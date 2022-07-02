@@ -1,15 +1,32 @@
 import { ArrowSmRightIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
+import { useEffect } from 'react'
 import { ButtonMenu } from '~/components'
+import { useLoading } from '~/context'
+import { useWindowSize } from '~/hook'
 
 const Spending = () => {
+    const { setLoading } = useLoading()
+    useEffect(() => {
+        setLoading(true)
+        const timeout = setTimeout(() => {
+            setLoading(false)
+        }, 1500)
+
+        return () => timeout && clearTimeout(timeout)
+    }, [])
+
+    const { width } = useWindowSize()
+
     return (
         <>
             <div className='lg:grid lg:grid-cols-12 xl:gap-6 gap-4'>
                 <main className='lg:col-span-12 xl:col-span-10'>
-                    <div className='xl:hidden block'>
-                        <ButtonMenu />
-                    </div>
+                    {width < 1280 && (
+                        <div className='xl:hidden block'>
+                            <ButtonMenu />
+                        </div>
+                    )}
 
                     <Divider className='xl:hidden' />
 
@@ -34,11 +51,13 @@ const Spending = () => {
                         </div>
                     </Transaction>
                 </main>
-                <aside className='hidden xl:block xl:col-span-2'>
-                    <div className='sticky top-4 space-y-4'>
-                        <ButtonMenu />
-                    </div>
-                </aside>
+                {width >= 1280 && (
+                    <aside className='hidden xl:block xl:col-span-2'>
+                        <div className='sticky top-4 space-y-4'>
+                            <ButtonMenu />
+                        </div>
+                    </aside>
+                )}
             </div>
         </>
     )

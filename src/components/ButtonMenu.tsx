@@ -2,7 +2,7 @@ import { ClipboardListIcon, MinusCircleIcon, PlusCircleIcon, SwitchHorizontalIco
 import clsx from 'clsx'
 import { SVGProps } from 'react'
 import { Link, To, useNavigate } from 'react-router-dom'
-import { SlideOverProvider, useSlideOver } from '~/context'
+import { SlideOverProvider, useLoading, useSlideOver } from '~/context'
 import SlideOver from './SlideOver'
 import { useState } from 'react'
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
