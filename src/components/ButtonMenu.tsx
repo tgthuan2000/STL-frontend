@@ -1,19 +1,23 @@
 import { ClipboardListIcon, MinusCircleIcon, PlusCircleIcon, SwitchHorizontalIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import { SVGProps } from 'react'
-import { Link, To } from 'react-router-dom'
+import { Link, To, useNavigate } from 'react-router-dom'
 import { SlideOverProvider, useSlideOver } from '~/context'
 import SlideOver from './SlideOver'
 import { useState } from 'react'
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
 import { Combobox } from '@headlessui/react'
 
+export interface SlideParams {
+    slide?: string
+}
 interface IMenuBtn {
     title: string
     icon: (props: SVGProps<SVGSVGElement>) => JSX.Element
     color: string
-    to?: To
+    to: To
     children?: (setIsOpen: (isOpen: boolean) => void) => React.ReactNode | React.ReactNode
+    query?: SlideParams
 }
 
 const menuBtns: IMenuBtn[] = [
@@ -22,11 +26,19 @@ const menuBtns: IMenuBtn[] = [
         color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300',
         icon: PlusCircleIcon,
         children: () => <MakeIncome />,
+        to: '?slide=add-income',
+        query: {
+            slide: 'add-income',
+        },
     },
     {
         title: 'Thêm chi phí',
         color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300',
         icon: MinusCircleIcon,
+        to: '?slide=add-payment',
+        query: {
+            slide: 'add-payment',
+        },
     },
     {
         title: 'Chuyển khoản',
@@ -46,7 +58,7 @@ const ButtonMenu = ({ className }: { className?: string }) => {
     return (
         <div className={clsx('min-h-[240px] max-w-lg mx-auto grid grid-cols-2 xl:grid-cols-1 gap-2', className)}>
             {menuBtns.map((menuBtn) => (
-                <SlideOverProvider key={menuBtn.title}>
+                <SlideOverProvider key={menuBtn.title} query={menuBtn.query} title={menuBtn.title}>
                     <ButtonItem data={menuBtn} />
                 </SlideOverProvider>
             ))}
@@ -59,20 +71,23 @@ interface ButtonProps {
 }
 
 const ButtonItem = ({ data }: ButtonProps) => {
-    const { title, color, icon: Icon, children, ...props } = data
+    const { title, color, icon: Icon, children, to } = data
     const { setIsOpen, setTitle } = useSlideOver()
+    const navigate = useNavigate()
 
-    const handleClick = () => {
+    const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        e.preventDefault()
+        navigate(to, {
+            replace: true,
+        })
         setIsOpen(true)
         setTitle(title)
     }
 
-    const Component = (data.to ? Link : 'button') as any
-
     return (
         <>
-            <Component
-                {...props}
+            <Link
+                to={to}
                 onClick={handleClick}
                 className={clsx(
                     'inline-flex items-center justify-center flex-col py-2 space-y-2 border border-transparent font-medium rounded-md focus:outline-none',
@@ -81,7 +96,7 @@ const ButtonItem = ({ data }: ButtonProps) => {
             >
                 <Icon className='w-10 h-10' />
                 <span>{title}</span>
-            </Component>
+            </Link>
             <SlideOver>{children}</SlideOver>
         </>
     )
@@ -89,6 +104,8 @@ const ButtonItem = ({ data }: ButtonProps) => {
 
 const MakeIncome = () => {
     const { setIsOpen } = useSlideOver()
+    const navigate = useNavigate()
+
     return (
         <form className='flex h-full flex-col'>
             <div className='h-0 flex-1 overflow-y-auto'>
@@ -145,7 +162,12 @@ const MakeIncome = () => {
                     <button
                         type='button'
                         className='min-w-[100px] rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none'
-                        onClick={() => setIsOpen(false)}
+                        onClick={() => {
+                            setIsOpen(false)
+                            navigate('.', {
+                                replace: true,
+                            })
+                        }}
                     >
                         Hủy bỏ
                     </button>

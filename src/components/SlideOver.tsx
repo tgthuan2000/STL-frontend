@@ -3,6 +3,7 @@ import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
 import { useSlideOver } from '~/context'
+import { useNavigate } from 'react-router-dom'
 
 interface SlideOverProps {
     children?: (setIsOpen: (isOpen: boolean) => void) => React.ReactNode | React.ReactNode
@@ -10,10 +11,18 @@ interface SlideOverProps {
 
 const SlideOver = ({ children }: SlideOverProps) => {
     const { isOpen, setIsOpen, title } = useSlideOver()
+    const navigate = useNavigate()
 
     return (
         <Transition.Root show={isOpen} as={Fragment}>
-            <Dialog as='div' className='relative z-10' onClose={setIsOpen}>
+            <Dialog
+                as='div'
+                className='relative z-10'
+                onClose={(value) => {
+                    setIsOpen(value)
+                    navigate('.', { replace: true })
+                }}
+            >
                 <Transition.Child
                     as={Fragment}
                     enter='ease-in-out duration-500'
@@ -38,7 +47,7 @@ const SlideOver = ({ children }: SlideOverProps) => {
                                 leaveFrom='translate-x-0'
                                 leaveTo='translate-x-full'
                             >
-                                <Dialog.Panel className='pointer-events-auto w-screen max-w-md'>
+                                <Dialog.Panel className='pointer-events-auto w-screen sm:max-w-md max-w-full'>
                                     <div className='flex h-full flex-col overflow-y-scroll bg-white shadow-xl'>
                                         <div className='px-4 sm:px-6 pt-6'>
                                             <div className='flex items-start justify-between'>
@@ -49,7 +58,10 @@ const SlideOver = ({ children }: SlideOverProps) => {
                                                     <button
                                                         type='button'
                                                         className='rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none'
-                                                        onClick={() => setIsOpen(false)}
+                                                        onClick={() => {
+                                                            setIsOpen(false)
+                                                            navigate('.', { replace: true })
+                                                        }}
                                                     >
                                                         <span className='sr-only'>Close panel</span>
                                                         <XIcon className='h-6 w-6' aria-hidden='true' />

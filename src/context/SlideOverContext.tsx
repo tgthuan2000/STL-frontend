@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import { SlideParams } from '~/components/ButtonMenu'
 
 interface ISlideOverContext {
     isOpen: boolean
@@ -14,9 +16,27 @@ const SlideOverContext = createContext<ISlideOverContext>({
     setTitle: () => {},
 })
 
-const SlideOverProvider = ({ children }: { children: React.ReactNode }) => {
-    const [isOpen, setIsOpen] = useState(false)
-    const [title, setTitle] = useState('')
+const SlideOverProvider = ({
+    children,
+    query,
+    title: _title,
+}: {
+    children: React.ReactNode
+    query?: SlideParams
+    title?: string
+}) => {
+    const location = useLocation()
+    const [isOpen, setIsOpen] = useState(() => {
+        if (location.search) {
+            const search = location.search.substring(1)
+            const parse = JSON.parse(
+                '{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}'
+            )
+            return parse.slide === query?.slide
+        }
+        return false
+    })
+    const [title, setTitle] = useState(_title || '')
 
     const value: ISlideOverContext = {
         isOpen,
