@@ -1,22 +1,46 @@
 import { ArrowSmRightIcon } from '@heroicons/react/outline'
-import React from 'react'
+import clsx from 'clsx'
 import { ButtonMenu } from '~/components'
 
 const Spending = () => {
     return (
-        <div>
-            <ButtonMenu />
-            <Transaction>
-                <Transaction.Divider />
-                <Transaction.Box title='Giao dịch gần đây'>
-                    <RecentTransactionList />
-                </Transaction.Box>
-                <Transaction.Divider />
-                <Transaction.Box title='Phương thức thanh toán'>
-                    <MethodTransactionList />
-                </Transaction.Box>
-            </Transaction>
-        </div>
+        <>
+            <div className='lg:grid lg:grid-cols-12 xl:gap-6 gap-4'>
+                <main className='lg:col-span-12 xl:col-span-10'>
+                    <div className='xl:hidden block'>
+                        <ButtonMenu />
+                    </div>
+
+                    <Divider className='xl:hidden' />
+
+                    <Transaction>
+                        <div className='xl:space-y-6 space-y-4'>
+                            {/* <Transaction.Divider /> */}
+                            <Transaction.Box title='Giao dịch gần đây'>
+                                <RecentTransactionList />
+                            </Transaction.Box>
+                            {/* <Transaction.Divider /> */}
+                            <Transaction.Box title='Phương thức thanh toán'>
+                                <MethodTransactionList />
+                            </Transaction.Box>
+                        </div>
+                        <div className='xl:space-y-6 space-y-4'>
+                            <Transaction.Box title='Phương thức thanh toán'>
+                                <MethodTransactionList />
+                            </Transaction.Box>
+                            <Transaction.Box title='Giao dịch gần đây'>
+                                <RecentTransactionList />
+                            </Transaction.Box>
+                        </div>
+                    </Transaction>
+                </main>
+                <aside className='hidden xl:block xl:col-span-2'>
+                    <div className='sticky top-4 space-y-4'>
+                        <ButtonMenu />
+                    </div>
+                </aside>
+            </div>
+        </>
     )
 }
 
@@ -82,7 +106,9 @@ const MethodTransactionList = () => {
     )
 }
 
-const Transaction = ({ children }: { children?: React.ReactNode }) => <div>{children}</div>
+const Transaction = ({ children }: { children?: React.ReactNode }) => (
+    <div className='grid xl:grid-cols-2 grid-cols-1 xl:gap-6 gap-4'>{children}</div>
+)
 
 interface BoxProps {
     title?: string
@@ -92,7 +118,7 @@ interface BoxProps {
 
 const Box = ({ title, seeMore = true, children }: BoxProps) => {
     return (
-        <div className='max-w-lg mx-auto bg-white border border-gray-300 overflow-hidden rounded-md select-none'>
+        <div className='max-w-lg w-full h-fit mx-auto bg-white border border-gray-300 overflow-hidden rounded-md select-none'>
             <TransactionTitle title={title} />
             {children}
             <TransactionSeeMore seeMore={seeMore} />
@@ -100,8 +126,8 @@ const Box = ({ title, seeMore = true, children }: BoxProps) => {
     )
 }
 
-const Divider = () => (
-    <div className='py-6 flex items-center max-w-lg mx-auto' aria-hidden='true'>
+const Divider = ({ className }: { className?: string }) => (
+    <div className={clsx('py-6 flex items-center max-w-lg mx-auto', className)} aria-hidden='true'>
         <div className='w-full border-t border-gray-300' />
     </div>
 )
