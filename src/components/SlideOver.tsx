@@ -17,7 +17,7 @@ const SlideOver = ({ children }: SlideOverProps) => {
                 className='relative z-10'
                 onClose={(value) => {
                     setIsOpen(value)
-                    navigate(-1)
+                    navigate('.', { replace: true })
                 }}
             >
                 <Transition.Child
@@ -57,7 +57,7 @@ const SlideOver = ({ children }: SlideOverProps) => {
                                                         className='rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none'
                                                         onClick={() => {
                                                             setIsOpen(false)
-                                                            navigate(-1)
+                                                            navigate('.', { replace: true })
                                                         }}
                                                     >
                                                         <span className='sr-only'>Close panel</span>

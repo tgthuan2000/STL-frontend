@@ -11,7 +11,9 @@ const ButtonItem = ({ data }: ButtonProps) => {
 
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault()
-        navigate(to)
+        navigate(to, {
+            replace: true,
+        })
         setIsOpen(true)
         setTitle(title)
     }

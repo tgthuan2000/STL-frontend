@@ -55,16 +55,18 @@ const MakeIncome = () => {
                 <div className='flex sm:justify-start justify-end space-x-3'>
                     <button
                         type='submit'
-                        className='min-w-[100px] inline-flex justify-center rounded-md border border-transparent bg-radical-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-radical-red-700 focus:outline-none'
+                        className='min-w-[100px] sm:w-auto w-1/2 inline-flex justify-center rounded-md border border-transparent bg-radical-red-600 sm:py-2 py-3 px-4 sm:text-sm text-base font-medium text-white shadow-sm hover:bg-radical-red-700 focus:outline-none'
                     >
                         Lưu
                     </button>
                     <button
                         type='button'
-                        className='min-w-[100px] rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none'
+                        className='min-w-[100px] sm:w-auto w-1/2 rounded-md border border-gray-300 bg-white sm:py-2 py-3 px-4 sm:text-sm text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none'
                         onClick={() => {
                             setIsOpen(false)
-                            navigate(-1)
+                            navigate('.', {
+                                replace: true,
+                            })
                         }}
                     >
                         Hủy bỏ
