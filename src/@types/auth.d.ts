@@ -18,3 +18,9 @@ export type AuthStore = (set: (user: SetUserProfile) => void) => {
 }
 
 export type IFetchGoogleResponse = (res: CredentialResponse, addUser: AddUserProfile) => void
+
+export interface GoogleData {
+    sub: string
+    image: string
+    userName: string
+}
