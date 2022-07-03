@@ -1,13 +1,7 @@
 import React, { createContext, useContext, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { SlideParams } from '~/components/ButtonMenu'
-
-interface ISlideOverContext {
-    isOpen: boolean
-    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-    title: string
-    setTitle: React.Dispatch<React.SetStateAction<string>>
-}
+import { SlideParams } from '~/@types/components'
+import { ISlideOverContext } from '~/@types/context'
 
 const SlideOverContext = createContext<ISlideOverContext>({
     isOpen: false,

@@ -1,9 +1,5 @@
 import React, { createContext, useContext, useState } from 'react'
-
-interface ILoadingContext {
-    loading: boolean
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>
-}
+import { ILoadingContext } from '~/@types/context'
 
 const LoadingContext = createContext<ILoadingContext>({
     loading: false,

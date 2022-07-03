@@ -1,22 +1,13 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { CalendarIcon, CashIcon, MenuIcon, SwitchVerticalIcon, XIcon } from '@heroicons/react/outline'
+import { MenuIcon, XIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import { NavLink } from 'react-router-dom'
+import { SideBarProps } from '~/@types/layout'
+import { navigation } from '~/constant/layout'
 
-const navigation = [
-    { name: 'Quản lý chi tiêu', href: '/spending', icon: CashIcon },
-    { name: 'Quản lý chấm công', href: '/timekeeping', icon: CalendarIcon },
-    { name: 'Quản lý vay / cho vay', href: '/loan', icon: SwitchVerticalIcon },
-]
-
-interface SideBarProps {
-    children: React.ReactNode
-    title?: string
-}
-
-const Sidebar = ({ children, title }: SideBarProps) => {
+const Sidebar = ({ children }: SideBarProps) => {
     const [sidebarOpen, setSidebarOpen] = useState(false)
 
     return (

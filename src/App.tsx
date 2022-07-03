@@ -1,14 +1,14 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Auth, Loan, Spending, TimeKeeping } from '~/page'
 import { DefaultLayout } from '~/layout'
-import { LoadingBackdrop } from './components'
+import { Loading } from './components'
 import { LoadingProvider } from './context'
 
 function App() {
     return (
         <BrowserRouter>
             <LoadingProvider>
-                <LoadingBackdrop />
+                <Loading />
                 <Routes>
                     <Route path='/' element={<DefaultLayout />}>
                         <Route index element={<Navigate to='spending' />} />

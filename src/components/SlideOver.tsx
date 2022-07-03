@@ -4,10 +4,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
 import { useSlideOver } from '~/context'
 import { useNavigate } from 'react-router-dom'
-
-interface SlideOverProps {
-    children?: (setIsOpen: (isOpen: boolean) => void) => React.ReactNode | React.ReactNode
-}
+import { SlideOverProps } from '~/@types/components'
 
 const SlideOver = ({ children }: SlideOverProps) => {
     const { isOpen, setIsOpen, title } = useSlideOver()
@@ -20,7 +17,7 @@ const SlideOver = ({ children }: SlideOverProps) => {
                 className='relative z-10'
                 onClose={(value) => {
                     setIsOpen(value)
-                    navigate('.', { replace: true })
+                    navigate(-1)
                 }}
             >
                 <Transition.Child
@@ -60,7 +57,7 @@ const SlideOver = ({ children }: SlideOverProps) => {
                                                         className='rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none'
                                                         onClick={() => {
                                                             setIsOpen(false)
-                                                            navigate('.', { replace: true })
+                                                            navigate(-1)
                                                         }}
                                                     >
                                                         <span className='sr-only'>Close panel</span>
@@ -70,7 +67,7 @@ const SlideOver = ({ children }: SlideOverProps) => {
                                             </div>
                                         </div>
                                         <div className='flex-1'>
-                                            {children?.(setIsOpen)}
+                                            {children?.()}
                                             {/* /End replace */}
                                         </div>
                                     </div>
