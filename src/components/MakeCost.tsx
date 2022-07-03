@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSlideOver } from '~/context'
 import AutoCompelete from './Autocomplete'
 
-const MakeIncome = () => {
+const MakeCost = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const ref = useRef<HTMLInputElement>(null)
@@ -20,7 +20,7 @@ const MakeIncome = () => {
                         <div className='space-y-6 pt-6 pb-5'>
                             <div>
                                 <label htmlFor='name' className='block font-medium text-gray-900'>
-                                    Thu nhập
+                                    Chi phí
                                 </label>
                                 <div className='mt-1'>
                                     <input
@@ -62,7 +62,7 @@ const MakeIncome = () => {
                 <div className='flex sm:justify-start justify-end space-x-3'>
                     <button
                         type='submit'
-                        className='min-w-[100px] sm:w-auto w-1/2 inline-flex justify-center rounded-md border border-transparent bg-green-600 sm:py-2 py-3 px-4 sm:text-sm text-base font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none'
+                        className='min-w-[100px] sm:w-auto w-1/2 inline-flex justify-center rounded-md border border-transparent bg-radical-red-600 sm:py-2 py-3 px-4 sm:text-sm text-base font-medium text-white shadow-sm hover:bg-radical-red-700 focus:outline-none'
                     >
                         Lưu
                     </button>
@@ -84,4 +84,4 @@ const MakeIncome = () => {
     )
 }
 
-export default MakeIncome
+export default MakeCost
