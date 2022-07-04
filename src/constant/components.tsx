@@ -6,9 +6,11 @@ import {
     PlusCircleIcon,
     QrcodeIcon,
     SwitchHorizontalIcon,
+    TemplateIcon,
 } from '@heroicons/react/outline'
+import { googleLogout } from '@react-oauth/google'
 import { IMenuBtn } from '~/@types/components'
-import { MakeIncome, MakeCost, MakeTransfer } from '~/components'
+import { MakeIncome, MakeCost, MakeTransfer, AddCategory, AddMethod } from '~/page/spending/components'
 
 export const menuMobile: IMenuBtn[] = [
     {
@@ -85,6 +87,10 @@ export const menuPC: IMenuBtn[] = [
         color: 'text-gray-700 bg-gray-200 hover:bg-gray-300',
         icon: LogoutIcon,
         to: '/',
+        action: (removeUserProfile) => {
+            googleLogout()
+            removeUserProfile()
+        },
         divider: true,
     },
     {
@@ -104,6 +110,27 @@ export const menuPC: IMenuBtn[] = [
         color: 'text-purple-700 bg-purple-200 hover:bg-purple-300',
         icon: QrcodeIcon,
         to: 'method',
+    },
+    {
+        title: 'Tạo mới phương thức thanh toán',
+        color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300',
+        icon: QrcodeIcon,
+        children: () => <AddMethod />,
+        to: '?slide=add-method',
+        query: {
+            slide: 'add-method',
+        },
+        divider: true,
+    },
+    {
+        title: 'Tạo mới thể loại',
+        color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300',
+        icon: TemplateIcon,
+        children: () => <AddCategory />,
+        to: '?slide=add-category',
+        query: {
+            slide: 'add-category',
+        },
     },
 ]
 

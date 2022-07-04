@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { AutoComplete } from '~/components'
 import { useSlideOver } from '~/context'
 import useEventListener from '~/hook/useEventListener'
-import AutoCompelete from './Autocomplete'
 
-const MakeTransfer = () => {
+const MakeCost = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const ref = useRef<HTMLInputElement>(null)
@@ -27,7 +27,7 @@ const MakeTransfer = () => {
                         <div className='space-y-6 pt-6 pb-5'>
                             <div>
                                 <label htmlFor='name' className='block font-medium text-gray-900'>
-                                    Số tiền
+                                    Chi phí
                                 </label>
                                 <div className='mt-1'>
                                     <input
@@ -41,10 +41,10 @@ const MakeTransfer = () => {
                                 </div>
                             </div>
                             <div>
-                                <AutoCompelete title='Từ phương thức thanh toán' />
+                                <AutoComplete title='Thể loại' />
                             </div>
                             <div>
-                                <AutoCompelete title='Đến phương thức thanh toán' />
+                                <AutoComplete title='Phương thức thanh toán' />
                             </div>
                             <div>
                                 <label htmlFor='description' className='block font-medium text-gray-900'>
@@ -69,9 +69,9 @@ const MakeTransfer = () => {
                 <div className='flex sm:justify-start justify-end space-x-3'>
                     <button
                         type='submit'
-                        className='min-w-[100px] sm:w-auto w-1/2 inline-flex justify-center rounded-md border border-transparent bg-blue-600 sm:py-2 py-3 px-4 sm:text-sm text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none'
+                        className='min-w-[100px] sm:w-auto w-1/2 inline-flex justify-center rounded-md border border-transparent bg-radical-red-600 sm:py-2 py-3 px-4 sm:text-sm text-base font-medium text-white shadow-sm hover:bg-radical-red-700 focus:outline-none'
                     >
-                        Chuyển khoản
+                        Lưu
                     </button>
                     <button
                         type='button'
@@ -89,4 +89,4 @@ const MakeTransfer = () => {
     )
 }
 
-export default MakeTransfer
+export default MakeCost

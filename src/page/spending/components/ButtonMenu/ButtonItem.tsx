@@ -3,14 +3,17 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ButtonProps } from '~/@types/components'
 import { useSlideOver } from '~/context'
 import { SlideOver, Divider } from '~/components'
+import useAuth from '~/store/auth'
 
 const ButtonItem = ({ data }: ButtonProps) => {
-    const { title, color, icon: Icon, children, to, query, divider } = data
+    const { title, color, icon: Icon, children, to, query, divider, action } = data
     const { setIsOpen, setTitle } = useSlideOver()
     const navigate = useNavigate()
+    const { removeUserProfile } = useAuth()
 
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-        if (query) {
+        if (query || action) {
+            action?.(removeUserProfile)
             e.preventDefault()
             navigate(to)
             setIsOpen(true)

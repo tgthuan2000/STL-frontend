@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { AutoCompleteProps } from '~/@types/components'
 import { people } from '~/constant/components'
 
-const AutoCompelete = ({ title }: AutoCompleteProps) => {
+const AutoComplete = ({ title }: AutoCompleteProps) => {
     const [query, setQuery] = useState('')
     const [selectedPerson, setSelectedPerson] = useState()
 
@@ -69,4 +69,4 @@ const AutoCompelete = ({ title }: AutoCompleteProps) => {
     )
 }
 
-export default AutoCompelete
+export default AutoComplete

@@ -40,12 +40,12 @@ const SlideOver = ({ children }: SlideOverProps) => {
                         <div className='pointer-events-none fixed inset-y-0 right-0 flex max-w-full'>
                             <Transition.Child
                                 as={Fragment}
-                                enter='transform transition ease-in-out duration-500 sm:duration-700'
-                                enterFrom='translate-x-full'
+                                enter='transform transition ease-in-out duration-500'
+                                enterFrom='translate-x-full opacity-0'
                                 enterTo='translate-x-0'
-                                leave='transform transition ease-in-out duration-500 sm:duration-700'
+                                leave='transform transition ease-in-out duration-500'
                                 leaveFrom='translate-x-0'
-                                leaveTo='translate-x-full'
+                                leaveTo='translate-x-full opacity-0'
                             >
                                 <Dialog.Panel className='pointer-events-auto w-screen sm:max-w-md max-w-full'>
                                     <div className='flex h-full flex-col overflow-y-auto bg-white shadow-xl'>

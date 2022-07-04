@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { AutoComplete } from '~/components'
 import { useSlideOver } from '~/context'
 import { useEventListener } from '~/hook'
-import AutoComplete from './Autocomplete'
 
 const MakeIncome = () => {
     const { setIsOpen } = useSlideOver()

@@ -11,7 +11,7 @@ interface IUserProfile {
 }
 
 interface SetUserProfile {
-    userProfile: SanityDocument<IUserProfile>
+    userProfile: SanityDocument<IUserProfile> | null
 }
 
 type AddUserProfile = (userProfile: SanityDocument<IUserProfile>) => void
@@ -19,6 +19,7 @@ type AddUserProfile = (userProfile: SanityDocument<IUserProfile>) => void
 export type AuthStore = (set: (user: SetUserProfile) => void) => {
     userProfile: SanityDocument<IUserProfile> | null
     addUserProfile: AddUserProfile
+    removeUserProfile: () => void
 }
 
 export type IFetchGoogleResponse = (res: CredentialResponse, addUser: AddUserProfile) => void

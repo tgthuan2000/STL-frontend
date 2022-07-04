@@ -1,7 +1,7 @@
-import { ButtonMenu, Divider } from '~/components'
+import { Divider } from '~/components'
 import { menuMobile } from '~/constant/components'
 import { useWindowSize } from '~/hook'
-import { Method, Recent, Transaction } from './components'
+import { ButtonMenu, Method, Recent, Transaction } from './components'
 
 const Dashboard = () => {
     const { width } = useWindowSize()

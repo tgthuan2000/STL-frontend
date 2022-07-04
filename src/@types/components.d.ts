@@ -12,6 +12,7 @@ export interface IMenuBtn {
     children?: () => React.ReactNode
     query?: SlideParams
     divider?: boolean
+    action?: (cb: () => void) => void
 }
 
 export interface ButtonProps {

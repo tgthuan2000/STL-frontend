@@ -2,9 +2,8 @@ import { useCallback, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSlideOver } from '~/context'
 import useEventListener from '~/hook/useEventListener'
-import AutoCompelete from './Autocomplete'
 
-const MakeCost = () => {
+const AddMethod = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const ref = useRef<HTMLInputElement>(null)
@@ -27,37 +26,16 @@ const MakeCost = () => {
                         <div className='space-y-6 pt-6 pb-5'>
                             <div>
                                 <label htmlFor='name' className='block font-medium text-gray-900'>
-                                    Chi phí
+                                    Tên phương thức
                                 </label>
                                 <div className='mt-1'>
                                     <input
                                         ref={ref}
-                                        type='number'
+                                        type='text'
                                         name='name'
                                         id='name'
                                         spellCheck={false}
                                         className='block p-2 w-full rounded-md border border-gray-300 shadow-sm'
-                                    />
-                                </div>
-                            </div>
-                            <div>
-                                <AutoCompelete title='Thể loại' />
-                            </div>
-                            <div>
-                                <AutoCompelete title='Phương thức thanh toán' />
-                            </div>
-                            <div>
-                                <label htmlFor='description' className='block font-medium text-gray-900'>
-                                    Ghi chú
-                                </label>
-                                <div className='mt-1'>
-                                    <textarea
-                                        id='description'
-                                        name='description'
-                                        spellCheck={false}
-                                        rows={4}
-                                        className='block p-2 w-full rounded-md border border-gray-300 shadow-sm'
-                                        defaultValue={''}
                                     />
                                 </div>
                             </div>
@@ -69,9 +47,9 @@ const MakeCost = () => {
                 <div className='flex sm:justify-start justify-end space-x-3'>
                     <button
                         type='submit'
-                        className='min-w-[100px] sm:w-auto w-1/2 inline-flex justify-center rounded-md border border-transparent bg-radical-red-600 sm:py-2 py-3 px-4 sm:text-sm text-base font-medium text-white shadow-sm hover:bg-radical-red-700 focus:outline-none'
+                        className='min-w-[100px] sm:w-auto w-1/2 inline-flex justify-center rounded-md border border-transparent bg-cyan-600 sm:py-2 py-3 px-4 sm:text-sm text-base font-medium text-white shadow-sm hover:bg-cyan-700 focus:outline-none'
                     >
-                        Lưu
+                        Tạo
                     </button>
                     <button
                         type='button'
@@ -89,4 +67,4 @@ const MakeCost = () => {
     )
 }
 
-export default MakeCost
+export default AddMethod
