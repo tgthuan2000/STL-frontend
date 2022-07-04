@@ -9,7 +9,7 @@ const authStore: AuthStore = (set) => ({
 
 const useAuth = create(
     persist(authStore, {
-        name: 'auth',
+        name: 'STL-auth',
     })
 )
 

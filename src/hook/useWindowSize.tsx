@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import useEventListener from './useEventListener'
 
 const useWindowSize = () => {
@@ -7,12 +7,14 @@ const useWindowSize = () => {
         height: window.innerHeight,
     })
 
-    useEventListener('resize', () => {
+    const handler = useCallback(() => {
         setWindowSize({
             width: window.innerWidth,
             height: window.innerHeight,
         })
-    })
+    }, [])
+
+    useEventListener('resize', handler)
 
     return windowSize
 }

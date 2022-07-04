@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSlideOver } from '~/context'
-import AutoCompelete from './Autocomplete'
+import { useEventListener } from '~/hook'
+import AutoComplete from './Autocomplete'
 
 const MakeIncome = () => {
     const { setIsOpen } = useSlideOver()
@@ -11,6 +12,14 @@ const MakeIncome = () => {
     useEffect(() => {
         ref.current?.focus()
     }, [])
+
+    const handler = useCallback(() => {
+        setIsOpen(false)
+        window.history.forward()
+        navigate('.', { replace: true })
+    }, [])
+
+    useEventListener('popstate', handler)
 
     return (
         <form className='flex h-full flex-col'>
@@ -34,10 +43,10 @@ const MakeIncome = () => {
                                 </div>
                             </div>
                             <div>
-                                <AutoCompelete title='Thể loại' />
+                                <AutoComplete title='Thể loại' />
                             </div>
                             <div>
-                                <AutoCompelete title='Phương thức thanh toán' />
+                                <AutoComplete title='Phương thức thanh toán' />
                             </div>
                             <div>
                                 <label htmlFor='description' className='block font-medium text-gray-900'>

@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSlideOver } from '~/context'
+import useEventListener from '~/hook/useEventListener'
 import AutoCompelete from './Autocomplete'
 
 const MakeCost = () => {
@@ -11,6 +12,14 @@ const MakeCost = () => {
     useEffect(() => {
         ref.current?.focus()
     }, [])
+
+    const handler = useCallback(() => {
+        setIsOpen(false)
+        window.history.forward()
+        navigate('.', { replace: true })
+    }, [])
+
+    useEventListener('popstate', handler)
 
     return (
         <form className='flex h-full flex-col'>

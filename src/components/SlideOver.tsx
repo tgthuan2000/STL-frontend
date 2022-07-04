@@ -1,13 +1,14 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
-import { useSlideOver } from '~/context'
+import { useLoading, useSlideOver } from '~/context'
 import { useNavigate } from 'react-router-dom'
 import { SlideOverProps } from '~/@types/components'
 
 const SlideOver = ({ children }: SlideOverProps) => {
     const { isOpen, setIsOpen, title } = useSlideOver()
+    const { loading } = useLoading()
     const navigate = useNavigate()
 
     return (
@@ -16,8 +17,10 @@ const SlideOver = ({ children }: SlideOverProps) => {
                 as='div'
                 className='relative z-10'
                 onClose={(value) => {
-                    setIsOpen(value)
-                    navigate('.', { replace: true })
+                    if (!loading) {
+                        setIsOpen(value)
+                        navigate('.', { replace: true })
+                    }
                 }}
             >
                 <Transition.Child
