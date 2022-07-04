@@ -1,14 +1,19 @@
 import clsx from 'clsx'
+import { IMenuBtn } from '~/@types/components'
 import { SlideOverProvider } from '~/context'
-import { menuBtns } from '~/constant/components'
 import ButtonItem from './ButtonItem'
 
-const ButtonMenu = ({ className }: { className?: string }) => {
+const ButtonMenu = ({ className, data }: { className?: string; data: IMenuBtn[] }) => {
     return (
-        <div className={clsx('min-h-[240px] max-w-lg mx-auto grid grid-cols-2 xl:grid-cols-1 gap-2', className)}>
-            {menuBtns.map((menuBtn) => (
-                <SlideOverProvider key={menuBtn.title} query={menuBtn.query} title={menuBtn.title}>
-                    <ButtonItem data={menuBtn} />
+        <div
+            className={clsx(
+                'xl:hover:bg-white min-w-[80px] xl:hover:bg-opacity-30 transition-all xl:hover:p-3 xl:rounded-lg xl:hover:shadow-lg min-h-[240px] max-w-lg mx-auto grid grid-cols-2 xl:grid-cols-1 gap-2',
+                className
+            )}
+        >
+            {data.map((item) => (
+                <SlideOverProvider key={item.title} query={item.query} title={item.title}>
+                    <ButtonItem data={item} />
                 </SlideOverProvider>
             ))}
         </div>

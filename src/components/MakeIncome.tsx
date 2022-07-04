@@ -15,8 +15,6 @@ const MakeIncome = () => {
 
     const handler = useCallback(() => {
         setIsOpen(false)
-        window.history.forward()
-        navigate('.', { replace: true })
     }, [])
 
     useEventListener('popstate', handler)
@@ -80,9 +78,7 @@ const MakeIncome = () => {
                         className='min-w-[100px] sm:w-auto w-1/2 rounded-md border border-gray-300 bg-white sm:py-2 py-3 px-4 sm:text-sm text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none'
                         onClick={() => {
                             setIsOpen(false)
-                            navigate('.', {
-                                replace: true,
-                            })
+                            navigate(-1)
                         }}
                     >
                         Hủy bỏ

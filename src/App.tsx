@@ -14,7 +14,13 @@ function App() {
                     <Routes>
                         <Route path='/' element={<DefaultLayout />}>
                             <Route index element={<Navigate to='spending' />} />
-                            <Route path='spending' element={<Spending />} />
+                            <Route path='spending' element={<Spending />}>
+                                <Route index element={<Spending.Dashboard />} />
+                                <Route path='transaction' element={<Spending.Transaction />} />
+                                <Route path='transaction/:id' element={<Spending.TransactionDetail />} />
+                                <Route path='method' element={<Spending.Method />} />
+                                <Route path='method/:id' element={<Spending.MethodDetail />} />
+                            </Route>
                             <Route path='timekeeping' element={<TimeKeeping />} />
                             <Route path='loan' element={<Loan />} />
                         </Route>

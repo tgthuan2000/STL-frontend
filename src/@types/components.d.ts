@@ -11,6 +11,7 @@ export interface IMenuBtn {
     to: To
     children?: () => React.ReactNode
     query?: SlideParams
+    divider?: boolean
 }
 
 export interface ButtonProps {

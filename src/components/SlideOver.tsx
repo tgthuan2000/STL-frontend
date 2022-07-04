@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useEffect } from 'react'
+import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
 import { useLoading, useSlideOver } from '~/context'
@@ -19,7 +19,7 @@ const SlideOver = ({ children }: SlideOverProps) => {
                 onClose={(value) => {
                     if (!loading) {
                         setIsOpen(value)
-                        navigate('.', { replace: true })
+                        navigate(-1)
                     }
                 }}
             >
@@ -48,7 +48,7 @@ const SlideOver = ({ children }: SlideOverProps) => {
                                 leaveTo='translate-x-full'
                             >
                                 <Dialog.Panel className='pointer-events-auto w-screen sm:max-w-md max-w-full'>
-                                    <div className='flex h-full flex-col overflow-y-scroll bg-white shadow-xl'>
+                                    <div className='flex h-full flex-col overflow-y-auto bg-white shadow-xl'>
                                         <div className='px-4 sm:px-6 pt-6'>
                                             <div className='flex items-start justify-between'>
                                                 <Dialog.Title className='text-lg font-medium text-gray-900'>
@@ -60,7 +60,7 @@ const SlideOver = ({ children }: SlideOverProps) => {
                                                         className='rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none'
                                                         onClick={() => {
                                                             setIsOpen(false)
-                                                            navigate('.', { replace: true })
+                                                            navigate(-1)
                                                         }}
                                                     >
                                                         <span className='sr-only'>Close panel</span>

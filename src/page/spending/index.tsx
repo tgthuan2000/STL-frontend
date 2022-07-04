@@ -1,8 +1,14 @@
 import { useEffect } from 'react'
-import { ButtonMenu, Divider } from '~/components'
+import { Outlet } from 'react-router-dom'
+import { ButtonMenu } from '~/components'
+import { menuPC } from '~/constant/components'
 import { useLoading } from '~/context'
 import { useWindowSize } from '~/hook'
-import { Method, Recent, Transaction } from './components'
+import Dashboard from './dashboard'
+import Method from './method'
+import MethodDetail from './method-detail'
+import Transaction from './transaction'
+import TransactionDetail from './transaction-detail'
 
 const Spending = () => {
     const { setLoading } = useLoading()
@@ -20,32 +26,13 @@ const Spending = () => {
     return (
         <>
             <div className='lg:grid lg:grid-cols-12 xl:gap-6 gap-4'>
-                <main className='lg:col-span-12 xl:col-span-10'>
-                    {width < 1280 && (
-                        <div className='xl:hidden block'>
-                            <ButtonMenu />
-                        </div>
-                    )}
-
-                    <Divider className='xl:hidden' />
-
-                    <Transaction>
-                        <div className='xl:space-y-6 space-y-4'>
-                            <Transaction.Box title='Giao dịch gần đây'>
-                                <Recent />
-                            </Transaction.Box>
-                        </div>
-                        <div className='xl:space-y-6 space-y-4'>
-                            <Transaction.Box title='Phương thức thanh toán'>
-                                <Method />
-                            </Transaction.Box>
-                        </div>
-                    </Transaction>
+                <main className='lg:col-span-12 xl:col-span-11'>
+                    <Outlet />
                 </main>
                 {width >= 1280 && (
-                    <aside className='hidden xl:block xl:col-span-2'>
+                    <aside className='hidden xl:block xl:col-span-1'>
                         <div className='sticky top-4 space-y-4'>
-                            <ButtonMenu />
+                            <ButtonMenu data={menuPC} />
                         </div>
                     </aside>
                 )}
@@ -53,5 +40,11 @@ const Spending = () => {
         </>
     )
 }
+
+Spending.Dashboard = Dashboard
+Spending.Transaction = Transaction
+Spending.TransactionDetail = TransactionDetail
+Spending.Method = Method
+Spending.MethodDetail = MethodDetail
 
 export default Spending
