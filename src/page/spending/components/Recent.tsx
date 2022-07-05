@@ -1,78 +1,12 @@
-import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { client } from '~/sanityConfig'
 import moment from 'moment'
 import NumberFormat from 'react-number-format'
-import useAuth from '~/store/auth'
 import clsx from 'clsx'
-import { useConfig } from '~/context'
 import _ from 'lodash'
+import { RecentProps } from '~/@types/spending'
 
-interface Data {
-    _id: string
-    _createdAt: string
-    name: string
-    category: {
-        _id: string
-        name: string
-    }
-    method: {
-        _id: string
-        name: string
-    }
-    kind: {
-        _id: string
-        name: string
-        key: string
-    }
-    description: string
-    amount: number
-    date: string
-}
-
-const Recent = () => {
-    const [data, setData] = useState<Data[]>([])
-    const { userProfile } = useAuth()
-    const { kindSpending } = useConfig()
-
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                const res = await client.fetch(
-                    `*[_type == "spending" && user._ref == $userId] | order(_createdAt desc)[0...5]
-                {
-                    _id,
-                    _createdAt,
-                    name,
-                    category-> {
-                        _id,
-                        name
-                    },
-                    method-> {
-                        _id,
-                        name
-                    },
-                    kind-> {
-                        _id,
-                        name,
-                        key
-                    },
-                    description,
-                    amount,
-                    date
-                }`,
-                    {
-                        userId: userProfile?._id,
-                    }
-                )
-
-                setData(res)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        getData()
-    }, [])
+const Recent = ({ data, loading }: RecentProps) => {
+    if (loading) return <RecentSkeleton />
 
     if (!_.isEmpty(data)) {
         return (
@@ -111,7 +45,7 @@ const Recent = () => {
             </ul>
         )
     }
-    return <RecentSkeleton />
+    return <div className='py-2 text-center text-gray-700'>Không có dữ liệu</div>
 }
 
 export default Recent

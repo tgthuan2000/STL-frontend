@@ -1,74 +1,10 @@
 import { Link } from 'react-router-dom'
 import NumberFormat from 'react-number-format'
-import { useEffect, useState } from 'react'
-import useAuth from '~/store/auth'
-import { client } from '~/sanityConfig'
 import clsx from 'clsx'
-import { useConfig } from '~/context'
 import _ from 'lodash'
+import { MethodProps } from '~/@types/spending'
 
-interface Data {
-    _id: string
-    name: string
-    cost: number
-    receive: number
-}
-interface DataSanity {
-    _id: string
-    name: string
-    cost: number[]
-    receive: number[]
-}
-
-const Method = () => {
-    const [data, setData] = useState<Data[]>([])
-    const { kindSpending } = useConfig()
-    const { userProfile } = useAuth()
-    const [loading, setLoading] = useState(true)
-
-    useEffect(() => {
-        const getData = async () => {
-            setLoading(true)
-
-            if (_.isEmpty(kindSpending)) return
-
-            const temp = kindSpending.map(
-                ({ _id, key }) =>
-                    `"${key}": *[_type == "spending" && user._ref == $userId && method._ref == ^._id && kind._ref == "${_id}"].amount`
-            )
-
-            try {
-                const query = `
-                    *[_type == "methodSpending" && user._ref == $userId]
-                        {
-                            _id,
-                            name,
-                            ${temp.join(',')}
-                        }
-                `
-
-                const res: DataSanity[] = await client.fetch(query, {
-                    userId: userProfile?._id,
-                })
-
-                setData(
-                    res.map(({ cost, receive, ...data }) => {
-                        return {
-                            ...data,
-                            cost: _.isEmpty(cost) ? 0 : cost.reduce((a, b) => a + b, 0),
-                            receive: _.isEmpty(receive) ? 0 : receive.reduce((a, b) => a + b, 0),
-                        }
-                    })
-                )
-            } catch (error) {
-                console.log(error)
-            } finally {
-                setLoading(false)
-            }
-        }
-        getData()
-    }, [kindSpending])
-
+const Method = ({ data, loading }: MethodProps) => {
     if (loading) return <MethodSkeleton />
 
     if (!_.isEmpty(data)) {
