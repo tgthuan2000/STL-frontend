@@ -4,6 +4,7 @@ import { DefaultLayout } from '~/layout'
 import { Loading } from './components'
 import { ConfigProvider, LoadingProvider } from './context'
 import { GoogleOAuthProvider } from '@react-oauth/google'
+import { CacheProvider } from './context/CacheContext'
 
 function App() {
     return (
@@ -16,7 +17,9 @@ function App() {
                             path='/'
                             element={
                                 <ConfigProvider>
-                                    <DefaultLayout />
+                                    <CacheProvider>
+                                        <DefaultLayout />
+                                    </CacheProvider>
                                 </ConfigProvider>
                             }
                         >

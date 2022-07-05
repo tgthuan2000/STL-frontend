@@ -3,9 +3,8 @@ import { useEffect, useState } from 'react'
 import { MethodData, RecentData } from '~/@types/spending'
 import { Divider } from '~/components'
 import { menuMobile } from '~/constant/components'
-import { useConfig } from '~/context'
+import { useConfig, useCache } from '~/context'
 import { useWindowSize } from '~/hook'
-import { client } from '~/sanityConfig'
 import { GET_METHOD_SPENDING, GET_RECENT_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 import { sum } from '~/util'
@@ -27,30 +26,34 @@ const Dashboard = () => {
         method: [],
     })
     const [loading, setLoading] = useState(true)
+    const { fetchApi } = useCache()
 
     useEffect(() => {
         const getData = async () => {
             setLoading(true)
+
             try {
                 if (_.isEmpty(kindSpending)) return
 
-                const res: { recent: RecentData[]; method: DataMethodSanity[] } = await client.fetch(
-                    `
-                        {
-                            "recent": ${GET_RECENT_SPENDING},
-                            "method": ${GET_METHOD_SPENDING(kindSpending)}
-                        }
-                    `,
-                    { userId: userProfile?._id }
-                )
+                const query = `
+                    {
+                        "recent": ${GET_RECENT_SPENDING},
+                        "method": ${GET_METHOD_SPENDING(kindSpending)}
+                    }
+                `
+
+                const params = { userId: userProfile?._id }
+                const res = await fetchApi<{ recent: RecentData[]; method: DataMethodSanity[] }>(query, params)
 
                 setData({
                     recent: res.recent,
-                    method: res.method.map(({ cost, receive, ...data }) => ({
-                        ...data,
-                        cost: sum(cost),
-                        receive: sum(receive),
-                    })),
+                    method: _.isEmpty(res.method)
+                        ? []
+                        : res.method.map(({ cost, receive, ...data }) => ({
+                              ...data,
+                              cost: sum(cost),
+                              receive: sum(receive),
+                          })),
                 })
             } catch (error) {
                 console.log(error)

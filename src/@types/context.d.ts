@@ -19,3 +19,13 @@ export interface ISlideOverContext {
     title: string
     setTitle: React.Dispatch<React.SetStateAction<string>>
 }
+
+export interface ICacheContext {
+    fetchApi: <T>(query: string, params?: QueryParams) => Promise<T>
+}
+export interface ICacheData<T> {
+    key: number
+    data: T
+}
+
+export type QueryParams = { [key: string]: any }
