@@ -2,10 +2,14 @@ import { Navigate, Outlet } from 'react-router-dom'
 import useAuth from '~/store/auth'
 import SideBar from './components/SideBar'
 
-const DefaultLayout = () => {
+const privateHOC = (Component: () => JSX.Element) => () => {
     const { userProfile } = useAuth()
-    if (!userProfile) return <Navigate to='/auth' />
 
+    if (!userProfile) return <Navigate to='/auth' />
+    return <Component />
+}
+
+const DefaultLayout = () => {
     return (
         <SideBar>
             <Outlet />
@@ -13,4 +17,4 @@ const DefaultLayout = () => {
     )
 }
 
-export default DefaultLayout
+export default privateHOC(DefaultLayout)

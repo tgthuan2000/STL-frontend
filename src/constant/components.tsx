@@ -134,4 +134,4 @@ export const menuPC: IMenuBtn[] = [
     },
 ]
 
-export const people = [{ id: 1, name: 'Leslie Alexander' }]
+export const people = [{ _id: 1, name: 'Leslie Alexander' }]

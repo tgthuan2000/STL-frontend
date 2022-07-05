@@ -21,6 +21,9 @@ export interface ButtonProps {
 
 export interface AutoCompleteProps {
     title?: string
+    data?: any[]
+    idKey?: string
+    valueKey?: string
 }
 
 export interface SlideOverProps {

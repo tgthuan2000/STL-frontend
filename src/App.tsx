@@ -2,7 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Auth, Loan, Spending, TimeKeeping } from '~/page'
 import { DefaultLayout } from '~/layout'
 import { Loading } from './components'
-import { LoadingProvider } from './context'
+import { ConfigProvider, LoadingProvider } from './context'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 
 function App() {
@@ -12,7 +12,14 @@ function App() {
                 <LoadingProvider>
                     <Loading />
                     <Routes>
-                        <Route path='/' element={<DefaultLayout />}>
+                        <Route
+                            path='/'
+                            element={
+                                <ConfigProvider>
+                                    <DefaultLayout />
+                                </ConfigProvider>
+                            }
+                        >
                             <Route index element={<Navigate to='spending' />} />
                             <Route path='spending' element={<Spending />}>
                                 <Route index element={<Spending.Dashboard />} />

@@ -11,17 +11,10 @@ import Transaction from './transaction'
 import TransactionDetail from './transaction-detail'
 
 const Spending = () => {
-    const { setLoading } = useLoading()
-    useEffect(() => {
-        setLoading(true)
-        const timeout = setTimeout(() => {
-            setLoading(false)
-        }, 1500)
-
-        return () => timeout && clearTimeout(timeout)
-    }, [])
-
     const { width } = useWindowSize()
+    const { loading } = useLoading()
+
+    if (loading) return null
 
     return (
         <>

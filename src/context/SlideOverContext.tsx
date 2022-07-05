@@ -23,10 +23,12 @@ const SlideOverProvider = ({
     const [isOpen, setIsOpen] = useState(() => {
         if (location.search) {
             const search = location.search.substring(1)
-            const parse = JSON.parse(
-                '{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}'
-            )
-            return parse.slide === query?.slide
+            if (search.includes('slide')) {
+                const parse = JSON.parse(
+                    '{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}'
+                )
+                return parse.slide === query?.slide
+            }
         }
         return false
     })

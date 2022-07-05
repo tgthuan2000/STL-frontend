@@ -8,6 +8,7 @@ const client = sanityClient({
     apiVersion: import.meta.env.VITE_VERSION_API,
     token: import.meta.env.VITE_API_TOKEN,
     useCdn: false,
+    ignoreBrowserTokenWarning: true,
 })
 
 const builder = ImageUrlBuilder(client)

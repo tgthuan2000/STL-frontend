@@ -5,6 +5,8 @@ import moment from 'moment'
 import NumberFormat from 'react-number-format'
 import useAuth from '~/store/auth'
 import clsx from 'clsx'
+import { useConfig } from '~/context'
+import _ from 'lodash'
 
 interface Data {
     _id: string
@@ -21,7 +23,7 @@ interface Data {
     kind: {
         _id: string
         name: string
-        style: string
+        key: string
     }
     description: string
     amount: number
@@ -31,6 +33,8 @@ interface Data {
 const Recent = () => {
     const [data, setData] = useState<Data[]>([])
     const { userProfile } = useAuth()
+    const { kindSpending } = useConfig()
+
     useEffect(() => {
         const getData = async () => {
             try {
@@ -51,7 +55,7 @@ const Recent = () => {
                     kind-> {
                         _id,
                         name,
-                        style
+                        key
                     },
                     description,
                     amount,
@@ -66,18 +70,18 @@ const Recent = () => {
         getData()
     }, [])
 
-    if (data && data.length) {
+    if (!_.isEmpty(data)) {
         return (
             <ul role='list' className='divide-y divide-gray-300'>
                 {data.map((item) => (
                     <li key={item._id}>
                         <Link
                             to={`transaction/${item._id}`}
-                            className='px-4 py-4 flex hover:bg-gray-100 cursor-pointer'
+                            className='px-3 py-2 flex hover:bg-gray-100 cursor-pointer'
                         >
                             <div className='w-2/3 truncate'>
-                                {item.date && <span>{moment(item.date).format('DD/MM/YYYY - HH:mm:ss')}</span>}
-                                {item.method && <h3 className='font-medium'>{item.method.name}</h3>}
+                                <span>{moment(item.date).format('DD/MM/YYYY - HH:mm:ss')}</span>
+                                <h3 className='font-medium'>{item.method.name}</h3>
                                 {item.description && (
                                     <span className='truncate' title={item.description}>
                                         {item.description}
@@ -85,12 +89,17 @@ const Recent = () => {
                                 )}
                             </div>
                             <div className='w-1/3 truncate text-right'>
-                                {item.kind && <h4 className={clsx('font-bold')}>{item.kind.name}</h4>}
-                                {item.amount && (
-                                    <h4>
-                                        <NumberFormat value={item.amount} displayType='text' thousandSeparator />
-                                    </h4>
-                                )}
+                                <h4 className={clsx('font-medium')}>{item.kind.name}</h4>
+                                <NumberFormat
+                                    className={clsx(
+                                        { 'text-red-500': item.kind.key === 'cost' },
+                                        { 'text-green-500': item.kind.key === 'receive' },
+                                        'font-medium'
+                                    )}
+                                    value={item.amount}
+                                    displayType='text'
+                                    thousandSeparator
+                                />
                             </div>
                         </Link>
                     </li>
@@ -98,7 +107,27 @@ const Recent = () => {
             </ul>
         )
     }
-    return <div className='py-3 text-center text-md animate-pulse'>Loading...</div>
+    return <RecentSkeleton />
 }
 
 export default Recent
+
+const RecentSkeleton = () => (
+    <ul role='list' className='divide-y divide-gray-300 select-none pointer-events-none'>
+        {Array.from(Array(5)).map((value, index) => (
+            <li key={index}>
+                <div className='px-4 py-3 flex'>
+                    <div className='w-2/3 space-y-1'>
+                        <div className='animate-pulse bg-gray-200 rounded-full h-4 w-2/3' />
+                        <div className='animate-pulse bg-gray-200 rounded-full h-4 w-1/2' />
+                        <div className='animate-pulse bg-gray-200 rounded-full h-4 w-1/3' />
+                    </div>
+                    <div className='w-1/3 space-y-1 flex flex-col items-end'>
+                        <div className='animate-pulse bg-gray-200 rounded-full h-4 w-1/2' />
+                        <div className='animate-pulse bg-gray-200 rounded-full h-4 w-full' />
+                    </div>
+                </div>
+            </li>
+        ))}
+    </ul>
+)
