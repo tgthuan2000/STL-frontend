@@ -72,4 +72,6 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
     }
 )
 
+AutoComplete.displayName = 'AutoComplete'
+
 export default AutoComplete
