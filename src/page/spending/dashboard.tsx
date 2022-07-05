@@ -8,6 +8,7 @@ import { useWindowSize } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_METHOD_SPENDING, GET_RECENT_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
+import { sum } from '~/util'
 import { ButtonMenu, Method, Recent, Transaction } from './components'
 
 interface DataMethodSanity {
@@ -47,8 +48,8 @@ const Dashboard = () => {
                     recent: res.recent,
                     method: res.method.map(({ cost, receive, ...data }) => ({
                         ...data,
-                        cost: _.isEmpty(cost) ? 0 : cost.reduce((a, b) => a + b, 0),
-                        receive: _.isEmpty(receive) ? 0 : receive.reduce((a, b) => a + b, 0),
+                        cost: sum(cost),
+                        receive: sum(receive),
                     })),
                 })
             } catch (error) {
