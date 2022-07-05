@@ -26,6 +26,14 @@ export interface AutoCompleteProps {
     valueKey?: string
 }
 
+export interface SelectionProps {
+    title?: string
+    data?: any[]
+    idKey?: string
+    valueKey?: string
+    placeholder?: string
+}
+
 export interface SlideOverProps {
     children?: () => React.ReactNode
 }

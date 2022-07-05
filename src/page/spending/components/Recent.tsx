@@ -38,8 +38,8 @@ const Recent = () => {
     useEffect(() => {
         const getData = async () => {
             try {
-                const res =
-                    await client.fetch(`*[_type == "spending" && user._ref == '${userProfile?._id}'] | order(_createdAt desc)[0...5]
+                const res = await client.fetch(
+                    `*[_type == "spending" && user._ref == $userId] | order(_createdAt desc)[0...5]
                 {
                     _id,
                     _createdAt,
@@ -60,7 +60,11 @@ const Recent = () => {
                     description,
                     amount,
                     date
-                }`)
+                }`,
+                    {
+                        userId: userProfile?._id,
+                    }
+                )
 
                 setData(res)
             } catch (error) {

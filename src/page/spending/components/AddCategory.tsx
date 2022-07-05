@@ -1,18 +1,13 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { AutoComplete } from '~/components'
+import { Selection } from '~/components'
 import { useConfig, useSlideOver } from '~/context'
 import useEventListener from '~/hook/useEventListener'
 
 const AddCategory = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
-    const ref = useRef<HTMLInputElement>(null)
     const { kindSpending } = useConfig()
-
-    useEffect(() => {
-        ref.current?.focus()
-    }, [])
 
     const handler = useCallback(() => {
         setIsOpen(false)
@@ -27,9 +22,9 @@ const AddCategory = () => {
                     <div className='divide-y divide-gray-200 px-4 sm:px-6'>
                         <div className='space-y-6 pt-6 pb-5'>
                             <div>
-                                <AutoComplete
-                                    ref={ref}
+                                <Selection
                                     title='Thể loại'
+                                    placeholder='--- Chọn thể loại ---'
                                     data={kindSpending}
                                     idKey='_id'
                                     valueKey='name'

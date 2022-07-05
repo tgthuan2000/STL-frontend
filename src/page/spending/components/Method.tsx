@@ -29,6 +29,9 @@ const Method = () => {
     useEffect(() => {
         const getData = async () => {
             setLoading(true)
+
+            if (_.isEmpty(kindSpending)) return
+
             const temp = kindSpending.map(
                 ({ _id, key }) =>
                     `"${key}": *[_type == "spending" && user._ref == $userId && method._ref == ^._id && kind._ref == "${_id}"].amount`
@@ -64,7 +67,7 @@ const Method = () => {
             }
         }
         getData()
-    }, [])
+    }, [kindSpending])
 
     if (loading) return <MethodSkeleton />
 
