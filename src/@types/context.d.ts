@@ -19,9 +19,10 @@ export interface ISlideOverContext {
     title: string
     setTitle: React.Dispatch<React.SetStateAction<string>>
 }
+export type FetchApi = <T>(query: string, params?: QueryParams = {}, status?: 'no-cache') => Promise<T>
 
 export interface ICacheContext {
-    fetchApi: <T>(query: string, params?: QueryParams, options: null | 'no-cache') => Promise<T>
+    fetchApi: FetchApi
 }
 export interface ICacheData<T> {
     key: number

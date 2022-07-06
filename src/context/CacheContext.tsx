@@ -16,7 +16,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
     const updateCache = <T,>(
         newKey: number,
         newData: T,
-        options: { status: null | 'no-cache'; indexCache: number }
+        options: { status: undefined | 'no-cache'; indexCache: number }
     ) => {
         let clone: Array<ICacheData<T>> = JSON.parse(JSON.stringify(cache))
         if (options.status === 'no-cache' && options.indexCache !== -1) {
@@ -29,10 +29,10 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
         setCache(clone)
     }
 
-    const fetchApi = async <T,>(query: string, params: QueryParams = {}, status: 'no-cache' | null = null) => {
+    const fetchApi = async <T,>(query: string, params: QueryParams = {}, status: undefined | 'no-cache') => {
         const queryHash = hashCode(query + JSON.stringify(params))
         const indexCache = cache.length > 0 ? cache.findIndex((c) => c.key === queryHash) : -1
-        if (indexCache !== -1 && _.isNull(status)) {
+        if (indexCache !== -1 && _.isUndefined(status)) {
             return cache[indexCache].data as T
         } else {
             const data: T = await client.fetch(query, params)
