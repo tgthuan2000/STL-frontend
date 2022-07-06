@@ -9,7 +9,7 @@ import {
     TemplateIcon,
 } from '@heroicons/react/outline'
 import { googleLogout } from '@react-oauth/google'
-import { IMenuBtn } from '~/@types/components'
+import { IMenuBtn } from '~/@types/spending'
 import { MakeIncome, MakeCost, MakeTransfer, AddCategory, AddMethod } from '~/page/spending/components'
 
 export const menuMobile: IMenuBtn[] = [
