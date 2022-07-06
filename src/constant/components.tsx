@@ -97,7 +97,7 @@ export const menuPC: IMenuBtn[] = [
         title: 'Trang chủ',
         color: 'text-red-700 bg-red-200 hover:bg-red-300',
         icon: HomeIcon,
-        to: '/',
+        to: '/spending',
     },
     {
         title: 'Giao dịch',

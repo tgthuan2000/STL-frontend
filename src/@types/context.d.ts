@@ -21,7 +21,7 @@ export interface ISlideOverContext {
 }
 
 export interface ICacheContext {
-    fetchApi: <T>(query: string, params?: QueryParams) => Promise<T>
+    fetchApi: <T>(query: string, params?: QueryParams, options: null | 'no-cache') => Promise<T>
 }
 export interface ICacheData<T> {
     key: number
