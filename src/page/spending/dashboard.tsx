@@ -5,7 +5,7 @@ import { Divider } from '~/components'
 import { menuMobile } from '~/constant/components'
 import { useConfig, useCache } from '~/context'
 import { useWindowSize } from '~/hook'
-import { GET_METHOD_SPENDING, GET_RECENT_SPENDING } from '~/schema/query/spending'
+import { F_GET_METHOD_SPENDING, GET_RECENT_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 import { sum } from '~/util'
 import { ButtonMenu, Method, Recent, Transaction } from './components'
@@ -38,7 +38,7 @@ const Dashboard = () => {
                 const query = `
                     {
                         "recent": ${GET_RECENT_SPENDING},
-                        "method": ${GET_METHOD_SPENDING(kindSpending)}
+                        "method": ${F_GET_METHOD_SPENDING(kindSpending)}
                     }
                 `
 

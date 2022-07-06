@@ -6,18 +6,26 @@ export interface SlideParams {
 }
 
 export interface AutoCompleteProps {
-    title?: string
+    className?: string
+    label?: string
     data?: any[]
     idKey?: string
     valueKey?: string
+    error?: FieldError
+    value?: any
+    onChange: (value: any) => void
 }
 
 export interface SelectionProps {
-    title?: string
+    className?: string
+    label?: string
     data?: any[]
     idKey?: string
     valueKey?: string
     placeholder?: string
+    error?: FieldError
+    value?: any
+    onChange: (value: any) => void
 }
 
 export interface SlideOverProps {
@@ -29,6 +37,12 @@ export interface InputProps {
     label?: string
     name: string
     type: HTMLInputTypeAttribute
+    error?: FieldError
+}
+export interface TextAreaProps {
+    className?: string
+    label?: string
+    name: string
     error?: FieldError
 }
 export interface ButtonProps {

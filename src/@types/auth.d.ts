@@ -3,7 +3,7 @@ import { SanityDocument } from '@sanity/client'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import React from 'react'
 
-interface IUserProfile {
+export interface IUserProfile {
     _id: string
     _type: string
     image: string

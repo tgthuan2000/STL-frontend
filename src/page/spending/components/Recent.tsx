@@ -19,7 +19,7 @@ const Recent = ({ data, loading }: RecentProps) => {
                         >
                             <div className='w-2/3 truncate'>
                                 <span>{moment(item.date).format('DD/MM/YYYY - HH:mm:ss')}</span>
-                                <h3 className='font-medium'>{item.method.name}</h3>
+                                <h3 className='font-medium'>{item.methodSpending.name}</h3>
                                 {item.description && (
                                     <span className='truncate' title={item.description}>
                                         {item.description}
@@ -27,11 +27,11 @@ const Recent = ({ data, loading }: RecentProps) => {
                                 )}
                             </div>
                             <div className='w-1/3 truncate text-right'>
-                                <h4 className={clsx('font-medium')}>{item.kind.name}</h4>
+                                <h4 className={clsx('font-medium')}>{item.kindSpending.name}</h4>
                                 <NumberFormat
                                     className={clsx(
-                                        { 'text-red-500': item.kind.key === 'cost' },
-                                        { 'text-green-500': item.kind.key === 'receive' },
+                                        { 'text-red-500': item.kindSpending.key === 'cost' },
+                                        { 'text-green-500': item.kindSpending.key === 'receive' },
                                         'font-medium'
                                     )}
                                     value={item.amount}

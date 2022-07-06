@@ -1,3 +1,6 @@
+import { IUserProfile } from './auth'
+import { IKindSpending } from './context'
+
 export interface BoxProps {
     title?: string
     seeMore?: boolean
@@ -8,15 +11,15 @@ export interface RecentData {
     _id: string
     _createdAt: string
     name: string
-    category: {
+    categorySpending: {
         _id: string
         name: string
     }
-    method: {
+    methodSpending: {
         _id: string
         name: string
     }
-    kind: {
+    kindSpending: {
         _id: string
         name: string
         key: string
@@ -54,4 +57,16 @@ export interface IMenuBtn {
 
 export interface MenuButtonProps {
     data: IMenuBtn
+}
+
+export interface ICategorySpending {
+    _id: string
+    name: string
+    kindSpending: IKindSpending
+    user: IUserProfile
+}
+export interface IMethodSpending {
+    _id: string
+    name: string
+    user: IUserProfile
 }
