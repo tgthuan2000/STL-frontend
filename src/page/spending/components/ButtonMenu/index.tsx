@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { IMenuBtn } from '~/@types/components'
+import { IMenuBtn } from '~/@types/spending'
 import { SlideOverProvider } from '~/context'
 import ButtonItem from './ButtonItem'
 
