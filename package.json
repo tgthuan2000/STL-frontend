@@ -21,6 +21,7 @@
     "moment": "^2.29.3",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-hook-form": "^7.33.1",
     "react-number-format": "^4.9.3",
     "react-router-dom": "^6.3.0",
     "url": "^0.11.0",

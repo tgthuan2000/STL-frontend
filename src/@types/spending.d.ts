@@ -40,3 +40,18 @@ export interface MethodProps {
     data: MethodData[]
     loading: boolean
 }
+
+export interface IMenuBtn {
+    title: string
+    icon: (props: SVGProps<SVGSVGElement>) => JSX.Element
+    color: string
+    to: To
+    children?: () => React.ReactNode
+    query?: SlideParams
+    divider?: boolean
+    action?: (cb: () => void) => void
+}
+
+export interface MenuButtonProps {
+    data: IMenuBtn
+}

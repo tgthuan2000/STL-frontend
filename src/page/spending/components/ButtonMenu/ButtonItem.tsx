@@ -1,11 +1,11 @@
 import clsx from 'clsx'
 import { Link, useNavigate } from 'react-router-dom'
-import { ButtonProps } from '~/@types/components'
+import { MenuButtonProps } from '~/@types/spending'
 import { useSlideOver } from '~/context'
 import { SlideOver, Divider } from '~/components'
 import useAuth from '~/store/auth'
 
-const ButtonItem = ({ data }: ButtonProps) => {
+const ButtonItem = ({ data }: MenuButtonProps) => {
     const { title, color, icon: Icon, children, to, query, divider, action } = data
     const { setIsOpen, setTitle } = useSlideOver()
     const navigate = useNavigate()

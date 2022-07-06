@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { AutoComplete } from '~/components'
+import { AutoComplete, Button } from '~/components'
 import { useSlideOver } from '~/context'
 import useEventListener from '~/hook/useEventListener'
 
@@ -67,22 +67,19 @@ const MakeTransfer = () => {
             </div>
             <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
                 <div className='flex sm:justify-start justify-end space-x-3'>
-                    <button
-                        type='submit'
-                        className='min-w-[100px] sm:w-auto w-1/2 inline-flex justify-center rounded-md border border-transparent bg-blue-600 sm:py-2 py-3 px-4 sm:text-sm text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none'
-                    >
+                    <Button color='blue' type='submit'>
                         Chuyển khoản
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                        color='outline'
                         type='button'
-                        className='min-w-[100px] sm:w-auto w-1/2 rounded-md border border-gray-300 bg-white sm:py-2 py-3 px-4 sm:text-sm text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none'
                         onClick={() => {
                             setIsOpen(false)
                             navigate(-1)
                         }}
                     >
                         Hủy bỏ
-                    </button>
+                    </Button>
                 </div>
             </div>
         </form>

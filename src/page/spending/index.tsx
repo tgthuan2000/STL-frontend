@@ -24,7 +24,7 @@ const Spending = () => {
                 </main>
                 {width >= 1280 && (
                     <aside className='hidden xl:block xl:col-span-1'>
-                        <div className='sticky top-4 space-y-4'>
+                        <div className='sticky top-6 space-y-4'>
                             <ButtonMenu data={menuPC} />
                         </div>
                     </aside>

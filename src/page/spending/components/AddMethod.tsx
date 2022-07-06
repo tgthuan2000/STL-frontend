@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Button, Input } from '~/components'
 import { useSlideOver } from '~/context'
 import useEventListener from '~/hook/useEventListener'
 
@@ -24,43 +25,26 @@ const AddMethod = () => {
                 <div className='flex flex-1 flex-col justify-between'>
                     <div className='divide-y divide-gray-200 px-4 sm:px-6'>
                         <div className='space-y-6 pt-6 pb-5'>
-                            <div>
-                                <label htmlFor='name' className='block font-medium text-gray-900'>
-                                    Tên phương thức
-                                </label>
-                                <div className='mt-1'>
-                                    <input
-                                        ref={ref}
-                                        type='text'
-                                        name='name'
-                                        id='name'
-                                        spellCheck={false}
-                                        className='block p-2 w-full rounded-md border border-gray-300 shadow-sm'
-                                    />
-                                </div>
-                            </div>
+                            <Input type='text' name='name' label='Tên phương thức thanh toán' ref={ref} />
                         </div>
                     </div>
                 </div>
             </div>
             <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
                 <div className='flex sm:justify-start justify-end space-x-3'>
-                    <button
-                        type='submit'
-                        className='min-w-[100px] sm:w-auto w-1/2 inline-flex justify-center rounded-md border border-transparent bg-cyan-600 sm:py-2 py-3 px-4 sm:text-sm text-base font-medium text-white shadow-sm hover:bg-cyan-700 focus:outline-none'
-                    >
+                    <Button color='cyan' type='submit'>
                         Tạo
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                        color='outline'
                         type='button'
-                        className='min-w-[100px] sm:w-auto w-1/2 rounded-md border border-gray-300 bg-white sm:py-2 py-3 px-4 sm:text-sm text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none'
                         onClick={() => {
                             setIsOpen(false)
                             navigate(-1)
                         }}
                     >
                         Hủy bỏ
-                    </button>
+                    </Button>
                 </div>
             </div>
         </form>

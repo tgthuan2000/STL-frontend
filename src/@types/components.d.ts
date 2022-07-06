@@ -1,22 +1,7 @@
-import React from 'react'
+import React, { HTMLInputTypeAttribute } from 'react'
 
 export interface SlideParams {
     slide?: string
-}
-
-export interface IMenuBtn {
-    title: string
-    icon: (props: SVGProps<SVGSVGElement>) => JSX.Element
-    color: string
-    to: To
-    children?: () => React.ReactNode
-    query?: SlideParams
-    divider?: boolean
-    action?: (cb: () => void) => void
-}
-
-export interface ButtonProps {
-    data: IMenuBtn
 }
 
 export interface AutoCompleteProps {
@@ -36,4 +21,18 @@ export interface SelectionProps {
 
 export interface SlideOverProps {
     children?: () => React.ReactNode
+}
+
+export interface InputProps {
+    className?: string
+    label?: string
+    name: string
+    type: HTMLInputTypeAttribute
+}
+export interface ButtonProps {
+    className?: string
+    children: React.ReactNode
+    type: 'button' | 'submit' | 'reset'
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
+    color: 'primary' | 'outline' | 'cyan' | 'green' | 'blue' | 'radicalRed'
 }
