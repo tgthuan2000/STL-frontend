@@ -37,7 +37,7 @@ const useConfig = () => {
     const context = useContext(ConfigContext)
 
     if (!context) {
-        throw new Error('useConfig must be used within a ConfigProvider. Using SlideOverHOC to wrap parent component')
+        throw new Error('useConfig must be used within a ConfigProvider')
     }
 
     return context

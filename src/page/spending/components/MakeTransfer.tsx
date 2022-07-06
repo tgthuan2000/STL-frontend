@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AutoComplete, Button } from '~/components'
-import { useSlideOver } from '~/context'
-import useEventListener from '~/hook/useEventListener'
+import { SlideOverHOC, useSlideOver } from '~/context'
 
 const MakeTransfer = () => {
     const { setIsOpen } = useSlideOver()
@@ -12,12 +11,6 @@ const MakeTransfer = () => {
     useEffect(() => {
         ref.current?.focus()
     }, [])
-
-    const handler = useCallback(() => {
-        setIsOpen(false)
-    }, [])
-
-    useEventListener('popstate', handler)
 
     return (
         <form className='flex h-full flex-col'>
@@ -86,4 +79,4 @@ const MakeTransfer = () => {
     )
 }
 
-export default MakeTransfer
+export default SlideOverHOC(MakeTransfer)

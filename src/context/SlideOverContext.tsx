@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useCallback, useContext, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { SlideParams } from '~/@types/components'
 import { ISlideOverContext } from '~/@types/context'
+import { useEventListener } from '~/hook'
 
 const SlideOverContext = createContext<ISlideOverContext>({
     isOpen: false,
@@ -47,20 +48,22 @@ const useSlideOver = () => {
     const context = useContext(SlideOverContext)
 
     if (!context) {
-        throw new Error(
-            'useSlideOver must be used within a SlideOverProvider. Using SlideOverHOC to wrap parent component'
-        )
+        throw new Error('useSlideOver must be used within a SlideOverProvider')
     }
 
     return context
 }
 
 const SlideOverHOC = (Component: (props: any) => JSX.Element) => () => {
-    return (
-        <SlideOverProvider>
-            <Component />
-        </SlideOverProvider>
-    )
+    const { setIsOpen } = useSlideOver()
+
+    const handler = useCallback(() => {
+        setIsOpen(false)
+    }, [])
+
+    useEventListener('popstate', handler)
+
+    return <Component />
 }
 
 export { useSlideOver, SlideOverHOC, SlideOverProvider }

@@ -1,19 +1,11 @@
-import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Selection } from '~/components'
-import { useConfig, useSlideOver } from '~/context'
-import useEventListener from '~/hook/useEventListener'
+import { SlideOverHOC, useConfig, useSlideOver } from '~/context'
 
 const AddCategory = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { kindSpending } = useConfig()
-
-    const handler = useCallback(() => {
-        setIsOpen(false)
-    }, [])
-
-    useEventListener('popstate', handler)
 
     return (
         <form className='flex h-full flex-col'>
@@ -69,4 +61,4 @@ const AddCategory = () => {
     )
 }
 
-export default AddCategory
+export default SlideOverHOC(AddCategory)

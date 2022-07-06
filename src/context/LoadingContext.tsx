@@ -20,7 +20,7 @@ const useLoading = () => {
     const context = useContext(LoadingContext)
 
     if (!context) {
-        throw new Error('useLoading must be used within a LoadingProvider. Using SlideOverHOC to wrap parent component')
+        throw new Error('useLoading must be used within a LoadingProvider')
     }
 
     return context

@@ -1,6 +1,7 @@
 import { CredentialResponse } from '@react-oauth/google'
 import { SanityDocument } from '@sanity/client'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
+import React from 'react'
 
 interface IUserProfile {
     _id: string
@@ -22,7 +23,11 @@ export type AuthStore = (set: (user: SetUserProfile) => void) => {
     removeUserProfile: () => void
 }
 
-export type IFetchGoogleResponse = (res: CredentialResponse, addUser: AddUserProfile) => void
+export type IFetchGoogleResponse = (
+    res: CredentialResponse,
+    addUser: AddUserProfile,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>
+) => void
 
 export interface GoogleData {
     sub: string

@@ -23,6 +23,7 @@ export type FetchApi = <T>(query: string, params?: QueryParams = {}, status?: 'n
 
 export interface ICacheContext {
     fetchApi: FetchApi
+    setIsRefetch: React.Dispatch<React.SetStateAction<boolean>>
 }
 export interface ICacheData<T> {
     key: number
