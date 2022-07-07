@@ -1,3 +1,5 @@
+import _ from 'lodash'
+import moment from 'moment'
 import { useEffect, useMemo, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -9,26 +11,26 @@ import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spend
 import useAuth from '~/store/auth'
 
 interface IAddIncomeForm {
-    amount: number
+    amount: number | undefined
     categorySpending: ICategorySpending | null
     methodSpending: IMethodSpending | null
     description: string
 }
 interface Data {
-    methodSpending: ICategorySpending[]
-    categorySpending: IMethodSpending[]
+    methodSpending: IMethodSpending[]
+    categorySpending: ICategorySpending[]
 }
 const MakeIncome = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { userProfile } = useAuth()
     const { setIsRefetch, fetchApi } = useCache()
-    const { kindSpending } = useConfig()
+    const { getKindSpendingId } = useConfig()
     const { loading, setLoading } = useLoading()
 
     const kindSpendingId = useMemo(() => {
-        return kindSpending.find((kind) => kind.key.toLowerCase() === 'receive')?._id
-    }, [])
+        return getKindSpendingId('RECEIVE')
+    }, [getKindSpendingId])
 
     const [data, setData] = useState<Data>({
         methodSpending: [],
@@ -36,7 +38,7 @@ const MakeIncome = () => {
     })
     const { control, handleSubmit } = useForm<IAddIncomeForm>({
         defaultValues: {
-            amount: 0,
+            amount: undefined,
             categorySpending: null,
             methodSpending: null,
             description: '',
@@ -46,6 +48,8 @@ const MakeIncome = () => {
     useEffect(() => {
         const getData = async () => {
             try {
+                if (_.isUndefined(kindSpendingId)) return
+
                 const query = `
                     {
                         "methodSpending": ${GET_METHOD_SPENDING},
@@ -69,7 +73,7 @@ const MakeIncome = () => {
             }
         }
         getData()
-    }, [])
+    }, [kindSpendingId])
 
     const onsubmit: SubmitHandler<IAddIncomeForm> = async (data) => {
         setLoading(true)
@@ -80,6 +84,7 @@ const MakeIncome = () => {
             _type: 'spending',
             amount,
             description,
+            date: moment().format(),
             kindSpending: {
                 _type: 'reference',
                 _ref: kindSpendingId,
@@ -163,9 +168,6 @@ const MakeIncome = () => {
                             <Controller
                                 name='description'
                                 control={control}
-                                rules={{
-                                    required: 'Yêu cầu chọn phương thức thanh toán!',
-                                }}
                                 render={({ field, fieldState: { error } }) => (
                                     <TextArea label='Ghi chú' error={error} {...field} />
                                 )}

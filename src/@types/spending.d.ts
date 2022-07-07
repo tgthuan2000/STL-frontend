@@ -22,7 +22,7 @@ export interface RecentData {
     kindSpending: {
         _id: string
         name: string
-        key: string
+        key: KIND_SPENDING
     }
     description: string
     amount: number

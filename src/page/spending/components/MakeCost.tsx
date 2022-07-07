@@ -1,3 +1,5 @@
+import _ from 'lodash'
+import moment from 'moment'
 import { useEffect, useMemo, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -9,7 +11,7 @@ import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spend
 import useAuth from '~/store/auth'
 
 interface IAddCostForm {
-    amount: number
+    amount: number | undefined
     categorySpending: ICategorySpending | null
     methodSpending: IMethodSpending | null
     description: string
@@ -25,11 +27,11 @@ const MakeCost = () => {
     const { userProfile } = useAuth()
     const { setIsRefetch, fetchApi } = useCache()
     const { loading, setLoading } = useLoading()
-    const { kindSpending } = useConfig()
+    const { getKindSpendingId } = useConfig()
 
     const kindSpendingId = useMemo(() => {
-        return kindSpending.find((kind) => kind.key.toLowerCase() === 'cost')?._id
-    }, [])
+        return getKindSpendingId('COST')
+    }, [getKindSpendingId])
 
     const [data, setData] = useState<Data>({
         methodSpending: [],
@@ -37,7 +39,7 @@ const MakeCost = () => {
     })
     const { control, handleSubmit } = useForm<IAddCostForm>({
         defaultValues: {
-            amount: 0,
+            amount: undefined,
             categorySpending: null,
             methodSpending: null,
             description: '',
@@ -47,6 +49,8 @@ const MakeCost = () => {
     useEffect(() => {
         const getData = async () => {
             try {
+                if (_.isUndefined(kindSpendingId)) return
+
                 const query = `
                     {
                         "methodSpending": ${GET_METHOD_SPENDING},
@@ -70,7 +74,7 @@ const MakeCost = () => {
             }
         }
         getData()
-    }, [])
+    }, [kindSpendingId])
 
     const onsubmit: SubmitHandler<IAddCostForm> = async (data) => {
         setLoading(true)
@@ -81,6 +85,7 @@ const MakeCost = () => {
             _type: 'spending',
             amount,
             description,
+            date: moment().format(),
             kindSpending: {
                 _type: 'reference',
                 _ref: kindSpendingId,
@@ -164,9 +169,6 @@ const MakeCost = () => {
                             <Controller
                                 name='description'
                                 control={control}
-                                rules={{
-                                    required: 'Yêu cầu chọn phương thức thanh toán!',
-                                }}
                                 render={({ field, fieldState: { error } }) => (
                                     <TextArea label='Ghi chú' error={error} {...field} />
                                 )}

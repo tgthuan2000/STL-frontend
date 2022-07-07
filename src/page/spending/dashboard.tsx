@@ -15,6 +15,8 @@ interface DataMethodSanity {
     name: string
     cost: number[]
     receive: number[]
+    'transfer-from': number[]
+    'transfer-to': number[]
 }
 
 const Dashboard = () => {
@@ -49,11 +51,19 @@ const Dashboard = () => {
                     recent: res.recent,
                     method: _.isEmpty(res.method)
                         ? []
-                        : res.method.map(({ cost, receive, ...data }) => ({
-                              ...data,
-                              cost: sum(cost),
-                              receive: sum(receive),
-                          })),
+                        : res.method.map(
+                              ({
+                                  cost,
+                                  receive,
+                                  'transfer-from': transferFrom,
+                                  'transfer-to': transferTo,
+                                  ...data
+                              }) => ({
+                                  ...data,
+                                  cost: sum([...cost, ...transferFrom]),
+                                  receive: sum([...receive, ...transferTo]),
+                              })
+                          ),
                 })
             } catch (error) {
                 console.log(error)

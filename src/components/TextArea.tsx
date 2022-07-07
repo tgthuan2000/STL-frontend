@@ -10,18 +10,18 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(({ className, la
     return (
         <div className={clsx(className)}>
             {label && (
-                <label htmlFor={id} className='block font-medium text-gray-900'>
+                <label htmlFor={id} className='inline-block font-medium text-gray-900'>
                     {label}
                 </label>
             )}
             <div className='mt-1'>
                 <textarea
+                    ref={ref}
                     id={id}
                     spellCheck={false}
                     autoComplete='off'
                     rows={6}
                     className='block p-2 w-full rounded-md border border-gray-300 shadow-sm font-light'
-                    defaultValue=''
                     {...props}
                 />
             </div>

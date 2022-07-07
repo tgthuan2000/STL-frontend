@@ -24,3 +24,9 @@ export const methodItems = [
         amount: '1000000',
     },
 ]
+export enum KIND_SPENDING {
+    RECEIVE = 'receive',
+    COST = 'cost',
+    TRANSFER_FROM = 'transfer-from',
+    TRANSFER_TO = 'transfer-to',
+}

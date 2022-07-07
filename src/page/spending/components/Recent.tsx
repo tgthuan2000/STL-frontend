@@ -4,6 +4,7 @@ import NumberFormat from 'react-number-format'
 import clsx from 'clsx'
 import _ from 'lodash'
 import { RecentProps } from '~/@types/spending'
+import { KIND_SPENDING } from '~/constant/spending'
 
 const Recent = ({ data, loading }: RecentProps) => {
     if (loading) return <RecentSkeleton />
@@ -30,8 +31,14 @@ const Recent = ({ data, loading }: RecentProps) => {
                                 <h4 className={clsx('font-medium')}>{item.kindSpending.name}</h4>
                                 <NumberFormat
                                     className={clsx(
-                                        { 'text-red-500': item.kindSpending.key === 'cost' },
-                                        { 'text-green-500': item.kindSpending.key === 'receive' },
+                                        { 'text-red-500': item.kindSpending.key === KIND_SPENDING.COST },
+                                        { 'text-green-500': item.kindSpending.key === KIND_SPENDING.RECEIVE },
+                                        {
+                                            'text-blue-500': [
+                                                KIND_SPENDING.TRANSFER_FROM,
+                                                KIND_SPENDING.TRANSFER_TO,
+                                            ].includes(item.kindSpending.key),
+                                        },
                                         'font-medium'
                                     )}
                                     value={item.amount}

@@ -1,3 +1,5 @@
+import { KIND_SPENDING } from '~/constant/spending'
+
 export interface ILoadingContext {
     loading: boolean
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
@@ -5,12 +7,13 @@ export interface ILoadingContext {
 
 export interface IKindSpending {
     _id: string
-    key: string
+    key: KIND_SPENDING
     name: string
 }
 
 export interface IConfigContext {
     kindSpending: IKindSpending[]
+    getKindSpendingId: (KEY: keyof typeof KIND_SPENDING) => string | undefined
 }
 
 export interface ISlideOverContext {

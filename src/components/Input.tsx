@@ -11,7 +11,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         return (
             <div className={clsx(className)}>
                 {label && (
-                    <label htmlFor={id} className='block font-medium text-gray-900'>
+                    <label htmlFor={id} className='inline-block font-medium text-gray-900'>
                         {label}
                     </label>
                 )}

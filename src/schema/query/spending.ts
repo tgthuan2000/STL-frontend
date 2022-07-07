@@ -33,7 +33,7 @@ export const F_GET_METHOD_SPENDING = (kindSpending: IKindSpending[]) => groq`
         ${kindSpending
             .map(
                 ({ _id, key }) =>
-                    `"${key}": *[_type == "spending" && user._ref == $userId && method._ref == ^._id && kindSpending._ref == "${_id}"].amount`
+                    `"${key}": *[_type == "spending" && user._ref == $userId && methodSpending._ref == ^._id && kindSpending._ref == "${_id}"].amount`
             )
             .join(',')}
     }    
