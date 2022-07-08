@@ -37,15 +37,11 @@ const Dashboard = () => {
             try {
                 if (_.isEmpty(kindSpending)) return
 
-                const query = `
-                    {
-                        "recent": ${GET_RECENT_SPENDING},
-                        "method": ${F_GET_METHOD_SPENDING(kindSpending)}
-                    }
-                `
-
                 const params = { userId: userProfile?._id }
-                const res = await fetchApi<{ recent: RecentData[]; method: DataMethodSanity[] }>(query, params)
+                const res = await fetchApi<{ recent: RecentData[]; method: DataMethodSanity[] }>(
+                    { recent: GET_RECENT_SPENDING, method: F_GET_METHOD_SPENDING(kindSpending) },
+                    params
+                )
 
                 setData({
                     recent: res.recent,

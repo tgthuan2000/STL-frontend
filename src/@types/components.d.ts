@@ -14,6 +14,7 @@ export interface AutoCompleteProps {
     error?: FieldError
     value?: any
     onChange: (value: any) => void
+    addMore?: (value: any) => Promise<any>
 }
 
 export interface SelectionProps {

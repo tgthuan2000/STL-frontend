@@ -1,8 +1,9 @@
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { Button, Input } from '~/components'
-import { SlideOverHOC, useCache, useLoading, useSlideOver } from '~/context'
+import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import { client } from '~/sanityConfig'
+import { F_GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 
 interface IAddMethodForm {
@@ -14,7 +15,8 @@ const AddMethod = () => {
     const navigate = useNavigate()
     const { userProfile } = useAuth()
     const { loading, setLoading } = useLoading()
-    const { setIsRefetch } = useCache()
+    const { deleteCache } = useCache()
+    const { kindSpending } = useConfig()
 
     const { control, handleSubmit } = useForm<IAddMethodForm>({
         defaultValues: {
@@ -41,7 +43,13 @@ const AddMethod = () => {
         try {
             await client.create(document)
             // navigate to dashboard
-            setIsRefetch(true)
+            const result = await deleteCache([
+                {
+                    method: F_GET_METHOD_SPENDING(kindSpending),
+                    params: { userId: userProfile?._id },
+                },
+            ])
+            console.log(result)
             setIsOpen(false)
             navigate(-1)
         } catch (error) {

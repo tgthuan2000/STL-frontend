@@ -3,7 +3,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { IKindSpending } from '~/@types/context'
 import { Button, Input, Selection } from '~/components'
-import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
+import { SlideOverHOC, useConfig, useSlideOver } from '~/context'
 import { client } from '~/sanityConfig'
 import useAuth from '~/store/auth'
 
@@ -16,7 +16,6 @@ const AddCategory = () => {
     const navigate = useNavigate()
     const { kindSpending } = useConfig()
     const { userProfile } = useAuth()
-    const { setIsRefetch } = useCache()
     const [loading, setLoading] = useState(false)
     const { control, handleSubmit } = useForm<IAddCategoryForm>({
         defaultValues: {
@@ -48,7 +47,6 @@ const AddCategory = () => {
         try {
             await client.create(document)
             // navigate to dashboard
-            setIsRefetch(true)
             setIsOpen(false)
             navigate(-1)
         } catch (error) {

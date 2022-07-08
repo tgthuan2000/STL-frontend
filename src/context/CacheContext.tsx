@@ -4,49 +4,97 @@ import { ICacheContext, ICacheData, QueryParams } from '~/@types/context'
 import { client } from '~/sanityConfig'
 import { hashCode } from '~/util'
 
-const CACHE_LIMIT_RANGE = 5
+const CACHE_LIMIT_RANGE = 8
 
 const CacheContext = createContext<ICacheContext>({
     fetchApi: <T,>() => Promise.resolve({} as T),
-    setIsRefetch: () => {},
+    deleteCache: () => Promise.resolve(''),
 })
 
 const CacheProvider = ({ children }: { children: React.ReactNode }) => {
     const [cache, setCache] = useState<Array<ICacheData<any>>>([])
-    const [isRefetch, setIsRefetch] = useState(false)
 
-    const updateCache = <T,>(
-        newKey: number,
-        newData: T,
-        options: { status: undefined | 'no-cache'; indexCache: number }
-    ) => {
+    const updateCache = <T extends { [x: string]: any }>(res: T) => {
         let clone: Array<ICacheData<T>> = JSON.parse(JSON.stringify(cache))
-        if (isRefetch || (options.status === 'no-cache' && options.indexCache !== -1)) {
-            clone.splice(options.indexCache, 1)
-            isRefetch && setIsRefetch(false)
-        }
-        if (clone.length >= CACHE_LIMIT_RANGE) {
-            clone = clone.slice(1)
-        }
-        clone.push({ key: newKey, data: newData })
+
+        Object.keys(res).forEach((k) => {
+            const { key, data } = res[k]
+            if (clone.length >= CACHE_LIMIT_RANGE) {
+                clone = clone.slice(1)
+            }
+            clone.push({ key, data })
+        })
+
         setCache(clone)
     }
 
-    const fetchApi = async <T,>(query: string, params: QueryParams = {}, status: undefined | 'no-cache') => {
-        const queryHash = hashCode(query + JSON.stringify(params))
-        const indexCache = cache.length > 0 ? cache.findIndex((c) => c.key === queryHash) : -1
-        if (indexCache !== -1 && _.isUndefined(status) && !isRefetch) {
-            return cache[indexCache].data as T
-        } else {
-            const data: T = await client.fetch(query, params)
-            updateCache<T>(queryHash, data, { status, indexCache })
-            return data
+    const deleteCache = (payloads: { [x: string]: any }[]) => {
+        let count = 0
+        let clone: Array<ICacheData<any>> = JSON.parse(JSON.stringify(cache))
+        payloads.forEach((payload) => {
+            const queryHash = hashCode(JSON.stringify(payload))
+            const indexCache = clone.length > 0 ? clone.findIndex((c) => c.key === queryHash) : -1
+            if (indexCache !== -1) {
+                clone.splice(indexCache, 1)
+                count++
+            }
+        })
+        setCache(clone)
+        return Promise.resolve('Deleted ' + count + ' cache')
+    }
+
+    const fetchApi = async <T extends { [x: string]: any }>(
+        query: {
+            [Property in keyof T]: string
+        },
+        params: QueryParams = {}
+    ) => {
+        const callApi: {
+            [x: string]: { value: string; key: number; data: any[] }
+        } = {}
+        const data = {} as T
+
+        Object.keys(query).forEach((key) => {
+            const value = query[key]
+            const p = _.isEqual(params, {})
+                ? {}
+                : Object.assign(
+                      {},
+                      ...Object.keys(params)
+                          .filter((x) => value.includes(x))
+                          .map((v) => ({ [v]: params[v] }))
+                  )
+
+            const queryHash = hashCode(JSON.stringify({ [key]: value, params: p }))
+
+            const indexCache = cache.length > 0 ? cache.findIndex((c) => c.key === queryHash) : -1
+            if (indexCache !== -1) {
+                Object.assign(data, { [key]: cache[indexCache].data })
+            } else {
+                Object.assign(callApi, { [key]: { value, key: queryHash } })
+            }
+        })
+
+        if (!_.isEqual(callApi, {})) {
+            const keys = Object.keys(callApi)
+            const query = '{' + keys.map((key) => `"${key}": ${callApi[key].value}`).join(', ') + '}'
+            const res: T = await client.fetch(query, params)
+            Object.assign(data, res)
+
+            const temp = {} as T
+            keys.forEach((key) =>
+                Object.assign(temp, {
+                    [key]: { ...callApi[key], data: res[key] },
+                })
+            )
+            updateCache(temp)
         }
+        return data
     }
 
     const value: ICacheContext = {
         fetchApi,
-        setIsRefetch,
+        deleteCache,
     }
 
     return <CacheContext.Provider value={value}>{children}</CacheContext.Provider>

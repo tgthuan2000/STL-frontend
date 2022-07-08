@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import _ from 'lodash'
 import { RecentProps } from '~/@types/spending'
 import { KIND_SPENDING } from '~/constant/spending'
+import { Fragment } from 'react'
 
 const Recent = ({ data, loading }: RecentProps) => {
     if (loading) return <RecentSkeleton />
@@ -22,8 +23,13 @@ const Recent = ({ data, loading }: RecentProps) => {
                                 <span>{moment(item.date).format('DD/MM/YYYY - HH:mm:ss')}</span>
                                 <h3 className='font-medium'>{item.methodSpending.name}</h3>
                                 {item.description && (
-                                    <span className='truncate' title={item.description}>
-                                        {item.description}
+                                    <span title={item.description}>
+                                        {item.description.split('\n').map((line, index) => (
+                                            <Fragment key={index}>
+                                                <span className='truncate'>{line}</span>
+                                                <br />
+                                            </Fragment>
+                                        ))}
                                     </span>
                                 )}
                             </div>

@@ -1,12 +1,12 @@
 import moment from 'moment'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { IMethodSpending } from '~/@types/spending'
 import { AutoComplete, Button, Input, TextArea } from '~/components'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import { client } from '~/sanityConfig'
-import { GET_METHOD_SPENDING } from '~/schema/query/spending'
+import { F_GET_METHOD_SPENDING, GET_METHOD_SPENDING, GET_RECENT_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 
 interface IMakeTransferForm {
@@ -24,9 +24,9 @@ const MakeTransfer = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { userProfile } = useAuth()
-    const { setIsRefetch, fetchApi } = useCache()
+    const { fetchApi, deleteCache } = useCache()
     const { loading, setLoading } = useLoading()
-    const { getKindSpendingId } = useConfig()
+    const { getKindSpendingId, kindSpending } = useConfig()
     const [data, setData] = useState<Data>({
         methodSpending: [],
     })
@@ -40,28 +40,26 @@ const MakeTransfer = () => {
         },
     })
 
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                const query = `
-                    {
-                        "methodSpending": ${GET_METHOD_SPENDING}
-                    }
-                `
-
-                const params = {
-                    userId: userProfile?._id,
-                }
-                const res = await fetchApi<Data>(query, params)
-
-                setData({
-                    methodSpending: res.methodSpending,
-                })
-            } catch (error) {
-                console.log(error)
-            } finally {
+    const getData = useCallback(async () => {
+        try {
+            const params = {
+                userId: userProfile?._id,
             }
+            const res = await fetchApi<Data>(
+                {
+                    methodSpending: GET_METHOD_SPENDING,
+                },
+                params
+            )
+
+            setData(res)
+        } catch (error) {
+            console.log(error)
+        } finally {
         }
+    }, [])
+
+    useEffect(() => {
         getData()
     }, [])
 
@@ -73,7 +71,7 @@ const MakeTransfer = () => {
         const document1 = {
             _type: 'spending',
             amount,
-            description: `Từ ${methodSpendingTo?.name}: ${description}`,
+            description: `Đến ${methodSpendingTo?.name}\n${description}`,
             date: moment().format(),
             kindSpending: {
                 _type: 'reference',
@@ -92,7 +90,7 @@ const MakeTransfer = () => {
         const document2 = {
             _type: 'spending',
             amount,
-            description: `Đến ${methodSpendingFrom?.name}: ${description}`,
+            description: `Từ ${methodSpendingFrom?.name}\n${description}`,
             date: moment().format(),
             kindSpending: {
                 _type: 'reference',
@@ -111,13 +109,54 @@ const MakeTransfer = () => {
         try {
             await client.transaction().create(document1).create(document2).commit()
             // navigate to dashboard
-            setIsRefetch(true)
+            const result = await deleteCache([
+                {
+                    method: F_GET_METHOD_SPENDING(kindSpending),
+                    params: { userId: userProfile?._id },
+                },
+                {
+                    recent: GET_RECENT_SPENDING,
+                    params: { userId: userProfile?._id },
+                },
+            ])
+            console.log(result)
             setIsOpen(false)
             navigate(-1)
         } catch (error) {
             console.log(error)
         } finally {
             setLoading(false)
+        }
+    }
+
+    const handleAddMoreMethodSpending = async (name: string) => {
+        // delete spaces between and last first
+        name = name.replace(/\s+/g, ' ').trim()
+        // capitalize first letter
+        name = name.charAt(0).toUpperCase() + name.slice(1)
+        // add to database
+        const document = {
+            _type: 'methodSpending',
+            name,
+            user: {
+                _type: 'reference',
+                _ref: userProfile?._id,
+            },
+        }
+
+        try {
+            const { _id, name } = await client.create(document)
+            const result = await deleteCache([
+                {
+                    methodSpending: GET_METHOD_SPENDING,
+                    params: { userId: userProfile?._id },
+                },
+            ])
+            console.log(result)
+            await getData()
+            return { _id, name }
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -152,6 +191,7 @@ const MakeTransfer = () => {
                                         data={data?.methodSpending}
                                         label='Từ phương thức thanh toán'
                                         error={error}
+                                        addMore={handleAddMoreMethodSpending}
                                         {...field}
                                     />
                                 )}
@@ -167,6 +207,7 @@ const MakeTransfer = () => {
                                         data={data?.methodSpending}
                                         label='Đến phương thức thanh toán'
                                         error={error}
+                                        addMore={handleAddMoreMethodSpending}
                                         {...field}
                                     />
                                 )}

@@ -1,13 +1,18 @@
 import _ from 'lodash'
 import moment from 'moment'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending } from '~/@types/spending'
 import { AutoComplete, Button, Input, TextArea } from '~/components'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import { client } from '~/sanityConfig'
-import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
+import {
+    F_GET_METHOD_SPENDING,
+    GET_CATEGORY_SPENDING,
+    GET_METHOD_SPENDING,
+    GET_RECENT_SPENDING,
+} from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 
 interface IAddCostForm {
@@ -17,17 +22,17 @@ interface IAddCostForm {
     description: string
 }
 interface Data {
-    methodSpending: ICategorySpending[]
-    categorySpending: IMethodSpending[]
+    methodSpending: IMethodSpending[]
+    categorySpending: ICategorySpending[]
 }
 
 const MakeCost = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { userProfile } = useAuth()
-    const { setIsRefetch, fetchApi } = useCache()
+    const { fetchApi, deleteCache } = useCache()
     const { loading, setLoading } = useLoading()
-    const { getKindSpendingId } = useConfig()
+    const { getKindSpendingId, kindSpending } = useConfig()
 
     const kindSpendingId = useMemo(() => {
         return getKindSpendingId('COST')
@@ -46,39 +51,38 @@ const MakeCost = () => {
         },
     })
 
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                if (_.isUndefined(kindSpendingId)) return
+    const getData = useCallback(async () => {
+        try {
+            if (_.isUndefined(kindSpendingId)) return
 
-                const query = `
-                    {
-                        "methodSpending": ${GET_METHOD_SPENDING},
-                        "categorySpending": ${GET_CATEGORY_SPENDING}
-                    }
-                `
-
-                const params = {
-                    userId: userProfile?._id,
-                    kindSpending: kindSpendingId,
-                }
-                const res = await fetchApi<Data>(query, params)
-
-                setData({
-                    methodSpending: res.methodSpending,
-                    categorySpending: res.categorySpending,
-                })
-            } catch (error) {
-                console.log(error)
-            } finally {
+            const params = {
+                userId: userProfile?._id,
+                kindSpending: kindSpendingId,
             }
+            const res = await fetchApi<Data>(
+                {
+                    methodSpending: GET_METHOD_SPENDING,
+                    categorySpending: GET_CATEGORY_SPENDING,
+                },
+                params
+            )
+
+            setData(res)
+        } catch (error) {
+            console.log(error)
+        } finally {
         }
+    }, [])
+
+    useEffect(() => {
         getData()
-    }, [kindSpendingId])
+    }, [])
 
     const onsubmit: SubmitHandler<IAddCostForm> = async (data) => {
         setLoading(true)
         let { amount, methodSpending, categorySpending, description } = data
+        // transfer amount to number
+        amount = Number(amount)
 
         // add to database
         const document = {
@@ -106,13 +110,54 @@ const MakeCost = () => {
         try {
             await client.create(document)
             // navigate to dashboard
-            setIsRefetch(true)
+            const result = await deleteCache([
+                {
+                    method: F_GET_METHOD_SPENDING(kindSpending),
+                    params: { userId: userProfile?._id },
+                },
+                {
+                    recent: GET_RECENT_SPENDING,
+                    params: { userId: userProfile?._id },
+                },
+            ])
+            console.log(result)
             setIsOpen(false)
             navigate(-1)
         } catch (error) {
             console.log(error)
         } finally {
             setLoading(false)
+        }
+    }
+
+    const handleAddMoreMethodSpending = async (name: string) => {
+        // delete spaces between and last first
+        name = name.replace(/\s+/g, ' ').trim()
+        // capitalize first letter
+        name = name.charAt(0).toUpperCase() + name.slice(1)
+        // add to database
+        const document = {
+            _type: 'methodSpending',
+            name,
+            user: {
+                _type: 'reference',
+                _ref: userProfile?._id,
+            },
+        }
+
+        try {
+            const { _id, name } = await client.create(document)
+            const result = await deleteCache([
+                {
+                    methodSpending: GET_METHOD_SPENDING,
+                    params: { userId: userProfile?._id },
+                },
+            ])
+            console.log(result)
+            await getData()
+            return { _id, name }
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -162,6 +207,7 @@ const MakeCost = () => {
                                         data={data?.methodSpending}
                                         label='Phương thức thanh toán'
                                         error={error}
+                                        addMore={handleAddMoreMethodSpending}
                                         {...field}
                                     />
                                 )}
