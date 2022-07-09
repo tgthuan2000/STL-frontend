@@ -6,6 +6,8 @@ export interface BoxProps {
     seeMore?: boolean
     children: React.ReactNode
     to?: string
+    onReload?: () => void
+    loading?: boolean
 }
 export interface RecentData {
     _id: string

@@ -146,6 +146,10 @@ const MakeTransfer = () => {
                     methodSpending: GET_METHOD_SPENDING,
                     params: { userId: userProfile?._id },
                 },
+                {
+                    method: F_GET_METHOD_SPENDING(kindSpending),
+                    params: { userId: userProfile?._id },
+                },
             ])
             console.log(result)
             await getData()
