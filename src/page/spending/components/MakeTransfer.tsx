@@ -130,11 +130,6 @@ const MakeTransfer = () => {
     }
 
     const handleAddMoreMethodSpending = async (name: string) => {
-        // delete spaces between and last first
-        name = name.replace(/\s+/g, ' ').trim()
-        // capitalize first letter
-        name = name.charAt(0).toUpperCase() + name.slice(1)
-        // add to database
         const document = {
             _type: 'methodSpending',
             name,

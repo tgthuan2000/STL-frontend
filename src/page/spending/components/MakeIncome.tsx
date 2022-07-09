@@ -128,12 +128,37 @@ const MakeIncome = () => {
         }
     }
 
+    const handleAddMoreCategorySpending = async (name: string) => {
+        const document = {
+            _type: 'categorySpending',
+            name,
+            kindSpending: {
+                _type: 'reference',
+                _ref: kindSpendingId,
+            },
+            user: {
+                _type: 'reference',
+                _ref: userProfile?._id,
+            },
+        }
+
+        try {
+            const { _id, name } = await client.create(document)
+            const result = await deleteCache([
+                {
+                    categorySpending: GET_CATEGORY_SPENDING,
+                    params: { userId: userProfile?._id, kindSpending: kindSpendingId },
+                },
+            ])
+            console.log(result)
+            await getData()
+            return { _id, name }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const handleAddMoreMethodSpending = async (name: string) => {
-        // delete spaces between and last first
-        name = name.replace(/\s+/g, ' ').trim()
-        // capitalize first letter
-        name = name.charAt(0).toUpperCase() + name.slice(1)
-        // add to database
         const document = {
             _type: 'methodSpending',
             name,
@@ -190,6 +215,7 @@ const MakeIncome = () => {
                                         data={data?.categorySpending}
                                         label='Thể loại'
                                         error={error}
+                                        addMore={handleAddMoreCategorySpending}
                                         {...field}
                                     />
                                 )}

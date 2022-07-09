@@ -31,9 +31,11 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
     const deleteCache = (payloads: { [x: string]: any }[]) => {
         let count = 0
         let clone: Array<ICacheData<any>> = JSON.parse(JSON.stringify(cache))
+
         payloads.forEach((payload) => {
             const queryHash = hashCode(JSON.stringify(payload))
             const indexCache = clone.length > 0 ? clone.findIndex((c) => c.key === queryHash) : -1
+
             if (indexCache !== -1) {
                 clone.splice(indexCache, 1)
                 count++
@@ -64,7 +66,6 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
                           .filter((x) => value.includes(x))
                           .map((v) => ({ [v]: params[v] }))
                   )
-
             const queryHash = hashCode(JSON.stringify({ [key]: value, params: p }))
 
             const indexCache = cache.length > 0 ? cache.findIndex((c) => c.key === queryHash) : -1

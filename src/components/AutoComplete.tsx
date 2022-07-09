@@ -41,6 +41,10 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                 if (addMore) {
                     try {
                         setLoading(true)
+                        // delete spaces between and last first
+                        value = value.replace(/\s+/g, ' ').trim()
+                        // capitalize first letter
+                        value = value.charAt(0).toUpperCase() + value.slice(1)
                         const data = await addMore(value)
                         if (data) {
                             onChange?.(data)
