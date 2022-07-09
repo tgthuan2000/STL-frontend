@@ -72,11 +72,11 @@ const MakeCost = () => {
             console.log(error)
         } finally {
         }
-    }, [])
+    }, [kindSpendingId])
 
     useEffect(() => {
         getData()
-    }, [])
+    }, [getData])
 
     const onsubmit: SubmitHandler<IAddCostForm> = async (data) => {
         setLoading(true)

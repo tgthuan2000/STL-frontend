@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { IKindSpending } from '~/@types/context'
 import { Button, Input, Selection } from '~/components'
+import { KIND_SPENDING } from '~/constant/spending'
 import { SlideOverHOC, useConfig, useSlideOver } from '~/context'
 import { client } from '~/sanityConfig'
 import useAuth from '~/store/auth'
@@ -23,6 +24,11 @@ const AddCategory = () => {
             kindSpending: null,
         },
     })
+
+    const kinds = useMemo(
+        () => kindSpending.filter((kind) => [KIND_SPENDING.COST, KIND_SPENDING.RECEIVE].includes(kind.key)),
+        [kindSpending]
+    )
 
     const onsubmit: SubmitHandler<IAddCategoryForm> = async (data) => {
         setLoading(true)
@@ -72,7 +78,7 @@ const AddCategory = () => {
                                     <Selection
                                         label='Thể loại'
                                         placeholder='--- Chọn thể loại ---'
-                                        data={kindSpending}
+                                        data={kinds}
                                         idKey='_id'
                                         valueKey='name'
                                         error={error}

@@ -71,11 +71,11 @@ const MakeIncome = () => {
             console.log(error)
         } finally {
         }
-    }, [])
+    }, [kindSpendingId])
 
     useEffect(() => {
         getData()
-    }, [])
+    }, [getData])
 
     const onsubmit: SubmitHandler<IAddIncomeForm> = async (data) => {
         setLoading(true)

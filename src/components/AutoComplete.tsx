@@ -3,7 +3,7 @@ import { Combobox } from '@headlessui/react'
 import { CheckIcon, SelectorIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import _ from 'lodash'
-import { forwardRef, useState } from 'react'
+import { forwardRef, startTransition, useState } from 'react'
 import { AutoCompleteProps } from '~/@types/components'
 import { people } from '~/constant/components'
 
@@ -17,6 +17,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
             className,
             error,
             onChange,
+            onBlur,
             addMore,
             value,
             ...props
@@ -63,7 +64,20 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
 
         return (
             <div className={clsx(className)}>
-                <Combobox as='div' ref={ref} {...props} value={selectedItem} onChange={handleChange} disabled={loading}>
+                <Combobox
+                    as='div'
+                    ref={ref}
+                    onBlur={() => {
+                        onBlur()
+                        setTimeout(() => {
+                            setQuery('')
+                        }, 300)
+                    }}
+                    value={selectedItem}
+                    onChange={handleChange}
+                    disabled={loading}
+                    {...props}
+                >
                     <Combobox.Label className='inline-block text-sm font-medium text-gray-700'>{label}</Combobox.Label>
                     <div className='relative mt-1'>
                         <Combobox.Input
@@ -126,7 +140,16 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                         }
                                     >
                                         <span className='block truncate'>
-                                            Tạo mới <span className='font-medium'>"{query}"</span>
+                                            Tạo mới{' '}
+                                            <span className='font-medium'>
+                                                "
+                                                {(() => {
+                                                    let temp = query.replace(/\s+/g, ' ').trim()
+                                                    temp = temp.charAt(0).toUpperCase() + temp.slice(1)
+                                                    return temp
+                                                })()}
+                                                "
+                                            </span>
                                         </span>
                                     </Combobox.Option>
                                 </Combobox.Options>
