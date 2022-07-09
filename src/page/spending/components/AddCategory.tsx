@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router-dom'
 import { IKindSpending } from '~/@types/context'
 import { Button, Input, Selection } from '~/components'
 import { KIND_SPENDING } from '~/constant/spending'
-import { SlideOverHOC, useConfig, useSlideOver } from '~/context'
+import { SlideOverHOC, useCache, useConfig, useSlideOver } from '~/context'
 import { client } from '~/sanityConfig'
+import { GET_CATEGORY_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 
 interface IAddCategoryForm {
@@ -18,6 +19,7 @@ const AddCategory = () => {
     const { kindSpending } = useConfig()
     const { userProfile } = useAuth()
     const [loading, setLoading] = useState(false)
+    const { deleteCache } = useCache()
     const { control, handleSubmit } = useForm<IAddCategoryForm>({
         defaultValues: {
             name: '',
@@ -53,6 +55,13 @@ const AddCategory = () => {
         try {
             await client.create(document)
             // navigate to dashboard
+            const result = await deleteCache([
+                {
+                    categorySpending: GET_CATEGORY_SPENDING,
+                    params: { userId: userProfile?._id, kindSpending: kindSpending?._id },
+                },
+            ])
+            console.log(result)
             setIsOpen(false)
             navigate(-1)
         } catch (error) {

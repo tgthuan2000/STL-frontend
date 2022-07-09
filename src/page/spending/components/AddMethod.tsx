@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button, Input } from '~/components'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import { client } from '~/sanityConfig'
-import { F_GET_METHOD_SPENDING } from '~/schema/query/spending'
+import { F_GET_METHOD_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 
 interface IAddMethodForm {
@@ -46,6 +46,10 @@ const AddMethod = () => {
             const result = await deleteCache([
                 {
                     method: F_GET_METHOD_SPENDING(kindSpending),
+                    params: { userId: userProfile?._id },
+                },
+                {
+                    methodSpending: GET_METHOD_SPENDING,
                     params: { userId: userProfile?._id },
                 },
             ])
