@@ -1,6 +1,5 @@
 import {
     ClipboardListIcon,
-    DotsVerticalIcon,
     HomeIcon,
     LogoutIcon,
     MinusCircleIcon,
@@ -155,10 +154,25 @@ export const menuPages: IMenuBtn[] = [
         to: 'method',
     },
     {
-        title: 'Tùy chọn',
+        title: 'Tạo mới phương thức thanh toán',
         color: 'text-cyan-700',
-        icon: DotsVerticalIcon,
-        to: 'options',
+        icon: QrcodeIcon,
+        children: () => <AddMethod />,
+        to: '?slide=add-method',
+        query: {
+            slide: 'add-method',
+        },
+        divider: true,
+    },
+    {
+        title: 'Tạo mới thể loại',
+        color: 'text-cyan-700',
+        icon: TemplateIcon,
+        children: () => <AddCategory />,
+        to: '?slide=add-category',
+        query: {
+            slide: 'add-category',
+        },
     },
 ]
 
