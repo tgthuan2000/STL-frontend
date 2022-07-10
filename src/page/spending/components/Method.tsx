@@ -5,13 +5,13 @@ import _ from 'lodash'
 import { MethodProps } from '~/@types/spending'
 
 const Method = ({ data, loading }: MethodProps) => {
+    const tempData = data.length > 8 ? data.filter((i) => i.receive !== i.cost) : data
     if (loading) return <MethodSkeleton />
 
     if (!_.isEmpty(data)) {
         return (
             <ul role='list'>
-                {data
-                    .filter((i) => i.receive !== i.cost)
+                {tempData
                     .sort((a, b) => b.receive - b.cost - a.receive + a.cost)
                     .map((item) => {
                         return (
