@@ -170,7 +170,7 @@ const Dashboard = () => {
                     <Transaction.Box
                         title='Giao dịch gần đây'
                         to='transaction'
-                        onReload={_.isEmpty(data.recent) ? undefined : handleReloadRecent}
+                        onReload={handleReloadRecent}
                         loading={loadingRecent}
                     >
                         <Recent data={data.recent} loading={loadingRecent} />
@@ -180,7 +180,7 @@ const Dashboard = () => {
                     <Transaction.Box
                         title='Phương thức thanh toán'
                         to='method'
-                        onReload={_.isEmpty(data.method) ? undefined : handleReloadMethod}
+                        onReload={handleReloadMethod}
                         loading={loadingMethod}
                     >
                         <Method data={data.method} loading={loadingMethod} />
