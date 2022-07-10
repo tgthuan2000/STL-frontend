@@ -222,6 +222,7 @@ const MakeCost = () => {
                                         label='Thể loại'
                                         error={error}
                                         addMore={handleAddMoreCategorySpending}
+                                        onReload={_.isEmpty(data.categorySpending) ? undefined : getData}
                                         {...field}
                                     />
                                 )}
@@ -238,6 +239,7 @@ const MakeCost = () => {
                                         label='Phương thức thanh toán'
                                         error={error}
                                         addMore={handleAddMoreMethodSpending}
+                                        onReload={_.isEmpty(data.methodSpending) ? undefined : getData}
                                         {...field}
                                     />
                                 )}

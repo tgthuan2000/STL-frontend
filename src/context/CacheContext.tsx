@@ -66,6 +66,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
                           .map((v) => ({ [v]: params[v] }))
                   )
             const queryHash = hashCode(JSON.stringify({ [key]: value, params: p }))
+
             const indexCache = cache.length > 0 ? cache.findIndex((c) => c.key === queryHash) : -1
             if (indexCache !== -1) {
                 Object.assign(data, { [key]: cache[indexCache].data })

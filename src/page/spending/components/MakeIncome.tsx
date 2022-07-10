@@ -221,6 +221,7 @@ const MakeIncome = () => {
                                         label='Thể loại'
                                         error={error}
                                         addMore={handleAddMoreCategorySpending}
+                                        onReload={_.isEmpty(data.categorySpending) ? undefined : getData}
                                         {...field}
                                     />
                                 )}
@@ -237,6 +238,7 @@ const MakeIncome = () => {
                                         label='Phương thức thanh toán'
                                         error={error}
                                         addMore={handleAddMoreMethodSpending}
+                                        onReload={_.isEmpty(data.categorySpending) ? undefined : getData}
                                         {...field}
                                     />
                                 )}
