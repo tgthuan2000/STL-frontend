@@ -41,6 +41,7 @@ export interface InputProps {
     name: string
     type: HTMLInputTypeAttribute
     error?: FieldError
+    value?: any
 }
 export interface TextAreaProps {
     className?: string
