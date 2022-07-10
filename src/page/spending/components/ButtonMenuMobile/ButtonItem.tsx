@@ -21,7 +21,7 @@ const ButtonItem = ({ data }: MenuButtonProps) => {
                 }
                 title={title}
             >
-                <Icon className='w-7 h-7' />
+                {({ isActive }) => <Icon className={clsx('transition-all', isActive ? 'w-9 h-9' : 'w-7 h-7')} />}
             </NavLink>
             <SlideOver>{children}</SlideOver>
         </>
