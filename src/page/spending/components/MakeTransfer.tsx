@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import moment from 'moment'
 import { useCallback, useEffect, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
@@ -191,7 +192,7 @@ const MakeTransfer = () => {
                                         label='Từ phương thức thanh toán'
                                         error={error}
                                         addMore={handleAddMoreMethodSpending}
-                                        onReload={getData}
+                                        onReload={_.isEmpty(data.methodSpending) ? undefined : getData}
                                         {...field}
                                     />
                                 )}
@@ -208,7 +209,7 @@ const MakeTransfer = () => {
                                         label='Đến phương thức thanh toán'
                                         error={error}
                                         addMore={handleAddMoreMethodSpending}
-                                        onReload={getData}
+                                        onReload={_.isEmpty(data.methodSpending) ? undefined : getData}
                                         {...field}
                                     />
                                 )}
