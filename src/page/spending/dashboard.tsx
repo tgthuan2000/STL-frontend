@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import { useCallback, useEffect, useState } from 'react'
-import { getEnvironmentData } from 'worker_threads'
 import { MethodData, RecentData } from '~/@types/spending'
 import { Divider } from '~/components'
 import { menuMobile } from '~/constant/components'
@@ -28,11 +27,15 @@ const Dashboard = () => {
         recent: [],
         method: [],
     })
-    const [loading, setLoading] = useState(true)
     const { fetchApi, deleteCache } = useCache()
+    const [reLoadRecent, setReLoadRecent] = useState(false)
+    const [reLoadMethod, setReLoadMethod] = useState(false)
+    const [loadingRecent, setLoadingRecent] = useState(true)
+    const [loadingMethod, setLoadingMethod] = useState(true)
 
     const getData = useCallback(async () => {
-        setLoading(true)
+        setLoadingRecent(true)
+        setLoadingMethod(true)
 
         try {
             if (_.isEmpty(kindSpending)) return
@@ -58,13 +61,77 @@ const Dashboard = () => {
         } catch (error) {
             console.log(error)
         } finally {
-            setLoading(false)
+            setLoadingRecent(false)
+            setLoadingMethod(false)
         }
     }, [kindSpending])
 
     useEffect(() => {
         getData()
     }, [getData])
+
+    useEffect(() => {
+        if (reLoadRecent) {
+            const reloadRecent = async () => {
+                setLoadingRecent(true)
+                try {
+                    const params = { userId: userProfile?._id }
+                    const res = await fetchApi<{ recent: RecentData[] }>({ recent: GET_RECENT_SPENDING }, params)
+
+                    setData((prev) => ({
+                        ...prev,
+                        recent: res.recent,
+                    }))
+                } catch (error) {
+                    console.log(error)
+                } finally {
+                    setLoadingRecent(false)
+                    setReLoadRecent(false)
+                }
+            }
+            reloadRecent()
+        }
+    }, [reLoadRecent])
+
+    useEffect(() => {
+        if (reLoadMethod) {
+            const reLoadMethod = async () => {
+                setLoadingMethod(true)
+                try {
+                    const params = { userId: userProfile?._id }
+                    const res = await fetchApi<{ method: DataMethodSanity[] }>(
+                        { method: F_GET_METHOD_SPENDING(kindSpending) },
+                        params
+                    )
+
+                    setData((prev) => ({
+                        ...prev,
+                        method: _.isEmpty(res.method)
+                            ? []
+                            : res.method.map(
+                                  ({
+                                      cost,
+                                      receive,
+                                      'transfer-from': transferFrom,
+                                      'transfer-to': transferTo,
+                                      ...data
+                                  }) => ({
+                                      ...data,
+                                      cost: sum([...cost, ...transferFrom]),
+                                      receive: sum([...receive, ...transferTo]),
+                                  })
+                              ),
+                    }))
+                } catch (error) {
+                    console.log(error)
+                } finally {
+                    setLoadingMethod(false)
+                    setReLoadMethod(false)
+                }
+            }
+            reLoadMethod()
+        }
+    }, [reLoadMethod])
 
     const handleReloadRecent = async () => {
         const result = await deleteCache([
@@ -74,21 +141,7 @@ const Dashboard = () => {
             },
         ])
         console.log(result)
-        // --------------------------------------------------
-        setLoading(true)
-        try {
-            const params = { userId: userProfile?._id }
-            const res = await fetchApi<{ recent: RecentData[] }>({ recent: GET_RECENT_SPENDING }, params)
-
-            setData((prev) => ({
-                ...prev,
-                recent: res.recent,
-            }))
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setLoading(false)
-        }
+        setReLoadRecent(true)
     }
 
     const handleReloadMethod = async () => {
@@ -99,33 +152,9 @@ const Dashboard = () => {
             },
         ])
         console.log(result)
-        // --------------------------------------------------
-        setLoading(true)
-        try {
-            const params = { userId: userProfile?._id }
-            const res = await fetchApi<{ method: DataMethodSanity[] }>(
-                { method: F_GET_METHOD_SPENDING(kindSpending) },
-                params
-            )
-
-            setData((prev) => ({
-                ...prev,
-                method: _.isEmpty(res.method)
-                    ? []
-                    : res.method.map(
-                          ({ cost, receive, 'transfer-from': transferFrom, 'transfer-to': transferTo, ...data }) => ({
-                              ...data,
-                              cost: sum([...cost, ...transferFrom]),
-                              receive: sum([...receive, ...transferTo]),
-                          })
-                      ),
-            }))
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setLoading(false)
-        }
+        setReLoadMethod(true)
     }
+
     return (
         <>
             {width < 1280 && (
@@ -142,9 +171,9 @@ const Dashboard = () => {
                         title='Giao dịch gần đây'
                         to='transaction'
                         onReload={handleReloadRecent}
-                        loading={loading}
+                        loading={loadingRecent}
                     >
-                        <Recent data={data.recent} loading={loading} />
+                        <Recent data={data.recent} loading={loadingRecent} />
                     </Transaction.Box>
                 </div>
                 <div className='xl:space-y-6 space-y-4'>
@@ -152,9 +181,9 @@ const Dashboard = () => {
                         title='Phương thức thanh toán'
                         to='method'
                         onReload={handleReloadMethod}
-                        loading={loading}
+                        loading={loadingMethod}
                     >
-                        <Method data={data.method} loading={loading} />
+                        <Method data={data.method} loading={loadingMethod} />
                     </Transaction.Box>
                 </div>
             </Transaction>

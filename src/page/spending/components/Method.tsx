@@ -11,6 +11,7 @@ const Method = ({ data, loading }: MethodProps) => {
         return (
             <ul role='list'>
                 {data
+                    .filter((i) => i.receive !== i.cost)
                     .sort((a, b) => b.receive - b.cost - a.receive + a.cost)
                     .map((item) => {
                         return (

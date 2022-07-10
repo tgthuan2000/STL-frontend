@@ -7,6 +7,7 @@ const Title = ({ title, onReload, loading }: { title?: string; onReload?: () => 
             <h4 className='text-base font-medium text-gray-500'>{title}</h4>
             {onReload && (
                 <button
+                    type='button'
                     className='cursor-pointer group disabled:cursor-wait disabled:animate-spin -scale-100'
                     onClick={onReload}
                     disabled={loading}

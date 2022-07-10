@@ -13,7 +13,7 @@ export interface RecentData {
     _id: string
     _createdAt: string
     name: string
-    categorySpending: {
+    categorySpending?: {
         _id: string
         name: string
     }

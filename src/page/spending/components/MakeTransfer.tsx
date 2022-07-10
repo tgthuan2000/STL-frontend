@@ -191,6 +191,7 @@ const MakeTransfer = () => {
                                         label='Từ phương thức thanh toán'
                                         error={error}
                                         addMore={handleAddMoreMethodSpending}
+                                        onReload={getData}
                                         {...field}
                                     />
                                 )}
@@ -207,6 +208,7 @@ const MakeTransfer = () => {
                                         label='Đến phương thức thanh toán'
                                         error={error}
                                         addMore={handleAddMoreMethodSpending}
+                                        onReload={getData}
                                         {...field}
                                     />
                                 )}

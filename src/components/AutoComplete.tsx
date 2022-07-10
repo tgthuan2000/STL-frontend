@@ -1,9 +1,9 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Combobox } from '@headlessui/react'
-import { CheckIcon, SelectorIcon } from '@heroicons/react/outline'
+import { CheckIcon, RefreshIcon, SelectorIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import _ from 'lodash'
-import { forwardRef, startTransition, useState } from 'react'
+import { forwardRef, useState } from 'react'
 import { AutoCompleteProps } from '~/@types/components'
 import { people } from '~/constant/components'
 
@@ -17,6 +17,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
             className,
             error,
             onChange,
+            onReload,
             onBlur,
             addMore,
             value,
@@ -82,7 +83,27 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                     disabled={loading}
                     {...props}
                 >
-                    <Combobox.Label className='inline-block text-sm font-medium text-gray-700'>{label}</Combobox.Label>
+                    <div className='flex justify-between items-center'>
+                        <Combobox.Label className='inline-block text-sm font-medium text-gray-700'>
+                            {label}
+                        </Combobox.Label>
+                        {onReload && (
+                            <button
+                                type='button'
+                                className='cursor-pointer group disabled:cursor-wait disabled:animate-spin -scale-100'
+                                onClick={() => {
+                                    setLoading(true)
+                                    onReload().then(() => {
+                                        setLoading(false)
+                                    })
+                                }}
+                                disabled={loading}
+                                title='Tải lại'
+                            >
+                                <RefreshIcon className='h-4 w-4 text-gray-500 group-hover:text-gray-400 group-disabled:text-gray-300' />
+                            </button>
+                        )}
+                    </div>
                     <div className='relative mt-1'>
                         <Combobox.Input
                             className={clsx(

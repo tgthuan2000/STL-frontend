@@ -1,7 +1,8 @@
+import { useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { Button, Input } from '~/components'
-import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
+import { SlideOverHOC, useCache, useConfig, useSlideOver } from '~/context'
 import { client } from '~/sanityConfig'
 import { F_GET_METHOD_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
@@ -14,7 +15,7 @@ const AddMethod = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { userProfile } = useAuth()
-    const { loading, setLoading } = useLoading()
+    const [loading, setLoading] = useState(false)
     const { deleteCache } = useCache()
     const { kindSpending } = useConfig()
 

@@ -19,9 +19,9 @@ const Recent = ({ data, loading }: RecentProps) => {
                             to={`transaction/${item._id}`}
                             className='px-3 py-2 flex hover:bg-gray-100 cursor-pointer'
                         >
-                            <div className='w-2/3 truncate'>
-                                <span>{moment(item.date).format('DD/MM/YYYY - HH:mm:ss')}</span>
-                                <h3 className='font-medium'>{item.methodSpending.name}</h3>
+                            <div className='xl:w-2/3 w-1/2'>
+                                <span>{moment(item.date).format('DD/MM/YYYY HH:mm:ss')}</span>
+                                <h3 className='font-medium truncate'>{item.methodSpending.name}</h3>
                                 {item.description && (
                                     <span title={item.description}>
                                         {item.description.split('\n').map((line, index) => (
@@ -33,8 +33,10 @@ const Recent = ({ data, loading }: RecentProps) => {
                                     </span>
                                 )}
                             </div>
-                            <div className='w-1/3 truncate text-right'>
-                                <h4 className={clsx('font-medium')}>{item.kindSpending.name}</h4>
+                            <div className='xl:w-1/3 w-1/2 text-right'>
+                                <h4 className={clsx('font-medium truncate')}>
+                                    {item.categorySpending?.name ?? item.kindSpending.name}
+                                </h4>
                                 <NumberFormat
                                     className={clsx(
                                         { 'text-red-500': item.kindSpending.key === KIND_SPENDING.COST },
