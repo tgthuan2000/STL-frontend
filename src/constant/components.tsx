@@ -1,5 +1,6 @@
 import {
     ClipboardListIcon,
+    DotsVerticalIcon,
     HomeIcon,
     LogoutIcon,
     MinusCircleIcon,
@@ -131,6 +132,33 @@ export const menuPC: IMenuBtn[] = [
         query: {
             slide: 'add-category',
         },
+    },
+]
+
+export const menuPages: IMenuBtn[] = [
+    {
+        title: 'Trang chủ',
+        color: 'text-red-700',
+        icon: HomeIcon,
+        to: '/spending',
+    },
+    {
+        title: 'Giao dịch',
+        color: 'text-orange-700',
+        icon: ClipboardListIcon,
+        to: 'transaction',
+    },
+    {
+        title: 'PTTT',
+        color: 'text-purple-700',
+        icon: QrcodeIcon,
+        to: 'method',
+    },
+    {
+        title: 'Tùy chọn',
+        color: 'text-cyan-700',
+        icon: DotsVerticalIcon,
+        to: 'options',
     },
 ]
 

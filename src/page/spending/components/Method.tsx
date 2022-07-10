@@ -3,9 +3,10 @@ import NumberFormat from 'react-number-format'
 import clsx from 'clsx'
 import _ from 'lodash'
 import { MethodProps } from '~/@types/spending'
+import { useMemo } from 'react'
 
 const Method = ({ data, loading }: MethodProps) => {
-    const tempData = data.length > 8 ? data.filter((i) => i.receive !== i.cost) : data
+    const tempData = useMemo(() => (data.length > 8 ? data.filter((i) => i.receive !== i.cost) : data), [data])
     if (loading) return <MethodSkeleton />
 
     if (!_.isEmpty(data)) {
