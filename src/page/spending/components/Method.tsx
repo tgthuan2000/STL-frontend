@@ -6,19 +6,18 @@ import { MethodProps } from '~/@types/spending'
 import { useMemo } from 'react'
 
 const Method = ({ data, loading }: MethodProps) => {
-    const tempData = useMemo(() => (data.length > 8 ? data.filter((i) => i.receive !== i.cost) : data), [data])
     if (loading) return <MethodSkeleton />
 
     if (!_.isEmpty(data)) {
         return (
             <ul role='list'>
-                {tempData
+                {data
                     .sort((a, b) => b.receive - b.cost - a.receive + a.cost)
                     .map((item) => {
                         return (
                             <li key={item._id}>
                                 <Link
-                                    to={`method/${item._id}`}
+                                    to={`/spending/method/${item._id}`}
                                     className='px-3 py-3 flex hover:bg-gray-100 cursor-pointer'
                                 >
                                     <div className='w-2/3 truncate'>

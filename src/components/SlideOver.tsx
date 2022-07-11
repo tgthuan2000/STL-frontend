@@ -15,7 +15,7 @@ const SlideOver = ({ children }: SlideOverProps) => {
         <Transition.Root show={isOpen} as={Fragment}>
             <Dialog
                 as='div'
-                className='relative z-10'
+                className='relative z-30'
                 onClose={(value) => {
                     if (!loading) {
                         setIsOpen(value)

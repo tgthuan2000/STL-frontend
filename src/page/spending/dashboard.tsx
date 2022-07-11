@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { MethodData, RecentData } from '~/@types/spending'
 import { Divider } from '~/components'
 import { menuMobile } from '~/constant/components'
@@ -10,7 +10,7 @@ import useAuth from '~/store/auth'
 import { sum } from '~/util'
 import { ButtonMenu, Method, Recent, Transaction } from './components'
 
-interface DataMethodSanity {
+export interface DataMethodSanity {
     _id: string
     name: string
     cost: number[]
@@ -32,6 +32,10 @@ const Dashboard = () => {
     const [reLoadMethod, setReLoadMethod] = useState(false)
     const [loadingRecent, setLoadingRecent] = useState(true)
     const [loadingMethod, setLoadingMethod] = useState(true)
+    const dataMethod = useMemo(
+        () => (data.method.length > 8 ? data.method.filter((i) => i.receive !== i.cost) : data.method),
+        [data.method]
+    )
 
     const getData = useCallback(async () => {
         setLoadingRecent(true)
@@ -183,7 +187,7 @@ const Dashboard = () => {
                         onReload={handleReloadMethod}
                         loading={loadingMethod}
                     >
-                        <Method data={data.method} loading={loadingMethod} />
+                        <Method data={dataMethod} loading={loadingMethod} />
                     </Transaction.Box>
                 </div>
             </Transaction>
