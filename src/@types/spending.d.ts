@@ -1,3 +1,4 @@
+import { KIND_SPENDING } from '~/constant/spending'
 import { IUserProfile } from './auth'
 import { IKindSpending } from './context'
 
@@ -32,7 +33,7 @@ export interface RecentData {
 }
 
 export interface RecentProps {
-    data: RecentData[]
+    data: RecentData[] | undefined
     loading: boolean
 }
 export interface MethodData {
@@ -42,7 +43,7 @@ export interface MethodData {
     receive: number
 }
 export interface MethodProps {
-    data: MethodData[]
+    data: MethodData[] | undefined
     loading: boolean
 }
 

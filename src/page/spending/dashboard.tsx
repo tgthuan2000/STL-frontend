@@ -1,10 +1,10 @@
 import _ from 'lodash'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { MethodData, RecentData } from '~/@types/spending'
+import { useEffect, useMemo } from 'react'
+import { RecentData } from '~/@types/spending'
 import { Divider } from '~/components'
 import { menuMobile } from '~/constant/components'
-import { useConfig, useCache } from '~/context'
-import { useWindowSize } from '~/hook'
+import { useConfig } from '~/context'
+import { useQuery, useWindowSize } from '~/hook'
 import { F_GET_METHOD_SPENDING, GET_RECENT_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 import { sum } from '~/util'
@@ -23,140 +23,47 @@ const Dashboard = () => {
     const { width } = useWindowSize()
     const { userProfile } = useAuth()
     const { kindSpending } = useConfig()
-    const [data, setData] = useState<{ recent: RecentData[]; method: MethodData[] }>({
-        recent: [],
-        method: [],
-    })
-    const { fetchApi, deleteCache } = useCache()
-    const [reLoadRecent, setReLoadRecent] = useState(false)
-    const [reLoadMethod, setReLoadMethod] = useState(false)
-    const [loadingRecent, setLoadingRecent] = useState(true)
-    const [loadingMethod, setLoadingMethod] = useState(true)
-    const dataMethod = useMemo(
-        () => (data.method.length > 8 ? data.method.filter((i) => i.receive !== i.cost) : data.method),
-        [data.method]
+    const [{ method, recent }, fetchData, deleteCache, reload] = useQuery<{
+        recent: RecentData[]
+        method: DataMethodSanity[]
+    }>(
+        {
+            recent: GET_RECENT_SPENDING,
+            method: F_GET_METHOD_SPENDING(kindSpending),
+        },
+        { userId: userProfile?._id as string }
     )
 
-    const getData = useCallback(async () => {
-        setLoadingRecent(true)
-        setLoadingMethod(true)
-
-        try {
-            if (_.isEmpty(kindSpending)) return
-
-            const params = { userId: userProfile?._id }
-            const res = await fetchApi<{ recent: RecentData[]; method: DataMethodSanity[] }>(
-                { recent: GET_RECENT_SPENDING, method: F_GET_METHOD_SPENDING(kindSpending) },
-                params
-            )
-
-            setData({
-                recent: res.recent,
-                method: _.isEmpty(res.method)
-                    ? []
-                    : res.method.map(
-                          ({ cost, receive, 'transfer-from': transferFrom, 'transfer-to': transferTo, ...data }) => ({
-                              ...data,
-                              cost: sum([...cost, ...transferFrom]),
-                              receive: sum([...receive, ...transferTo]),
-                          })
-                      ),
-            })
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setLoadingRecent(false)
-            setLoadingMethod(false)
+    useEffect(() => {
+        if (!_.isEmpty(kindSpending)) {
+            fetchData()
         }
     }, [kindSpending])
 
-    useEffect(() => {
-        getData()
-    }, [getData])
+    const dataMethod = useMemo(() => {
+        if (!method.data) return
 
-    useEffect(() => {
-        if (reLoadRecent) {
-            const reloadRecent = async () => {
-                setLoadingRecent(true)
-                try {
-                    const params = { userId: userProfile?._id }
-                    const res = await fetchApi<{ recent: RecentData[] }>({ recent: GET_RECENT_SPENDING }, params)
+        const methodMap = method.data.map(
+            ({ cost, receive, 'transfer-from': transferFrom, 'transfer-to': transferTo, ...data }) => ({
+                ...data,
+                cost: sum([...cost, ...transferFrom]),
+                receive: sum([...receive, ...transferTo]),
+            })
+        )
 
-                    setData((prev) => ({
-                        ...prev,
-                        recent: res.recent,
-                    }))
-                } catch (error) {
-                    console.log(error)
-                } finally {
-                    setLoadingRecent(false)
-                    setReLoadRecent(false)
-                }
-            }
-            reloadRecent()
-        }
-    }, [reLoadRecent])
-
-    useEffect(() => {
-        if (reLoadMethod) {
-            const reLoadMethod = async () => {
-                setLoadingMethod(true)
-                try {
-                    const params = { userId: userProfile?._id }
-                    const res = await fetchApi<{ method: DataMethodSanity[] }>(
-                        { method: F_GET_METHOD_SPENDING(kindSpending) },
-                        params
-                    )
-
-                    setData((prev) => ({
-                        ...prev,
-                        method: _.isEmpty(res.method)
-                            ? []
-                            : res.method.map(
-                                  ({
-                                      cost,
-                                      receive,
-                                      'transfer-from': transferFrom,
-                                      'transfer-to': transferTo,
-                                      ...data
-                                  }) => ({
-                                      ...data,
-                                      cost: sum([...cost, ...transferFrom]),
-                                      receive: sum([...receive, ...transferTo]),
-                                  })
-                              ),
-                    }))
-                } catch (error) {
-                    console.log(error)
-                } finally {
-                    setLoadingMethod(false)
-                    setReLoadMethod(false)
-                }
-            }
-            reLoadMethod()
-        }
-    }, [reLoadMethod])
+        return methodMap.length > 8 ? methodMap.filter((i) => i.receive !== i.cost) : methodMap
+    }, [method.data])
 
     const handleReloadRecent = async () => {
-        const result = await deleteCache([
-            {
-                recent: GET_RECENT_SPENDING,
-                params: { userId: userProfile?._id },
-            },
-        ])
+        const result = await deleteCache('recent')
         console.log(result)
-        setReLoadRecent(true)
+        reload()
     }
 
     const handleReloadMethod = async () => {
-        const result = await deleteCache([
-            {
-                method: F_GET_METHOD_SPENDING(kindSpending),
-                params: { userId: userProfile?._id },
-            },
-        ])
+        const result = await deleteCache('method')
         console.log(result)
-        setReLoadMethod(true)
+        reload()
     }
 
     return (
@@ -175,9 +82,9 @@ const Dashboard = () => {
                         title='Giao dịch gần đây'
                         to='transaction'
                         onReload={handleReloadRecent}
-                        loading={loadingRecent}
+                        loading={recent.loading}
                     >
-                        <Recent data={data.recent} loading={loadingRecent} />
+                        <Recent data={recent.data} loading={recent.loading} />
                     </Transaction.Box>
                 </div>
                 <div className='xl:space-y-6 space-y-4'>
@@ -185,9 +92,9 @@ const Dashboard = () => {
                         title='Phương thức thanh toán'
                         to='method'
                         onReload={handleReloadMethod}
-                        loading={loadingMethod}
+                        loading={method.loading}
                     >
-                        <Method data={dataMethod} loading={loadingMethod} />
+                        <Method data={dataMethod} loading={method.loading} />
                     </Transaction.Box>
                 </div>
             </Transaction>

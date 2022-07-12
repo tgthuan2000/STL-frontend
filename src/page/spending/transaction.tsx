@@ -74,25 +74,25 @@ const Tabs = () => {
 }
 
 const people = [
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
+    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com1', role: 'Member' },
+    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com2', role: 'Member' },
+    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com3', role: 'Member' },
+    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com4', role: 'Member' },
+    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com5', role: 'Member' },
+    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com6', role: 'Member' },
+    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com7', role: 'Member' },
+    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com8', role: 'Member' },
+    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com9', role: 'Member' },
+    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com10', role: 'Member' },
+    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com11', role: 'Member' },
+    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com12', role: 'Member' },
+    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com13', role: 'Member' },
+    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com14', role: 'Member' },
+    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com15', role: 'Member' },
+    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com16', role: 'Member' },
+    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com17', role: 'Member' },
+    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com18', role: 'Member' },
+    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com19', role: 'Member' },
     // More people...
 ]
 
@@ -134,7 +134,7 @@ const Table = () => {
                                 </thead>
                                 <tbody className='bg-white'>
                                     {people.map((person, personIdx) => (
-                                        <Link to='#' key={person.email} className='table-row'>
+                                        <tr key={person.email}>
                                             <td
                                                 className={clsx(
                                                     personIdx !== people.length - 1 ? 'border-b border-gray-200' : '',
@@ -179,7 +179,7 @@ const Table = () => {
                                                     thousandSeparator
                                                 />
                                             </td>
-                                        </Link>
+                                        </tr>
                                     ))}
                                 </tbody>
                             </table>

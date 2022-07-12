@@ -13,7 +13,7 @@ const Recent = ({ data, loading }: RecentProps) => {
     if (!_.isEmpty(data)) {
         return (
             <ul role='list' className='divide-y divide-gray-300'>
-                {data.map((item) => (
+                {data?.map((item) => (
                     <li key={item._id}>
                         <Link
                             to={`transaction/${item._id}`}

@@ -22,18 +22,32 @@ export interface ISlideOverContext {
     title: string
     setTitle: React.Dispatch<React.SetStateAction<string>>
 }
-export type FetchApi = <
+export type FetchApi = <T extends { [x: string]: any }>(
+    callApi: { [x: string]: { value: string; key: number; data: any[] } },
+    params: { [y: string]: string }
+) => Promise<T>
+
+export type CheckInCache = <
     T extends {
         [x: string]: any
     }
 >(
     query: { [Property in keyof T]: string },
-    params?: QueryParams,
-    status?: 'no-cache' | undefined
-) => Promise<T>
+    params?: QueryParams
+) => {
+    data: T
+    callApi: {
+        [x: string]: {
+            value: string
+            key: number
+            data: any[]
+        }
+    }
+}
 
 export interface ICacheContext {
     fetchApi: FetchApi
+    checkInCache: CheckInCache
     deleteCache: (payloads: { [x: string]: any }[]) => Promise<string>
 }
 export interface ICacheData<T> {

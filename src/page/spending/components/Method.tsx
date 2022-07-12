@@ -3,7 +3,6 @@ import NumberFormat from 'react-number-format'
 import clsx from 'clsx'
 import _ from 'lodash'
 import { MethodProps } from '~/@types/spending'
-import { useMemo } from 'react'
 
 const Method = ({ data, loading }: MethodProps) => {
     if (loading) return <MethodSkeleton />
@@ -12,7 +11,7 @@ const Method = ({ data, loading }: MethodProps) => {
         return (
             <ul role='list'>
                 {data
-                    .sort((a, b) => b.receive - b.cost - a.receive + a.cost)
+                    ?.sort((a, b) => b.receive - b.cost - a.receive + a.cost)
                     .map((item) => {
                         return (
                             <li key={item._id}>

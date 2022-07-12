@@ -9,6 +9,7 @@ const CACHE_LIMIT_RANGE = 8
 const CacheContext = createContext<ICacheContext>({
     fetchApi: <T,>() => Promise.resolve({} as T),
     deleteCache: () => Promise.resolve(''),
+    checkInCache: <T,>() => ({ data: {} as T, callApi: {} }),
 })
 
 const CacheProvider = ({ children }: { children: React.ReactNode }) => {
@@ -45,6 +46,27 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const fetchApi = async <T extends { [x: string]: any }>(
+        callApi: { [x: string]: { value: string; key: number; data: any[] } },
+        params: { [y: string]: string }
+    ) => {
+        const data = {} as T
+        const keys = Object.keys(callApi)
+        const q = '{' + keys.map((key) => `"${key}": ${callApi[key].value}`).join(', ') + '}'
+        const res: T = await client.fetch(q, params)
+        Object.assign(data, res)
+
+        const temp = {} as T
+        keys.forEach((key) =>
+            Object.assign(temp, {
+                [key]: { ...callApi[key], data: res[key] },
+            })
+        )
+        updateCache(temp)
+
+        return data
+    }
+
+    const checkInCache = <T extends { [x: string]: any }>(
         query: {
             [Property in keyof T]: string
         },
@@ -75,26 +97,13 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
             }
         })
 
-        if (!_.isEqual(callApi, {})) {
-            const keys = Object.keys(callApi)
-            const query = '{' + keys.map((key) => `"${key}": ${callApi[key].value}`).join(', ') + '}'
-            const res: T = await client.fetch(query, params)
-            Object.assign(data, res)
-
-            const temp = {} as T
-            keys.forEach((key) =>
-                Object.assign(temp, {
-                    [key]: { ...callApi[key], data: res[key] },
-                })
-            )
-            updateCache(temp)
-        }
-        return data
+        return { data, callApi }
     }
 
     const value: ICacheContext = {
         fetchApi,
         deleteCache,
+        checkInCache,
     }
 
     return <CacheContext.Provider value={value}>{children}</CacheContext.Provider>
