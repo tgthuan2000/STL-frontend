@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending } from '~/@types/spending'
 import { AutoComplete, Button, Input, TextArea } from '~/components'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
+import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import {
     F_GET_METHOD_SPENDING,
@@ -30,18 +31,31 @@ const MakeCost = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { userProfile } = useAuth()
-    const { fetchApi, deleteCache } = useCache()
-    const { loading, setLoading } = useLoading()
+    const { deleteCache } = useCache()
+    const { loading, setSubmitLoading } = useLoading()
     const { getKindSpendingId, kindSpending } = useConfig()
 
     const kindSpendingId = useMemo(() => {
         return getKindSpendingId('COST')
     }, [getKindSpendingId])
 
-    const [data, setData] = useState<Data>({
-        methodSpending: [],
-        categorySpending: [],
-    })
+    const [{ categorySpending, methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
+        {
+            methodSpending: GET_METHOD_SPENDING,
+            categorySpending: GET_CATEGORY_SPENDING,
+        },
+        {
+            userId: userProfile?._id as string,
+            kindSpending: kindSpendingId as string,
+        }
+    )
+
+    useEffect(() => {
+        if (!_.isUndefined(kindSpendingId)) {
+            fetchData()
+        }
+    }, [kindSpendingId])
+
     const { control, handleSubmit } = useForm<IAddCostForm>({
         defaultValues: {
             amount: undefined,
@@ -51,38 +65,12 @@ const MakeCost = () => {
         },
     })
 
-    const getData = useCallback(async () => {
-        try {
-            if (_.isUndefined(kindSpendingId)) return
-
-            const params = {
-                userId: userProfile?._id,
-                kindSpending: kindSpendingId,
-            }
-            const res = await fetchApi<Data>(
-                {
-                    methodSpending: GET_METHOD_SPENDING,
-                    categorySpending: GET_CATEGORY_SPENDING,
-                },
-                params
-            )
-
-            setData(res)
-        } catch (error) {
-            console.log(error)
-        } finally {
-        }
-    }, [kindSpendingId])
-
-    useEffect(() => {
-        getData()
-    }, [getData])
-
     const onsubmit: SubmitHandler<IAddCostForm> = async (data) => {
-        setLoading(true)
+        setSubmitLoading(true)
         let { amount, methodSpending, categorySpending, description } = data
         // transfer amount to number
         amount = Number(amount)
+        description = description.trim()
 
         // add to database
         const document = {
@@ -110,7 +98,7 @@ const MakeCost = () => {
         try {
             await client.create(document)
             // navigate to dashboard
-            const result = await deleteCache([
+            const res = deleteCache([
                 {
                     method: F_GET_METHOD_SPENDING(kindSpending),
                     params: { userId: userProfile?._id },
@@ -120,13 +108,13 @@ const MakeCost = () => {
                     params: { userId: userProfile?._id },
                 },
             ])
-            console.log(result)
+            console.log(res)
             setIsOpen(false)
             navigate(-1)
         } catch (error) {
             console.log(error)
         } finally {
-            setLoading(false)
+            setSubmitLoading(false)
         }
     }
 
@@ -146,14 +134,9 @@ const MakeCost = () => {
 
         try {
             const { _id, name } = await client.create(document)
-            const result = await deleteCache([
-                {
-                    categorySpending: GET_CATEGORY_SPENDING,
-                    params: { userId: userProfile?._id, kindSpending: kindSpendingId },
-                },
-            ])
-            console.log(result)
-            await getData()
+            const res = deleteCacheData('categorySpending')
+            console.log(res)
+            reloadData()
             return { _id, name }
         } catch (error) {
             console.log(error)
@@ -172,22 +155,19 @@ const MakeCost = () => {
 
         try {
             const { _id, name } = await client.create(document)
-            const result = await deleteCache([
-                {
-                    methodSpending: GET_METHOD_SPENDING,
-                    params: { userId: userProfile?._id },
-                },
-                {
-                    method: F_GET_METHOD_SPENDING(kindSpending),
-                    params: { userId: userProfile?._id },
-                },
-            ])
-            console.log(result)
-            await getData()
+            const res = deleteCacheData('methodSpending')
+            console.log(res)
+            reloadData()
             return { _id, name }
         } catch (error) {
             console.log(error)
         }
+    }
+
+    const handleReloadData = async (keys: keyof Data) => {
+        const res = deleteCacheData(keys)
+        console.log(res)
+        reloadData()
     }
 
     return (
@@ -218,11 +198,16 @@ const MakeCost = () => {
                                 }}
                                 render={({ field, fieldState: { error } }) => (
                                     <AutoComplete
-                                        data={data?.categorySpending}
+                                        data={categorySpending.data}
                                         label='Thể loại'
                                         error={error}
+                                        loading={categorySpending.loading}
                                         addMore={handleAddMoreCategorySpending}
-                                        onReload={_.isEmpty(data.categorySpending) ? undefined : getData}
+                                        onReload={
+                                            _.isEmpty(categorySpending.data)
+                                                ? undefined
+                                                : () => handleReloadData('categorySpending')
+                                        }
                                         {...field}
                                     />
                                 )}
@@ -235,11 +220,16 @@ const MakeCost = () => {
                                 }}
                                 render={({ field, fieldState: { error } }) => (
                                     <AutoComplete
-                                        data={data?.methodSpending}
+                                        data={methodSpending.data}
                                         label='Phương thức thanh toán'
                                         error={error}
+                                        loading={methodSpending.loading}
                                         addMore={handleAddMoreMethodSpending}
-                                        onReload={_.isEmpty(data.methodSpending) ? undefined : getData}
+                                        onReload={
+                                            _.isEmpty(methodSpending.data)
+                                                ? undefined
+                                                : () => handleReloadData('methodSpending')
+                                        }
                                         {...field}
                                     />
                                 )}
@@ -257,7 +247,7 @@ const MakeCost = () => {
             </div>
             <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
                 <div className='flex sm:justify-start justify-end space-x-3'>
-                    <Button color='radicalRed' type='submit' disabled={loading}>
+                    <Button color='radicalRed' type='submit' disabled={loading.submit}>
                         Lưu
                     </Button>
                     <Button

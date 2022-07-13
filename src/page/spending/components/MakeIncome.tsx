@@ -1,12 +1,12 @@
 import _ from 'lodash'
 import moment from 'moment'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import NumberFormat from 'react-number-format'
 import { useNavigate } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending } from '~/@types/spending'
 import { AutoComplete, Button, Input, TextArea } from '~/components'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
+import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import {
     F_GET_METHOD_SPENDING,
@@ -30,18 +30,31 @@ const MakeIncome = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { userProfile } = useAuth()
-    const { fetchApi, deleteCache } = useCache()
+    const { deleteCache } = useCache()
     const { getKindSpendingId, kindSpending } = useConfig()
-    const { loading, setLoading } = useLoading()
+    const { loading, setSubmitLoading } = useLoading()
 
     const kindSpendingId = useMemo(() => {
         return getKindSpendingId('RECEIVE')
-    }, [getKindSpendingId])
+    }, [])
 
-    const [data, setData] = useState<Data>({
-        methodSpending: [],
-        categorySpending: [],
-    })
+    const [{ categorySpending, methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
+        {
+            methodSpending: GET_METHOD_SPENDING,
+            categorySpending: GET_CATEGORY_SPENDING,
+        },
+        {
+            userId: userProfile?._id as string,
+            kindSpending: kindSpendingId as string,
+        }
+    )
+
+    useEffect(() => {
+        if (!_.isUndefined(kindSpendingId)) {
+            fetchData()
+        }
+    }, [kindSpendingId])
+
     const { control, handleSubmit } = useForm<IAddIncomeForm>({
         defaultValues: {
             amount: undefined,
@@ -51,37 +64,11 @@ const MakeIncome = () => {
         },
     })
 
-    const getData = useCallback(async () => {
-        try {
-            if (_.isUndefined(kindSpendingId)) return
-
-            const params = {
-                userId: userProfile?._id,
-                kindSpending: kindSpendingId,
-            }
-            const res = await fetchApi<Data>(
-                {
-                    methodSpending: GET_METHOD_SPENDING,
-                    categorySpending: GET_CATEGORY_SPENDING,
-                },
-                params
-            )
-
-            setData(res)
-        } catch (error) {
-            console.log(error)
-        } finally {
-        }
-    }, [kindSpendingId])
-
-    useEffect(() => {
-        getData()
-    }, [getData])
-
     const onsubmit: SubmitHandler<IAddIncomeForm> = async (data) => {
-        setLoading(true)
+        setSubmitLoading(true)
         let { amount, methodSpending, categorySpending, description } = data
         amount = Number(amount)
+        description = description.trim()
 
         // add to database
         const document = {
@@ -109,7 +96,7 @@ const MakeIncome = () => {
         try {
             await client.create(document)
             // navigate to dashboard
-            const result = await deleteCache([
+            deleteCache([
                 {
                     method: F_GET_METHOD_SPENDING(kindSpending),
                     params: { userId: userProfile?._id },
@@ -119,13 +106,12 @@ const MakeIncome = () => {
                     params: { userId: userProfile?._id },
                 },
             ])
-            console.log(result)
             setIsOpen(false)
             navigate(-1)
         } catch (error) {
             console.log(error)
         } finally {
-            setLoading(false)
+            setSubmitLoading(false)
         }
     }
 
@@ -145,14 +131,9 @@ const MakeIncome = () => {
 
         try {
             const { _id, name } = await client.create(document)
-            const result = await deleteCache([
-                {
-                    categorySpending: GET_CATEGORY_SPENDING,
-                    params: { userId: userProfile?._id, kindSpending: kindSpendingId },
-                },
-            ])
-            console.log(result)
-            await getData()
+            const res = deleteCacheData('categorySpending')
+            console.log(res)
+            reloadData()
             return { _id, name }
         } catch (error) {
             console.log(error)
@@ -171,22 +152,19 @@ const MakeIncome = () => {
 
         try {
             const { _id, name } = await client.create(document)
-            const result = await deleteCache([
-                {
-                    methodSpending: GET_METHOD_SPENDING,
-                    params: { userId: userProfile?._id },
-                },
-                {
-                    method: F_GET_METHOD_SPENDING(kindSpending),
-                    params: { userId: userProfile?._id },
-                },
-            ])
-            console.log(result)
-            await getData()
+            const res = deleteCacheData('methodSpending')
+            console.log(res)
+            reloadData()
             return { _id, name }
         } catch (error) {
             console.log(error)
         }
+    }
+
+    const handleReloadData = async (keys: keyof Data) => {
+        const res = deleteCacheData(keys)
+        console.log(res)
+        reloadData()
     }
 
     return (
@@ -217,11 +195,16 @@ const MakeIncome = () => {
                                 }}
                                 render={({ field, fieldState: { error } }) => (
                                     <AutoComplete
-                                        data={data?.categorySpending}
+                                        data={categorySpending.data}
                                         label='Thể loại'
                                         error={error}
+                                        loading={categorySpending.loading}
                                         addMore={handleAddMoreCategorySpending}
-                                        onReload={_.isEmpty(data.categorySpending) ? undefined : getData}
+                                        onReload={
+                                            _.isEmpty(categorySpending.data)
+                                                ? undefined
+                                                : () => handleReloadData('categorySpending')
+                                        }
                                         {...field}
                                     />
                                 )}
@@ -234,11 +217,16 @@ const MakeIncome = () => {
                                 }}
                                 render={({ field, fieldState: { error } }) => (
                                     <AutoComplete
-                                        data={data?.methodSpending}
+                                        data={methodSpending.data}
                                         label='Phương thức thanh toán'
                                         error={error}
+                                        loading={methodSpending.loading}
                                         addMore={handleAddMoreMethodSpending}
-                                        onReload={_.isEmpty(data.categorySpending) ? undefined : getData}
+                                        onReload={
+                                            _.isEmpty(methodSpending.data)
+                                                ? undefined
+                                                : () => handleReloadData('methodSpending')
+                                        }
                                         {...field}
                                     />
                                 )}
@@ -256,7 +244,7 @@ const MakeIncome = () => {
             </div>
             <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
                 <div className='flex sm:justify-start justify-end space-x-3'>
-                    <Button color='green' type='submit' disabled={loading}>
+                    <Button color='green' type='submit' disabled={loading.submit}>
                         Lưu
                     </Button>
                     <Button

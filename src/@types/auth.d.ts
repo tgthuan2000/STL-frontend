@@ -26,7 +26,7 @@ export type AuthStore = (set: (user: SetUserProfile) => void) => {
 export type IFetchGoogleResponse = (
     res: CredentialResponse,
     addUser: AddUserProfile,
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>
+    setLoading: (value: boolean) => void
 ) => void
 
 export interface GoogleData {

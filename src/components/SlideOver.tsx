@@ -17,7 +17,7 @@ const SlideOver = ({ children }: SlideOverProps) => {
                 as='div'
                 className='relative z-30'
                 onClose={(value) => {
-                    if (!loading) {
+                    if (!loading.config) {
                         setIsOpen(value)
                         navigate(-1)
                     }

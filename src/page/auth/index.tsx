@@ -6,14 +6,14 @@ import { fetchGoogleResponse } from '~/util/auth'
 
 const Auth = () => {
     const { addUserProfile, userProfile } = useAuth()
-    const { setLoading } = useLoading()
+    const { setConfigLoading } = useLoading()
     if (userProfile) return <Navigate to='/' />
 
     return (
         <div className='h-screen flex items-center justify-center overflow-hidden'>
             <GoogleLogin
                 onSuccess={(res) => {
-                    fetchGoogleResponse(res, addUserProfile, setLoading)
+                    fetchGoogleResponse(res, addUserProfile, setConfigLoading)
                 }}
                 onError={() => {}}
             />

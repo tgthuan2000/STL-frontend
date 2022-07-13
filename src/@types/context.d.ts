@@ -1,8 +1,13 @@
 import { KIND_SPENDING } from '~/constant/spending'
 
+type LoadingItems = {
+    config: boolean
+    submit: boolean
+}
 export interface ILoadingContext {
-    loading: boolean
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>
+    loading: LoadingItems
+    setConfigLoading: (config: boolean) => void
+    setSubmitLoading: (submit: boolean) => void
 }
 
 export interface IKindSpending {
@@ -48,7 +53,7 @@ export type CheckInCache = <
 export interface ICacheContext {
     fetchApi: FetchApi
     checkInCache: CheckInCache
-    deleteCache: (payloads: { [x: string]: any }[]) => Promise<string>
+    deleteCache: (payloads: { [x: string]: any }[]) => string
 }
 export interface ICacheData<T> {
     key: number

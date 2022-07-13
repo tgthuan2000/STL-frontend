@@ -12,18 +12,18 @@ const ConfigContext = createContext<IConfigContext>({
 
 const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
     const [kindSpending, setKindSpending] = useState<IKindSpending[]>([])
-    const { setLoading } = useLoading()
+    const { setConfigLoading } = useLoading()
 
     useEffect(() => {
         const getConfig = async () => {
             try {
-                setLoading(true)
+                setConfigLoading(true)
                 const res: IConfigContext = await client.fetch(GET_CONFIG)
                 setKindSpending(res.kindSpending)
             } catch (error) {
                 console.log(error)
             } finally {
-                setLoading(false)
+                setConfigLoading(false)
             }
         }
         getConfig()

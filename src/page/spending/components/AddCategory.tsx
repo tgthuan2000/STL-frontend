@@ -55,7 +55,7 @@ const AddCategory = () => {
         try {
             await client.create(document)
             // navigate to dashboard
-            const result = await deleteCache([
+            const result = deleteCache([
                 {
                     categorySpending: GET_CATEGORY_SPENDING,
                     params: { userId: userProfile?._id, kindSpending: kindSpending?._id },

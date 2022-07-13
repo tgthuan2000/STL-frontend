@@ -2,11 +2,11 @@ import { useEffect } from 'react'
 import { useLoading } from '~/context'
 
 const Loan = () => {
-    const { setLoading } = useLoading()
+    const { setConfigLoading } = useLoading()
     useEffect(() => {
-        setLoading(true)
+        setConfigLoading(true)
         const timeout = setTimeout(() => {
-            setLoading(false)
+            setConfigLoading(false)
         }, 1500)
 
         return () => timeout && clearTimeout(timeout)

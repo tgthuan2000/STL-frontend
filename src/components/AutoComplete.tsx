@@ -5,13 +5,12 @@ import clsx from 'clsx'
 import _ from 'lodash'
 import { forwardRef, useState } from 'react'
 import { AutoCompleteProps } from '~/@types/components'
-import { people } from '~/constant/components'
 
 const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
     (
         {
             label,
-            data = people,
+            data = [],
             idKey = '_id',
             valueKey = 'name',
             className,
@@ -21,6 +20,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
             onBlur,
             addMore,
             value,
+            loading,
             ...props
         },
         ref
@@ -28,7 +28,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
         const [query, setQuery] = useState(value?.[valueKey] ?? '')
         const [selectedItem, setSelectedItem] = useState(value)
         const [parent] = useAutoAnimate<HTMLDivElement>()
-        const [loading, setLoading] = useState(false)
+        const [loadingAddMore, setLoadingAddMore] = useState(false)
 
         const filterData =
             query === ''
@@ -41,7 +41,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
             if (typeof value === 'string') {
                 if (addMore) {
                     try {
-                        setLoading(true)
+                        setLoadingAddMore(true)
                         // delete spaces between and last first
                         value = value.replace(/\s+/g, ' ').trim()
                         // capitalize first letter
@@ -56,7 +56,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                     } catch (error) {
                         console.log(error)
                     } finally {
-                        setLoading(false)
+                        setLoadingAddMore(false)
                     }
                 } else {
                     alert('Could not find "addMore" function in Autocomplete')
@@ -91,12 +91,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                             <button
                                 type='button'
                                 className='cursor-pointer group disabled:cursor-wait disabled:animate-spin -scale-100'
-                                onClick={() => {
-                                    setLoading(true)
-                                    onReload().then(() => {
-                                        setLoading(false)
-                                    })
-                                }}
+                                onClick={onReload}
                                 disabled={loading}
                                 title='Tải lại'
                             >
@@ -110,7 +105,9 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                 'w-full rounded-md border border-gray-300 py-2 pl-3 pr-10 shadow-sm sm:text-sm focus:outline-none',
                                 loading ? 'bg-gray-50 text-gray-500' : 'bg-white text-gray-900'
                             )}
-                            displayValue={(item: any) => (loading ? 'Đang thực hiện tạo mới...' : item?.[valueKey])}
+                            displayValue={(item: any) =>
+                                loadingAddMore ? 'Đang thực hiện tạo mới...' : item?.[valueKey]
+                            }
                             onChange={(event) => setQuery(event.target.value)}
                             spellCheck={false}
                             autoComplete='off'

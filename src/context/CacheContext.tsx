@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useRef } from 'react'
 import { ICacheContext, ICacheData, QueryParams } from '~/@types/context'
 import { client } from '~/sanityConfig'
 import { hashCode } from '~/util'
@@ -8,41 +8,41 @@ const CACHE_LIMIT_RANGE = 8
 
 const CacheContext = createContext<ICacheContext>({
     fetchApi: <T,>() => Promise.resolve({} as T),
-    deleteCache: () => Promise.resolve(''),
+    deleteCache: () => '',
     checkInCache: <T,>() => ({ data: {} as T, callApi: {} }),
 })
 
 const CacheProvider = ({ children }: { children: React.ReactNode }) => {
-    const [cache, setCache] = useState<Array<ICacheData<any>>>([])
+    const cacheRef = useRef<Array<ICacheData<any>>>([])
 
     const updateCache = <T extends { [x: string]: any }>(res: T) => {
-        let clone: Array<ICacheData<T>> = JSON.parse(JSON.stringify(cache))
+        let cache: Array<ICacheData<any>> = JSON.parse(JSON.stringify(cacheRef.current))
 
         Object.keys(res).forEach((k) => {
             const { key, data } = res[k]
-            if (clone.length >= CACHE_LIMIT_RANGE) {
-                clone = clone.slice(1)
+            if (cache.length >= CACHE_LIMIT_RANGE) {
+                cache = cache.slice(1)
             }
-            clone.push({ key, data })
+            cache.push({ key, data })
         })
 
-        setCache(clone)
+        cacheRef.current = cache
     }
 
     const deleteCache = (payloads: { [x: string]: any }[]) => {
+        const cache: Array<ICacheData<any>> = JSON.parse(JSON.stringify(cacheRef.current))
         let count = 0
-        let clone: Array<ICacheData<any>> = JSON.parse(JSON.stringify(cache))
 
         payloads.forEach((payload) => {
             const queryHash = hashCode(JSON.stringify(payload))
-            const indexCache = clone.length > 0 ? clone.findIndex((c) => c.key === queryHash) : -1
+            const indexCache = cache.length > 0 ? cache.findIndex((c) => c.key === queryHash) : -1
             if (indexCache !== -1) {
-                clone.splice(indexCache, 1)
+                cache.splice(indexCache, 1)
                 count++
             }
         })
-        setCache(clone)
-        return Promise.resolve('Deleted ' + count + ' cache')
+        cacheRef.current = cache
+        return 'Deleted ' + count + ' cached data'
     }
 
     const fetchApi = async <T extends { [x: string]: any }>(
@@ -65,7 +65,6 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
 
         return data
     }
-
     const checkInCache = <T extends { [x: string]: any }>(
         query: {
             [Property in keyof T]: string
@@ -76,6 +75,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
             [x: string]: { value: string; key: number; data: any[] }
         } = {}
         const data = {} as T
+        const cache: Array<ICacheData<any>> = JSON.parse(JSON.stringify(cacheRef.current))
 
         Object.keys(query).forEach((key) => {
             const value = query[key]

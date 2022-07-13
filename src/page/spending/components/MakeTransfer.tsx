@@ -1,11 +1,12 @@
 import _ from 'lodash'
 import moment from 'moment'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { IMethodSpending } from '~/@types/spending'
 import { AutoComplete, Button, Input, TextArea } from '~/components'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
+import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { F_GET_METHOD_SPENDING, GET_METHOD_SPENDING, GET_RECENT_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
@@ -25,12 +26,22 @@ const MakeTransfer = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { userProfile } = useAuth()
-    const { fetchApi, deleteCache } = useCache()
-    const { loading, setLoading } = useLoading()
+    const { deleteCache } = useCache()
+    const { loading, setSubmitLoading } = useLoading()
     const { getKindSpendingId, kindSpending } = useConfig()
-    const [data, setData] = useState<Data>({
-        methodSpending: [],
-    })
+
+    const [{ methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
+        {
+            methodSpending: GET_METHOD_SPENDING,
+        },
+        {
+            userId: userProfile?._id as string,
+        }
+    )
+
+    useEffect(() => {
+        fetchData()
+    }, [])
 
     const { control, handleSubmit } = useForm<IMakeTransferForm>({
         defaultValues: {
@@ -41,38 +52,16 @@ const MakeTransfer = () => {
         },
     })
 
-    const getData = useCallback(async () => {
-        try {
-            const params = {
-                userId: userProfile?._id,
-            }
-            const res = await fetchApi<Data>(
-                {
-                    methodSpending: GET_METHOD_SPENDING,
-                },
-                params
-            )
-
-            setData(res)
-        } catch (error) {
-            console.log(error)
-        } finally {
-        }
-    }, [])
-
-    useEffect(() => {
-        getData()
-    }, [])
-
     const onsubmit: SubmitHandler<IMakeTransferForm> = async (data) => {
-        setLoading(true)
+        setSubmitLoading(true)
         let { amount, methodSpendingFrom, methodSpendingTo, description } = data
         amount = Number(amount)
+        description = description.trim()
         // add to database
         const document1 = {
             _type: 'spending',
             amount,
-            description: `Đến ${methodSpendingTo?.name}\n${description}`,
+            description: `Đến ${methodSpendingTo?.name}${description ? `\n${description}` : ''}`,
             date: moment().format(),
             kindSpending: {
                 _type: 'reference',
@@ -91,7 +80,7 @@ const MakeTransfer = () => {
         const document2 = {
             _type: 'spending',
             amount,
-            description: `Từ ${methodSpendingFrom?.name}\n${description}`,
+            description: `Từ ${methodSpendingFrom?.name}${description ? `\n${description}` : ''}`,
             date: moment().format(),
             kindSpending: {
                 _type: 'reference',
@@ -110,7 +99,7 @@ const MakeTransfer = () => {
         try {
             await client.transaction().create(document1).create(document2).commit()
             // navigate to dashboard
-            const result = await deleteCache([
+            const result = deleteCache([
                 {
                     method: F_GET_METHOD_SPENDING(kindSpending),
                     params: { userId: userProfile?._id },
@@ -126,7 +115,7 @@ const MakeTransfer = () => {
         } catch (error) {
             console.log(error)
         } finally {
-            setLoading(false)
+            setSubmitLoading(false)
         }
     }
 
@@ -142,22 +131,19 @@ const MakeTransfer = () => {
 
         try {
             const { _id, name } = await client.create(document)
-            const result = await deleteCache([
-                {
-                    methodSpending: GET_METHOD_SPENDING,
-                    params: { userId: userProfile?._id },
-                },
-                {
-                    method: F_GET_METHOD_SPENDING(kindSpending),
-                    params: { userId: userProfile?._id },
-                },
-            ])
-            console.log(result)
-            await getData()
+            const res = deleteCacheData('methodSpending')
+            console.log(res)
+            reloadData()
             return { _id, name }
         } catch (error) {
             console.log(error)
         }
+    }
+
+    const handleReloadData = async (keys: keyof Data) => {
+        const res = deleteCacheData(keys)
+        console.log(res)
+        reloadData()
     }
 
     return (
@@ -188,11 +174,16 @@ const MakeTransfer = () => {
                                 }}
                                 render={({ field, fieldState: { error } }) => (
                                     <AutoComplete
-                                        data={data?.methodSpending}
+                                        data={methodSpending.data}
                                         label='Từ phương thức thanh toán'
                                         error={error}
+                                        loading={methodSpending.loading}
                                         addMore={handleAddMoreMethodSpending}
-                                        onReload={_.isEmpty(data.methodSpending) ? undefined : getData}
+                                        onReload={
+                                            _.isEmpty(methodSpending.data)
+                                                ? undefined
+                                                : () => handleReloadData('methodSpending')
+                                        }
                                         {...field}
                                     />
                                 )}
@@ -205,11 +196,16 @@ const MakeTransfer = () => {
                                 }}
                                 render={({ field, fieldState: { error } }) => (
                                     <AutoComplete
-                                        data={data?.methodSpending}
+                                        data={methodSpending.data}
                                         label='Đến phương thức thanh toán'
                                         error={error}
+                                        loading={methodSpending.loading}
                                         addMore={handleAddMoreMethodSpending}
-                                        onReload={_.isEmpty(data.methodSpending) ? undefined : getData}
+                                        onReload={
+                                            _.isEmpty(methodSpending.data)
+                                                ? undefined
+                                                : () => handleReloadData('methodSpending')
+                                        }
                                         {...field}
                                     />
                                 )}
@@ -227,7 +223,7 @@ const MakeTransfer = () => {
             </div>
             <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
                 <div className='flex sm:justify-start justify-end space-x-3'>
-                    <Button color='blue' type='submit' disabled={loading}>
+                    <Button color='blue' type='submit' disabled={loading.submit}>
                         Chuyển khoản
                     </Button>
                     <Button

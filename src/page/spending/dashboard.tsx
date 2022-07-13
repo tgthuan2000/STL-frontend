@@ -3,7 +3,7 @@ import { useEffect, useMemo } from 'react'
 import { RecentData } from '~/@types/spending'
 import { Divider } from '~/components'
 import { menuMobile } from '~/constant/components'
-import { useConfig } from '~/context'
+import { useConfig, useLoading } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import { F_GET_METHOD_SPENDING, GET_RECENT_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
@@ -23,6 +23,7 @@ const Dashboard = () => {
     const { width } = useWindowSize()
     const { userProfile } = useAuth()
     const { kindSpending } = useConfig()
+    const { loading } = useLoading()
     const [{ method, recent }, fetchData, deleteCache, reload] = useQuery<{
         recent: RecentData[]
         method: DataMethodSanity[]
@@ -33,12 +34,11 @@ const Dashboard = () => {
         },
         { userId: userProfile?._id as string }
     )
-
     useEffect(() => {
-        if (!_.isEmpty(kindSpending)) {
+        if (!_.isEmpty(kindSpending) && !loading.submit) {
             fetchData()
         }
-    }, [kindSpending])
+    }, [kindSpending, loading])
 
     const dataMethod = useMemo(() => {
         if (!method.data) return
@@ -54,15 +54,15 @@ const Dashboard = () => {
         return methodMap.length > 8 ? methodMap.filter((i) => i.receive !== i.cost) : methodMap
     }, [method.data])
 
-    const handleReloadRecent = async () => {
-        const result = await deleteCache('recent')
-        console.log(result)
+    const handleReloadRecent = () => {
+        const res = deleteCache('recent')
+        console.log(res)
         reload()
     }
 
-    const handleReloadMethod = async () => {
-        const result = await deleteCache('method')
-        console.log(result)
+    const handleReloadMethod = () => {
+        const res = deleteCache('method')
+        console.log(res)
         reload()
     }
 

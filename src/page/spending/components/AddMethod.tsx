@@ -44,7 +44,7 @@ const AddMethod = () => {
         try {
             await client.create(document)
             // navigate to dashboard
-            const result = await deleteCache([
+            const result = deleteCache([
                 {
                     method: F_GET_METHOD_SPENDING(kindSpending),
                     params: { userId: userProfile?._id },

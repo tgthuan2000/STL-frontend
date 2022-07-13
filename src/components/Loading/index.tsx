@@ -4,9 +4,12 @@ import { useLoading } from '~/context'
 import LoadingIcon from './LoadingIcon'
 
 const Loading = () => {
-    const { loading } = useLoading()
+    const {
+        loading: { config, submit },
+    } = useLoading()
+
     return (
-        <Transition.Root show={loading} as={Fragment}>
+        <Transition.Root show={config || submit} as={Fragment}>
             <Transition.Child
                 as={Fragment}
                 enter='ease-in-out duration-500'

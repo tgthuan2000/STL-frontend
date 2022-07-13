@@ -22,8 +22,8 @@ const formatTransform = <T extends { [x: string]: string }>(prev: Data<T>, data:
 
 const assignLoading = <T extends { [x: string]: string }>(prev: Data<T>) => {
     const arr = Object.keys(prev).map((key) => {
-        const { query, params } = prev[key]
-        return { [key]: { loading: true, data: undefined, query, params } }
+        const { query, params, data } = prev[key]
+        return { [key]: { loading: true, data, query, params } }
     })
     return Object.assign({}, ...arr)
 }
@@ -31,7 +31,7 @@ const assignLoading = <T extends { [x: string]: string }>(prev: Data<T>) => {
 const useQuery = <T extends { [x: string]: any }>(
     query: { [Property in keyof T]: string },
     params: { [y: string]: string } = {}
-): [Data<T>, () => Promise<void>, (keys: keyof T) => Promise<string>, () => void] => {
+): [Data<T>, () => Promise<void>, (keys_0: keyof T) => string, () => void] => {
     const { fetchApi, deleteCache, checkInCache } = useCache()
     const queryRef = useRef(query)
     const paramsRef = useRef(params)
@@ -85,12 +85,12 @@ const useQuery = <T extends { [x: string]: any }>(
     }, [queryRef, paramsRef, checkInCache])
 
     const deletedCaches = useCallback(
-        async (...keys: [keyof T]) => {
+        (...keys: [keyof T]) => {
             const items = keys.map((key) => {
                 const { params, query } = data[key]
                 return { [key]: query, params }
             })
-            return await deleteCache(items)
+            return deleteCache(items)
         },
         [deleteCache, query]
     )

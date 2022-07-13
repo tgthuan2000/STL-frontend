@@ -17,6 +17,7 @@ export interface AutoCompleteProps {
     onReload?: () => Promise<void>
     onBlur: () => void
     addMore?: (value: any) => Promise<any>
+    loading?: boolean
 }
 
 export interface SelectionProps {
