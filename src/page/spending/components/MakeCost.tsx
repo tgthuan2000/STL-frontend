@@ -105,7 +105,7 @@ const MakeCost = () => {
                 },
                 {
                     recent: GET_RECENT_SPENDING,
-                    params: { userId: userProfile?._id },
+                    params: { userId: userProfile?._id, from: 0, to: 5 },
                 },
             ])
             console.log(res)

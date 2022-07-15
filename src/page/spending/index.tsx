@@ -8,6 +8,7 @@ import Method from './method'
 import MethodDetail from './method-detail'
 import Transaction from './transaction'
 import TransactionDetail from './transaction-detail'
+import TransactionTabTable from './transaction-tab-table'
 
 const Spending = () => {
     const { width } = useWindowSize()
@@ -43,6 +44,7 @@ const Spending = () => {
 Spending.Dashboard = Dashboard
 Spending.Transaction = Transaction
 Spending.TransactionDetail = TransactionDetail
+Spending.TransactionTabTable = TransactionTabTable
 Spending.Method = Method
 Spending.MethodDetail = MethodDetail
 

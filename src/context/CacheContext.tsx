@@ -47,7 +47,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
 
     const fetchApi = async <T extends { [x: string]: any }>(
         callApi: { [x: string]: { value: string; key: number; data: any[] } },
-        params: { [y: string]: string }
+        params: { [y: string]: string | number }
     ) => {
         const data = {} as T
         const keys = Object.keys(callApi)

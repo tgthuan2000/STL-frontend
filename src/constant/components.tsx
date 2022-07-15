@@ -47,7 +47,7 @@ export const menuMobile: IMenuBtn[] = [
         title: 'Giao dịch',
         color: 'text-orange-700 bg-orange-200 hover:bg-orange-300',
         icon: ClipboardListIcon,
-        to: 'transaction',
+        to: 'transaction/tab-all',
     },
 ]
 
@@ -103,7 +103,7 @@ export const menuPC: IMenuBtn[] = [
         title: 'Giao dịch',
         color: 'text-orange-700 bg-orange-200 hover:bg-orange-300',
         icon: ClipboardListIcon,
-        to: 'transaction',
+        to: 'transaction/tab-all',
     },
     {
         title: 'Phương thức thanh toán',
@@ -145,7 +145,7 @@ export const menuPages: IMenuBtn[] = [
         title: 'Giao dịch',
         color: 'text-orange-700',
         icon: ClipboardListIcon,
-        to: 'transaction',
+        to: 'transaction/tab-all',
     },
     {
         title: 'PTTT',

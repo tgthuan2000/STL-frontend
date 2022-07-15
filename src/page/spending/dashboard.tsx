@@ -32,7 +32,7 @@ const Dashboard = () => {
             recent: GET_RECENT_SPENDING,
             method: F_GET_METHOD_SPENDING(kindSpending),
         },
-        { userId: userProfile?._id as string }
+        { userId: userProfile?._id as string, from: 0, to: 5 }
     )
     useEffect(() => {
         if (!_.isEmpty(kindSpending) && !loading.submit) {
