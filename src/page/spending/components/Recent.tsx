@@ -17,43 +17,44 @@ const Recent = ({ data, loading }: RecentProps) => {
                     <li key={item._id}>
                         <Link
                             to={`transaction/${item._id}`}
-                            className='px-3 py-2 flex hover:bg-gray-100 cursor-pointer'
+                            className='px-3 py-2 flex flex-col hover:bg-gray-100 cursor-pointer'
                         >
-                            <div className='xl:w-2/3 w-1/2'>
-                                <span>{moment(item.date).format('DD/MM/YYYY HH:mm:ss')}</span>
-                                <h3 className='font-medium truncate'>{item.methodSpending.name}</h3>
-                                {item.description && (
-                                    <span title={item.description}>
-                                        {item.description.split('\n').map((line, index) => (
-                                            <Fragment key={index}>
-                                                <span className='truncate'>{line}</span>
-                                                <br />
-                                            </Fragment>
-                                        ))}
-                                    </span>
-                                )}
+                            <div className='flex'>
+                                <div className='xl:w-2/3 w-1/2 overflow-hidden'>
+                                    <span>{moment(item.date).format('DD/MM/YYYY HH:mm:ss')}</span>
+                                    <h3 className='font-medium truncate'>{item.methodSpending.name}</h3>
+                                </div>
+                                <div className='xl:w-1/3 w-1/2 overflow-hidden text-right'>
+                                    <h4 className={clsx('font-medium truncate')}>
+                                        {item.categorySpending?.name ?? item.kindSpending.name}
+                                    </h4>
+                                    <NumberFormat
+                                        className={clsx(
+                                            { 'text-red-500': item.kindSpending.key === KIND_SPENDING.COST },
+                                            { 'text-green-500': item.kindSpending.key === KIND_SPENDING.RECEIVE },
+                                            {
+                                                'text-blue-500': [
+                                                    KIND_SPENDING.TRANSFER_FROM,
+                                                    KIND_SPENDING.TRANSFER_TO,
+                                                ].includes(item.kindSpending.key),
+                                            },
+                                            'font-medium'
+                                        )}
+                                        value={item.amount}
+                                        displayType='text'
+                                        thousandSeparator
+                                    />
+                                </div>
                             </div>
-                            <div className='xl:w-1/3 w-1/2 text-right'>
-                                <h4 className={clsx('font-medium truncate')}>
-                                    {item.categorySpending?.name ?? item.kindSpending.name}
-                                </h4>
-                                <NumberFormat
-                                    className={clsx(
-                                        { 'text-red-500': item.kindSpending.key === KIND_SPENDING.COST },
-                                        { 'text-green-500': item.kindSpending.key === KIND_SPENDING.RECEIVE },
-                                        {
-                                            'text-blue-500': [
-                                                KIND_SPENDING.TRANSFER_FROM,
-                                                KIND_SPENDING.TRANSFER_TO,
-                                            ].includes(item.kindSpending.key),
-                                        },
-                                        'font-medium'
-                                    )}
-                                    value={item.amount}
-                                    displayType='text'
-                                    thousandSeparator
-                                />
-                            </div>
+                            {item.description && (
+                                <span title={item.description}>
+                                    {item.description.split('\n').map((line, index) => (
+                                        <span key={index} className='block truncate w-full'>
+                                            {line}
+                                        </span>
+                                    ))}
+                                </span>
+                            )}
                         </Link>
                     </li>
                 ))}
