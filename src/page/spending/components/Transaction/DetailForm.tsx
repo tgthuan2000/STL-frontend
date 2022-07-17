@@ -1,4 +1,4 @@
-import { ArrowSmLeftIcon } from '@heroicons/react/outline'
+import { ArrowSmLeftIcon, TrashIcon } from '@heroicons/react/outline'
 import _ from 'lodash'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -26,6 +26,7 @@ export interface TransactionDetailFormData {
     handleReloadDataCategory: (keys: keyof DataCategory) => Promise<void>
     handleAddMoreMethodSpending: (name: string) => Promise<{ _id: string; name: string } | undefined>
     handleAddMoreCategorySpending: (name: string) => Promise<{ _id: string; name: string } | undefined>
+    handleDeleteTransaction: () => void
     categorySpending: D<ICategorySpending>
     methodSpending: D<IMethodSpending>
     transaction: SpendingData
@@ -41,6 +42,7 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
         categorySpending,
         handleAddMoreMethodSpending,
         handleAddMoreCategorySpending,
+        handleDeleteTransaction,
         handleReloadData,
         handleReloadDataCategory,
         methodSpending,
@@ -59,14 +61,20 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
 
     return (
         <div>
-            <div className='flex items-center text-gray-900 space-x-2 mb-4 select-none'>
-                <ArrowSmLeftIcon
-                    className='h-7 w-7 hover:opacity-50 cursor-pointer'
-                    onClick={() => {
-                        navigate(-1)
-                    }}
+            <div className='flex justify-between items-center mb-4'>
+                <div className='flex items-center text-gray-900 space-x-2 select-none'>
+                    <ArrowSmLeftIcon
+                        className='h-7 w-7 hover:opacity-50 cursor-pointer'
+                        onClick={() => {
+                            navigate(-1)
+                        }}
+                    />
+                    <h4 className='xl:text-2xl text-xl font-semibold'>Cập nhật giao dịch</h4>
+                </div>
+                <TrashIcon
+                    className='h-6 lg:h-8 w-6 lg:w-8 hover:opacity-50 text-gray-700 cursor-pointer'
+                    onClick={handleDeleteTransaction}
                 />
-                <h4 className='xl:text-2xl text-xl font-semibold'>Cập nhật giao dịch</h4>
             </div>
             <div className='bg-white rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>
                 <div className='max-w-lg w-full mx-auto'>

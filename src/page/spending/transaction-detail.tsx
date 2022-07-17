@@ -155,6 +155,20 @@ const TransactionDetail = () => {
         }
     }
 
+    const handleDeleteTransaction = async () => {
+        try {
+            setSubmitLoading(true)
+            await client.delete(id as string)
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setSubmitLoading(false)
+            navigate('/spending', {
+                replace: true,
+            })
+        }
+    }
+
     const data: TransactionDetailFormData = {
         title: kindSpending?.name as string,
         onsubmit,
@@ -162,6 +176,7 @@ const TransactionDetail = () => {
         handleReloadDataCategory,
         handleAddMoreCategorySpending,
         handleAddMoreMethodSpending,
+        handleDeleteTransaction,
         categorySpending,
         methodSpending,
         transaction: transaction.data?.[0] as SpendingData,
