@@ -79,3 +79,27 @@ export const GET_METHOD_SPENDING = groq`
         name
     }
 `
+
+export const GET_TRANSACTION_DETAIL = groq`
+    *[_type == "spending" && user._ref == $userId && _id == $id]
+    {
+        _id,
+        _createdAt,
+        categorySpending-> {
+            _id,
+            name
+        },
+        methodSpending-> {
+            _id,
+            name
+        },
+        kindSpending-> {
+            _id,
+            name,
+            key
+        },
+        description,
+        amount,
+        date
+    }
+`

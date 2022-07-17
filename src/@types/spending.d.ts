@@ -10,7 +10,7 @@ export interface BoxProps {
     onReload?: () => void
     loading?: boolean
 }
-export interface RecentData {
+export interface SpendingData {
     _id: string
     _createdAt: string
     categorySpending?: {
@@ -32,7 +32,7 @@ export interface RecentData {
 }
 
 export interface RecentProps {
-    data: RecentData[] | undefined
+    data: SpendingData[] | undefined
     loading: boolean
 }
 export interface MethodData {

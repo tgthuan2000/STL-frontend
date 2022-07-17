@@ -3,9 +3,8 @@ import _ from 'lodash'
 import moment from 'moment'
 import { Fragment, useEffect } from 'react'
 import NumberFormat from 'react-number-format'
-import { RecentData } from '~/@types/spending'
+import { SpendingData } from '~/@types/spending'
 import { KIND_SPENDING } from '~/constant/spending'
-import { useLoading } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import useAuth from '~/store/auth'
 
@@ -16,22 +15,37 @@ interface TransactionTabTableProps {
 
 const TransactionTabTable = ({ query, params = {} }: TransactionTabTableProps) => {
     const { userProfile } = useAuth()
-    const { loading } = useLoading()
     const { width } = useWindowSize()
 
     const [{ recent }, fetchData] = useQuery<{
-        recent: RecentData[]
+        recent: SpendingData[]
     }>(query, { userId: userProfile?._id as string, ...params })
 
     useEffect(() => {
-        if (!loading.submit) {
-            fetchData()
-        }
-    }, [loading])
+        fetchData()
+    }, [])
 
-    if (recent.loading) return null
+    if (recent.loading)
+        return (
+            <tr>
+                <td colSpan={4} className='whitespace-nowrap py-4 px-2'>
+                    <span className='block truncate w-full text-center text-lg text-gray-700 font-base animate-pulse'>
+                        Đang tải...
+                    </span>
+                </td>
+            </tr>
+        )
 
-    if (!recent.data || _.isEmpty(recent.data)) return null
+    if (!recent.data || _.isEmpty(recent.data))
+        return (
+            <tr>
+                <td colSpan={4} className='whitespace-nowrap py-4 px-2'>
+                    <span className='block truncate w-full text-center text-lg text-gray-700 font-base'>
+                        Không có dữ liệu!
+                    </span>
+                </td>
+            </tr>
+        )
 
     return (
         <>

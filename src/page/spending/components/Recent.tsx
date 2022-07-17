@@ -17,6 +17,7 @@ const Recent = ({ data, loading }: RecentProps) => {
                     <li key={item._id}>
                         <Link
                             to={`transaction/${item._id}`}
+                            state={{ status: item.kindSpending._id }}
                             className='px-3 py-2 flex flex-col hover:bg-gray-100 cursor-pointer'
                         >
                             <div className='flex'>

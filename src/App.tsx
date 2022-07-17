@@ -71,8 +71,8 @@ function App() {
                                             />
                                         }
                                     />
-                                    <Route path=':id' element={<Spending.TransactionDetail />} />
                                 </Route>
+                                <Route path='transaction/:id' element={<Spending.TransactionDetail />} />
                                 <Route path='method' element={<Spending.Method />} />
                                 <Route path='method/:id' element={<Spending.MethodDetail />} />
                             </Route>

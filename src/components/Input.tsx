@@ -25,6 +25,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                         spellCheck={false}
                         autoComplete='off'
                         className='block p-2 w-full rounded-md border border-gray-300 shadow-sm font-light'
+                        value={value}
                         {...props}
                     />
                 </div>

@@ -1,9 +1,9 @@
 import _ from 'lodash'
 import { useEffect, useMemo } from 'react'
-import { RecentData } from '~/@types/spending'
+import { SpendingData } from '~/@types/spending'
 import { Divider } from '~/components'
 import { menuMobile } from '~/constant/components'
-import { useConfig, useLoading } from '~/context'
+import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import { F_GET_METHOD_SPENDING, GET_RECENT_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
@@ -23,9 +23,8 @@ const Dashboard = () => {
     const { width } = useWindowSize()
     const { userProfile } = useAuth()
     const { kindSpending } = useConfig()
-    const { loading } = useLoading()
     const [{ method, recent }, fetchData, deleteCache, reload] = useQuery<{
-        recent: RecentData[]
+        recent: SpendingData[]
         method: DataMethodSanity[]
     }>(
         {
@@ -35,10 +34,10 @@ const Dashboard = () => {
         { userId: userProfile?._id as string, from: 0, to: 5 }
     )
     useEffect(() => {
-        if (!_.isEmpty(kindSpending) && !loading.submit) {
+        if (!_.isEmpty(kindSpending)) {
             fetchData()
         }
-    }, [kindSpending, loading])
+    }, [kindSpending])
 
     const dataMethod = useMemo(() => {
         if (!method.data) return
