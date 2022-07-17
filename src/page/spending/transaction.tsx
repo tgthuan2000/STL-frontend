@@ -31,9 +31,9 @@ const Transaction = () => {
                 <div className='px-4 sm:px-6 lg:px-8'>
                     <div className='mt-8 flex flex-col'>
                         <div className='-my-2 -mx-8 sm:-mx-6 lg:-mx-8'>
-                            <div className='inline-block min-w-full py-2 align-middle'>
+                            <div className='inline-block w-full py-2 align-middle'>
                                 <div className='shadow-sm ring-1 ring-black ring-opacity-5'>
-                                    <table className='min-w-full border-separate' style={{ borderSpacing: 0 }}>
+                                    <table className='table-fixed w-full border-separate' style={{ borderSpacing: 0 }}>
                                         <thead className='bg-gray-50 select-none'>
                                             <tr>
                                                 <th
