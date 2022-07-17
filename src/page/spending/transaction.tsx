@@ -41,25 +41,25 @@ const Transaction = () => {
                                             <tr>
                                                 <th
                                                     scope='col'
-                                                    className='sticky text-center top-14 sm:top-16 md:top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 py-3.5 pl-4 pr-3 text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6 lg:pl-8'
+                                                    className='sticky text-center whitespace-nowrap top-14 sm:top-16 md:top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 py-3.5 pl-4 pr-3 text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6 lg:pl-8'
                                                 >
                                                     Ngày
                                                 </th>
                                                 <th
                                                     scope='col'
-                                                    className='sticky text-center top-14 sm:top-16 md:top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter'
+                                                    className='sticky  whitespace-nowrap text-center top-14 sm:top-16 md:top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter'
                                                 >
                                                     Thể loại
                                                 </th>
                                                 <th
                                                     scope='col'
-                                                    className='text-green-500 text-center sticky top-14 sm:top-16 md:top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-sm font-semibold backdrop-blur backdrop-filter'
+                                                    className='text-green-500 whitespace-nowrap text-center sticky top-14 sm:top-16 md:top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-sm font-semibold backdrop-blur backdrop-filter'
                                                 >
                                                     Thu nhập
                                                 </th>
                                                 <th
                                                     scope='col'
-                                                    className='text-red-500 text-center sticky top-14 sm:top-16 md:top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-sm font-semibold backdrop-blur backdrop-filter'
+                                                    className='text-red-500 whitespace-nowrap text-center sticky top-14 sm:top-16 md:top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-sm font-semibold backdrop-blur backdrop-filter'
                                                 >
                                                     Chi phí
                                                 </th>
