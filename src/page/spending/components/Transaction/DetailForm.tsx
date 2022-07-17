@@ -1,6 +1,6 @@
 import { ArrowSmLeftIcon } from '@heroicons/react/outline'
 import _ from 'lodash'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending, SpendingData } from '~/@types/spending'
 import { AutoComplete, Button, Input, TextArea } from '~/components'
@@ -20,7 +20,7 @@ interface D<T> {
     params?: {} | undefined
 }
 export interface TransactionDetailFormData {
-    onsubmit: () => void
+    onsubmit: SubmitHandler<IDetailSpendingForm>
     title: string
     handleReloadData: (keys: keyof Data) => Promise<void>
     handleReloadDataCategory: (keys: keyof DataCategory) => Promise<void>
@@ -68,9 +68,12 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                 />
                 <h4 className='xl:text-2xl text-xl font-semibold'>Cập nhật giao dịch</h4>
             </div>
-            <div className='bg-white rounded-xl shadow-lg px-2 py-4 sm:py-6 lg:py-8'>
+            <div className='bg-white rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>
                 <div className='max-w-lg w-full mx-auto'>
-                    <form onSubmit={handleSubmit(onsubmit)} className='flex h-full flex-col'>
+                    <form
+                        onSubmit={!_.isEmpty(categorySpending.data) ? handleSubmit(onsubmit) : undefined}
+                        className='flex h-full flex-col'
+                    >
                         <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
                             <div className='flex flex-1 flex-col justify-between'>
                                 <div className='divide-y divide-gray-200 px-4 sm:px-6'>
@@ -144,22 +147,24 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                 </div>
                             </div>
                         </div>
-                        <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
-                            <div className='flex sm:justify-start justify-end space-x-3'>
-                                <Button color='blue' type='submit' disabled={loading.submit}>
-                                    Cập nhật
-                                </Button>
-                                <Button
-                                    color='outline'
-                                    type='button'
-                                    onClick={() => {
-                                        navigate(-1)
-                                    }}
-                                >
-                                    Hủy bỏ
-                                </Button>
+                        {!_.isEmpty(categorySpending.data) && (
+                            <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
+                                <div className='flex sm:justify-start justify-end space-x-3'>
+                                    <Button color='blue' type='submit' disabled={loading.submit}>
+                                        Cập nhật
+                                    </Button>
+                                    <Button
+                                        color='outline'
+                                        type='button'
+                                        onClick={() => {
+                                            navigate(-1)
+                                        }}
+                                    >
+                                        Hủy bỏ
+                                    </Button>
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </form>
                 </div>
             </div>

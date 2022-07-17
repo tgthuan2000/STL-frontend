@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { useEffect, useMemo } from 'react'
+import { SubmitHandler } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending, SpendingData } from '~/@types/spending'
 import { useCache, useLoading } from '~/context'
@@ -124,7 +125,35 @@ const TransactionDetail = () => {
         reloadDataCategory()
     }
 
-    const onsubmit = () => {}
+    const onsubmit: SubmitHandler<IDetailSpendingForm> = async (data) => {
+        let { amount, description, categorySpending, methodSpending } = data
+        description = description.trim()
+        try {
+            setSubmitLoading(true)
+            await client
+                .patch(id as string)
+                .set({
+                    amount,
+                    description,
+                    categorySpending: {
+                        _type: 'reference',
+                        _ref: categorySpending._id,
+                    },
+                    methodSpending: {
+                        _type: 'reference',
+                        _ref: methodSpending._id,
+                    },
+                })
+                .commit()
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setSubmitLoading(false)
+            navigate('/spending', {
+                replace: true,
+            })
+        }
+    }
 
     const data: TransactionDetailFormData = {
         title: kindSpending?.name as string,

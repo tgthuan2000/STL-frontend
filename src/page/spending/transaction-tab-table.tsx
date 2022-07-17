@@ -3,6 +3,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import { Fragment, useEffect } from 'react'
 import NumberFormat from 'react-number-format'
+import { useNavigate } from 'react-router-dom'
 import { SpendingData } from '~/@types/spending'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useQuery, useWindowSize } from '~/hook'
@@ -16,6 +17,7 @@ interface TransactionTabTableProps {
 const TransactionTabTable = ({ query, params = {} }: TransactionTabTableProps) => {
     const { userProfile } = useAuth()
     const { width } = useWindowSize()
+    const navigate = useNavigate()
 
     const [{ recent }, fetchData] = useQuery<{
         recent: SpendingData[]
@@ -52,7 +54,11 @@ const TransactionTabTable = ({ query, params = {} }: TransactionTabTableProps) =
             {recent.data.map(
                 ({ _id, date, description, methodSpending, kindSpending, categorySpending, amount }, index, data) => (
                     <Fragment key={_id}>
-                        <tr>
+                        <tr
+                            onClick={() => {
+                                navigate(`/spending/transaction/${_id}`)
+                            }}
+                        >
                             <td className={clsx('whitespace-nowrap pt-4 pl-2 pr-3 sm:pl-6 lg:pl-8')}>
                                 {width <= 900 ? (
                                     <>
@@ -89,7 +95,11 @@ const TransactionTabTable = ({ query, params = {} }: TransactionTabTableProps) =
                                 )}
                             </td>
                         </tr>
-                        <tr>
+                        <tr
+                            onClick={() => {
+                                navigate(`/spending/transaction/${_id}`)
+                            }}
+                        >
                             <td
                                 colSpan={4}
                                 className={clsx(
