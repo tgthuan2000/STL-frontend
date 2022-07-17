@@ -54,7 +54,7 @@ const TransactionTabTable = ({ query, params = {} }: TransactionTabTableProps) =
                             <td className={clsx('whitespace-nowrap px-3 pt-4 text-sm font-medium text-gray-900')}>
                                 {categorySpending?.name ?? kindSpending.name}
                             </td>
-                            <td className={clsx('whitespace-nowrap px-3 pt-4 text-sm text-gray-500')}>
+                            <td className={clsx('whitespace-nowrap px-3 pt-4 text-sm text-center')}>
                                 {[KIND_SPENDING.RECEIVE, KIND_SPENDING.TRANSFER_TO].includes(kindSpending.key) && (
                                     <NumberFormat
                                         className={clsx('text-green-500', 'font-medium')}
@@ -64,7 +64,7 @@ const TransactionTabTable = ({ query, params = {} }: TransactionTabTableProps) =
                                     />
                                 )}
                             </td>
-                            <td className={clsx('whitespace-nowrap px-3 pt-4 text-sm text-gray-500')}>
+                            <td className={clsx('whitespace-nowrap px-3 pt-4 text-sm text-center')}>
                                 {[KIND_SPENDING.COST, KIND_SPENDING.TRANSFER_FROM].includes(kindSpending.key) && (
                                     <NumberFormat
                                         className={clsx('text-red-500', 'font-medium')}
