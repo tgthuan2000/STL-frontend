@@ -49,9 +49,13 @@ const TransactionTabTable = ({ query, params = {} }: TransactionTabTableProps) =
                                 ) : (
                                     <span>{moment(date).format('DD/MM/YYYY HH:mm:ss')}</span>
                                 )}
-                                <h3 className='mt-1 font-medium truncate'>{methodSpending.name}</h3>
+                                <h3 className='mt-1 font-medium'>{methodSpending.name}</h3>
                             </td>
-                            <td className={clsx('whitespace-nowrap px-3 pt-4 text-sm font-medium text-gray-900')}>
+                            <td
+                                className={clsx(
+                                    'whitespace-nowrap px-3 pt-4 text-sm font-medium text-gray-900 text-center'
+                                )}
+                            >
                                 {categorySpending?.name ?? kindSpending.name}
                             </td>
                             <td className={clsx('whitespace-nowrap px-3 pt-4 text-sm text-center')}>
