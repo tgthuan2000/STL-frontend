@@ -55,7 +55,7 @@ const MakeIncome = () => {
         }
     }, [kindSpendingId])
 
-    const { control, handleSubmit } = useForm<IAddIncomeForm>({
+    const { control, handleSubmit, reset, watch } = useForm<IAddIncomeForm>({
         defaultValues: {
             amount: undefined,
             categorySpending: null,
@@ -96,7 +96,7 @@ const MakeIncome = () => {
         try {
             await client.create(document)
             // navigate to dashboard
-            deleteCache([
+            const res = deleteCache([
                 {
                     method: F_GET_METHOD_SPENDING(kindSpending),
                     params: { userId: userProfile?._id },
@@ -106,8 +106,14 @@ const MakeIncome = () => {
                     params: { userId: userProfile?._id, from: 0, to: 5 },
                 },
             ])
-            setIsOpen(false)
-            navigate(-1)
+            console.log(res)
+            reset({
+                amount: 0,
+                description: '',
+            })
+            alert('Create success!')
+            // setIsOpen(false)
+            // navigate(-1)
         } catch (error) {
             console.log(error)
         } finally {

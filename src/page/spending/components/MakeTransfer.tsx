@@ -43,7 +43,7 @@ const MakeTransfer = () => {
         fetchData()
     }, [])
 
-    const { control, handleSubmit } = useForm<IMakeTransferForm>({
+    const { control, handleSubmit, reset } = useForm<IMakeTransferForm>({
         defaultValues: {
             amount: undefined,
             methodSpendingFrom: null,
@@ -110,8 +110,13 @@ const MakeTransfer = () => {
                 },
             ])
             console.log(result)
-            setIsOpen(false)
-            navigate(-1)
+            reset({
+                amount: 0,
+                description: '',
+            })
+            alert('Transfer success!')
+            // setIsOpen(false)
+            // navigate(-1)
         } catch (error) {
             console.log(error)
         } finally {

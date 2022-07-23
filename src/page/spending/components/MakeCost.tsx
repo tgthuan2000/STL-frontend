@@ -56,7 +56,7 @@ const MakeCost = () => {
         }
     }, [kindSpendingId])
 
-    const { control, handleSubmit } = useForm<IAddCostForm>({
+    const { control, handleSubmit, reset } = useForm<IAddCostForm>({
         defaultValues: {
             amount: undefined,
             categorySpending: null,
@@ -109,8 +109,13 @@ const MakeCost = () => {
                 },
             ])
             console.log(res)
-            setIsOpen(false)
-            navigate(-1)
+            reset({
+                amount: 0,
+                description: '',
+            })
+            alert('Create success!')
+            // setIsOpen(false)
+            // navigate(-1)
         } catch (error) {
             console.log(error)
         } finally {

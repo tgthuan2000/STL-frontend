@@ -128,6 +128,7 @@ const TransactionDetail = () => {
     const onsubmit: SubmitHandler<IDetailSpendingForm> = async (data) => {
         let { amount, description, categorySpending, methodSpending } = data
         description = description.trim()
+        amount = Number(amount)
         try {
             setSubmitLoading(true)
             await client
