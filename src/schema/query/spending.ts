@@ -103,3 +103,13 @@ export const GET_TRANSACTION_DETAIL = groq`
         date
     }
 `
+
+export const GET_STATISTIC_SPENDING = groq`
+    *[_type == "kindSpending"]
+    {
+        _id,
+        name,
+        key,
+        "data": *[_type == "spending" && user._ref == $userId  && kindSpending._ref == ^._id].amount,
+    }
+`

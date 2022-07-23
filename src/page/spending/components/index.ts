@@ -1,6 +1,7 @@
 export { default as Transaction } from './Transaction'
 export { default as Method } from './Method'
 export { default as Recent } from './Recent'
+export { default as Statistic } from './Statistic'
 export { default as MakeIncome } from './MakeIncome'
 export { default as MakeCost } from './MakeCost'
 export { default as MakeTransfer } from './MakeTransfer'

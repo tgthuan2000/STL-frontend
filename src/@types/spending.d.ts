@@ -9,6 +9,8 @@ export interface BoxProps {
     to?: string
     onReload?: () => void
     loading?: boolean
+    className?: string
+    fullWidth?: boolean
 }
 export interface SpendingData {
     _id: string
@@ -31,8 +33,20 @@ export interface SpendingData {
     date: string
 }
 
+export interface StatisticData {
+    _id: string
+    name: string
+    key: KIND_SPENDING
+    data: number[]
+}
+
 export interface RecentProps {
     data: SpendingData[] | undefined
+    loading: boolean
+}
+
+export interface StatisticProps {
+    data: StatisticData[] | undefined
     loading: boolean
 }
 export interface MethodData {
