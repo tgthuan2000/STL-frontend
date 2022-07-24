@@ -45,8 +45,14 @@ export interface RecentProps {
     loading: boolean
 }
 
+export interface Statistic {
+    _id: string
+    value: number
+    name: string
+    color: string
+}
 export interface StatisticProps {
-    data: StatisticData[] | undefined
+    data: Statistic[] | undefined
     loading: boolean
 }
 export interface MethodData {

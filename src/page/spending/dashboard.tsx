@@ -1,8 +1,10 @@
-import _ from 'lodash'
+import _, { isEmpty } from 'lodash'
+import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SpendingData, StatisticData } from '~/@types/spending'
 import { Divider } from '~/components'
 import { menuMobile } from '~/constant/components'
+import { KIND_SPENDING } from '~/constant/spending'
 import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import { F_GET_METHOD_SPENDING, GET_RECENT_SPENDING, GET_STATISTIC_SPENDING } from '~/schema/query/spending'
@@ -19,6 +21,12 @@ export interface DataMethodSanity {
     'transfer-to': number[]
 }
 
+interface IData {
+    recent: SpendingData[]
+    method: DataMethodSanity[]
+    statistic: StatisticData[]
+}
+
 const getDate = (type: 'start' | 'end' = 'start') => {
     const date = new Date()
     if (type === 'start') {
@@ -30,12 +38,8 @@ const getDate = (type: 'start' | 'end' = 'start') => {
 const Dashboard = () => {
     const { width } = useWindowSize()
     const { userProfile } = useAuth()
-    const { kindSpending } = useConfig()
-    const [{ method, recent, statistic }, fetchData, deleteCache, reload] = useQuery<{
-        recent: SpendingData[]
-        method: DataMethodSanity[]
-        statistic: StatisticData[]
-    }>(
+    const { kindSpending, getKindSpendingId } = useConfig()
+    const [{ method, recent, statistic }, fetchData, deleteCache, reload] = useQuery<IData>(
         {
             recent: GET_RECENT_SPENDING,
             method: F_GET_METHOD_SPENDING(kindSpending),
@@ -69,14 +73,46 @@ const Dashboard = () => {
         return methodMap.length > 8 ? methodMap.filter((i) => i.receive !== i.cost) : methodMap
     }, [method.data])
 
-    const handleReloadRecent = () => {
-        const res = deleteCache('recent')
-        console.log(res)
-        reload()
-    }
+    const dataStatistic = useMemo(() => {
+        const data = statistic.data
+        if (!data || isEmpty(data)) return
+        const _ = data.reduce(
+            (result, value) => {
+                return {
+                    ...result,
+                    [value.key]: sum(value.data),
+                }
+            },
+            { 'transfer-to': 0, 'transfer-from': 0, cost: 0, receive: 0 }
+        )
+        const surplus = _.receive + _['transfer-to'] - _.cost - _['transfer-from']
+        return {
+            dateRange: ['start', 'end'].map((value) => moment(getDate(value as any)).format('DD/MM/YYYY')),
+            data: [
+                {
+                    _id: getKindSpendingId('RECEIVE') as string,
+                    value: _.receive + _['transfer-to'],
+                    name: 'Thu nhập',
+                    color: 'text-green-500',
+                },
+                {
+                    _id: getKindSpendingId('COST') as string,
+                    value: _.cost + _['transfer-from'],
+                    name: 'Chi phí',
+                    color: 'text-red-500',
+                },
+                {
+                    _id: getKindSpendingId('TRANSFER_FROM') as string,
+                    value: surplus,
+                    name: 'Số dư',
+                    color: surplus >= 0 ? 'text-green-500' : 'text-red-500',
+                },
+            ],
+        }
+    }, [statistic.data])
 
-    const handleReloadMethod = () => {
-        const res = deleteCache('method')
+    const handleReload = (key: keyof IData) => {
+        const res = deleteCache(key)
         console.log(res)
         reload()
     }
@@ -93,19 +129,19 @@ const Dashboard = () => {
 
             <Transaction>
                 <Transaction.Box
-                    className='col-span-2 xl:block hidden'
-                    title='01 thg 7 2022 - 31 thg 7 2022'
-                    onReload={() => {}}
-                    loading={recent.loading}
+                    className='xl:col-span-2 col-span-1'
+                    title={dataStatistic?.dateRange.join(' - ') || ' '}
+                    onReload={() => handleReload('statistic')}
+                    loading={statistic.loading}
                     seeMore={false}
                     fullWidth
                 >
-                    <Statistic data={statistic.data} loading={statistic.loading} />
+                    <Statistic data={dataStatistic?.data} loading={statistic.loading} />
                 </Transaction.Box>
                 <Transaction.Box
                     title='Giao dịch gần đây'
                     to='transaction'
-                    onReload={handleReloadRecent}
+                    onReload={() => handleReload('recent')}
                     loading={recent.loading}
                     fullWidth
                 >
@@ -114,7 +150,7 @@ const Dashboard = () => {
                 <Transaction.Box
                     title='Phương thức thanh toán'
                     to='method'
-                    onReload={handleReloadMethod}
+                    onReload={() => handleReload('method')}
                     loading={method.loading}
                     fullWidth
                 >
