@@ -9,7 +9,7 @@ import { navigation } from '~/constant/layout'
 import useAuth from '~/store/auth'
 
 const Sidebar = ({ children }: SideBarProps) => {
-    const { userProfile } = useAuth()
+    const { userProfile, removeUserProfile } = useAuth()
     const [sidebarOpen, setSidebarOpen] = useState(false)
 
     return (
@@ -101,7 +101,7 @@ const Sidebar = ({ children }: SideBarProps) => {
                                             ))}
                                         </nav>
                                     </div>
-                                    <div className='flex-shrink-0 flex bg-gray-700 p-4'>
+                                    <div className='flex-shrink-0 flex bg-gray-700 p-4' onClick={removeUserProfile}>
                                         <div className='flex-shrink-0 group block'>
                                             <div className='flex items-center'>
                                                 <div>
