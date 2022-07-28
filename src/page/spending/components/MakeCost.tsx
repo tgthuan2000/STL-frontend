@@ -56,7 +56,7 @@ const MakeCost = () => {
         }
     }, [kindSpendingId])
 
-    const { control, handleSubmit, reset } = useForm<IAddCostForm>({
+    const { control, handleSubmit, reset, watch } = useForm<IAddCostForm>({
         defaultValues: {
             amount: undefined,
             categorySpending: null,
@@ -64,7 +64,7 @@ const MakeCost = () => {
             description: '',
         },
     })
-
+    console.log(watch())
     const onsubmit: SubmitHandler<IAddCostForm> = async (data) => {
         setSubmitLoading(true)
         let { amount, methodSpending, categorySpending, description } = data
@@ -109,11 +109,17 @@ const MakeCost = () => {
                 },
             ])
             console.log(res)
-            reset({
-                amount: 0,
-                description: '',
-            })
-            alert('Create success!')
+            reset(
+                {
+                    amount: 0,
+                    categorySpending,
+                    methodSpending,
+                },
+                {
+                    keepDefaultValues: true,
+                }
+            )
+            alert('Tạo chi phí thành công!')
             // setIsOpen(false)
             // navigate(-1)
         } catch (error) {

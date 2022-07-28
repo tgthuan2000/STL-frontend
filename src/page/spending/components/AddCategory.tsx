@@ -62,8 +62,9 @@ const AddCategory = () => {
                 },
             ])
             console.log(result)
-            setIsOpen(false)
-            navigate(-1)
+            alert('Tạo mới thể loại thành công!')
+            // setIsOpen(false)
+            // navigate(-1)
         } catch (error) {
             console.log(error)
         } finally {

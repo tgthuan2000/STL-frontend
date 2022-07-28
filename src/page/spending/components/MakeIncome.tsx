@@ -55,7 +55,7 @@ const MakeIncome = () => {
         }
     }, [kindSpendingId])
 
-    const { control, handleSubmit, reset, watch } = useForm<IAddIncomeForm>({
+    const { control, handleSubmit, reset } = useForm<IAddIncomeForm>({
         defaultValues: {
             amount: undefined,
             categorySpending: null,
@@ -107,11 +107,17 @@ const MakeIncome = () => {
                 },
             ])
             console.log(res)
-            reset({
-                amount: 0,
-                description: '',
-            })
-            alert('Create success!')
+            reset(
+                {
+                    amount: 0,
+                    categorySpending,
+                    methodSpending,
+                },
+                {
+                    keepDefaultValues: true,
+                }
+            )
+            alert('Tạo thu nhập thành công!')
             // setIsOpen(false)
             // navigate(-1)
         } catch (error) {

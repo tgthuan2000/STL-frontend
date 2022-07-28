@@ -110,11 +110,17 @@ const MakeTransfer = () => {
                 },
             ])
             console.log(result)
-            reset({
-                amount: 0,
-                description: '',
-            })
-            alert('Transfer success!')
+            reset(
+                {
+                    amount: 0,
+                    methodSpendingFrom,
+                    methodSpendingTo,
+                },
+                {
+                    keepDefaultValues: true,
+                }
+            )
+            alert('Thực hiện chuyển khoản thành công!')
             // setIsOpen(false)
             // navigate(-1)
         } catch (error) {

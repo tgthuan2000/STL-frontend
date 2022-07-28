@@ -55,8 +55,9 @@ const AddMethod = () => {
                 },
             ])
             console.log(result)
-            setIsOpen(false)
-            navigate(-1)
+            alert('Tạo mới phương thức thanh toán thành công!')
+            // setIsOpen(false)
+            // navigate(-1)
         } catch (error) {
             console.log(error)
         } finally {
