@@ -22,7 +22,7 @@ const Recent = ({ data, loading }: RecentProps) => {
                         >
                             <div className='flex'>
                                 <div className='xl:w-2/3 w-1/2 overflow-hidden'>
-                                    <span>{moment(item.date).format('DD/MM/YYYY HH:mm:ss')}</span>
+                                    <span>{moment(item.date).format('DD/MM/YYYY HH:mm')}</span>
                                     <h3 className='font-medium truncate'>{item.methodSpending.name}</h3>
                                 </div>
                                 <div className='xl:w-1/3 w-1/2 overflow-hidden text-right'>

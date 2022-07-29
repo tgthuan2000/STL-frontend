@@ -96,10 +96,10 @@ const TransactionTabTable = ({ query, params = {} }: TransactionTabTableProps) =
                                     <>
                                         <span>{moment(date).format('DD/MM/YYYY')}</span>
                                         <br />
-                                        <span>{moment(date).format('HH:mm:ss')}</span>
+                                        <span>{moment(date).format('HH:mm')}</span>
                                     </>
                                 ) : (
-                                    <span>{moment(date).format('DD/MM/YYYY HH:mm:ss')}</span>
+                                    <span>{moment(date).format('DD/MM/YYYY HH:mm')}</span>
                                 )}
                                 <h3 className='mt-1 font-medium'>{methodSpending.name}</h3>
                             </td>
