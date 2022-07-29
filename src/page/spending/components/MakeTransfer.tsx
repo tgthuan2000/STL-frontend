@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { IMethodSpending } from '~/@types/spending'
-import { AutoComplete, Button, Input, TextArea } from '~/components'
+import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
@@ -15,6 +15,7 @@ interface IMakeTransferForm {
     amount: number | undefined
     methodSpendingFrom: IMethodSpending | null
     methodSpendingTo: IMethodSpending | null
+    date: Date
     description: string
 }
 
@@ -48,13 +49,14 @@ const MakeTransfer = () => {
             amount: undefined,
             methodSpendingFrom: null,
             methodSpendingTo: null,
+            date: new Date(),
             description: '',
         },
     })
 
     const onsubmit: SubmitHandler<IMakeTransferForm> = async (data) => {
         setSubmitLoading(true)
-        let { amount, methodSpendingFrom, methodSpendingTo, description } = data
+        let { amount, methodSpendingFrom, methodSpendingTo, description, date } = data
         amount = Number(amount)
         description = description.trim()
         // add to database
@@ -62,7 +64,7 @@ const MakeTransfer = () => {
             _type: 'spending',
             amount,
             description: `Đến ${methodSpendingTo?.name}${description ? `\n${description}` : ''}`,
-            date: moment().format(),
+            date: moment(date).format(),
             kindSpending: {
                 _type: 'reference',
                 _ref: getKindSpendingId('TRANSFER_FROM'),
@@ -81,7 +83,7 @@ const MakeTransfer = () => {
             _type: 'spending',
             amount,
             description: `Từ ${methodSpendingFrom?.name}${description ? `\n${description}` : ''}`,
-            date: moment().format(),
+            date: moment(date).format(),
             kindSpending: {
                 _type: 'reference',
                 _ref: getKindSpendingId('TRANSFER_TO'),
@@ -219,6 +221,16 @@ const MakeTransfer = () => {
                                         }
                                         {...field}
                                     />
+                                )}
+                            />
+                            <Controller
+                                name='date'
+                                control={control}
+                                rules={{
+                                    required: 'Yêu cầu chọn ngày!',
+                                }}
+                                render={({ field, fieldState: { error } }) => (
+                                    <DatePicker label='Ngày' error={error} {...field} />
                                 )}
                             />
                             <Controller

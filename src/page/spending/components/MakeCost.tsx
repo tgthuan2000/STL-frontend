@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending } from '~/@types/spending'
-import { AutoComplete, Button, Input, TextArea } from '~/components'
+import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
@@ -21,6 +21,7 @@ interface IAddCostForm {
     categorySpending: ICategorySpending | null
     methodSpending: IMethodSpending | null
     description: string
+    date: Date
 }
 interface Data {
     methodSpending: IMethodSpending[]
@@ -62,12 +63,13 @@ const MakeCost = () => {
             categorySpending: null,
             methodSpending: null,
             description: '',
+            date: new Date(),
         },
     })
     console.log(watch())
     const onsubmit: SubmitHandler<IAddCostForm> = async (data) => {
         setSubmitLoading(true)
-        let { amount, methodSpending, categorySpending, description } = data
+        let { amount, methodSpending, categorySpending, description, date } = data
         // transfer amount to number
         amount = Number(amount)
         description = description.trim()
@@ -77,7 +79,7 @@ const MakeCost = () => {
             _type: 'spending',
             amount,
             description,
-            date: moment().format(),
+            date: moment(date).format(),
             kindSpending: {
                 _type: 'reference',
                 _ref: kindSpendingId,
@@ -243,6 +245,16 @@ const MakeCost = () => {
                                         }
                                         {...field}
                                     />
+                                )}
+                            />
+                            <Controller
+                                name='date'
+                                control={control}
+                                rules={{
+                                    required: 'Yêu cầu chọn ngày!',
+                                }}
+                                render={({ field, fieldState: { error } }) => (
+                                    <DatePicker label='Ngày' error={error} {...field} />
                                 )}
                             />
                             <Controller

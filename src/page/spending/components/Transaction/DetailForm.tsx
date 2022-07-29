@@ -1,9 +1,10 @@
 import { ArrowSmLeftIcon, TrashIcon } from '@heroicons/react/outline'
 import _ from 'lodash'
+import moment from 'moment'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending, SpendingData } from '~/@types/spending'
-import { AutoComplete, Button, Input, TextArea } from '~/components'
+import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
 import { useLoading } from '~/context'
 import { Data, DataCategory } from '../../transaction-detail'
 
@@ -11,6 +12,7 @@ interface IDetailSpendingForm {
     amount: number
     categorySpending: ICategorySpending
     methodSpending: IMethodSpending
+    date: Date
     description: string
 }
 interface D<T> {
@@ -55,6 +57,7 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
             amount: transaction.amount,
             categorySpending: transaction.categorySpending,
             methodSpending: transaction.methodSpending,
+            date: moment(transaction.date).toDate(),
             description: transaction.description,
         },
     })
@@ -100,28 +103,30 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                                 <Input type='number' label={title} error={error} {...field} />
                                             )}
                                         />
-                                        <Controller
-                                            name='categorySpending'
-                                            control={control}
-                                            rules={{
-                                                required: 'Yêu cầu chọn thể loại!',
-                                            }}
-                                            render={({ field, fieldState: { error } }) => (
-                                                <AutoComplete
-                                                    data={categorySpending.data}
-                                                    label='Thể loại'
-                                                    error={error}
-                                                    loading={categorySpending.loading}
-                                                    addMore={handleAddMoreCategorySpending}
-                                                    onReload={
-                                                        _.isEmpty(categorySpending.data)
-                                                            ? undefined
-                                                            : () => handleReloadDataCategory('categorySpending')
-                                                    }
-                                                    {...field}
-                                                />
-                                            )}
-                                        />
+                                        {!_.isEmpty(categorySpending.data) && (
+                                            <Controller
+                                                name='categorySpending'
+                                                control={control}
+                                                rules={{
+                                                    required: 'Yêu cầu chọn thể loại!',
+                                                }}
+                                                render={({ field, fieldState: { error } }) => (
+                                                    <AutoComplete
+                                                        data={categorySpending.data}
+                                                        label='Thể loại'
+                                                        error={error}
+                                                        loading={categorySpending.loading}
+                                                        addMore={handleAddMoreCategorySpending}
+                                                        onReload={
+                                                            _.isEmpty(categorySpending.data)
+                                                                ? undefined
+                                                                : () => handleReloadDataCategory('categorySpending')
+                                                        }
+                                                        {...field}
+                                                    />
+                                                )}
+                                            />
+                                        )}
                                         <Controller
                                             name='methodSpending'
                                             control={control}
@@ -142,6 +147,16 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                                     }
                                                     {...field}
                                                 />
+                                            )}
+                                        />
+                                        <Controller
+                                            name='date'
+                                            control={control}
+                                            rules={{
+                                                required: 'Yêu cầu chọn ngày!',
+                                            }}
+                                            render={({ field, fieldState: { error } }) => (
+                                                <DatePicker label='Ngày' error={error} {...field} />
                                             )}
                                         />
                                         <Controller

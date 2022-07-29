@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending } from '~/@types/spending'
-import { AutoComplete, Button, Input, TextArea } from '~/components'
+import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
@@ -20,6 +20,7 @@ interface IAddIncomeForm {
     amount: number | undefined
     categorySpending: ICategorySpending | null
     methodSpending: IMethodSpending | null
+    date: Date
     description: string
 }
 interface Data {
@@ -60,13 +61,14 @@ const MakeIncome = () => {
             amount: undefined,
             categorySpending: null,
             methodSpending: null,
+            date: new Date(),
             description: '',
         },
     })
 
     const onsubmit: SubmitHandler<IAddIncomeForm> = async (data) => {
         setSubmitLoading(true)
-        let { amount, methodSpending, categorySpending, description } = data
+        let { amount, methodSpending, categorySpending, description, date } = data
         amount = Number(amount)
         description = description.trim()
 
@@ -75,7 +77,7 @@ const MakeIncome = () => {
             _type: 'spending',
             amount,
             description,
-            date: moment().format(),
+            date: moment(date).format(),
             kindSpending: {
                 _type: 'reference',
                 _ref: kindSpendingId,
@@ -241,6 +243,16 @@ const MakeIncome = () => {
                                         }
                                         {...field}
                                     />
+                                )}
+                            />
+                            <Controller
+                                name='date'
+                                control={control}
+                                rules={{
+                                    required: 'Yêu cầu chọn ngày!',
+                                }}
+                                render={({ field, fieldState: { error } }) => (
+                                    <DatePicker label='Ngày' error={error} {...field} />
                                 )}
                             />
                             <Controller

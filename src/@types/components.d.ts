@@ -44,6 +44,15 @@ export interface InputProps {
     error?: FieldError
     value?: any
 }
+
+export interface DateProps {
+    className?: string
+    label?: string
+    name: string
+    error?: FieldError
+    value?: any
+    onChange: (value: any) => void
+}
 export interface TextAreaProps {
     className?: string
     label?: string
