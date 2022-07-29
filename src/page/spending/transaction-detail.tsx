@@ -1,3 +1,4 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import _ from 'lodash'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler } from 'react-hook-form'

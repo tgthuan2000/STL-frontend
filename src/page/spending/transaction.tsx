@@ -1,3 +1,4 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { ArrowSmLeftIcon } from '@heroicons/react/outline'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { Tabs } from '~/components'
@@ -12,6 +13,7 @@ const TransactionTabs = [
 
 const Transaction = () => {
     const navigate = useNavigate()
+    const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
 
     return (
         <div>
@@ -65,7 +67,7 @@ const Transaction = () => {
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody className='bg-white'>
+                                        <tbody ref={parentRef} className='bg-white'>
                                             <Outlet />
                                         </tbody>
                                     </table>
