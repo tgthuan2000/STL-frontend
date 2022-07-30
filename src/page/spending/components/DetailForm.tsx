@@ -1,7 +1,7 @@
 import { ArrowSmLeftIcon, TrashIcon } from '@heroicons/react/outline'
 import _ from 'lodash'
 import moment from 'moment'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending, SpendingData } from '~/@types/spending'
 import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
@@ -52,7 +52,7 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
     } = data
     const navigate = useNavigate()
     const { loading } = useLoading()
-    const { control, handleSubmit } = useForm<IDetailSpendingForm>({
+    const form = useForm<IDetailSpendingForm>({
         defaultValues: {
             amount: transaction.amount,
             categorySpending: transaction.categorySpending,
@@ -82,16 +82,18 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
             <div className='bg-white rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>
                 <div className='max-w-lg w-full mx-auto'>
                     <form
-                        onSubmit={!_.isEmpty(categorySpending.data) ? handleSubmit(onsubmit) : undefined}
+                        onSubmit={!_.isEmpty(categorySpending.data) ? form.handleSubmit(onsubmit) : undefined}
                         className='flex h-full flex-col'
                     >
                         <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
                             <div className='flex flex-1 flex-col justify-between'>
                                 <div className='divide-y divide-gray-200 px-4 sm:px-6'>
                                     <div className='space-y-6 pt-6 pb-5'>
-                                        <Controller
+                                        <Input
                                             name='amount'
-                                            control={control}
+                                            form={form}
+                                            type='number'
+                                            label={title}
                                             rules={{
                                                 required: 'Yêu cầu nhập chi phí!',
                                                 min: {
@@ -99,73 +101,52 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                                     message: 'Chi phí phải lớn hơn 0!',
                                                 },
                                             }}
-                                            render={({ field, fieldState: { error } }) => (
-                                                <Input type='number' label={title} error={error} {...field} />
-                                            )}
                                         />
                                         {!_.isEmpty(categorySpending.data) && (
-                                            <Controller
+                                            <AutoComplete
                                                 name='categorySpending'
-                                                control={control}
+                                                form={form}
+                                                data={categorySpending.data}
+                                                label='Thể loại'
+                                                loading={categorySpending.loading}
+                                                addMore={handleAddMoreCategorySpending}
                                                 rules={{
                                                     required: 'Yêu cầu chọn thể loại!',
                                                 }}
-                                                render={({ field, fieldState: { error } }) => (
-                                                    <AutoComplete
-                                                        data={categorySpending.data}
-                                                        label='Thể loại'
-                                                        error={error}
-                                                        loading={categorySpending.loading}
-                                                        addMore={handleAddMoreCategorySpending}
-                                                        onReload={
-                                                            _.isEmpty(categorySpending.data)
-                                                                ? undefined
-                                                                : () => handleReloadDataCategory('categorySpending')
-                                                        }
-                                                        {...field}
-                                                    />
-                                                )}
+                                                onReload={
+                                                    _.isEmpty(categorySpending.data)
+                                                        ? undefined
+                                                        : () => handleReloadDataCategory('categorySpending')
+                                                }
                                             />
                                         )}
-                                        <Controller
+
+                                        <AutoComplete
                                             name='methodSpending'
-                                            control={control}
+                                            form={form}
+                                            data={methodSpending.data}
+                                            label='Phương thức thanh toán'
+                                            loading={methodSpending.loading}
+                                            addMore={handleAddMoreMethodSpending}
                                             rules={{
                                                 required: 'Yêu cầu chọn phương thức thanh toán!',
                                             }}
-                                            render={({ field, fieldState: { error } }) => (
-                                                <AutoComplete
-                                                    data={methodSpending.data}
-                                                    label='Phương thức thanh toán'
-                                                    error={error}
-                                                    loading={methodSpending.loading}
-                                                    addMore={handleAddMoreMethodSpending}
-                                                    onReload={
-                                                        _.isEmpty(methodSpending.data)
-                                                            ? undefined
-                                                            : () => handleReloadData('methodSpending')
-                                                    }
-                                                    {...field}
-                                                />
-                                            )}
+                                            onReload={
+                                                _.isEmpty(methodSpending.data)
+                                                    ? undefined
+                                                    : () => handleReloadData('methodSpending')
+                                            }
                                         />
-                                        <Controller
+                                        <DatePicker
                                             name='date'
-                                            control={control}
+                                            form={form}
+                                            label='Ngày'
                                             rules={{
                                                 required: 'Yêu cầu chọn ngày!',
                                             }}
-                                            render={({ field, fieldState: { error } }) => (
-                                                <DatePicker label='Ngày' error={error} {...field} />
-                                            )}
                                         />
-                                        <Controller
-                                            name='description'
-                                            control={control}
-                                            render={({ field, fieldState: { error } }) => (
-                                                <TextArea label='Ghi chú' error={error} {...field} />
-                                            )}
-                                        />
+
+                                        <TextArea name='description' form={form} label='Ghi chú' />
                                     </div>
                                 </div>
                             </div>

@@ -3,7 +3,8 @@ import { Combobox } from '@headlessui/react'
 import { CheckIcon, RefreshIcon, SelectorIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import _ from 'lodash'
-import { forwardRef, useState } from 'react'
+import { forwardRef, useMemo, useState } from 'react'
+import { Controller } from 'react-hook-form'
 import { AutoCompleteProps } from '~/@types/components'
 
 const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
@@ -14,17 +15,19 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
             idKey = '_id',
             valueKey = 'name',
             className,
-            error,
-            onChange,
+            name,
+            form,
+            rules,
             onReload,
-            onBlur,
             addMore,
-            value,
             loading,
-            ...props
         },
         ref
     ) => {
+        const value = useMemo(() => {
+            return form.getValues(name)
+        }, [JSON.stringify(form.getValues(name))])
+
         const [query, setQuery] = useState(value?.[valueKey] ?? '')
         const [selectedItem, setSelectedItem] = useState(value)
         const [parent] = useAutoAnimate<HTMLDivElement>()
@@ -37,7 +40,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                       return item[valueKey].toLowerCase().includes(query.toLowerCase())
                   })
 
-        const handleChange = async (value: any) => {
+        const handleChange = async (value: any, onChange: (...event: any[]) => void) => {
             if (typeof value === 'string') {
                 if (addMore) {
                     try {
@@ -68,122 +71,133 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
         }
 
         return (
-            <div className={clsx(className)}>
-                <Combobox
-                    as='div'
-                    ref={ref}
-                    onBlur={() => {
-                        onBlur()
-                        setTimeout(() => {
-                            setQuery('')
-                        }, 300)
-                    }}
-                    value={selectedItem}
-                    onChange={handleChange}
-                    disabled={loading}
-                    {...props}
-                >
-                    <div className='flex justify-between items-center'>
-                        <Combobox.Label className='inline-block text-sm font-medium text-gray-700'>
-                            {label}
-                        </Combobox.Label>
-                        {onReload && (
-                            <button
-                                type='button'
-                                className='cursor-pointer group disabled:cursor-wait disabled:animate-spin -scale-100'
-                                onClick={onReload}
-                                disabled={loading}
-                                title='Tải lại'
-                            >
-                                <RefreshIcon className='h-4 w-4 text-gray-500 group-hover:text-gray-400 group-disabled:text-gray-300' />
-                            </button>
-                        )}
-                    </div>
-                    <div className='relative mt-1'>
-                        <Combobox.Input
-                            className={clsx(
-                                'w-full rounded-md border border-gray-300 py-2 pl-3 pr-10 shadow-sm sm:text-sm focus:outline-none',
-                                loading ? 'bg-gray-50 text-gray-500' : 'bg-white text-gray-900'
-                            )}
-                            displayValue={(item: any) =>
-                                loadingAddMore ? 'Đang thực hiện tạo mới...' : item?.[valueKey]
-                            }
-                            onChange={(event) => setQuery(event.target.value)}
-                            spellCheck={false}
-                            autoComplete='off'
-                        />
-                        <Combobox.Button className='absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none'>
-                            <SelectorIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
-                        </Combobox.Button>
-
-                        {filterData.length > 0 ? (
-                            <Combobox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
-                                {filterData.map((item) => (
-                                    <Combobox.Option
-                                        key={item[idKey]}
-                                        value={item}
-                                        className={({ active }) =>
-                                            clsx(
-                                                'relative cursor-default select-none py-2 pl-8 pr-4',
-                                                active ? 'bg-indigo-600 text-white' : 'text-gray-900'
-                                            )
-                                        }
+            <Controller
+                name={name}
+                control={form.control}
+                rules={rules}
+                render={({ field, fieldState: { error } }) => (
+                    <div className={clsx(className)}>
+                        <Combobox
+                            as='div'
+                            ref={ref}
+                            onBlur={() => {
+                                field.onBlur()
+                                setTimeout(() => {
+                                    setQuery('')
+                                }, 300)
+                            }}
+                            value={selectedItem}
+                            onChange={(value) => handleChange(value, field.onChange)}
+                            disabled={loading}
+                        >
+                            <div className='flex justify-between items-center'>
+                                <Combobox.Label className='inline-block text-sm font-medium text-gray-700'>
+                                    {label}
+                                </Combobox.Label>
+                                {onReload && (
+                                    <button
+                                        type='button'
+                                        className='cursor-pointer group disabled:cursor-wait disabled:animate-spin -scale-100'
+                                        onClick={onReload}
+                                        disabled={loading}
+                                        title='Tải lại'
                                     >
-                                        {({ active, selected }) => (
-                                            <>
-                                                <span className={clsx('block truncate', selected && 'font-semibold')}>
-                                                    {item[valueKey]}
-                                                </span>
+                                        <RefreshIcon className='h-4 w-4 text-gray-500 group-hover:text-gray-400 group-disabled:text-gray-300' />
+                                    </button>
+                                )}
+                            </div>
+                            <div className='relative mt-1'>
+                                <Combobox.Input
+                                    className={clsx(
+                                        'w-full rounded-md border border-gray-300 py-2 pl-3 pr-10 shadow-sm sm:text-sm focus:outline-none',
+                                        loading ? 'bg-gray-50 text-gray-500' : 'bg-white text-gray-900'
+                                    )}
+                                    displayValue={(item: any) =>
+                                        loadingAddMore ? 'Đang thực hiện tạo mới...' : item?.[valueKey]
+                                    }
+                                    onChange={(event) => setQuery(event.target.value)}
+                                    spellCheck={false}
+                                    autoComplete='off'
+                                />
+                                <Combobox.Button className='absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none'>
+                                    <SelectorIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
+                                </Combobox.Button>
 
-                                                {selected && (
-                                                    <span
-                                                        className={clsx(
-                                                            'absolute inset-y-0 left-0 flex items-center pl-1.5',
-                                                            active ? 'text-white' : 'text-indigo-600'
+                                {filterData.length > 0 ? (
+                                    <Combobox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
+                                        {filterData.map((item) => (
+                                            <Combobox.Option
+                                                key={item[idKey]}
+                                                value={item}
+                                                className={({ active }) =>
+                                                    clsx(
+                                                        'relative cursor-default select-none py-2 pl-8 pr-4',
+                                                        active ? 'bg-indigo-600 text-white' : 'text-gray-900'
+                                                    )
+                                                }
+                                            >
+                                                {({ active, selected }) => (
+                                                    <>
+                                                        <span
+                                                            className={clsx(
+                                                                'block truncate',
+                                                                selected && 'font-semibold'
+                                                            )}
+                                                        >
+                                                            {item[valueKey]}
+                                                        </span>
+
+                                                        {selected && (
+                                                            <span
+                                                                className={clsx(
+                                                                    'absolute inset-y-0 left-0 flex items-center pl-1.5',
+                                                                    active ? 'text-white' : 'text-indigo-600'
+                                                                )}
+                                                            >
+                                                                <CheckIcon className='h-5 w-5' aria-hidden='true' />
+                                                            </span>
                                                         )}
-                                                    >
-                                                        <CheckIcon className='h-5 w-5' aria-hidden='true' />
-                                                    </span>
+                                                    </>
                                                 )}
-                                            </>
-                                        )}
-                                    </Combobox.Option>
-                                ))}
-                            </Combobox.Options>
-                        ) : (
-                            query.trim() !== '' &&
-                            addMore && (
-                                <Combobox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
-                                    <Combobox.Option
-                                        value={query.trim()}
-                                        className={({ active }) =>
-                                            clsx(
-                                                'relative bg-indigo-600 text-white cursor-default select-none py-2 pl-8 pr-4'
-                                            )
-                                        }
-                                    >
-                                        <span className='block truncate'>
-                                            Tạo mới{' '}
-                                            <span className='font-medium'>
-                                                "
-                                                {(() => {
-                                                    let temp = query.replace(/\s+/g, ' ').trim()
-                                                    temp = temp.charAt(0).toUpperCase() + temp.slice(1)
-                                                    return temp
-                                                })()}
-                                                "
-                                            </span>
-                                        </span>
-                                    </Combobox.Option>
-                                </Combobox.Options>
-                            )
-                        )}
+                                            </Combobox.Option>
+                                        ))}
+                                    </Combobox.Options>
+                                ) : (
+                                    query.trim() !== '' &&
+                                    addMore && (
+                                        <Combobox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
+                                            <Combobox.Option
+                                                value={query.trim()}
+                                                className={({ active }) =>
+                                                    clsx(
+                                                        'relative bg-indigo-600 text-white cursor-default select-none py-2 pl-8 pr-4'
+                                                    )
+                                                }
+                                            >
+                                                <span className='block truncate'>
+                                                    Tạo mới{' '}
+                                                    <span className='font-medium'>
+                                                        "
+                                                        {(() => {
+                                                            let temp = query.replace(/\s+/g, ' ').trim()
+                                                            temp = temp.charAt(0).toUpperCase() + temp.slice(1)
+                                                            return temp
+                                                        })()}
+                                                        "
+                                                    </span>
+                                                </span>
+                                            </Combobox.Option>
+                                        </Combobox.Options>
+                                    )
+                                )}
+                            </div>
+                        </Combobox>
+                        <div ref={parent}>
+                            {error && <div className='mt-1 text-radical-red-700 text-sm'>{error.message}</div>}
+                        </div>
                     </div>
-                </Combobox>
-                <div ref={parent}>
-                    {error && <div className='mt-1 text-radical-red-700 text-sm'>{error.message}</div>}
-                </div>
-            </div>
+                )}
+            />
         )
     }
 )
