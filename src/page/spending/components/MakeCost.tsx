@@ -10,9 +10,11 @@ import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import {
     F_GET_METHOD_SPENDING,
+    GETALL_RECENT_SPENDING,
     GET_CATEGORY_SPENDING,
     GET_METHOD_SPENDING,
     GET_RECENT_SPENDING,
+    GET_STATISTIC_SPENDING,
 } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 
@@ -66,7 +68,7 @@ const MakeCost = () => {
             date: new Date(),
         },
     })
-    console.log(watch())
+
     const onsubmit: SubmitHandler<IAddCostForm> = async (data) => {
         setSubmitLoading(true)
         let { amount, methodSpending, categorySpending, description, date } = data
@@ -102,12 +104,20 @@ const MakeCost = () => {
             // navigate to dashboard
             const res = deleteCache([
                 {
+                    statistic: GET_STATISTIC_SPENDING,
+                    params: { userId: userProfile?._id },
+                },
+                {
                     method: F_GET_METHOD_SPENDING(kindSpending),
                     params: { userId: userProfile?._id },
                 },
                 {
                     recent: GET_RECENT_SPENDING,
                     params: { userId: userProfile?._id, from: 0, to: 5 },
+                },
+                {
+                    recent: GETALL_RECENT_SPENDING,
+                    params: { userId: userProfile?._id },
                 },
             ])
             console.log(res)

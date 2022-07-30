@@ -2,7 +2,7 @@ import groq from 'groq'
 import { IKindSpending } from '~/@types/context'
 
 export const GETALL_RECENT_SPENDING = groq`
-    *[_type == "spending" && user._ref == $userId] | order(_createdAt desc)
+    *[_type == "spending" && user._ref == $userId] | order(date desc)
     {
         _id,
         _createdAt,
@@ -25,7 +25,7 @@ export const GETALL_RECENT_SPENDING = groq`
     }
 `
 export const GET_RECENT_SPENDING = groq`
-    *[_type == "spending" && user._ref == $userId] | order(_createdAt desc)[$from...$to]
+    *[_type == "spending" && user._ref == $userId] | order(date desc)[$from...$to]
     {
         _id,
         _createdAt,

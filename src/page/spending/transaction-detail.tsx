@@ -1,12 +1,18 @@
 import _ from 'lodash'
+import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending, SpendingData } from '~/@types/spending'
-import { useLoading } from '~/context'
+import { useCache, useLoading } from '~/context'
 import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
-import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING, GET_TRANSACTION_DETAIL } from '~/schema/query/spending'
+import {
+    GETALL_RECENT_SPENDING,
+    GET_CATEGORY_SPENDING,
+    GET_METHOD_SPENDING,
+    GET_TRANSACTION_DETAIL,
+} from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 import TransactionDetailForm, { TransactionDetailFormData } from './components/Transaction/DetailForm'
 
@@ -14,6 +20,7 @@ interface IDetailSpendingForm {
     amount: number
     categorySpending: ICategorySpending
     methodSpending: IMethodSpending
+    date: Date
     description: string
 }
 export interface Data {
@@ -28,6 +35,7 @@ const TransactionDetail = () => {
     const { userProfile } = useAuth()
     const { setSubmitLoading } = useLoading()
     const { id } = useParams()
+    const { deleteCache } = useCache()
 
     const [{ transaction, methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
         {
@@ -125,7 +133,7 @@ const TransactionDetail = () => {
     }
 
     const onsubmit: SubmitHandler<IDetailSpendingForm> = async (data) => {
-        let { amount, description, categorySpending, methodSpending } = data
+        let { amount, description, categorySpending, methodSpending, date } = data
         description = description.trim()
         amount = Number(amount)
         try {
@@ -134,6 +142,7 @@ const TransactionDetail = () => {
                 .patch(id as string)
                 .set({
                     amount,
+                    date: moment(date).format(),
                     description,
                     categorySpending: {
                         _type: 'reference',
@@ -148,13 +157,22 @@ const TransactionDetail = () => {
 
             const res = deleteCacheData('transaction')
             console.log(res)
+
+            const caches = deleteCache([
+                {
+                    recent: GETALL_RECENT_SPENDING,
+                    params: { userId: userProfile?._id },
+                },
+            ])
+            console.log(caches)
         } catch (error) {
             console.log(error)
         } finally {
             setSubmitLoading(false)
-            navigate('/spending', {
-                replace: true,
-            })
+            // navigate('/spending', {
+            //     replace: true,
+            // })
+            navigate(-1)
         }
     }
 
