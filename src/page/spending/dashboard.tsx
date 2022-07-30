@@ -111,8 +111,8 @@ const Dashboard = () => {
         }
     }, [statistic.data])
 
-    const handleReload = (key: keyof IData) => {
-        const res = deleteCache(key)
+    const handleReload = () => {
+        const res = deleteCache('statistic', 'recent', 'method')
         console.log(res)
         reload()
     }
@@ -131,7 +131,7 @@ const Dashboard = () => {
                 <Transaction.Box
                     className='xl:col-span-2 col-span-1'
                     title={dataStatistic?.dateRange.join(' - ') || ' '}
-                    onReload={() => handleReload('statistic')}
+                    onReload={handleReload}
                     loading={statistic.loading}
                     seeMore={false}
                     fullWidth
@@ -141,7 +141,7 @@ const Dashboard = () => {
                 <Transaction.Box
                     title='Giao dịch gần đây'
                     to='transaction'
-                    onReload={() => handleReload('recent')}
+                    onReload={handleReload}
                     loading={recent.loading}
                     fullWidth
                 >
@@ -150,7 +150,7 @@ const Dashboard = () => {
                 <Transaction.Box
                     title='Phương thức thanh toán'
                     to='method'
-                    onReload={() => handleReload('method')}
+                    onReload={handleReload}
                     loading={method.loading}
                     fullWidth
                 >

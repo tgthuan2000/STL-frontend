@@ -1,10 +1,9 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import _ from 'lodash'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending, SpendingData } from '~/@types/spending'
-import { useCache, useLoading } from '~/context'
+import { useLoading } from '~/context'
 import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING, GET_TRANSACTION_DETAIL } from '~/schema/query/spending'
@@ -27,8 +26,7 @@ export interface DataCategory {
 const TransactionDetail = () => {
     const navigate = useNavigate()
     const { userProfile } = useAuth()
-    const { deleteCache } = useCache()
-    const { loading, setSubmitLoading } = useLoading()
+    const { setSubmitLoading } = useLoading()
     const { id } = useParams()
 
     const [{ transaction, methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
@@ -147,6 +145,9 @@ const TransactionDetail = () => {
                     },
                 })
                 .commit()
+
+            const res = deleteCacheData('transaction')
+            console.log(res)
         } catch (error) {
             console.log(error)
         } finally {

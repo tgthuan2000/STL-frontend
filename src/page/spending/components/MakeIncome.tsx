@@ -17,7 +17,7 @@ import {
 import useAuth from '~/store/auth'
 
 interface IAddIncomeForm {
-    amount: number | undefined
+    amount: number | string
     categorySpending: ICategorySpending | null
     methodSpending: IMethodSpending | null
     date: Date
@@ -58,7 +58,7 @@ const MakeIncome = () => {
 
     const { control, handleSubmit, reset } = useForm<IAddIncomeForm>({
         defaultValues: {
-            amount: undefined,
+            amount: '',
             categorySpending: null,
             methodSpending: null,
             date: new Date(),
@@ -111,7 +111,7 @@ const MakeIncome = () => {
             console.log(res)
             reset(
                 {
-                    amount: 0,
+                    amount: '',
                     categorySpending,
                     methodSpending,
                 },

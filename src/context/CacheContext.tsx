@@ -27,8 +27,8 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
         })
 
         cacheRef.current = cache
+        console.log(cacheRef.current)
     }
-
     const deleteCache = (payloads: { [x: string]: any }[]) => {
         const cache: Array<ICacheData<any>> = JSON.parse(JSON.stringify(cacheRef.current))
         let count = 0

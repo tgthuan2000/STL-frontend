@@ -12,7 +12,7 @@ import { F_GET_METHOD_SPENDING, GET_METHOD_SPENDING, GET_RECENT_SPENDING } from 
 import useAuth from '~/store/auth'
 
 interface IMakeTransferForm {
-    amount: number | undefined
+    amount: string | number
     methodSpendingFrom: IMethodSpending | null
     methodSpendingTo: IMethodSpending | null
     date: Date
@@ -46,7 +46,7 @@ const MakeTransfer = () => {
 
     const { control, handleSubmit, reset } = useForm<IMakeTransferForm>({
         defaultValues: {
-            amount: undefined,
+            amount: '',
             methodSpendingFrom: null,
             methodSpendingTo: null,
             date: new Date(),
@@ -114,7 +114,7 @@ const MakeTransfer = () => {
             console.log(result)
             reset(
                 {
-                    amount: 0,
+                    amount: '',
                     methodSpendingFrom,
                     methodSpendingTo,
                 },

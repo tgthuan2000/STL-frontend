@@ -17,7 +17,7 @@ import {
 import useAuth from '~/store/auth'
 
 interface IAddCostForm {
-    amount: number | undefined
+    amount: number | string
     categorySpending: ICategorySpending | null
     methodSpending: IMethodSpending | null
     description: string
@@ -59,7 +59,7 @@ const MakeCost = () => {
 
     const { control, handleSubmit, reset, watch } = useForm<IAddCostForm>({
         defaultValues: {
-            amount: undefined,
+            amount: '',
             categorySpending: null,
             methodSpending: null,
             description: '',
@@ -113,7 +113,7 @@ const MakeCost = () => {
             console.log(res)
             reset(
                 {
-                    amount: 0,
+                    amount: '',
                     categorySpending,
                     methodSpending,
                 },

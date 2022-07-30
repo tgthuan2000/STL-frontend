@@ -31,7 +31,7 @@ const assignLoading = <T extends { [x: string]: string }>(prev: Data<T>) => {
 const useQuery = <T extends { [x: string]: any }>(
     query: { [Property in keyof T]: string },
     params: { [y: string]: string | number } = {}
-): [Data<T>, () => Promise<void>, (keys_0: keyof T) => string, () => void] => {
+): [Data<T>, () => Promise<void>, (...keys: Array<keyof T>) => string, () => void] => {
     const { fetchApi, deleteCache, checkInCache } = useCache()
     const queryRef = useRef(query)
     const paramsRef = useRef(params)
@@ -85,7 +85,7 @@ const useQuery = <T extends { [x: string]: any }>(
     }, [queryRef, paramsRef, checkInCache])
 
     const deletedCaches = useCallback(
-        (...keys: [keyof T]) => {
+        (...keys: Array<keyof T>) => {
             const items = keys.map((key) => {
                 const { params, query } = data[key]
                 return { [key]: query, params }
