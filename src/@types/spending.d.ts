@@ -2,7 +2,7 @@ import { KIND_SPENDING } from '~/constant/spending'
 import { IUserProfile } from './auth'
 import { IKindSpending } from './context'
 
-export interface BoxProps {
+export interface ContentBoxProps {
     title?: string
     seeMore?: boolean
     children: React.ReactNode

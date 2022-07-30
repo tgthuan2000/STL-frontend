@@ -14,7 +14,7 @@ import {
     GET_TRANSACTION_DETAIL,
 } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
-import TransactionDetailForm, { TransactionDetailFormData } from './components/Transaction/DetailForm'
+import TransactionDetailForm, { TransactionDetailFormData } from './components/DetailForm'
 
 interface IDetailSpendingForm {
     amount: number

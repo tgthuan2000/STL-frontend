@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { MenuButtonProps } from '~/@types/spending'
 import { useSlideOver } from '~/context'
-import { SlideOver, Divider } from '~/components'
+import { SlideOver } from '~/components'
 import useAuth from '~/store/auth'
 
 const ButtonItem = ({ data }: MenuButtonProps) => {

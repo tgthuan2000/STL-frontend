@@ -2,15 +2,14 @@ import _, { isEmpty } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SpendingData, StatisticData } from '~/@types/spending'
-import { Divider } from '~/components'
+import { Box, ButtonMenu, Divider } from '~/components'
 import { menuMobile } from '~/constant/components'
-import { KIND_SPENDING } from '~/constant/spending'
 import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import { F_GET_METHOD_SPENDING, GET_RECENT_SPENDING, GET_STATISTIC_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 import { sum } from '~/util'
-import { ButtonMenu, Method, Recent, Statistic, Transaction } from './components'
+import { Method, Recent, Statistic } from './components'
 
 export interface DataMethodSanity {
     _id: string
@@ -127,8 +126,8 @@ const Dashboard = () => {
 
             <Divider className='xl:hidden py-6' />
 
-            <Transaction>
-                <Transaction.Box
+            <Box>
+                <Box.Content
                     className='xl:col-span-2 col-span-1'
                     title={dataStatistic?.dateRange.join(' - ') || ' '}
                     onReload={handleReload}
@@ -137,17 +136,17 @@ const Dashboard = () => {
                     fullWidth
                 >
                     <Statistic data={dataStatistic?.data} loading={statistic.loading} />
-                </Transaction.Box>
-                <Transaction.Box
+                </Box.Content>
+                <Box.Content
                     title='Giao dịch gần đây'
-                    to='transaction'
+                    to='Box/tab-all'
                     onReload={handleReload}
                     loading={recent.loading}
                     fullWidth
                 >
                     <Recent data={recent.data} loading={recent.loading} />
-                </Transaction.Box>
-                <Transaction.Box
+                </Box.Content>
+                <Box.Content
                     title='Phương thức thanh toán'
                     to='method'
                     onReload={handleReload}
@@ -155,8 +154,8 @@ const Dashboard = () => {
                     fullWidth
                 >
                     <Method data={dataMethod} loading={method.loading} />
-                </Transaction.Box>
-            </Transaction>
+                </Box.Content>
+            </Box>
         </>
     )
 }

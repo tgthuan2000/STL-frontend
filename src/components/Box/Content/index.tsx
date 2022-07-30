@@ -1,10 +1,19 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
-import { BoxProps } from '~/@types/spending'
+import { ContentBoxProps } from '~/@types/spending'
 import SeeMore from './SeeMore'
 import Title from './Title'
 
-const Box = ({ title, seeMore = true, children, to, onReload, loading, className, fullWidth }: BoxProps) => {
+const ContentBox = ({
+    title,
+    seeMore = true,
+    children,
+    to,
+    onReload,
+    loading,
+    className,
+    fullWidth,
+}: ContentBoxProps) => {
     const [parent] = useAutoAnimate<HTMLDivElement>()
     return (
         <div
@@ -21,4 +30,4 @@ const Box = ({ title, seeMore = true, children, to, onReload, loading, className
     )
 }
 
-export default Box
+export default ContentBox

@@ -1,18 +1,12 @@
 import { Outlet } from 'react-router-dom'
 import { ButtonMenu, ButtonMenuMobile } from '~/components'
-import { menuSpendingPages, menuSpendingPC } from '~/constant/components'
+import { menuLoanPages, menuLoanPC } from '~/constant/components'
 import { useLoading } from '~/context'
 import { useWindowSize } from '~/hook'
-import Dashboard from './dashboard'
-import Method from './method'
-import MethodDetail from './method-detail'
-import Transaction from './transaction'
-import TransactionDetail from './transaction-detail'
-import TransactionTabTable from './transaction-tab-table'
 
-const Spending = () => {
-    const { width } = useWindowSize()
+const Loan = () => {
     const { loading } = useLoading()
+    const { width } = useWindowSize()
 
     if (loading.config) return null
 
@@ -25,14 +19,14 @@ const Spending = () => {
                 {width >= 1280 ? (
                     <aside className='hidden xl:block xl:col-span-1'>
                         <div className='sticky z-20 top-6 space-y-4'>
-                            <ButtonMenu data={menuSpendingPC} />
+                            <ButtonMenu data={menuLoanPC} />
                         </div>
                     </aside>
                 ) : (
                     <>
                         <div className='h-16' />
                         <aside className='block xl:hidden fixed bottom-0 bg-white border-t-2 border-gray-300 left-0 right-0 h-16'>
-                            <ButtonMenuMobile data={menuSpendingPages} />
+                            <ButtonMenuMobile data={menuLoanPages} />
                         </aside>
                     </>
                 )}
@@ -41,11 +35,4 @@ const Spending = () => {
     )
 }
 
-Spending.Dashboard = Dashboard
-Spending.Transaction = Transaction
-Spending.TransactionDetail = TransactionDetail
-Spending.TransactionTabTable = TransactionTabTable
-Spending.Method = Method
-Spending.MethodDetail = MethodDetail
-
-export default Spending
+export default Loan

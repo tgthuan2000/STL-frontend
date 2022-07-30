@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending, SpendingData } from '~/@types/spending'
 import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
 import { useLoading } from '~/context'
-import { Data, DataCategory } from '../../transaction-detail'
+import { Data, DataCategory } from '../transaction-detail'
 
 interface IDetailSpendingForm {
     amount: number
