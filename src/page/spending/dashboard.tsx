@@ -139,7 +139,7 @@ const Dashboard = () => {
                 </Box.Content>
                 <Box.Content
                     title='Giao dịch gần đây'
-                    to='Box/tab-all'
+                    to='transaction/tab-all'
                     onReload={handleReload}
                     loading={recent.loading}
                     fullWidth

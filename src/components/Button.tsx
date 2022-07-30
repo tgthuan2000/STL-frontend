@@ -17,6 +17,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                     { 'border-transparent bg-green-600 text-white hover:bg-green-700': color === 'green' },
                     { 'border-transparent bg-blue-600 text-white hover:bg-blue-700': color === 'blue' },
                     {
+                        'border-transparent bg-prussian-blue-600 text-white hover:bg-prussian-blue-700':
+                            color === 'prussianBlue',
+                    },
+                    {
                         'border-transparent bg-radical-red-600 text-white hover:bg-radical-red-700':
                             color === 'radicalRed',
                     },

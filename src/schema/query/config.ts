@@ -6,6 +6,11 @@ export const GET_CONFIG = groq`
             _id,
             key,
             name
+        },
+        "kindLoan": *[_type == "kindLoan"] {
+            _id,
+            key,
+            name
         }
     }
 `

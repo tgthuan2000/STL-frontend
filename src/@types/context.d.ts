@@ -1,3 +1,4 @@
+import { KIND_LOAN } from '~/constant/loan'
 import { KIND_SPENDING } from '~/constant/spending'
 
 type LoadingItems = {
@@ -19,6 +20,8 @@ export interface IKindSpending {
 export interface IConfigContext {
     kindSpending: IKindSpending[]
     getKindSpendingId: (KEY: keyof typeof KIND_SPENDING) => string | undefined
+    kindLoan: any[]
+    getKindLoanId: (KEY: keyof typeof KIND_LOAN) => string | undefined
 }
 
 export interface ISlideOverContext {

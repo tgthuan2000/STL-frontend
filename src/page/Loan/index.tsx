@@ -3,6 +3,7 @@ import { ButtonMenu, ButtonMenuMobile } from '~/components'
 import { menuLoanPages, menuLoanPC } from '~/constant/components'
 import { useLoading } from '~/context'
 import { useWindowSize } from '~/hook'
+import Dashboard from './dashboard'
 
 const Loan = () => {
     const { loading } = useLoading()
@@ -34,5 +35,7 @@ const Loan = () => {
         </>
     )
 }
+
+Loan.Dashboard = Dashboard
 
 export default Loan

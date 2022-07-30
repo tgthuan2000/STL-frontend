@@ -64,6 +64,6 @@ export interface ButtonProps {
     children: React.ReactNode
     type: 'button' | 'submit' | 'reset'
     onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
-    color: 'primary' | 'outline' | 'cyan' | 'green' | 'blue' | 'radicalRed'
+    color: 'primary' | 'outline' | 'cyan' | 'green' | 'blue' | 'radicalRed' | 'prussianBlue'
     disabled?: boolean
 }

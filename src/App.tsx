@@ -77,7 +77,9 @@ function App() {
                                 <Route path='method/:id' element={<Spending.MethodDetail />} />
                             </Route>
                             <Route path='timekeeping' element={<TimeKeeping />} />
-                            <Route path='loan' element={<Loan />} />
+                            <Route path='loan' element={<Loan />}>
+                                <Route index element={<Loan.Dashboard />} />
+                            </Route>
                         </Route>
                         <Route path='/auth' element={<Auth />} />
                     </Routes>

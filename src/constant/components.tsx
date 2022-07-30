@@ -13,6 +13,7 @@ import {
 } from '@heroicons/react/outline'
 import { googleLogout } from '@react-oauth/google'
 import { IMenuBtn } from '~/@types/spending'
+import { CreateMember, MakeGetLoan, MakeLoan } from '~/page/Loan/components'
 import { MakeIncome, MakeCost, MakeTransfer, AddCategory, AddMethod } from '~/page/spending/components'
 
 export const menuMobile: IMenuBtn[] = [
@@ -142,30 +143,30 @@ export const menuLoanPC: IMenuBtn[] = [
         title: 'Vay tiền',
         color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300',
         icon: TrendingUpIcon,
-        children: () => <MakeIncome />,
-        to: '?slide=add-income',
+        children: () => <MakeGetLoan />,
+        to: '?slide=get-loan',
         query: {
-            slide: 'add-income',
+            slide: 'get-loan',
         },
     },
     {
         title: 'Cho vay tiền',
         color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300',
         icon: TrendingDownIcon,
-        children: () => <MakeCost />,
-        to: '?slide=add-payment',
+        children: () => <MakeLoan />,
+        to: '?slide=loan',
         query: {
-            slide: 'add-payment',
+            slide: 'loan',
         },
     },
     {
         title: 'Tạo thành viên',
         color: 'text-green-700 bg-green-200 hover:bg-green-300',
         icon: UserAddIcon,
-        children: () => <MakeTransfer />,
-        to: '?slide=transfer',
+        children: () => <CreateMember />,
+        to: '?slide=create-member',
         query: {
-            slide: 'transfer',
+            slide: 'create-member',
         },
     },
     {
