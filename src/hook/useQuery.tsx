@@ -35,6 +35,7 @@ const useQuery = <T extends { [x: string]: any }>(
     const { fetchApi, deleteCache, checkInCache } = useCache()
     const queryRef = useRef(query)
     const paramsRef = useRef(params)
+    const [reload, setReload] = useState(false)
 
     useEffect(() => {
         queryRef.current = query
@@ -94,8 +95,6 @@ const useQuery = <T extends { [x: string]: any }>(
         },
         [deleteCache, query]
     )
-
-    const [reload, setReload] = useState(false)
 
     const reloadData = () => {
         setReload(true)
