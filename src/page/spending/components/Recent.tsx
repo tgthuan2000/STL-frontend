@@ -5,7 +5,6 @@ import clsx from 'clsx'
 import _ from 'lodash'
 import { RecentProps } from '~/@types/spending'
 import { KIND_SPENDING } from '~/constant/spending'
-import { Fragment } from 'react'
 
 const Recent = ({ data, loading }: RecentProps) => {
     if (loading) return <RecentSkeleton />

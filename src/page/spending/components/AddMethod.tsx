@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { Button, Input } from '~/components'
 import { SlideOverHOC, useCache, useConfig, useSlideOver } from '~/context'
 import { client } from '~/sanityConfig'
-import { F_GET_METHOD_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
+import { getMethodKindSpending, getMethodSpending } from '~/services/query'
 import useAuth from '~/store/auth'
 
 interface IAddMethodForm {
@@ -19,7 +19,7 @@ const AddMethod = () => {
     const { deleteCache } = useCache()
     const { kindSpending } = useConfig()
 
-    const { control, handleSubmit } = useForm<IAddMethodForm>({
+    const form = useForm<IAddMethodForm>({
         defaultValues: {
             name: '',
         },
@@ -45,14 +45,8 @@ const AddMethod = () => {
             await client.create(document)
             // navigate to dashboard
             const result = deleteCache([
-                {
-                    method: F_GET_METHOD_SPENDING(kindSpending),
-                    params: { userId: userProfile?._id },
-                },
-                {
-                    methodSpending: GET_METHOD_SPENDING,
-                    params: { userId: userProfile?._id },
-                },
+                getMethodKindSpending({ userProfile, kindSpending }),
+                getMethodSpending({ userProfile }),
             ])
             console.log(result)
             alert('Tạo mới phương thức thanh toán thành công!')
@@ -66,14 +60,14 @@ const AddMethod = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit(onsubmit)} className='flex h-full flex-col'>
+        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
             <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
                 <div className='flex flex-1 flex-col justify-between'>
                     <div className='divide-y divide-gray-200 px-4 sm:px-6'>
                         <div className='space-y-6 pt-6 pb-5'>
-                            <Controller
+                            <Input
                                 name='name'
-                                control={control}
+                                form={form}
                                 rules={{
                                     required: 'Yêu cầu nhập tên phương thức thanh toán!',
                                     maxLength: {
@@ -81,9 +75,8 @@ const AddMethod = () => {
                                         message: 'Tên phương thức thanh toán không được vượt quá 50 ký tự!',
                                     },
                                 }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <Input type='text' label='Tên phương thức thanh toán' error={error} {...field} />
-                                )}
+                                type='text'
+                                label='Tên phương thức thanh toán'
                             />
                         </div>
                     </div>

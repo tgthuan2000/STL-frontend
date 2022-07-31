@@ -110,6 +110,6 @@ export const GET_STATISTIC_SPENDING = groq`
         _id,
         name,
         key,
-        "data": *[_type == "spending" && user._ref == $userId  && kindSpending._ref == ^._id].amount,
+        "data": *[_type == "spending" && user._ref == $userId  && kindSpending._ref == ^._id && $startDate <= date && date <= $endDate].amount,
     }
 `

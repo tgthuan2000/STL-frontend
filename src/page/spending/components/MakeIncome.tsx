@@ -1,21 +1,15 @@
 import _ from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending } from '~/@types/spending'
 import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
-import {
-    F_GET_METHOD_SPENDING,
-    GETALL_RECENT_SPENDING,
-    GET_CATEGORY_SPENDING,
-    GET_METHOD_SPENDING,
-    GET_RECENT_SPENDING,
-    GET_STATISTIC_SPENDING,
-} from '~/schema/query/spending'
+import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
+import { getMethodKindSpending, getAllRecentSpending, getRecentSpending, getStatisticSpending } from '~/services/query'
 import useAuth from '~/store/auth'
 
 interface IAddIncomeForm {
@@ -58,7 +52,7 @@ const MakeIncome = () => {
         }
     }, [kindSpendingId])
 
-    const { control, handleSubmit, reset } = useForm<IAddIncomeForm>({
+    const form = useForm<IAddIncomeForm>({
         defaultValues: {
             amount: '',
             categorySpending: null,
@@ -101,25 +95,13 @@ const MakeIncome = () => {
             await client.create(document)
             // navigate to dashboard
             const res = deleteCache([
-                {
-                    statistic: GET_STATISTIC_SPENDING,
-                    params: { userId: userProfile?._id },
-                },
-                {
-                    method: F_GET_METHOD_SPENDING(kindSpending),
-                    params: { userId: userProfile?._id },
-                },
-                {
-                    recent: GET_RECENT_SPENDING,
-                    params: { userId: userProfile?._id, from: 0, to: 5 },
-                },
-                {
-                    recent: GETALL_RECENT_SPENDING,
-                    params: { userId: userProfile?._id },
-                },
+                getStatisticSpending({ userProfile }),
+                getMethodKindSpending({ userProfile, kindSpending }),
+                getRecentSpending({ userProfile }),
+                getAllRecentSpending({ userProfile }),
             ])
             console.log(res)
-            reset(
+            form.reset(
                 {
                     amount: '',
                     categorySpending,
@@ -192,14 +174,14 @@ const MakeIncome = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit(onsubmit)} className='flex h-full flex-col'>
+        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
             <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
                 <div className='flex flex-1 flex-col justify-between'>
                     <div className='divide-y divide-gray-200 px-4 sm:px-6'>
                         <div className='space-y-6 pt-6 pb-5'>
-                            <Controller
+                            <Input
                                 name='amount'
-                                control={control}
+                                form={form}
                                 rules={{
                                     required: 'Yêu cầu nhập thu nhập!',
                                     min: {
@@ -207,71 +189,54 @@ const MakeIncome = () => {
                                         message: 'Thu nhập phải lớn hơn 0!',
                                     },
                                 }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <Input type='number' label='Thu nhập' error={error} {...field} />
-                                )}
+                                type='number'
+                                label='Thu nhập'
                             />
-                            <Controller
+
+                            <AutoComplete
                                 name='categorySpending'
-                                control={control}
+                                form={form}
                                 rules={{
                                     required: 'Yêu cầu chọn thể loại!',
                                 }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <AutoComplete
-                                        data={categorySpending.data}
-                                        label='Thể loại'
-                                        error={error}
-                                        loading={categorySpending.loading}
-                                        addMore={handleAddMoreCategorySpending}
-                                        onReload={
-                                            _.isEmpty(categorySpending.data)
-                                                ? undefined
-                                                : () => handleReloadData('categorySpending')
-                                        }
-                                        {...field}
-                                    />
-                                )}
+                                data={categorySpending.data}
+                                label='Thể loại'
+                                loading={categorySpending.loading}
+                                addMore={handleAddMoreCategorySpending}
+                                onReload={
+                                    _.isEmpty(categorySpending.data)
+                                        ? undefined
+                                        : () => handleReloadData('categorySpending')
+                                }
                             />
-                            <Controller
+
+                            <AutoComplete
                                 name='methodSpending'
-                                control={control}
+                                form={form}
                                 rules={{
                                     required: 'Yêu cầu chọn phương thức thanh toán!',
                                 }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <AutoComplete
-                                        data={methodSpending.data}
-                                        label='Phương thức thanh toán'
-                                        error={error}
-                                        loading={methodSpending.loading}
-                                        addMore={handleAddMoreMethodSpending}
-                                        onReload={
-                                            _.isEmpty(methodSpending.data)
-                                                ? undefined
-                                                : () => handleReloadData('methodSpending')
-                                        }
-                                        {...field}
-                                    />
-                                )}
+                                data={methodSpending.data}
+                                label='Phương thức thanh toán'
+                                loading={methodSpending.loading}
+                                addMore={handleAddMoreMethodSpending}
+                                onReload={
+                                    _.isEmpty(methodSpending.data)
+                                        ? undefined
+                                        : () => handleReloadData('methodSpending')
+                                }
                             />
-                            <Controller
+
+                            <DatePicker
                                 name='date'
-                                control={control}
+                                form={form}
                                 rules={{
                                     required: 'Yêu cầu chọn ngày!',
                                 }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <DatePicker label='Ngày' error={error} {...field} />
-                                )}
+                                label='Ngày'
                             />
-                            <Controller
-                                name='description'
-                                control={control}
-                                render={({ field, fieldState: { error } }) => (
-                                    <TextArea label='Ghi chú' error={error} {...field} />
-                                )}
-                            />
+
+                            <TextArea name='description' form={form} label='Ghi chú' />
                         </div>
                     </div>
                 </div>

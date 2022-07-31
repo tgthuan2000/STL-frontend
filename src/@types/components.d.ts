@@ -1,13 +1,8 @@
 import React, { HTMLInputTypeAttribute } from 'react'
-import { Control, FieldError, UseFormReturn, ValidationRule } from 'react-hook-form'
+import { Control, FieldError, RegisterOptions, UseFormReturn, ValidationRule } from 'react-hook-form'
 
 export interface SlideParams {
     slide?: string
-}
-interface RulesValidate {
-    required?: string | ValidationRule<boolean>
-    min?: ValidationRule<string | number>
-    max?: ValidationRule<string | number>
 }
 export interface AutoCompleteProps {
     name: string
@@ -45,7 +40,7 @@ export interface InputProps {
     name: string
     type?: HTMLInputTypeAttribute
     form: UseFormReturn<any, object>
-    rules?: RulesValidate
+    rules?: Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
 }
 
 export interface DateProps {

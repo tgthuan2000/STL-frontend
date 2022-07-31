@@ -14,6 +14,7 @@ import {
     GET_METHOD_SPENDING,
     GET_RECENT_SPENDING,
 } from '~/schema/query/spending'
+import { getAllRecentSpending, getMethodKindSpending, getRecentSpending } from '~/services/query'
 import useAuth from '~/store/auth'
 
 interface IMakeTransferForm {
@@ -49,7 +50,7 @@ const MakeTransfer = () => {
         fetchData()
     }, [])
 
-    const { control, handleSubmit, reset } = useForm<IMakeTransferForm>({
+    const form = useForm<IMakeTransferForm>({
         defaultValues: {
             amount: '',
             methodSpendingFrom: null,
@@ -107,21 +108,12 @@ const MakeTransfer = () => {
             await client.transaction().create(document1).create(document2).commit()
             // navigate to dashboard
             const result = deleteCache([
-                {
-                    method: F_GET_METHOD_SPENDING(kindSpending),
-                    params: { userId: userProfile?._id },
-                },
-                {
-                    recent: GET_RECENT_SPENDING,
-                    params: { userId: userProfile?._id, from: 0, to: 5 },
-                },
-                {
-                    recent: GETALL_RECENT_SPENDING,
-                    params: { userId: userProfile?._id },
-                },
+                getMethodKindSpending({ userProfile, kindSpending }),
+                getRecentSpending({ userProfile }),
+                getAllRecentSpending({ userProfile }),
             ])
             console.log(result)
-            reset(
+            form.reset(
                 {
                     amount: '',
                     methodSpendingFrom,
@@ -169,14 +161,14 @@ const MakeTransfer = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit(onsubmit)} className='flex h-full flex-col'>
+        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
             <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
                 <div className='flex flex-1 flex-col justify-between'>
                     <div className='divide-y divide-gray-200 px-4 sm:px-6'>
                         <div className='space-y-6 pt-6 pb-5'>
-                            <Controller
+                            <Input
                                 name='amount'
-                                control={control}
+                                form={form}
                                 rules={{
                                     required: 'Yêu cầu nhập số tiền!',
                                     min: {
@@ -184,71 +176,54 @@ const MakeTransfer = () => {
                                         message: 'Số tiền phải lớn hơn 0!',
                                     },
                                 }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <Input type='number' label='Số tiền' error={error} {...field} />
-                                )}
+                                type='number'
+                                label='Số tiền'
                             />
-                            <Controller
+
+                            <AutoComplete
                                 name='methodSpendingFrom'
-                                control={control}
+                                form={form}
                                 rules={{
                                     required: 'Yêu cầu chọn phương thức thanh toán!',
                                 }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <AutoComplete
-                                        data={methodSpending.data}
-                                        label='Từ phương thức thanh toán'
-                                        error={error}
-                                        loading={methodSpending.loading}
-                                        addMore={handleAddMoreMethodSpending}
-                                        onReload={
-                                            _.isEmpty(methodSpending.data)
-                                                ? undefined
-                                                : () => handleReloadData('methodSpending')
-                                        }
-                                        {...field}
-                                    />
-                                )}
+                                data={methodSpending.data}
+                                label='Từ phương thức thanh toán'
+                                loading={methodSpending.loading}
+                                addMore={handleAddMoreMethodSpending}
+                                onReload={
+                                    _.isEmpty(methodSpending.data)
+                                        ? undefined
+                                        : () => handleReloadData('methodSpending')
+                                }
                             />
-                            <Controller
+
+                            <AutoComplete
                                 name='methodSpendingTo'
-                                control={control}
+                                form={form}
                                 rules={{
                                     required: 'Yêu cầu chọn phương thức thanh toán!',
                                 }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <AutoComplete
-                                        data={methodSpending.data}
-                                        label='Đến phương thức thanh toán'
-                                        error={error}
-                                        loading={methodSpending.loading}
-                                        addMore={handleAddMoreMethodSpending}
-                                        onReload={
-                                            _.isEmpty(methodSpending.data)
-                                                ? undefined
-                                                : () => handleReloadData('methodSpending')
-                                        }
-                                        {...field}
-                                    />
-                                )}
+                                data={methodSpending.data}
+                                label='Đến phương thức thanh toán'
+                                loading={methodSpending.loading}
+                                addMore={handleAddMoreMethodSpending}
+                                onReload={
+                                    _.isEmpty(methodSpending.data)
+                                        ? undefined
+                                        : () => handleReloadData('methodSpending')
+                                }
                             />
-                            <Controller
+
+                            <DatePicker
                                 name='date'
-                                control={control}
+                                form={form}
                                 rules={{
                                     required: 'Yêu cầu chọn ngày!',
                                 }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <DatePicker label='Ngày' error={error} {...field} />
-                                )}
+                                label='Ngày'
                             />
-                            <Controller
-                                name='description'
-                                control={control}
-                                render={({ field, fieldState: { error } }) => (
-                                    <TextArea label='Ghi chú' error={error} {...field} />
-                                )}
-                            />
+
+                            <TextArea name='description' form={form} label='Ghi chú' />
                         </div>
                     </div>
                 </div>

@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { IKindSpending } from '~/@types/context'
 import { Button, Input, Selection } from '~/components'
 import { KIND_SPENDING } from '~/constant/spending'
 import { SlideOverHOC, useCache, useConfig, useSlideOver } from '~/context'
 import { client } from '~/sanityConfig'
-import { GET_CATEGORY_SPENDING } from '~/schema/query/spending'
+import { getCategorySpending } from '~/services/query'
 import useAuth from '~/store/auth'
 
 interface IAddCategoryForm {
@@ -20,7 +20,7 @@ const AddCategory = () => {
     const { userProfile } = useAuth()
     const [loading, setLoading] = useState(false)
     const { deleteCache } = useCache()
-    const { control, handleSubmit } = useForm<IAddCategoryForm>({
+    const form = useForm<IAddCategoryForm>({
         defaultValues: {
             name: '',
             kindSpending: null,
@@ -55,12 +55,7 @@ const AddCategory = () => {
         try {
             await client.create(document)
             // navigate to dashboard
-            const result = deleteCache([
-                {
-                    categorySpending: GET_CATEGORY_SPENDING,
-                    params: { userId: userProfile?._id, kindSpending: kindSpending?._id },
-                },
-            ])
+            const result = deleteCache([getCategorySpending({ userProfile, kindSpending })])
             console.log(result)
             alert('Tạo mới thể loại thành công!')
             // setIsOpen(false)
@@ -73,33 +68,27 @@ const AddCategory = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit(onsubmit)} className='flex h-full flex-col'>
+        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
             <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
                 <div className='flex flex-1 flex-col justify-between'>
                     <div className='divide-y divide-gray-200 px-4 sm:px-6'>
                         <div className='space-y-6 pt-6 pb-5'>
-                            <Controller
+                            <Selection
                                 name='kindSpending'
-                                control={control}
+                                form={form}
                                 rules={{
                                     required: 'Yêu cầu chọn thể loại!',
                                 }}
-                                render={({ field: { value, onChange }, fieldState: { error } }) => (
-                                    <Selection
-                                        label='Thể loại'
-                                        placeholder='--- Chọn thể loại ---'
-                                        data={kinds}
-                                        idKey='_id'
-                                        valueKey='name'
-                                        error={error}
-                                        value={value}
-                                        onChange={onChange}
-                                    />
-                                )}
+                                label='Thể loại'
+                                placeholder='--- Chọn thể loại ---'
+                                data={kinds}
+                                idKey='_id'
+                                valueKey='name'
                             />
-                            <Controller
+
+                            <Input
                                 name='name'
-                                control={control}
+                                form={form}
                                 rules={{
                                     required: 'Yêu cầu nhập tên thể loại!',
                                     maxLength: {
@@ -107,9 +96,8 @@ const AddCategory = () => {
                                         message: 'Tên thể loại không được vượt quá 50 ký tự!',
                                     },
                                 }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <Input type='text' label='Tên thể loại' error={error} {...field} />
-                                )}
+                                type='text'
+                                label='Tên thể loại'
                             />
                         </div>
                     </div>

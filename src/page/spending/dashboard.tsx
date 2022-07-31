@@ -7,6 +7,7 @@ import { menuMobile } from '~/constant/components'
 import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import { F_GET_METHOD_SPENDING, GET_RECENT_SPENDING, GET_STATISTIC_SPENDING } from '~/schema/query/spending'
+import { getDate } from '~/services'
 import useAuth from '~/store/auth'
 import { sum } from '~/util'
 import { Method, Recent, Statistic } from './components'
@@ -24,14 +25,6 @@ interface IData {
     recent: SpendingData[]
     method: DataMethodSanity[]
     statistic: StatisticData[]
-}
-
-const getDate = (type: 'start' | 'end' = 'start') => {
-    const date = new Date()
-    if (type === 'start') {
-        return new Date(date.getFullYear(), date.getMonth(), 1).toISOString()
-    }
-    return new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString()
 }
 
 const Dashboard = () => {

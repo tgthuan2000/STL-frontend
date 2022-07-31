@@ -4,15 +4,20 @@ import { useEffect, useMemo } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending, SpendingData } from '~/@types/spending'
-import { useCache, useLoading } from '~/context'
+import { useCache, useConfig, useLoading } from '~/context'
 import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import {
+    F_GET_METHOD_SPENDING,
     GETALL_RECENT_SPENDING,
     GET_CATEGORY_SPENDING,
     GET_METHOD_SPENDING,
+    GET_RECENT_SPENDING,
+    GET_STATISTIC_SPENDING,
     GET_TRANSACTION_DETAIL,
 } from '~/schema/query/spending'
+import { getDate } from '~/services'
+import { getAllRecentSpending, getMethodKindSpending, getRecentSpending, getStatisticSpending } from '~/services/query'
 import useAuth from '~/store/auth'
 import TransactionDetailForm, { TransactionDetailFormData } from './components/DetailForm'
 
@@ -36,6 +41,7 @@ const TransactionDetail = () => {
     const { setSubmitLoading } = useLoading()
     const { id } = useParams()
     const { deleteCache } = useCache()
+    const { kindSpending: _kindSpending } = useConfig()
 
     const [{ transaction, methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
         {
@@ -159,16 +165,17 @@ const TransactionDetail = () => {
             console.log(res)
 
             const caches = deleteCache([
-                {
-                    recent: GETALL_RECENT_SPENDING,
-                    params: { userId: userProfile?._id },
-                },
+                getAllRecentSpending({ userProfile }),
+                getRecentSpending({ userProfile }),
+                getMethodKindSpending({ userProfile, kindSpending: _kindSpending }),
+                getStatisticSpending({ userProfile }),
             ])
             console.log(caches)
         } catch (error) {
             console.log(error)
         } finally {
             setSubmitLoading(false)
+
             // navigate('/spending', {
             //     replace: true,
             // })
@@ -180,6 +187,13 @@ const TransactionDetail = () => {
         try {
             setSubmitLoading(true)
             await client.delete(id as string)
+            const caches = deleteCache([
+                getAllRecentSpending({ userProfile }),
+                getRecentSpending({ userProfile }),
+                getMethodKindSpending({ userProfile, kindSpending: _kindSpending }),
+                getStatisticSpending({ userProfile }),
+            ])
+            console.log(caches)
         } catch (error) {
             console.log(error)
         } finally {
