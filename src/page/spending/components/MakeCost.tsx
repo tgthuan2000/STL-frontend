@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending } from '~/@types/spending'
 import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
-import { useQuery } from '~/hook'
+import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
 import { getMethodKindSpending, getAllRecentSpending, getRecentSpending, getStatisticSpending } from '~/services/query'
@@ -30,7 +30,8 @@ const MakeCost = () => {
     const { userProfile } = useAuth()
     const { deleteCache } = useCache()
     const { loading, setSubmitLoading } = useLoading()
-    const { getKindSpendingId, kindSpending } = useConfig()
+    const { getKindSpendingId } = useConfig()
+    const { METHOD_KIND_SPENDING, RECENT_SPENDING, ALL_RECENT_SPENDING, STATISTIC_SPENDING } = useServiceQuery()
 
     const kindSpendingId = useMemo(() => {
         return getKindSpendingId('COST')
@@ -96,12 +97,7 @@ const MakeCost = () => {
         try {
             await client.create(document)
             // navigate to dashboard
-            const res = deleteCache([
-                getStatisticSpending({ userProfile }),
-                getMethodKindSpending({ userProfile, kindSpending }),
-                getRecentSpending({ userProfile }),
-                getAllRecentSpending({ userProfile }),
-            ])
+            const res = deleteCache([METHOD_KIND_SPENDING, RECENT_SPENDING, ALL_RECENT_SPENDING, STATISTIC_SPENDING])
             console.log(res)
             form.reset(
                 {

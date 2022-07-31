@@ -3,6 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { Button, Input } from '~/components'
 import { SlideOverHOC, useCache, useConfig, useSlideOver } from '~/context'
+import { useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { getMethodKindSpending, getMethodSpending } from '~/services/query'
 import useAuth from '~/store/auth'
@@ -17,7 +18,7 @@ const AddMethod = () => {
     const { userProfile } = useAuth()
     const [loading, setLoading] = useState(false)
     const { deleteCache } = useCache()
-    const { kindSpending } = useConfig()
+    const { METHOD_KIND_SPENDING, METHOD_SPENDING } = useServiceQuery()
 
     const form = useForm<IAddMethodForm>({
         defaultValues: {
@@ -44,10 +45,7 @@ const AddMethod = () => {
         try {
             await client.create(document)
             // navigate to dashboard
-            const result = deleteCache([
-                getMethodKindSpending({ userProfile, kindSpending }),
-                getMethodSpending({ userProfile }),
-            ])
+            const result = deleteCache([METHOD_KIND_SPENDING, METHOD_SPENDING])
             console.log(result)
             alert('Tạo mới phương thức thanh toán thành công!')
             // setIsOpen(false)

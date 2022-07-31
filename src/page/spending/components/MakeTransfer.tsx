@@ -1,20 +1,14 @@
 import _ from 'lodash'
 import moment from 'moment'
 import { useEffect } from 'react'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { IMethodSpending } from '~/@types/spending'
 import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
-import { useQuery } from '~/hook'
+import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
-import {
-    F_GET_METHOD_SPENDING,
-    GETALL_RECENT_SPENDING,
-    GET_METHOD_SPENDING,
-    GET_RECENT_SPENDING,
-} from '~/schema/query/spending'
-import { getAllRecentSpending, getMethodKindSpending, getRecentSpending } from '~/services/query'
+import { GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 
 interface IMakeTransferForm {
@@ -35,7 +29,8 @@ const MakeTransfer = () => {
     const { userProfile } = useAuth()
     const { deleteCache } = useCache()
     const { loading, setSubmitLoading } = useLoading()
-    const { getKindSpendingId, kindSpending } = useConfig()
+    const { getKindSpendingId } = useConfig()
+    const { METHOD_KIND_SPENDING, RECENT_SPENDING, ALL_RECENT_SPENDING } = useServiceQuery()
 
     const [{ methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
         {
@@ -107,11 +102,7 @@ const MakeTransfer = () => {
         try {
             await client.transaction().create(document1).create(document2).commit()
             // navigate to dashboard
-            const result = deleteCache([
-                getMethodKindSpending({ userProfile, kindSpending }),
-                getRecentSpending({ userProfile }),
-                getAllRecentSpending({ userProfile }),
-            ])
+            const result = deleteCache([METHOD_KIND_SPENDING, RECENT_SPENDING, ALL_RECENT_SPENDING])
             console.log(result)
             form.reset(
                 {
