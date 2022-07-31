@@ -47,7 +47,7 @@ const MakeTransfer = () => {
         fetchData()
     }, [])
 
-    const { control, handleSubmit, reset } = useForm<IMakeTransferForm>({
+    const form = useForm<IMakeTransferForm>({
         defaultValues: {
             userName: '',
             image: null,
@@ -71,7 +71,7 @@ const MakeTransfer = () => {
         try {
             await client.transaction().create(document).commit()
             // navigate to dashboard
-            reset(
+            form.reset(
                 {
                     userName: '',
                     image: null,
@@ -118,26 +118,25 @@ const MakeTransfer = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit(onsubmit)} className='flex h-full flex-col'>
+        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
             <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
                 <div className='flex flex-1 flex-col justify-between'>
                     <div className='divide-y divide-gray-200 px-4 sm:px-6'>
                         <div className='space-y-6 pt-6 pb-5'>
-                            <Controller
+                            <Input
                                 name='userName'
-                                control={control}
+                                form={form}
                                 rules={{
                                     required: 'Yêu cầu nhập tên thành viên!',
                                 }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <Input type='text' label='Họ và tên' error={error} {...field} />
-                                )}
+                                type='text'
+                                label='Họ và tên'
                             />
-                            <Controller
+                            {/* <Controller
                                 name='image'
-                                control={control}
+                                form={form}
                                 render={({ field, fieldState: { error } }) => <div>hello</div>}
-                            />
+                            /> */}
                         </div>
                     </div>
                 </div>

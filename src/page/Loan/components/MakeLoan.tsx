@@ -53,7 +53,7 @@ const MakeLoan = () => {
         }
     }, [kindLoanId])
 
-    const { control, handleSubmit, reset } = useForm<IAddIncomeForm>({
+    const form = useForm<IAddIncomeForm>({
         defaultValues: {
             amount: '',
             categorySpending: null,
@@ -96,7 +96,7 @@ const MakeLoan = () => {
         try {
             await client.create(document)
             // navigate to dashboard
-            reset(
+            form.reset(
                 {
                     amount: '',
                     methodSpending,
@@ -123,14 +123,14 @@ const MakeLoan = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit(onsubmit)} className='flex h-full flex-col'>
+        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
             <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
                 <div className='flex flex-1 flex-col justify-between'>
                     <div className='divide-y divide-gray-200 px-4 sm:px-6'>
                         <div className='space-y-6 pt-6 pb-5'>
-                            <Controller
+                            <Input
                                 name='amount'
-                                control={control}
+                                form={form}
                                 rules={{
                                     required: 'Yêu cầu nhập số tiền!',
                                     min: {
@@ -138,66 +138,43 @@ const MakeLoan = () => {
                                         message: 'Số tiền phải lớn hơn 0!',
                                     },
                                 }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <Input type='number' label='Số tiền' error={error} {...field} />
-                                )}
+                                type='number'
+                                label='Số tiền'
                             />
-                            <Controller
+
+                            <AutoComplete
                                 name='methodSpending'
-                                control={control}
+                                form={form}
                                 rules={{
                                     required: 'Yêu cầu chọn phương thức thanh toán!',
                                 }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <AutoComplete
-                                        data={methodSpending.data}
-                                        label='Phương thức thanh toán'
-                                        error={error}
-                                        loading={methodSpending.loading}
-                                        onReload={
-                                            _.isEmpty(methodSpending.data)
-                                                ? undefined
-                                                : () => handleReloadData('methodSpending')
-                                        }
-                                        {...field}
-                                    />
-                                )}
+                                data={methodSpending.data}
+                                label='Phương thức thanh toán'
+                                loading={methodSpending.loading}
+                                onReload={
+                                    _.isEmpty(methodSpending.data)
+                                        ? undefined
+                                        : () => handleReloadData('methodSpending')
+                                }
                             />
-                            <Controller
-                                name='payDate'
-                                control={control}
-                                render={({ field, fieldState: { error } }) => (
-                                    <DatePicker label='Ngày trả' error={error} {...field} />
-                                )}
-                            />
-                            <Controller
+
+                            <DatePicker name='payDate' form={form} label='Ngày trả' />
+
+                            <AutoComplete
                                 name='userLoan'
-                                control={control}
+                                form={form}
                                 rules={{
                                     required: 'Yêu cầu chọn đối tượng vay!',
                                 }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <AutoComplete
-                                        data={userLoan.data}
-                                        label='Đối tượng vay'
-                                        valueKey='userName'
-                                        error={error}
-                                        loading={userLoan.loading}
-                                        // multiple
-                                        onReload={
-                                            _.isEmpty(userLoan.data) ? undefined : () => handleReloadData('userLoan')
-                                        }
-                                        {...field}
-                                    />
-                                )}
+                                data={userLoan.data}
+                                label='Đối tượng vay'
+                                valueKey='userName'
+                                loading={userLoan.loading}
+                                // multiple
+                                onReload={_.isEmpty(userLoan.data) ? undefined : () => handleReloadData('userLoan')}
                             />
-                            <Controller
-                                name='description'
-                                control={control}
-                                render={({ field, fieldState: { error } }) => (
-                                    <TextArea label='Ghi chú' error={error} {...field} />
-                                )}
-                            />
+
+                            <TextArea name='description' form={form} label='Ghi chú' />
                         </div>
                     </div>
                 </div>
