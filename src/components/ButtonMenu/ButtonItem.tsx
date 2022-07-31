@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { Link, useNavigate } from 'react-router-dom'
-import { MenuButtonProps } from '~/@types/spending'
+import { MenuButtonProps } from '~/@types/components'
 import { useSlideOver } from '~/context'
 import { SlideOver, Divider } from '~/components'
 import useAuth from '~/store/auth'

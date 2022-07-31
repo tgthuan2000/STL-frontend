@@ -2,10 +2,9 @@ import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { Button, Input } from '~/components'
-import { SlideOverHOC, useCache, useConfig, useSlideOver } from '~/context'
+import { SlideOverHOC, useCache, useSlideOver } from '~/context'
 import { useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
-import { getMethodKindSpending, getMethodSpending } from '~/services/query'
 import useAuth from '~/store/auth'
 
 interface IAddMethodForm {

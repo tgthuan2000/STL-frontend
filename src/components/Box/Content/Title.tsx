@@ -1,4 +1,3 @@
-import { RefreshIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import LoadingButton from '~/components/Loading/LoadingButton'
 

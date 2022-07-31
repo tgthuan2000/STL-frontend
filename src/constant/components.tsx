@@ -12,8 +12,8 @@ import {
     UserAddIcon,
 } from '@heroicons/react/outline'
 import { googleLogout } from '@react-oauth/google'
-import { IMenuBtn } from '~/@types/spending'
-import { CreateMember, MakeGetLoan, MakeLoan } from '~/page/Loan/components'
+import { IMenuBtn } from '~/@types/components'
+import { CreateMember, MakeGetLoan, MakeLoan } from '~/page/loan/components'
 import { MakeIncome, MakeCost, MakeTransfer, AddCategory, AddMethod } from '~/page/spending/components'
 
 export const menuMobile: IMenuBtn[] = [

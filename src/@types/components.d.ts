@@ -67,3 +67,28 @@ export interface ButtonProps {
     color: 'primary' | 'outline' | 'cyan' | 'green' | 'blue' | 'radicalRed' | 'prussianBlue'
     disabled?: boolean
 }
+
+export interface ContentBoxProps {
+    title?: string
+    seeMore?: boolean
+    children: React.ReactNode
+    to?: string
+    onReload?: () => void
+    loading?: boolean
+    className?: string
+    fullWidth?: boolean
+}
+export interface MenuButtonProps {
+    data: IMenuBtn
+}
+
+export interface IMenuBtn {
+    title: string
+    icon: (props: SVGProps<SVGSVGElement>) => JSX.Element
+    color: string
+    to: To
+    children?: () => React.ReactNode
+    query?: SlideParams
+    divider?: boolean
+    action?: (cb: () => void) => void
+}

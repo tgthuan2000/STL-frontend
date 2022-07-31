@@ -2,16 +2,6 @@ import { KIND_SPENDING } from '~/constant/spending'
 import { IUserProfile } from './auth'
 import { IKindSpending } from './context'
 
-export interface ContentBoxProps {
-    title?: string
-    seeMore?: boolean
-    children: React.ReactNode
-    to?: string
-    onReload?: () => void
-    loading?: boolean
-    className?: string
-    fullWidth?: boolean
-}
 export interface SpendingData {
     _id: string
     _createdAt: string
@@ -64,21 +54,6 @@ export interface MethodData {
 export interface MethodProps {
     data: MethodData[] | undefined
     loading: boolean
-}
-
-export interface IMenuBtn {
-    title: string
-    icon: (props: SVGProps<SVGSVGElement>) => JSX.Element
-    color: string
-    to: To
-    children?: () => React.ReactNode
-    query?: SlideParams
-    divider?: boolean
-    action?: (cb: () => void) => void
-}
-
-export interface MenuButtonProps {
-    data: IMenuBtn
 }
 
 export interface ICategorySpending {

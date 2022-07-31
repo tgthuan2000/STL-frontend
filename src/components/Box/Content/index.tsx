@@ -1,6 +1,6 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
-import { ContentBoxProps } from '~/@types/spending'
+import { ContentBoxProps } from '~/@types/components'
 import SeeMore from './SeeMore'
 import Title from './Title'
 
