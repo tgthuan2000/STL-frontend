@@ -55,6 +55,39 @@ export const menuMobile: IMenuBtn[] = [
     },
 ]
 
+export const menuLoanMobile: IMenuBtn[] = [
+    {
+        title: 'Vay tiền',
+        color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300',
+        icon: TrendingUpIcon,
+        children: () => <MakeGetLoan />,
+        to: '?slide=get-loan',
+        query: {
+            slide: 'get-loan',
+        },
+    },
+    {
+        title: 'Cho vay tiền',
+        color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300',
+        icon: TrendingDownIcon,
+        children: () => <MakeLoan />,
+        to: '?slide=loan',
+        query: {
+            slide: 'loan',
+        },
+    },
+    {
+        title: 'Tạo thành viên',
+        color: 'text-green-700 bg-green-200 hover:bg-green-300',
+        icon: UserAddIcon,
+        children: () => <CreateMember />,
+        to: '?slide=create-member',
+        query: {
+            slide: 'create-member',
+        },
+    },
+]
+
 export const menuSpendingPC: IMenuBtn[] = [
     {
         title: 'Thêm thu nhập',
