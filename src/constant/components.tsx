@@ -13,7 +13,7 @@ import {
 } from '@heroicons/react/outline'
 import { googleLogout } from '@react-oauth/google'
 import { IMenuBtn } from '~/@types/components'
-import { CreateMember, MakeGetLoan, MakeLoan } from '~/page/loans/components'
+import { CreateMember, MakeGetLoan, MakeLoan } from '~/page/loan/components'
 import { MakeIncome, MakeCost, MakeTransfer, AddCategory, AddMethod } from '~/page/spending/components'
 
 export const menuMobile: IMenuBtn[] = [
