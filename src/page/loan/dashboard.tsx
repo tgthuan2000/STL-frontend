@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { SpendingData, StatisticData } from '~/@types/spending'
-import { ButtonMenu, Divider } from '~/components'
-import { menuMobile } from '~/constant/components'
+import { ButtonMenuLoan, Divider } from '~/components'
+import { menuLoanMobile } from '~/constant/components'
 import { useWindowSize } from '~/hook'
 
 export interface DataMethodSanity {
@@ -26,7 +26,7 @@ const Dashboard = () => {
         <>
             {width < 1280 && (
                 <div className='xl:hidden block'>
-                    <ButtonMenu data={menuMobile} />
+                    <ButtonMenuLoan data={menuLoanMobile} />
                 </div>
             )}
 
