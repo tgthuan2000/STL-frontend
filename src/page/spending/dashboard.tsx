@@ -18,19 +18,19 @@ interface IData {
     statistic: StatisticData[]
 }
 
-const F_GET_METHOD_SPENDING = (kindSpending: any[]) => `
-    *[_type == "methodSpending"]
-    {
-        _id,
-        name,
-        ${kindSpending
-            .map(
-                ({ _id, key }) =>
-                    `"${key}": *[_type == "spending" && methodSpending._ref == ^._id && kindSpending._ref == "${_id}"].amount`
-            )
-            .join(',')}
-    }
-`
+// const F_GET_METHOD_SPENDING = (kindSpending: any[]) => `
+//     *[_type == "methodSpending"]
+//     {
+//         _id,
+//         name,
+//         ${kindSpending
+//             .map(
+//                 ({ _id, key }) =>
+//                     `"${key}": *[_type == "spending" && methodSpending._ref == ^._id && kindSpending._ref == "${_id}"].amount`
+//             )
+//             .join(',')}
+//     }
+// `
 
 const Dashboard = () => {
     const { width } = useWindowSize()
@@ -39,8 +39,8 @@ const Dashboard = () => {
     const [{ method, recent, statistic }, fetchData, deleteCache, reload] = useQuery<IData>(
         {
             recent: GET_RECENT_SPENDING,
-            // method: GET_METHOD_SPENDING_DESC_SURPLUS,
-            method: F_GET_METHOD_SPENDING(kindSpending),
+            method: GET_METHOD_SPENDING_DESC_SURPLUS,
+            // method: F_GET_METHOD_SPENDING(kindSpending),
             statistic: GET_STATISTIC_SPENDING,
         },
         {
@@ -57,21 +57,21 @@ const Dashboard = () => {
         }
     }, [kindSpending])
 
-    const dataMethod = useMemo(() => {
-        if (!method.data) return
+    // const dataMethod = useMemo(() => {
+    //     if (!method.data) return
 
-        const methodMap = (method.data as any[]).map(
-            ({ cost, receive, 'transfer-from': transferFrom, 'transfer-to': transferTo, ...data }) => ({
-                ...data,
-                cost: sum([...cost, ...transferFrom]),
-                receive: sum([...receive, ...transferTo]),
-            })
-        )
+    //     const methodMap = (method.data as any[]).map(
+    //         ({ cost, receive, 'transfer-from': transferFrom, 'transfer-to': transferTo, ...data }) => ({
+    //             ...data,
+    //             cost: sum([...cost, ...transferFrom]),
+    //             receive: sum([...receive, ...transferTo]),
+    //         })
+    //     )
 
-        return methodMap
-    }, [method.data])
+    //     return methodMap
+    // }, [method.data])
 
-    console.log(dataMethod?.map((d) => ({ data: d.receive - d.cost, name: d.name })))
+    // console.log(dataMethod?.map((d) => ({ data: d.receive - d.cost, name: d.name })))
 
     const dataStatistic = useMemo(() => {
         const data = statistic.data
