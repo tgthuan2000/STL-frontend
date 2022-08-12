@@ -26,7 +26,7 @@ const useServiceQuery = () => {
         }),
         ALL_RECENT_SPENDING: services.getAllRecentSpending({ userProfile }),
         METHOD_SPENDING: services.getMethodSpending({ userProfile }),
-        METHOD_KIND_SPENDING: services.getMethodKindSpending({ userProfile, kindSpending }),
+        METHOD_SPENDING_DESC_SURPLUS: services.getMethodSpendingDescSurplus({ userProfile }),
         RECENT_SPENDING: services.getRecentSpending({ userProfile }),
         STATISTIC_SPENDING: services.getStatisticSpending({ userProfile }),
     }

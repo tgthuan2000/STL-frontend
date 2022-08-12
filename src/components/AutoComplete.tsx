@@ -2,10 +2,11 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Combobox } from '@headlessui/react'
 import { CheckIcon, RefreshIcon, SelectorIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
-import _ from 'lodash'
-import { forwardRef, useMemo, useState } from 'react'
+import { find, isNil } from 'lodash'
+import { forwardRef, useEffect, useMemo, useState } from 'react'
 import { Controller } from 'react-hook-form'
 import { AutoCompleteProps } from '~/@types/components'
+import numeral from 'numeral'
 
 const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
     (
@@ -21,6 +22,8 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
             onReload,
             addMore,
             loading,
+            disabled,
+            onChange,
         },
         ref
     ) => {
@@ -32,6 +35,20 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
         const [selectedItem, setSelectedItem] = useState(value)
         const [parent] = useAutoAnimate<HTMLDivElement>()
         const [loadingAddMore, setLoadingAddMore] = useState(false)
+        const [surplus, setSurplus] = useState(value?.surplus || null)
+
+        useEffect(() => {
+            setSelectedItem((prev: any) => {
+                if (isNil(prev)) {
+                    return
+                }
+                return find(data, ['_id', selectedItem._id])
+            })
+        }, [data])
+
+        useEffect(() => {
+            !isNil(selectedItem?.surplus) && setSurplus(selectedItem.surplus)
+        }, [selectedItem])
 
         const filterData =
             query === ''
@@ -40,7 +57,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                       return item[valueKey].toLowerCase().includes(query.toLowerCase())
                   })
 
-        const handleChange = async (value: any, onChange: (...event: any[]) => void) => {
+        const handleChange = async (value: any, fieldChange: (...event: any[]) => void) => {
             if (typeof value === 'string') {
                 if (addMore) {
                     try {
@@ -51,6 +68,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                         value = value.charAt(0).toUpperCase() + value.slice(1)
                         const data = await addMore(value)
                         if (data) {
+                            fieldChange(data)
                             onChange?.(data)
                             setSelectedItem(data)
                         } else {
@@ -67,6 +85,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
             } else {
                 setSelectedItem(value)
                 onChange?.(value)
+                fieldChange(value)
             }
         }
 
@@ -88,7 +107,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                             }}
                             value={selectedItem}
                             onChange={(value) => handleChange(value, field.onChange)}
-                            disabled={loading}
+                            disabled={disabled || loading}
                         >
                             <div className='flex justify-between items-center'>
                                 <Combobox.Label className='inline-block text-sm font-medium text-gray-700'>
@@ -110,7 +129,9 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                 <Combobox.Input
                                     className={clsx(
                                         'w-full rounded-md border border-gray-300 py-2 pl-3 pr-10 shadow-sm sm:text-sm focus:outline-none',
-                                        loading ? 'bg-gray-50 text-gray-500' : 'bg-white text-gray-900'
+                                        loading || disabled
+                                            ? 'bg-gray-50 text-gray-500 select-none'
+                                            : 'bg-white text-gray-900'
                                     )}
                                     displayValue={(item: any) =>
                                         loadingAddMore ? 'Đang thực hiện tạo mới...' : item?.[valueKey]
@@ -193,6 +214,20 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                             </div>
                         </Combobox>
                         <div ref={parent}>
+                            {!isNil(surplus) && (
+                                <div className='mt-1 ml-3'>
+                                    Số dư:{' '}
+                                    <strong
+                                        className={clsx(
+                                            { 'text-green-400': surplus > 0 },
+                                            { 'text-radical-red-400': surplus < 0 },
+                                            { 'text-slate-400': surplus === 0 }
+                                        )}
+                                    >
+                                        {numeral(surplus).format()}
+                                    </strong>
+                                </div>
+                            )}
                             {error && <div className='mt-1 text-radical-red-700 text-sm'>{error.message}</div>}
                         </div>
                     </div>

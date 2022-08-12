@@ -17,7 +17,7 @@ const AddMethod = () => {
     const { userProfile } = useAuth()
     const [loading, setLoading] = useState(false)
     const { deleteCache } = useCache()
-    const { METHOD_KIND_SPENDING, METHOD_SPENDING } = useServiceQuery()
+    const { METHOD_SPENDING_DESC_SURPLUS, METHOD_SPENDING } = useServiceQuery()
 
     const form = useForm<IAddMethodForm>({
         defaultValues: {
@@ -36,6 +36,7 @@ const AddMethod = () => {
         const document = {
             _type: 'methodSpending',
             name,
+            surplus: 0,
             user: {
                 _type: 'reference',
                 _ref: userProfile?._id,
@@ -44,7 +45,7 @@ const AddMethod = () => {
         try {
             await client.create(document)
             // navigate to dashboard
-            const result = deleteCache([METHOD_KIND_SPENDING, METHOD_SPENDING])
+            const result = deleteCache([METHOD_SPENDING_DESC_SURPLUS, METHOD_SPENDING])
             console.log(result)
             alert('Tạo mới phương thức thanh toán thành công!')
             // setIsOpen(false)

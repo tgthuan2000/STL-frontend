@@ -1,29 +1,20 @@
 import _, { isEmpty } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
-import { SpendingData, StatisticData } from '~/@types/spending'
+import { IMethodSpending, SpendingData, StatisticData } from '~/@types/spending'
 import { Box, ButtonMenu, Divider } from '~/components'
 import { menuMobile } from '~/constant/components'
 import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
-import { F_GET_METHOD_SPENDING, GET_RECENT_SPENDING, GET_STATISTIC_SPENDING } from '~/schema/query/spending'
+import { GET_METHOD_SPENDING_DESC_SURPLUS, GET_RECENT_SPENDING, GET_STATISTIC_SPENDING } from '~/schema/query/spending'
 import { getDate } from '~/services'
 import useAuth from '~/store/auth'
 import { sum } from '~/util'
 import { Method, Recent, Statistic } from './components'
 
-export interface DataMethodSanity {
-    _id: string
-    name: string
-    cost: number[]
-    receive: number[]
-    'transfer-from': number[]
-    'transfer-to': number[]
-}
-
 interface IData {
     recent: SpendingData[]
-    method: DataMethodSanity[]
+    method: IMethodSpending[]
     statistic: StatisticData[]
 }
 
@@ -34,7 +25,7 @@ const Dashboard = () => {
     const [{ method, recent, statistic }, fetchData, deleteCache, reload] = useQuery<IData>(
         {
             recent: GET_RECENT_SPENDING,
-            method: F_GET_METHOD_SPENDING(kindSpending),
+            method: GET_METHOD_SPENDING_DESC_SURPLUS,
             statistic: GET_STATISTIC_SPENDING,
         },
         {
@@ -51,20 +42,6 @@ const Dashboard = () => {
         }
     }, [kindSpending])
 
-    const dataMethod = useMemo(() => {
-        if (!method.data) return
-
-        const methodMap = method.data.map(
-            ({ cost, receive, 'transfer-from': transferFrom, 'transfer-to': transferTo, ...data }) => ({
-                ...data,
-                cost: sum([...cost, ...transferFrom]),
-                receive: sum([...receive, ...transferTo]),
-            })
-        )
-
-        return methodMap.length > 8 ? methodMap.filter((i) => i.receive !== i.cost) : methodMap
-    }, [method.data])
-
     const dataStatistic = useMemo(() => {
         const data = statistic.data
         if (!data || isEmpty(data)) return
@@ -75,21 +52,21 @@ const Dashboard = () => {
                     [value.key]: sum(value.data),
                 }
             },
-            { 'transfer-to': 0, 'transfer-from': 0, cost: 0, receive: 0 }
+            { cost: 0, receive: 0 }
         )
-        const surplus = _.receive + _['transfer-to'] - _.cost - _['transfer-from']
+        const surplus = _.receive - _.cost
         return {
             dateRange: ['start', 'end'].map((value) => moment(getDate(value as any)).format('DD/MM/YYYY')),
             data: [
                 {
                     _id: getKindSpendingId('RECEIVE') as string,
-                    value: _.receive + _['transfer-to'],
+                    value: _.receive,
                     name: 'Thu nhập',
                     color: 'text-green-500',
                 },
                 {
                     _id: getKindSpendingId('COST') as string,
-                    value: _.cost + _['transfer-from'],
+                    value: _.cost,
                     name: 'Chi phí',
                     color: 'text-red-500',
                 },
@@ -146,7 +123,7 @@ const Dashboard = () => {
                     loading={method.loading}
                     fullWidth
                 >
-                    <Method data={dataMethod} loading={method.loading} />
+                    <Method data={method.data} loading={method.loading} />
                 </Box.Content>
             </Box>
         </>

@@ -30,7 +30,7 @@ const MakeTransfer = () => {
     const { deleteCache } = useCache()
     const { loading, setSubmitLoading } = useLoading()
     const { getKindSpendingId } = useConfig()
-    const { METHOD_KIND_SPENDING, RECENT_SPENDING, ALL_RECENT_SPENDING } = useServiceQuery()
+    const { METHOD_SPENDING_DESC_SURPLUS, RECENT_SPENDING, ALL_RECENT_SPENDING } = useServiceQuery()
 
     const [{ methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
         {
@@ -66,6 +66,7 @@ const MakeTransfer = () => {
             amount,
             description: `Đến ${methodSpendingTo?.name}${description ? `\n${description}` : ''}`,
             date: moment(date).format(),
+            surplus: methodSpendingFrom?.surplus,
             kindSpending: {
                 _type: 'reference',
                 _ref: getKindSpendingId('TRANSFER_FROM'),
@@ -73,6 +74,10 @@ const MakeTransfer = () => {
             methodSpending: {
                 _type: 'reference',
                 _ref: methodSpendingFrom?._id,
+            },
+            methodReference: {
+                _type: 'reference',
+                _ref: methodSpendingTo?._id,
             },
             user: {
                 _type: 'reference',
@@ -85,6 +90,7 @@ const MakeTransfer = () => {
             amount,
             description: `Từ ${methodSpendingFrom?.name}${description ? `\n${description}` : ''}`,
             date: moment(date).format(),
+            surplus: methodSpendingTo?.surplus,
             kindSpending: {
                 _type: 'reference',
                 _ref: getKindSpendingId('TRANSFER_TO'),
@@ -93,6 +99,10 @@ const MakeTransfer = () => {
                 _type: 'reference',
                 _ref: methodSpendingTo?._id,
             },
+            methodReference: {
+                _type: 'reference',
+                _ref: methodSpendingFrom?._id,
+            },
             user: {
                 _type: 'reference',
                 _ref: userProfile?._id,
@@ -100,9 +110,11 @@ const MakeTransfer = () => {
         }
 
         try {
-            await client.transaction().create(document1).create(document2).commit()
+            const patch1 = client.patch(methodSpendingFrom?._id as string).dec({ surplus: amount })
+            const patch2 = client.patch(methodSpendingTo?._id as string).inc({ surplus: amount })
+            await client.transaction().create(document1).patch(patch1).create(document2).patch(patch2).commit()
             // navigate to dashboard
-            const result = deleteCache([METHOD_KIND_SPENDING, RECENT_SPENDING, ALL_RECENT_SPENDING])
+            const result = deleteCache([METHOD_SPENDING_DESC_SURPLUS, RECENT_SPENDING, ALL_RECENT_SPENDING])
             console.log(result)
             form.reset(
                 {
@@ -128,6 +140,7 @@ const MakeTransfer = () => {
         const document = {
             _type: 'methodSpending',
             name,
+            surplus: 0,
             user: {
                 _type: 'reference',
                 _ref: userProfile?._id,
