@@ -93,7 +93,10 @@ const MakeIncome = () => {
             },
         }
         try {
-            const patch = client.patch(methodSpending?._id as string).inc({ surplus: amount })
+            const patch = client
+                .patch(methodSpending?._id as string)
+                .setIfMissing({ surplus: 0 })
+                .inc({ surplus: amount })
             await client.transaction().create(document).patch(patch).commit()
             // navigate to dashboard
             const res = deleteCache([
