@@ -6,7 +6,7 @@ import NumberFormat from 'react-number-format'
 import { InputProps } from '~/@types/components'
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-    ({ className, label, name, type = 'text', form, rules, ...props }, ref) => {
+    ({ className, label, name, type = 'text', form, rules, disabled, ...props }, ref) => {
         const id = useId()
         const [parent] = useAutoAnimate<HTMLDivElement>()
         return (
@@ -25,9 +25,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                             <input
                                 id={id}
                                 type={type}
+                                disabled={disabled}
                                 spellCheck={false}
                                 autoComplete='off'
-                                className='block p-2 w-full rounded-md border border-gray-300 shadow-sm font-light'
+                                className='block p-2 w-full rounded-md border border-gray-300 shadow-sm font-light disabled:bg-gray-100 disabled:text-gray-400'
                                 {...field}
                                 {...props}
                             />

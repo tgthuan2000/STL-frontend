@@ -1,20 +1,16 @@
 import { ArrowSmLeftIcon, TrashIcon } from '@heroicons/react/outline'
-import _ from 'lodash'
+import clsx from 'clsx'
+import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
+import numeral from 'numeral'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending, SpendingData } from '~/@types/spending'
 import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
 import { useLoading } from '~/context'
-import { Data, DataCategory } from '../transaction-detail'
+import { getColorPrize } from '~/util'
+import { Data, DataCategory, IDetailSpendingForm } from '../transaction-detail'
 
-interface IDetailSpendingForm {
-    amount: number
-    categorySpending: ICategorySpending
-    methodSpending: IMethodSpending
-    date: Date
-    description: string
-}
 interface D<T> {
     loading: boolean
     data: T[] | undefined
@@ -57,8 +53,10 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
             amount: transaction.amount,
             categorySpending: transaction.categorySpending,
             methodSpending: transaction.methodSpending,
+            methodReference: transaction.methodReference,
             date: moment(transaction.date).toDate(),
             description: transaction.description,
+            surplus: transaction.surplus,
         },
     })
 
@@ -82,13 +80,40 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
             <div className='bg-white rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>
                 <div className='max-w-lg w-full mx-auto'>
                     <form
-                        onSubmit={!_.isEmpty(categorySpending.data) ? form.handleSubmit(onsubmit) : undefined}
+                        onSubmit={!isEmpty(categorySpending.data) ? form.handleSubmit(onsubmit) : undefined}
                         className='flex h-full flex-col'
                     >
                         <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
                             <div className='flex flex-1 flex-col justify-between'>
                                 <div className='divide-y divide-gray-200 px-4 sm:px-6'>
                                     <div className='space-y-6 pt-6 pb-5'>
+                                        {!isNil(form.watch('surplus')) &&
+                                            (() => {
+                                                const surplus = form.watch('surplus')
+                                                const calc =
+                                                    (['receive', 'transfer-to'].includes(transaction.kindSpending.key)
+                                                        ? 1
+                                                        : -1) *
+                                                        Number(form.watch('amount')) +
+                                                    surplus
+                                                return (
+                                                    <div className='flex justify-between'>
+                                                        <h4 className='inline-block font-medium text-gray-900'>
+                                                            Số dư tại thời điểm
+                                                        </h4>
+                                                        <div className='flex items-center space-x-2 font-normal'>
+                                                            <span className={clsx(...getColorPrize(calc))}>
+                                                                {numeral(calc).format()}
+                                                            </span>
+                                                            <span className='inline-block w-px h-full border border-gray-400' />
+                                                            <span className={clsx(...getColorPrize(surplus))}>
+                                                                {numeral(surplus).format()}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })()}
+
                                         <Input
                                             name='amount'
                                             form={form}
@@ -102,7 +127,8 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                                 },
                                             }}
                                         />
-                                        {!_.isEmpty(categorySpending.data) && (
+
+                                        {!isEmpty(categorySpending.data) && (
                                             <AutoComplete
                                                 name='categorySpending'
                                                 form={form}
@@ -114,29 +140,75 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                                     required: 'Yêu cầu chọn thể loại!',
                                                 }}
                                                 onReload={
-                                                    _.isEmpty(categorySpending.data)
+                                                    isEmpty(categorySpending.data)
                                                         ? undefined
                                                         : () => handleReloadDataCategory('categorySpending')
                                                 }
                                             />
                                         )}
 
-                                        <AutoComplete
-                                            name='methodSpending'
-                                            form={form}
-                                            data={methodSpending.data}
-                                            label='Phương thức thanh toán'
-                                            loading={methodSpending.loading}
-                                            addMore={handleAddMoreMethodSpending}
-                                            rules={{
-                                                required: 'Yêu cầu chọn phương thức thanh toán!',
-                                            }}
-                                            onReload={
-                                                _.isEmpty(methodSpending.data)
-                                                    ? undefined
-                                                    : () => handleReloadData('methodSpending')
-                                            }
-                                        />
+                                        <div
+                                            className={clsx(
+                                                'flex gap-y-6',
+                                                transaction.kindSpending.key === 'transfer-to'
+                                                    ? 'flex-col-reverse'
+                                                    : 'flex-col'
+                                            )}
+                                        >
+                                            <AutoComplete
+                                                name='methodSpending'
+                                                form={form}
+                                                data={methodSpending.data}
+                                                label={
+                                                    transaction.methodReference
+                                                        ? (transaction.kindSpending.key === 'transfer-from'
+                                                              ? 'Từ'
+                                                              : 'Đến') + ' phương thức thanh toán'
+                                                        : 'Phương thức thanh toán'
+                                                }
+                                                loading={methodSpending.loading}
+                                                addMore={handleAddMoreMethodSpending}
+                                                rules={{
+                                                    required: 'Yêu cầu chọn phương thức thanh toán!',
+                                                }}
+                                                onReload={
+                                                    isEmpty(methodSpending.data)
+                                                        ? undefined
+                                                        : () => handleReloadData('methodSpending')
+                                                }
+                                                onChange={(item) => {
+                                                    if (transaction.methodSpending._id !== item._id) {
+                                                        form.setValue('surplus', item.surplus)
+                                                    } else {
+                                                        form.setValue('surplus', transaction.surplus)
+                                                    }
+                                                }}
+                                            />
+
+                                            {transaction.methodReference && (
+                                                <AutoComplete
+                                                    name='methodReference'
+                                                    form={form}
+                                                    data={methodSpending.data}
+                                                    label={
+                                                        (transaction.kindSpending.key === 'transfer-from'
+                                                            ? 'Đến'
+                                                            : 'Từ') + ' phương thức thanh toán'
+                                                    }
+                                                    loading={methodSpending.loading}
+                                                    addMore={handleAddMoreMethodSpending}
+                                                    rules={{
+                                                        required: 'Yêu cầu chọn phương thức thanh toán!',
+                                                    }}
+                                                    onReload={
+                                                        isEmpty(methodSpending.data)
+                                                            ? undefined
+                                                            : () => handleReloadData('methodSpending')
+                                                    }
+                                                />
+                                            )}
+                                        </div>
+
                                         <DatePicker
                                             name='date'
                                             form={form}
@@ -151,7 +223,7 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                 </div>
                             </div>
                         </div>
-                        {!_.isEmpty(categorySpending.data) && (
+                        {!isEmpty(categorySpending.data) && (
                             <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
                                 <div className='flex sm:justify-start justify-end space-x-3'>
                                     <Button color='blue' type='submit' disabled={loading.submit}>

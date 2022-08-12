@@ -13,11 +13,16 @@ export interface SpendingData {
         _id: string
         name: string
     }
+    methodReference?: {
+        _id: string
+        name: string
+    }
     kindSpending: {
         _id: string
         name: string
         key: KIND_SPENDING
     }
+    surplus: number
     description: string
     amount: number
     date: string
@@ -45,14 +50,9 @@ export interface StatisticProps {
     data: Statistic[] | undefined
     loading: boolean
 }
-export interface MethodData {
-    _id: string
-    name: string
-    cost: number
-    receive: number
-}
+
 export interface MethodProps {
-    data: MethodData[] | undefined
+    data: IMethodSpending[] | undefined
     loading: boolean
 }
 
@@ -65,5 +65,6 @@ export interface ICategorySpending {
 export interface IMethodSpending {
     _id: string
     name: string
+    surplus: number
     user: IUserProfile
 }

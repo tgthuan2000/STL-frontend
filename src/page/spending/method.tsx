@@ -1,16 +1,15 @@
 import { ArrowSmLeftIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useConfig } from '~/context'
-import { F_GET_METHOD_SPENDING } from '~/schema/query/spending'
+import { GET_METHOD_SPENDING_DESC_SURPLUS } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
-import { sum } from '~/util'
-import { DataMethodSanity } from './dashboard'
 import { Method as MethodBox } from './components'
 import _ from 'lodash'
 import { useQuery } from '~/hook'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { MethodData } from '~/@types/spending'
 
 const Method = () => {
     const navigate = useNavigate()
@@ -19,10 +18,10 @@ const Method = () => {
     const [parent] = useAutoAnimate<HTMLDivElement>()
 
     const [{ method }, fetchData] = useQuery<{
-        method: DataMethodSanity[]
+        method: MethodData[]
     }>(
         {
-            method: F_GET_METHOD_SPENDING(kindSpending),
+            method: GET_METHOD_SPENDING_DESC_SURPLUS,
         },
         { userId: userProfile?._id as string }
     )
@@ -31,20 +30,6 @@ const Method = () => {
             fetchData()
         }
     }, [kindSpending])
-
-    const dataMethod = useMemo(() => {
-        if (!method.data) return
-
-        const methodMap = method.data.map(
-            ({ cost, receive, 'transfer-from': transferFrom, 'transfer-to': transferTo, ...data }) => ({
-                ...data,
-                cost: sum([...cost, ...transferFrom]),
-                receive: sum([...receive, ...transferTo]),
-            })
-        )
-
-        return methodMap
-    }, [method.data])
 
     return (
         <div>
@@ -66,7 +51,7 @@ const Method = () => {
                         ref={parent}
                         className='max-w-lg w-full h-fit mx-auto bg-white border border-gray-300 overflow-hidden rounded-md select-none'
                     >
-                        <MethodBox data={dataMethod} loading={method.loading} />
+                        <MethodBox data={method.data} loading={method.loading} />
                     </div>
                 </div>
                 <div className='xl:flex-[2]'>

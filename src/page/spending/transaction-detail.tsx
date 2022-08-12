@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { head } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler } from 'react-hook-form'
@@ -11,12 +11,14 @@ import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING, GET_TRANSACTION_DETAIL } fr
 import useAuth from '~/store/auth'
 import TransactionDetailForm, { TransactionDetailFormData } from './components/DetailForm'
 
-interface IDetailSpendingForm {
+export interface IDetailSpendingForm {
     amount: number
-    categorySpending: ICategorySpending
+    categorySpending?: ICategorySpending
     methodSpending: IMethodSpending
+    methodReference?: IMethodSpending
     date: Date
     description: string
+    surplus: number
 }
 export interface Data {
     transaction: SpendingData[]
@@ -31,7 +33,8 @@ const TransactionDetail = () => {
     const { setSubmitLoading } = useLoading()
     const { id } = useParams()
     const { deleteCache } = useCache()
-    const { METHOD_KIND_SPENDING, RECENT_SPENDING, ALL_RECENT_SPENDING, STATISTIC_SPENDING } = useServiceQuery()
+    const { METHOD_SPENDING_DESC_SURPLUS, METHOD_SPENDING, RECENT_SPENDING, ALL_RECENT_SPENDING, STATISTIC_SPENDING } =
+        useServiceQuery()
 
     const [{ transaction, methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
         {
@@ -65,10 +68,10 @@ const TransactionDetail = () => {
     }, [])
 
     useEffect(() => {
-        if (kindSpending?._id) {
+        if (kindSpending?._id && head(transaction.data)?.categorySpending) {
             fetchDataCategory()
         }
-    }, [kindSpending])
+    }, [kindSpending, transaction.data])
 
     const handleAddMoreCategorySpending = async (name: string) => {
         const document = {
@@ -99,6 +102,7 @@ const TransactionDetail = () => {
         const document = {
             _type: 'methodSpending',
             name,
+            surplus: 0,
             user: {
                 _type: 'reference',
                 _ref: userProfile?._id,
@@ -127,34 +131,70 @@ const TransactionDetail = () => {
         console.log(res)
         reloadDataCategory()
     }
-
+    console.log(transaction.data)
     const onsubmit: SubmitHandler<IDetailSpendingForm> = async (data) => {
-        let { amount, description, categorySpending, methodSpending, date } = data
+        let { amount, description, categorySpending, methodSpending, date, surplus } = data
         description = description.trim()
         amount = Number(amount)
         try {
             setSubmitLoading(true)
-            await client
-                .patch(id as string)
-                .set({
-                    amount,
-                    date: moment(date).format(),
-                    description,
-                    categorySpending: {
-                        _type: 'reference',
-                        _ref: categorySpending._id,
-                    },
-                    methodSpending: {
-                        _type: 'reference',
-                        _ref: methodSpending._id,
-                    },
+            const condition = ['receive', 'transfer-to'].includes(head(transaction.data)?.kindSpending.key as string)
+                ? 1
+                : -1
+            const _transaction = head(transaction.data)
+
+            const __ = client.transaction()
+
+            if (methodSpending._id === _transaction?.methodSpending._id) {
+                if (amount !== (_transaction?.amount as number)) {
+                    const patch = client.patch(methodSpending._id).inc({
+                        surplus: (amount - (_transaction?.amount as number)) * condition,
+                    })
+                    __.patch(patch)
+                }
+            } else {
+                // Change method spending -> refund surplus for old method
+                const patch1 = client.patch(_transaction?.methodSpending._id as string).dec({
+                    surplus: (_transaction?.amount as number) * condition,
                 })
-                .commit()
+
+                const patch2 = client.patch(methodSpending._id as string).inc({
+                    surplus: amount * condition,
+                })
+
+                __.patch(patch1).patch(patch2)
+            }
+
+            const document = {
+                amount,
+                date: moment(date).format(),
+                description,
+                surplus,
+                categorySpending: {
+                    _type: 'reference',
+                    _ref: categorySpending?._id as string,
+                },
+                methodSpending: {
+                    _type: 'reference',
+                    _ref: methodSpending._id,
+                },
+            }
+
+            const patch = client.patch(id as string).set(document)
+            __.patch(patch)
+
+            await __.commit()
 
             const res = deleteCacheData('transaction')
-            console.log(res)
+            console.log(res + ' transaction')
 
-            const caches = deleteCache([METHOD_KIND_SPENDING, RECENT_SPENDING, ALL_RECENT_SPENDING, STATISTIC_SPENDING])
+            const caches = deleteCache([
+                METHOD_SPENDING_DESC_SURPLUS,
+                METHOD_SPENDING,
+                RECENT_SPENDING,
+                ALL_RECENT_SPENDING,
+                STATISTIC_SPENDING,
+            ])
             console.log(caches)
         } catch (error) {
             console.log(error)
@@ -172,7 +212,13 @@ const TransactionDetail = () => {
         try {
             setSubmitLoading(true)
             await client.delete(id as string)
-            const caches = deleteCache([METHOD_KIND_SPENDING, RECENT_SPENDING, ALL_RECENT_SPENDING, STATISTIC_SPENDING])
+            const caches = deleteCache([
+                METHOD_SPENDING_DESC_SURPLUS,
+                METHOD_SPENDING,
+                RECENT_SPENDING,
+                ALL_RECENT_SPENDING,
+                STATISTIC_SPENDING,
+            ])
             console.log(caches)
         } catch (error) {
             console.log(error)

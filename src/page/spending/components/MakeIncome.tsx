@@ -9,7 +9,6 @@ import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/c
 import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
-import { getMethodKindSpending, getAllRecentSpending, getRecentSpending, getStatisticSpending } from '~/services/query'
 import useAuth from '~/store/auth'
 
 interface IAddIncomeForm {
@@ -30,7 +29,7 @@ const MakeIncome = () => {
     const { deleteCache } = useCache()
     const { getKindSpendingId } = useConfig()
     const { loading, setSubmitLoading } = useLoading()
-    const { METHOD_KIND_SPENDING, RECENT_SPENDING, ALL_RECENT_SPENDING, STATISTIC_SPENDING } = useServiceQuery()
+    const { METHOD_SPENDING_DESC_SURPLUS, RECENT_SPENDING, ALL_RECENT_SPENDING, STATISTIC_SPENDING } = useServiceQuery()
 
     const kindSpendingId = useMemo(() => {
         return getKindSpendingId('RECEIVE')
@@ -75,6 +74,7 @@ const MakeIncome = () => {
             amount,
             description,
             date: moment(date).format(),
+            surplus: methodSpending?.surplus,
             kindSpending: {
                 _type: 'reference',
                 _ref: kindSpendingId,
@@ -93,9 +93,15 @@ const MakeIncome = () => {
             },
         }
         try {
-            await client.create(document)
+            const patch = client.patch(methodSpending?._id as string).inc({ surplus: amount })
+            await client.transaction().create(document).patch(patch).commit()
             // navigate to dashboard
-            const res = deleteCache([METHOD_KIND_SPENDING, RECENT_SPENDING, ALL_RECENT_SPENDING, STATISTIC_SPENDING])
+            const res = deleteCache([
+                METHOD_SPENDING_DESC_SURPLUS,
+                RECENT_SPENDING,
+                ALL_RECENT_SPENDING,
+                STATISTIC_SPENDING,
+            ])
             console.log(res)
             form.reset(
                 {
@@ -146,6 +152,7 @@ const MakeIncome = () => {
         const document = {
             _type: 'methodSpending',
             name,
+            surplus: 0,
             user: {
                 _type: 'reference',
                 _ref: userProfile?._id,

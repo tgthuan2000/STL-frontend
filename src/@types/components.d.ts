@@ -16,6 +16,8 @@ export interface AutoCompleteProps {
     loading?: boolean
     form: UseFormReturn<any, object>
     rules?: RulesValidate
+    disabled?: boolean
+    onChange?: (value: any) => void
 }
 
 export interface SelectionProps {
@@ -39,6 +41,7 @@ export interface InputProps {
     label?: string
     name: string
     type?: HTMLInputTypeAttribute
+    disabled?: boolean
     form: UseFormReturn<any, object>
     rules?: Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
 }

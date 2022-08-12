@@ -9,12 +9,7 @@ import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
-import {
-    F_GET_METHOD_SPENDING,
-    GETALL_RECENT_SPENDING,
-    GET_METHOD_SPENDING,
-    GET_RECENT_SPENDING,
-} from '~/schema/query/spending'
+import { GETALL_RECENT_SPENDING, GET_METHOD_SPENDING, GET_RECENT_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 
 interface IMakeTransferForm {
@@ -94,6 +89,7 @@ const MakeTransfer = () => {
         const document = {
             _type: 'methodSpending',
             name,
+            surplus: 0,
             user: {
                 _type: 'reference',
                 _ref: userProfile?._id,

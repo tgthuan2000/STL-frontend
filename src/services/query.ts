@@ -1,10 +1,10 @@
 import { SanityDocument } from '@sanity/client'
 import { IKindSpending } from '~/@types/context'
 import {
-    F_GET_METHOD_SPENDING,
     GETALL_RECENT_SPENDING,
     GET_CATEGORY_SPENDING,
     GET_METHOD_SPENDING,
+    GET_METHOD_SPENDING_DESC_SURPLUS,
     GET_RECENT_SPENDING,
     GET_STATISTIC_SPENDING,
 } from '~/schema/query/spending'
@@ -24,11 +24,10 @@ export const getCategorySpending = <T>({ userProfile, kindSpending }: GetCategor
 // ---------------------------------------------------------------------------------------------------------------------
 interface GetMethodKindSpending<T> {
     userProfile: SanityDocument<T> | null
-    kindSpending: IKindSpending[]
 }
-export const getMethodKindSpending = <T>({ userProfile, kindSpending }: GetMethodKindSpending<T>) => {
+export const getMethodSpendingDescSurplus = <T>({ userProfile }: GetMethodKindSpending<T>) => {
     return {
-        method: F_GET_METHOD_SPENDING(kindSpending),
+        method: GET_METHOD_SPENDING_DESC_SURPLUS,
         params: { userId: userProfile?._id },
     }
 }
