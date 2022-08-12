@@ -95,7 +95,10 @@ const MakeCost = () => {
             },
         }
         try {
-            const patch = client.patch(methodSpending?._id as string).dec({ surplus: amount })
+            const patch = client
+                .patch(methodSpending?._id as string)
+                .setIfMissing({ surplus: 0 })
+                .dec({ surplus: amount })
             await client.transaction().create(document).patch(patch).commit()
             // navigate to dashboard
             const res = deleteCache([

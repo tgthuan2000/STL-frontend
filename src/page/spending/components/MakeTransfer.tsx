@@ -110,8 +110,16 @@ const MakeTransfer = () => {
         }
 
         try {
-            const patch1 = client.patch(methodSpendingFrom?._id as string).dec({ surplus: amount })
-            const patch2 = client.patch(methodSpendingTo?._id as string).inc({ surplus: amount })
+            const patch1 = client
+                .patch(methodSpendingFrom?._id as string)
+                .setIfMissing({ surplus: 0 })
+                .dec({ surplus: amount })
+
+            const patch2 = client
+                .patch(methodSpendingTo?._id as string)
+                .setIfMissing({ surplus: 0 })
+                .inc({ surplus: amount })
+
             await client.transaction().create(document1).patch(patch1).create(document2).patch(patch2).commit()
             // navigate to dashboard
             const result = deleteCache([METHOD_SPENDING_DESC_SURPLUS, RECENT_SPENDING, ALL_RECENT_SPENDING])
