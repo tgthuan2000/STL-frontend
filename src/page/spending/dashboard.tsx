@@ -74,7 +74,7 @@ const Dashboard = () => {
         return methodMap
     }, [method.data])
 
-    console.log(dataMethod?.map((d) => ({ data: d.receive - d.cost, name: d.name, userName: d.userName })))
+    console.log(dataMethod?.map((d) => ({ data: d.receive - d.cost, name: d.name, userName: d.user.userName })))
 
     const dataStatistic = useMemo(() => {
         const data = statistic.data
