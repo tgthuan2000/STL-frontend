@@ -9,7 +9,7 @@ import { Method as MethodBox } from './components'
 import _ from 'lodash'
 import { useQuery } from '~/hook'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { MethodData } from '~/@types/spending'
+import { IMethodSpending } from '~/@types/spending'
 
 const Method = () => {
     const navigate = useNavigate()
@@ -18,7 +18,7 @@ const Method = () => {
     const [parent] = useAutoAnimate<HTMLDivElement>()
 
     const [{ method }, fetchData] = useQuery<{
-        method: MethodData[]
+        method: IMethodSpending[]
     }>(
         {
             method: GET_METHOD_SPENDING_DESC_SURPLUS,

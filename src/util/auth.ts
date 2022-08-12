@@ -10,7 +10,7 @@ export const fetchGoogleResponse: IFetchGoogleResponse = async (res, addUser, se
             const data: GoogleData = jwtDecode(credential)
             if (data) {
                 const { sub, picture, name, email } = data
-                const document: IUserProfile = {
+                const document = {
                     _type: 'user',
                     _id: sub,
                     image: picture,
