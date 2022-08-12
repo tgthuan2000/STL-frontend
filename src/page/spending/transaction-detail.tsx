@@ -131,7 +131,7 @@ const TransactionDetail = () => {
         console.log(res)
         reloadDataCategory()
     }
-    console.log(transaction.data)
+
     const onsubmit: SubmitHandler<IDetailSpendingForm> = async (data) => {
         let { amount, description, categorySpending, methodSpending, date, surplus } = data
         description = description.trim()

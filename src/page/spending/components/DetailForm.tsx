@@ -56,7 +56,7 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
             methodReference: transaction.methodReference,
             date: moment(transaction.date).toDate(),
             description: transaction.description,
-            surplus: transaction.surplus,
+            surplus: transaction.surplus ?? 0,
         },
     })
 
