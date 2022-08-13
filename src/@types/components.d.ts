@@ -1,3 +1,4 @@
+import { SanityImageAssetDocument } from '@sanity/client'
 import React, { HTMLInputTypeAttribute } from 'react'
 import { Control, FieldError, RegisterOptions, UseFormReturn, ValidationRule } from 'react-hook-form'
 
@@ -41,6 +42,14 @@ export interface InputProps {
     label?: string
     name: string
     type?: HTMLInputTypeAttribute
+    disabled?: boolean
+    form: UseFormReturn<any, object>
+    rules?: Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
+}
+export interface UploadImageProps {
+    className?: string
+    label?: string
+    name: string
     disabled?: boolean
     form: UseFormReturn<any, object>
     rules?: Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>

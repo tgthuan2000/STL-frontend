@@ -1,15 +1,9 @@
 import { SanityAssetDocument } from '@sanity/client'
-import _ from 'lodash'
-import moment from 'moment'
-import { useEffect } from 'react'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { IMethodSpending } from '~/@types/spending'
-import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
-import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
-import { useQuery } from '~/hook'
+import { Button, Input, UploadImage } from '~/components'
+import { SlideOverHOC, useLoading, useSlideOver } from '~/context'
 import { client } from '~/sanityConfig'
-import { GETALL_RECENT_SPENDING, GET_METHOD_SPENDING, GET_RECENT_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 
 interface IMakeTransferForm {
@@ -17,46 +11,41 @@ interface IMakeTransferForm {
     image: SanityAssetDocument | null
 }
 
-interface Data {
-    methodSpending: IMethodSpending[]
+const defaultValues = {
+    userName: '',
+    image: null,
 }
 
 const MakeTransfer = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { userProfile } = useAuth()
-    const { deleteCache } = useCache()
     const { loading, setSubmitLoading } = useLoading()
-    const { getKindSpendingId, kindSpending } = useConfig()
-
-    const [{ methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
-        {
-            methodSpending: GET_METHOD_SPENDING,
-        },
-        {
-            userId: userProfile?._id as string,
-        }
-    )
-
-    useEffect(() => {
-        fetchData()
-    }, [])
 
     const form = useForm<IMakeTransferForm>({
-        defaultValues: {
-            userName: '',
-            image: null,
-        },
+        defaultValues,
     })
 
     const onsubmit: SubmitHandler<IMakeTransferForm> = async (data) => {
         setSubmitLoading(true)
         let { userName, image } = data
+        // delete spaces between and last first
+        userName = userName.replace(/\s+/g, ' ').trim()
         // add to database
+        let _image
+        if (image) {
+            _image = {
+                _type: 'image',
+                asset: {
+                    _type: 'reference',
+                    _ref: image._id,
+                },
+            }
+        }
         const document = {
             _type: 'userLoan',
             userName,
-            image: image?._id,
+            image: _image,
             user: {
                 _type: 'reference',
                 _ref: userProfile?._id,
@@ -66,16 +55,10 @@ const MakeTransfer = () => {
         try {
             await client.transaction().create(document).commit()
             // navigate to dashboard
-            form.reset(
-                {
-                    userName: '',
-                    image: null,
-                },
-                {
-                    keepDefaultValues: true,
-                }
-            )
-            alert('Thực hiện chuyển khoản thành công!')
+            form.reset(defaultValues, {
+                keepDefaultValues: true,
+            })
+            alert('Tạo thành viên thành công!')
             // setIsOpen(false)
             // navigate(-1)
         } catch (error) {
@@ -83,34 +66,6 @@ const MakeTransfer = () => {
         } finally {
             setSubmitLoading(false)
         }
-    }
-
-    const handleAddMoreMethodSpending = async (name: string) => {
-        const document = {
-            _type: 'methodSpending',
-            name,
-            surplus: 0,
-            user: {
-                _type: 'reference',
-                _ref: userProfile?._id,
-            },
-        }
-
-        try {
-            const { _id, name } = await client.create(document)
-            const res = deleteCacheData('methodSpending')
-            console.log(res)
-            reloadData()
-            return { _id, name }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const handleReloadData = async (keys: keyof Data) => {
-        const res = deleteCacheData(keys)
-        console.log(res)
-        reloadData()
     }
 
     return (
@@ -128,11 +83,7 @@ const MakeTransfer = () => {
                                 type='text'
                                 label='Họ và tên'
                             />
-                            {/* <Controller
-                                name='image'
-                                form={form}
-                                render={({ field, fieldState: { error } }) => <div>hello</div>}
-                            /> */}
+                            <UploadImage name='image' form={form} label='Hình ảnh (tùy chọn)' />
                         </div>
                     </div>
                 </div>
