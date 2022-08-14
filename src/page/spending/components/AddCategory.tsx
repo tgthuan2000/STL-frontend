@@ -47,6 +47,7 @@ const AddCategory = () => {
                 _type: 'reference',
                 _ref: kindSpending?._id,
             },
+            countUsed: 0,
             user: {
                 _type: 'reference',
                 _ref: userProfile?._id,

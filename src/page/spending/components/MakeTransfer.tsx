@@ -112,13 +112,14 @@ const MakeTransfer = () => {
         try {
             const patch1 = client
                 .patch(methodSpendingFrom?._id as string)
-                .setIfMissing({ surplus: 0 })
+                .setIfMissing({ surplus: 0, countUsed: 0 })
                 .dec({ surplus: amount })
+                .inc({ countUsed: 1 })
 
             const patch2 = client
                 .patch(methodSpendingTo?._id as string)
-                .setIfMissing({ surplus: 0 })
-                .inc({ surplus: amount })
+                .setIfMissing({ surplus: 0, countUsed: 0 })
+                .inc({ surplus: amount, countUsed: 1 })
 
             await client.transaction().create(document1).patch(patch1).create(document2).patch(patch2).commit()
             // navigate to dashboard
