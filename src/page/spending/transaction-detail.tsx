@@ -145,24 +145,61 @@ const TransactionDetail = () => {
 
             const __ = client.transaction()
 
-            if (methodSpending._id === _transaction?.methodSpending._id) {
-                if (amount !== (_transaction?.amount as number)) {
-                    const patch = client.patch(methodSpending._id).inc({
-                        surplus: (amount - (_transaction?.amount as number)) * condition,
-                    })
-                    __.patch(patch)
+            if (_transaction) {
+                // refund if change category spending
+                if (
+                    _transaction.categorySpending &&
+                    categorySpending &&
+                    _transaction.categorySpending._id !== categorySpending._id
+                ) {
+                    // OLD categorySpending
+                    const patchOld = client
+                        .patch(_transaction.categorySpending._id as string)
+                        .setIfMissing({ countUsed: 0 })
+                        .dec({
+                            countUsed: 1,
+                        })
+                    // NEW categorySpending
+                    const patchNew = client
+                        .patch(categorySpending._id as string)
+                        .setIfMissing({ countUsed: 0 })
+                        .inc({ countUsed: 1 })
+
+                    __.patch(patchOld).patch(patchNew)
                 }
-            } else {
-                // Change method spending -> refund surplus for old method
-                const patch1 = client.patch(_transaction?.methodSpending._id as string).dec({
-                    surplus: (_transaction?.amount as number) * condition,
-                })
 
-                const patch2 = client.patch(methodSpending._id as string).inc({
-                    surplus: amount * condition,
-                })
+                // refund if change method spending
+                if (methodSpending._id === _transaction.methodSpending._id) {
+                    if (amount !== (_transaction.amount as number)) {
+                        const patch = client
+                            .patch(methodSpending._id)
+                            .setIfMissing({ surplus: 0 })
+                            .inc({
+                                surplus: (amount - (_transaction?.amount as number)) * condition,
+                            })
+                        __.patch(patch)
+                    }
+                } else {
+                    // Change method spending -> refund surplus for old method
+                    // OLD method
+                    const patchOld = client
+                        .patch(_transaction.methodSpending._id as string)
+                        .setIfMissing({ surplus: 0, countUsed: 0 })
+                        .dec({
+                            surplus: (_transaction.amount as number) * condition,
+                            countUsed: 1,
+                        })
+                    // NEW method
+                    const patchNew = client
+                        .patch(methodSpending._id as string)
+                        .setIfMissing({ surplus: 0, countUsed: 0 })
+                        .inc({
+                            surplus: amount * condition,
+                            countUsed: 1,
+                        })
 
-                __.patch(patch1).patch(patch2)
+                    __.patch(patchOld).patch(patchNew)
+                }
             }
 
             const document = {
@@ -211,7 +248,43 @@ const TransactionDetail = () => {
     const handleDeleteTransaction = async () => {
         try {
             setSubmitLoading(true)
-            await client.delete(id as string)
+            const condition = ['receive', 'transfer-to'].includes(head(transaction.data)?.kindSpending.key as string)
+                ? 1
+                : -1
+            const _transaction = head(transaction.data)
+            const __ = client.transaction()
+
+            if (_transaction) {
+                // refund countUsed for category deleted
+                if (_transaction.categorySpending) {
+                    const patchCategory = client
+                        .patch(_transaction.categorySpending._id)
+                        .setIfMissing({ countUsed: 0 })
+                        .dec({
+                            countUsed: 1,
+                        })
+                    __.patch(patchCategory)
+                }
+
+                // refund surplus, countUsed for method deleted
+                if (_transaction.methodReference) {
+                    const patchMethod = client
+                        .patch(_transaction.methodSpending._id)
+                        .setIfMissing({ surplus: 0, countUsed: 0 })
+                        .dec({
+                            surplus: (_transaction.amount as number) * condition,
+                            countUsed: 1,
+                        })
+                    __.patch(patchMethod)
+                }
+            }
+
+            // delete transaction
+            __.delete(id as string)
+
+            // commit
+            await __.commit()
+
             const caches = deleteCache([
                 METHOD_SPENDING_DESC_SURPLUS,
                 METHOD_SPENDING,

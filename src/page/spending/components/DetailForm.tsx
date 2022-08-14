@@ -74,7 +74,7 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                 </div>
                 <TrashIcon
                     className='h-6 lg:h-8 w-6 lg:w-8 hover:opacity-50 text-gray-700 cursor-pointer'
-                    onClick={handleDeleteTransaction}
+                    onClick={() => window.confirm('Bạn có chắc muốn xóa giao dịch này ?') && handleDeleteTransaction()}
                 />
             </div>
             <div className='bg-white rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>

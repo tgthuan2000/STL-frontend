@@ -95,11 +95,18 @@ const MakeCost = () => {
             },
         }
         try {
-            const patch = client
+            const patchMethod = client
                 .patch(methodSpending?._id as string)
-                .setIfMissing({ surplus: 0 })
+                .setIfMissing({ surplus: 0, countUsed: 0 })
                 .dec({ surplus: amount })
-            await client.transaction().create(document).patch(patch).commit()
+                .inc({ countUsed: 1 })
+
+            const patchCategory = client
+                .patch(categorySpending?._id as string)
+                .setIfMissing({ countUsed: 0 })
+                .inc({ countUsed: 1 })
+
+            await client.transaction().create(document).patch(patchMethod).patch(patchCategory).commit()
             // navigate to dashboard
             const res = deleteCache([
                 METHOD_SPENDING_DESC_SURPLUS,

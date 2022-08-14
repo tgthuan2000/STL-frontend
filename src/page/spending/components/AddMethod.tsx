@@ -37,6 +37,7 @@ const AddMethod = () => {
             _type: 'methodSpending',
             name,
             surplus: 0,
+            countUsed: 0,
             user: {
                 _type: 'reference',
                 _ref: userProfile?._id,

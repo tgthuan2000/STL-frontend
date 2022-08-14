@@ -40,7 +40,7 @@ export const GET_RECENT_SPENDING = groq`
 `
 
 export const GET_CATEGORY_SPENDING = groq`
-    *[_type == "categorySpending" && user._ref == $userId && kindSpending._ref == $kindSpending] | order(_createdAt desc)
+    *[_type == "categorySpending" && user._ref == $userId && kindSpending._ref == $kindSpending] | order(countUsed desc)
     {
         _id,
         name
@@ -55,7 +55,7 @@ export const GET_METHOD_SPENDING_DESC_SURPLUS = groq`
     }
 `
 export const GET_METHOD_SPENDING = groq`
-    *[_type == "methodSpending" && user._ref == $userId] | order(_createdAt desc)
+    *[_type == "methodSpending" && user._ref == $userId] | order(countUsed desc)
     {
         _id,
         surplus,
