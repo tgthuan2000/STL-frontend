@@ -75,6 +75,7 @@ const MakeGetLoan = () => {
             _type: 'loan',
             amount,
             description,
+            paid: false,
             payDate: moment(payDate).format(),
             kindLoan: {
                 _type: 'reference',

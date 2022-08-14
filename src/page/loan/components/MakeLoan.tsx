@@ -75,6 +75,7 @@ const MakeLoan = () => {
             _type: 'loan',
             amount,
             description,
+            paid: false,
             payDate: moment(payDate).format(),
             kindLoan: {
                 _type: 'reference',
@@ -84,6 +85,7 @@ const MakeLoan = () => {
                 _type: 'reference',
                 _ref: methodSpending?._id,
             },
+            // array
             // userLoan: {
             //     _type: 'reference',
             //     _ref: userLoan?._id,

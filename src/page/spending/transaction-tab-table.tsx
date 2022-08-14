@@ -7,6 +7,7 @@ import NumberFormat from 'react-number-format'
 import { useNavigate } from 'react-router-dom'
 import { ISpendingData } from '~/@types/spending'
 import LoadingButton from '~/components/Loading/LoadingButton'
+import { DATE_FORMAT, DATE_TIME_FORMAT, TIME_FORMAT } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useQuery, useWindowSize } from '~/hook'
 import useAuth from '~/store/auth'
@@ -119,12 +120,12 @@ const MainTable = ({ data }: MainTableProps) => {
                             <td className={clsx('whitespace-nowrap pt-4 pl-2 pr-3 sm:pl-6 lg:pl-8')}>
                                 {width <= 900 ? (
                                     <>
-                                        <span>{moment(date).format('DD/MM/YYYY')}</span>
+                                        <span>{moment(date).format(DATE_FORMAT)}</span>
                                         <br />
-                                        <span>{moment(date).format('HH:mm')}</span>
+                                        <span>{moment(date).format(TIME_FORMAT)}</span>
                                     </>
                                 ) : (
-                                    <span>{moment(date).format('DD/MM/YYYY HH:mm')}</span>
+                                    <span>{moment(date).format(DATE_TIME_FORMAT)}</span>
                                 )}
                                 <h3 className='mt-1 font-medium'>{methodSpending.name}</h3>
                             </td>

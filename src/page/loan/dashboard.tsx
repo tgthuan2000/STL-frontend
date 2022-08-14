@@ -1,11 +1,12 @@
+import moment from 'moment'
 import { useEffect } from 'react'
-import { IUserLoan } from '~/@types/loan'
+import { ILoanData } from '~/@types/loan'
 import { ButtonMenuLoan, Divider } from '~/components'
 import { menuLoanMobile } from '~/constant/components'
 import { useQuery, useWindowSize } from '~/hook'
-import { GET_USER_LOAN_DESC_COUNT_USED } from '~/schema/query/loan'
+import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN } from '~/schema/query/loan'
 import useAuth from '~/store/auth'
-import { ListMember } from './components'
+import { Recent, AnimateWrap, PayDue } from './components'
 
 export interface DataMethodSanity {
     _id: string
@@ -17,21 +18,24 @@ export interface DataMethodSanity {
 }
 
 interface IData {
-    member: IUserLoan[]
+    recent: ILoanData[]
+    paydue: ILoanData[]
 }
 
 const Dashboard = () => {
     const { width } = useWindowSize()
     const { userProfile } = useAuth()
 
-    const [{ member }, fetchData, deleteCache, reload] = useQuery<IData>(
+    const [{ recent, paydue }, fetchData, deleteCache, reload] = useQuery<IData>(
         {
-            member: GET_USER_LOAN_DESC_COUNT_USED,
+            recent: GET_RECENT_LOAN,
+            paydue: GET_PAY_DUE_LOAN,
         },
         {
             userId: userProfile?._id as string,
             from: 0,
             to: 10,
+            dueDate: moment().utc(true).add(7, 'days').toISOString(),
         }
     )
     useEffect(() => {
@@ -50,13 +54,21 @@ const Dashboard = () => {
 
             {/* Show user */}
             <div className='space-y-6'>
-                <ListMember label='Giao dịch gần đây' data={member.data} loading={member.loading} />
+                <AnimateWrap>
+                    <Recent label='Trạng thái' data={recent.data} loading={recent.loading} />
+                </AnimateWrap>
 
-                <ListMember label='Sắp đến hạn trả' data={member.data} loading={member.loading} />
+                <AnimateWrap>
+                    <PayDue label='Sắp đến hạn trả' data={paydue.data} loading={paydue.loading} />
+                </AnimateWrap>
 
+                <AnimateWrap>
+                    <PayDue label='Giao dịch gần đây' data={paydue.data} loading={paydue.loading} />
+                </AnimateWrap>
+                {/*
                 <ListMember label='Đang vay' data={member.data} loading={member.loading} />
 
-                <ListMember label='Đang cho vay' data={member.data} loading={member.loading} />
+                <ListMember label='Đang cho vay' data={member.data} loading={member.loading} /> */}
             </div>
         </>
     )

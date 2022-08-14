@@ -3,6 +3,7 @@ import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { IMethodSpending, ISpendingData, IStatisticData } from '~/@types/spending'
 import { Box, ButtonMenu, Divider } from '~/components'
+import { DATE_FORMAT } from '~/constant'
 import { menuMobile } from '~/constant/components'
 import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
@@ -90,7 +91,7 @@ const Dashboard = () => {
         )
         const surplus = _.receive - _.cost
         return {
-            dateRange: ['start', 'end'].map((value) => moment(getDate(value as any)).format('DD/MM/YYYY')),
+            dateRange: ['start', 'end'].map((value) => moment(getDate(value as any)).format(DATE_FORMAT)),
             data: [
                 {
                     _id: getKindSpendingId('RECEIVE') as string,

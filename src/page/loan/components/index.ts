@@ -1,4 +1,6 @@
 export { default as CreateMember } from './CreateMember'
 export { default as MakeLoan } from './MakeLoan'
 export { default as MakeGetLoan } from './MakeGetLoan'
-export { default as ListMember } from './ListMember'
+export { default as Recent } from './RecentLoan'
+export { default as PayDue } from './PayDueLoan'
+export { default as AnimateWrap } from './AnimateWrap'
