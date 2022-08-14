@@ -5,7 +5,7 @@ import moment from 'moment'
 import numeral from 'numeral'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { ICategorySpending, IMethodSpending, SpendingData } from '~/@types/spending'
+import { ICategorySpending, IMethodSpending, ISpendingData } from '~/@types/spending'
 import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
 import { useLoading } from '~/context'
 import { getColorPrize } from '~/util'
@@ -27,7 +27,7 @@ export interface TransactionDetailFormData {
     handleDeleteTransaction: () => void
     categorySpending: D<ICategorySpending>
     methodSpending: D<IMethodSpending>
-    transaction: SpendingData
+    transaction: ISpendingData
 }
 
 interface TransactionDetailFormProps {

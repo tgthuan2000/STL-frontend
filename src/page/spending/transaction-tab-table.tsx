@@ -5,7 +5,7 @@ import moment from 'moment'
 import { Fragment, useEffect } from 'react'
 import NumberFormat from 'react-number-format'
 import { useNavigate } from 'react-router-dom'
-import { SpendingData } from '~/@types/spending'
+import { ISpendingData } from '~/@types/spending'
 import LoadingButton from '~/components/Loading/LoadingButton'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useQuery, useWindowSize } from '~/hook'
@@ -22,7 +22,7 @@ const TransactionTabTable = ({ query, params = {} }: TransactionTabTableProps) =
     const { width } = useWindowSize()
 
     const [{ recent }, fetchData, deleteCacheData, reload] = useQuery<{
-        recent: SpendingData[]
+        recent: ISpendingData[]
     }>(query, { userId: userProfile?._id as string, ...params })
 
     useEffect(() => {
@@ -100,7 +100,7 @@ const TransactionTabTable = ({ query, params = {} }: TransactionTabTableProps) =
 export default TransactionTabTable
 
 interface MainTableProps {
-    data: SpendingData[]
+    data: ISpendingData[]
 }
 const MainTable = ({ data }: MainTableProps) => {
     const navigate = useNavigate()

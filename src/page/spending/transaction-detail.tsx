@@ -3,7 +3,7 @@ import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ICategorySpending, IMethodSpending, SpendingData } from '~/@types/spending'
+import { ICategorySpending, IMethodSpending, ISpendingData } from '~/@types/spending'
 import { useCache, useLoading } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
@@ -21,7 +21,7 @@ export interface IDetailSpendingForm {
     surplus: number
 }
 export interface Data {
-    transaction: SpendingData[]
+    transaction: ISpendingData[]
     methodSpending: IMethodSpending[]
 }
 export interface DataCategory {
@@ -314,7 +314,7 @@ const TransactionDetail = () => {
         handleDeleteTransaction,
         categorySpending,
         methodSpending,
-        transaction: transaction.data?.[0] as SpendingData,
+        transaction: transaction.data?.[0] as ISpendingData,
     }
 
     if (transaction.loading) return null

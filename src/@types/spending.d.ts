@@ -2,7 +2,22 @@ import { KIND_SPENDING } from '~/constant/spending'
 import { IUserProfile } from './auth'
 import { IKindSpending } from './context'
 
-export interface SpendingData {
+// INTERFACES
+
+export interface ICategorySpending {
+    _id: string
+    name: string
+    kindSpending: IKindSpending
+    user: IUserProfile
+}
+export interface IMethodSpending {
+    _id: string
+    name: string
+    surplus: number
+    user: IUserProfile
+}
+
+export interface ISpendingData {
     _id: string
     _createdAt: string
     categorySpending?: {
@@ -28,19 +43,21 @@ export interface SpendingData {
     date: string
 }
 
-export interface StatisticData {
+export interface IStatisticData {
     _id: string
     name: string
     key: KIND_SPENDING
     data: number[]
 }
 
+// PROPS
+
 export interface RecentProps {
-    data: SpendingData[] | undefined
+    data: ISpendingData[] | undefined
     loading: boolean
 }
 
-export interface Statistic {
+interface Statistic {
     _id: string
     value: number
     name: string
@@ -54,17 +71,4 @@ export interface StatisticProps {
 export interface MethodProps {
     data: IMethodSpending[] | undefined
     loading: boolean
-}
-
-export interface ICategorySpending {
-    _id: string
-    name: string
-    kindSpending: IKindSpending
-    user: IUserProfile
-}
-export interface IMethodSpending {
-    _id: string
-    name: string
-    surplus: number
-    user: IUserProfile
 }

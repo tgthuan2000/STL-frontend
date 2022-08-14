@@ -1,7 +1,7 @@
 import _, { isEmpty } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
-import { IMethodSpending, SpendingData, StatisticData } from '~/@types/spending'
+import { IMethodSpending, ISpendingData, IStatisticData } from '~/@types/spending'
 import { Box, ButtonMenu, Divider } from '~/components'
 import { menuMobile } from '~/constant/components'
 import { useConfig } from '~/context'
@@ -13,9 +13,9 @@ import { sum } from '~/util'
 import { Method, Recent, Statistic } from './components'
 
 interface IData {
-    recent: SpendingData[]
+    recent: ISpendingData[]
     method: IMethodSpending[]
-    statistic: StatisticData[]
+    statistic: IStatisticData[]
 }
 
 // const F_GET_METHOD_SPENDING = (kindSpending: any[]) => `
@@ -130,6 +130,7 @@ const Dashboard = () => {
 
             <Divider className='xl:hidden py-6' />
 
+            {/* Show analytics */}
             <Box>
                 <Box.Content
                     className='xl:col-span-2 col-span-1'
