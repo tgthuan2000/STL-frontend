@@ -123,8 +123,16 @@ const MakeTransfer = () => {
 
             await client.transaction().create(document1).patch(patch1).create(document2).patch(patch2).commit()
             // navigate to dashboard
-            const result = deleteCache([METHOD_SPENDING_DESC_SURPLUS, RECENT_SPENDING, ALL_RECENT_SPENDING])
-            console.log(result)
+            let res = deleteCache([METHOD_SPENDING_DESC_SURPLUS, RECENT_SPENDING, ALL_RECENT_SPENDING])
+            console.log(res)
+
+            setTimeout(() => {
+                res = deleteCacheData('methodSpending')
+                console.log(res)
+
+                reloadData()
+            }, 0)
+
             form.reset(
                 {
                     amount: '',

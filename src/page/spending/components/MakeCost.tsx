@@ -94,6 +94,7 @@ const MakeCost = () => {
                 _ref: userProfile?._id,
             },
         }
+
         try {
             const patchMethod = client
                 .patch(methodSpending?._id as string)
@@ -108,13 +109,21 @@ const MakeCost = () => {
 
             await client.transaction().create(document).patch(patchMethod).patch(patchCategory).commit()
             // navigate to dashboard
-            const res = deleteCache([
+            let res = deleteCache([
                 METHOD_SPENDING_DESC_SURPLUS,
                 RECENT_SPENDING,
                 ALL_RECENT_SPENDING,
                 STATISTIC_SPENDING,
             ])
             console.log(res)
+
+            setTimeout(() => {
+                res = deleteCacheData('methodSpending', 'categorySpending')
+                console.log(res)
+
+                reloadData()
+            }, 0)
+
             form.reset(
                 {
                     amount: '',
