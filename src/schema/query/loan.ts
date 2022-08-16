@@ -5,6 +5,7 @@ export const GET_USER_LOAN = groq`
     {
         _id,
         userName,
+        surplus,
         image
     }
 `
@@ -25,6 +26,16 @@ export const GET_RECENT_LOAN = groq`
             userName,
             image
         }
+    }
+`
+
+export const GET_STATISTIC_LOAN = groq`
+    *[_type == "userLoan" && user._ref == $userId && surplus != 0 && surplus != null] | order(surplus desc) [$from...$to]
+    {
+        _id,
+        userName,
+        surplus,
+        image
     }
 `
 

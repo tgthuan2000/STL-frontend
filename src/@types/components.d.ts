@@ -1,6 +1,7 @@
 import { SanityImageAssetDocument } from '@sanity/client'
 import React, { HTMLInputTypeAttribute } from 'react'
 import { Control, FieldError, RegisterOptions, UseFormReturn, ValidationRule } from 'react-hook-form'
+import { ILoanData, IUserLoan } from './loan'
 
 export interface SlideParams {
     slide?: string
@@ -90,6 +91,16 @@ export interface ContentBoxProps {
     className?: string
     fullWidth?: boolean
 }
+
+export interface ContentLoanBox2Props {
+    data?: ILoanData[]
+    loading?: boolean
+}
+
+export interface ContentUserLoanBox2Props {
+    data?: IUserLoan[]
+    loading?: boolean
+}
 export interface MenuButtonProps {
     data: IMenuBtn
 }
@@ -103,4 +114,8 @@ export interface IMenuBtn {
     query?: SlideParams
     divider?: boolean
     action?: (cb: () => void) => void
+}
+export interface AnimateWrapProps {
+    children: React.ReactNode
+    className?: string
 }

@@ -1,12 +1,11 @@
 import moment from 'moment'
 import { useEffect } from 'react'
-import { ILoanData } from '~/@types/loan'
-import { ButtonMenuLoan, Divider } from '~/components'
+import { ILoanData, IUserLoan } from '~/@types/loan'
+import { Box2, ButtonMenuLoan, Divider } from '~/components'
 import { menuLoanMobile } from '~/constant/components'
 import { useQuery, useWindowSize } from '~/hook'
-import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN } from '~/schema/query/loan'
+import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
 import useAuth from '~/store/auth'
-import { Recent, AnimateWrap, PayDue } from './components'
 
 export interface DataMethodSanity {
     _id: string
@@ -20,16 +19,18 @@ export interface DataMethodSanity {
 interface IData {
     recent: ILoanData[]
     paydue: ILoanData[]
+    statistic: IUserLoan[]
 }
 
 const Dashboard = () => {
     const { width } = useWindowSize()
     const { userProfile } = useAuth()
 
-    const [{ recent, paydue }, fetchData, deleteCache, reload] = useQuery<IData>(
+    const [{ recent, paydue, statistic }, fetchData, deleteCache, reload] = useQuery<IData>(
         {
             recent: GET_RECENT_LOAN,
             paydue: GET_PAY_DUE_LOAN,
+            statistic: GET_STATISTIC_LOAN,
         },
         {
             userId: userProfile?._id as string,
@@ -41,6 +42,12 @@ const Dashboard = () => {
     useEffect(() => {
         fetchData()
     }, [])
+
+    const handleReload = () => {
+        const res = deleteCache('statistic', 'recent', 'paydue')
+        console.log(res)
+        reload()
+    }
 
     return (
         <>
@@ -54,17 +61,18 @@ const Dashboard = () => {
 
             {/* Show user */}
             <div className='space-y-6'>
-                <AnimateWrap>
-                    <Recent label='Trạng thái' data={recent.data} loading={recent.loading} />
-                </AnimateWrap>
+                <Box2 label='Trạng thái' data={statistic.data} loading={statistic.loading} onReload={handleReload}>
+                    {(data) => <Box2.Content1 {...data} />}
+                </Box2>
 
-                <AnimateWrap>
-                    <PayDue label='Sắp đến hạn trả' data={paydue.data} loading={paydue.loading} />
-                </AnimateWrap>
+                <Box2 label='Sắp đến hạn trả' data={paydue.data} loading={paydue.loading} onReload={handleReload}>
+                    {(data) => <Box2.ContentLoan {...data} />}
+                </Box2>
 
-                <AnimateWrap>
-                    <PayDue label='Giao dịch gần đây' data={paydue.data} loading={paydue.loading} />
-                </AnimateWrap>
+                <Box2 label='Giao dịch gần đây' data={recent.data} loading={recent.loading} onReload={handleReload}>
+                    {(data) => <Box2.ContentLoan {...data} />}
+                </Box2>
+
                 {/*
                 <ListMember label='Đang vay' data={member.data} loading={member.loading} />
 

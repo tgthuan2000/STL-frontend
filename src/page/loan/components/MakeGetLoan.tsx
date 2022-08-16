@@ -95,7 +95,20 @@ const MakeGetLoan = () => {
             },
         }
         try {
-            await client.create(document)
+            const __ = client.transaction()
+            __.create(document)
+
+            const updateUserLoan = client
+                .patch(userLoan?._id as string)
+                .setIfMissing({
+                    surplus: 0,
+                })
+                .inc({
+                    surplus: amount,
+                })
+            __.patch(updateUserLoan)
+
+            await __.commit()
             // navigate to dashboard
             form.reset(
                 {

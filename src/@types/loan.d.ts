@@ -5,7 +5,8 @@ import { KIND_LOAN } from '~/constant/loan'
 export interface IUserLoan {
     _id: string
     userName: string
-    image: SanityAssetDocument
+    surplus: number
+    image?: SanityAssetDocument
 }
 
 export interface IKindLoan {
@@ -23,7 +24,7 @@ export interface ILoanData {
 }
 
 // PROPS
-export interface RecentLoanProps {
+export interface StatusLoanProps {
     data: ILoanData[] | undefined
     loading: boolean
     label: string
@@ -32,8 +33,4 @@ export interface PayDueLoanProps {
     data: ILoanData[] | undefined
     loading: boolean
     label: string
-}
-
-export interface AnimateWrapProps {
-    children: React.ReactNode
 }
