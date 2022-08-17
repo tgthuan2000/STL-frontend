@@ -4,6 +4,7 @@ import { menuLoanPages, menuLoanPC } from '~/constant/components'
 import { useLoading } from '~/context'
 import { useWindowSize } from '~/hook'
 import Dashboard from './dashboard'
+import TransactionDetail from './transaction-detail'
 
 const Loan = () => {
     const { loading } = useLoading()
@@ -37,5 +38,6 @@ const Loan = () => {
 }
 
 Loan.Dashboard = Dashboard
+Loan.TransactionDetail = TransactionDetail
 
 export default Loan

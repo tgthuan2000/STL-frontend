@@ -79,6 +79,7 @@ function App() {
                             <Route path='timekeeping' element={<TimeKeeping />} />
                             <Route path='loan' element={<Loan />}>
                                 <Route index element={<Loan.Dashboard />} />
+                                <Route path='transaction/:id' element={<Loan.TransactionDetail />} />
                             </Route>
                         </Route>
                         <Route path='/auth' element={<Auth />} />

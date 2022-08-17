@@ -133,7 +133,9 @@ const MainTable = ({ data }: MainTableProps) => {
                                 {categorySpending?.name ?? kindSpending.name}
                             </td>
                             <td className={clsx('whitespace-nowrap px-1 pt-4 text-sm text-center')}>
-                                {[KIND_SPENDING.RECEIVE, KIND_SPENDING.TRANSFER_TO].includes(kindSpending.key) && (
+                                {[KIND_SPENDING.RECEIVE, KIND_SPENDING.TRANSFER_TO, KIND_SPENDING.GET_LOAN].includes(
+                                    kindSpending.key
+                                ) && (
                                     <NumberFormat
                                         className={clsx('text-green-500', 'font-medium')}
                                         value={amount}
@@ -143,7 +145,9 @@ const MainTable = ({ data }: MainTableProps) => {
                                 )}
                             </td>
                             <td className={clsx('whitespace-nowrap pl-1 pr-2 pt-4 text-sm text-center')}>
-                                {[KIND_SPENDING.COST, KIND_SPENDING.TRANSFER_FROM].includes(kindSpending.key) && (
+                                {[KIND_SPENDING.COST, KIND_SPENDING.TRANSFER_FROM, KIND_SPENDING.LOAN].includes(
+                                    kindSpending.key
+                                ) && (
                                     <NumberFormat
                                         className={clsx('text-red-500', 'font-medium')}
                                         value={amount}

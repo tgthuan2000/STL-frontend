@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending, ISpendingData } from '~/@types/spending'
 import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
+import { KIND_SPENDING } from '~/constant/spending'
 import { useLoading } from '~/context'
 import { getColorPrize } from '~/util'
 import { Data, DataCategory, IDetailSpendingForm } from '../transaction-detail'
@@ -72,10 +73,19 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                     />
                     <h4 className='xl:text-2xl text-xl font-semibold'>Cập nhật giao dịch</h4>
                 </div>
-                <TrashIcon
-                    className='h-6 lg:h-8 w-6 lg:w-8 hover:opacity-50 text-gray-700 cursor-pointer'
-                    onClick={() => window.confirm('Bạn có chắc muốn xóa giao dịch này ?') && handleDeleteTransaction()}
-                />
+                {[
+                    KIND_SPENDING.COST,
+                    KIND_SPENDING.RECEIVE,
+                    KIND_SPENDING.TRANSFER_FROM,
+                    KIND_SPENDING.TRANSFER_TO,
+                ].includes(transaction.kindSpending.key) && (
+                    <TrashIcon
+                        className='h-6 lg:h-8 w-6 lg:w-8 hover:opacity-50 text-gray-700 cursor-pointer'
+                        onClick={() =>
+                            window.confirm('Bạn có chắc muốn xóa giao dịch này ?') && handleDeleteTransaction()
+                        }
+                    />
+                )}
             </div>
             <div className='bg-white rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>
                 <div className='max-w-lg w-full mx-auto'>
@@ -91,7 +101,11 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                             (() => {
                                                 const surplus = form.watch('surplus')
                                                 const calc =
-                                                    (['receive', 'transfer-to'].includes(transaction.kindSpending.key)
+                                                    ([
+                                                        KIND_SPENDING.RECEIVE,
+                                                        KIND_SPENDING.TRANSFER_TO,
+                                                        KIND_SPENDING.GET_LOAN,
+                                                    ].includes(transaction.kindSpending.key)
                                                         ? 1
                                                         : -1) *
                                                         Number(form.watch('amount')) +
@@ -150,7 +164,7 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                         <div
                                             className={clsx(
                                                 'flex gap-y-6',
-                                                transaction.kindSpending.key === 'transfer-to'
+                                                transaction.kindSpending.key === KIND_SPENDING.TRANSFER_TO
                                                     ? 'flex-col-reverse'
                                                     : 'flex-col'
                                             )}
@@ -161,7 +175,7 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                                 data={methodSpending.data}
                                                 label={
                                                     transaction.methodReference
-                                                        ? (transaction.kindSpending.key === 'transfer-from'
+                                                        ? (transaction.kindSpending.key === KIND_SPENDING.TRANSFER_FROM
                                                               ? 'Từ'
                                                               : 'Đến') + ' phương thức thanh toán'
                                                         : 'Phương thức thanh toán'
@@ -191,7 +205,7 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                                     form={form}
                                                     data={methodSpending.data}
                                                     label={
-                                                        (transaction.kindSpending.key === 'transfer-from'
+                                                        (transaction.kindSpending.key === KIND_SPENDING.TRANSFER_FROM
                                                             ? 'Đến'
                                                             : 'Từ') + ' phương thức thanh toán'
                                                     }

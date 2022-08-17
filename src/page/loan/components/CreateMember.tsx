@@ -46,6 +46,8 @@ const MakeTransfer = () => {
             _type: 'userLoan',
             userName,
             image: _image,
+            surplus: 0,
+            countUsed: 0,
             user: {
                 _type: 'reference',
                 _ref: userProfile?._id,

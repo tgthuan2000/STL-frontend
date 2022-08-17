@@ -66,16 +66,16 @@ export const menuLoanMobile: IMenuBtn[] = [
             slide: 'get-loan',
         },
     },
-    {
-        title: 'Cho vay tiền',
-        color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300',
-        icon: TrendingDownIcon,
-        children: () => <MakeLoan />,
-        to: '?slide=loan',
-        query: {
-            slide: 'loan',
-        },
-    },
+    // {
+    //     title: 'Cho vay tiền',
+    //     color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300',
+    //     icon: TrendingDownIcon,
+    //     children: () => <MakeLoan />,
+    //     to: '?slide=loan',
+    //     query: {
+    //         slide: 'loan',
+    //     },
+    // },
     {
         title: 'Tạo thành viên',
         color: 'text-green-700 bg-green-200 hover:bg-green-300',
@@ -182,16 +182,16 @@ export const menuLoanPC: IMenuBtn[] = [
             slide: 'get-loan',
         },
     },
-    {
-        title: 'Cho vay tiền',
-        color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300',
-        icon: TrendingDownIcon,
-        children: () => <MakeLoan />,
-        to: '?slide=loan',
-        query: {
-            slide: 'loan',
-        },
-    },
+    // {
+    //     title: 'Cho vay tiền',
+    //     color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300',
+    //     icon: TrendingDownIcon,
+    //     children: () => <MakeLoan />,
+    //     to: '?slide=loan',
+    //     query: {
+    //         slide: 'loan',
+    //     },
+    // },
     {
         title: 'Tạo thành viên',
         color: 'text-green-700 bg-green-200 hover:bg-green-300',

@@ -20,6 +20,7 @@ export interface AutoCompleteProps {
     rules?: RulesValidate
     disabled?: boolean
     onChange?: (value: any) => void
+    showImage?: boolean
 }
 
 export interface SelectionProps {

@@ -7,6 +7,8 @@ import { forwardRef, useEffect, useMemo, useState } from 'react'
 import { Controller } from 'react-hook-form'
 import { AutoCompleteProps } from '~/@types/components'
 import numeral from 'numeral'
+import { urlFor } from '~/sanityConfig'
+import UserSvg from './UserSvg'
 
 const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
     (
@@ -24,6 +26,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
             loading,
             disabled,
             onChange,
+            showImage,
         },
         ref
     ) => {
@@ -146,42 +149,58 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
 
                                 {filterData.length > 0 ? (
                                     <Combobox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
-                                        {filterData.map((item) => (
-                                            <Combobox.Option
-                                                key={item[idKey]}
-                                                value={item}
-                                                className={({ active }) =>
-                                                    clsx(
-                                                        'relative cursor-default select-none py-2 pl-8 pr-4',
-                                                        active ? 'bg-indigo-600 text-white' : 'text-gray-900'
-                                                    )
-                                                }
-                                            >
-                                                {({ active, selected }) => (
-                                                    <>
-                                                        <span
-                                                            className={clsx(
-                                                                'block truncate',
-                                                                selected && 'font-semibold'
-                                                            )}
-                                                        >
-                                                            {item[valueKey]}
-                                                        </span>
+                                        {filterData.map((item) => {
+                                            return (
+                                                <Combobox.Option
+                                                    key={item[idKey]}
+                                                    value={item}
+                                                    className={({ active }) =>
+                                                        clsx(
+                                                            'relative cursor-default select-none py-2 pl-8 pr-4',
+                                                            active ? 'bg-indigo-600 text-white' : 'text-gray-900'
+                                                        )
+                                                    }
+                                                >
+                                                    {({ active, selected }) => (
+                                                        <>
+                                                            <div className='flex items-center gap-2'>
+                                                                {showImage &&
+                                                                    (item.image ? (
+                                                                        <img
+                                                                            src={urlFor(item.image)}
+                                                                            alt={item.name}
+                                                                            className='h-7 w-7 rounded-full'
+                                                                        />
+                                                                    ) : (
+                                                                        <span className='inline-block h-7 w-7 rounded-full overflow-hidden bg-gray-100'>
+                                                                            <UserSvg />
+                                                                        </span>
+                                                                    ))}
+                                                                <span
+                                                                    className={clsx(
+                                                                        'block truncate',
+                                                                        selected && 'font-semibold'
+                                                                    )}
+                                                                >
+                                                                    {item[valueKey]}
+                                                                </span>
+                                                            </div>
 
-                                                        {selected && (
-                                                            <span
-                                                                className={clsx(
-                                                                    'absolute inset-y-0 left-0 flex items-center pl-1.5',
-                                                                    active ? 'text-white' : 'text-indigo-600'
-                                                                )}
-                                                            >
-                                                                <CheckIcon className='h-5 w-5' aria-hidden='true' />
-                                                            </span>
-                                                        )}
-                                                    </>
-                                                )}
-                                            </Combobox.Option>
-                                        ))}
+                                                            {selected && (
+                                                                <span
+                                                                    className={clsx(
+                                                                        'absolute inset-y-0 left-0 flex items-center pl-1.5',
+                                                                        active ? 'text-white' : 'text-indigo-600'
+                                                                    )}
+                                                                >
+                                                                    <CheckIcon className='h-5 w-5' aria-hidden='true' />
+                                                                </span>
+                                                            )}
+                                                        </>
+                                                    )}
+                                                </Combobox.Option>
+                                            )
+                                        })}
                                     </Combobox.Options>
                                 ) : (
                                     query.trim() !== '' &&

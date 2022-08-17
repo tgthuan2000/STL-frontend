@@ -39,6 +39,12 @@ const Recent = ({ data, loading }: RecentProps) => {
                                                     KIND_SPENDING.TRANSFER_TO,
                                                 ].includes(item.kindSpending.key),
                                             },
+                                            {
+                                                'text-orange-500': [
+                                                    KIND_SPENDING.LOAN,
+                                                    KIND_SPENDING.GET_LOAN,
+                                                ].includes(item.kindSpending.key),
+                                            },
                                             'font-medium'
                                         )}
                                         value={item.amount}

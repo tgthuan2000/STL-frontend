@@ -71,7 +71,7 @@ const MakeLoan = () => {
         description = description.trim()
 
         // add to database
-        const document = {
+        const documentLoan = {
             _type: 'loan',
             amount,
             description,
@@ -95,18 +95,21 @@ const MakeLoan = () => {
                 _ref: userProfile?._id,
             },
         }
+
         try {
             const __ = client.transaction()
-            __.create(document)
+            __.create(documentLoan)
 
             userLoan?.forEach((user) => {
                 const updateUserLoan = client
                     .patch(user?._id as string)
                     .setIfMissing({
                         surplus: 0,
+                        countUsed: 0,
                     })
                     .inc({
                         surplus: amount as number,
+                        countUsed: 1,
                     })
                 __.patch(updateUserLoan)
             })
@@ -164,10 +167,10 @@ const MakeLoan = () => {
                                 name='methodSpending'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn phương thức thanh toán!',
+                                    required: 'Yêu cầu chọn phương thức cho vay!',
                                 }}
                                 data={methodSpending.data}
-                                label='Phương thức thanh toán'
+                                label='Phương thức cho vay'
                                 loading={methodSpending.loading}
                                 onReload={
                                     _.isEmpty(methodSpending.data)
@@ -182,14 +185,14 @@ const MakeLoan = () => {
                                 name='userLoan'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn đối tượng vay!',
+                                    required: 'Yêu cầu chọn đối tượng cho vay!',
                                 }}
                                 data={userLoan.data}
-                                label='Đối tượng vay'
+                                label='Đối tượng cho vay'
                                 valueKey='userName'
                                 loading={userLoan.loading}
-                                // multiple
                                 onReload={_.isEmpty(userLoan.data) ? undefined : () => handleReloadData('userLoan')}
+                                showImage
                             />
 
                             <TextArea name='description' form={form} label='Ghi chú' />

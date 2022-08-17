@@ -3,4 +3,6 @@ export enum KIND_SPENDING {
     COST = 'cost',
     TRANSFER_FROM = 'transfer-from',
     TRANSFER_TO = 'transfer-to',
+    LOAN = 'loan',
+    GET_LOAN = 'get-loan',
 }

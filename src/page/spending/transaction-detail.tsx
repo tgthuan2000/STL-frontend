@@ -4,6 +4,7 @@ import { useEffect, useMemo } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending, ISpendingData } from '~/@types/spending'
+import { KIND_SPENDING } from '~/constant/spending'
 import { useCache, useLoading } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
@@ -138,7 +139,9 @@ const TransactionDetail = () => {
         amount = Number(amount)
         try {
             setSubmitLoading(true)
-            const condition = ['receive', 'transfer-to'].includes(head(transaction.data)?.kindSpending.key as string)
+            const condition = [KIND_SPENDING.RECEIVE, KIND_SPENDING.TRANSFER_TO].includes(
+                head(transaction.data)?.kindSpending.key as KIND_SPENDING
+            )
                 ? 1
                 : -1
             const _transaction = head(transaction.data)
@@ -248,7 +251,9 @@ const TransactionDetail = () => {
     const handleDeleteTransaction = async () => {
         try {
             setSubmitLoading(true)
-            const condition = ['receive', 'transfer-to'].includes(head(transaction.data)?.kindSpending.key as string)
+            const condition = [KIND_SPENDING.RECEIVE, KIND_SPENDING.TRANSFER_TO].includes(
+                head(transaction.data)?.kindSpending.key as KIND_SPENDING
+            )
                 ? 1
                 : -1
             const _transaction = head(transaction.data)

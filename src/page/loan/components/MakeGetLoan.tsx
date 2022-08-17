@@ -1,12 +1,13 @@
-import _ from 'lodash'
+import { isEmpty, isUndefined } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { IUserLoan } from '~/@types/loan'
 import { ICategorySpending, IMethodSpending } from '~/@types/spending'
 import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
-import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
+import { DATE_FORMAT } from '~/constant'
+import { SlideOverHOC, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_USER_LOAN } from '~/schema/query/loan'
@@ -29,13 +30,16 @@ const MakeGetLoan = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { userProfile } = useAuth()
-    const { deleteCache } = useCache()
-    const { getKindLoanId, kindLoan } = useConfig()
+    const { getKindLoanId, kindLoan, getKindSpendingId, kindSpending } = useConfig()
     const { loading, setSubmitLoading } = useLoading()
 
     const kindLoanId = useMemo(() => {
         return getKindLoanId('GET_LOAN')
     }, [kindLoan])
+
+    const kindSpendingLoanId = useMemo(() => {
+        return getKindSpendingId('GET_LOAN')
+    }, [kindSpending])
 
     const [{ methodSpending, userLoan }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
         {
@@ -48,7 +52,7 @@ const MakeGetLoan = () => {
     )
 
     useEffect(() => {
-        if (!_.isUndefined(kindLoanId)) {
+        if (!isUndefined(kindLoanId)) {
             fetchData()
         }
     }, [kindLoanId])
@@ -71,12 +75,12 @@ const MakeGetLoan = () => {
         description = description.trim()
 
         // add to database
-        const document = {
+        const documentLoan = {
             _type: 'loan',
             amount,
             description,
             paid: false,
-            payDate: moment(payDate).format(),
+            payDate: payDate ? moment(payDate).format() : undefined,
             kindLoan: {
                 _type: 'reference',
                 _ref: kindLoanId,
@@ -94,21 +98,68 @@ const MakeGetLoan = () => {
                 _ref: userProfile?._id,
             },
         }
+
+        const documentSpending = {
+            _type: 'spending',
+            amount,
+            description: `${payDate ? `Hạn trả ${moment(payDate).format(DATE_FORMAT)}` : ''}${
+                description ? `\n${description}` : ''
+            }`,
+            surplus: methodSpending?.surplus,
+            date: moment().format(),
+            kindSpending: {
+                _type: 'reference',
+                _ref: kindSpendingLoanId,
+            },
+            methodSpending: {
+                _type: 'reference',
+                _ref: methodSpending?._id,
+            },
+            user: {
+                _type: 'reference',
+                _ref: userProfile?._id,
+            },
+        }
+
         try {
             const __ = client.transaction()
-            __.create(document)
+            __.create(documentLoan)
+            __.create(documentSpending)
 
             const updateUserLoan = client
                 .patch(userLoan?._id as string)
                 .setIfMissing({
                     surplus: 0,
+                    countUsed: 0,
                 })
                 .inc({
                     surplus: amount,
+                    countUsed: 1,
                 })
             __.patch(updateUserLoan)
 
+            const updateMethodSpending = client
+                .patch(methodSpending?._id as string)
+                .setIfMissing({
+                    countUsed: 0,
+                    surplus: 0,
+                })
+                .inc({
+                    countUsed: 1,
+                    surplus: amount,
+                })
+            __.patch(updateMethodSpending)
+
             await __.commit()
+
+            let res
+            setTimeout(() => {
+                res = deleteCacheData('methodSpending', 'userLoan')
+                console.log(res)
+
+                reloadData()
+            }, 0)
+
             // navigate to dashboard
             form.reset(
                 {
@@ -160,15 +211,13 @@ const MakeGetLoan = () => {
                                 name='methodSpending'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn phương thức thanh toán!',
+                                    required: 'Yêu cầu chọn phương thức nhận tiền!',
                                 }}
                                 data={methodSpending.data}
-                                label='Phương thức thanh toán'
+                                label='Phương thức nhận tiền'
                                 loading={methodSpending.loading}
                                 onReload={
-                                    _.isEmpty(methodSpending.data)
-                                        ? undefined
-                                        : () => handleReloadData('methodSpending')
+                                    isEmpty(methodSpending.data) ? undefined : () => handleReloadData('methodSpending')
                                 }
                             />
 
@@ -183,7 +232,8 @@ const MakeGetLoan = () => {
                                 label='Đối tượng vay'
                                 valueKey='userName'
                                 loading={userLoan.loading}
-                                onReload={_.isEmpty(userLoan.data) ? undefined : () => handleReloadData('userLoan')}
+                                onReload={isEmpty(userLoan.data) ? undefined : () => handleReloadData('userLoan')}
+                                showImage
                             />
 
                             <TextArea name='description' form={form} label='Ghi chú' />
