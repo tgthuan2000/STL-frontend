@@ -20,23 +20,10 @@ export interface IMethodSpending {
 export interface ISpendingData {
     _id: string
     _createdAt: string
-    categorySpending?: {
-        _id: string
-        name: string
-    }
-    methodSpending: {
-        _id: string
-        name: string
-    }
-    methodReference?: {
-        _id: string
-        name: string
-    }
-    kindSpending: {
-        _id: string
-        name: string
-        key: KIND_SPENDING
-    }
+    categorySpending?: ICategorySpending
+    methodSpending: IMethodSpending
+    methodReference?: IMethodSpending
+    kindSpending: IKindSpending
     surplus: number
     description: string
     amount: number

@@ -5,6 +5,8 @@ import { useLoading } from '~/context'
 import { useWindowSize } from '~/hook'
 import Dashboard from './dashboard'
 import TransactionDetail from './transaction-detail'
+import TransactionEdit from './transaction-edit'
+import MemberDetail from './member-detail'
 
 const Loan = () => {
     const { loading } = useLoading()
@@ -39,5 +41,7 @@ const Loan = () => {
 
 Loan.Dashboard = Dashboard
 Loan.TransactionDetail = TransactionDetail
+Loan.TransactionEdit = TransactionEdit
+Loan.MemberDetail = MemberDetail
 
 export default Loan

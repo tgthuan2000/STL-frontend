@@ -4,6 +4,7 @@ import moment from 'moment'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
 import { ContentLoanBox2Props } from '~/@types/components'
+import AvatarUser from '~/components/AvatarUser'
 import UserSvg from '~/components/UserSvg'
 import { DATE_TIME_FORMAT } from '~/constant'
 import { urlFor } from '~/sanityConfig'
@@ -45,22 +46,11 @@ const Content = ({ data, loading }: ContentLoanBox2Props) => {
 
                 return (
                     <Link
-                        to={`transaction/${item._id}`}
+                        to={`transaction/${item._id}/detail`}
                         className='flex flex-col group bg-white gap-x-3 gap-y-1 py-3 px-3 border rounded-md cursor-pointer shadow-md hover:shadow-lg hover:bg-gray-50 transition-all'
                         key={item._id}
                     >
-                        {item.userLoan?.image ? (
-                            <div
-                                style={{
-                                    backgroundImage: `url(${urlFor(item.userLoan?.image)})`,
-                                }}
-                                className='flex-shrink-0 w-8 h-8 rounded-full bg-no-repeat bg-center bg-cover bg-gray-200'
-                            />
-                        ) : (
-                            <div className='inline-block flex-shrink-0 w-8 h-8 overflow-hidden rounded-full bg-gray-100'>
-                                <UserSvg />
-                            </div>
-                        )}
+                        <AvatarUser size='small' image={item.userLoan?.image} />
 
                         <span className='truncate flex-1 max-w-[150px]'>{item.userLoan?.userName}</span>
                         <span title='Hạn trả' className={clsx('font-normal truncate', date?.color)}>

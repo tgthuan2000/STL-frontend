@@ -1,12 +1,13 @@
-import { SanityAssetDocument } from '@sanity/client'
+import { SanityImageAssetDocument } from '@sanity/client'
 import { KIND_LOAN } from '~/constant/loan'
+import { IMethodSpending } from './spending'
 
 // INTERFACES
 export interface IUserLoan {
     _id: string
     userName: string
     surplus: number
-    image?: SanityAssetDocument
+    image?: SanityImageAssetDocument
 }
 
 export interface IKindLoan {
@@ -21,6 +22,8 @@ export interface ILoanData {
     payDate: string
     userLoan: IUserLoan
     paid: boolean
+    methodSpending: IMethodSpending
+    description?: string
 }
 
 // PROPS

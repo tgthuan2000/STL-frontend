@@ -58,3 +58,30 @@ export const GET_PAY_DUE_LOAN = groq`
     }
 
 `
+
+export const GET_TRANSACTION_DETAIL = groq`
+    *[_type == "loan" && user._ref == $userId && _id == $id]
+    {
+        _id,
+        _createdAt,
+        _updatedAt,
+        amount,
+        description,
+        paid,
+        methodSpending-> {
+            _id,
+            name,
+            surplus
+        },
+        kindLoan-> {
+            _id,
+            name,
+            key
+        },
+        userLoan-> {
+            _id,
+            userName,
+            image
+        }
+    }
+`

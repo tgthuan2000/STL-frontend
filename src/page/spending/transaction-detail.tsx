@@ -10,7 +10,7 @@ import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING, GET_TRANSACTION_DETAIL } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
-import TransactionDetailForm, { TransactionDetailFormData } from './components/DetailForm'
+import { TransactionDetailForm, TransactionDetailFormData } from './components'
 
 export interface IDetailSpendingForm {
     amount: number
