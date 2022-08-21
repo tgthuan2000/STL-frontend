@@ -100,7 +100,7 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                                                 required: 'Yêu cầu chọn phương thức thanh toán!',
                                                             }}
                                                             onReload={
-                                                                isEmpty(methodSpending.data)
+                                                                isEmpty(methodSpending.data) || transaction.paid
                                                                     ? undefined
                                                                     : () => handleReloadData('methodSpending')
                                                             }

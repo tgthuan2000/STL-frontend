@@ -1,7 +1,7 @@
 import { head, isEmpty } from 'lodash'
 import { useEffect } from 'react'
 import { SubmitHandler } from 'react-hook-form'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { IMethodSpending, ISpendingData } from '~/@types/spending'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useCache, useLoading } from '~/context'
@@ -18,6 +18,7 @@ export interface Data {
 }
 
 const TransactionDetail = () => {
+    const navigate = useNavigate()
     const { userProfile } = useAuth()
     const { setSubmitLoading } = useLoading()
     const { id } = useParams()
@@ -118,7 +119,62 @@ const TransactionDetail = () => {
         reloadData()
     }
 
-    const handleDeleteTransaction = () => {}
+    const handleDeleteTransaction = async () => {
+        try {
+            setSubmitLoading(true)
+            const condition = [KIND_SPENDING.GET_LOAN].includes(trans?.kindSpending.key as KIND_SPENDING) ? 1 : -1
+            const __ = client.transaction()
+
+            if (trans) {
+                // refund surplus, countUsed for method deleted
+                if (trans.methodSpending) {
+                    const patchMethod = client
+                        .patch(trans.methodSpending._id)
+                        .setIfMissing({ surplus: 0, countUsed: 0 })
+                        .dec({
+                            surplus: (trans.amount as number) * condition,
+                            countUsed: 1,
+                        })
+                    __.patch(patchMethod)
+                }
+
+                // refund surplus, countUsed for userLoan
+                if (trans.userLoan) {
+                    const patchuserLoan = client
+                        .patch(trans.userLoan._id)
+                        .setIfMissing({ surplus: 0, countUsed: 0 })
+                        .dec({
+                            surplus: (trans.amount as number) * condition,
+                            countUsed: 1,
+                        })
+                    __.patch(patchuserLoan)
+                }
+            }
+
+            // delete transaction
+            __.delete(id as string)
+
+            // commit
+            await __.commit()
+
+            const caches = deleteCache([
+                METHOD_SPENDING_DESC_SURPLUS,
+                METHOD_SPENDING,
+                RECENT_SPENDING,
+                ALL_RECENT_SPENDING,
+                STATISTIC_SPENDING,
+                GET_RECENT_LOAN,
+                GET_PAY_DUE_LOAN,
+                GET_STATISTIC_LOAN,
+            ])
+            console.log(caches)
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setSubmitLoading(false)
+            navigate(-1)
+        }
+    }
 
     const data: TransactionDetailFormData = {
         onsubmit,
