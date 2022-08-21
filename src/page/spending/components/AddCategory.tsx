@@ -56,7 +56,9 @@ const AddCategory = () => {
         try {
             await client.create(document)
             // navigate to dashboard
-            const result = deleteCache([getCategorySpending({ userProfile, kindSpending })])
+            const result = deleteCache([
+                getCategorySpending({ userProfile, kindSpending: kindSpending?._id as string }),
+            ])
             console.log(result)
             alert('Tạo mới thể loại thành công!')
             // setIsOpen(false)
