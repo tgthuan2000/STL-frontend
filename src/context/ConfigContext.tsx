@@ -1,6 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { IConfigContext, IKindSpending } from '~/@types/context'
-import { KIND_LOAN } from '~/constant/loan'
 import { KIND_SPENDING } from '~/constant/spending'
 import { client } from '~/sanityConfig'
 import { GET_CONFIG } from '~/schema/query/config'
@@ -9,8 +8,7 @@ import { useLoading } from './LoadingContext'
 const ConfigContext = createContext<IConfigContext>({
     kindSpending: [],
     getKindSpendingId: () => '',
-    kindLoan: [],
-    getKindLoanId: () => '',
+    ok: false,
 })
 interface IConfig {
     kindSpending: IKindSpending[]
@@ -22,6 +20,8 @@ const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
         kindSpending: [],
         kindLoan: [],
     })
+    const [ok, setOk] = useState(false)
+
     const { setConfigLoading } = useLoading()
 
     useEffect(() => {
@@ -30,6 +30,7 @@ const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
                 setConfigLoading(true)
                 const res: IConfig = await client.fetch(GET_CONFIG)
                 setConfig(res)
+                setOk(true)
             } catch (error) {
                 console.log(error)
             } finally {
@@ -46,19 +47,12 @@ const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
         [config.kindSpending]
     )
 
-    const getKindLoanId = useCallback(
-        (KEY: keyof typeof KIND_LOAN) => {
-            return config.kindLoan.find((kind) => kind.key.toLowerCase() === KIND_LOAN[KEY])?._id
-        },
-        [config.kindLoan]
-    )
-
     const value: IConfigContext = {
+        ok,
         kindSpending: config.kindSpending,
-        kindLoan: config.kindLoan,
         getKindSpendingId,
-        getKindLoanId,
     }
+
     return <ConfigContext.Provider value={value}>{children}</ConfigContext.Provider>
 }
 

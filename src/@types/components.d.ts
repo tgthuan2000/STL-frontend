@@ -1,7 +1,8 @@
 import { SanityImageAssetDocument } from '@sanity/client'
 import React, { HTMLInputTypeAttribute } from 'react'
-import { Control, FieldError, RegisterOptions, UseFormReturn, ValidationRule } from 'react-hook-form'
-import { ILoanData, IUserLoan } from './loan'
+import { Control, FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
+import { IUserLoan } from './loan'
+import { ISpendingData } from './spending'
 
 export interface SlideParams {
     slide?: string
@@ -17,7 +18,7 @@ export interface AutoCompleteProps {
     addMore?: (value: any) => Promise<any>
     loading?: boolean
     form: UseFormReturn<any, object>
-    rules?: RulesValidate
+    rules?: Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
     disabled?: boolean
     onChange?: (value: any) => void
     showImage?: boolean
@@ -32,7 +33,7 @@ export interface SelectionProps {
     valueKey?: string
     placeholder?: string
     form: UseFormReturn<any, object>
-    rules?: RulesValidate
+    rules?: Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
 }
 
 export interface SlideOverProps {
@@ -63,7 +64,7 @@ export interface DateProps {
     name: string
     error?: FieldError
     form: UseFormReturn<any, object>
-    rules?: RulesValidate
+    rules?: Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
 }
 export interface TextAreaProps {
     className?: string
@@ -71,7 +72,7 @@ export interface TextAreaProps {
     name: string
     error?: FieldError
     form: UseFormReturn<any, object>
-    rules?: RulesValidate
+    rules?: Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
 }
 export interface ButtonProps {
     className?: string
@@ -94,7 +95,7 @@ export interface ContentBoxProps {
 }
 
 export interface ContentLoanBox2Props {
-    data?: ILoanData[]
+    data?: ISpendingData[]
     loading?: boolean
 }
 
@@ -119,4 +120,12 @@ export interface IMenuBtn {
 export interface AnimateWrapProps {
     children: React.ReactNode
     className?: string
+}
+
+export interface ToggleProps {
+    label: string
+    form: UseFormReturn<any, object>
+    rules?: Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
+    name: string
+    disabled?: boolean
 }

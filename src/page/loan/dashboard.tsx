@@ -1,8 +1,10 @@
 import moment from 'moment'
 import { useEffect } from 'react'
-import { ILoanData, IUserLoan } from '~/@types/loan'
+import { IUserLoan } from '~/@types/loan'
+import { ISpendingData } from '~/@types/spending'
 import { Box2, ButtonMenuLoan, Divider } from '~/components'
 import { menuLoanMobile } from '~/constant/components'
+import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
 import useAuth from '~/store/auth'
@@ -17,14 +19,15 @@ export interface DataMethodSanity {
 }
 
 interface IData {
-    recent: ILoanData[]
-    paydue: ILoanData[]
+    recent: ISpendingData[]
+    paydue: ISpendingData[]
     statistic: IUserLoan[]
 }
 
 const Dashboard = () => {
     const { width } = useWindowSize()
     const { userProfile } = useAuth()
+    const { getKindSpendingId } = useConfig()
 
     const [{ recent, paydue, statistic }, fetchData, deleteCache, reload] = useQuery<IData>(
         {
@@ -37,8 +40,11 @@ const Dashboard = () => {
             from: 0,
             to: 10,
             dueDate: moment().utc(true).add(7, 'days').toISOString(),
+            kindLoan: getKindSpendingId('LOAN') as string,
+            kindGetLoan: getKindSpendingId('GET_LOAN') as string,
         }
     )
+
     useEffect(() => {
         fetchData()
     }, [])

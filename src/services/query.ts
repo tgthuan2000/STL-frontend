@@ -1,5 +1,6 @@
 import { SanityDocument } from '@sanity/client'
-import { IKindSpending } from '~/@types/context'
+import moment from 'moment'
+import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
 import {
     GETALL_RECENT_SPENDING,
     GET_CATEGORY_SPENDING,
@@ -12,12 +13,12 @@ import { getDate } from '.'
 
 interface GetCategorySpending<T> {
     userProfile: SanityDocument<T> | null
-    kindSpending: IKindSpending | null
+    kindSpending: string
 }
 export const getCategorySpending = <T>({ userProfile, kindSpending }: GetCategorySpending<T>) => {
     return {
         categorySpending: GET_CATEGORY_SPENDING,
-        params: { userId: userProfile?._id, kindSpending: kindSpending?._id },
+        params: { userId: userProfile?._id, kindSpending },
     }
 }
 
@@ -77,3 +78,49 @@ export const getAllRecentSpending = <T>({ userProfile }: GetAllRecentSpending<T>
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
+// LOAN
+interface GetRecentLoan<T> {
+    userProfile: SanityDocument<T> | null
+    kindLoan: string
+    kindGetLoan: string
+}
+export const getRecentLoan = <T>({ userProfile, kindLoan, kindGetLoan }: GetRecentLoan<T>) => {
+    return {
+        recent: GET_RECENT_LOAN,
+        params: { userId: userProfile?._id, from: 0, to: 10, kindLoan, kindGetLoan },
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+interface GetPayDueLoan<T> {
+    userProfile: SanityDocument<T> | null
+    kindLoan: string
+    kindGetLoan: string
+}
+export const getPayDueLoan = <T>({ userProfile, kindLoan, kindGetLoan }: GetPayDueLoan<T>) => {
+    return {
+        recent: GET_PAY_DUE_LOAN,
+        params: {
+            userId: userProfile?._id,
+            from: 0,
+            to: 10,
+            dueDate: moment().utc(true).add(7, 'days').toISOString(),
+            kindLoan,
+            kindGetLoan,
+        },
+    }
+}
+// ---------------------------------------------------------------------------------------------------------------------
+interface GetStatisticLoan<T> {
+    userProfile: SanityDocument<T> | null
+}
+export const getStatisticLoan = <T>({ userProfile }: GetStatisticLoan<T>) => {
+    return {
+        recent: GET_STATISTIC_LOAN,
+        params: {
+            userId: userProfile?._id,
+            from: 0,
+            to: 10,
+        },
+    }
+}

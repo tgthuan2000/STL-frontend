@@ -1,6 +1,7 @@
 import { KIND_SPENDING } from '~/constant/spending'
 import { IUserProfile } from './auth'
 import { IKindSpending } from './context'
+import { IUserLoan } from './loan'
 
 // INTERFACES
 
@@ -20,14 +21,17 @@ export interface IMethodSpending {
 export interface ISpendingData {
     _id: string
     _createdAt: string
+    amount: number
+    kindSpending: IKindSpending
+    surplus: number
+    user: IUserProfile
+    description?: string
     categorySpending?: ICategorySpending
     methodSpending: IMethodSpending
     methodReference?: IMethodSpending
-    kindSpending: IKindSpending
-    surplus: number
-    description: string
-    amount: number
-    date: string
+    date?: string
+    paid?: boolean
+    userLoan?: IUserLoan
 }
 
 export interface IStatisticData {

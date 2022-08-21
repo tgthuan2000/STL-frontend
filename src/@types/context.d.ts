@@ -20,8 +20,7 @@ export interface IKindSpending {
 export interface IConfigContext {
     kindSpending: IKindSpending[]
     getKindSpendingId: (KEY: keyof typeof KIND_SPENDING) => string | undefined
-    kindLoan: any[]
-    getKindLoanId: (KEY: keyof typeof KIND_LOAN) => string | undefined
+    ok: boolean
 }
 
 export interface ISlideOverContext {

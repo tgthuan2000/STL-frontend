@@ -5,9 +5,7 @@ import numeral from 'numeral'
 import { Link } from 'react-router-dom'
 import { ContentLoanBox2Props } from '~/@types/components'
 import AvatarUser from '~/components/AvatarUser'
-import UserSvg from '~/components/UserSvg'
 import { DATE_TIME_FORMAT } from '~/constant'
-import { urlFor } from '~/sanityConfig'
 
 const Content = ({ data, loading }: ContentLoanBox2Props) => {
     if (loading) return <Skeleton />
@@ -15,9 +13,9 @@ const Content = ({ data, loading }: ContentLoanBox2Props) => {
         <>
             {data?.map((item) => {
                 let numberDay: number | undefined, date: { message: string; color: string }
-                const isHavePayDate = item.payDate && item.payDate !== 'Invalid date'
+                const isHavePayDate = item.date && item.date !== 'Invalid date'
                 if (isHavePayDate) {
-                    numberDay = moment(item.payDate).diff(moment(), 'days')
+                    numberDay = moment(item.date).diff(moment(), 'days')
                 }
                 date = {
                     message: `Còn lại ${numberDay} ngày`,
@@ -54,7 +52,7 @@ const Content = ({ data, loading }: ContentLoanBox2Props) => {
 
                         <span className='truncate flex-1 max-w-[150px]'>{item.userLoan?.userName}</span>
                         <span title='Hạn trả' className={clsx('font-normal truncate', date?.color)}>
-                            {isHavePayDate && moment(item.payDate).format(DATE_TIME_FORMAT) + ' - '} {date?.message}
+                            {isHavePayDate && moment(item.date).format(DATE_TIME_FORMAT) + ' - '} {date?.message}
                         </span>
                         <span className={clsx('font-normal', item.amount > 0 ? 'text-green-500' : 'text-red-500')}>
                             {numeral(item.amount).format()}

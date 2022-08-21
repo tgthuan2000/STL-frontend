@@ -14,11 +14,11 @@ import { GET_USER_LOAN } from '~/schema/query/loan'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 
-interface IAddIncomeForm {
+interface IMakeGetLoanForm {
     amount: number | string
     categorySpending: ICategorySpending | null
     methodSpending: IMethodSpending | null
-    payDate: Date | null
+    date: Date | null
     description: string
     userLoan: IUserLoan | null
 }
@@ -30,14 +30,10 @@ const MakeGetLoan = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { userProfile } = useAuth()
-    const { getKindLoanId, kindLoan, getKindSpendingId, kindSpending } = useConfig()
+    const { getKindSpendingId, kindSpending } = useConfig()
     const { loading, setSubmitLoading } = useLoading()
 
     const kindLoanId = useMemo(() => {
-        return getKindLoanId('GET_LOAN')
-    }, [kindLoan])
-
-    const kindSpendingLoanId = useMemo(() => {
         return getKindSpendingId('GET_LOAN')
     }, [kindSpending])
 
@@ -57,31 +53,31 @@ const MakeGetLoan = () => {
         }
     }, [kindLoanId])
 
-    const form = useForm<IAddIncomeForm>({
+    const form = useForm<IMakeGetLoanForm>({
         defaultValues: {
             amount: '',
             categorySpending: null,
             methodSpending: null,
-            payDate: null,
+            date: null,
             userLoan: null,
             description: '',
         },
     })
 
-    const onsubmit: SubmitHandler<IAddIncomeForm> = async (data) => {
+    const onsubmit: SubmitHandler<IMakeGetLoanForm> = async (data) => {
         setSubmitLoading(true)
-        let { amount, methodSpending, description, payDate, userLoan } = data
+        let { amount, methodSpending, description, date, userLoan } = data
         amount = Number(amount)
         description = description.trim()
 
-        // add to database
-        const documentLoan = {
-            _type: 'loan',
+        const documentSpending = {
+            _type: 'spending',
             amount,
             description,
+            surplus: methodSpending?.surplus,
+            date: date ? moment(date).format() : undefined,
             paid: false,
-            payDate: payDate ? moment(payDate).format() : undefined,
-            kindLoan: {
+            kindSpending: {
                 _type: 'reference',
                 _ref: kindLoanId,
             },
@@ -99,31 +95,8 @@ const MakeGetLoan = () => {
             },
         }
 
-        const documentSpending = {
-            _type: 'spending',
-            amount,
-            description: `${payDate ? `Hạn trả ${moment(payDate).format(DATE_FORMAT)}` : ''}${
-                description ? `\n${description}` : ''
-            }`,
-            surplus: methodSpending?.surplus,
-            date: moment().format(),
-            kindSpending: {
-                _type: 'reference',
-                _ref: kindSpendingLoanId,
-            },
-            methodSpending: {
-                _type: 'reference',
-                _ref: methodSpending?._id,
-            },
-            user: {
-                _type: 'reference',
-                _ref: userProfile?._id,
-            },
-        }
-
         try {
             const __ = client.transaction()
-            __.create(documentLoan)
             __.create(documentSpending)
 
             const updateUserLoan = client
@@ -221,7 +194,7 @@ const MakeGetLoan = () => {
                                 }
                             />
 
-                            <DatePicker name='payDate' form={form} label='Ngày trả' />
+                            <DatePicker name='date' form={form} label='Ngày trả' />
                             <AutoComplete
                                 name='userLoan'
                                 form={form}

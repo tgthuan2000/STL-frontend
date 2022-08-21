@@ -28,14 +28,17 @@ const assignLoading = <T extends { [x: string]: string }>(prev: Data<T>) => {
     return Object.assign({}, ...arr)
 }
 
+type useQueryType<T> = [Data<T>, () => Promise<void>, (...keys: Array<keyof T>) => string, () => void, Boolean]
+
 const useQuery = <T extends { [x: string]: any }>(
     query: { [Property in keyof T]: string },
     params: { [y: string]: string | number } = {}
-): [Data<T>, () => Promise<void>, (...keys: Array<keyof T>) => string, () => void] => {
+): useQueryType<T> => {
     const { fetchApi, deleteCache, checkInCache } = useCache()
     const queryRef = useRef(query)
     const paramsRef = useRef(params)
     const [reload, setReload] = useState(false)
+    const [error, setError] = useState(false)
 
     useEffect(() => {
         queryRef.current = query
@@ -66,6 +69,7 @@ const useQuery = <T extends { [x: string]: any }>(
     const fetchData = useCallback(async () => {
         // Check in cache
         const { data, callApi } = checkInCache<T>(queryRef.current, paramsRef.current)
+
         // setData loading
         setData(assignLoading)
         // setData in cache
@@ -81,6 +85,7 @@ const useQuery = <T extends { [x: string]: any }>(
                 setData((prev) => formatTransform<T>(prev, data))
             } catch (error) {
                 console.log(error)
+                setError(true)
             }
         }
     }, [queryRef, paramsRef, checkInCache])
@@ -108,7 +113,7 @@ const useQuery = <T extends { [x: string]: any }>(
         }
     }, [reload])
 
-    return [data, fetchData, deletedCaches, reloadData]
+    return [data, fetchData, deletedCaches, reloadData, error]
 }
 
 export default useQuery

@@ -41,6 +41,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
             }
         })
         cacheRef.current = cache
+
         return 'Deleted ' + count + ' cached data'
     }
 

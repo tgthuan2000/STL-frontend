@@ -17,7 +17,7 @@ interface IAddIncomeForm {
     amount: number | string
     categorySpending: ICategorySpending | null
     methodSpending: IMethodSpending | null
-    payDate: Date | null
+    date: Date | null
     description: string
     userLoan: IUserLoan[] | null
 }
@@ -30,12 +30,12 @@ const MakeLoan = () => {
     const navigate = useNavigate()
     const { userProfile } = useAuth()
     const { deleteCache } = useCache()
-    const { getKindLoanId, kindLoan } = useConfig()
+    const { getKindSpendingId, kindSpending } = useConfig()
     const { loading, setSubmitLoading } = useLoading()
 
     const kindLoanId = useMemo(() => {
-        return getKindLoanId('LOAN')
-    }, [kindLoan])
+        return getKindSpendingId('LOAN')
+    }, [kindSpending])
 
     const [{ methodSpending, userLoan }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
         {
@@ -58,7 +58,7 @@ const MakeLoan = () => {
             amount: '',
             categorySpending: null,
             methodSpending: null,
-            payDate: null,
+            date: null,
             description: '',
             userLoan: null,
         },
@@ -66,18 +66,18 @@ const MakeLoan = () => {
 
     const onsubmit: SubmitHandler<IAddIncomeForm> = async (data) => {
         setSubmitLoading(true)
-        let { amount, methodSpending, description, payDate, userLoan } = data
+        let { amount, methodSpending, description, date, userLoan } = data
         amount = Number(amount)
         description = description.trim()
 
         // add to database
         const documentLoan = {
-            _type: 'loan',
+            _type: 'spending',
             amount,
             description,
             paid: false,
-            payDate: moment(payDate).format(),
-            kindLoan: {
+            date: date ? moment(date).format() : undefined,
+            kindSpending: {
                 _type: 'reference',
                 _ref: kindLoanId,
             },
@@ -179,7 +179,7 @@ const MakeLoan = () => {
                                 }
                             />
 
-                            <DatePicker name='payDate' form={form} label='Ngày trả' />
+                            <DatePicker name='date' form={form} label='Ngày trả' />
 
                             <AutoComplete
                                 name='userLoan'

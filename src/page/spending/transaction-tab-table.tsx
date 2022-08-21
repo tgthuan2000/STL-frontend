@@ -118,14 +118,18 @@ const MainTable = ({ data }: MainTableProps) => {
                             }}
                         >
                             <td className={clsx('whitespace-nowrap pt-4 pl-2 pr-3 sm:pl-6 lg:pl-8')}>
-                                {width <= 900 ? (
-                                    <>
-                                        <span>{moment(date).format(DATE_FORMAT)}</span>
-                                        <br />
-                                        <span>{moment(date).format(TIME_FORMAT)}</span>
-                                    </>
+                                {date ? (
+                                    width <= 900 ? (
+                                        <>
+                                            <span>{moment(date).format(DATE_FORMAT)}</span>
+                                            <br />
+                                            <span>{moment(date).format(TIME_FORMAT)}</span>
+                                        </>
+                                    ) : (
+                                        <span>{moment(date).format(DATE_TIME_FORMAT)}</span>
+                                    )
                                 ) : (
-                                    <span>{moment(date).format(DATE_TIME_FORMAT)}</span>
+                                    <span>Không có thời hạn</span>
                                 )}
                                 <h3 className='mt-1 font-medium'>{methodSpending.name}</h3>
                             </td>

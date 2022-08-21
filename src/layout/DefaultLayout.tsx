@@ -1,4 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom'
+import { useConfig } from '~/context'
 import useAuth from '~/store/auth'
 import SideBar from './components/SideBar'
 
@@ -10,11 +11,8 @@ const privateHOC = (Component: () => JSX.Element) => () => {
 }
 
 const DefaultLayout = () => {
-    return (
-        <SideBar>
-            <Outlet />
-        </SideBar>
-    )
+    const { ok } = useConfig()
+    return <SideBar>{ok && <Outlet />}</SideBar>
 }
 
 export default privateHOC(DefaultLayout)
