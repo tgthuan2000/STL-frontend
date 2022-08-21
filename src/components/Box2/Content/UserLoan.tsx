@@ -1,13 +1,14 @@
 import clsx from 'clsx'
+import { isEmpty } from 'lodash'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
 import { ContentUserLoanBox2Props } from '~/@types/components'
 import AvatarUser from '~/components/AvatarUser'
-import UserSvg from '~/components/UserSvg'
-import { urlFor } from '~/sanityConfig'
 
 const Content = ({ data, loading }: ContentUserLoanBox2Props) => {
     if (loading) return <Skeleton />
+    if (isEmpty(data))
+        return <div className='text-center text-gray-500 py-4 px-8 rounded-xl bg-white'>Không có dữ liệu</div>
     return (
         <>
             {data?.map((item) => {
@@ -21,7 +22,14 @@ const Content = ({ data, loading }: ContentUserLoanBox2Props) => {
 
                         <div className='flex flex-col'>
                             <span className='truncate max-w-[150px]'>{item.userName}</span>
-                            <span className={clsx('font-normal', item.surplus > 0 ? 'text-green-500' : 'text-red-500')}>
+                            <span
+                                className={clsx(
+                                    'font-normal',
+                                    { 'text-green-500': item.surplus > 0 },
+                                    { 'text-red-500': item.surplus < 0 },
+                                    { 'text-gray-500': item.surplus === 0 }
+                                )}
+                            >
                                 {numeral(item.surplus).format()}
                             </span>
                         </div>

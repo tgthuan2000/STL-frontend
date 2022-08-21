@@ -20,7 +20,7 @@ export const GETALL_RECENT_SPENDING = groq`
     }
 `
 export const GET_RECENT_SPENDING = groq`
-    *[_type == "spending" && user._ref == $userId && date != null] | order(_updatedAt desc)[$from...$to]
+    *[_type == "spending" && user._ref == $userId] | order(_updatedAt desc)[$from...$to]
     {
         _id,
         categorySpending-> {

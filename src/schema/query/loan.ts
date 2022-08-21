@@ -30,7 +30,7 @@ export const GET_RECENT_LOAN = groq`
 `
 
 export const GET_STATISTIC_LOAN = groq`
-    *[_type == "userLoan" && user._ref == $userId && surplus != 0 && surplus != null] | order(surplus desc) [$from...$to]
+    *[_type == "userLoan" && user._ref == $userId] | order(surplus desc) [$from...$to]
     {
         _id,
         userName,
@@ -68,6 +68,7 @@ export const GET_TRANSACTION_DETAIL = groq`
         amount,
         description,
         paid,
+        realPaid,
         date,
         methodSpending-> {
             _id,

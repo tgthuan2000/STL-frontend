@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { isNil } from 'lodash'
+import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
@@ -9,6 +9,8 @@ import { DATE_TIME_FORMAT } from '~/constant'
 
 const Content = ({ data, loading }: ContentLoanBox2Props) => {
     if (loading) return <Skeleton />
+    if (isEmpty(data))
+        return <div className='text-center text-gray-500 py-4 px-8 rounded-xl bg-white'>Không có dữ liệu</div>
     return (
         <>
             {data?.map((item) => {

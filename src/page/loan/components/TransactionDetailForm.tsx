@@ -7,7 +7,7 @@ import numeral from 'numeral'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { IMethodSpending, ISpendingData } from '~/@types/spending'
-import { AutoComplete, AvatarUser, Button, Divider, Toggle } from '~/components'
+import { AutoComplete, AvatarUser, Button, Divider, Input, Toggle } from '~/components'
 import { DATE_TIME_FORMAT } from '~/constant'
 import { useLoading } from '~/context'
 import { Data } from '../transaction-detail'
@@ -29,6 +29,7 @@ export interface TransactionDetailFormData {
 export interface PaidForm {
     paid: boolean
     methodSpending: IMethodSpending | null
+    amount: number
 }
 interface TransactionDetailFormProps {
     data: TransactionDetailFormData
@@ -40,7 +41,8 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
     const form = useForm<PaidForm>({
         defaultValues: {
             paid: transaction.paid,
-            methodSpending: transaction.methodSpending || null,
+            methodSpending: transaction.methodSpending ?? null,
+            amount: transaction.realPaid ?? transaction.amount,
         },
     })
     const [parent] = useAutoAnimate<HTMLDivElement>()
@@ -87,7 +89,7 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                             />
                                             <div ref={parent}>
                                                 {form.watch('paid') && (
-                                                    <div className='mt-2'>
+                                                    <div className='mt-2 space-y-4'>
                                                         <AutoComplete
                                                             name='methodSpending'
                                                             form={form}
@@ -102,6 +104,21 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                                                     ? undefined
                                                                     : () => handleReloadData('methodSpending')
                                                             }
+                                                            disabled={transaction.paid}
+                                                        />
+                                                        <Input
+                                                            name='amount'
+                                                            form={form}
+                                                            rules={{
+                                                                required: 'Yêu cầu nhập số tiền thực trả!',
+                                                                max: {
+                                                                    value: transaction.amount,
+                                                                    message:
+                                                                        'Số tiền thực trả không được lớn hơn số tiền cần trả!',
+                                                                },
+                                                            }}
+                                                            type='number'
+                                                            label='Số tiền thực trả'
                                                             disabled={transaction.paid}
                                                         />
                                                     </div>

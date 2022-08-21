@@ -57,12 +57,13 @@ const TransactionDetail = () => {
         if (id) {
             try {
                 setSubmitLoading(true)
-                const { paid, methodSpending } = value
+                const { paid, methodSpending, amount } = value
                 const condition = [KIND_SPENDING.GET_LOAN].includes(trans?.kindSpending.key as KIND_SPENDING) ? 1 : -1
 
                 const __ = client.transaction()
                 const update = client.patch(id).set({
                     paid,
+                    realPaid: amount,
                     methodSpending: {
                         _type: 'reference',
                         _ref: methodSpending?._id as string,
@@ -71,20 +72,18 @@ const TransactionDetail = () => {
 
                 __.patch(update)
 
-                const surplus = trans ? condition * trans.amount : 0
-
                 const updateMethod = client
                     .patch(methodSpending?._id as string)
                     .setIfMissing({ surplus: 0, countUsed: 0 })
                     .inc({ countUsed: 1 })
-                    .dec({ surplus })
+                    .dec({ surplus: condition * amount })
 
                 __.patch(updateMethod)
 
                 const updateUserLoan = client
                     .patch(trans?.userLoan?._id as string)
                     .setIfMissing({ countUsed: 0, surplus: 0 })
-                    .dec({ surplus })
+                    .dec({ surplus: trans ? condition * amount : 0 })
 
                 __.patch(updateUserLoan)
                 await __.commit()
