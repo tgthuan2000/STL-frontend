@@ -30,10 +30,10 @@ function App() {
                                 }
                             >
                                 <Route index element={<Navigate to='spending' />} />
-                                <Route path='spending' element={<SpendingFeature />} />
+                                <Route path='spending/*' element={<SpendingFeature />} />
 
-                                <Route path='timekeeping' element={<TimeKeepingFeature />} />
-                                <Route path='loan' element={<LoanFeature />} />
+                                <Route path='timekeeping/*' element={<TimeKeepingFeature />} />
+                                <Route path='loan/*' element={<LoanFeature />} />
                                 <Route path='*' element={<Navigate to='/' />} />
                             </Route>
                             <Route path='/auth' element={<AuthFeature />} />
