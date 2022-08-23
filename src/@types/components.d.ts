@@ -1,9 +1,11 @@
 import { SanityImageAssetDocument } from '@sanity/client'
 import React, { HTMLInputTypeAttribute } from 'react'
 import { Control, FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
+import { NavigateFunction } from 'react-router-dom'
 import { IUserLoan } from './loan'
 import { ISpendingData } from './spending'
 
+type Rules = Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
 export interface SlideParams {
     slide?: string
 }
@@ -18,7 +20,7 @@ export interface AutoCompleteProps {
     addMore?: (value: any) => Promise<any>
     loading?: boolean
     form: UseFormReturn<any, object>
-    rules?: Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
+    rules?: Rules
     disabled?: boolean
     onChange?: (value: any) => void
     showImage?: boolean
@@ -33,7 +35,7 @@ export interface SelectionProps {
     valueKey?: string
     placeholder?: string
     form: UseFormReturn<any, object>
-    rules?: Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
+    rules?: Rules
 }
 
 export interface SlideOverProps {
@@ -47,7 +49,7 @@ export interface InputProps {
     type?: HTMLInputTypeAttribute
     disabled?: boolean
     form: UseFormReturn<any, object>
-    rules?: Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
+    rules?: Rules
 }
 export interface UploadImageProps {
     className?: string
@@ -55,7 +57,7 @@ export interface UploadImageProps {
     name: string
     disabled?: boolean
     form: UseFormReturn<any, object>
-    rules?: Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
+    rules?: Rules
 }
 
 export interface DateProps {
@@ -64,7 +66,7 @@ export interface DateProps {
     name: string
     error?: FieldError
     form: UseFormReturn<any, object>
-    rules?: Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
+    rules?: Rules
 }
 export interface TextAreaProps {
     className?: string
@@ -72,7 +74,7 @@ export interface TextAreaProps {
     name: string
     error?: FieldError
     form: UseFormReturn<any, object>
-    rules?: Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
+    rules?: Rules
 }
 export interface ButtonProps {
     className?: string
@@ -125,7 +127,40 @@ export interface AnimateWrapProps {
 export interface ToggleProps {
     label: string
     form: UseFormReturn<any, object>
-    rules?: Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
+    rules?: Rules
     name: string
     disabled?: boolean
+}
+
+export interface LoadingButtonProps {
+    onReload: () => void
+    disabled: boolean | undefined
+}
+
+export interface AvatarUserProps {
+    image: SanityImageAssetDocument | null | undefined
+    size?: 'small' | 'medium' | 'large'
+}
+
+export interface Box2Props {
+    children?: (data: { data: any[] | undefined; loading: boolean }) => React.ReactNode
+    data: any[] | undefined
+    label?: string
+    loading?: boolean
+    onReload: () => void
+}
+
+interface TabData {
+    name: string
+    href: string
+}
+
+export interface TabsProps {
+    data: TabData[]
+}
+
+export interface TabItemProps {
+    tab: TabData
+    navigate: NavigateFunction
+    tabsRef: React.RefObject<HTMLAnchorElement[]>
 }

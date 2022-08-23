@@ -1,5 +1,5 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import React from 'react'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { AnimateWrapProps } from '~/@types/components'
 
 const AnimateWrap: React.FC<AnimateWrapProps> = ({ children, className }) => {

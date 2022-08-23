@@ -1,11 +1,8 @@
+import React from 'react'
 import { RefreshIcon } from '@heroicons/react/outline'
+import { LoadingButtonProps } from '~/@types/components'
 
-interface LoadingButtonProps {
-    onReload: () => void
-    disabled: boolean | undefined
-}
-
-const LoadingButton = ({ onReload, disabled }: LoadingButtonProps) => {
+const LoadingButton: React.FC<LoadingButtonProps> = ({ onReload, disabled }) => {
     return (
         <button
             type='button'

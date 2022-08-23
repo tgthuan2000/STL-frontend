@@ -1,8 +1,9 @@
 import clsx from 'clsx'
+import React from 'react'
 import LoadingButton from '~/components/Loading/LoadingButton'
 import AnimateWrap from '../AnimateWrap'
 
-const Title = ({ label, onReload, loading }: { label?: string; onReload: () => void; loading: boolean }) => {
+const Title: React.FC<{ label?: string; onReload: () => void; loading: boolean }> = ({ label, onReload, loading }) => {
     return (
         <AnimateWrap className={clsx('flex items-center gap-3', loading ? 'mb-4' : 'mb-2')}>
             {loading ? (

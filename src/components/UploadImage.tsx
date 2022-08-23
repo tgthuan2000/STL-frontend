@@ -7,6 +7,7 @@ import { UploadImageProps } from '~/@types/components'
 import { client, urlFor } from '~/sanityConfig'
 
 const acceptImageType = ['image/jpeg', 'image/png', 'image/jpg']
+
 const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
     ({ className, label, name, form, rules, disabled, ...props }, ref) => {
         const id = useId()

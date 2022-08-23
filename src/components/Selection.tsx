@@ -1,4 +1,4 @@
-import { Fragment, useMemo, useState } from 'react'
+import React, { Fragment, useMemo, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
 import clsx from 'clsx'
@@ -8,7 +8,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import _ from 'lodash'
 import { Controller } from 'react-hook-form'
 
-const Selection = ({
+const Selection: React.FC<SelectionProps> = ({
     label,
     data = people,
     idKey = '_id',
@@ -18,7 +18,7 @@ const Selection = ({
     form,
     rules,
     name,
-}: SelectionProps) => {
+}) => {
     const value = useMemo(() => form.getValues(name), [JSON.stringify(form.getValues(name))])
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const [selected, setSelected] = useState(value)

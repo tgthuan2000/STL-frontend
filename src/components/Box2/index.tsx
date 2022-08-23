@@ -1,21 +1,10 @@
 import React from 'react'
+import { Box2Props } from '~/@types/components'
 import AnimateWrap from '../AnimateWrap'
 import { ContentUserLoan, ContentLoan } from './Content'
 import Title from './Title'
 
-const Box2 = ({
-    data,
-    label,
-    onReload,
-    loading = false,
-    children,
-}: {
-    children?: (data: { data: any[] | undefined; loading: boolean }) => React.ReactNode
-    data: any[] | undefined
-    label?: string
-    loading?: boolean
-    onReload: () => void
-}) => {
+const Box2 = ({ data, label, onReload, loading = false, children }: Box2Props) => {
     return (
         <div>
             <Title label={label} onReload={onReload} loading={loading} />

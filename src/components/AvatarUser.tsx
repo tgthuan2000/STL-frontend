@@ -1,13 +1,8 @@
-import { SanityImageAssetDocument } from '@sanity/client'
 import clsx from 'clsx'
 import React from 'react'
+import { AvatarUserProps } from '~/@types/components'
 import { urlFor } from '~/sanityConfig'
 import UserSvg from './UserSvg'
-
-interface AvatarUserProps {
-    image: SanityImageAssetDocument | null | undefined
-    size?: 'small' | 'medium' | 'large'
-}
 
 const AvatarUser: React.FC<AvatarUserProps> = ({ image, size = 'medium' }) => {
     const getSize = {

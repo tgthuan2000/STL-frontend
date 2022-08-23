@@ -1,17 +1,9 @@
 import clsx from 'clsx'
-import { useEffect, useRef } from 'react'
-import { NavigateFunction, NavLink, useLocation, useNavigate } from 'react-router-dom'
+import React, { useEffect, useRef } from 'react'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { TabItemProps, TabsProps } from '~/@types/components'
 
-interface TabData {
-    name: string
-    href: string
-}
-
-interface TabsProps {
-    data: TabData[]
-}
-
-const Tabs = ({ data }: TabsProps) => {
+const Tabs: React.FC<TabsProps> = ({ data }) => {
     const navigate = useNavigate()
     const { pathname } = useLocation()
     const lineRef = useRef<HTMLDivElement>(null)
@@ -50,12 +42,7 @@ const Tabs = ({ data }: TabsProps) => {
 
 export default Tabs
 
-interface TabItemProps {
-    tab: TabData
-    navigate: NavigateFunction
-    tabsRef: React.RefObject<HTMLAnchorElement[]>
-}
-const TabItem = ({ tab, navigate, tabsRef }: TabItemProps) => {
+const TabItem: React.FC<TabItemProps> = ({ tab, navigate, tabsRef }) => {
     const ref = useRef<HTMLAnchorElement>(null)
 
     useEffect(() => {

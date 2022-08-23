@@ -1,8 +1,8 @@
-import _ from 'lodash'
+import { isEqual } from 'lodash'
 import React, { createContext, useContext, useRef } from 'react'
 import { ICacheContext, ICacheData, QueryParams } from '~/@types/context'
 import { client } from '~/sanityConfig'
-import { hashCode } from '~/util'
+import { hashCode } from '~/services'
 
 const CACHE_LIMIT_RANGE = 8
 
@@ -79,7 +79,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
 
         Object.keys(query).forEach((key) => {
             const value = query[key]
-            const p = _.isEqual(params, {})
+            const p = isEqual(params, {})
                 ? {}
                 : Object.assign(
                       {},

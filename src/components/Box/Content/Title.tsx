@@ -1,7 +1,12 @@
 import clsx from 'clsx'
+import React from 'react'
 import LoadingButton from '~/components/Loading/LoadingButton'
 
-const Title = ({ title, onReload, loading }: { title?: string; onReload?: () => void; loading?: boolean }) => {
+const Title: React.FC<{ title?: string; onReload?: () => void; loading?: boolean }> = ({
+    title,
+    onReload,
+    loading,
+}) => {
     if (!title) return null
     return (
         <div className='flex justify-between items-center border-b border-gray-200 bg-gray-50 px-4 py-2'>

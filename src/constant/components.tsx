@@ -7,14 +7,13 @@ import {
     QrcodeIcon,
     SwitchHorizontalIcon,
     TemplateIcon,
-    TrendingDownIcon,
     TrendingUpIcon,
     UserAddIcon,
 } from '@heroicons/react/outline'
 import { googleLogout } from '@react-oauth/google'
 import { IMenuBtn } from '~/@types/components'
-import { CreateMember, MakeGetLoan, MakeLoan } from '~/page/loan/components'
-import { MakeIncome, MakeCost, MakeTransfer, AddCategory, AddMethod } from '~/page/spending/components'
+import { CreateMember, MakeGetLoan } from '~/features/loan/components'
+import { MakeIncome, MakeCost, MakeTransfer, AddCategory, AddMethod } from '~/features/spending/components'
 
 export const menuMobile: IMenuBtn[] = [
     {

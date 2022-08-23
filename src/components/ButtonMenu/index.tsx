@@ -1,9 +1,10 @@
 import clsx from 'clsx'
+import React from 'react'
 import { IMenuBtn } from '~/@types/components'
 import { SlideOverProvider } from '~/context'
 import ButtonItem from './ButtonItem'
 
-const ButtonMenu = ({ className, data }: { className?: string; data: IMenuBtn[] }) => {
+const ButtonMenu: React.FC<{ className?: string; data: IMenuBtn[] }> = ({ className, data }) => {
     return (
         <div
             className={clsx(

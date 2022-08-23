@@ -4,8 +4,9 @@ import { MenuButtonProps } from '~/@types/components'
 import { useSlideOver } from '~/context'
 import { SlideOver } from '~/components'
 import useAuth from '~/store/auth'
+import React from 'react'
 
-const ButtonItem = ({ data }: MenuButtonProps) => {
+const ButtonItem: React.FC<MenuButtonProps> = ({ data }) => {
     const { title, color, icon: Icon, children, to, query, divider, action } = data
     const { setIsOpen, setTitle } = useSlideOver()
     const navigate = useNavigate()

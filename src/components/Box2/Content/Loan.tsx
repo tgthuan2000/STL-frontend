@@ -2,12 +2,13 @@ import clsx from 'clsx'
 import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { ContentLoanBox2Props } from '~/@types/components'
 import AvatarUser from '~/components/AvatarUser'
 import { DATE_TIME_FORMAT } from '~/constant'
 
-const Content = ({ data, loading }: ContentLoanBox2Props) => {
+const Content: React.FC<ContentLoanBox2Props> = ({ data, loading }) => {
     if (loading) return <Skeleton />
     if (isEmpty(data))
         return <div className='text-center text-gray-500 py-4 px-8 rounded-xl bg-white'>Không có dữ liệu</div>

@@ -1,5 +1,4 @@
-/* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
@@ -8,7 +7,7 @@ import { SideBarProps } from '~/@types/layout'
 import { navigation } from '~/constant/layout'
 import useAuth from '~/store/auth'
 
-const Sidebar = ({ children }: SideBarProps) => {
+const Sidebar: React.FC<SideBarProps> = ({ children }) => {
     const { userProfile, removeUserProfile } = useAuth()
     const [sidebarOpen, setSidebarOpen] = useState(false)
 

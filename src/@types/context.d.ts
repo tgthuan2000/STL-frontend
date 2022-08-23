@@ -63,3 +63,7 @@ export interface ICacheData<T> {
 }
 
 export type QueryParams = { [key: string]: string | number | undefined }
+
+export interface IConfig {
+    kindSpending: IKindSpending[]
+}

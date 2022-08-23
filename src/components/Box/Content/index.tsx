@@ -1,10 +1,11 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
+import React from 'react'
 import { ContentBoxProps } from '~/@types/components'
 import SeeMore from './SeeMore'
 import Title from './Title'
 
-const ContentBox = ({
+const ContentBox: React.FC<ContentBoxProps> = ({
     title,
     seeMore = true,
     children,
@@ -13,7 +14,7 @@ const ContentBox = ({
     loading,
     className,
     fullWidth,
-}: ContentBoxProps) => {
+}) => {
     const [parent] = useAutoAnimate<HTMLDivElement>()
     return (
         <div

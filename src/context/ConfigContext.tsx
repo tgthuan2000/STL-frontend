@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
-import { IConfigContext, IKindSpending } from '~/@types/context'
+import { IConfig, IConfigContext } from '~/@types/context'
 import { KIND_SPENDING } from '~/constant/spending'
 import { client } from '~/sanityConfig'
 import { GET_CONFIG } from '~/schema/query/config'
@@ -10,15 +10,10 @@ const ConfigContext = createContext<IConfigContext>({
     getKindSpendingId: () => '',
     ok: false,
 })
-interface IConfig {
-    kindSpending: IKindSpending[]
-    kindLoan: any[]
-}
 
 const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
     const [config, setConfig] = useState<IConfig>({
         kindSpending: [],
-        kindLoan: [],
     })
     const [ok, setOk] = useState(false)
 

@@ -1,12 +1,11 @@
-/* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from 'react'
+import React, { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
 import { useLoading, useSlideOver } from '~/context'
 import { useNavigate } from 'react-router-dom'
 import { SlideOverProps } from '~/@types/components'
 
-const SlideOver = ({ children }: SlideOverProps) => {
+const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
     const { isOpen, setIsOpen, title } = useSlideOver()
     const { loading } = useLoading()
     const navigate = useNavigate()
