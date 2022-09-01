@@ -284,16 +284,18 @@ const TransactionDetail = () => {
                 }
 
                 // refund surplus, countUsed for method reference
-                if (_transaction.methodReference) {
-                    const patchMethodReference = client
-                        .patch(_transaction.methodReference._id)
-                        .setIfMissing({ surplus: 0, countUsed: 0 })
-                        .dec({
-                            surplus: (_transaction.amount as number) * condition,
-                            countUsed: 1,
-                        })
-                    __.patch(patchMethodReference)
-                }
+                // if (_transaction.methodReference) {
+                //     const patchMethodReference = client
+                //         .patch(_transaction.methodReference._id)
+                //         .setIfMissing({ surplus: 0, countUsed: 0 })
+                //         .dec({
+                //             countUsed: 1,
+                //         })
+                //          .inc({
+                //             surplus: (_transaction.amount as number) * condition,
+                //          })
+                //     __.patch(patchMethodReference)
+                // }
             }
 
             // delete transaction
