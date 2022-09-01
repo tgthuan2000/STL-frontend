@@ -296,9 +296,9 @@ const TransactionDetail = () => {
                 //         .dec({
                 //             countUsed: 1,
                 //         })
-                //         .inc({
+                //          .inc({
                 //             surplus: (_transaction.amount as number) * condition,
-                //         })
+                //          })
                 //     __.patch(patchMethodReference)
                 // }
             }
