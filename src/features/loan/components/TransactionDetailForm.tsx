@@ -98,37 +98,40 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                                 <div ref={parent}>
                                                     {form.watch('paid') && (
                                                         <div className='mt-2 space-y-4'>
-                                                            <AutoComplete
-                                                                name='methodSpending'
-                                                                form={form}
-                                                                data={methodSpending.data}
-                                                                label='Phương thức thanh toán'
-                                                                loading={methodSpending.loading}
-                                                                rules={{
-                                                                    required: 'Yêu cầu chọn phương thức thanh toán!',
-                                                                }}
-                                                                onReload={
-                                                                    isEmpty(methodSpending.data) || transaction.paid
-                                                                        ? undefined
-                                                                        : () => handleReloadData('methodSpending')
-                                                                }
-                                                                disabled={transaction.paid}
-                                                            />
-                                                            <Input
-                                                                name='amount'
-                                                                form={form}
-                                                                rules={{
-                                                                    required: 'Yêu cầu nhập số tiền thực trả!',
-                                                                    max: {
-                                                                        value: transaction.amount,
-                                                                        message:
-                                                                            'Số tiền thực trả không được lớn hơn số tiền cần trả!',
-                                                                    },
-                                                                }}
-                                                                type='number'
-                                                                label='Số tiền thực trả'
-                                                                disabled={transaction.paid}
-                                                            />
+                                                            <Suspense fallback={<div>Loading...</div>}>
+                                                                <AutoComplete
+                                                                    name='methodSpending'
+                                                                    form={form}
+                                                                    data={methodSpending.data}
+                                                                    label='Phương thức thanh toán'
+                                                                    loading={methodSpending.loading}
+                                                                    rules={{
+                                                                        required:
+                                                                            'Yêu cầu chọn phương thức thanh toán!',
+                                                                    }}
+                                                                    onReload={
+                                                                        isEmpty(methodSpending.data) || transaction.paid
+                                                                            ? undefined
+                                                                            : () => handleReloadData('methodSpending')
+                                                                    }
+                                                                    disabled={transaction.paid}
+                                                                />
+                                                                <Input
+                                                                    name='amount'
+                                                                    form={form}
+                                                                    rules={{
+                                                                        required: 'Yêu cầu nhập số tiền thực trả!',
+                                                                        max: {
+                                                                            value: transaction.amount,
+                                                                            message:
+                                                                                'Số tiền thực trả không được lớn hơn số tiền cần trả!',
+                                                                        },
+                                                                    }}
+                                                                    type='number'
+                                                                    label='Số tiền thực trả'
+                                                                    disabled={transaction.paid}
+                                                                />
+                                                            </Suspense>
                                                         </div>
                                                     )}
                                                 </div>

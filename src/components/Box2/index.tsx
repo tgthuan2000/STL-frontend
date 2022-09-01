@@ -7,14 +7,12 @@ const AnimateWrap = React.lazy(() => import('../AnimateWrap'))
 
 const Box2 = ({ data, label, onReload, loading = false, children }: Box2Props) => {
     return (
-        <div>
-            <Suspense fallback={<div>Loading...</div>}>
-                <Title label={label} onReload={onReload} loading={loading} />
-                <AnimateWrap className='flex lg:flex-wrap gap-4 w-full overflow-x-auto overflow-y-hidden pb-6'>
-                    {children?.({ data, loading })}
-                </AnimateWrap>
-            </Suspense>
-        </div>
+        <Suspense fallback={<div>Loading...</div>}>
+            <Title label={label} onReload={onReload} loading={loading} />
+            <AnimateWrap className='flex lg:flex-wrap gap-4 w-full overflow-x-auto overflow-y-hidden pb-6'>
+                {children?.({ data, loading })}
+            </AnimateWrap>
+        </Suspense>
     )
 }
 

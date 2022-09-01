@@ -9,6 +9,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     ({ className, label, name, type = 'text', form, rules, disabled, ...props }, ref) => {
         const id = useId()
         const [parent] = useAutoAnimate<HTMLDivElement>()
+        const [value] = useAutoAnimate<HTMLDivElement>()
         return (
             <Controller
                 name={name}
@@ -33,7 +34,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                                 {...props}
                             />
                         </div>
-                        {type === 'number' && <div className='mt-1 ml-2 text-sm'>{numeral(field.value).format()}</div>}
+                        {type === 'number' && (
+                            <div ref={value} className='mt-1 ml-2 text-sm'>
+                                {field.value ? numeral(field.value).format() : ''}
+                            </div>
+                        )}
                         <div ref={parent}>
                             {error && <div className='mt-1 text-radical-red-700 text-sm'>{error.message}</div>}
                         </div>

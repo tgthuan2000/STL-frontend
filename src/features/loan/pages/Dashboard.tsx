@@ -1,13 +1,17 @@
 import moment from 'moment'
-import { useCallback, useEffect, useMemo } from 'react'
+import React, { Suspense, useCallback, useEffect } from 'react'
 import { IUserLoan } from '~/@types/loan'
 import { ISpendingData } from '~/@types/spending'
-import { Box2, ButtonMenu, Divider } from '~/components'
-import { menuLoanMobile } from '~/constant/components'
 import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
 import useAuth from '~/store/auth'
+
+const Box2 = React.lazy(() => import('~/components').then(({ Box2 }) => ({ default: Box2 })))
+const Box2Content1 = React.lazy(() => import('~/components').then(({ Box2 }) => ({ default: Box2.Content1 })))
+const Box2ContentLoan = React.lazy(() => import('~/components').then(({ Box2 }) => ({ default: Box2.ContentLoan })))
+const ButtonMenu = React.lazy(() => import('~/components').then(({ ButtonMenu }) => ({ default: ButtonMenu })))
+const Divider = React.lazy(() => import('~/components').then(({ Divider }) => ({ default: Divider })))
 
 export interface DataMethodSanity {
     _id: string
@@ -61,10 +65,10 @@ const Dashboard = () => {
     }, [])
 
     return (
-        <>
+        <Suspense fallback={<div>Loading...</div>}>
             {width < 1280 && (
                 <div className='xl:hidden block'>
-                    <ButtonMenu data={menuLoanMobile()} />
+                    <ButtonMenu data={menuLoanMobile()} className='min-h-[60px] grid-cols-3' />
                 </div>
             )}
             <Divider className='xl:hidden py-6' />
@@ -72,15 +76,15 @@ const Dashboard = () => {
             {/* Show user */}
             <div className='space-y-6'>
                 <Box2 label='Trạng thái' data={statistic.data} loading={statistic.loading} onReload={handleReload}>
-                    {(data) => <Box2.Content1 {...data} />}
+                    {(data) => <Box2Content1 {...data} />}
                 </Box2>
 
                 <Box2 label='Sắp đến hạn trả' data={paydue.data} loading={paydue.loading} onReload={handleReload}>
-                    {(data) => <Box2.ContentLoan {...data} />}
+                    {(data) => <Box2ContentLoan {...data} />}
                 </Box2>
 
                 <Box2 label='Giao dịch gần đây' data={recent.data} loading={recent.loading} onReload={handleReload}>
-                    {(data) => <Box2.ContentLoan {...data} />}
+                    {(data) => <Box2ContentLoan {...data} />}
                 </Box2>
 
                 {/*
@@ -88,7 +92,7 @@ const Dashboard = () => {
 
                 <ListMember label='Đang cho vay' data={member.data} loading={member.loading} /> */}
             </div>
-        </>
+        </Suspense>
     )
 }
 
