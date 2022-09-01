@@ -148,6 +148,12 @@ export const menuSpendingPC: IMenuBtn[] = [
         to: 'method',
     },
     {
+        title: 'Thể loại',
+        color: 'text-purple-700 bg-purple-200 hover:bg-purple-300',
+        icon: TemplateIcon,
+        to: 'category',
+    },
+    {
         title: 'Tạo mới phương thức thanh toán',
         color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300',
         icon: QrcodeIcon,
@@ -250,6 +256,12 @@ export const menuSpendingPages: IMenuBtn[] = [
         color: 'text-purple-700',
         icon: QrcodeIcon,
         to: 'method',
+    },
+    {
+        title: 'Thể loại',
+        color: 'text-purple-700',
+        icon: TemplateIcon,
+        to: 'category',
     },
     {
         title: 'Tạo mới phương thức thanh toán',

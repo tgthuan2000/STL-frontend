@@ -19,13 +19,7 @@ const Selection: React.FC<SelectionProps> = ({
     rules,
     name,
 }) => {
-    const value = useMemo(() => form.getValues(name), [JSON.stringify(form.getValues(name))])
     const [parent] = useAutoAnimate<HTMLDivElement>()
-    const [selected, setSelected] = useState(value)
-
-    const handleChange = (value: any) => {
-        setSelected(value)
-    }
 
     return (
         <Controller
@@ -34,7 +28,7 @@ const Selection: React.FC<SelectionProps> = ({
             rules={rules}
             render={({ field, fieldState: { error } }) => (
                 <div className={clsx(className)}>
-                    <Listbox value={selected} onChange={handleChange}>
+                    <Listbox value={form.getValues(name)} onChange={field.onChange}>
                         {({ open }) => (
                             <>
                                 {label && (
