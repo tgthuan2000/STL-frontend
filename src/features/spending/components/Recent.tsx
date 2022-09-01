@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
 import moment from 'moment'
-import NumberFormat from 'react-number-format'
 import clsx from 'clsx'
 import { RecentProps } from '~/@types/spending'
 import { KIND_SPENDING } from '~/constant/spending'
 import { DATE_TIME_FORMAT } from '~/constant'
 import { isEmpty } from 'lodash'
+import numeral from 'numeral'
 
 const Recent = ({ data, loading }: RecentProps) => {
     if (loading) return <RecentSkeleton />
@@ -31,7 +31,7 @@ const Recent = ({ data, loading }: RecentProps) => {
                                     <h4 className={clsx('font-medium truncate')}>
                                         {item.categorySpending?.name ?? item.kindSpending.name}
                                     </h4>
-                                    <NumberFormat
+                                    <span
                                         className={clsx(
                                             { 'text-red-500': item.kindSpending.key === KIND_SPENDING.COST },
                                             { 'text-green-500': item.kindSpending.key === KIND_SPENDING.RECEIVE },
@@ -49,10 +49,9 @@ const Recent = ({ data, loading }: RecentProps) => {
                                             },
                                             'font-medium'
                                         )}
-                                        value={item.amount}
-                                        displayType='text'
-                                        thousandSeparator
-                                    />
+                                    >
+                                        {numeral(item.amount).format()}
+                                    </span>
                                 </div>
                             </div>
                             {item.description && (

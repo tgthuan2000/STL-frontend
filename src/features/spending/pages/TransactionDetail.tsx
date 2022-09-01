@@ -1,6 +1,6 @@
 import { head } from 'lodash'
 import moment from 'moment'
-import { useEffect, useMemo } from 'react'
+import React, { Suspense, useEffect, useMemo } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending, ISpendingData } from '~/@types/spending'
@@ -10,7 +10,11 @@ import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING, GET_TRANSACTION_DETAIL } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
-import { TransactionDetailForm, TransactionDetailFormData } from '../components'
+import { TransactionDetailFormData } from '../components'
+
+const TransactionDetailForm = React.lazy(() =>
+    import('../components').then(({ TransactionDetailForm }) => ({ default: TransactionDetailForm }))
+)
 
 export interface IDetailSpendingForm {
     amount: number
@@ -336,7 +340,11 @@ const TransactionDetail = () => {
 
     if (transaction.loading) return null
 
-    return <TransactionDetailForm data={data} />
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <TransactionDetailForm data={data} />
+        </Suspense>
+    )
 }
 
 export default TransactionDetail

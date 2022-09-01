@@ -2,15 +2,16 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
-import { Fragment, useEffect } from 'react'
-import NumberFormat from 'react-number-format'
+import numeral from 'numeral'
+import React, { Fragment, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ISpendingData } from '~/@types/spending'
-import LoadingButton from '~/components/Loading/LoadingButton'
 import { DATE_FORMAT, DATE_TIME_FORMAT, TIME_FORMAT } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useQuery, useWindowSize } from '~/hook'
 import useAuth from '~/store/auth'
+
+const LoadingButton = React.lazy(() => import('~/components/Loading/LoadingButton'))
 
 interface TransactionTabTableProps {
     query: { recent: string }
@@ -140,24 +141,18 @@ const MainTable = ({ data }: MainTableProps) => {
                                 {[KIND_SPENDING.RECEIVE, KIND_SPENDING.TRANSFER_TO, KIND_SPENDING.GET_LOAN].includes(
                                     kindSpending.key
                                 ) && (
-                                    <NumberFormat
-                                        className={clsx('text-green-500', 'font-medium')}
-                                        value={amount}
-                                        displayType='text'
-                                        thousandSeparator
-                                    />
+                                    <span className={clsx('text-green-500', 'font-medium')}>
+                                        {numeral(amount).format()}
+                                    </span>
                                 )}
                             </td>
                             <td className={clsx('whitespace-nowrap pl-1 pr-2 pt-4 text-sm text-center')}>
                                 {[KIND_SPENDING.COST, KIND_SPENDING.TRANSFER_FROM, KIND_SPENDING.LOAN].includes(
                                     kindSpending.key
                                 ) && (
-                                    <NumberFormat
-                                        className={clsx('text-red-500', 'font-medium')}
-                                        value={amount}
-                                        displayType='text'
-                                        thousandSeparator
-                                    />
+                                    <span className={clsx('text-red-500', 'font-medium')}>
+                                        {numeral(amount).format()}
+                                    </span>
                                 )}
                             </td>
                         </tr>

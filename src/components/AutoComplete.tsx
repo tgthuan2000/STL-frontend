@@ -3,12 +3,13 @@ import { Combobox } from '@headlessui/react'
 import { CheckIcon, RefreshIcon, SelectorIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import { find, isNil } from 'lodash'
-import { forwardRef, useEffect, useMemo, useState } from 'react'
+import React, { forwardRef, Suspense, useEffect, useMemo, useState } from 'react'
 import { Controller } from 'react-hook-form'
 import { AutoCompleteProps } from '~/@types/components'
 import numeral from 'numeral'
 import { urlFor } from '~/sanityConfig'
-import UserSvg from './UserSvg'
+
+const UserSvg = React.lazy(() => import('./UserSvg'))
 
 const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
     (
@@ -173,7 +174,9 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                                                         />
                                                                     ) : (
                                                                         <span className='inline-block h-7 w-7 rounded-full overflow-hidden bg-gray-100'>
-                                                                            <UserSvg />
+                                                                            <Suspense fallback={<div>Loading...</div>}>
+                                                                                <UserSvg />
+                                                                            </Suspense>
                                                                         </span>
                                                                     ))}
                                                                 <span

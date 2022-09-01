@@ -1,16 +1,18 @@
+import React, { Suspense } from 'react'
 import clsx from 'clsx'
+import useAuth from '~/store/auth'
 import { Link, useNavigate } from 'react-router-dom'
 import { MenuButtonProps } from '~/@types/components'
 import { useSlideOver } from '~/context'
-import { SlideOver, Divider } from '~/components'
-import useAuth from '~/store/auth'
-import React from 'react'
+
+const SlideOver = React.lazy(() => import('~/components').then(({ SlideOver }) => ({ default: SlideOver })))
+const Divider = React.lazy(() => import('~/components').then(({ Divider }) => ({ default: Divider })))
 
 const ButtonItem: React.FC<MenuButtonProps> = ({ data }) => {
     const { title, color, icon: Icon, children, to, query, divider, action } = data
     const { setIsOpen, setTitle } = useSlideOver()
-    const navigate = useNavigate()
     const { removeUserProfile } = useAuth()
+    const navigate = useNavigate()
 
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         if (query || action) {
@@ -23,7 +25,7 @@ const ButtonItem: React.FC<MenuButtonProps> = ({ data }) => {
     }
 
     return (
-        <>
+        <Suspense fallback={<div>Loading...</div>}>
             {divider && <Divider className='w-full py-1' />}
             <Link
                 to={to}
@@ -38,7 +40,7 @@ const ButtonItem: React.FC<MenuButtonProps> = ({ data }) => {
                 <span className='text-center truncate w-full block xl:hidden xl:group-hover:block'>{title}</span>
             </Link>
             <SlideOver>{children}</SlideOver>
-        </>
+        </Suspense>
     )
 }
 

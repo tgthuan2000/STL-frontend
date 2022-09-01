@@ -1,15 +1,16 @@
 import { ArrowSmLeftIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
-import { useEffect } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useConfig } from '~/context'
 import { GET_METHOD_SPENDING_DESC_SURPLUS } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
-import { Method as MethodBox } from '../components'
 import { useQuery } from '~/hook'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { IMethodSpending } from '~/@types/spending'
 import { isEmpty } from 'lodash'
+
+const MethodBox = React.lazy(() => import('../components').then(({ Method }) => ({ default: Method })))
 
 const Method = () => {
     const navigate = useNavigate()
@@ -51,7 +52,9 @@ const Method = () => {
                         ref={parent}
                         className='max-w-lg w-full h-fit mx-auto bg-white border border-gray-300 overflow-hidden rounded-md select-none'
                     >
-                        <MethodBox data={method.data} loading={method.loading} />
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <MethodBox data={method.data} loading={method.loading} />
+                        </Suspense>
                     </div>
                 </div>
                 <div className='xl:flex-[2]'>

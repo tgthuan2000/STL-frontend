@@ -1,8 +1,9 @@
-import { Suspense } from 'react'
+import React, { Suspense } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 import { useConfig } from '~/context'
 import useAuth from '~/store/auth'
-import SideBar from './components/SideBar'
+
+const SideBar = React.lazy(() => import('./components/SideBar'))
 
 const privateHOC = (Component: () => JSX.Element) => () => {
     const { userProfile } = useAuth()
@@ -14,13 +15,15 @@ const privateHOC = (Component: () => JSX.Element) => () => {
 const DefaultLayout = () => {
     const { ok } = useConfig()
     return (
-        <SideBar>
-            {ok && (
-                <Suspense fallback={<div>Loading...</div>}>
-                    <Outlet />
-                </Suspense>
-            )}
-        </SideBar>
+        <Suspense fallback={<div>Loading...</div>}>
+            <SideBar>
+                {ok && (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Outlet />
+                    </Suspense>
+                )}
+            </SideBar>
+        </Suspense>
     )
 }
 

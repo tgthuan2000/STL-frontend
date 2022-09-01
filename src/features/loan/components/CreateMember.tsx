@@ -1,10 +1,13 @@
 import { SanityAssetDocument } from '@sanity/client'
+import React, { Suspense } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { Button, Input, UploadImage } from '~/components'
 import { SlideOverHOC, useLoading, useSlideOver } from '~/context'
-import { client } from '~/sanityConfig'
 import useAuth from '~/store/auth'
+
+const Button = React.lazy(() => import('~/components').then(({ Button }) => ({ default: Button })))
+const Input = React.lazy(() => import('~/components').then(({ Input }) => ({ default: Input })))
+const UploadImage = React.lazy(() => import('~/components').then(({ UploadImage }) => ({ default: UploadImage })))
 
 interface IMakeTransferForm {
     userName: string
@@ -55,6 +58,7 @@ const MakeTransfer = () => {
         }
 
         try {
+            const { client } = await import('~/sanityConfig')
             await client.transaction().create(document).commit()
             // navigate to dashboard
             form.reset(defaultValues, {
@@ -71,43 +75,45 @@ const MakeTransfer = () => {
     }
 
     return (
-        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
-            <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
-                <div className='flex flex-1 flex-col justify-between'>
-                    <div className='divide-y divide-gray-200 px-4 sm:px-6'>
-                        <div className='space-y-6 pt-6 pb-5'>
-                            <Input
-                                name='userName'
-                                form={form}
-                                rules={{
-                                    required: 'Yêu cầu nhập tên thành viên!',
-                                }}
-                                type='text'
-                                label='Họ và tên'
-                            />
-                            <UploadImage name='image' form={form} label='Hình ảnh (tùy chọn)' />
+        <Suspense fallback={<div>Loading...</div>}>
+            <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
+                <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
+                    <div className='flex flex-1 flex-col justify-between'>
+                        <div className='divide-y divide-gray-200 px-4 sm:px-6'>
+                            <div className='space-y-6 pt-6 pb-5'>
+                                <Input
+                                    name='userName'
+                                    form={form}
+                                    rules={{
+                                        required: 'Yêu cầu nhập tên thành viên!',
+                                    }}
+                                    type='text'
+                                    label='Họ và tên'
+                                />
+                                <UploadImage name='image' form={form} label='Hình ảnh (tùy chọn)' />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
-                <div className='flex sm:justify-start justify-end space-x-3'>
-                    <Button color='green' type='submit' disabled={loading.submit}>
-                        Tạo thành viên
-                    </Button>
-                    <Button
-                        color='outline'
-                        type='button'
-                        onClick={() => {
-                            setIsOpen(false)
-                            navigate(-1)
-                        }}
-                    >
-                        Hủy bỏ
-                    </Button>
+                <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
+                    <div className='flex sm:justify-start justify-end space-x-3'>
+                        <Button color='green' type='submit' disabled={loading.submit}>
+                            Tạo thành viên
+                        </Button>
+                        <Button
+                            color='outline'
+                            type='button'
+                            onClick={() => {
+                                setIsOpen(false)
+                                navigate(-1)
+                            }}
+                        >
+                            Hủy bỏ
+                        </Button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </Suspense>
     )
 }
 

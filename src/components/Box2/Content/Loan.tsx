@@ -2,11 +2,12 @@ import clsx from 'clsx'
 import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Link } from 'react-router-dom'
 import { ContentLoanBox2Props } from '~/@types/components'
-import AvatarUser from '~/components/AvatarUser'
 import { DATE_TIME_FORMAT } from '~/constant'
+
+const AvatarUser = React.lazy(() => import('~/components').then(({ AvatarUser }) => ({ default: AvatarUser })))
 
 const Content: React.FC<ContentLoanBox2Props> = ({ data, loading }) => {
     if (loading) return <Skeleton />
@@ -51,7 +52,9 @@ const Content: React.FC<ContentLoanBox2Props> = ({ data, loading }) => {
                         className='flex flex-col group bg-white gap-x-3 gap-y-1 py-3 px-3 border rounded-md cursor-pointer shadow-md hover:shadow-lg hover:bg-gray-50 transition-all'
                         key={item._id}
                     >
-                        <AvatarUser size='small' image={item.userLoan?.image} />
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <AvatarUser size='small' image={item.userLoan?.image} />
+                        </Suspense>
 
                         <span className='truncate flex-1 max-w-[150px]'>{item.userLoan?.userName}</span>
                         <span title='Hạn trả' className={clsx('font-normal truncate', date?.color)}>

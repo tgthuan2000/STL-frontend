@@ -1,15 +1,23 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import { NavLink } from 'react-router-dom'
-import { SideBarProps } from '~/@types/layout'
-import { navigation } from '~/constant/layout'
+import { Navigation, SideBarProps } from '~/@types/layout'
 import useAuth from '~/store/auth'
 
 const Sidebar: React.FC<SideBarProps> = ({ children }) => {
     const { userProfile, removeUserProfile } = useAuth()
     const [sidebarOpen, setSidebarOpen] = useState(false)
+    const [navigation, setNavigation] = useState<Navigation[]>([])
+
+    useEffect(() => {
+        ;(async () => {
+            const { navigation } = await import('~/constant/layout')
+            const _ = await navigation()
+            setNavigation(_)
+        })()
+    }, [])
 
     return (
         <>

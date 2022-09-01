@@ -1,8 +1,8 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
+import numeral from 'numeral'
 import { forwardRef, useId } from 'react'
 import { Controller } from 'react-hook-form'
-import NumberFormat from 'react-number-format'
 import { InputProps } from '~/@types/components'
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -33,11 +33,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                                 {...props}
                             />
                         </div>
-                        {type === 'number' && (
-                            <div className='mt-1 ml-2 text-sm'>
-                                <NumberFormat value={field.value} displayType='text' thousandSeparator />
-                            </div>
-                        )}
+                        {type === 'number' && <div className='mt-1 ml-2 text-sm'>{numeral(field.value).format()}</div>}
                         <div ref={parent}>
                             {error && <div className='mt-1 text-radical-red-700 text-sm'>{error.message}</div>}
                         </div>

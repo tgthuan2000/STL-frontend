@@ -1,15 +1,20 @@
 import { isEmpty, isUndefined } from 'lodash'
 import moment from 'moment'
-import { useEffect, useMemo } from 'react'
+import React, { Suspense, useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending } from '~/@types/spending'
-import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
+
+const Button = React.lazy(() => import('~/components').then(({ Button }) => ({ default: Button })))
+const Input = React.lazy(() => import('~/components').then(({ Input }) => ({ default: Input })))
+const AutoComplete = React.lazy(() => import('~/components').then(({ AutoComplete }) => ({ default: AutoComplete })))
+const DatePicker = React.lazy(() => import('~/components').then(({ DatePicker }) => ({ default: DatePicker })))
+const TextArea = React.lazy(() => import('~/components').then(({ TextArea }) => ({ default: TextArea })))
 
 interface IAddCostForm {
     amount: number | string
@@ -198,87 +203,91 @@ const MakeCost = () => {
     }
 
     return (
-        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
-            <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
-                <div className='flex flex-1 flex-col justify-between'>
-                    <div className='divide-y divide-gray-200 px-4 sm:px-6'>
-                        <div className='space-y-6 pt-6 pb-5'>
-                            <Input
-                                name='amount'
-                                form={form}
-                                rules={{
-                                    required: 'Yêu cầu nhập chi phí!',
-                                    min: {
-                                        value: 0,
-                                        message: 'Chi phí phải lớn hơn 0!',
-                                    },
-                                }}
-                                type='number'
-                                label='Chi phí'
-                            />
+        <Suspense fallback={<div>Loading...</div>}>
+            <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
+                <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
+                    <div className='flex flex-1 flex-col justify-between'>
+                        <div className='divide-y divide-gray-200 px-4 sm:px-6'>
+                            <div className='space-y-6 pt-6 pb-5'>
+                                <Input
+                                    name='amount'
+                                    form={form}
+                                    rules={{
+                                        required: 'Yêu cầu nhập chi phí!',
+                                        min: {
+                                            value: 0,
+                                            message: 'Chi phí phải lớn hơn 0!',
+                                        },
+                                    }}
+                                    type='number'
+                                    label='Chi phí'
+                                />
 
-                            <AutoComplete
-                                name='categorySpending'
-                                form={form}
-                                rules={{
-                                    required: 'Yêu cầu chọn thể loại!',
-                                }}
-                                data={categorySpending.data}
-                                label='Thể loại'
-                                loading={categorySpending.loading}
-                                addMore={handleAddMoreCategorySpending}
-                                onReload={
-                                    isEmpty(categorySpending.data)
-                                        ? undefined
-                                        : () => handleReloadData('categorySpending')
-                                }
-                            />
-                            <AutoComplete
-                                name='methodSpending'
-                                form={form}
-                                rules={{
-                                    required: 'Yêu cầu chọn phương thức thanh toán!',
-                                }}
-                                data={methodSpending.data}
-                                label='Phương thức thanh toán'
-                                loading={methodSpending.loading}
-                                addMore={handleAddMoreMethodSpending}
-                                onReload={
-                                    isEmpty(methodSpending.data) ? undefined : () => handleReloadData('methodSpending')
-                                }
-                            />
-                            <DatePicker
-                                name='date'
-                                form={form}
-                                rules={{
-                                    required: 'Yêu cầu chọn ngày!',
-                                }}
-                                label='Ngày'
-                            />
+                                <AutoComplete
+                                    name='categorySpending'
+                                    form={form}
+                                    rules={{
+                                        required: 'Yêu cầu chọn thể loại!',
+                                    }}
+                                    data={categorySpending.data}
+                                    label='Thể loại'
+                                    loading={categorySpending.loading}
+                                    addMore={handleAddMoreCategorySpending}
+                                    onReload={
+                                        isEmpty(categorySpending.data)
+                                            ? undefined
+                                            : () => handleReloadData('categorySpending')
+                                    }
+                                />
+                                <AutoComplete
+                                    name='methodSpending'
+                                    form={form}
+                                    rules={{
+                                        required: 'Yêu cầu chọn phương thức thanh toán!',
+                                    }}
+                                    data={methodSpending.data}
+                                    label='Phương thức thanh toán'
+                                    loading={methodSpending.loading}
+                                    addMore={handleAddMoreMethodSpending}
+                                    onReload={
+                                        isEmpty(methodSpending.data)
+                                            ? undefined
+                                            : () => handleReloadData('methodSpending')
+                                    }
+                                />
+                                <DatePicker
+                                    name='date'
+                                    form={form}
+                                    rules={{
+                                        required: 'Yêu cầu chọn ngày!',
+                                    }}
+                                    label='Ngày'
+                                />
 
-                            <TextArea name='description' form={form} label='Ghi chú' />
+                                <TextArea name='description' form={form} label='Ghi chú' />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
-                <div className='flex sm:justify-start justify-end space-x-3'>
-                    <Button color='radicalRed' type='submit' disabled={loading.submit}>
-                        Lưu
-                    </Button>
-                    <Button
-                        color='outline'
-                        type='button'
-                        onClick={() => {
-                            setIsOpen(false)
-                            navigate(-1)
-                        }}
-                    >
-                        Hủy bỏ
-                    </Button>
+                <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
+                    <div className='flex sm:justify-start justify-end space-x-3'>
+                        <Button color='radicalRed' type='submit' disabled={loading.submit}>
+                            Lưu
+                        </Button>
+                        <Button
+                            color='outline'
+                            type='button'
+                            onClick={() => {
+                                setIsOpen(false)
+                                navigate(-1)
+                            }}
+                        >
+                            Hủy bỏ
+                        </Button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </Suspense>
     )
 }
 

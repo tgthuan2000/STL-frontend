@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { ChangeEvent, forwardRef, useId, useState } from 'react'
 import { Controller } from 'react-hook-form'
 import { UploadImageProps } from '~/@types/components'
-import { client, urlFor } from '~/sanityConfig'
+import { urlFor } from '~/sanityConfig'
 
 const acceptImageType = ['image/jpeg', 'image/png', 'image/jpg']
 
@@ -33,6 +33,7 @@ const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
                         form.clearErrors(name)
                     }
 
+                    const { client } = await import('~/sanityConfig')
                     const data = await client.assets.upload('image', file)
                     form.setValue(name, data)
                 } catch (error) {

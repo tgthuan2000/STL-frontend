@@ -1,9 +1,10 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
-import React from 'react'
+import React, { Suspense } from 'react'
 import { ContentBoxProps } from '~/@types/components'
-import SeeMore from './SeeMore'
-import Title from './Title'
+
+const SeeMore = React.lazy(() => import('./SeeMore'))
+const Title = React.lazy(() => import('./Title'))
 
 const ContentBox: React.FC<ContentBoxProps> = ({
     title,
@@ -24,9 +25,11 @@ const ContentBox: React.FC<ContentBoxProps> = ({
                 className
             )}
         >
-            <Title title={title} onReload={onReload} loading={loading} />
-            <div ref={parent}>{children}</div>
-            <SeeMore seeMore={seeMore} to={to} />
+            <Suspense fallback={<div>Loading...</div>}>
+                <Title title={title} onReload={onReload} loading={loading} />
+                <div ref={parent}>{children}</div>
+                <SeeMore seeMore={seeMore} to={to} />
+            </Suspense>
         </div>
     )
 }

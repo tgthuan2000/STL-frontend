@@ -1,14 +1,16 @@
-import { useMemo, useState } from 'react'
+import React, { Suspense, useMemo, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { IKindSpending } from '~/@types/context'
-import { Button, Input, Selection } from '~/components'
 import { KIND_SPENDING } from '~/constant/spending'
 import { SlideOverHOC, useCache, useConfig, useSlideOver } from '~/context'
 import { client } from '~/sanityConfig'
 import { getCategorySpending } from '~/services/query'
 import useAuth from '~/store/auth'
 
+const Button = React.lazy(() => import('~/components').then(({ Button }) => ({ default: Button })))
+const Input = React.lazy(() => import('~/components').then(({ Input }) => ({ default: Input })))
+const Selection = React.lazy(() => import('~/components').then(({ Selection }) => ({ default: Selection })))
 interface IAddCategoryForm {
     name: string
     kindSpending: IKindSpending | null
@@ -71,59 +73,61 @@ const AddCategory = () => {
     }
 
     return (
-        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
-            <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
-                <div className='flex flex-1 flex-col justify-between'>
-                    <div className='divide-y divide-gray-200 px-4 sm:px-6'>
-                        <div className='space-y-6 pt-6 pb-5'>
-                            <Selection
-                                name='kindSpending'
-                                form={form}
-                                rules={{
-                                    required: 'Yêu cầu chọn thể loại!',
-                                }}
-                                label='Thể loại'
-                                placeholder='--- Chọn thể loại ---'
-                                data={kinds}
-                                idKey='_id'
-                                valueKey='name'
-                            />
+        <Suspense fallback={<div>Loading...</div>}>
+            <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
+                <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
+                    <div className='flex flex-1 flex-col justify-between'>
+                        <div className='divide-y divide-gray-200 px-4 sm:px-6'>
+                            <div className='space-y-6 pt-6 pb-5'>
+                                <Selection
+                                    name='kindSpending'
+                                    form={form}
+                                    rules={{
+                                        required: 'Yêu cầu chọn thể loại!',
+                                    }}
+                                    label='Thể loại'
+                                    placeholder='--- Chọn thể loại ---'
+                                    data={kinds}
+                                    idKey='_id'
+                                    valueKey='name'
+                                />
 
-                            <Input
-                                name='name'
-                                form={form}
-                                rules={{
-                                    required: 'Yêu cầu nhập tên thể loại!',
-                                    maxLength: {
-                                        value: 50,
-                                        message: 'Tên thể loại không được vượt quá 50 ký tự!',
-                                    },
-                                }}
-                                type='text'
-                                label='Tên thể loại'
-                            />
+                                <Input
+                                    name='name'
+                                    form={form}
+                                    rules={{
+                                        required: 'Yêu cầu nhập tên thể loại!',
+                                        maxLength: {
+                                            value: 50,
+                                            message: 'Tên thể loại không được vượt quá 50 ký tự!',
+                                        },
+                                    }}
+                                    type='text'
+                                    label='Tên thể loại'
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
-                <div className='flex sm:justify-start justify-end space-x-3'>
-                    <Button color='cyan' type='submit' disabled={loading}>
-                        Tạo
-                    </Button>
-                    <Button
-                        color='outline'
-                        type='button'
-                        onClick={() => {
-                            setIsOpen(false)
-                            navigate(-1)
-                        }}
-                    >
-                        Hủy bỏ
-                    </Button>
+                <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
+                    <div className='flex sm:justify-start justify-end space-x-3'>
+                        <Button color='cyan' type='submit' disabled={loading}>
+                            Tạo
+                        </Button>
+                        <Button
+                            color='outline'
+                            type='button'
+                            onClick={() => {
+                                setIsOpen(false)
+                                navigate(-1)
+                            }}
+                        >
+                            Hủy bỏ
+                        </Button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </Suspense>
     )
 }
 

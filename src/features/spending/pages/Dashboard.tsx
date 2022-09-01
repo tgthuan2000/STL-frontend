@@ -1,17 +1,23 @@
 import { isEmpty } from 'lodash'
 import moment from 'moment'
-import { useEffect, useMemo } from 'react'
+import React, { Suspense, useCallback, useEffect, useMemo } from 'react'
 import { IMethodSpending, ISpendingData, IStatisticData } from '~/@types/spending'
-import { Box, ButtonMenu, Divider } from '~/components'
 import { DATE_FORMAT } from '~/constant'
-import { menuMobile } from '~/constant/components'
 import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import { GET_METHOD_SPENDING_DESC_SURPLUS, GET_RECENT_SPENDING, GET_STATISTIC_SPENDING } from '~/schema/query/spending'
 import { getDate } from '~/services'
 import useAuth from '~/store/auth'
 import { sum } from '~/services'
-import { Method, Recent, Statistic } from '../components'
+
+const Method = React.lazy(() => import('../components').then(({ Method }) => ({ default: Method })))
+const Recent = React.lazy(() => import('../components').then(({ Recent }) => ({ default: Recent })))
+const Statistic = React.lazy(() => import('../components').then(({ Statistic }) => ({ default: Statistic })))
+
+const Box = React.lazy(() => import('~/components').then(({ Box }) => ({ default: Box })))
+const BoxContent = React.lazy(() => import('~/components').then(({ Box }) => ({ default: Box.Content })))
+const ButtonMenu = React.lazy(() => import('~/components').then(({ ButtonMenu }) => ({ default: ButtonMenu })))
+const Divider = React.lazy(() => import('~/components').then(({ Divider }) => ({ default: Divider })))
 
 interface IData {
     recent: ISpendingData[]
@@ -121,11 +127,16 @@ const Dashboard = () => {
         reload()
     }
 
+    const menuMobile = useCallback(async () => {
+        const { menuMobile } = await import('~/constant/components')
+        return await menuMobile()
+    }, [])
+
     return (
-        <>
+        <Suspense fallback={<div>Loading...</div>}>
             {width < 1280 && (
                 <div className='xl:hidden block'>
-                    <ButtonMenu data={menuMobile} />
+                    <ButtonMenu data={menuMobile()} />
                 </div>
             )}
 
@@ -133,7 +144,7 @@ const Dashboard = () => {
 
             {/* Show analytics */}
             <Box>
-                <Box.Content
+                <BoxContent
                     className='xl:col-span-2 col-span-1'
                     title={dataStatistic?.dateRange.join(' - ') || ' '}
                     onReload={handleReload}
@@ -142,8 +153,8 @@ const Dashboard = () => {
                     fullWidth
                 >
                     <Statistic data={dataStatistic?.data} loading={statistic.loading} />
-                </Box.Content>
-                <Box.Content
+                </BoxContent>
+                <BoxContent
                     title='Giao dịch gần đây'
                     to='transaction/tab-all'
                     onReload={handleReload}
@@ -151,8 +162,8 @@ const Dashboard = () => {
                     fullWidth
                 >
                     <Recent data={recent.data} loading={recent.loading} />
-                </Box.Content>
-                <Box.Content
+                </BoxContent>
+                <BoxContent
                     title='Phương thức thanh toán'
                     to='method'
                     onReload={handleReload}
@@ -160,9 +171,9 @@ const Dashboard = () => {
                     fullWidth
                 >
                     <Method data={method.data} loading={method.loading} />
-                </Box.Content>
+                </BoxContent>
             </Box>
-        </>
+        </Suspense>
     )
 }
 

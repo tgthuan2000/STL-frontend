@@ -1,6 +1,8 @@
 import { ArrowSmLeftIcon } from '@heroicons/react/outline'
+import React, { Suspense } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
-import { Tabs } from '~/components'
+
+const Tabs = React.lazy(() => import('~/components').then(({ Tabs }) => ({ default: Tabs })))
 
 const TransactionTabs = [
     { name: 'Tất cả', href: 'tab-all' },
@@ -25,7 +27,9 @@ const Transaction = () => {
                 <h4 className='xl:text-2xl text-xl font-semibold'>Giao dịch</h4>
             </div>
             <div>
-                <Tabs data={TransactionTabs} />
+                <Suspense fallback={<div>Loading...</div>}>
+                    <Tabs data={TransactionTabs} />
+                </Suspense>
             </div>
             <div>
                 <Outlet />

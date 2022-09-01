@@ -1,12 +1,11 @@
-import jwtDecode from 'jwt-decode'
 import { GoogleData, IFetchGoogleResponse } from '~/@types/auth'
-import { client } from '~/sanityConfig'
 
 export const fetchGoogleResponse: IFetchGoogleResponse = async (res, addUser, setLoading) => {
     try {
         setLoading(true)
         const credential = res.credential
         if (credential) {
+            const jwtDecode = (await import('jwt-decode')).default
             const data: GoogleData = jwtDecode(credential)
             if (data) {
                 const { sub, picture, name, email } = data
@@ -17,6 +16,7 @@ export const fetchGoogleResponse: IFetchGoogleResponse = async (res, addUser, se
                     userName: name,
                     email,
                 }
+                const { client } = await import('~/sanityConfig')
                 const d = await client.createIfNotExists(document)
                 addUser(d)
             }

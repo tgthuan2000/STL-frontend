@@ -1,10 +1,17 @@
 import clsx from 'clsx'
-import React from 'react'
+import { isEmpty } from 'lodash'
+import React, { memo, Suspense } from 'react'
 import { IMenuBtn } from '~/@types/components'
 import { SlideOverProvider } from '~/context'
-import ButtonItem from './ButtonItem'
+import { useStateAsync } from '~/hook'
 
-const ButtonMenu: React.FC<{ className?: string; data: IMenuBtn[] }> = ({ className, data }) => {
+const ButtonItem = React.lazy(() => import('./ButtonItem'))
+
+const ButtonMenu: React.FC<{ className?: string; data: Promise<IMenuBtn[]> }> = ({ className, data }) => {
+    const [menu] = useStateAsync<IMenuBtn[]>(data, [])
+
+    if (isEmpty(menu)) return <></>
+
     return (
         <div
             className={clsx(
@@ -12,13 +19,15 @@ const ButtonMenu: React.FC<{ className?: string; data: IMenuBtn[] }> = ({ classN
                 className
             )}
         >
-            {data.map((item) => (
-                <SlideOverProvider key={item.title} query={item.query} title={item.title}>
-                    <ButtonItem data={item} />
-                </SlideOverProvider>
-            ))}
+            <Suspense fallback={<div>Loading...</div>}>
+                {menu.map((item) => (
+                    <SlideOverProvider key={item.title} query={item.query} title={item.title}>
+                        <ButtonItem data={item} />
+                    </SlideOverProvider>
+                ))}
+            </Suspense>
         </div>
     )
 }
 
-export default ButtonMenu
+export default memo(ButtonMenu)

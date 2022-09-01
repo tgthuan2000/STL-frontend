@@ -1,5 +1,5 @@
 import { head, isEmpty } from 'lodash'
-import { useEffect } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IMethodSpending, ISpendingData } from '~/@types/spending'
@@ -10,7 +10,11 @@ import { client } from '~/sanityConfig'
 import { GET_TRANSACTION_DETAIL } from '~/schema/query/loan'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
-import { PaidForm, TransactionDetailForm, TransactionDetailFormData } from '../components'
+import { PaidForm, TransactionDetailFormData } from '../components'
+
+const TransactionDetailForm = React.lazy(() =>
+    import('../components').then(({ TransactionDetailForm }) => ({ default: TransactionDetailForm }))
+)
 
 export interface Data {
     transaction: ISpendingData[]
@@ -188,7 +192,11 @@ const TransactionDetail = () => {
 
     if (isEmpty(transaction.data)) return <div>Empty Data!</div>
 
-    return <TransactionDetailForm data={data} />
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <TransactionDetailForm data={data} />
+        </Suspense>
+    )
 }
 
 export default TransactionDetail

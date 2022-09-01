@@ -6,3 +6,11 @@ export enum KIND_SPENDING {
     LOAN = 'loan',
     GET_LOAN = 'get-loan',
 }
+
+export enum TAB_TABLE {
+    ALL = 'all',
+    DAY = 'day',
+    WEEK = 'week',
+    MONTH = 'month',
+    YEAR = 'year',
+}

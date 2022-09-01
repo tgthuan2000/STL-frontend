@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useState } from 'react'
+import React, { createContext, Suspense, useCallback, useContext, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { SlideParams } from '~/@types/components'
 import { ISlideOverContext } from '~/@types/context'

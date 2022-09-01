@@ -1,8 +1,8 @@
 import moment from 'moment'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { IUserLoan } from '~/@types/loan'
 import { ISpendingData } from '~/@types/spending'
-import { Box2, ButtonMenuLoan, Divider } from '~/components'
+import { Box2, ButtonMenu, Divider } from '~/components'
 import { menuLoanMobile } from '~/constant/components'
 import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
@@ -55,14 +55,18 @@ const Dashboard = () => {
         reload()
     }
 
+    const menuLoanMobile = useCallback(async () => {
+        const { menuLoanMobile } = await import('~/constant/components')
+        return await menuLoanMobile()
+    }, [])
+
     return (
         <>
             {width < 1280 && (
                 <div className='xl:hidden block'>
-                    <ButtonMenuLoan data={menuLoanMobile} />
+                    <ButtonMenu data={menuLoanMobile()} />
                 </div>
             )}
-
             <Divider className='xl:hidden py-6' />
 
             {/* Show user */}
