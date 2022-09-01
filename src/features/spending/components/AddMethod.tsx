@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react'
+import React, { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { SlideOverHOC, useCache, useSlideOver } from '~/context'
@@ -61,48 +61,46 @@ const AddMethod = () => {
     }
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
-                <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
-                    <div className='flex flex-1 flex-col justify-between'>
-                        <div className='divide-y divide-gray-200 px-4 sm:px-6'>
-                            <div className='space-y-6 pt-6 pb-5'>
-                                <Input
-                                    name='name'
-                                    form={form}
-                                    rules={{
-                                        required: 'Yêu cầu nhập tên phương thức thanh toán!',
-                                        maxLength: {
-                                            value: 50,
-                                            message: 'Tên phương thức thanh toán không được vượt quá 50 ký tự!',
-                                        },
-                                    }}
-                                    type='text'
-                                    label='Tên phương thức thanh toán'
-                                />
-                            </div>
+        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
+            <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
+                <div className='flex flex-1 flex-col justify-between'>
+                    <div className='divide-y divide-gray-200 px-4 sm:px-6'>
+                        <div className='space-y-6 pt-6 pb-5'>
+                            <Input
+                                name='name'
+                                form={form}
+                                rules={{
+                                    required: 'Yêu cầu nhập tên phương thức thanh toán!',
+                                    maxLength: {
+                                        value: 50,
+                                        message: 'Tên phương thức thanh toán không được vượt quá 50 ký tự!',
+                                    },
+                                }}
+                                type='text'
+                                label='Tên phương thức thanh toán'
+                            />
                         </div>
                     </div>
                 </div>
-                <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
-                    <div className='flex sm:justify-start justify-end space-x-3'>
-                        <Button color='cyan' type='submit' disabled={loading}>
-                            Tạo
-                        </Button>
-                        <Button
-                            color='outline'
-                            type='button'
-                            onClick={() => {
-                                setIsOpen(false)
-                                navigate(-1)
-                            }}
-                        >
-                            Hủy bỏ
-                        </Button>
-                    </div>
+            </div>
+            <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
+                <div className='flex sm:justify-start justify-end space-x-3'>
+                    <Button color='cyan' type='submit' disabled={loading}>
+                        Tạo
+                    </Button>
+                    <Button
+                        color='outline'
+                        type='button'
+                        onClick={() => {
+                            setIsOpen(false)
+                            navigate(-1)
+                        }}
+                    >
+                        Hủy bỏ
+                    </Button>
                 </div>
-            </form>
-        </Suspense>
+            </div>
+        </form>
     )
 }
 

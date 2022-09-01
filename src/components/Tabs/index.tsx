@@ -1,6 +1,7 @@
-import React, { Suspense, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { TabsProps } from '~/@types/components'
+import { SuspenseAnimate } from '~/components'
 
 const TabItem = React.lazy(() => import('./TabItem'))
 
@@ -24,20 +25,18 @@ const Tabs: React.FC<TabsProps> = ({ data }) => {
     return (
         <div className='block'>
             <div className='border-b border-gray-200'>
-                <div className='relative overflow-x-auto overflow-y-hidden'>
+                <SuspenseAnimate className='relative overflow-x-auto overflow-y-hidden'>
                     <nav className='-mb-px flex sm:space-x-8 space-x-2 pb-3' aria-label='Tabs'>
-                        <Suspense fallback={<div>Loading...</div>}>
-                            {data.map((tab) => (
-                                <TabItem key={tab.name} tab={tab} navigate={navigate} tabsRef={tabsRef} />
-                            ))}
-                        </Suspense>
+                        {data.map((tab) => (
+                            <TabItem key={tab.name} tab={tab} navigate={navigate} tabsRef={tabsRef} />
+                        ))}
                         {/* line */}
                     </nav>
                     <div
                         ref={lineRef}
                         className='absolute h-0.5 rounded-full bg-indigo-500 transition-all bottom-3 left-0 w-0'
                     />
-                </div>
+                </SuspenseAnimate>
             </div>
         </div>
     )

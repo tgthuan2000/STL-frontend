@@ -9,6 +9,7 @@ import { useQuery } from '~/hook'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { IMethodSpending } from '~/@types/spending'
 import { isEmpty } from 'lodash'
+import { SuspenseAnimate } from '~/components'
 
 const MethodBox = React.lazy(() => import('../components').then(({ Method }) => ({ default: Method })))
 
@@ -16,7 +17,6 @@ const Method = () => {
     const navigate = useNavigate()
     const { kindSpending } = useConfig()
     const { userProfile } = useAuth()
-    const [parent] = useAutoAnimate<HTMLDivElement>()
 
     const [{ method }, fetchData] = useQuery<{
         method: IMethodSpending[]
@@ -47,16 +47,11 @@ const Method = () => {
                 <Tabs />
             </div>
             <div className='flex xl:flex-row flex-col-reverse gap-4 mt-4'>
-                <div className='xl:flex-[1]'>
-                    <div
-                        ref={parent}
-                        className='max-w-lg w-full h-fit mx-auto bg-white border border-gray-300 overflow-hidden rounded-md select-none'
-                    >
-                        <Suspense fallback={<div>Loading...</div>}>
-                            <MethodBox data={method.data} loading={method.loading} />
-                        </Suspense>
+                <SuspenseAnimate className='xl:flex-[1]'>
+                    <div className='max-w-lg w-full h-fit mx-auto bg-white border border-gray-300 overflow-hidden rounded-md select-none'>
+                        <MethodBox data={method.data} loading={method.loading} />
                     </div>
-                </div>
+                </SuspenseAnimate>
                 <div className='xl:flex-[2]'>
                     <h4 className=' h-12 rounded-md bg-red-500 xl:sticky xl:top-6 text-white font-medium text-lg py-2 px-4'>
                         Chart

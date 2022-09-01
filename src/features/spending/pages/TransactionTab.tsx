@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TAB_TABLE } from '~/constant/spending'
 
 const TransactionTabTable = React.lazy(() =>
@@ -32,11 +32,7 @@ const TransactionTab: React.FC<TransactionTabProps> = ({ by }) => {
 
     if (!query) return <></>
 
-    return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <TransactionTabTable query={{ recent: query }} />
-        </Suspense>
-    )
+    return <TransactionTabTable query={{ recent: query }} />
 }
 
 export default TransactionTab

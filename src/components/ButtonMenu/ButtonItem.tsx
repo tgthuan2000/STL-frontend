@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import clsx from 'clsx'
 import useAuth from '~/store/auth'
 import { Link, useNavigate } from 'react-router-dom'
@@ -25,7 +25,7 @@ const ButtonItem: React.FC<MenuButtonProps> = ({ data }) => {
     }
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <>
             {divider && <Divider className='w-full py-1' />}
             <Link
                 to={to}
@@ -40,7 +40,7 @@ const ButtonItem: React.FC<MenuButtonProps> = ({ data }) => {
                 <span className='text-center truncate w-full block xl:hidden xl:group-hover:block'>{title}</span>
             </Link>
             <SlideOver>{children}</SlideOver>
-        </Suspense>
+        </>
     )
 }
 

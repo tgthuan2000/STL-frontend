@@ -133,7 +133,7 @@ const Dashboard = () => {
     }, [])
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <>
             {width < 1280 && (
                 <div className='xl:hidden block'>
                     <ButtonMenu data={menuMobile()} />
@@ -173,7 +173,7 @@ const Dashboard = () => {
                     <Method data={method.data} loading={method.loading} />
                 </BoxContent>
             </Box>
-        </Suspense>
+        </>
     )
 }
 

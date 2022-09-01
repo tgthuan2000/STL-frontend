@@ -17,28 +17,26 @@ function App() {
             <BrowserRouter>
                 <LoadingProvider>
                     <Loading />
-                    <Suspense fallback={<div>Loading...</div>}>
-                        <Routes>
-                            <Route
-                                path='/'
-                                element={
-                                    <ConfigProvider>
-                                        <CacheProvider>
-                                            <DefaultLayout />
-                                        </CacheProvider>
-                                    </ConfigProvider>
-                                }
-                            >
-                                <Route index element={<Navigate to='spending' />} />
-                                <Route path='spending/*' element={<SpendingFeature />} />
+                    <Routes>
+                        <Route
+                            path='/'
+                            element={
+                                <ConfigProvider>
+                                    <CacheProvider>
+                                        <DefaultLayout />
+                                    </CacheProvider>
+                                </ConfigProvider>
+                            }
+                        >
+                            <Route index element={<Navigate to='spending' />} />
+                            <Route path='spending/*' element={<SpendingFeature />} />
 
-                                <Route path='timekeeping/*' element={<TimeKeepingFeature />} />
-                                <Route path='loan/*' element={<LoanFeature />} />
-                                <Route path='*' element={<Navigate to='/' />} />
-                            </Route>
-                            <Route path='/auth' element={<AuthFeature />} />
-                        </Routes>
-                    </Suspense>
+                            <Route path='timekeeping/*' element={<TimeKeepingFeature />} />
+                            <Route path='loan/*' element={<LoanFeature />} />
+                            <Route path='*' element={<Navigate to='/' />} />
+                        </Route>
+                        <Route path='/auth' element={<AuthFeature />} />
+                    </Routes>
                 </LoadingProvider>
             </BrowserRouter>
         </GoogleOAuthProvider>

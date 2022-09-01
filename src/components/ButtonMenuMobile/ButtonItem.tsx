@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { MenuButtonProps } from '~/@types/components'
 import { useSlideOver } from '~/context'
 import useAuth from '~/store/auth'
-import React, { Suspense } from 'react'
+import React from 'react'
 
 const SlideOver = React.lazy(() => import('~/components').then(({ SlideOver }) => ({ default: SlideOver })))
 
@@ -23,7 +23,7 @@ const ButtonItem: React.FC<MenuButtonProps> = ({ data }) => {
         }
     }
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <>
             {divider && <div className='h-2/3 w-px bg-gray-300 select-none pointer-events-none' />}
             <NavLink
                 to={to}
@@ -39,7 +39,7 @@ const ButtonItem: React.FC<MenuButtonProps> = ({ data }) => {
                 {({ isActive }) => <Icon className={clsx('transition-all', isActive ? 'w-9 h-9' : 'w-7 h-7')} />}
             </NavLink>
             <SlideOver>{children}</SlideOver>
-        </Suspense>
+        </>
     )
 }
 

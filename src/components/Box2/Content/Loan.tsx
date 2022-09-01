@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
-import React, { Suspense } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { ContentLoanBox2Props } from '~/@types/components'
 import { DATE_TIME_FORMAT } from '~/constant'
@@ -52,9 +52,7 @@ const Content: React.FC<ContentLoanBox2Props> = ({ data, loading }) => {
                         className='flex flex-col group bg-white gap-x-3 gap-y-1 py-3 px-3 border rounded-md cursor-pointer shadow-md hover:shadow-lg hover:bg-gray-50 transition-all'
                         key={item._id}
                     >
-                        <Suspense fallback={<div>Loading...</div>}>
-                            <AvatarUser size='small' image={item.userLoan?.image} />
-                        </Suspense>
+                        <AvatarUser size='small' image={item.userLoan?.image} />
 
                         <span className='truncate flex-1 max-w-[150px]'>{item.userLoan?.userName}</span>
                         <span title='Hạn trả' className={clsx('font-normal truncate', date?.color)}>

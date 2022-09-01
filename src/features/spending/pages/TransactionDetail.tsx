@@ -1,6 +1,6 @@
 import { head } from 'lodash'
 import moment from 'moment'
-import React, { Suspense, useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ICategorySpending, IMethodSpending, ISpendingData } from '~/@types/spending'
@@ -343,11 +343,7 @@ const TransactionDetail = () => {
 
     if (transaction.loading) return null
 
-    return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <TransactionDetailForm data={data} />
-        </Suspense>
-    )
+    return <TransactionDetailForm data={data} />
 }
 
 export default TransactionDetail

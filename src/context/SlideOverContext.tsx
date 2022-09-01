@@ -2,6 +2,7 @@ import React, { createContext, Suspense, useCallback, useContext, useState } fro
 import { useLocation } from 'react-router-dom'
 import { SlideParams } from '~/@types/components'
 import { ISlideOverContext } from '~/@types/context'
+import { SuspenseAnimate } from '~/components'
 import { useEventListener } from '~/hook'
 
 const SlideOverContext = createContext<ISlideOverContext>({
@@ -63,7 +64,10 @@ const SlideOverHOC = (Component: (props: any) => JSX.Element) => () => {
 
     useEventListener('popstate', handler)
 
-    return <Component />
+    return (
+        <SuspenseAnimate>
+            <Component />
+        </SuspenseAnimate>
+    )
 }
-
 export { useSlideOver, SlideOverHOC, SlideOverProvider }

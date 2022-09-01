@@ -164,3 +164,8 @@ export interface TabItemProps {
     navigate: NavigateFunction
     tabsRef: React.RefObject<HTMLAnchorElement[]>
 }
+
+export interface SuspenseAnimateProps {
+    className?: string
+    children: React.ReactNode
+}

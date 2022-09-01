@@ -1,5 +1,5 @@
 import { head, isEmpty } from 'lodash'
-import React, { Suspense, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IMethodSpending, ISpendingData } from '~/@types/spending'
@@ -192,11 +192,7 @@ const TransactionDetail = () => {
 
     if (isEmpty(transaction.data)) return <div>Empty Data!</div>
 
-    return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <TransactionDetailForm data={data} />
-        </Suspense>
-    )
+    return <TransactionDetailForm data={data} />
 }
 
 export default TransactionDetail

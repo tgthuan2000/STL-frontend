@@ -15,10 +15,10 @@ const privateHOC = (Component: () => JSX.Element) => () => {
 const DefaultLayout = () => {
     const { ok } = useConfig()
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div className='text-radical-red-500 font-normal text-xl'>App Loading...</div>}>
             <SideBar>
                 {ok && (
-                    <Suspense fallback={<div>Loading...</div>}>
+                    <Suspense fallback={<div>Content Loading...</div>}>
                         <Outlet />
                     </Suspense>
                 )}

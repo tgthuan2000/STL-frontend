@@ -1,6 +1,6 @@
 import { isEmpty, isUndefined } from 'lodash'
 import moment from 'moment'
-import React, { Suspense, useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { IUserLoan } from '~/@types/loan'
@@ -149,82 +149,78 @@ const MakeLoan = () => {
     }
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
-                <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
-                    <div className='flex flex-1 flex-col justify-between'>
-                        <div className='divide-y divide-gray-200 px-4 sm:px-6'>
-                            <div className='space-y-6 pt-6 pb-5'>
-                                <Input
-                                    name='amount'
-                                    form={form}
-                                    rules={{
-                                        required: 'Yêu cầu nhập số tiền!',
-                                        min: {
-                                            value: 0,
-                                            message: 'Số tiền phải lớn hơn 0!',
-                                        },
-                                    }}
-                                    type='number'
-                                    label='Số tiền'
-                                />
+        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
+            <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
+                <div className='flex flex-1 flex-col justify-between'>
+                    <div className='divide-y divide-gray-200 px-4 sm:px-6'>
+                        <div className='space-y-6 pt-6 pb-5'>
+                            <Input
+                                name='amount'
+                                form={form}
+                                rules={{
+                                    required: 'Yêu cầu nhập số tiền!',
+                                    min: {
+                                        value: 0,
+                                        message: 'Số tiền phải lớn hơn 0!',
+                                    },
+                                }}
+                                type='number'
+                                label='Số tiền'
+                            />
 
-                                <AutoComplete
-                                    name='methodSpending'
-                                    form={form}
-                                    rules={{
-                                        required: 'Yêu cầu chọn phương thức cho vay!',
-                                    }}
-                                    data={methodSpending.data}
-                                    label='Phương thức cho vay'
-                                    loading={methodSpending.loading}
-                                    onReload={
-                                        isEmpty(methodSpending.data)
-                                            ? undefined
-                                            : () => handleReloadData('methodSpending')
-                                    }
-                                />
+                            <AutoComplete
+                                name='methodSpending'
+                                form={form}
+                                rules={{
+                                    required: 'Yêu cầu chọn phương thức cho vay!',
+                                }}
+                                data={methodSpending.data}
+                                label='Phương thức cho vay'
+                                loading={methodSpending.loading}
+                                onReload={
+                                    isEmpty(methodSpending.data) ? undefined : () => handleReloadData('methodSpending')
+                                }
+                            />
 
-                                <DatePicker name='date' form={form} label='Ngày trả' />
+                            <DatePicker name='date' form={form} label='Ngày trả' />
 
-                                <AutoComplete
-                                    name='userLoan'
-                                    form={form}
-                                    rules={{
-                                        required: 'Yêu cầu chọn đối tượng cho vay!',
-                                    }}
-                                    data={userLoan.data}
-                                    label='Đối tượng cho vay'
-                                    valueKey='userName'
-                                    loading={userLoan.loading}
-                                    onReload={isEmpty(userLoan.data) ? undefined : () => handleReloadData('userLoan')}
-                                    showImage
-                                />
+                            <AutoComplete
+                                name='userLoan'
+                                form={form}
+                                rules={{
+                                    required: 'Yêu cầu chọn đối tượng cho vay!',
+                                }}
+                                data={userLoan.data}
+                                label='Đối tượng cho vay'
+                                valueKey='userName'
+                                loading={userLoan.loading}
+                                onReload={isEmpty(userLoan.data) ? undefined : () => handleReloadData('userLoan')}
+                                showImage
+                            />
 
-                                <TextArea name='description' form={form} label='Ghi chú' />
-                            </div>
+                            <TextArea name='description' form={form} label='Ghi chú' />
                         </div>
                     </div>
                 </div>
-                <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
-                    <div className='flex sm:justify-start justify-end space-x-3'>
-                        <Button color='prussianBlue' type='submit' disabled={loading.submit}>
-                            Lưu
-                        </Button>
-                        <Button
-                            color='outline'
-                            type='button'
-                            onClick={() => {
-                                setIsOpen(false)
-                                navigate(-1)
-                            }}
-                        >
-                            Hủy bỏ
-                        </Button>
-                    </div>
+            </div>
+            <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
+                <div className='flex sm:justify-start justify-end space-x-3'>
+                    <Button color='prussianBlue' type='submit' disabled={loading.submit}>
+                        Lưu
+                    </Button>
+                    <Button
+                        color='outline'
+                        type='button'
+                        onClick={() => {
+                            setIsOpen(false)
+                            navigate(-1)
+                        }}
+                    >
+                        Hủy bỏ
+                    </Button>
                 </div>
-            </form>
-        </Suspense>
+            </div>
+        </form>
     )
 }
 

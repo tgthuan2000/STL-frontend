@@ -2,6 +2,7 @@ import moment from 'moment'
 import React, { Suspense, useCallback, useEffect } from 'react'
 import { IUserLoan } from '~/@types/loan'
 import { ISpendingData } from '~/@types/spending'
+import { SuspenseAnimate } from '~/components'
 import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
@@ -65,7 +66,7 @@ const Dashboard = () => {
     }, [])
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <>
             {width < 1280 && (
                 <div className='xl:hidden block'>
                     <ButtonMenu data={menuLoanMobile()} className='min-h-[60px] grid-cols-3' />
@@ -92,7 +93,7 @@ const Dashboard = () => {
 
                 <ListMember label='Đang cho vay' data={member.data} loading={member.loading} /> */}
             </div>
-        </Suspense>
+        </>
     )
 }
 
