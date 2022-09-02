@@ -1,0 +1,5 @@
+export { default as Box2LoanSkeleton } from './Box2LoanSkeleton'
+export { default as Box2UserLoanSkeleton } from './Box2UserLoanSkeleton'
+export { default as StatisticSkeleton } from './StatisticSkeleton'
+export { default as RecentSkeleton } from './RecentSkeleton'
+export { default as MethodSkeleton } from './MethodSkeleton'

@@ -6,9 +6,10 @@ import { KIND_SPENDING } from '~/constant/spending'
 import { DATE_TIME_FORMAT } from '~/constant'
 import { isEmpty } from 'lodash'
 import numeral from 'numeral'
+import React from 'react'
 
-const Recent = ({ data, loading }: RecentProps) => {
-    if (loading) return <RecentSkeleton />
+const Recent: React.FC<RecentProps> = ({ data, loading, fallback }) => {
+    if (loading) return <>{fallback}</>
 
     if (!isEmpty(data)) {
         return (
@@ -73,23 +74,3 @@ const Recent = ({ data, loading }: RecentProps) => {
 }
 
 export default Recent
-
-const RecentSkeleton = () => (
-    <ul role='list' className='divide-y divide-gray-300 select-none pointer-events-none'>
-        {Array.from(Array(5)).map((value, index) => (
-            <li key={index}>
-                <div className='px-4 py-3 flex'>
-                    <div className='w-2/3 space-y-1'>
-                        <div className='animate-pulse bg-gray-200 rounded-full h-4 w-2/3' />
-                        <div className='animate-pulse bg-gray-200 rounded-full h-4 w-1/2' />
-                        <div className='animate-pulse bg-gray-200 rounded-full h-4 w-1/3' />
-                    </div>
-                    <div className='w-1/3 space-y-1 flex flex-col items-end'>
-                        <div className='animate-pulse bg-gray-200 rounded-full h-4 w-1/2' />
-                        <div className='animate-pulse bg-gray-200 rounded-full h-4 w-full' />
-                    </div>
-                </div>
-            </li>
-        ))}
-    </ul>
-)

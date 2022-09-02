@@ -5,11 +5,17 @@ import clsx from 'clsx'
 import { NavLink } from 'react-router-dom'
 import { Navigation, SideBarProps } from '~/@types/layout'
 import useAuth from '~/store/auth'
+import { isEmpty } from 'lodash'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { SuspenseAnimate } from '~/components'
+
+const AvatarUser = React.lazy(() => import('~/components/AvatarUser'))
 
 const Sidebar: React.FC<SideBarProps> = ({ children }) => {
     const { userProfile, removeUserProfile } = useAuth()
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const [navigation, setNavigation] = useState<Navigation[]>([])
+    const [parent] = useAutoAnimate<HTMLElement>()
 
     useEffect(() => {
         ;(async () => {
@@ -148,54 +154,81 @@ const Sidebar: React.FC<SideBarProps> = ({ children }) => {
                                     alt='Workflow'
                                 />
                             </div> */}
-                            <nav className='mt-5 flex-1 px-2 space-y-1'>
-                                {navigation.map((item) => (
-                                    <NavLink
-                                        key={item.name}
-                                        to={item.href}
-                                        className={({ isActive }) =>
-                                            clsx(
-                                                isActive
-                                                    ? 'bg-gray-900 text-white'
-                                                    : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                                'group flex items-center px-2 py-2 text-sm font-medium rounded-md select-none'
-                                            )
-                                        }
-                                    >
-                                        {({ isActive }) => (
-                                            <>
-                                                <item.icon
-                                                    className={clsx(
-                                                        isActive
-                                                            ? 'text-gray-300'
-                                                            : 'text-gray-400 group-hover:text-gray-300',
-                                                        'mr-3 flex-shrink-0 h-6 w-6'
-                                                    )}
-                                                    aria-hidden='true'
-                                                />
-                                                {item.name}
-                                            </>
-                                        )}
-                                    </NavLink>
-                                ))}
+                            <nav ref={parent} className='mt-5 flex-1 px-2 space-y-1'>
+                                {isEmpty(navigation) ? (
+                                    <>
+                                        {Array.from(Array(3)).map((v, i) => (
+                                            <span
+                                                key={i}
+                                                className='bg-gray-900 flex items-center px-2 py-5 rounded-md select-none animate-pulse'
+                                            />
+                                        ))}
+                                    </>
+                                ) : (
+                                    navigation.map((item) => (
+                                        <NavLink
+                                            key={item.name}
+                                            to={item.href}
+                                            className={({ isActive }) =>
+                                                clsx(
+                                                    isActive
+                                                        ? 'bg-gray-900 text-white'
+                                                        : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                                    'group flex items-center px-2 py-2 text-sm font-medium rounded-md select-none'
+                                                )
+                                            }
+                                        >
+                                            {({ isActive }) => (
+                                                <>
+                                                    <item.icon
+                                                        className={clsx(
+                                                            isActive
+                                                                ? 'text-gray-300'
+                                                                : 'text-gray-400 group-hover:text-gray-300',
+                                                            'mr-3 flex-shrink-0 h-6 w-6'
+                                                        )}
+                                                        aria-hidden='true'
+                                                    />
+                                                    {item.name}
+                                                </>
+                                            )}
+                                        </NavLink>
+                                    ))
+                                )}
                             </nav>
                         </div>
                         <div className='flex-shrink-0 flex bg-gray-700 p-4'>
                             <div className='flex-shrink-0 w-full group block'>
                                 <div className='flex items-center'>
-                                    <div>
-                                        <img
-                                            className='inline-block h-9 w-9 rounded-full'
-                                            src={userProfile?.image}
-                                            alt=''
-                                        />
-                                    </div>
-                                    <div className='ml-3'>
-                                        <p className='text-sm font-medium text-white'>{userProfile?.userName}</p>
-                                        <p className='text-xs font-medium text-gray-300 group-hover:text-gray-200'>
-                                            {userProfile?.email}
-                                        </p>
-                                    </div>
+                                    {userProfile ? (
+                                        <>
+                                            <div>
+                                                <img
+                                                    className='inline-block h-9 w-9 rounded-full'
+                                                    src={userProfile.image}
+                                                    alt=''
+                                                />
+                                            </div>
+                                            <div className='ml-3'>
+                                                <p className='text-sm font-medium text-white'>{userProfile.userName}</p>
+                                                <p className='text-xs font-medium text-gray-300 group-hover:text-gray-200'>
+                                                    {userProfile.email}
+                                                </p>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div>
+                                                <SuspenseAnimate>
+                                                    <AvatarUser />
+                                                </SuspenseAnimate>
+                                            </div>
+                                            <div className='ml-3 space-y-2 animate-pulse'>
+                                                <p className='h-4 w-32 rounded-full bg-gray-500' />
+                                                <p className='h-4 w-20 rounded-full bg-gray-500' />
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         </div>

@@ -14,7 +14,10 @@ const ButtonMenuMobile: React.FC<{ className?: string; data: Promise<IMenuBtn[]>
     if (isEmpty(menu)) return <></>
 
     return (
-        <SuspenseAnimate className={clsx('flex flex-nowrap items-center justify-evenly h-full', className)}>
+        <SuspenseAnimate
+            fallback={<Fallback length={menu.length} />}
+            className={clsx('flex flex-nowrap items-center justify-evenly h-full', className)}
+        >
             {menu.map((item) => (
                 <SlideOverProvider key={item.title} query={item.query} title={item.title}>
                     <ButtonItem data={item} />
@@ -25,3 +28,16 @@ const ButtonMenuMobile: React.FC<{ className?: string; data: Promise<IMenuBtn[]>
 }
 
 export default memo(ButtonMenuMobile)
+
+const Fallback = ({ length }: { length: number }) => {
+    return (
+        <>
+            {Array.from(Array(length)).map((v, i) => (
+                <span
+                    key={i}
+                    className='w-10 h-10 bg-gray-200 animate-pulse inline-block border border-transparent rounded-md xl:relative'
+                />
+            ))}
+        </>
+    )
+}

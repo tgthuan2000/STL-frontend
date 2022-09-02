@@ -88,22 +88,25 @@ export interface ButtonProps {
 export interface ContentBoxProps {
     title?: string
     seeMore?: boolean
-    children: React.ReactNode
+    children: (data: { fallback?: React.ReactNode }) => React.ReactNode
     to?: string
     onReload?: () => void
     loading?: boolean
     className?: string
     fullWidth?: boolean
+    fallback?: React.ReactNode
 }
 
 export interface ContentLoanBox2Props {
     data?: ISpendingData[]
     loading?: boolean
+    fallback?: React.ReactNode
 }
 
 export interface ContentUserLoanBox2Props {
     data?: IUserLoan[]
     loading?: boolean
+    fallback?: React.ReactNode
 }
 export interface MenuButtonProps {
     data: IMenuBtn
@@ -138,16 +141,17 @@ export interface LoadingButtonProps {
 }
 
 export interface AvatarUserProps {
-    image: SanityImageAssetDocument | null | undefined
+    image?: SanityImageAssetDocument | null | undefined
     size?: 'small' | 'medium' | 'large'
 }
 
 export interface Box2Props {
-    children?: (data: { data: any[] | undefined; loading: boolean }) => React.ReactNode
+    children?: (data: { data: any[] | undefined; loading: boolean; fallback?: React.ReactNode }) => React.ReactNode
     data: any[] | undefined
     label?: string
     loading?: boolean
     onReload: () => void
+    fallback?: React.ReactNode
 }
 
 interface TabData {
@@ -168,4 +172,5 @@ export interface TabItemProps {
 export interface SuspenseAnimateProps {
     className?: string
     children: React.ReactNode
+    fallback?: React.ReactNode
 }

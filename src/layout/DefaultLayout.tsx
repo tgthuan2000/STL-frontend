@@ -1,9 +1,9 @@
-import React, { Suspense } from 'react'
+import { Suspense } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
+import LoadingIcon from '~/components/Loading/LoadingIcon'
 import { useConfig } from '~/context'
 import useAuth from '~/store/auth'
-
-const SideBar = React.lazy(() => import('./components/SideBar'))
+import SideBar from './components/SideBar'
 
 const privateHOC = (Component: () => JSX.Element) => () => {
     const { userProfile } = useAuth()
@@ -15,15 +15,13 @@ const privateHOC = (Component: () => JSX.Element) => () => {
 const DefaultLayout = () => {
     const { ok } = useConfig()
     return (
-        <Suspense fallback={<div className='text-radical-red-500 font-normal text-xl'>App Loading...</div>}>
-            <SideBar>
-                {ok && (
-                    <Suspense fallback={<div>Content Loading...</div>}>
-                        <Outlet />
-                    </Suspense>
-                )}
-            </SideBar>
-        </Suspense>
+        <SideBar>
+            {ok && (
+                <Suspense fallback={<LoadingIcon />}>
+                    <Outlet />
+                </Suspense>
+            )}
+        </SideBar>
     )
 }
 

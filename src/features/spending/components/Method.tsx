@@ -3,9 +3,10 @@ import clsx from 'clsx'
 import { MethodProps } from '~/@types/spending'
 import { isEmpty } from 'lodash'
 import numeral from 'numeral'
+import React from 'react'
 
-const Method = ({ data, loading }: MethodProps) => {
-    if (loading) return <MethodSkeleton />
+const Method: React.FC<MethodProps> = ({ data, loading, fallback }) => {
+    if (loading) return <>{fallback}</>
 
     if (!isEmpty(data)) {
         return (
@@ -43,20 +44,3 @@ const Method = ({ data, loading }: MethodProps) => {
 }
 
 export default Method
-
-const MethodSkeleton = () => (
-    <ul role='list' className='select-none pointer-events-none'>
-        {Array.from(Array(5)).map((value, index) => (
-            <li key={index}>
-                <div className='px-4 py-4 flex'>
-                    <div className='w-2/3 space-y-1'>
-                        <div className='animate-pulse bg-gray-200 rounded-full h-4 w-2/3' />
-                    </div>
-                    <div className='w-1/3 space-y-1 flex flex-col items-end'>
-                        <div className='animate-pulse bg-gray-200 rounded-full h-4 w-2/3' />
-                    </div>
-                </div>
-            </li>
-        ))}
-    </ul>
-)

@@ -1,3 +1,4 @@
+import React from 'react'
 import { KIND_SPENDING } from '~/constant/spending'
 import { IUserProfile } from './auth'
 import { IKindSpending } from './context'
@@ -47,6 +48,7 @@ export interface IStatisticData {
 export interface RecentProps {
     data: ISpendingData[] | undefined
     loading: boolean
+    fallback?: React.ReactNode
 }
 
 interface Statistic {
@@ -58,9 +60,11 @@ interface Statistic {
 export interface StatisticProps {
     data: Statistic[] | undefined
     loading: boolean
+    fallback?: React.ReactNode
 }
 
 export interface MethodProps {
     data: IMethodSpending[] | undefined
     loading: boolean
+    fallback?: React.ReactNode
 }

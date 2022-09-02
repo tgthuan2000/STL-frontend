@@ -65,7 +65,7 @@ const SlideOverHOC = (Component: (props: any) => JSX.Element) => () => {
     useEventListener('popstate', handler)
 
     return (
-        <SuspenseAnimate>
+        <SuspenseAnimate className='h-full'>
             <Component />
         </SuspenseAnimate>
     )

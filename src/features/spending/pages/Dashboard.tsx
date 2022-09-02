@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash'
 import moment from 'moment'
-import React, { Suspense, useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { IMethodSpending, ISpendingData, IStatisticData } from '~/@types/spending'
 import { DATE_FORMAT } from '~/constant'
 import { useConfig } from '~/context'
@@ -9,6 +9,7 @@ import { GET_METHOD_SPENDING_DESC_SURPLUS, GET_RECENT_SPENDING, GET_STATISTIC_SP
 import { getDate } from '~/services'
 import useAuth from '~/store/auth'
 import { sum } from '~/services'
+import { MethodSkeleton, RecentSkeleton, StatisticSkeleton } from '~/components/Skeleton'
 
 const Method = React.lazy(() => import('../components').then(({ Method }) => ({ default: Method })))
 const Recent = React.lazy(() => import('../components').then(({ Recent }) => ({ default: Recent })))
@@ -150,27 +151,30 @@ const Dashboard = () => {
                     onReload={handleReload}
                     loading={statistic.loading}
                     seeMore={false}
+                    fallback={<StatisticSkeleton />}
                     fullWidth
                 >
-                    <Statistic data={dataStatistic?.data} loading={statistic.loading} />
+                    {(props) => <Statistic data={dataStatistic?.data} loading={statistic.loading} {...props} />}
                 </BoxContent>
                 <BoxContent
                     title='Giao dịch gần đây'
                     to='transaction/tab-all'
                     onReload={handleReload}
                     loading={recent.loading}
+                    fallback={<RecentSkeleton />}
                     fullWidth
                 >
-                    <Recent data={recent.data} loading={recent.loading} />
+                    {(props) => <Recent data={recent.data} loading={recent.loading} {...props} />}
                 </BoxContent>
                 <BoxContent
                     title='Phương thức thanh toán'
                     to='method'
                     onReload={handleReload}
                     loading={method.loading}
+                    fallback={<MethodSkeleton />}
                     fullWidth
                 >
-                    <Method data={method.data} loading={method.loading} />
+                    {(props) => <Method data={method.data} loading={method.loading} {...props} />}
                 </BoxContent>
             </Box>
         </>

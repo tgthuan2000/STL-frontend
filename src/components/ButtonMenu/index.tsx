@@ -15,6 +15,7 @@ const ButtonMenu: React.FC<{ className?: string; data: Promise<IMenuBtn[]> }> = 
 
     return (
         <SuspenseAnimate
+            fallback={<Fallback length={menu.length} />}
             className={clsx(
                 'xl:hover:bg-white min-w-[80px] xl:hover:bg-opacity-30 transition-all xl:hover:p-3 xl:rounded-lg xl:hover:shadow-lg min-h-[240px] max-w-lg mx-auto grid grid-cols-2 xl:grid-cols-1 gap-2',
                 className
@@ -30,3 +31,16 @@ const ButtonMenu: React.FC<{ className?: string; data: Promise<IMenuBtn[]> }> = 
 }
 
 export default memo(ButtonMenu)
+
+const Fallback = ({ length }: { length: number }) => {
+    return (
+        <>
+            {Array.from(Array(length)).map((v, i) => (
+                <span
+                    key={i}
+                    className='w-full h-full py-6 bg-gray-200 animate-pulse inline-block border border-transparent rounded-md xl:relative'
+                />
+            ))}
+        </>
+    )
+}

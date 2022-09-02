@@ -1,8 +1,8 @@
 import moment from 'moment'
-import React, { Suspense, useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { IUserLoan } from '~/@types/loan'
 import { ISpendingData } from '~/@types/spending'
-import { SuspenseAnimate } from '~/components'
+import { Box2LoanSkeleton, Box2UserLoanSkeleton } from '~/components/Skeleton'
 import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
@@ -76,15 +76,33 @@ const Dashboard = () => {
 
             {/* Show user */}
             <div className='space-y-6'>
-                <Box2 label='Trạng thái' data={statistic.data} loading={statistic.loading} onReload={handleReload}>
+                <Box2
+                    label='Trạng thái'
+                    fallback={<Box2UserLoanSkeleton />}
+                    data={statistic.data}
+                    loading={statistic.loading}
+                    onReload={handleReload}
+                >
                     {(data) => <Box2Content1 {...data} />}
                 </Box2>
 
-                <Box2 label='Sắp đến hạn trả' data={paydue.data} loading={paydue.loading} onReload={handleReload}>
+                <Box2
+                    label='Sắp đến hạn trả'
+                    fallback={<Box2LoanSkeleton />}
+                    data={paydue.data}
+                    loading={paydue.loading}
+                    onReload={handleReload}
+                >
                     {(data) => <Box2ContentLoan {...data} />}
                 </Box2>
 
-                <Box2 label='Giao dịch gần đây' data={recent.data} loading={recent.loading} onReload={handleReload}>
+                <Box2
+                    label='Giao dịch gần đây'
+                    fallback={<Box2LoanSkeleton />}
+                    data={recent.data}
+                    loading={recent.loading}
+                    onReload={handleReload}
+                >
                     {(data) => <Box2ContentLoan {...data} />}
                 </Box2>
 
