@@ -1,16 +1,13 @@
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { IKindSpending } from '~/@types/context'
+import { Button, Input, Selection } from '~/components'
 import { KIND_SPENDING } from '~/constant/spending'
 import { SlideOverHOC, useCache, useConfig, useSlideOver } from '~/context'
 import { client } from '~/sanityConfig'
 import { getCategorySpending } from '~/services/query'
 import useAuth from '~/store/auth'
-
-const Button = React.lazy(() => import('~/components').then(({ Button }) => ({ default: Button })))
-const Input = React.lazy(() => import('~/components').then(({ Input }) => ({ default: Input })))
-const Selection = React.lazy(() => import('~/components').then(({ Selection }) => ({ default: Selection })))
 interface IAddCategoryForm {
     name: string
     kindSpending: IKindSpending | null

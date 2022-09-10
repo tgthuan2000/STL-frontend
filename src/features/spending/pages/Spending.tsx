@@ -1,12 +1,10 @@
-import React, { Suspense, useMemo } from 'react'
+import { useMemo } from 'react'
+import { lazily } from 'react-lazily'
 import { Outlet } from 'react-router-dom'
 import { useLoading } from '~/context'
 import { useWindowSize } from '~/hook'
 
-const ButtonMenu = React.lazy(() => import('~/components').then(({ ButtonMenu }) => ({ default: ButtonMenu })))
-const ButtonMenuMobile = React.lazy(() =>
-    import('~/components').then(({ ButtonMenuMobile }) => ({ default: ButtonMenuMobile }))
-)
+const { ButtonMenu, ButtonMenuMobile } = lazily(() => import('~/components'))
 
 const Spending = () => {
     const { width } = useWindowSize()

@@ -1,20 +1,18 @@
 import React from 'react'
 import { Box2Props } from '~/@types/components'
-import { SuspenseAnimate } from '~/components'
+import { AnimateWrap } from '~/components'
 import LoadingButton from '../Loading/LoadingButton'
 import { ContentUserLoan, ContentLoan } from './Content'
-
-const Title = React.lazy(() => import('./Title'))
-const AnimateWrap = React.lazy(() => import('../AnimateWrap'))
+import Title from './Title'
 
 const Box2 = ({ data, label, onReload, loading = false, children, fallback }: Box2Props) => {
     return (
-        <SuspenseAnimate fallback={<Fallback>{fallback}</Fallback>}>
+        <div>
             <Title label={label} onReload={onReload} loading={loading} />
             <AnimateWrap className='flex lg:flex-wrap gap-4 w-full overflow-x-auto overflow-y-hidden pb-6'>
                 {children?.({ data, loading, fallback })}
             </AnimateWrap>
-        </SuspenseAnimate>
+        </div>
     )
 }
 

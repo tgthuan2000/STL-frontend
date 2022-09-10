@@ -1,6 +1,7 @@
 import { head, isEmpty } from 'lodash'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { SubmitHandler } from 'react-hook-form'
+import { lazily } from 'react-lazily'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IMethodSpending, ISpendingData } from '~/@types/spending'
 import { KIND_SPENDING } from '~/constant/spending'
@@ -12,9 +13,7 @@ import { GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 import { PaidForm, TransactionDetailFormData } from '../components'
 
-const TransactionDetailForm = React.lazy(() =>
-    import('../components').then(({ TransactionDetailForm }) => ({ default: TransactionDetailForm }))
-)
+const { TransactionDetailForm } = lazily(() => import('../components'))
 
 export interface Data {
     transaction: ISpendingData[]

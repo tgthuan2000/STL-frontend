@@ -4,8 +4,7 @@ import { MenuButtonProps } from '~/@types/components'
 import { useSlideOver } from '~/context'
 import useAuth from '~/store/auth'
 import React from 'react'
-
-const SlideOver = React.lazy(() => import('~/components').then(({ SlideOver }) => ({ default: SlideOver })))
+import SlideOver from '../SlideOver'
 
 const ButtonItem: React.FC<MenuButtonProps> = ({ data }) => {
     const { title, color, icon: Icon, children, to, query, divider, action } = data

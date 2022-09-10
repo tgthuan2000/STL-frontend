@@ -2,9 +2,7 @@ import clsx from 'clsx'
 import React from 'react'
 import { AvatarUserProps } from '~/@types/components'
 import { urlFor } from '~/sanityConfig'
-import SuspenseAnimate from './SuspenseAnimate'
-
-const UserSvg = React.lazy(() => import('./UserSvg'))
+import UserSvg from './UserSvg'
 
 const AvatarUser: React.FC<AvatarUserProps> = ({ image, size = 'medium' }) => {
     const getSize = {
@@ -25,14 +23,14 @@ const AvatarUser: React.FC<AvatarUserProps> = ({ image, size = 'medium' }) => {
                     )}
                 />
             ) : (
-                <SuspenseAnimate
+                <div
                     className={clsx(
                         'inline-block flex-shrink-0 overflow-hidden rounded-full bg-gray-100',
                         getSize[size]
                     )}
                 >
                     <UserSvg />
-                </SuspenseAnimate>
+                </div>
             )}
         </>
     )

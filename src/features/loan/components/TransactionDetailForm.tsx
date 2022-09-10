@@ -1,4 +1,3 @@
-import React from 'react'
 import { ArrowSmLeftIcon, TrashIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
@@ -10,15 +9,11 @@ import { IMethodSpending, ISpendingData } from '~/@types/spending'
 import { DATE_TIME_FORMAT } from '~/constant'
 import { useLoading } from '~/context'
 import { Data } from '../pages/TransactionDetail'
-import { AnimateWrap, SuspenseAnimate } from '~/components'
+import { AvatarUser, Button, Divider, SuspenseAnimate, Toggle } from '~/components'
+import Group from './Group'
+import { lazily } from 'react-lazily'
 
-const Button = React.lazy(() => import('~/components').then(({ Button }) => ({ default: Button })))
-const Input = React.lazy(() => import('~/components').then(({ Input }) => ({ default: Input })))
-const AutoComplete = React.lazy(() => import('~/components').then(({ AutoComplete }) => ({ default: AutoComplete })))
-const AvatarUser = React.lazy(() => import('~/components').then(({ AvatarUser }) => ({ default: AvatarUser })))
-const Divider = React.lazy(() => import('~/components').then(({ Divider }) => ({ default: Divider })))
-const Toggle = React.lazy(() => import('~/components').then(({ Toggle }) => ({ default: Toggle })))
-const Group = React.lazy(() => import('./Group'))
+const { Input, AutoComplete } = lazily(() => import('~/components'))
 
 interface D<T> {
     loading: boolean

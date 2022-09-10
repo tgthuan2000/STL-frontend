@@ -3,17 +3,22 @@ import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
 import React from 'react'
+import { loadable } from 'react-lazily/loadable'
 import { Link } from 'react-router-dom'
 import { ContentLoanBox2Props } from '~/@types/components'
-import { Box2LoanSkeleton } from '~/components/Skeleton'
 import { DATE_TIME_FORMAT } from '~/constant'
 
-const AvatarUser = React.lazy(() => import('~/components').then(({ AvatarUser }) => ({ default: AvatarUser })))
+const { AvatarUser } = loadable(() => import('~/components'), {
+    fallback: <>...</>,
+})
 
 const Content: React.FC<ContentLoanBox2Props> = ({ data, loading, fallback }) => {
     if (loading) return <>{fallback}</>
-    if (isEmpty(data))
+
+    if (isEmpty(data)) {
         return <div className='text-center text-gray-500 py-4 px-8 rounded-xl bg-white'>Không có dữ liệu</div>
+    }
+
     return (
         <>
             {data?.map((item) => {
@@ -54,7 +59,6 @@ const Content: React.FC<ContentLoanBox2Props> = ({ data, loading, fallback }) =>
                         key={item._id}
                     >
                         <AvatarUser size='small' image={item.userLoan?.image} />
-
                         <span className='truncate flex-1 max-w-[150px]'>{item.userLoan?.userName}</span>
                         <span title='Hạn trả' className={clsx('font-normal truncate', date?.color)}>
                             {isHavePayDate && moment(item.date).format(DATE_TIME_FORMAT) + ' - '} {date?.message}

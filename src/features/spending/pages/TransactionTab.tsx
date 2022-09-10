@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { lazily } from 'react-lazily'
 import { TAB_TABLE } from '~/constant/spending'
 
-const TransactionTabTable = React.lazy(() =>
-    import('../components').then(({ TransactionTabTable }) => ({ default: TransactionTabTable }))
-)
+const { TransactionTabTable } = lazily(() => import('../components'))
 
 type TabTable = keyof typeof TAB_TABLE
 

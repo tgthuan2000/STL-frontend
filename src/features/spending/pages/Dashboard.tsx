@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash'
 import moment from 'moment'
-import React, { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { IMethodSpending, ISpendingData, IStatisticData } from '~/@types/spending'
 import { DATE_FORMAT } from '~/constant'
 import { useConfig } from '~/context'
@@ -10,15 +10,11 @@ import { getDate } from '~/services'
 import useAuth from '~/store/auth'
 import { sum } from '~/services'
 import { MethodSkeleton, RecentSkeleton, StatisticSkeleton } from '~/components/Skeleton'
+import { lazily } from 'react-lazily'
+import { Box, Divider } from '~/components'
+import { Method, Recent, Statistic } from '../components'
 
-const Method = React.lazy(() => import('../components').then(({ Method }) => ({ default: Method })))
-const Recent = React.lazy(() => import('../components').then(({ Recent }) => ({ default: Recent })))
-const Statistic = React.lazy(() => import('../components').then(({ Statistic }) => ({ default: Statistic })))
-
-const Box = React.lazy(() => import('~/components').then(({ Box }) => ({ default: Box })))
-const BoxContent = React.lazy(() => import('~/components').then(({ Box }) => ({ default: Box.Content })))
-const ButtonMenu = React.lazy(() => import('~/components').then(({ ButtonMenu }) => ({ default: ButtonMenu })))
-const Divider = React.lazy(() => import('~/components').then(({ Divider }) => ({ default: Divider })))
+const { ButtonMenu } = lazily(() => import('~/components'))
 
 interface IData {
     recent: ISpendingData[]
@@ -145,7 +141,7 @@ const Dashboard = () => {
 
             {/* Show analytics */}
             <Box>
-                <BoxContent
+                <Box.Content
                     className='xl:col-span-2 col-span-1'
                     title={dataStatistic?.dateRange.join(' - ') || ' '}
                     onReload={handleReload}
@@ -155,8 +151,8 @@ const Dashboard = () => {
                     fullWidth
                 >
                     {(props) => <Statistic data={dataStatistic?.data} loading={statistic.loading} {...props} />}
-                </BoxContent>
-                <BoxContent
+                </Box.Content>
+                <Box.Content
                     title='Giao dịch gần đây'
                     to='transaction/tab-all'
                     onReload={handleReload}
@@ -165,8 +161,8 @@ const Dashboard = () => {
                     fullWidth
                 >
                     {(props) => <Recent data={recent.data} loading={recent.loading} {...props} />}
-                </BoxContent>
-                <BoxContent
+                </Box.Content>
+                <Box.Content
                     title='Phương thức thanh toán'
                     to='method'
                     onReload={handleReload}
@@ -175,7 +171,7 @@ const Dashboard = () => {
                     fullWidth
                 >
                     {(props) => <Method data={method.data} loading={method.loading} {...props} />}
-                </BoxContent>
+                </Box.Content>
             </Box>
         </>
     )

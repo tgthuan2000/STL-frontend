@@ -1,9 +1,6 @@
 import { ArrowSmLeftIcon } from '@heroicons/react/outline'
-import React from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
-import { SuspenseAnimate } from '~/components'
-
-const Tabs = React.lazy(() => import('~/components').then(({ Tabs }) => ({ default: Tabs })))
+import { SuspenseAnimate, Tabs } from '~/components'
 
 const TransactionTabs = [
     { name: 'Tất cả', href: 'tab-all' },

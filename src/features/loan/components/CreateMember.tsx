@@ -1,13 +1,9 @@
 import { SanityAssetDocument } from '@sanity/client'
-import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { Button, Input, UploadImage } from '~/components'
 import { SlideOverHOC, useLoading, useSlideOver } from '~/context'
 import useAuth from '~/store/auth'
-
-const Button = React.lazy(() => import('~/components').then(({ Button }) => ({ default: Button })))
-const Input = React.lazy(() => import('~/components').then(({ Input }) => ({ default: Input })))
-const UploadImage = React.lazy(() => import('~/components').then(({ UploadImage }) => ({ default: UploadImage })))
 
 interface IMakeTransferForm {
     userName: string

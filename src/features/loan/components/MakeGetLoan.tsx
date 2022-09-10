@@ -1,21 +1,16 @@
 import { isEmpty, isUndefined } from 'lodash'
 import moment from 'moment'
-import React, { useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { IUserLoan } from '~/@types/loan'
 import { ICategorySpending, IMethodSpending } from '~/@types/spending'
+import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
 import { SlideOverHOC, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery } from '~/hook'
 import { GET_USER_LOAN } from '~/schema/query/loan'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
-
-const Button = React.lazy(() => import('~/components').then(({ Button }) => ({ default: Button })))
-const Input = React.lazy(() => import('~/components').then(({ Input }) => ({ default: Input })))
-const AutoComplete = React.lazy(() => import('~/components').then(({ AutoComplete }) => ({ default: AutoComplete })))
-const DatePicker = React.lazy(() => import('~/components').then(({ DatePicker }) => ({ default: DatePicker })))
-const TextArea = React.lazy(() => import('~/components').then(({ TextArea }) => ({ default: TextArea })))
 
 interface IMakeGetLoanForm {
     amount: number | string

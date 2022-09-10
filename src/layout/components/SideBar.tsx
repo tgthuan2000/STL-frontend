@@ -199,7 +199,7 @@ const Sidebar: React.FC<SideBarProps> = ({ children }) => {
                         </div>
                         <div className='flex-shrink-0 flex bg-gray-700 p-4'>
                             <div className='flex-shrink-0 w-full group block'>
-                                <div className='flex items-center'>
+                                <SuspenseAnimate className='flex items-center'>
                                     {userProfile ? (
                                         <>
                                             <div>
@@ -219,9 +219,7 @@ const Sidebar: React.FC<SideBarProps> = ({ children }) => {
                                     ) : (
                                         <>
                                             <div>
-                                                <SuspenseAnimate>
-                                                    <AvatarUser />
-                                                </SuspenseAnimate>
+                                                <AvatarUser />
                                             </div>
                                             <div className='ml-3 space-y-2 animate-pulse'>
                                                 <p className='h-4 w-32 rounded-full bg-gray-500' />
@@ -229,7 +227,7 @@ const Sidebar: React.FC<SideBarProps> = ({ children }) => {
                                             </div>
                                         </>
                                     )}
-                                </div>
+                                </SuspenseAnimate>
                             </div>
                         </div>
                     </div>

@@ -1,18 +1,16 @@
 import moment from 'moment'
-import React, { useCallback, useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
+import { lazily } from 'react-lazily'
 import { IUserLoan } from '~/@types/loan'
 import { ISpendingData } from '~/@types/spending'
+import { Box2, Divider } from '~/components'
 import { Box2LoanSkeleton, Box2UserLoanSkeleton } from '~/components/Skeleton'
 import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
 import useAuth from '~/store/auth'
 
-const Box2 = React.lazy(() => import('~/components').then(({ Box2 }) => ({ default: Box2 })))
-const Box2Content1 = React.lazy(() => import('~/components').then(({ Box2 }) => ({ default: Box2.Content1 })))
-const Box2ContentLoan = React.lazy(() => import('~/components').then(({ Box2 }) => ({ default: Box2.ContentLoan })))
-const ButtonMenu = React.lazy(() => import('~/components').then(({ ButtonMenu }) => ({ default: ButtonMenu })))
-const Divider = React.lazy(() => import('~/components').then(({ Divider }) => ({ default: Divider })))
+const { ButtonMenu } = lazily(() => import('~/components'))
 
 export interface DataMethodSanity {
     _id: string
@@ -83,7 +81,7 @@ const Dashboard = () => {
                     loading={statistic.loading}
                     onReload={handleReload}
                 >
-                    {(data) => <Box2Content1 {...data} />}
+                    {(data) => <Box2.Content1 {...data} />}
                 </Box2>
 
                 <Box2
@@ -93,7 +91,7 @@ const Dashboard = () => {
                     loading={paydue.loading}
                     onReload={handleReload}
                 >
-                    {(data) => <Box2ContentLoan {...data} />}
+                    {(data) => <Box2.ContentLoan {...data} />}
                 </Box2>
 
                 <Box2
@@ -103,7 +101,7 @@ const Dashboard = () => {
                     loading={recent.loading}
                     onReload={handleReload}
                 >
-                    {(data) => <Box2ContentLoan {...data} />}
+                    {(data) => <Box2.ContentLoan {...data} />}
                 </Box2>
 
                 {/*

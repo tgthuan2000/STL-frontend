@@ -1,4 +1,3 @@
-import React from 'react'
 import { ArrowSmLeftIcon, TrashIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import { isEmpty, isNil } from 'lodash'
@@ -11,13 +10,7 @@ import { KIND_SPENDING } from '~/constant/spending'
 import { useLoading } from '~/context'
 import { getColorPrize } from '~/services'
 import { Data, DataCategory, IDetailSpendingForm } from '../pages/TransactionDetail'
-import { SuspenseAnimate } from '~/components'
-
-const Button = React.lazy(() => import('~/components').then(({ Button }) => ({ default: Button })))
-const Input = React.lazy(() => import('~/components').then(({ Input }) => ({ default: Input })))
-const AutoComplete = React.lazy(() => import('~/components').then(({ AutoComplete }) => ({ default: AutoComplete })))
-const DatePicker = React.lazy(() => import('~/components').then(({ DatePicker }) => ({ default: DatePicker })))
-const TextArea = React.lazy(() => import('~/components').then(({ TextArea }) => ({ default: TextArea })))
+import { AutoComplete, Button, DatePicker, Input, SuspenseAnimate, TextArea } from '~/components'
 
 interface D<T> {
     loading: boolean

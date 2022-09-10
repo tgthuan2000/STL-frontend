@@ -4,9 +4,10 @@ import useAuth from '~/store/auth'
 import { Link, useNavigate } from 'react-router-dom'
 import { MenuButtonProps } from '~/@types/components'
 import { useSlideOver } from '~/context'
+import SlideOver from '../SlideOver'
+import { lazily } from 'react-lazily'
 
-const SlideOver = React.lazy(() => import('~/components').then(({ SlideOver }) => ({ default: SlideOver })))
-const Divider = React.lazy(() => import('~/components').then(({ Divider }) => ({ default: Divider })))
+const { Divider } = lazily(() => import('~/components'))
 
 const ButtonItem: React.FC<MenuButtonProps> = ({ data }) => {
     const { title, color, icon: Icon, children, to, query, divider, action } = data

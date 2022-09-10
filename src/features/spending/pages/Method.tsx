@@ -1,17 +1,14 @@
 import { ArrowSmLeftIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
-import React, { Suspense, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useConfig } from '~/context'
 import { GET_METHOD_SPENDING_DESC_SURPLUS } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 import { useQuery } from '~/hook'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { IMethodSpending } from '~/@types/spending'
 import { isEmpty } from 'lodash'
-import { SuspenseAnimate } from '~/components'
-
-const MethodBox = React.lazy(() => import('../components').then(({ Method }) => ({ default: Method })))
+import { Method as MethodBox } from '../components'
 
 const Method = () => {
     const navigate = useNavigate()
@@ -47,11 +44,11 @@ const Method = () => {
                 <Tabs />
             </div>
             <div className='flex xl:flex-row flex-col-reverse gap-4 mt-4'>
-                <SuspenseAnimate className='xl:flex-[1]'>
+                <div className='xl:flex-[1]'>
                     <div className='max-w-lg w-full h-fit mx-auto bg-white border border-gray-300 overflow-hidden rounded-md select-none'>
                         <MethodBox data={method.data} loading={method.loading} />
                     </div>
-                </SuspenseAnimate>
+                </div>
                 <div className='xl:flex-[2]'>
                     <h4 className=' h-12 rounded-md bg-red-500 xl:sticky xl:top-6 text-white font-medium text-lg py-2 px-4'>
                         Chart

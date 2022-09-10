@@ -1,12 +1,10 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { Button, Input } from '~/components'
 import { SlideOverHOC, useCache, useSlideOver } from '~/context'
 import { useServiceQuery } from '~/hook'
 import useAuth from '~/store/auth'
-
-const Button = React.lazy(() => import('~/components').then(({ Button }) => ({ default: Button })))
-const Input = React.lazy(() => import('~/components').then(({ Input }) => ({ default: Input })))
 
 interface IAddMethodForm {
     name: string

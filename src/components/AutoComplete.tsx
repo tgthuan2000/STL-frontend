@@ -3,14 +3,12 @@ import { Combobox } from '@headlessui/react'
 import { CheckIcon, RefreshIcon, SelectorIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import { find, isNil } from 'lodash'
-import React, { forwardRef, useEffect, useMemo, useState } from 'react'
+import { forwardRef, useEffect, useMemo, useState } from 'react'
 import { Controller } from 'react-hook-form'
 import { AutoCompleteProps } from '~/@types/components'
 import numeral from 'numeral'
 import { urlFor } from '~/sanityConfig'
-import SuspenseAnimate from './SuspenseAnimate'
-
-const UserSvg = React.lazy(() => import('./UserSvg'))
+import UserSvg from './UserSvg'
 
 const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
     (
@@ -165,7 +163,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                                 >
                                                     {({ active, selected }) => (
                                                         <>
-                                                            <SuspenseAnimate className='flex items-center gap-2'>
+                                                            <div className='flex items-center gap-2'>
                                                                 {showImage &&
                                                                     (item.image ? (
                                                                         <img
@@ -186,7 +184,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                                                 >
                                                                     {item[valueKey]}
                                                                 </span>
-                                                            </SuspenseAnimate>
+                                                            </div>
 
                                                             {selected && (
                                                                 <span

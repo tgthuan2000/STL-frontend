@@ -1,7 +1,6 @@
 import clsx from 'clsx'
 import React from 'react'
-
-const LoadingButton = React.lazy(() => import('~/components/Loading/LoadingButton'))
+import LoadingButton from '../Loading/LoadingButton'
 
 const Title: React.FC<{ label?: string; onReload: () => void; loading: boolean }> = ({ label, onReload, loading }) => {
     return (
