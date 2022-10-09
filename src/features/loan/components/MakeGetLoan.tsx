@@ -17,7 +17,7 @@ import useAuth from '~/store/auth'
 interface IMakeGetLoanForm {
     amount: number | string
     categorySpending: ICategorySpending | null
-    methodSpending: IMethodSpending | null
+    methodReference: IMethodSpending | null
     date: Date | null
     description: string
     userLoan: IUserLoan | null
@@ -57,7 +57,7 @@ const MakeGetLoan = () => {
         defaultValues: {
             amount: '',
             categorySpending: null,
-            methodSpending: null,
+            methodReference: null,
             date: null,
             userLoan: null,
             description: '',
@@ -66,25 +66,25 @@ const MakeGetLoan = () => {
 
     const onsubmit: SubmitHandler<IMakeGetLoanForm> = async (data) => {
         setSubmitLoading(true)
-        let { amount, methodSpending, description, date, userLoan } = data
+        let { amount, methodReference, description, date, userLoan } = data
         amount = Number(amount)
         description = description.trim()
 
         const documentSpending = {
             _type: 'spending',
             amount,
-            description: `${methodSpending ? 'Cộng gốc' : 'Tạm vay'}${description ? `\n${description}` : ''}`,
+            description: `${methodReference ? 'Cộng gốc' : 'Tạm vay'}${description ? `\n${description}` : ''}`,
             date: date ? moment(date).format() : undefined,
             paid: false,
             kindSpending: {
                 _type: 'reference',
                 _ref: kindLoanId,
             },
-            ...(methodSpending && {
-                surplus: methodSpending.surplus,
-                methodSpending: {
+            ...(methodReference && {
+                surplus: methodReference.surplus,
+                methodReference: {
                     _type: 'reference',
-                    _ref: methodSpending._id,
+                    _ref: methodReference._id,
                 },
             }),
             userLoan: {
@@ -113,9 +113,9 @@ const MakeGetLoan = () => {
                 })
             __.patch(updateUserLoan)
 
-            if (methodSpending) {
-                const updateMethodSpending = client
-                    .patch(methodSpending?._id as string)
+            if (methodReference) {
+                const updateMethodReference = client
+                    .patch(methodReference?._id as string)
                     .setIfMissing({
                         countUsed: 0,
                         surplus: 0,
@@ -124,14 +124,18 @@ const MakeGetLoan = () => {
                         countUsed: 1,
                         surplus: amount,
                     })
-                __.patch(updateMethodSpending)
+                __.patch(updateMethodReference)
             }
 
             await __.commit()
 
             let res
             setTimeout(() => {
-                res = deleteCacheData('methodSpending', 'userLoan')
+                if (methodReference) {
+                    res = deleteCacheData('methodSpending', 'userLoan')
+                } else {
+                    res = deleteCacheData('userLoan')
+                }
                 console.log(res)
 
                 reloadData()
@@ -141,7 +145,7 @@ const MakeGetLoan = () => {
             form.reset(
                 {
                     amount: '',
-                    methodSpending,
+                    methodReference,
                     userLoan,
                 },
                 {
@@ -185,7 +189,7 @@ const MakeGetLoan = () => {
                             />
 
                             <AutoComplete
-                                name='methodSpending'
+                                name='methodReference'
                                 form={form}
                                 data={methodSpending.data}
                                 label='Phương thức nhận tiền'
@@ -200,10 +204,10 @@ const MakeGetLoan = () => {
                                 <span
                                     className={clsx(
                                         'font-medium',
-                                        form.watch('methodSpending') ? 'text-indigo-500' : 'text-orange-500'
+                                        form.watch('methodReference') ? 'text-indigo-500' : 'text-orange-500'
                                     )}
                                 >
-                                    {form.watch('methodSpending') ? 'Cộng gốc' : 'Tạm vay'}
+                                    {form.watch('methodReference') ? 'Cộng gốc' : 'Tạm vay'}
                                 </span>
                             </p>
 

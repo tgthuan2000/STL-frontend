@@ -11,12 +11,22 @@ const Recent = ({ data, loading }: RecentProps) => {
     if (loading) return <RecentSkeleton />
 
     if (!isEmpty(data)) {
+        const getLink = (key: KIND_SPENDING, id: string) => {
+            switch (key) {
+                case KIND_SPENDING.GET_LOAN:
+                case KIND_SPENDING.LOAN:
+                    return `/loan/transaction/${id}/detail`
+                default:
+                    return `transaction/${id}`
+            }
+        }
+
         return (
             <ul role='list' className='divide-y divide-gray-300'>
                 {data?.map((item) => (
                     <li key={item._id}>
                         <Link
-                            to={`transaction/${item._id}`}
+                            to={getLink(item.kindSpending.key, item._id)}
                             state={{ status: item.kindSpending._id }}
                             className='px-3 py-2 flex flex-col hover:bg-gray-100 cursor-pointer'
                         >
@@ -25,7 +35,9 @@ const Recent = ({ data, loading }: RecentProps) => {
                                     <span>
                                         {item.date ? moment(item.date).format(DATE_TIME_FORMAT) : 'Không có thời hạn'}
                                     </span>
-                                    <h3 className='font-medium truncate'>{item.methodSpending?.name || 'Không có'}</h3>
+                                    <h3 className='font-medium truncate'>
+                                        {item.methodSpending?.name || 'Chưa có phương thức thanh toán'}
+                                    </h3>
                                 </div>
                                 <div className='xl:w-1/3 w-1/2 overflow-hidden text-right'>
                                     <h4 className={clsx('font-medium truncate')}>
