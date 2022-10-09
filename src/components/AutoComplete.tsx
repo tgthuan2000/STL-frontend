@@ -1,6 +1,6 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Combobox } from '@headlessui/react'
-import { CheckIcon, RefreshIcon, SelectorIcon } from '@heroicons/react/outline'
+import { CheckIcon, RefreshIcon, SelectorIcon, XIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import { find, isNil } from 'lodash'
 import { forwardRef, useEffect, useMemo, useState } from 'react'
@@ -27,6 +27,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
             disabled,
             onChange,
             showImage,
+            disabledClear,
         },
         ref
     ) => {
@@ -37,6 +38,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
         const [query, setQuery] = useState(value?.[valueKey] ?? '')
         const [selectedItem, setSelectedItem] = useState(value)
         const [parent] = useAutoAnimate<HTMLDivElement>()
+        const [closeRef] = useAutoAnimate<HTMLButtonElement>()
         const [loadingAddMore, setLoadingAddMore] = useState(false)
         const [surplus, setSurplus] = useState(value?.surplus || null)
 
@@ -50,7 +52,9 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
         }, [data])
 
         useEffect(() => {
-            !isNil(selectedItem?.surplus) && setSurplus(selectedItem.surplus)
+            if (!isNil(selectedItem?.surplus)) {
+                setSurplus(selectedItem.surplus)
+            } else if (!isNil(surplus)) setSurplus(null)
         }, [selectedItem])
 
         const filterData =
@@ -143,6 +147,26 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                     spellCheck={false}
                                     autoComplete='off'
                                 />
+
+                                {!disabledClear && (
+                                    <Combobox.Button
+                                        ref={closeRef}
+                                        className='absolute inset-y-0 right-6 flex items-center rounded-r-md px-2 focus:outline-none'
+                                    >
+                                        {selectedItem && (
+                                            <XIcon
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    setSelectedItem(null)
+                                                    field.onChange(null)
+                                                }}
+                                                className='h-5 w-5 text-gray-400 hover:text-gray-500 transition-colors'
+                                                aria-hidden='true'
+                                            />
+                                        )}
+                                    </Combobox.Button>
+                                )}
+
                                 <Combobox.Button className='absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none'>
                                     <SelectorIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
                                 </Combobox.Button>

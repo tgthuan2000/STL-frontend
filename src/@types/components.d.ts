@@ -24,6 +24,7 @@ export interface AutoCompleteProps {
     disabled?: boolean
     onChange?: (value: any) => void
     showImage?: boolean
+    disabledClear?: boolean
 }
 
 export interface SelectionProps {

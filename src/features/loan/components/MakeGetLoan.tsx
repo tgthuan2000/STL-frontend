@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { isEmpty, isUndefined } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
@@ -73,17 +74,19 @@ const MakeGetLoan = () => {
             _type: 'spending',
             amount,
             description,
-            surplus: methodSpending?.surplus,
             date: date ? moment(date).format() : undefined,
             paid: false,
             kindSpending: {
                 _type: 'reference',
                 _ref: kindLoanId,
             },
-            methodSpending: {
-                _type: 'reference',
-                _ref: methodSpending?._id,
-            },
+            ...(methodSpending && {
+                surplus: methodSpending.surplus,
+                methodSpending: {
+                    _type: 'reference',
+                    _ref: methodSpending._id,
+                },
+            }),
             userLoan: {
                 _type: 'reference',
                 _ref: userLoan?._id,
@@ -110,17 +113,19 @@ const MakeGetLoan = () => {
                 })
             __.patch(updateUserLoan)
 
-            const updateMethodSpending = client
-                .patch(methodSpending?._id as string)
-                .setIfMissing({
-                    countUsed: 0,
-                    surplus: 0,
-                })
-                .inc({
-                    countUsed: 1,
-                    surplus: amount,
-                })
-            __.patch(updateMethodSpending)
+            if (methodSpending) {
+                const updateMethodSpending = client
+                    .patch(methodSpending?._id as string)
+                    .setIfMissing({
+                        countUsed: 0,
+                        surplus: 0,
+                    })
+                    .inc({
+                        countUsed: 1,
+                        surplus: amount,
+                    })
+                __.patch(updateMethodSpending)
+            }
 
             await __.commit()
 
@@ -182,9 +187,6 @@ const MakeGetLoan = () => {
                             <AutoComplete
                                 name='methodSpending'
                                 form={form}
-                                rules={{
-                                    required: 'Yêu cầu chọn phương thức nhận tiền!',
-                                }}
                                 data={methodSpending.data}
                                 label='Phương thức nhận tiền'
                                 loading={methodSpending.loading}
@@ -192,6 +194,18 @@ const MakeGetLoan = () => {
                                     isEmpty(methodSpending.data) ? undefined : () => handleReloadData('methodSpending')
                                 }
                             />
+
+                            <p>
+                                Trạng thái vay:{' '}
+                                <span
+                                    className={clsx(
+                                        'font-medium',
+                                        form.watch('methodSpending') ? 'text-indigo-500' : 'text-orange-500'
+                                    )}
+                                >
+                                    {form.watch('methodSpending') ? 'Cộng gốc' : 'Tạm vay'}
+                                </span>
+                            </p>
 
                             <DatePicker name='date' form={form} label='Ngày trả' />
                             <AutoComplete
