@@ -25,7 +25,7 @@ const Recent = ({ data, loading }: RecentProps) => {
                                     <span>
                                         {item.date ? moment(item.date).format(DATE_TIME_FORMAT) : 'Không có thời hạn'}
                                     </span>
-                                    <h3 className='font-medium truncate'>{item.methodSpending.name}</h3>
+                                    <h3 className='font-medium truncate'>{item.methodSpending?.name || 'Không có'}</h3>
                                 </div>
                                 <div className='xl:w-1/3 w-1/2 overflow-hidden text-right'>
                                     <h4 className={clsx('font-medium truncate')}>

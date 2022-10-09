@@ -166,7 +166,7 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                             {numeral(transaction.amount).format()}
                                         </Group>
                                         <Group label='Phương thức giao dịch' className='justify-between'>
-                                            {transaction.methodSpending.name}
+                                            {transaction.methodSpending?.name || 'Không có'}
                                         </Group>
                                         {transaction.date && (
                                             <Group label='Hạn trả' className='justify-between'>

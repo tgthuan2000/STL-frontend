@@ -73,7 +73,7 @@ const MakeGetLoan = () => {
         const documentSpending = {
             _type: 'spending',
             amount,
-            description,
+            description: `${methodSpending ? 'Cộng gốc' : 'Tạm vay'}${description ? `\n${description}` : ''}`,
             date: date ? moment(date).format() : undefined,
             paid: false,
             kindSpending: {

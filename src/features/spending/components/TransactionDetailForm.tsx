@@ -161,53 +161,26 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                             />
                                         )}
 
-                                        <div
-                                            className={clsx(
-                                                'flex gap-y-6',
-                                                transaction.kindSpending.key === KIND_SPENDING.TRANSFER_TO
-                                                    ? 'flex-col-reverse'
-                                                    : 'flex-col'
-                                            )}
-                                        >
-                                            <AutoComplete
-                                                name='methodSpending'
-                                                form={form}
-                                                data={methodSpending.data}
-                                                label={
-                                                    transaction.methodReference
-                                                        ? (transaction.kindSpending.key === KIND_SPENDING.TRANSFER_FROM
-                                                              ? 'Từ'
-                                                              : 'Đến') + ' phương thức thanh toán'
-                                                        : 'Phương thức thanh toán'
-                                                }
-                                                loading={methodSpending.loading}
-                                                addMore={handleAddMoreMethodSpending}
-                                                rules={{
-                                                    required: 'Yêu cầu chọn phương thức thanh toán!',
-                                                }}
-                                                onReload={
-                                                    isEmpty(methodSpending.data)
-                                                        ? undefined
-                                                        : () => handleReloadData('methodSpending')
-                                                }
-                                                onChange={(item) => {
-                                                    if (transaction.methodSpending._id !== item._id) {
-                                                        form.setValue('surplus', item.surplus)
-                                                    } else {
-                                                        form.setValue('surplus', transaction.surplus)
-                                                    }
-                                                }}
-                                            />
-
-                                            {transaction.methodReference && (
+                                        {transaction.methodSpending && (
+                                            <div
+                                                className={clsx(
+                                                    'flex gap-y-6',
+                                                    transaction.kindSpending.key === KIND_SPENDING.TRANSFER_TO
+                                                        ? 'flex-col-reverse'
+                                                        : 'flex-col'
+                                                )}
+                                            >
                                                 <AutoComplete
-                                                    name='methodReference'
+                                                    name='methodSpending'
                                                     form={form}
                                                     data={methodSpending.data}
                                                     label={
-                                                        (transaction.kindSpending.key === KIND_SPENDING.TRANSFER_FROM
-                                                            ? 'Đến'
-                                                            : 'Từ') + ' phương thức thanh toán'
+                                                        transaction.methodReference
+                                                            ? (transaction.kindSpending.key ===
+                                                              KIND_SPENDING.TRANSFER_FROM
+                                                                  ? 'Từ'
+                                                                  : 'Đến') + ' phương thức thanh toán'
+                                                            : 'Phương thức thanh toán'
                                                     }
                                                     loading={methodSpending.loading}
                                                     addMore={handleAddMoreMethodSpending}
@@ -219,9 +192,40 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                                             ? undefined
                                                             : () => handleReloadData('methodSpending')
                                                     }
+                                                    onChange={(item) => {
+                                                        if (transaction.methodSpending._id !== item._id) {
+                                                            form.setValue('surplus', item.surplus)
+                                                        } else {
+                                                            form.setValue('surplus', transaction.surplus)
+                                                        }
+                                                    }}
                                                 />
-                                            )}
-                                        </div>
+
+                                                {transaction.methodReference && (
+                                                    <AutoComplete
+                                                        name='methodReference'
+                                                        form={form}
+                                                        data={methodSpending.data}
+                                                        label={
+                                                            (transaction.kindSpending.key ===
+                                                            KIND_SPENDING.TRANSFER_FROM
+                                                                ? 'Đến'
+                                                                : 'Từ') + ' phương thức thanh toán'
+                                                        }
+                                                        loading={methodSpending.loading}
+                                                        addMore={handleAddMoreMethodSpending}
+                                                        rules={{
+                                                            required: 'Yêu cầu chọn phương thức thanh toán!',
+                                                        }}
+                                                        onReload={
+                                                            isEmpty(methodSpending.data)
+                                                                ? undefined
+                                                                : () => handleReloadData('methodSpending')
+                                                        }
+                                                    />
+                                                )}
+                                            </div>
+                                        )}
 
                                         <DatePicker
                                             name='date'
