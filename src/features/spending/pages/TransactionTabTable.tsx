@@ -111,87 +111,86 @@ const MainTable = ({ data }: MainTableProps) => {
     return (
         <>
             {data.map(
-                ({ _id, date, description, methodSpending, kindSpending, categorySpending, amount }, index, data) => (
-                    <Fragment key={_id}>
-                        <tr
-                            onClick={() => {
-                                navigate(getLinkSpending(kindSpending.key, _id))
-                            }}
-                        >
-                            <td className={clsx('whitespace-nowrap pt-4 pl-2 pr-3 sm:pl-6 lg:pl-8')}>
-                                {date ? (
-                                    width <= 900 ? (
-                                        <>
-                                            <span>{moment(date).format(DATE_FORMAT)}</span>
-                                            <br />
-                                            <span>{moment(date).format(TIME_FORMAT)}</span>
-                                        </>
+                ({ _id, date, description, methodSpending, kindSpending, categorySpending, amount }, index, data) => {
+                    const to = getLinkSpending(kindSpending.key, _id)
+                    return (
+                        <Fragment key={_id}>
+                            <tr onClick={() => navigate(to)}>
+                                <td className={clsx('whitespace-nowrap pt-4 pl-2 pr-3 sm:pl-6 lg:pl-8')}>
+                                    {date ? (
+                                        width <= 900 ? (
+                                            <>
+                                                <span>{moment(date).format(DATE_FORMAT)}</span>
+                                                <br />
+                                                <span>{moment(date).format(TIME_FORMAT)}</span>
+                                            </>
+                                        ) : (
+                                            <span>{moment(date).format(DATE_TIME_FORMAT)}</span>
+                                        )
                                     ) : (
-                                        <span>{moment(date).format(DATE_TIME_FORMAT)}</span>
-                                    )
-                                ) : (
-                                    <span>Không có thời hạn</span>
-                                )}
-                                <h3 className='mt-1 font-medium'>
-                                    {methodSpending?.name || 'Chưa có phương thức thanh toán'}
-                                </h3>
-                            </td>
-                            <td className={clsx('px-1 pt-4 text-sm font-medium text-gray-900 text-center truncate')}>
-                                {categorySpending?.name ?? kindSpending.name}
-                            </td>
-                            <td className={clsx('whitespace-nowrap px-1 pt-4 text-sm text-center')}>
-                                {[KIND_SPENDING.RECEIVE, KIND_SPENDING.TRANSFER_TO, KIND_SPENDING.GET_LOAN].includes(
-                                    kindSpending.key
-                                ) && (
-                                    <NumberFormat
-                                        className={clsx('text-green-500', 'font-medium')}
-                                        value={amount}
-                                        displayType='text'
-                                        thousandSeparator
-                                    />
-                                )}
-                            </td>
-                            <td className={clsx('whitespace-nowrap pl-1 pr-2 pt-4 text-sm text-center')}>
-                                {[KIND_SPENDING.COST, KIND_SPENDING.TRANSFER_FROM, KIND_SPENDING.LOAN].includes(
-                                    kindSpending.key
-                                ) && (
-                                    <NumberFormat
-                                        className={clsx('text-red-500', 'font-medium')}
-                                        value={amount}
-                                        displayType='text'
-                                        thousandSeparator
-                                    />
-                                )}
-                            </td>
-                        </tr>
-                        <tr
-                            onClick={() => {
-                                navigate(`/spending/transaction/${_id}`)
-                            }}
-                        >
-                            <td
-                                colSpan={4}
-                                className={clsx(
-                                    data && index !== data.length - 1 ? 'border-b border-gray-200' : '',
-                                    'whitespace-nowrap pb-4 pl-2 pr-2 sm:pl-6 lg:pl-8'
-                                )}
-                            >
-                                {description && (
-                                    <div
-                                        title={description}
-                                        className='mt-2 max-w-[450px] sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] cursor-default'
-                                    >
-                                        {description.split('\n').map((line, index) => (
-                                            <span key={index} className='block truncate'>
-                                                {line}
-                                            </span>
-                                        ))}
-                                    </div>
-                                )}
-                            </td>
-                        </tr>
-                    </Fragment>
-                )
+                                        <span>Không có thời hạn</span>
+                                    )}
+                                    <h3 className='mt-1 font-medium'>
+                                        {methodSpending?.name || 'Chưa có phương thức thanh toán'}
+                                    </h3>
+                                </td>
+                                <td
+                                    className={clsx('px-1 pt-4 text-sm font-medium text-gray-900 text-center truncate')}
+                                >
+                                    {categorySpending?.name ?? kindSpending.name}
+                                </td>
+                                <td className={clsx('whitespace-nowrap px-1 pt-4 text-sm text-center')}>
+                                    {[
+                                        KIND_SPENDING.RECEIVE,
+                                        KIND_SPENDING.TRANSFER_TO,
+                                        KIND_SPENDING.GET_LOAN,
+                                    ].includes(kindSpending.key) && (
+                                        <NumberFormat
+                                            className={clsx('text-green-500', 'font-medium')}
+                                            value={amount}
+                                            displayType='text'
+                                            thousandSeparator
+                                        />
+                                    )}
+                                </td>
+                                <td className={clsx('whitespace-nowrap pl-1 pr-2 pt-4 text-sm text-center')}>
+                                    {[KIND_SPENDING.COST, KIND_SPENDING.TRANSFER_FROM, KIND_SPENDING.LOAN].includes(
+                                        kindSpending.key
+                                    ) && (
+                                        <NumberFormat
+                                            className={clsx('text-red-500', 'font-medium')}
+                                            value={amount}
+                                            displayType='text'
+                                            thousandSeparator
+                                        />
+                                    )}
+                                </td>
+                            </tr>
+                            <tr onClick={() => navigate(to)}>
+                                <td
+                                    colSpan={4}
+                                    className={clsx(
+                                        data && index !== data.length - 1 ? 'border-b border-gray-200' : '',
+                                        'whitespace-nowrap pb-4 pl-2 pr-2 sm:pl-6 lg:pl-8'
+                                    )}
+                                >
+                                    {description && (
+                                        <div
+                                            title={description}
+                                            className='mt-2 max-w-[450px] sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] cursor-default'
+                                        >
+                                            {description.split('\n').map((line, index) => (
+                                                <span key={index} className='block truncate'>
+                                                    {line}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
+                                </td>
+                            </tr>
+                        </Fragment>
+                    )
+                }
             )}
         </>
     )

@@ -6,6 +6,6 @@ export const getLinkSpending = (key: KIND_SPENDING, id: string) => {
         case KIND_SPENDING.LOAN:
             return `/loan/transaction/${id}/detail`
         default:
-            return `transaction/${id}`
+            return `/spending/transaction/${id}`
     }
 }
