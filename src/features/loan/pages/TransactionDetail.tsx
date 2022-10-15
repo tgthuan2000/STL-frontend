@@ -64,6 +64,7 @@ const TransactionDetail = () => {
                 const __ = client.transaction()
                 const update = client.patch(id).set({
                     paid,
+                    paidDate: new Date(),
                     realPaid: amount,
                     methodSpending: {
                         _type: 'reference',

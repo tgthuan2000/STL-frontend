@@ -148,7 +148,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                     autoComplete='off'
                                 />
 
-                                {!disabledClear && (
+                                {!disabledClear && !disabled && !loading && (
                                     <Combobox.Button
                                         ref={closeRef}
                                         className='absolute inset-y-0 right-6 flex items-center rounded-r-md px-2 focus:outline-none'
@@ -157,14 +157,12 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                             <XIcon
                                                 onClick={(e) => {
                                                     e.stopPropagation()
-                                                    if (!disabled || !loading) {
-                                                        setSelectedItem(null)
-                                                        field.onChange(null)
-                                                    }
+                                                    setSelectedItem(null)
+                                                    field.onChange(null)
                                                 }}
-                                                className={clsx('h-5 w-5 text-gray-400 transition-colors', {
-                                                    'hover:text-gray-500': !disabled || !loading,
-                                                })}
+                                                className={
+                                                    'h-5 w-5 text-gray-400 transition-colors hover:text-gray-500'
+                                                }
                                                 aria-hidden='true'
                                             />
                                         )}

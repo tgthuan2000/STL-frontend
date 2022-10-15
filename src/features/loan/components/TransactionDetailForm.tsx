@@ -175,6 +175,11 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                                 {moment(transaction.date).format(DATE_TIME_FORMAT)}
                                             </Group>
                                         )}
+                                        {transaction.paidDate && (
+                                            <Group label='Thời điểm trả' className='justify-between'>
+                                                {moment(transaction.paidDate).format(DATE_TIME_FORMAT)}
+                                            </Group>
+                                        )}
 
                                         {transaction.description && (
                                             <Group label='Ghi chú' className='flex-col'>

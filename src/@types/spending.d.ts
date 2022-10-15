@@ -30,6 +30,7 @@ export interface ISpendingData {
     methodSpending: IMethodSpending
     methodReference?: IMethodSpending
     date?: string
+    paidDate?: string
     paid?: boolean
     realPaid?: number
     userLoan?: IUserLoan
