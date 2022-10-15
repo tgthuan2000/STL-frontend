@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { IKindSpending } from '~/@types/context'
 import { Button, Input, Selection } from '~/components'
 import { KIND_SPENDING } from '~/constant/spending'
-import { SlideOverHOC, useCache, useConfig, useSlideOver } from '~/context'
+import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import { client } from '~/sanityConfig'
 import { getCategorySpending } from '~/services/query'
 import useAuth from '~/store/auth'
@@ -18,7 +18,7 @@ const AddCategory = () => {
     const navigate = useNavigate()
     const { kindSpending } = useConfig()
     const { userProfile } = useAuth()
-    const [loading, setLoading] = useState(false)
+    const { loading, setSubmitLoading } = useLoading()
     const { deleteCache } = useCache()
     const form = useForm<IAddCategoryForm>({
         defaultValues: {
@@ -33,7 +33,7 @@ const AddCategory = () => {
     )
 
     const onsubmit: SubmitHandler<IAddCategoryForm> = async (data) => {
-        setLoading(true)
+        setSubmitLoading(true)
         let { name, kindSpending } = data
         // delete spaces between and last first
         name = name.replace(/\s+/g, ' ').trim()
@@ -66,7 +66,7 @@ const AddCategory = () => {
         } catch (error) {
             console.log(error)
         } finally {
-            setLoading(false)
+            setSubmitLoading(false)
         }
     }
 
@@ -108,7 +108,7 @@ const AddCategory = () => {
             </div>
             <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
                 <div className='flex sm:justify-start justify-end space-x-3'>
-                    <Button color='cyan' type='submit' disabled={loading}>
+                    <Button color='cyan' type='submit' disabled={loading.submit}>
                         Tạo
                     </Button>
                     <Button

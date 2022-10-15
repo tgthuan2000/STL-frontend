@@ -23,8 +23,9 @@ const Selection: React.FC<SelectionProps> = ({
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const [selected, setSelected] = useState(value)
 
-    const handleChange = (value: any) => {
+    const handleChange = (value: any, onChange: (value: any) => void) => {
         setSelected(value)
+        onChange(value)
     }
 
     return (
@@ -34,7 +35,7 @@ const Selection: React.FC<SelectionProps> = ({
             rules={rules}
             render={({ field, fieldState: { error } }) => (
                 <div className={clsx(className)}>
-                    <Listbox value={selected} onChange={handleChange}>
+                    <Listbox value={selected} onChange={(value) => handleChange(value, field.onChange)}>
                         {({ open }) => (
                             <>
                                 {label && (

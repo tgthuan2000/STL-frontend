@@ -157,10 +157,14 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                             <XIcon
                                                 onClick={(e) => {
                                                     e.stopPropagation()
-                                                    setSelectedItem(null)
-                                                    field.onChange(null)
+                                                    if (!disabled || !loading) {
+                                                        setSelectedItem(null)
+                                                        field.onChange(null)
+                                                    }
                                                 }}
-                                                className='h-5 w-5 text-gray-400 hover:text-gray-500 transition-colors'
+                                                className={clsx('h-5 w-5 text-gray-400 transition-colors', {
+                                                    'hover:text-gray-500': !disabled || !loading,
+                                                })}
                                                 aria-hidden='true'
                                             />
                                         )}

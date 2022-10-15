@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { Button, Input } from '~/components'
-import { SlideOverHOC, useCache, useSlideOver } from '~/context'
+import { SlideOverHOC, useCache, useLoading, useSlideOver } from '~/context'
 import { useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import useAuth from '~/store/auth'
@@ -15,7 +15,7 @@ const AddMethod = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { userProfile } = useAuth()
-    const [loading, setLoading] = useState(false)
+    const { loading, setSubmitLoading } = useLoading()
     const { deleteCache } = useCache()
     const { METHOD_SPENDING_DESC_SURPLUS, METHOD_SPENDING } = useServiceQuery()
 
@@ -26,7 +26,7 @@ const AddMethod = () => {
     })
 
     const onsubmit: SubmitHandler<IAddMethodForm> = async (data) => {
-        setLoading(true)
+        setSubmitLoading(true)
         let { name } = data
         // delete spaces between and last first
         name = name.replace(/\s+/g, ' ').trim()
@@ -54,7 +54,7 @@ const AddMethod = () => {
         } catch (error) {
             console.log(error)
         } finally {
-            setLoading(false)
+            setSubmitLoading(false)
         }
     }
 
@@ -83,7 +83,7 @@ const AddMethod = () => {
             </div>
             <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
                 <div className='flex sm:justify-start justify-end space-x-3'>
-                    <Button color='cyan' type='submit' disabled={loading}>
+                    <Button color='cyan' type='submit' disabled={loading.submit}>
                         Tạo
                     </Button>
                     <Button
