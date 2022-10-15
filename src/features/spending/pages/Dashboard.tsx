@@ -6,7 +6,7 @@ import { Box, ButtonMenu, Divider } from '~/components'
 import { DATE_FORMAT } from '~/constant'
 import { menuMobile } from '~/constant/components'
 import { useConfig } from '~/context'
-import { useQuery, useWindowSize } from '~/hook'
+import { useScrollIntoView, useQuery, useWindowSize } from '~/hook'
 import { GET_METHOD_SPENDING_DESC_SURPLUS, GET_RECENT_SPENDING, GET_STATISTIC_SPENDING } from '~/schema/query/spending'
 import { getDate } from '~/services'
 import useAuth from '~/store/auth'
@@ -40,6 +40,7 @@ const Dashboard = () => {
     const { width } = useWindowSize()
     const { userProfile } = useAuth()
     const { kindSpending, getKindSpendingId } = useConfig()
+    const wrapRef = useScrollIntoView<HTMLDivElement>()
     const [{ method, recent, statistic }, fetchData, deleteCache, reload] = useQuery<IData>(
         {
             recent: GET_RECENT_SPENDING,
@@ -122,7 +123,7 @@ const Dashboard = () => {
     }
 
     return (
-        <>
+        <div ref={wrapRef}>
             {width < 1280 && (
                 <div className='xl:hidden block'>
                     <ButtonMenu data={menuMobile} />
@@ -162,7 +163,7 @@ const Dashboard = () => {
                     <Method data={method.data} loading={method.loading} />
                 </Box.Content>
             </Box>
-        </>
+        </div>
     )
 }
 

@@ -1,6 +1,7 @@
 import { ArrowSmLeftIcon } from '@heroicons/react/outline'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { Tabs } from '~/components'
+import { useScrollIntoView } from '~/hook'
 
 const TransactionTabs = [
     { name: 'Tất cả', href: 'tab-all' },
@@ -12,9 +13,10 @@ const TransactionTabs = [
 
 const Transaction = () => {
     const navigate = useNavigate()
+    const wrapRef = useScrollIntoView<HTMLDivElement>()
 
     return (
-        <div>
+        <div ref={wrapRef}>
             <div className='flex items-center text-gray-900 space-x-2 sm:mb-2 mb-4 select-none'>
                 <ArrowSmLeftIcon
                     className='h-7 w-7 hover:opacity-50 cursor-pointer'

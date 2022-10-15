@@ -6,7 +6,7 @@ import { useConfig } from '~/context'
 import { GET_METHOD_SPENDING_DESC_SURPLUS } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 import { Method as MethodBox } from '../components'
-import { useQuery } from '~/hook'
+import { useQuery, useScrollIntoView } from '~/hook'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { IMethodSpending } from '~/@types/spending'
 import { isEmpty } from 'lodash'
@@ -16,6 +16,7 @@ const Method = () => {
     const { kindSpending } = useConfig()
     const { userProfile } = useAuth()
     const [parent] = useAutoAnimate<HTMLDivElement>()
+    const wrapRef = useScrollIntoView<HTMLDivElement>()
 
     const [{ method }, fetchData] = useQuery<{
         method: IMethodSpending[]
@@ -32,7 +33,7 @@ const Method = () => {
     }, [kindSpending])
 
     return (
-        <div>
+        <div ref={wrapRef}>
             <div className='flex items-center text-gray-900 space-x-2 sm:mb-2 mb-4 select-none'>
                 <ArrowSmLeftIcon
                     className='h-7 w-7 hover:opacity-50 cursor-pointer'

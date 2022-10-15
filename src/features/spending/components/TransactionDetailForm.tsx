@@ -9,6 +9,7 @@ import { ICategorySpending, IMethodSpending, ISpendingData } from '~/@types/spen
 import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useLoading } from '~/context'
+import { useScrollIntoView } from '~/hook'
 import { getColorPrize } from '~/services'
 import { Data, DataCategory, IDetailSpendingForm } from '../pages/TransactionDetail'
 
@@ -49,6 +50,7 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
     } = data
     const navigate = useNavigate()
     const { loading } = useLoading()
+    const wrapRef = useScrollIntoView<HTMLDivElement>()
     const form = useForm<IDetailSpendingForm>({
         defaultValues: {
             amount: transaction.amount,
@@ -62,7 +64,7 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
     })
 
     return (
-        <div>
+        <div ref={wrapRef}>
             <div className='flex justify-between items-center mb-4'>
                 <div className='flex items-center text-gray-900 space-x-2 select-none'>
                     <ArrowSmLeftIcon

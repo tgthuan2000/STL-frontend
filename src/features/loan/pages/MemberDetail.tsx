@@ -1,5 +1,9 @@
+import { useScrollIntoView } from '~/hook'
+
 const MemberDetail = () => {
-    return <div>MemberDetail</div>
+    const wrapRef = useScrollIntoView<HTMLDivElement>()
+
+    return <div ref={wrapRef}>MemberDetail</div>
 }
 
 export default MemberDetail

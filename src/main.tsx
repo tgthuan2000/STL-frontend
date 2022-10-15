@@ -8,3 +8,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <App />
     </React.StrictMode>
 )
+
+if (process.env.NODE_ENV === 'production') {
+    console.log = () => {}
+}

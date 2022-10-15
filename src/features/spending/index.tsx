@@ -10,7 +10,7 @@ const Transaction = React.lazy(() => import('./pages/Transaction'))
 const TransactionDetail = React.lazy(() => import('./pages/TransactionDetail'))
 const TransactionTabTable = React.lazy(() => import('./pages/TransactionTabTable'))
 
-const Loan = () => {
+const Spending = () => {
     return (
         <Routes>
             <Route path='/' element={<SpendingFeature />}>
@@ -61,4 +61,4 @@ const Loan = () => {
     )
 }
 
-export default Loan
+export default Spending

@@ -1,5 +1,9 @@
+import { useScrollIntoView } from '~/hook'
+
 const TransactionEdit = () => {
-    return <div>TransactionEdit</div>
+    const wrapRef = useScrollIntoView<HTMLDivElement>()
+
+    return <div ref={wrapRef}>TransactionEdit</div>
 }
 
 export default TransactionEdit

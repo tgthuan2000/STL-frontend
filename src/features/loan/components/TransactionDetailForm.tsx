@@ -10,6 +10,7 @@ import { IMethodSpending, ISpendingData } from '~/@types/spending'
 import { AutoComplete, AvatarUser, Button, Divider, Input, Toggle } from '~/components'
 import { DATE_TIME_FORMAT } from '~/constant'
 import { useLoading } from '~/context'
+import { useScrollIntoView } from '~/hook'
 import { Data } from '../pages/TransactionDetail'
 import Group from './Group'
 
@@ -38,6 +39,7 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
     const { onsubmit, handleDeleteTransaction, handleReloadData, methodSpending, transaction } = data
     const navigate = useNavigate()
     const { loading } = useLoading()
+    const wrapRef = useScrollIntoView<HTMLDivElement>()
     const form = useForm<PaidForm>({
         defaultValues: {
             paid: transaction.paid,
@@ -48,7 +50,7 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
     const [parent] = useAutoAnimate<HTMLDivElement>()
 
     return (
-        <div>
+        <div ref={wrapRef}>
             <div className='flex justify-between items-center mb-4'>
                 <div className='flex items-center text-gray-900 space-x-2 select-none'>
                     <ArrowSmLeftIcon

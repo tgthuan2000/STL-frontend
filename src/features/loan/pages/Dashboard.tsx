@@ -5,7 +5,7 @@ import { ISpendingData } from '~/@types/spending'
 import { Box2, ButtonMenuLoan, Divider } from '~/components'
 import { menuLoanMobile } from '~/constant/components'
 import { useConfig } from '~/context'
-import { useQuery, useWindowSize } from '~/hook'
+import { useQuery, useScrollIntoView, useWindowSize } from '~/hook'
 import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
 import useAuth from '~/store/auth'
 
@@ -28,6 +28,7 @@ const Dashboard = () => {
     const { width } = useWindowSize()
     const { userProfile } = useAuth()
     const { getKindSpendingId } = useConfig()
+    const wrapRef = useScrollIntoView<HTMLDivElement>()
 
     const [{ recent, paydue, statistic }, fetchData, deleteCache, reload] = useQuery<IData>(
         {
@@ -56,7 +57,7 @@ const Dashboard = () => {
     }
 
     return (
-        <>
+        <div ref={wrapRef}>
             {width < 1280 && (
                 <div className='xl:hidden block'>
                     <ButtonMenuLoan data={menuLoanMobile} />
@@ -84,7 +85,7 @@ const Dashboard = () => {
 
                 <ListMember label='Đang cho vay' data={member.data} loading={member.loading} /> */}
             </div>
-        </>
+        </div>
     )
 }
 
