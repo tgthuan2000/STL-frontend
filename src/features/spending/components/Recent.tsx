@@ -6,27 +6,18 @@ import { RecentProps } from '~/@types/spending'
 import { KIND_SPENDING } from '~/constant/spending'
 import { DATE_TIME_FORMAT } from '~/constant'
 import { isEmpty } from 'lodash'
+import { getLinkSpending } from '~/utils'
 
 const Recent = ({ data, loading }: RecentProps) => {
     if (loading) return <RecentSkeleton />
 
     if (!isEmpty(data)) {
-        const getLink = (key: KIND_SPENDING, id: string) => {
-            switch (key) {
-                case KIND_SPENDING.GET_LOAN:
-                case KIND_SPENDING.LOAN:
-                    return `/loan/transaction/${id}/detail`
-                default:
-                    return `transaction/${id}`
-            }
-        }
-
         return (
             <ul role='list' className='divide-y divide-gray-300'>
                 {data?.map((item) => (
                     <li key={item._id}>
                         <Link
-                            to={getLink(item.kindSpending.key, item._id)}
+                            to={getLinkSpending(item.kindSpending.key, item._id)}
                             state={{ status: item.kindSpending._id }}
                             className='px-3 py-2 flex flex-col hover:bg-gray-100 cursor-pointer'
                         >

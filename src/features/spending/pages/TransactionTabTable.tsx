@@ -11,6 +11,7 @@ import { DATE_FORMAT, DATE_TIME_FORMAT, TIME_FORMAT } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useQuery, useWindowSize } from '~/hook'
 import useAuth from '~/store/auth'
+import { getLinkSpending } from '~/utils'
 
 interface TransactionTabTableProps {
     query: { recent: string }
@@ -114,7 +115,7 @@ const MainTable = ({ data }: MainTableProps) => {
                     <Fragment key={_id}>
                         <tr
                             onClick={() => {
-                                navigate(`/spending/transaction/${_id}`)
+                                navigate(getLinkSpending(kindSpending.key, _id))
                             }}
                         >
                             <td className={clsx('whitespace-nowrap pt-4 pl-2 pr-3 sm:pl-6 lg:pl-8')}>
@@ -131,7 +132,9 @@ const MainTable = ({ data }: MainTableProps) => {
                                 ) : (
                                     <span>Không có thời hạn</span>
                                 )}
-                                <h3 className='mt-1 font-medium'>{methodSpending.name}</h3>
+                                <h3 className='mt-1 font-medium'>
+                                    {methodSpending?.name || 'Chưa có phương thức thanh toán'}
+                                </h3>
                             </td>
                             <td className={clsx('px-1 pt-4 text-sm font-medium text-gray-900 text-center truncate')}>
                                 {categorySpending?.name ?? kindSpending.name}
