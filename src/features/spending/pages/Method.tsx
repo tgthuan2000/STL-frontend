@@ -40,7 +40,7 @@ const Method = () => {
     const dataFilter = useMemo(() => {
         const data = method.data?.filter((item) => item.surplus > 0)
         return data
-    }, [])
+    }, [method.data])
 
     const options = useMemo<
         Omit<BarSvgProps<{ [x: string]: string | number; name: string }>, 'width' | 'height'>
