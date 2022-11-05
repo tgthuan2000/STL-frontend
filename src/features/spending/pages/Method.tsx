@@ -63,7 +63,7 @@ const Method = () => {
                         style={{ height: size(method.data) * 75 }}
                     >
                         <ResponsiveBar
-                            data={map(method.data, (item) => ({ ...item, [item.name]: item.surplus }))}
+                            data={map(method.data, ({ name, surplus }) => ({ name, [name]: surplus }))}
                             theme={{ fontFamily: 'Lexend', fontSize: 13 }}
                             keys={map(method.data, 'name')}
                             indexBy='name'
