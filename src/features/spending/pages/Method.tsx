@@ -9,7 +9,9 @@ import { Method as MethodBox } from '../components'
 import { useQuery, useScrollIntoView } from '~/hook'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { IMethodSpending } from '~/@types/spending'
-import { isEmpty } from 'lodash'
+import { isEmpty, map, size } from 'lodash'
+import { ResponsiveBar } from '@nivo/bar'
+import numeral from 'numeral'
 
 const Method = () => {
     const navigate = useNavigate()
@@ -46,18 +48,68 @@ const Method = () => {
             <div className=''>
                 <Tabs />
             </div>
-            <div className='flex xl:flex-row flex-col-reverse gap-4 mt-4'>
-                <div className='xl:flex-[1]'>
+            <div className='flex xl:flex-row-reverse flex-col-reverse gap-4 mt-4'>
+                {/* <div className='xl:flex-[1]'>
                     <div
                         ref={parent}
                         className='max-w-lg w-full h-fit mx-auto bg-white border border-gray-300 overflow-hidden rounded-md select-none'
                     >
                         <MethodBox data={method.data} loading={method.loading} />
                     </div>
-                </div>
+                </div> */}
                 <div className='xl:flex-[2]'>
-                    <h4 className=' h-12 rounded-md bg-red-500 xl:sticky xl:top-6 text-white font-medium text-lg py-2 px-4'>
-                        Chart
+                    <h4
+                        className='border border-gray-300 bg-white rounded-md xl:sticky xl:top-6 lg:py-2 lg:px-4'
+                        style={{ height: size(method.data) * 75 }}
+                    >
+                        <ResponsiveBar
+                            data={map(method.data, (item) => ({ ...item, [item.name]: item.surplus }))}
+                            theme={{ fontFamily: 'Lexend', fontSize: 13 }}
+                            keys={map(method.data, 'name')}
+                            indexBy='name'
+                            margin={{ top: 0, right: 30, bottom: 0, left: 70 }}
+                            padding={0.5}
+                            valueScale={{ type: 'linear' }}
+                            indexScale={{ type: 'band', round: true }}
+                            colors={{ scheme: 'nivo' }}
+                            defs={[
+                                {
+                                    id: 'dots',
+                                    type: 'patternDots',
+                                    background: 'inherit',
+                                    color: '#38bcb2',
+                                    size: 4,
+                                    padding: 1,
+                                    stagger: true,
+                                },
+                                {
+                                    id: 'lines',
+                                    type: 'patternLines',
+                                    background: 'inherit',
+                                    color: '#eed312',
+                                    rotation: -45,
+                                    lineWidth: 6,
+                                    spacing: 10,
+                                },
+                            ]}
+                            fill={[
+                                { match: { id: 'fries' }, id: 'dots' },
+                                { match: { id: 'sandwich' }, id: 'lines' },
+                            ]}
+                            axisBottom={null}
+                            borderRadius={3}
+                            borderWidth={1}
+                            borderColor={{ from: 'color', modifiers: [['darker', 1.7]] }}
+                            layout='horizontal'
+                            label={(data) => numeral(data.value).format()}
+                            labelSkipWidth={12}
+                            labelSkipHeight={12}
+                            labelTextColor={{ from: 'color', modifiers: [['darker', 3]] }}
+                            role='application'
+                            enableGridX={false}
+                            enableGridY={false}
+                            // isInteractive={false}
+                        />
                     </h4>
                 </div>
             </div>
@@ -108,3 +160,30 @@ const Tabs = () => {
         </div>
     )
 }
+
+const data = [
+    {
+        country: 'hot dog',
+        'hot dog': 68,
+    },
+    {
+        country: 'burger',
+        burger: 64,
+    },
+    {
+        country: 'sandwich',
+        sandwich: 91,
+    },
+    {
+        country: 'kebab',
+        kebab: 129,
+    },
+    {
+        country: 'fries',
+        fries: 64,
+    },
+    {
+        country: 'donut',
+        donut: 157,
+    },
+]
