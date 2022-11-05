@@ -45,10 +45,11 @@ const Method = () => {
             theme: { fontFamily: 'Lexend', fontSize: 13 },
             keys: map(method.data, 'name'),
             indexBy: 'name',
+            animate: false,
             margin: {
                 top: 0,
-                bottom: isMobileScreen ? size(method.data) * 35 : 0,
-                ...(isMobileScreen ? { right: 20, left: 20 } : { right: 30, left: 70 }),
+                bottom: isMobileScreen ? size(method.data) * 30 : 0,
+                ...(isMobileScreen ? { right: 20, left: 20 } : { right: 30, left: 100 }),
             },
             padding: 0.5,
             valueScale: { type: 'linear' },
@@ -104,7 +105,7 @@ const Method = () => {
                           direction: 'column',
                           justify: false,
                           translateX: 20,
-                          translateY: 135,
+                          translateY: size(method.data) * 25,
                           itemsSpacing: 5,
                           itemWidth: 100,
                           itemHeight: 20,
@@ -149,12 +150,17 @@ const Method = () => {
                     </div>
                 </div> */}
                 <div className='xl:flex-[2]'>
-                    <h4
+                    <div
                         className='border border-gray-300 bg-white rounded-md xl:sticky xl:top-6 lg:py-2 lg:px-4'
-                        style={{ height: size(method.data) * 90 }}
+                        style={{ height: method.data ? size(method.data) * 90 : 'auto' }}
+                        ref={parent}
                     >
-                        <ResponsiveBar {...options} />
-                    </h4>
+                        {method.data ? (
+                            <ResponsiveBar {...options} />
+                        ) : (
+                            <div className='animate-pulse p-2'>Loading...</div>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
