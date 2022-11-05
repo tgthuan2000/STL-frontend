@@ -37,18 +37,23 @@ const Method = () => {
 
     const isMobileScreen = width < 768
 
+    const dataFilter = useMemo(() => {
+        const data = method.data?.filter((item) => item.surplus > 0)
+        return data
+    }, [])
+
     const options = useMemo<
         Omit<BarSvgProps<{ [x: string]: string | number; name: string }>, 'width' | 'height'>
     >(() => {
         return {
-            data: map(method.data, ({ name, surplus }) => ({ name, [name]: surplus })),
+            data: map(dataFilter, ({ name, surplus }) => ({ name, [name]: surplus })),
             theme: { fontFamily: 'Lexend', fontSize: 13 },
-            keys: map(method.data, 'name'),
+            keys: map(dataFilter, 'name'),
             indexBy: 'name',
             animate: false,
             margin: {
                 top: 0,
-                bottom: isMobileScreen ? size(method.data) * 30 : 0,
+                bottom: isMobileScreen ? size(dataFilter) * 30 : 0,
                 ...(isMobileScreen ? { right: 20, left: 20 } : { right: 30, left: 100 }),
             },
             padding: 0.5,
@@ -74,10 +79,6 @@ const Method = () => {
                     lineWidth: 6,
                     spacing: 10,
                 },
-            ],
-            fill: [
-                { match: { id: 'fries' }, id: 'dots' },
-                { match: { id: 'sandwich' }, id: 'lines' },
             ],
             axisLeft: isMobileScreen ? null : undefined,
             axisBottom: null,
@@ -105,7 +106,7 @@ const Method = () => {
                           direction: 'column',
                           justify: false,
                           translateX: 20,
-                          translateY: size(method.data) * 25,
+                          translateY: size(data) * 25,
                           itemsSpacing: 5,
                           itemWidth: 100,
                           itemHeight: 20,
@@ -124,7 +125,7 @@ const Method = () => {
                   ]
                 : undefined,
         }
-    }, [isMobileScreen, method.data])
+    }, [isMobileScreen, dataFilter])
 
     return (
         <div ref={wrapRef}>
@@ -152,10 +153,10 @@ const Method = () => {
                 <div className='xl:flex-[2]'>
                     <div
                         className='border border-gray-300 bg-white rounded-md xl:sticky xl:top-6 lg:py-2 lg:px-4'
-                        style={{ height: method.data ? size(method.data) * 90 : 'auto' }}
+                        style={{ height: dataFilter ? size(dataFilter) * 90 : 'auto' }}
                         ref={parent}
                     >
-                        {method.data ? (
+                        {dataFilter ? (
                             <ResponsiveBar {...options} />
                         ) : (
                             <div className='animate-pulse p-2'>Loading...</div>
