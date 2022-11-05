@@ -68,6 +68,8 @@ export interface DateProps {
     error?: FieldError
     form: UseFormReturn<any, object>
     rules?: Rules
+    disabledClear?: boolean
+    disabled?: boolean
 }
 export interface TextAreaProps {
     className?: string

@@ -128,9 +128,9 @@ const TransactionDetail = () => {
 
             if (trans) {
                 // refund surplus, countUsed for method deleted
-                if (trans.methodSpending) {
+                if (trans.methodReference) {
                     const patchMethod = client
-                        .patch(trans.methodSpending._id)
+                        .patch(trans.methodReference._id)
                         .setIfMissing({ surplus: 0, countUsed: 0 })
                         .dec({
                             surplus: (trans.amount as number) * condition,

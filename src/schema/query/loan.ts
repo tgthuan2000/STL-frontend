@@ -76,6 +76,10 @@ export const GET_TRANSACTION_DETAIL = groq`
             name,
             surplus
         },
+        methodReference-> {
+            _id,
+            name,
+        },
         kindSpending-> {
             _id,
             name,
