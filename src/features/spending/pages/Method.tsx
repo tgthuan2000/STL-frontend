@@ -106,7 +106,7 @@ const Method = () => {
                           direction: 'column',
                           justify: false,
                           translateX: 20,
-                          translateY: size(data) * 25,
+                          translateY: size(dataFilter) * 25,
                           itemsSpacing: 5,
                           itemWidth: 100,
                           itemHeight: 20,
