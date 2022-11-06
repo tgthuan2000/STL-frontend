@@ -91,8 +91,8 @@ const Method = () => {
                     [x: string]: string | number
                     name: string
                 }>
-            ) => numeral(data.value).format(),
-            labelSkipWidth: 12,
+            ) => numeral(data.value).format('0a'),
+            labelSkipWidth: 24,
             labelSkipHeight: 12,
             labelTextColor: { from: 'color', modifiers: [['darker', 3]] },
             role: 'application',
