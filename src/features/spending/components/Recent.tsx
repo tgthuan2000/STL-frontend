@@ -7,6 +7,7 @@ import { KIND_SPENDING } from '~/constant/spending'
 import { DATE_TIME_FORMAT } from '~/constant'
 import { isEmpty } from 'lodash'
 import { getLinkSpending } from '~/utils'
+import { TEMPLATE } from '~/constant/template'
 
 const Recent = ({ data, loading }: RecentProps) => {
     if (loading) return <RecentSkeleton />
@@ -24,10 +25,10 @@ const Recent = ({ data, loading }: RecentProps) => {
                             <div className='flex'>
                                 <div className='xl:w-2/3 w-1/2 overflow-hidden'>
                                     <span>
-                                        {item.date ? moment(item.date).format(DATE_TIME_FORMAT) : 'Không có thời hạn'}
+                                        {item.date ? moment(item.date).format(DATE_TIME_FORMAT) : TEMPLATE.EMPTY_DATE}
                                     </span>
                                     <h3 className='font-medium truncate'>
-                                        {item.methodSpending?.name || 'Chưa có phương thức thanh toán'}
+                                        {item.methodSpending?.name || TEMPLATE.EMPTY_METHOD_SPENDING_SHORT}
                                     </h3>
                                 </div>
                                 <div className='xl:w-1/3 w-1/2 overflow-hidden text-right'>
@@ -73,7 +74,7 @@ const Recent = ({ data, loading }: RecentProps) => {
             </ul>
         )
     }
-    return <div className='py-2 text-center text-gray-700'>Không có dữ liệu</div>
+    return <div className='py-2 text-center text-gray-700'>{TEMPLATE.EMPTY_DATA}</div>
 }
 
 export default Recent

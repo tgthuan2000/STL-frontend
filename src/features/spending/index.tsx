@@ -15,7 +15,7 @@ const Spending = () => {
         <Routes>
             <Route path='/' element={<SpendingFeature />}>
                 <Route index element={<Dashboard />} />
-                <Route path='transaction' element={<Transaction />}>
+                <Route path='transaction' element={<Transaction title='Giao dịch' />}>
                     <Route index element={<Navigate to='tab-all' />} />
                     <Route
                         path='tab-all'
@@ -53,7 +53,26 @@ const Spending = () => {
                     />
                 </Route>
                 <Route path='transaction/:id' element={<TransactionDetail />} />
-                <Route path='method' element={<Method />} />
+                <Route path='method' element={<Transaction title='Phương thức thanh toán' />}>
+                    <Route index element={<Navigate to='tab-all' />} />
+                    <Route path='tab-all' element={<Method query={{ recent: GETALL_RECENT_SPENDING }} />} />
+                    <Route
+                        path='tab-day'
+                        element={<Method query={{ recent: GET_RECENT_SPENDING }} params={{ from: 0, to: 5 }} />}
+                    />
+                    <Route
+                        path='tab-week'
+                        element={<Method query={{ recent: GET_RECENT_SPENDING }} params={{ from: 5, to: 10 }} />}
+                    />
+                    <Route
+                        path='tab-month'
+                        element={<Method query={{ recent: GET_RECENT_SPENDING }} params={{ from: 10, to: 15 }} />}
+                    />
+                    <Route
+                        path='tab-year'
+                        element={<Method query={{ recent: GET_RECENT_SPENDING }} params={{ from: 15, to: 20 }} />}
+                    />
+                </Route>
                 <Route path='method/:id' element={<MethodDetail />} />
             </Route>
             <Route path='*' element={<Navigate to='/' />} />

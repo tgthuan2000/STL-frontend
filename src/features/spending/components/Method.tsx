@@ -3,6 +3,7 @@ import NumberFormat from 'react-number-format'
 import clsx from 'clsx'
 import { MethodProps } from '~/@types/spending'
 import { isEmpty } from 'lodash'
+import { TEMPLATE } from '~/constant/template'
 
 const Method = ({ data, loading }: MethodProps) => {
     if (loading) return <MethodSkeleton />
@@ -40,7 +41,7 @@ const Method = ({ data, loading }: MethodProps) => {
             </ul>
         )
     }
-    return <div className='py-2 text-center text-gray-700'>Không có dữ liệu</div>
+    return <div className='py-2 text-center text-gray-700'>{TEMPLATE.EMPTY_DATA}</div>
 }
 
 export default Method

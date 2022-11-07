@@ -2,8 +2,9 @@ import clsx from 'clsx'
 import React, { useEffect, useRef } from 'react'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { TabItemProps, TabsProps } from '~/@types/components'
+import { TABS_FILTER_DATE } from '~/constant/template'
 
-const Tabs: React.FC<TabsProps> = ({ data }) => {
+const Tabs: React.FC<TabsProps> = ({ data = TABS_FILTER_DATE }) => {
     const navigate = useNavigate()
     const { pathname } = useLocation()
     const lineRef = useRef<HTMLDivElement>(null)
@@ -54,9 +55,7 @@ const TabItem: React.FC<TabItemProps> = ({ tab, navigate, tabsRef }) => {
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         // Update the URL to match the selected tab.
         e.preventDefault()
-        navigate(tab.href, {
-            replace: true,
-        })
+        navigate(tab.href, { replace: true })
     }
 
     return (

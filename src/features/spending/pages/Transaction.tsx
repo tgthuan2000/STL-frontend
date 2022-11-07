@@ -1,17 +1,14 @@
 import { ArrowSmLeftIcon } from '@heroicons/react/outline'
+import React from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { Tabs } from '~/components'
+import { TABS_FILTER_DATE } from '~/constant/template'
 import { useScrollIntoView } from '~/hook'
 
-const TransactionTabs = [
-    { name: 'Tất cả', href: 'tab-all' },
-    { name: 'Hàng ngày', href: 'tab-day' },
-    { name: 'Hàng tuần', href: 'tab-week' },
-    { name: 'Hàng tháng', href: 'tab-month' },
-    { name: 'Hàng năm', href: 'tab-year' },
-]
-
-const Transaction = () => {
+interface TransactionProps {
+    title?: string
+}
+const Transaction: React.FC<TransactionProps> = ({ title = 'Title tab' }) => {
     const navigate = useNavigate()
     const wrapRef = useScrollIntoView<HTMLDivElement>()
 
@@ -24,10 +21,10 @@ const Transaction = () => {
                         navigate(-1)
                     }}
                 />
-                <h4 className='xl:text-2xl text-xl font-semibold'>Giao dịch</h4>
+                <h4 className='xl:text-2xl text-xl font-semibold'>{title}</h4>
             </div>
             <div>
-                <Tabs data={TransactionTabs} />
+                <Tabs data={TABS_FILTER_DATE} />
             </div>
             <div>
                 <Outlet />

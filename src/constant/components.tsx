@@ -145,7 +145,7 @@ export const menuSpendingPC: IMenuBtn[] = [
         title: 'Phương thức thanh toán',
         color: 'text-purple-700 bg-purple-200 hover:bg-purple-300',
         icon: QrcodeIcon,
-        to: 'method',
+        to: 'method/tab-all',
     },
     {
         title: 'Tạo mới phương thức thanh toán',
@@ -249,7 +249,7 @@ export const menuSpendingPages: IMenuBtn[] = [
         title: 'PTTT',
         color: 'text-purple-700',
         icon: QrcodeIcon,
-        to: 'method',
+        to: 'method/tab-all',
     },
     {
         title: 'Tạo mới phương thức thanh toán',

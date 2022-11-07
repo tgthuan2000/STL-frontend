@@ -4,6 +4,7 @@ import { SubmitHandler } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IMethodSpending, ISpendingData } from '~/@types/spending'
 import { KIND_SPENDING } from '~/constant/spending'
+import { TEMPLATE } from '~/constant/template'
 import { useCache, useLoading } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
@@ -185,9 +186,9 @@ const TransactionDetail = () => {
         transaction: trans as ISpendingData,
     }
 
-    if (transaction.loading) return null
+    if (transaction.loading) return <div>{TEMPLATE.LOADING}</div>
 
-    if (isEmpty(transaction.data)) return <div>Empty Data!</div>
+    if (isEmpty(transaction.data)) return <div>{TEMPLATE.EMPTY_DATA}</div>
 
     return <TransactionDetailForm data={data} />
 }
