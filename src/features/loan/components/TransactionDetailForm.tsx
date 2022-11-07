@@ -43,7 +43,7 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
     const form = useForm<PaidForm>({
         defaultValues: {
             paid: transaction.paid,
-            methodSpending: transaction.methodSpending ?? null,
+            methodSpending: transaction.methodSpending ?? transaction.methodReference ?? null,
             amount: transaction.realPaid ?? transaction.amount,
         },
     })

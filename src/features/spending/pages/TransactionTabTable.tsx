@@ -9,6 +9,7 @@ import { ISpendingData } from '~/@types/spending'
 import LoadingButton from '~/components/Loading/LoadingButton'
 import { DATE_FORMAT, DATE_TIME_FORMAT, TIME_FORMAT } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
+import { TEMPLATE } from '~/constant/template'
 import { useQuery, useWindowSize } from '~/hook'
 import useAuth from '~/store/auth'
 import { getLinkSpending } from '~/utils'
@@ -128,10 +129,10 @@ const MainTable = ({ data }: MainTableProps) => {
                                             <span>{moment(date).format(DATE_TIME_FORMAT)}</span>
                                         )
                                     ) : (
-                                        <span>Không có thời hạn</span>
+                                        <span>{TEMPLATE.EMPTY_DATE}</span>
                                     )}
                                     <h3 className='mt-1 font-medium'>
-                                        {methodSpending?.name || 'Chưa có phương thức thanh toán'}
+                                        {methodSpending?.name || TEMPLATE.EMPTY_METHOD_SPENDING_SHORT}
                                     </h3>
                                 </td>
                                 <td
@@ -245,7 +246,7 @@ const EmptyTransactionTable = () => {
         <tr>
             <td colSpan={4} className='whitespace-nowrap py-4 px-2'>
                 <span className='block truncate w-full text-center text-lg text-gray-700 font-base'>
-                    Không có dữ liệu!
+                    {TEMPLATE.EMPTY_DATA}
                 </span>
             </td>
         </tr>

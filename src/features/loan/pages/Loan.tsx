@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import { ButtonMenu, ButtonMenuMobile } from '~/components'
 import { menuLoanPages, menuLoanPC } from '~/constant/components'
+import { TEMPLATE } from '~/constant/template'
 import { useLoading } from '~/context'
 import { useWindowSize } from '~/hook'
 
@@ -8,7 +9,7 @@ const Loan = () => {
     const { loading } = useLoading()
     const { width } = useWindowSize()
 
-    if (loading.config) return null
+    if (loading.config) return <div>{TEMPLATE.LOADING}</div>
 
     return (
         <>
