@@ -6,6 +6,7 @@ import { Fragment, useEffect } from 'react'
 import NumberFormat from 'react-number-format'
 import { useNavigate } from 'react-router-dom'
 import { ISpendingData } from '~/@types/spending'
+import { TimeFilter } from '~/components'
 import LoadingButton from '~/components/Loading/LoadingButton'
 import { DATE_FORMAT } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
@@ -14,7 +15,6 @@ import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import useAuth from '~/store/auth'
 import { getLinkSpending } from '~/utils'
-import { Filter } from '../components'
 
 interface TransactionTabTableProps {
     query: { recent: string }
@@ -45,13 +45,15 @@ const TransactionTabTable = ({ query, params = {} }: TransactionTabTableProps) =
         reload()
     }
 
+    const handleFilterSubmit = () => {}
+
     return (
         <>
             <div className='sm:px-6 lg:px-8'>
                 <div className='mt-4 flex flex-col'>
                     <div className='-my-2 -mx-4 sm:-mx-6 lg:-mx-8'>
-                        <div className='flex justify-between items-center h-12'>
-                            <Filter />
+                        <div className='flex justify-between items-center'>
+                            <TimeFilter onSubmit={handleFilterSubmit} />
                             {width > 768 && (
                                 <div className='mr-3'>
                                     <LoadingButton onReload={onReload} disabled={recent.loading} />

@@ -9,6 +9,7 @@ import { Controller, ControllerRenderProps, FieldError } from 'react-hook-form'
 import clsx from 'clsx'
 import { XIcon } from '@heroicons/react/outline'
 import { DATE_FORMAT } from '~/constant'
+import './index.css'
 
 const DatePicker = forwardRef<ReactDatePicker<never, undefined>, DateProps>(
     ({ name, form, rules, label, disabledClear, format = 'DATE_TIME', onChange, ...props }, ref) => {
@@ -89,7 +90,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                         spellCheck={false}
                         autoComplete='off'
                         className={clsx(
-                            'block p-2 w-full rounded-md border border-gray-300 shadow-sm font-light',
+                            'block h-10 p-2 w-full rounded-md border border-gray-300 shadow-sm font-light',
                             className
                         )}
                         {...props}
