@@ -50,7 +50,7 @@ export const menuMobile: IMenuBtn[] = [
         title: 'Giao dịch',
         color: 'text-orange-700 bg-orange-200 hover:bg-orange-300',
         icon: ClipboardListIcon,
-        to: 'transaction/tab-all',
+        to: 'transaction',
     },
 ]
 
@@ -139,13 +139,13 @@ export const menuSpendingPC: IMenuBtn[] = [
         title: 'Giao dịch',
         color: 'text-orange-700 bg-orange-200 hover:bg-orange-300',
         icon: ClipboardListIcon,
-        to: 'transaction/tab-all',
+        to: 'transaction',
     },
     {
         title: 'Phương thức thanh toán',
         color: 'text-purple-700 bg-purple-200 hover:bg-purple-300',
         icon: QrcodeIcon,
-        to: 'method/tab-all',
+        to: 'method',
     },
     {
         title: 'Tạo mới phương thức thanh toán',
@@ -218,12 +218,12 @@ export const menuLoanPC: IMenuBtn[] = [
         icon: HomeIcon,
         to: '/loan',
     },
-    // {
-    //     title: 'Giao dịch',
-    //     color: 'text-orange-700 bg-orange-200 hover:bg-orange-300',
-    //     icon: ClipboardListIcon,
-    //     to: 'transaction/tab-all',
-    // },
+    {
+        title: 'Giao dịch',
+        color: 'text-orange-700 bg-orange-200 hover:bg-orange-300',
+        icon: ClipboardListIcon,
+        to: 'transaction',
+    },
     // {
     //     title: 'Phương thức thanh toán',
     //     color: 'text-purple-700 bg-purple-200 hover:bg-purple-300',
@@ -243,13 +243,13 @@ export const menuSpendingPages: IMenuBtn[] = [
         title: 'Giao dịch',
         color: 'text-orange-700',
         icon: ClipboardListIcon,
-        to: 'transaction/tab-all',
+        to: 'transaction',
     },
     {
         title: 'PTTT',
         color: 'text-purple-700',
         icon: QrcodeIcon,
-        to: 'method/tab-all',
+        to: 'method',
     },
     {
         title: 'Tạo mới phương thức thanh toán',
@@ -280,12 +280,12 @@ export const menuLoanPages: IMenuBtn[] = [
         icon: HomeIcon,
         to: '/loan',
     },
-    // {
-    //     title: 'Giao dịch',
-    //     color: 'text-orange-700',
-    //     icon: ClipboardListIcon,
-    //     to: 'transaction/tab-all',
-    // },
+    {
+        title: 'Giao dịch',
+        color: 'text-orange-700',
+        icon: ClipboardListIcon,
+        to: 'transaction',
+    },
     // {
     //     title: 'PTTT',
     //     color: 'text-purple-700',

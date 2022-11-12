@@ -8,7 +8,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { IMethodSpending, ISpendingData } from '~/@types/spending'
 import { AutoComplete, AvatarUser, Button, Divider, Input, Toggle } from '~/components'
-import { DATE_TIME_FORMAT } from '~/constant'
+import { DATE_FORMAT } from '~/constant'
 import { useLoading } from '~/context'
 import { useScrollIntoView } from '~/hook'
 import { Data } from '../pages/TransactionDetail'
@@ -172,12 +172,12 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                         </Group>
                                         {transaction.date && (
                                             <Group label='Hạn trả' className='justify-between'>
-                                                {moment(transaction.date).format(DATE_TIME_FORMAT)}
+                                                {moment(transaction.date).format(DATE_FORMAT.DATE_TIME)}
                                             </Group>
                                         )}
                                         {transaction.paidDate && (
                                             <Group label='Thời điểm trả' className='justify-between'>
-                                                {moment(transaction.paidDate).format(DATE_TIME_FORMAT)}
+                                                {moment(transaction.paidDate).format(DATE_FORMAT.DATE_TIME)}
                                             </Group>
                                         )}
 

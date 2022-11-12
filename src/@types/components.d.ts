@@ -2,6 +2,7 @@ import { SanityImageAssetDocument } from '@sanity/client'
 import React, { HTMLInputTypeAttribute } from 'react'
 import { Control, FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
 import { NavigateFunction } from 'react-router-dom'
+import { DATE_FORMAT } from '~/constant'
 import { IUserLoan } from './loan'
 import { ISpendingData } from './spending'
 
@@ -70,6 +71,12 @@ export interface DateProps {
     rules?: Rules
     disabledClear?: boolean
     disabled?: boolean
+    onChange?: (value: any) => void
+    format?: keyof typeof DATE_FORMAT
+    showTimeInput?: boolean
+    placeholderText?: string
+    showMonthYearPicker?: boolean
+    showYearPicker?: boolean
 }
 export interface TextAreaProps {
     className?: string

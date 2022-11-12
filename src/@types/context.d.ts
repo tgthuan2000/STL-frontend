@@ -20,6 +20,7 @@ export interface IKindSpending {
 export interface IConfigContext {
     kindSpending: IKindSpending[]
     getKindSpendingId: (KEY: keyof typeof KIND_SPENDING) => string | undefined
+    getKindSpendingIds: (...KEYS: (keyof typeof KIND_SPENDING)[]) => string[]
     ok: boolean
 }
 
@@ -31,7 +32,7 @@ export interface ISlideOverContext {
 }
 export type FetchApi = <T extends { [x: string]: any }>(
     callApi: { [x: string]: { value: string; key: number; data: any[] } },
-    params: { [y: string]: string | number }
+    params: { [y: string]: string | number | string[] }
 ) => Promise<T>
 
 export type CheckInCache = <
@@ -62,7 +63,7 @@ export interface ICacheData<T> {
     data: T
 }
 
-export type QueryParams = { [key: string]: string | number | undefined }
+export type QueryParams = { [key: string]: string | number | undefined | string[] }
 
 export interface IConfig {
     kindSpending: IKindSpending[]

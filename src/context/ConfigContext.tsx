@@ -8,6 +8,7 @@ import { useLoading } from './LoadingContext'
 const ConfigContext = createContext<IConfigContext>({
     kindSpending: [],
     getKindSpendingId: () => '',
+    getKindSpendingIds: () => [''],
     ok: false,
 })
 
@@ -42,10 +43,24 @@ const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
         [config.kindSpending]
     )
 
+    const getKindSpendingIds = useCallback(
+        (...KEYS: (keyof typeof KIND_SPENDING)[]) => {
+            const result: string[] = []
+            KEYS.forEach((KEY) => {
+                const item = config.kindSpending.find((kind) => kind.key.toLowerCase() === KIND_SPENDING[KEY])
+                if (item) {
+                    result.push(item._id)
+                }
+            })
+            return result
+        },
+        [config.kindSpending]
+    )
     const value: IConfigContext = {
         ok,
         kindSpending: config.kindSpending,
         getKindSpendingId,
+        getKindSpendingIds,
     }
 
     return <ConfigContext.Provider value={value}>{children}</ConfigContext.Provider>
