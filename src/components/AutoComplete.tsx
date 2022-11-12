@@ -2,7 +2,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Combobox } from '@headlessui/react'
 import { CheckIcon, RefreshIcon, SelectorIcon, XIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
-import { find, isNil } from 'lodash'
+import { find, get, isNil } from 'lodash'
 import { forwardRef, useEffect, useMemo, useState } from 'react'
 import { Controller } from 'react-hook-form'
 import { AutoCompleteProps } from '~/@types/components'
@@ -47,7 +47,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                 if (isNil(prev)) {
                     return
                 }
-                return find(data, ['_id', selectedItem._id])
+                return find(data, [idKey, get(selectedItem, idKey)])
             })
         }, [data])
 
@@ -135,7 +135,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                             <div className='relative mt-1'>
                                 <Combobox.Input
                                     className={clsx(
-                                        'w-full rounded-md border border-gray-300 py-2 pl-3 pr-10 shadow-sm sm:text-sm focus:outline-none',
+                                        'w-full h-10 rounded-md border border-gray-300 py-2 pl-3 pr-10 shadow-sm sm:text-sm focus:outline-none',
                                         loading || disabled
                                             ? 'bg-gray-50 text-gray-500 select-none'
                                             : 'bg-white text-gray-900'

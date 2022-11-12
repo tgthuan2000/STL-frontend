@@ -1,3 +1,5 @@
+import { DATE_FORMAT } from '.'
+
 export const TEMPLATE = {
     EMPTY_DATE: 'Vô thời hạn',
     EMPTY_METHOD_SPENDING_SHORT: 'Chưa có PTTT',
@@ -6,10 +8,30 @@ export const TEMPLATE = {
     LOADING: 'Đang tải dữ liệu',
 }
 
-export const TABS_FILTER_DATE = [
-    { name: 'Tất cả', href: 'tab-all' },
-    { name: 'Hàng ngày', href: 'tab-day' },
-    { name: 'Hàng tuần', href: 'tab-week' },
-    { name: 'Hàng tháng', href: 'tab-month' },
-    { name: 'Hàng năm', href: 'tab-year' },
+export enum E_FILTER_DATE {
+    DATE_RANGE = 1,
+    DATE = 2,
+    MONTH = 4,
+    YEAR = 5,
+}
+
+export interface IFILTER_DATE {
+    id: E_FILTER_DATE
+    name: string
+    labelName: string
+    dateName: string
+    formatDate: keyof typeof DATE_FORMAT
+}
+
+export const TABS_FILTER_DATE: IFILTER_DATE[] = [
+    {
+        id: E_FILTER_DATE.DATE_RANGE,
+        name: 'dateRange',
+        labelName: 'Khoảng ngày',
+        dateName: 'Khoảng ngày',
+        formatDate: 'DATE',
+    },
+    { id: E_FILTER_DATE.DATE, name: 'date', labelName: 'Theo ngày', dateName: 'Ngày', formatDate: 'DATE' },
+    { id: E_FILTER_DATE.MONTH, name: 'month', labelName: 'Theo tháng', dateName: 'Tháng', formatDate: 'MONTH' },
+    { id: E_FILTER_DATE.YEAR, name: 'year', labelName: 'Theo năm', dateName: 'Năm', formatDate: 'YEAR' },
 ]

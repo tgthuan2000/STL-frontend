@@ -77,6 +77,9 @@ export interface DateProps {
     placeholderText?: string
     showMonthYearPicker?: boolean
     showYearPicker?: boolean
+    selectsRange?: boolean
+    startDate?: Date
+    endDate?: Date
 }
 export interface TextAreaProps {
     className?: string
