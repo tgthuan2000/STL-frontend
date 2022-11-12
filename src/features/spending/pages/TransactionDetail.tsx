@@ -49,7 +49,14 @@ const TransactionDetail = () => {
         }
     )
 
-    const kindSpending = useMemo(() => transaction.data?.[0].kindSpending, [transaction.data])
+    const kindSpending = useMemo(() => {
+        try {
+            return transaction.data?.[0].kindSpending
+        } catch (error) {
+            console.log(error)
+            navigate('/')
+        }
+    }, [transaction.data])
 
     const [{ categorySpending }, fetchDataCategory, deleteCacheDataCategory, reloadDataCategory] =
         useQuery<DataCategory>(

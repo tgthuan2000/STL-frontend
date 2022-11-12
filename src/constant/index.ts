@@ -1,3 +1,10 @@
-export const DATE_FORMAT = 'DD/MM/YYYY'
-export const TIME_FORMAT = 'HH:mm'
-export const DATE_TIME_FORMAT = 'DD/MM/YYYY HH:mm'
+export enum DATE_FORMAT {
+    DATE = 'dd/MM/yyyy',
+    D_DATE = 'DD/MM/YYYY',
+    TIME = 'HH:mm',
+    DATE_TIME = 'dd/MM/yyyy HH:mm',
+    D_DATE_TIME = 'DD/MM/YYYY HH:mm',
+    WEEK = 'w',
+    MONTH = 'MM/yyyy',
+    YEAR = 'yyyy',
+}

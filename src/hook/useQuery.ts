@@ -22,7 +22,7 @@ const assignLoading = <T extends { [x: string]: string }>(prev: Data<T>) => {
 
 const useQuery = <T extends { [x: string]: any }>(
     query: { [Property in keyof T]: string },
-    params: { [y: string]: string | number } = {}
+    params: { [y: string]: string | number | string[] } = {}
 ): useQueryType<T> => {
     const { fetchApi, deleteCache, checkInCache } = useCache()
     const queryRef = useRef(query)

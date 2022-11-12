@@ -39,7 +39,7 @@ interface IData {
 const Dashboard = () => {
     const { width } = useWindowSize()
     const { userProfile } = useAuth()
-    const { kindSpending, getKindSpendingId } = useConfig()
+    const { kindSpending, getKindSpendingId, getKindSpendingIds } = useConfig()
     const wrapRef = useScrollIntoView<HTMLDivElement>()
     const [{ method, recent, statistic }, fetchData, deleteCache, reload] = useQuery<IData>(
         {
@@ -50,6 +50,7 @@ const Dashboard = () => {
         },
         {
             userId: userProfile?._id as string,
+            kindSpendingIds: getKindSpendingIds('COST', 'RECEIVE', 'TRANSFER_FROM', 'TRANSFER_TO'),
             from: 0,
             to: 5,
             startDate: getDate('start'),
@@ -92,7 +93,7 @@ const Dashboard = () => {
         )
         const surplus = _.receive - _.cost
         return {
-            dateRange: ['start', 'end'].map((value) => moment(getDate(value as any)).format(DATE_FORMAT)),
+            dateRange: ['start', 'end'].map((value) => moment(getDate(value as any)).format(DATE_FORMAT.D_DATE)),
             data: [
                 {
                     _id: getKindSpendingId('RECEIVE') as string,
@@ -130,7 +131,7 @@ const Dashboard = () => {
                 </div>
             )}
 
-            <Divider className='xl:hidden py-6' />
+            <Divider className='xl:hidden py-6' dashed />
 
             {/* Show analytics */}
             <Box>
@@ -146,7 +147,7 @@ const Dashboard = () => {
                 </Box.Content>
                 <Box.Content
                     title='Giao dịch gần đây'
-                    to='transaction/tab-all'
+                    to='transaction'
                     onReload={handleReload}
                     loading={recent.loading}
                     fullWidth

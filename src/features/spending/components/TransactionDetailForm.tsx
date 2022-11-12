@@ -73,7 +73,7 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                             navigate(-1)
                         }}
                     />
-                    <h4 className='xl:text-2xl text-xl font-semibold'>Cập nhật giao dịch</h4>
+                    <h4 className='xl:text-2xl text-xl font-semibold'>Chi tiết giao dịch</h4>
                 </div>
                 {[
                     KIND_SPENDING.COST,

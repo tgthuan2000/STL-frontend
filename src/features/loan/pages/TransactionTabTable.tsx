@@ -14,7 +14,7 @@ import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import useAuth from '~/store/auth'
 import { getLinkSpending } from '~/utils'
-import { Filter } from '../components'
+// import { Filter } from '../components'
 
 interface TransactionTabTableProps {
     query: { recent: string }
@@ -31,7 +31,7 @@ const TransactionTabTable = ({ query, params = {} }: TransactionTabTableProps) =
         recent: ISpendingData[]
     }>(query, {
         userId: userProfile?._id as string,
-        kindSpendingIds: getKindSpendingIds('COST', 'RECEIVE', 'TRANSFER_FROM', 'TRANSFER_TO'),
+        kindSpendingIds: getKindSpendingIds('GET_LOAN', 'LOAN'),
         ...params,
     })
 
@@ -51,7 +51,7 @@ const TransactionTabTable = ({ query, params = {} }: TransactionTabTableProps) =
                 <div className='mt-4 flex flex-col'>
                     <div className='-my-2 -mx-4 sm:-mx-6 lg:-mx-8'>
                         <div className='flex justify-between items-center h-12'>
-                            <Filter />
+                            {/* <Filter type={type} /> */}
                             {width > 768 && (
                                 <div className='mr-3'>
                                     <LoadingButton onReload={onReload} disabled={recent.loading} />
@@ -150,29 +150,31 @@ const MainTable = ({ data }: MainTableProps) => {
                                     </h3>
                                 </td>
                                 <td className='flex items-center justify-center gap-x-2 px-1 pt-4 text-center truncate'>
+                                    <span
+                                        className={clsx(
+                                            'inline-block h-1.5 w-1.5 rounded-full',
+                                            paid ? 'bg-green-500' : 'bg-radical-red-500'
+                                        )}
+                                    />
                                     <p className='text-sm font-medium text-gray-900'>
                                         {categorySpending?.name ?? kindSpending.name}
                                     </p>
                                 </td>
                                 <td className={clsx('whitespace-nowrap px-1 pt-4 text-sm text-center')}>
-                                    {[KIND_SPENDING.RECEIVE, KIND_SPENDING.TRANSFER_TO].includes(kindSpending.key) && (
-                                        <NumberFormat
-                                            className={clsx('text-green-500', 'font-medium')}
-                                            value={amount}
-                                            displayType='text'
-                                            thousandSeparator
-                                        />
-                                    )}
+                                    <NumberFormat
+                                        className={clsx('text-green-500', 'font-medium')}
+                                        value={KIND_SPENDING.GET_LOAN ? amount : realPaid}
+                                        displayType='text'
+                                        thousandSeparator
+                                    />
                                 </td>
                                 <td className={clsx('whitespace-nowrap pl-1 pr-2 pt-4 text-sm text-center')}>
-                                    {[KIND_SPENDING.COST, KIND_SPENDING.TRANSFER_FROM].includes(kindSpending.key) && (
-                                        <NumberFormat
-                                            className={clsx('text-red-500', 'font-medium')}
-                                            value={KIND_SPENDING.GET_LOAN ? realPaid : amount}
-                                            displayType='text'
-                                            thousandSeparator
-                                        />
-                                    )}
+                                    <NumberFormat
+                                        className={clsx('text-red-500', 'font-medium')}
+                                        value={KIND_SPENDING.GET_LOAN ? realPaid : amount}
+                                        displayType='text'
+                                        thousandSeparator
+                                    />
                                 </td>
                             </tr>
                             <tr onClick={() => navigate(to)}>

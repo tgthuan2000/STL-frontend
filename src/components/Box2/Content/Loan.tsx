@@ -6,7 +6,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { ContentLoanBox2Props } from '~/@types/components'
 import AvatarUser from '~/components/AvatarUser'
-import { DATE_TIME_FORMAT } from '~/constant'
+import { DATE_FORMAT } from '~/constant'
 
 const Content: React.FC<ContentLoanBox2Props> = ({ data, loading }) => {
     if (loading) return <Skeleton />
@@ -55,7 +55,7 @@ const Content: React.FC<ContentLoanBox2Props> = ({ data, loading }) => {
 
                         <span className='truncate flex-1 max-w-[150px]'>{item.userLoan?.userName}</span>
                         <span title='Hạn trả' className={clsx('font-normal truncate', date?.color)}>
-                            {isHavePayDate && moment(item.date).format(DATE_TIME_FORMAT) + ' - '} {date?.message}
+                            {isHavePayDate && moment(item.date).format(DATE_FORMAT.DATE_TIME) + ' - '} {date?.message}
                         </span>
                         <span className={clsx('font-normal', item.amount > 0 ? 'text-green-500' : 'text-red-500')}>
                             {numeral(item.amount).format()}

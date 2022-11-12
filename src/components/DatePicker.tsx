@@ -5,12 +5,13 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { useWindowSize } from '~/hook'
 import moment from 'moment'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { Controller, ControllerRenderProps, FieldError, UseFormReturn } from 'react-hook-form'
+import { Controller, ControllerRenderProps, FieldError } from 'react-hook-form'
 import clsx from 'clsx'
 import { XIcon } from '@heroicons/react/outline'
+import { DATE_FORMAT } from '~/constant'
 
 const DatePicker = forwardRef<ReactDatePicker<never, undefined>, DateProps>(
-    ({ name, form, rules, label, disabledClear, ...props }, ref) => {
+    ({ name, form, rules, label, disabledClear, format = 'DATE_TIME', onChange, ...props }, ref) => {
         const { width } = useWindowSize()
 
         const inputProps = {
@@ -24,7 +25,7 @@ const DatePicker = forwardRef<ReactDatePicker<never, undefined>, DateProps>(
                 rules={rules}
                 render={({ field, fieldState: { error } }) => (
                     <DP
-                        dateFormat='dd/MM/yyyy HH:mm'
+                        dateFormat={DATE_FORMAT[format]}
                         timeInputLabel='Time:'
                         showTimeInput
                         withPortal={width <= 768}
@@ -44,6 +45,10 @@ const DatePicker = forwardRef<ReactDatePicker<never, undefined>, DateProps>(
                             />
                         }
                         {...field}
+                        onChange={(date) => {
+                            field.onChange(date)
+                            onChange?.(date)
+                        }}
                         {...props}
                     />
                 )}

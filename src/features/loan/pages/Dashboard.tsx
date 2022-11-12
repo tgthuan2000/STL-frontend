@@ -64,7 +64,7 @@ const Dashboard = () => {
                 </div>
             )}
 
-            <Divider className='xl:hidden py-6' />
+            <Divider className='xl:hidden py-6' dashed />
 
             {/* Show user */}
             <div className='space-y-6'>

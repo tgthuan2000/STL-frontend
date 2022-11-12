@@ -1,7 +1,9 @@
 import { ArrowSmLeftIcon } from '@heroicons/react/outline'
 import React from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useScrollIntoView } from '~/hook'
+import { GETALL_RECENT_SPENDING } from '~/schema/query/spending'
+import TransactionTabTable from './TransactionTabTable'
 
 interface TransactionProps {
     title?: string
@@ -22,7 +24,7 @@ const Transaction: React.FC<TransactionProps> = ({ title = 'Title tab' }) => {
                 <h4 className='xl:text-2xl text-xl font-semibold'>{title}</h4>
             </div>
             <div>
-                <Outlet />
+                <TransactionTabTable query={{ recent: GETALL_RECENT_SPENDING }} />
             </div>
         </div>
     )
