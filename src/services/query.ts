@@ -9,13 +9,16 @@ import {
     GET_RECENT_SPENDING,
     GET_STATISTIC_SPENDING,
 } from '~/schema/query/spending'
-import { getDate } from '.'
+import { getDateOfMonth } from '.'
 
-interface GetCategorySpending<T> {
+interface GetCategorySpending<T extends Record<string, any>> {
     userProfile: SanityDocument<T> | null
     kindSpending: string
 }
-export const getCategorySpending = <T>({ userProfile, kindSpending }: GetCategorySpending<T>) => {
+export const getCategorySpending = <T extends Record<string, any>>({
+    userProfile,
+    kindSpending,
+}: GetCategorySpending<T>) => {
     return {
         categorySpending: GET_CATEGORY_SPENDING,
         params: { userId: userProfile?._id, kindSpending },
@@ -23,10 +26,12 @@ export const getCategorySpending = <T>({ userProfile, kindSpending }: GetCategor
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-interface GetMethodKindSpending<T> {
+interface GetMethodKindSpending<T extends Record<string, any>> {
     userProfile: SanityDocument<T> | null
 }
-export const getMethodSpendingDescSurplus = <T>({ userProfile }: GetMethodKindSpending<T>) => {
+export const getMethodSpendingDescSurplus = <T extends Record<string, any>>({
+    userProfile,
+}: GetMethodKindSpending<T>) => {
     return {
         method: GET_METHOD_SPENDING_DESC_SURPLUS,
         params: { userId: userProfile?._id },
@@ -34,10 +39,10 @@ export const getMethodSpendingDescSurplus = <T>({ userProfile }: GetMethodKindSp
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-interface GetMethodSpending<T> {
+interface GetMethodSpending<T extends Record<string, any>> {
     userProfile: SanityDocument<T> | null
 }
-export const getMethodSpending = <T>({ userProfile }: GetMethodSpending<T>) => {
+export const getMethodSpending = <T extends Record<string, any>>({ userProfile }: GetMethodSpending<T>) => {
     return {
         methodSpending: GET_METHOD_SPENDING,
         params: { userId: userProfile?._id },
@@ -45,21 +50,21 @@ export const getMethodSpending = <T>({ userProfile }: GetMethodSpending<T>) => {
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-interface GetStatisticSpending<T> {
+interface GetStatisticSpending<T extends Record<string, any>> {
     userProfile: SanityDocument<T> | null
 }
-export const getStatisticSpending = <T>({ userProfile }: GetStatisticSpending<T>) => {
+export const getStatisticSpending = <T extends Record<string, any>>({ userProfile }: GetStatisticSpending<T>) => {
     return {
         statistic: GET_STATISTIC_SPENDING,
-        params: { userId: userProfile?._id, startDate: getDate('start'), endDate: getDate('end') },
+        params: { userId: userProfile?._id, startDate: getDateOfMonth('start'), endDate: getDateOfMonth('end') },
     }
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-interface GetRecentSpending<T> {
+interface GetRecentSpending<T extends Record<string, any>> {
     userProfile: SanityDocument<T> | null
 }
-export const getRecentSpending = <T>({ userProfile }: GetRecentSpending<T>) => {
+export const getRecentSpending = <T extends Record<string, any>>({ userProfile }: GetRecentSpending<T>) => {
     return {
         recent: GET_RECENT_SPENDING,
         params: { userId: userProfile?._id, from: 0, to: 5 },
@@ -67,10 +72,10 @@ export const getRecentSpending = <T>({ userProfile }: GetRecentSpending<T>) => {
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-interface GetAllRecentSpending<T> {
+interface GetAllRecentSpending<T extends Record<string, any>> {
     userProfile: SanityDocument<T> | null
 }
-export const getAllRecentSpending = <T>({ userProfile }: GetAllRecentSpending<T>) => {
+export const getAllRecentSpending = <T extends Record<string, any>>({ userProfile }: GetAllRecentSpending<T>) => {
     return {
         recent: GETALL_RECENT_SPENDING,
         params: { userId: userProfile?._id },
@@ -79,12 +84,16 @@ export const getAllRecentSpending = <T>({ userProfile }: GetAllRecentSpending<T>
 
 // ---------------------------------------------------------------------------------------------------------------------
 // LOAN
-interface GetRecentLoan<T> {
+interface GetRecentLoan<T extends Record<string, any>> {
     userProfile: SanityDocument<T> | null
     kindLoan: string
     kindGetLoan: string
 }
-export const getRecentLoan = <T>({ userProfile, kindLoan, kindGetLoan }: GetRecentLoan<T>) => {
+export const getRecentLoan = <T extends Record<string, any>>({
+    userProfile,
+    kindLoan,
+    kindGetLoan,
+}: GetRecentLoan<T>) => {
     return {
         recent: GET_RECENT_LOAN,
         params: { userId: userProfile?._id, from: 0, to: 10, kindLoan, kindGetLoan },
@@ -92,12 +101,16 @@ export const getRecentLoan = <T>({ userProfile, kindLoan, kindGetLoan }: GetRece
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-interface GetPayDueLoan<T> {
+interface GetPayDueLoan<T extends Record<string, any>> {
     userProfile: SanityDocument<T> | null
     kindLoan: string
     kindGetLoan: string
 }
-export const getPayDueLoan = <T>({ userProfile, kindLoan, kindGetLoan }: GetPayDueLoan<T>) => {
+export const getPayDueLoan = <T extends Record<string, any>>({
+    userProfile,
+    kindLoan,
+    kindGetLoan,
+}: GetPayDueLoan<T>) => {
     return {
         recent: GET_PAY_DUE_LOAN,
         params: {
@@ -111,10 +124,10 @@ export const getPayDueLoan = <T>({ userProfile, kindLoan, kindGetLoan }: GetPayD
     }
 }
 // ---------------------------------------------------------------------------------------------------------------------
-interface GetStatisticLoan<T> {
+interface GetStatisticLoan<T extends Record<string, any>> {
     userProfile: SanityDocument<T> | null
 }
-export const getStatisticLoan = <T>({ userProfile }: GetStatisticLoan<T>) => {
+export const getStatisticLoan = <T extends Record<string, any>>({ userProfile }: GetStatisticLoan<T>) => {
     return {
         recent: GET_STATISTIC_LOAN,
         params: {

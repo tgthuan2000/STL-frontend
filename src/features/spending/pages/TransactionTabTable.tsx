@@ -2,38 +2,50 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
-import { Fragment, useEffect } from 'react'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 import NumberFormat from 'react-number-format'
 import { useNavigate } from 'react-router-dom'
 import { ISpendingData } from '~/@types/spending'
 import { TimeFilter } from '~/components'
 import LoadingButton from '~/components/Loading/LoadingButton'
+import { TimeFilterPayload } from '~/components/TimeFilter'
 import { DATE_FORMAT } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
-import { TEMPLATE } from '~/constant/template'
+import { E_FILTER_DATE, TEMPLATE } from '~/constant/template'
 import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
+import { ParamsTypeUseQuery, QueryTypeUseQuery } from '~/hook/useQuery'
+import { GETALL_RECENT_SPENDING, GETALL_RECENT_SPENDING_FILTER_DATE_RANGE } from '~/schema/query/spending'
+import { getDate } from '~/services'
 import useAuth from '~/store/auth'
 import { getLinkSpending } from '~/utils'
 
-interface TransactionTabTableProps {
-    query: { recent: string }
-    params?: { [x: string]: string | number }
+interface IRecent {
+    recent: ISpendingData[]
 }
 
-const TransactionTabTable = ({ query, params = {} }: TransactionTabTableProps) => {
+const TransactionTabTable = () => {
     const { userProfile } = useAuth()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
     const { width } = useWindowSize()
     const { getKindSpendingIds } = useConfig()
 
-    const [{ recent }, fetchData, deleteCacheData, reload] = useQuery<{
-        recent: ISpendingData[]
-    }>(query, {
-        userId: userProfile?._id as string,
-        kindSpendingIds: getKindSpendingIds('COST', 'RECEIVE', 'TRANSFER_FROM', 'TRANSFER_TO'),
-        ...params,
-    })
+    const defaultValues = useMemo(
+        () => ({
+            query: { recent: GETALL_RECENT_SPENDING },
+            params: {
+                userId: userProfile?._id as string,
+                kindSpendingIds: getKindSpendingIds('COST', 'RECEIVE', 'TRANSFER_FROM', 'TRANSFER_TO'),
+            },
+        }),
+        []
+    )
+
+    const [{ query, params }, setQuery] = useState<{ query: QueryTypeUseQuery<IRecent>; params: ParamsTypeUseQuery }>(
+        defaultValues
+    )
+
+    const [{ recent }, fetchData, deleteCacheData, reload] = useQuery<IRecent>(query, params)
 
     useEffect(() => {
         fetchData()
@@ -45,7 +57,58 @@ const TransactionTabTable = ({ query, params = {} }: TransactionTabTableProps) =
         reload()
     }
 
-    const handleFilterSubmit = () => {}
+    const handleFilterSubmit = (data: TimeFilterPayload) => {
+        switch (data.id) {
+            case E_FILTER_DATE.ALL:
+                setQuery(defaultValues)
+                break
+            case E_FILTER_DATE.DATE:
+                const date = data.data as Date
+                setQuery({
+                    query: { recent: GETALL_RECENT_SPENDING_FILTER_DATE_RANGE },
+                    params: {
+                        ...defaultValues.params,
+                        startDate: getDate(date, 'start'),
+                        endDate: getDate(date, 'end'),
+                    },
+                })
+                break
+            case E_FILTER_DATE.DATE_RANGE:
+                const [startDate, endDate] = data.data as Date[]
+                setQuery({
+                    query: { recent: GETALL_RECENT_SPENDING_FILTER_DATE_RANGE },
+                    params: {
+                        ...defaultValues.params,
+                        startDate: getDate(startDate, 'start'),
+                        endDate: getDate(endDate, 'end'),
+                    },
+                })
+                break
+            case E_FILTER_DATE.MONTH:
+                const month = data.data as Date
+                setQuery({
+                    query: { recent: GETALL_RECENT_SPENDING_FILTER_DATE_RANGE },
+                    params: {
+                        ...defaultValues.params,
+                        startDate: getDate(month, 'start', 'month'),
+                        endDate: getDate(month, 'end', 'month'),
+                    },
+                })
+                break
+            case E_FILTER_DATE.YEAR:
+                const year = data.data as Date
+                setQuery({
+                    query: { recent: GETALL_RECENT_SPENDING_FILTER_DATE_RANGE },
+                    params: {
+                        ...defaultValues.params,
+                        startDate: getDate(year, 'start', 'year'),
+                        endDate: getDate(year, 'end', 'year'),
+                    },
+                })
+                break
+        }
+        reload()
+    }
 
     return (
         <>

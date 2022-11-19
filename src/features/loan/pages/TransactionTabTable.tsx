@@ -6,22 +6,18 @@ import { Fragment, useEffect } from 'react'
 import NumberFormat from 'react-number-format'
 import { useNavigate } from 'react-router-dom'
 import { ISpendingData } from '~/@types/spending'
+import { TimeFilter } from '~/components'
 import LoadingButton from '~/components/Loading/LoadingButton'
 import { DATE_FORMAT } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { TEMPLATE } from '~/constant/template'
 import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
+import { GETALL_RECENT_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 import { getLinkSpending } from '~/utils'
-// import { Filter } from '../components'
 
-interface TransactionTabTableProps {
-    query: { recent: string }
-    params?: { [x: string]: string | number }
-}
-
-const TransactionTabTable = ({ query, params = {} }: TransactionTabTableProps) => {
+const TransactionTabTable = () => {
     const { userProfile } = useAuth()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
     const { width } = useWindowSize()
@@ -29,11 +25,13 @@ const TransactionTabTable = ({ query, params = {} }: TransactionTabTableProps) =
 
     const [{ recent }, fetchData, deleteCacheData, reload] = useQuery<{
         recent: ISpendingData[]
-    }>(query, {
-        userId: userProfile?._id as string,
-        kindSpendingIds: getKindSpendingIds('GET_LOAN', 'LOAN'),
-        ...params,
-    })
+    }>(
+        { recent: GETALL_RECENT_SPENDING },
+        {
+            userId: userProfile?._id as string,
+            kindSpendingIds: getKindSpendingIds('GET_LOAN', 'LOAN'),
+        }
+    )
 
     useEffect(() => {
         fetchData()
@@ -45,13 +43,16 @@ const TransactionTabTable = ({ query, params = {} }: TransactionTabTableProps) =
         reload()
     }
 
+    const handleFilterSubmit = () => {}
+
     return (
         <>
             <div className='sm:px-6 lg:px-8'>
                 <div className='mt-4 flex flex-col'>
                     <div className='-my-2 -mx-4 sm:-mx-6 lg:-mx-8'>
                         <div className='flex justify-between items-center h-12'>
-                            {/* <Filter type={type} /> */}
+                            <TimeFilter onSubmit={handleFilterSubmit} />
+
                             {width > 768 && (
                                 <div className='mr-3'>
                                     <LoadingButton onReload={onReload} disabled={recent.loading} />

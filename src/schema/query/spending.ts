@@ -21,6 +21,29 @@ export const GETALL_RECENT_SPENDING = groq`
         date
     }
 `
+
+export const GETALL_RECENT_SPENDING_FILTER_DATE_RANGE = groq`
+    *[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && $startDate <= date && date <= $endDate] | order(_updatedAt desc)
+    {
+        _id,
+        categorySpending-> {
+            name
+        },
+        methodSpending-> {
+            name
+        },
+        kindSpending-> {
+            name,
+            key
+        },
+        description,
+        amount,
+        realPaid,
+        paid,
+        date
+    }
+`
+
 export const GET_RECENT_SPENDING = groq`
     *[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds] | order(_updatedAt desc)[$from...$to]
     {

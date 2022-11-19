@@ -8,7 +8,7 @@ import { menuMobile } from '~/constant/components'
 import { useConfig } from '~/context'
 import { useScrollIntoView, useQuery, useWindowSize } from '~/hook'
 import { GET_METHOD_SPENDING_DESC_SURPLUS, GET_RECENT_SPENDING, GET_STATISTIC_SPENDING } from '~/schema/query/spending'
-import { getDate } from '~/services'
+import { getDateOfMonth } from '~/services'
 import useAuth from '~/store/auth'
 import { sum } from '~/services'
 import { Method, Recent, Statistic } from '../components'
@@ -53,8 +53,8 @@ const Dashboard = () => {
             kindSpendingIds: getKindSpendingIds('COST', 'RECEIVE', 'TRANSFER_FROM', 'TRANSFER_TO'),
             from: 0,
             to: 5,
-            startDate: getDate('start'),
-            endDate: getDate('end'),
+            startDate: getDateOfMonth('start'),
+            endDate: getDateOfMonth('end'),
         }
     )
     useEffect(() => {
@@ -93,7 +93,7 @@ const Dashboard = () => {
         )
         const surplus = _.receive - _.cost
         return {
-            dateRange: ['start', 'end'].map((value) => moment(getDate(value as any)).format(DATE_FORMAT.D_DATE)),
+            dateRange: ['start', 'end'].map((value) => moment(getDateOfMonth(value as any)).format(DATE_FORMAT.D_DATE)),
             data: [
                 {
                     _id: getKindSpendingId('RECEIVE') as string,
