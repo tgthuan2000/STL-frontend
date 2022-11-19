@@ -12,7 +12,7 @@ import { DATE_FORMAT } from '~/constant'
 import './index.css'
 
 const DatePicker = forwardRef<ReactDatePicker<never, undefined>, DateProps>(
-    ({ name, form, rules, label, disabledClear, format = 'DATE_TIME', onChange, ...props }, ref) => {
+    ({ name, form, rules, label, disabledClear, format = 'DATE_TIME', onChange, InputProps, ...props }, ref) => {
         const { width } = useWindowSize()
 
         const inputProps = {
@@ -41,8 +41,9 @@ const DatePicker = forwardRef<ReactDatePicker<never, undefined>, DateProps>(
                                 error={error}
                                 label={label}
                                 disabledClear={disabledClear}
-                                {...inputProps}
                                 field={field}
+                                readOnlyInput={width <= 768}
+                                {...inputProps}
                             />
                         }
                         {...field}
@@ -60,17 +61,18 @@ const DatePicker = forwardRef<ReactDatePicker<never, undefined>, DateProps>(
 
 export default DatePicker
 
-export interface InputProps {
+export interface DatePickerInputProps {
     error?: FieldError
     label?: string
     className?: string
     disabledClear?: boolean
     disabled?: boolean
     field: ControllerRenderProps<any, string>
+    readOnlyInput?: boolean
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
-    ({ label, error, className, disabledClear, disabled, field, ...props }, ref) => {
+const Input = forwardRef<HTMLInputElement, DatePickerInputProps>(
+    ({ label, error, className, disabledClear, disabled, field, readOnlyInput, ...props }, ref) => {
         const id = useId()
         const [closeRef] = useAutoAnimate<HTMLSpanElement>()
         const [parent] = useAutoAnimate<HTMLDivElement>()
@@ -93,7 +95,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                             'block h-10 p-2 w-full rounded-md border border-gray-300 shadow-sm font-light',
                             className
                         )}
+                        disabled={disabled}
                         {...props}
+                        readOnly={readOnlyInput}
                     />
                     {!disabledClear && !disabled && (
                         <span
