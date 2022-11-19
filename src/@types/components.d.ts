@@ -80,6 +80,9 @@ export interface DateProps {
     selectsRange?: boolean
     startDate?: Date
     endDate?: Date
+    InputProps?: {
+        readOnly?: boolean
+    }
 }
 export interface TextAreaProps {
     className?: string
