@@ -1,11 +1,18 @@
 import { isEmpty } from 'lodash'
 import moment from 'moment'
 
-export const getDate = (type: 'start' | 'end' = 'start') => {
+export const getDateOfMonth = (type: 'start' | 'end' = 'start') => {
     if (type === 'start') {
         return moment().utc(true).startOf('month').toISOString()
     }
     return moment().utc(true).endOf('month').toISOString()
+}
+
+export const getDate = (date: Date, type: 'start' | 'end' = 'start', of: moment.unitOfTime.StartOf = 'day') => {
+    if (type === 'start') {
+        return moment(date).utc(true).startOf(of).toISOString()
+    }
+    return moment(date).utc(true).endOf(of).toISOString()
 }
 
 export const sum = (arr: number[]) => {

@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useConfig } from '~/context'
 import { GET_METHOD_SPENDING_DESC_SURPLUS } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
@@ -11,12 +10,7 @@ import { BarSvgProps, ComputedDatum, ResponsiveBar } from '@nivo/bar'
 import numeral from 'numeral'
 import { TEMPLATE } from '~/constant/template'
 
-interface MethodProps {
-    query: { recent: string }
-    params?: { [x: string]: string | number }
-}
-
-const Method: React.FC<MethodProps> = ({ query, params = {} }) => {
+const Method = () => {
     const { kindSpending } = useConfig()
     const { userProfile } = useAuth()
     const [parent] = useAutoAnimate<HTMLDivElement>()

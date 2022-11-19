@@ -159,6 +159,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                                     e.stopPropagation()
                                                     setSelectedItem(null)
                                                     field.onChange(null)
+                                                    onChange?.(null)
                                                 }}
                                                 className={
                                                     'h-5 w-5 text-gray-400 transition-colors hover:text-gray-500'

@@ -6,18 +6,23 @@ import * as yup from 'yup'
 import { E_FILTER_DATE, IFILTER_DATE, TABS_FILTER_DATE } from '~/constant/template'
 import { find, get, isEmpty } from 'lodash'
 import clsx from 'clsx'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 type DateRange = [Date, Date]
 type FilterDateType = 'isDateRangeFilter' | 'isDateFilter' | 'isMonthFilter' | 'isYearFilter'
 interface TimeFilterProps {
-    onSubmit: (data: { type: 'dateRange' | 'date' | 'month' | 'year'; data: any } | {}) => void
+    onSubmit: (data: TimeFilterPayload) => void
 }
 interface IFilterDate {
-    date: Date | null
-    month: Date | null
-    year: Date | null
-    dateRange: DateRange | null
+    date?: Date | null
+    month?: Date | null
+    year?: Date | null
+    dateRange?: DateRange | null
     filter: IFILTER_DATE | null
+}
+export type TimeFilterPayload = {
+    id: number
+    data: Date | DateRange | null | undefined
 }
 
 const schema = yup.object().shape({
@@ -25,41 +30,51 @@ const schema = yup.object().shape({
     month: yup.date().nullable(),
     year: yup.date().nullable(),
     dateRange: yup.array().of(yup.date().nullable()).nullable(),
-    filter: yup.object(),
+    filter: yup.object().nullable(),
 })
 
 const defaultValues = {
     date: new Date(),
-    filter: TABS_FILTER_DATE[0],
+    month: new Date(),
+    year: new Date(),
+    filter: null,
 }
 
 const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit }) => {
+    const [parent] = useAutoAnimate<HTMLDivElement>()
     const form = useForm<IFilterDate>({
         defaultValues,
         resolver: yupResolver(schema),
     })
 
-    const onsubmit = (data: IFilterDate) => {
-        let payload = {}
-        const { filter, date, dateRange, month, year } = data
-        switch (filter?.id) {
+    const onsubmit = () => {
+        let payload: TimeFilterPayload | null = null
+
+        const { filter, date, dateRange, month, year } = form.watch()
+        const id = get(filter, 'id')
+
+        switch (id) {
             case E_FILTER_DATE.DATE_RANGE:
-                payload = { type: 'dateRange', data: dateRange }
+                if (isValidDateRange(dateRange)) payload = { id, data: dateRange }
                 break
             case E_FILTER_DATE.DATE:
-                payload = { type: 'date', data: date }
+                if (date) payload = { id, data: date }
                 break
             case E_FILTER_DATE.MONTH:
-                payload = { type: 'month', data: month }
+                if (month) payload = { id, data: month }
                 break
             case E_FILTER_DATE.YEAR:
-                payload = { type: 'year', data: year }
+                if (year) payload = { id, data: year }
                 break
             default:
+                payload = {
+                    id: E_FILTER_DATE.ALL,
+                    data: null,
+                }
                 break
         }
-        if (!isEmpty(payload)) onSubmit(payload) // call api
-        else console.log(payload) // log
+
+        if (!isEmpty(payload)) onSubmit(payload as TimeFilterPayload)
     }
 
     const filter = form.watch('filter')
@@ -78,13 +93,14 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit }) => {
         }
 
         const fields: {
-            [key in E_FILTER_DATE]: FilterDateType
+            [key in E_FILTER_DATE]?: FilterDateType
         } = {
             [E_FILTER_DATE.DATE_RANGE]: 'isDateRangeFilter',
             [E_FILTER_DATE.DATE]: 'isDateFilter',
             [E_FILTER_DATE.MONTH]: 'isMonthFilter',
             [E_FILTER_DATE.YEAR]: 'isYearFilter',
         }
+
         if (filter?.id) {
             const field = fields[filter.id]
             if (field && result.hasOwnProperty(field)) {
@@ -95,6 +111,12 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit }) => {
         return result
     }, [filter])
 
+    const isValidDateRange = (dateRange: DateRange | null | undefined) => {
+        if (!dateRange) return false
+        if (dateRange.some((date) => date === null)) return false
+        return true
+    }
+
     const props = useMemo(() => {
         if (!isDateRangeFilter) return {}
         return {
@@ -102,8 +124,7 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit }) => {
             startDate: get(dateRange, '[0]', null),
             endDate: get(dateRange, '[1]', null),
             onChange: (dateRange: DateRange) => {
-                if (dateRange.some((date) => date === null)) return
-                form.handleSubmit(onsubmit)(dateRange as any)
+                return isValidDateRange(dateRange) && form.handleSubmit(onsubmit)(dateRange as any)
             },
         }
     }, [isDateRangeFilter, dateRange])
@@ -117,21 +138,26 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit }) => {
                 form={form}
                 data={TABS_FILTER_DATE}
                 label='Bộ lọc'
-                disabledClear
+                onChange={form.handleSubmit(onsubmit)}
             />
-            <div className={clsx(isDateRangeFilter ? 'min-w-[300px]' : 'min-w-[200px]')}>
-                <DatePicker
-                    showTimeInput={false}
-                    form={form}
-                    name={get(filterTab, 'name', 'dateRange')}
-                    onChange={form.handleSubmit(onsubmit)}
-                    showMonthYearPicker={isMonthFilter}
-                    showYearPicker={isYearFilter}
-                    label={get(filterTab, 'dateName', 'Bộ lọc')}
-                    placeholderText='Chọn thời gian'
-                    format={get(filterTab, 'formatDate', 'DATE')}
-                    {...props}
-                />
+            <div ref={parent}>
+                {filterTab && (
+                    <div className={clsx(isDateRangeFilter ? 'min-w-[300px]' : 'min-w-[200px]')}>
+                        <DatePicker
+                            showTimeInput={false}
+                            form={form}
+                            name={get(filterTab, 'name', 'dateRange')}
+                            onChange={form.handleSubmit(onsubmit)}
+                            showMonthYearPicker={isMonthFilter}
+                            showYearPicker={isYearFilter}
+                            label={get(filterTab, 'dateName', 'Bộ lọc')}
+                            placeholderText='Chọn thời gian'
+                            format={get(filterTab, 'formatDate', 'DATE')}
+                            disabledClear
+                            {...props}
+                        />
+                    </div>
+                )}
             </div>
         </div>
     )

@@ -9,6 +9,7 @@ export const TEMPLATE = {
 }
 
 export enum E_FILTER_DATE {
+    ALL = 0,
     DATE_RANGE = 1,
     DATE = 2,
     MONTH = 4,
@@ -19,7 +20,7 @@ export interface IFILTER_DATE {
     id: E_FILTER_DATE
     name: string
     labelName: string
-    dateName: string
+    dateName: string | undefined
     formatDate: keyof typeof DATE_FORMAT
 }
 

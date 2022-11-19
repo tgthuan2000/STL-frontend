@@ -3,7 +3,7 @@ export type Data<T> = {
         loading: boolean
         data: undefined | T[Property]
         query: string
-        params?: {}
+        params?: ParamsTypeUseQuery
     }
 }
 
