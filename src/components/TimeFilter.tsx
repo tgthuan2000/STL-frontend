@@ -50,9 +50,9 @@ const getDefaultValues = (searchParams: URLSearchParams) => {
             [E_FILTER_DATE.MONTH]: 'month',
             [E_FILTER_DATE.YEAR]: 'year',
         }
-        let filter = null,
-            type = searchParams.get('type'),
-            data = searchParams.get('data'),
+
+        let { type, data } = Object.fromEntries([...searchParams]),
+            filter = null,
             date = null
 
         if (type && data) {
