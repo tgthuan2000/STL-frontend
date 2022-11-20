@@ -112,6 +112,9 @@ const useQuery = <T extends { [x: string]: any }>(
 
     useEffect(() => {
         if (reload) {
+            if (error) {
+                setError(false)
+            }
             fetchData().then(() => {
                 setReload(false)
             })

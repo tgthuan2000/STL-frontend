@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { Fragment, useEffect, useMemo, useState } from 'react'
 import NumberFormat from 'react-number-format'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ISpendingData } from '~/@types/spending'
 import { TimeFilter } from '~/components'
 import LoadingButton from '~/components/Loading/LoadingButton'
@@ -23,29 +23,85 @@ import { getLinkSpending } from '~/utils'
 interface IRecent {
     recent: ISpendingData[]
 }
-
 const TransactionTabTable = () => {
     const { userProfile } = useAuth()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
     const { width } = useWindowSize()
     const { getKindSpendingIds } = useConfig()
+    const [searchParams] = useSearchParams()
 
-    const defaultValues = useMemo(
-        () => ({
+    const getAll = useMemo(() => {
+        return {
             query: { recent: GETALL_RECENT_SPENDING },
             params: {
                 userId: userProfile?._id as string,
                 kindSpendingIds: getKindSpendingIds('COST', 'RECEIVE', 'TRANSFER_FROM', 'TRANSFER_TO'),
             },
-        }),
-        []
-    )
+        }
+    }, [])
+
+    const defaultValues = useMemo(() => {
+        try {
+            let query = GETALL_RECENT_SPENDING,
+                params = {}
+
+            const d = Object.fromEntries([...searchParams])
+            if (!isEmpty(d)) {
+                query = GETALL_RECENT_SPENDING_FILTER_DATE_RANGE
+                let { type, data } = d
+                data = JSON.parse(data)
+
+                switch (Number(type)) {
+                    case E_FILTER_DATE.DATE: {
+                        params = {
+                            startDate: getDate(moment(data).toDate(), 'start'),
+                            endDate: getDate(moment(data).toDate(), 'end'),
+                        }
+                        break
+                    }
+                    case E_FILTER_DATE.DATE_RANGE: {
+                        const [startDate, endDate] = data
+                        params = {
+                            startDate: getDate(moment(startDate).toDate(), 'start'),
+                            endDate: getDate(moment(endDate).toDate(), 'end'),
+                        }
+                        break
+                    }
+                    case E_FILTER_DATE.MONTH: {
+                        params = {
+                            startDate: getDate(moment(data).toDate(), 'start', 'month'),
+                            endDate: getDate(moment(data).toDate(), 'end', 'month'),
+                        }
+                        break
+                    }
+                    case E_FILTER_DATE.YEAR: {
+                        params = {
+                            startDate: getDate(moment(data).toDate(), 'start', 'year'),
+                            endDate: getDate(moment(data).toDate(), 'end', 'year'),
+                        }
+                        break
+                    }
+                }
+            }
+            return {
+                query: { recent: query },
+                params: {
+                    userId: userProfile?._id as string,
+                    kindSpendingIds: getKindSpendingIds('COST', 'RECEIVE', 'TRANSFER_FROM', 'TRANSFER_TO'),
+                    ...params,
+                },
+            }
+        } catch (error) {
+            console.log(error)
+            return getAll
+        }
+    }, [])
 
     const [{ query, params }, setQuery] = useState<{ query: QueryTypeUseQuery<IRecent>; params: ParamsTypeUseQuery }>(
         defaultValues
     )
 
-    const [{ recent }, fetchData, deleteCacheData, reload] = useQuery<IRecent>(query, params)
+    const [{ recent }, fetchData, deleteCacheData, reload, error] = useQuery<IRecent>(query, params)
 
     useEffect(() => {
         fetchData()
@@ -60,7 +116,7 @@ const TransactionTabTable = () => {
     const handleFilterSubmit = (data: TimeFilterPayload) => {
         switch (data.id) {
             case E_FILTER_DATE.ALL:
-                setQuery(defaultValues)
+                setQuery(getAll)
                 break
             case E_FILTER_DATE.DATE:
                 const date = data.data as Date
@@ -123,52 +179,56 @@ const TransactionTabTable = () => {
                                 </div>
                             )}
                         </div>
-                        <div className='inline-block w-full py-2 align-middle'>
-                            <div className='shadow-sm ring-1 ring-black ring-opacity-5'>
-                                <table
-                                    className='table-fixed w-full overflow-hidden border-separate'
-                                    style={{ borderSpacing: 0 }}
-                                >
-                                    <thead className='bg-gray-50 select-none'>
-                                        <tr>
-                                            <th
-                                                scope='col'
-                                                className='text-center whitespace-nowrap border-b border-gray-300 bg-gray-50 bg-opacity-75 py-3.5 pl-4 pr-3 text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6 lg:pl-8'
-                                            >
-                                                Ngày
-                                            </th>
-                                            <th
-                                                scope='col'
-                                                className=' whitespace-nowrap text-center border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter'
-                                            >
-                                                Thể loại
-                                            </th>
-                                            <th
-                                                scope='col'
-                                                className='text-green-500 whitespace-nowrap text-center border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-sm font-semibold backdrop-blur backdrop-filter'
-                                            >
-                                                Thu nhập
-                                            </th>
-                                            <th
-                                                scope='col'
-                                                className='text-red-500 whitespace-nowrap text-center border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-sm font-semibold backdrop-blur backdrop-filter'
-                                            >
-                                                Chi phí
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody ref={parentRef} className='bg-white'>
-                                        {recent.loading ? (
-                                            <SkeletonTransactionTable />
-                                        ) : !recent.data || isEmpty(recent.data) ? (
-                                            <EmptyTransactionTable />
-                                        ) : (
-                                            <MainTable data={recent.data} />
-                                        )}
-                                    </tbody>
-                                </table>
+                        {error ? (
+                            <p className='m-5 text-radical-red-500 font-medium'>{TEMPLATE.ERROR}</p>
+                        ) : (
+                            <div className='inline-block w-full py-2 align-middle'>
+                                <div className='shadow-sm ring-1 ring-black ring-opacity-5'>
+                                    <table
+                                        className='table-fixed w-full overflow-hidden border-separate'
+                                        style={{ borderSpacing: 0 }}
+                                    >
+                                        <thead className='bg-gray-50 select-none'>
+                                            <tr>
+                                                <th
+                                                    scope='col'
+                                                    className='text-center whitespace-nowrap border-b border-gray-300 bg-gray-50 bg-opacity-75 py-3.5 pl-4 pr-3 text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6 lg:pl-8'
+                                                >
+                                                    Ngày
+                                                </th>
+                                                <th
+                                                    scope='col'
+                                                    className=' whitespace-nowrap text-center border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter'
+                                                >
+                                                    Thể loại
+                                                </th>
+                                                <th
+                                                    scope='col'
+                                                    className='text-green-500 whitespace-nowrap text-center border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-sm font-semibold backdrop-blur backdrop-filter'
+                                                >
+                                                    Thu nhập
+                                                </th>
+                                                <th
+                                                    scope='col'
+                                                    className='text-red-500 whitespace-nowrap text-center border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-sm font-semibold backdrop-blur backdrop-filter'
+                                                >
+                                                    Chi phí
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody ref={parentRef} className='bg-white'>
+                                            {recent.loading ? (
+                                                <SkeletonTransactionTable />
+                                            ) : !recent.data || isEmpty(recent.data) ? (
+                                                <EmptyTransactionTable />
+                                            ) : (
+                                                <MainTable data={recent.data} />
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </div>
             </div>

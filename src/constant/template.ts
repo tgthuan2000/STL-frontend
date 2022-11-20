@@ -6,6 +6,7 @@ export const TEMPLATE = {
     EMPTY_METHOD_SPENDING: 'Chưa có phương thức thanh toán',
     EMPTY_DATA: 'Không có dữ liệu',
     LOADING: 'Đang tải dữ liệu',
+    ERROR: 'Đã có lỗi xảy ra!',
 }
 
 export enum E_FILTER_DATE {
