@@ -15,7 +15,6 @@ export enum E_FILTER_DATE {
     MONTH = 4,
     YEAR = 5,
 }
-
 export interface IFILTER_DATE {
     id: E_FILTER_DATE
     name: string
@@ -28,7 +27,7 @@ export const TABS_FILTER_DATE: IFILTER_DATE[] = [
     {
         id: E_FILTER_DATE.DATE_RANGE,
         name: 'dateRange',
-        labelName: 'Khoảng ngày',
+        labelName: 'Nâng cao',
         dateName: 'Khoảng ngày',
         formatDate: 'DATE',
     },
