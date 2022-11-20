@@ -8,6 +8,7 @@ import { find, get, isEmpty } from 'lodash'
 import clsx from 'clsx'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import moment from 'moment'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 
 type DateRange = [Date, Date]
 type FilterDateType = 'isDateRangeFilter' | 'isDateFilter' | 'isMonthFilter' | 'isYearFilter'
@@ -41,6 +42,39 @@ const defaultValues = {
     filter: null,
 }
 
+const getDefaultValues = (searchParams: URLSearchParams) => {
+    try {
+        const _: { [Property in E_FILTER_DATE]?: string } = {
+            [E_FILTER_DATE.DATE]: 'date',
+            [E_FILTER_DATE.DATE_RANGE]: 'dateRange',
+            [E_FILTER_DATE.MONTH]: 'month',
+            [E_FILTER_DATE.YEAR]: 'year',
+        }
+        let filter = null,
+            type = searchParams.get('type'),
+            data = searchParams.get('data'),
+            date = null
+
+        if (type && data) {
+            type = JSON.parse(type)
+            data = JSON.parse(data)
+            filter = find(TABS_FILTER_DATE, ['id', type]) ?? null
+            const temp = type && _[Number(type) as E_FILTER_DATE]
+            if (temp) {
+                date = { [temp]: Array.isArray(data) ? data.map((d) => moment(d).toDate()) : moment(data).toDate() }
+            }
+        }
+
+        return {
+            ...defaultValues,
+            ...date,
+            filter,
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 enum E_DATE_RANGE_SUGGESTION {
     THIS_WEEK = 1,
     LAST_WEEK = 2,
@@ -52,11 +86,23 @@ const dateRangeSuggestions = [
 ]
 
 const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit }) => {
+    const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const form = useForm<IFilterDate>({
-        defaultValues,
+        defaultValues: getDefaultValues(searchParams),
         resolver: yupResolver(schema),
     })
+
+    const createParamsUrl = (params: TimeFilterPayload) => {
+        const { id, data } = params
+        const paramsUrl = new URLSearchParams()
+
+        paramsUrl.append('type', JSON.stringify(id))
+        paramsUrl.append('data', JSON.stringify(data))
+
+        navigate(`?${paramsUrl.toString()}`, { replace: true })
+    }
 
     const onsubmit = () => {
         let payload: TimeFilterPayload | null = null
@@ -85,7 +131,10 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit }) => {
                 break
         }
 
-        if (!isEmpty(payload)) onSubmit(payload as TimeFilterPayload)
+        if (!isEmpty(payload)) {
+            createParamsUrl(payload as TimeFilterPayload)
+            onSubmit(payload as TimeFilterPayload)
+        }
     }
 
     const filter = form.watch('filter')
@@ -139,7 +188,7 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit }) => {
     }
 
     const isValidDateRange = (dateRange: DateRange | null | undefined) => {
-        if (!dateRange) return false
+        if (!dateRange || isEmpty(dateRange)) return false
         if (dateRange.some((date) => date === null)) return false
         return true
     }
