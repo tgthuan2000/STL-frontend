@@ -7,6 +7,7 @@ import { E_FILTER_DATE, IFILTER_DATE, TABS_FILTER_DATE } from '~/constant/templa
 import { find, get, isEmpty } from 'lodash'
 import clsx from 'clsx'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import moment from 'moment'
 
 type DateRange = [Date, Date]
 type FilterDateType = 'isDateRangeFilter' | 'isDateFilter' | 'isMonthFilter' | 'isYearFilter'
@@ -39,6 +40,16 @@ const defaultValues = {
     year: new Date(),
     filter: null,
 }
+
+enum E_DATE_RANGE_SUGGESTION {
+    THIS_WEEK = 1,
+    LAST_WEEK = 2,
+}
+
+const dateRangeSuggestions = [
+    { id: E_DATE_RANGE_SUGGESTION.THIS_WEEK, label: 'Tuần này' },
+    { id: E_DATE_RANGE_SUGGESTION.LAST_WEEK, label: 'Tuần trước' },
+]
 
 const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit }) => {
     const [parent] = useAutoAnimate<HTMLDivElement>()
@@ -111,6 +122,22 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit }) => {
         return result
     }, [filter])
 
+    const handleSuggestionClick = (id: E_DATE_RANGE_SUGGESTION) => {
+        const _ = moment()
+        switch (id) {
+            case E_DATE_RANGE_SUGGESTION.THIS_WEEK:
+                form.setValue('dateRange', [_.startOf('isoWeek').toDate(), _.endOf('isoWeek').toDate()])
+                break
+            case E_DATE_RANGE_SUGGESTION.LAST_WEEK:
+                const __ = _.subtract(1, 'week')
+                form.setValue('dateRange', [__.startOf('isoWeek').toDate(), __.endOf('isoWeek').toDate()])
+                break
+            default:
+                break
+        }
+        form.handleSubmit(onsubmit)()
+    }
+
     const isValidDateRange = (dateRange: DateRange | null | undefined) => {
         if (!dateRange) return false
         if (dateRange.some((date) => date === null)) return false
@@ -124,13 +151,13 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit }) => {
             startDate: get(dateRange, '[0]', null),
             endDate: get(dateRange, '[1]', null),
             onChange: (dateRange: DateRange) => {
-                return isValidDateRange(dateRange) && form.handleSubmit(onsubmit)(dateRange as any)
+                return isValidDateRange(dateRange) && form.handleSubmit(onsubmit)()
             },
         }
     }, [isDateRangeFilter, dateRange])
 
     return (
-        <div className='flex flex-wrap gap-2 mx-3'>
+        <div className='mb-2 flex flex-wrap gap-2 mx-3'>
             <AutoComplete
                 idKey='id'
                 valueKey='labelName'
@@ -142,7 +169,7 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit }) => {
             />
             <div ref={parent}>
                 {filterTab && (
-                    <div className={clsx(isDateRangeFilter ? 'min-w-[300px]' : 'min-w-[200px]')}>
+                    <div className={clsx('transition-all', isDateRangeFilter ? 'min-w-[300px]' : 'min-w-[200px]')}>
                         <DatePicker
                             showTimeInput={false}
                             form={form}
@@ -153,9 +180,22 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit }) => {
                             label={get(filterTab, 'dateName', 'Bộ lọc')}
                             placeholderText='Chọn thời gian'
                             format={get(filterTab, 'formatDate', 'DATE')}
-                            disabledClear
+                            disabledClear={!isDateRangeFilter}
                             {...props}
                         />
+                    </div>
+                )}
+                {isDateRangeFilter && !form.getValues('dateRange') && (
+                    <div className='my-2 flex gap-2'>
+                        {dateRangeSuggestions.map((suggest) => (
+                            <span
+                                key={suggest.id}
+                                className='cursor-pointer rounded-full px-2 py-1 text-xs bg-slate-500 text-white hover:opacity-70 transition-opacity'
+                                onClick={() => handleSuggestionClick(suggest.id)}
+                            >
+                                {suggest.label}
+                            </span>
+                        ))}
                     </div>
                 )}
             </div>

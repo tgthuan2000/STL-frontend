@@ -26,6 +26,7 @@ const DatePicker = forwardRef<ReactDatePicker<never, undefined>, DateProps>(
                 rules={rules}
                 render={({ field, fieldState: { error } }) => (
                     <DP
+                        calendarStartDay={1} // start date is monday
                         dateFormat={DATE_FORMAT[format]}
                         timeInputLabel='Time:'
                         showTimeInput
