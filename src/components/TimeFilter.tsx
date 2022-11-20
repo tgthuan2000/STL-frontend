@@ -94,13 +94,18 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit }) => {
         resolver: yupResolver(schema),
     })
 
-    const createParamsUrl = (params: TimeFilterPayload) => {
-        const { id, data } = params
+    const createParamsUrl = (payload: TimeFilterPayload) => {
+        const { id, data } = payload
+
         const paramsUrl = new URLSearchParams()
 
-        paramsUrl.append('type', JSON.stringify(id))
-        paramsUrl.append('data', JSON.stringify(data))
-
+        if (id === E_FILTER_DATE.ALL && data === null) {
+            paramsUrl.delete('type')
+            paramsUrl.delete('data')
+        } else {
+            paramsUrl.append('type', JSON.stringify(id))
+            paramsUrl.append('data', JSON.stringify(data))
+        }
         navigate(`?${paramsUrl.toString()}`, { replace: true })
     }
 
