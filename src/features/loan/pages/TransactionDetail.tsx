@@ -142,14 +142,14 @@ const TransactionDetail = () => {
 
                 // refund surplus, countUsed for userLoan
                 if (trans.userLoan) {
-                    const patchuserLoan = client
+                    const patchUserLoan = client
                         .patch(trans.userLoan._id)
                         .setIfMissing({ surplus: 0, countUsed: 0 })
                         .dec({
                             surplus: (trans.amount as number) * condition,
                             countUsed: 1,
                         })
-                    __.patch(patchuserLoan)
+                    __.patch(patchUserLoan)
                 }
             }
 
@@ -186,7 +186,7 @@ const TransactionDetail = () => {
         transaction: trans as ISpendingData,
     }
 
-    if (transaction.loading) return <div>{TEMPLATE.LOADING}</div>
+    if (transaction.loading || methodSpending.loading) return <div>{TEMPLATE.LOADING}</div>
 
     if (isEmpty(transaction.data)) return <div>{TEMPLATE.EMPTY_DATA}</div>
 
