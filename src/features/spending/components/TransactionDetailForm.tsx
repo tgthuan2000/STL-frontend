@@ -81,12 +81,14 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                     KIND_SPENDING.TRANSFER_FROM,
                     KIND_SPENDING.TRANSFER_TO,
                 ].includes(transaction.kindSpending.key) && (
-                    <TrashIcon
-                        className='h-6 lg:h-8 w-6 lg:w-8 hover:opacity-50 text-gray-700 cursor-pointer'
+                    <span
+                        className='h-8 lg:h-9 w-8 lg:w-9 hover:opacity-50 transition-opacity text-gray-600 cursor-pointer bg-slate-200 p-1.5 rounded-lg'
                         onClick={() =>
                             window.confirm('Bạn có chắc muốn xóa giao dịch này ?') && handleDeleteTransaction()
                         }
-                    />
+                    >
+                        <TrashIcon />
+                    </span>
                 )}
             </div>
             <div className='bg-white rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>

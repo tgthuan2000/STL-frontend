@@ -1,5 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { ArrowSmLeftIcon, TrashIcon } from '@heroicons/react/outline'
+import { ArrowSmLeftIcon, TrashIcon, PencilIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
@@ -63,12 +63,22 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                 </div>
 
                 {!transaction.paid && (
-                    <TrashIcon
-                        className='h-6 lg:h-8 w-6 lg:w-8 hover:opacity-50 text-gray-700 cursor-pointer'
-                        onClick={() =>
-                            window.confirm('Bạn có chắc muốn xóa giao dịch này ?') && handleDeleteTransaction()
-                        }
-                    />
+                    <div className='flex gap-2'>
+                        <span
+                            className='h-8 lg:h-9 w-8 lg:w-9 hover:opacity-50 transition-opacity text-gray-600 cursor-pointer bg-slate-200 p-1.5 rounded-lg'
+                            onClick={() => navigate(`/loan/transaction/${transaction._id}/edit`)}
+                        >
+                            <PencilIcon />
+                        </span>
+                        <span
+                            className='h-8 lg:h-9 w-8 lg:w-9 hover:opacity-50 transition-opacity text-gray-600 cursor-pointer bg-slate-200 p-1.5 rounded-lg'
+                            onClick={() =>
+                                window.confirm('Bạn có chắc muốn xóa giao dịch này ?') && handleDeleteTransaction()
+                            }
+                        >
+                            <TrashIcon />
+                        </span>
+                    </div>
                 )}
             </div>
             <div className='bg-white rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>
@@ -172,12 +182,12 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                         </Group>
                                         {transaction.date && (
                                             <Group label='Hạn trả' className='justify-between'>
-                                                {moment(transaction.date).format(DATE_FORMAT.DATE_TIME)}
+                                                {moment(transaction.date).format(DATE_FORMAT.D_DATE_TIME)}
                                             </Group>
                                         )}
                                         {transaction.paidDate && (
                                             <Group label='Thời điểm trả' className='justify-between'>
-                                                {moment(transaction.paidDate).format(DATE_FORMAT.DATE_TIME)}
+                                                {moment(transaction.paidDate).format(DATE_FORMAT.D_DATE_TIME)}
                                             </Group>
                                         )}
 

@@ -68,6 +68,7 @@ export const GET_TRANSACTION_DETAIL = groq`
         amount,
         description,
         paid,
+        surplus,
         realPaid,
         date,
         paidDate,
@@ -79,6 +80,7 @@ export const GET_TRANSACTION_DETAIL = groq`
         methodReference-> {
             _id,
             name,
+            surplus
         },
         kindSpending-> {
             _id,

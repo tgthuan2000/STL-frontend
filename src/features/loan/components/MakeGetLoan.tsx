@@ -5,7 +5,7 @@ import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { IUserLoan } from '~/@types/loan'
-import { ICategorySpending, IMethodSpending } from '~/@types/spending'
+import { IMethodSpending } from '~/@types/spending'
 import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
 import { SlideOverHOC, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery } from '~/hook'
@@ -16,7 +16,6 @@ import useAuth from '~/store/auth'
 
 interface IMakeGetLoanForm {
     amount: number | string
-    categorySpending: ICategorySpending | null
     methodReference: IMethodSpending | null
     date: Date | null
     description: string
@@ -56,7 +55,6 @@ const MakeGetLoan = () => {
     const form = useForm<IMakeGetLoanForm>({
         defaultValues: {
             amount: '',
-            categorySpending: null,
             methodReference: null,
             date: null,
             userLoan: null,
