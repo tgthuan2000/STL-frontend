@@ -1,16 +1,22 @@
-import { useState } from 'react'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { isEmpty, isEqual } from 'lodash'
+import { useEffect, useMemo, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { IMethodSpending } from '~/@types/spending'
 import { Button, Input } from '~/components'
 import { SlideOverHOC, useCache, useLoading, useSlideOver } from '~/context'
-import { useServiceQuery } from '~/hook'
+import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
+import { GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 
 interface IAddMethodForm {
     name: string
 }
-
+interface Data {
+    methodSpending: IMethodSpending[]
+}
 const AddMethod = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
@@ -18,12 +24,21 @@ const AddMethod = () => {
     const { loading, setSubmitLoading } = useLoading()
     const { deleteCache } = useCache()
     const { METHOD_SPENDING_DESC_SURPLUS, METHOD_SPENDING } = useServiceQuery()
-
+    const [alertRef] = useAutoAnimate<HTMLDivElement>()
     const form = useForm<IAddMethodForm>({
         defaultValues: {
             name: '',
         },
     })
+
+    const [{ methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
+        { methodSpending: GET_METHOD_SPENDING },
+        { userId: userProfile?._id as string }
+    )
+
+    useEffect(() => {
+        fetchData()
+    }, [])
 
     const onsubmit: SubmitHandler<IAddMethodForm> = async (data) => {
         setSubmitLoading(true)
@@ -58,6 +73,14 @@ const AddMethod = () => {
         }
     }
 
+    const watchName = form.watch('name')
+
+    const sameMethodList = useMemo(() => {
+        return methodSpending.data?.filter((item) => {
+            return item.name.toLowerCase().includes(watchName.toLowerCase())
+        })
+    }, [watchName])
+
     return (
         <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
             <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
@@ -77,6 +100,48 @@ const AddMethod = () => {
                                 type='text'
                                 label='Tên phương thức thanh toán'
                             />
+
+                            <div ref={alertRef}>
+                                {!methodSpending.loading && watchName.length >= 2 && (
+                                    <>
+                                        {!isEmpty(sameMethodList) ? (
+                                            <>
+                                                <h4>Đang có một số phương thức gần giống tên:</h4>
+                                                <ul className='mt-1 list-disc pl-5'>
+                                                    {sameMethodList?.map((item) => {
+                                                        let component: any = <>{item.name}</>
+                                                        const index = item.name
+                                                            .toLowerCase()
+                                                            .indexOf(watchName.toLowerCase())
+                                                        if (index !== -1) {
+                                                            const start = item.name.slice(0, index)
+                                                            const middle = item.name.slice(
+                                                                index,
+                                                                index + watchName.length
+                                                            )
+                                                            const end = item.name.slice(index + watchName.length)
+                                                            component = (
+                                                                <>
+                                                                    {start}
+                                                                    <span className='font-medium text-green-600'>
+                                                                        {middle}
+                                                                    </span>
+                                                                    {end}
+                                                                </>
+                                                            )
+                                                        }
+                                                        return <li key={item._id}>{component}</li>
+                                                    })}
+                                                </ul>
+                                            </>
+                                        ) : (
+                                            <div className='text-green-500'>
+                                                Không có phương thức nào gần giống tên!
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
