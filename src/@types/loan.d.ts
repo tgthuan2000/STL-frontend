@@ -11,7 +11,7 @@ export interface IUserLoan {
     image?: SanityImageAssetDocument
 }
 
-export interface ICreateMemberFormForm {
+export interface ICreateMemberForm {
     userName: string
     image: SanityAssetDocument | null
 }
