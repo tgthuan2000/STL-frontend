@@ -3,17 +3,20 @@ import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
-import { Fragment, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { ISpendingData } from '~/@types/spending'
+import { Fragment, useEffect, useMemo, useState } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { ISpendingData, RecentQueryData } from '~/@types/spending'
 import { TimeFilter } from '~/components'
 import LoadingButton from '~/components/Loading/LoadingButton'
+import { TimeFilterPayload } from '~/components/TimeFilter'
 import { DATE_FORMAT } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
-import { TEMPLATE } from '~/constant/template'
+import { E_FILTER_DATE, TEMPLATE } from '~/constant/template'
 import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
-import { GETALL_RECENT_SPENDING } from '~/schema/query/spending'
+import { ParamsTypeUseQuery, QueryTypeUseQuery } from '~/hook/useQuery'
+import { GETALL_RECENT_SPENDING, GETALL_RECENT_SPENDING_FILTER_DATE_RANGE } from '~/schema/query/spending'
+import { getDate } from '~/services'
 import useAuth from '~/store/auth'
 import { getLinkSpending } from '~/utils'
 
@@ -22,16 +25,81 @@ const TransactionTabTable = () => {
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
     const { width } = useWindowSize()
     const { getKindSpendingIds } = useConfig()
+    const [searchParams] = useSearchParams()
 
-    const [{ recent }, fetchData, deleteCacheData, reload] = useQuery<{
-        recent: ISpendingData[]
-    }>(
-        { recent: GETALL_RECENT_SPENDING },
-        {
-            userId: userProfile?._id as string,
-            kindSpendingIds: getKindSpendingIds('GET_LOAN', 'LOAN'),
+    const getAll = useMemo(() => {
+        return {
+            query: { recent: GETALL_RECENT_SPENDING },
+            params: {
+                userId: userProfile?._id as string,
+                kindSpendingIds: getKindSpendingIds('GET_LOAN', 'LOAN'),
+            },
         }
-    )
+    }, [])
+
+    const defaultValues = useMemo(() => {
+        try {
+            let query = GETALL_RECENT_SPENDING,
+                params = {}
+
+            const d = Object.fromEntries([...searchParams])
+            if (!isEmpty(d)) {
+                query = GETALL_RECENT_SPENDING_FILTER_DATE_RANGE
+                let { type, data } = d
+                data = JSON.parse(data)
+
+                switch (Number(type)) {
+                    case E_FILTER_DATE.DATE: {
+                        params = {
+                            startDate: getDate(moment(data).toDate(), 'start'),
+                            endDate: getDate(moment(data).toDate(), 'end'),
+                        }
+                        break
+                    }
+                    case E_FILTER_DATE.DATE_RANGE: {
+                        const [startDate, endDate] = data
+                        params = {
+                            startDate: getDate(moment(startDate).toDate(), 'start'),
+                            endDate: getDate(moment(endDate).toDate(), 'end'),
+                        }
+                        break
+                    }
+                    case E_FILTER_DATE.MONTH: {
+                        params = {
+                            startDate: getDate(moment(data).toDate(), 'start', 'month'),
+                            endDate: getDate(moment(data).toDate(), 'end', 'month'),
+                        }
+                        break
+                    }
+                    case E_FILTER_DATE.YEAR: {
+                        params = {
+                            startDate: getDate(moment(data).toDate(), 'start', 'year'),
+                            endDate: getDate(moment(data).toDate(), 'end', 'year'),
+                        }
+                        break
+                    }
+                }
+            }
+            return {
+                query: { recent: query },
+                params: {
+                    userId: userProfile?._id as string,
+                    kindSpendingIds: getKindSpendingIds('GET_LOAN', 'LOAN'),
+                    ...params,
+                },
+            }
+        } catch (error) {
+            console.log(error)
+            return getAll
+        }
+    }, [])
+
+    const [{ query, params }, setQuery] = useState<{
+        query: QueryTypeUseQuery<RecentQueryData>
+        params: ParamsTypeUseQuery
+    }>(defaultValues)
+
+    const [{ recent }, fetchData, deleteCacheData, reload] = useQuery<RecentQueryData>(query, params)
 
     useEffect(() => {
         fetchData()
@@ -43,14 +111,65 @@ const TransactionTabTable = () => {
         reload()
     }
 
-    const handleFilterSubmit = () => {}
+    const handleFilterSubmit = (data: TimeFilterPayload) => {
+        switch (data.id) {
+            case E_FILTER_DATE.ALL:
+                setQuery(getAll)
+                break
+            case E_FILTER_DATE.DATE:
+                const date = data.data as Date
+                setQuery({
+                    query: { recent: GETALL_RECENT_SPENDING_FILTER_DATE_RANGE },
+                    params: {
+                        ...defaultValues.params,
+                        startDate: getDate(date, 'start'),
+                        endDate: getDate(date, 'end'),
+                    },
+                })
+                break
+            case E_FILTER_DATE.DATE_RANGE:
+                const [startDate, endDate] = data.data as Date[]
+                setQuery({
+                    query: { recent: GETALL_RECENT_SPENDING_FILTER_DATE_RANGE },
+                    params: {
+                        ...defaultValues.params,
+                        startDate: getDate(startDate, 'start'),
+                        endDate: getDate(endDate, 'end'),
+                    },
+                })
+                break
+            case E_FILTER_DATE.MONTH:
+                const month = data.data as Date
+                setQuery({
+                    query: { recent: GETALL_RECENT_SPENDING_FILTER_DATE_RANGE },
+                    params: {
+                        ...defaultValues.params,
+                        startDate: getDate(month, 'start', 'month'),
+                        endDate: getDate(month, 'end', 'month'),
+                    },
+                })
+                break
+            case E_FILTER_DATE.YEAR:
+                const year = data.data as Date
+                setQuery({
+                    query: { recent: GETALL_RECENT_SPENDING_FILTER_DATE_RANGE },
+                    params: {
+                        ...defaultValues.params,
+                        startDate: getDate(year, 'start', 'year'),
+                        endDate: getDate(year, 'end', 'year'),
+                    },
+                })
+                break
+        }
+        reload()
+    }
 
     return (
         <>
             <div className='sm:px-6 lg:px-8'>
                 <div className='mt-4 flex flex-col'>
                     <div className='-my-2 -mx-4 sm:-mx-6 lg:-mx-8'>
-                        <div className='flex justify-between items-center h-12'>
+                        <div className='flex justify-between items-center'>
                             <TimeFilter onSubmit={handleFilterSubmit} />
 
                             {width > 768 && (
@@ -163,7 +282,7 @@ const MainTable = ({ data }: MainTableProps) => {
                             <tr onClick={() => navigate(to)}>
                                 <td className={clsx('whitespace-nowrap lg:pt-4 pt-0 pl-2 pr-3 sm:pl-6 lg:pl-8')}>
                                     {moment(date).format(DATE_FORMAT.D_DATE_TIME) !== 'Invalid date' && (
-                                        <span className='block mb-2'>{getDate(date as string, 'Ngày tạo')}</span>
+                                        <span className='block mt-1 mb-2'>{getDate(date as string, 'Ngày tạo')}</span>
                                     )}
                                     {estimatePaidDate ? (
                                         getDate(estimatePaidDate, 'Hạn trả')
