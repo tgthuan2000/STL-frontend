@@ -3,6 +3,7 @@ import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { IAddCostForm, MakeCostQueryData } from '~/@types/spending'
 import { Button } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
@@ -123,7 +124,7 @@ const MakeCost = () => {
                     keepDefaultValues: true,
                 }
             )
-            alert('Tạo chi phí thành công!')
+            toast.success<string>('Tạo chi phí thành công!')
             // setIsOpen(false)
             // navigate(-1)
         } catch (error) {

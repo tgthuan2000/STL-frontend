@@ -3,6 +3,7 @@ import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { IAddIncomeForm, MakeIncomeQueryData } from '~/@types/spending'
 import { Button } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
@@ -121,7 +122,7 @@ const MakeIncome = () => {
                     keepDefaultValues: true,
                 }
             )
-            alert('Tạo thu nhập thành công!')
+            toast.success<string>('Tạo thu nhập thành công!')
             // setIsOpen(false)
             // navigate(-1)
         } catch (error) {

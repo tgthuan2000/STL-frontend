@@ -15,6 +15,7 @@ import { getCategorySpending } from '~/services/query'
 import useAuth from '~/store/auth'
 import { searchName } from '../services'
 import { BadgeCheckIcon, ExclamationCircleIcon } from '@heroicons/react/outline'
+import { toast } from 'react-toastify'
 
 const AddCategory = () => {
     const { setIsOpen } = useSlideOver()
@@ -87,14 +88,12 @@ const AddCategory = () => {
         }
         try {
             await client.create(document)
-            // navigate to dashboard
             const result = deleteCache([
                 getCategorySpending({ userProfile, kindSpending: kindSpending?._id as string }),
             ])
             console.log(result)
-            alert('Tạo mới thể loại thành công!')
-            // setIsOpen(false)
-            // navigate(-1)
+            toast.success<string>('Tạo mới thể loại thành công!')
+            form.reset({ name: '' }, { keepDefaultValues: true })
         } catch (error) {
             console.log(error)
         } finally {

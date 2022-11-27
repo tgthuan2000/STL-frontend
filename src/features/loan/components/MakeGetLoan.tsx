@@ -3,6 +3,7 @@ import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { IMakeGetLoanForm, IUserLoan } from '~/@types/loan'
 import { IMethodSpending } from '~/@types/spending'
 import { Button } from '~/components'
@@ -145,7 +146,7 @@ const MakeGetLoan = () => {
                     keepDefaultValues: true,
                 }
             )
-            alert('Thực hiện tạo vay thành công!')
+            toast.success<string>('Thực hiện tạo vay thành công!')
             // setIsOpen(false)
             // navigate(-1)
         } catch (error) {

@@ -3,6 +3,7 @@ import moment from 'moment'
 import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { IMakeTransferForm, IMethodSpending, MakeTransferQueryData } from '~/@types/spending'
 import { Button } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
@@ -132,7 +133,7 @@ const MakeTransfer = () => {
                     keepDefaultValues: true,
                 }
             )
-            alert('Thực hiện chuyển khoản thành công!')
+            toast.success<string>('Thực hiện chuyển khoản thành công!')
             // setIsOpen(false)
             // navigate(-1)
         } catch (error) {
