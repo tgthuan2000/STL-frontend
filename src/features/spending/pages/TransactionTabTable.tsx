@@ -254,7 +254,7 @@ const MainTable = ({ data }: MainTableProps) => {
                     return (
                         <Fragment key={_id}>
                             <tr onClick={() => navigate(to)}>
-                                <td className={clsx('whitespace-nowrap pt-4 pl-2 pr-3 sm:pl-6 lg:pl-8')}>
+                                <td className={clsx('whitespace-nowrap lg:pt-4 pt-0 pl-2 pr-3 sm:pl-6 lg:pl-8')}>
                                     {date ? (
                                         width <= 900 ? (
                                             <>
@@ -279,14 +279,14 @@ const MainTable = ({ data }: MainTableProps) => {
                                         </p>
                                     </div>
                                 </td>
-                                <td className={clsx('whitespace-nowrap px-1 pt-4 text-sm text-center')}>
+                                <td className={clsx('whitespace-nowrap px-1 lg:pt-4 pt-0 text-sm text-center')}>
                                     {[KIND_SPENDING.RECEIVE, KIND_SPENDING.TRANSFER_TO].includes(kindSpending.key) && (
                                         <span className={clsx('text-green-500', 'font-medium')}>
                                             {numeral(amount).format()}
                                         </span>
                                     )}
                                 </td>
-                                <td className={clsx('whitespace-nowrap pl-1 pr-2 pt-4 text-sm text-center')}>
+                                <td className={clsx('whitespace-nowrap pl-1 pr-2 lg:pt-4 pt-0 text-sm text-center')}>
                                     {[KIND_SPENDING.COST, KIND_SPENDING.TRANSFER_FROM].includes(kindSpending.key) && (
                                         <span className={clsx('text-red-500', 'font-medium')}>
                                             {numeral(amount).format()}
