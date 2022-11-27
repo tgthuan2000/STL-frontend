@@ -1,6 +1,6 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
-import { isEmpty } from 'lodash'
+import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
 import { Fragment, useEffect, useMemo, useState } from 'react'
@@ -282,7 +282,7 @@ const MainTable = ({ data }: MainTableProps) => {
                             <tr onClick={() => navigate(to)}>
                                 <td className={clsx('whitespace-nowrap lg:pt-4 pt-0 pl-2 pr-3 sm:pl-6 lg:pl-8')}>
                                     {moment(date).format(DATE_FORMAT.D_DATE_TIME) !== 'Invalid date' && (
-                                        <span className='block mt-1 mb-2'>{getDate(date as string, 'Ngày tạo')}</span>
+                                        <span className='block mt-1'>{getDate(date as string, 'Ngày tạo')}</span>
                                     )}
                                     {estimatePaidDate ? (
                                         getDate(estimatePaidDate, 'Hạn trả')
@@ -293,7 +293,7 @@ const MainTable = ({ data }: MainTableProps) => {
                                         {methodSpending?.name || TEMPLATE.EMPTY_METHOD_SPENDING_SHORT}
                                     </h3>
                                 </td>
-                                <td className='gap-x-2 px-1 lg:pt-4 pt-0'>
+                                <td className='px-1 lg:pt-4 pt-0'>
                                     <div className='flex items-center justify-center gap-x-2 text-center truncate'>
                                         <span
                                             className={clsx(
@@ -307,14 +307,14 @@ const MainTable = ({ data }: MainTableProps) => {
                                     </div>
                                 </td>
                                 <td className={clsx('whitespace-nowrap px-1 lg:pt-4 pt-0 text-sm text-center')}>
-                                    {receive && (
+                                    {!isNil(receive) && (
                                         <span className={clsx('text-green-500', 'font-medium')}>
                                             {numeral(receive).format()}
                                         </span>
                                     )}
                                 </td>
                                 <td className={clsx('whitespace-nowrap pl-1 pr-2 lg:pt-4 pt-0 text-sm text-center')}>
-                                    {cost && (
+                                    {!isNil(cost) && (
                                         <span className={clsx('text-red-500', 'font-medium')}>
                                             {numeral(cost).format()}
                                         </span>

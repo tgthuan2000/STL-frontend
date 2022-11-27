@@ -272,10 +272,12 @@ const MainTable = ({ data }: MainTableProps) => {
                                         {methodSpending?.name || TEMPLATE.EMPTY_METHOD_SPENDING_SHORT}
                                     </h3>
                                 </td>
-                                <td className='flex items-center justify-center gap-x-2 px-1 pt-4 text-center truncate'>
-                                    <p className='text-sm font-medium text-gray-900'>
-                                        {categorySpending?.name ?? kindSpending.name}
-                                    </p>
+                                <td className='px-1 lg:pt-4 pt-0'>
+                                    <div className='text-center truncate'>
+                                        <p className='text-sm font-medium text-gray-900'>
+                                            {categorySpending?.name ?? kindSpending.name}
+                                        </p>
+                                    </div>
                                 </td>
                                 <td className={clsx('whitespace-nowrap px-1 pt-4 text-sm text-center')}>
                                     {[KIND_SPENDING.RECEIVE, KIND_SPENDING.TRANSFER_TO].includes(kindSpending.key) && (

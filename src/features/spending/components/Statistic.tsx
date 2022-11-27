@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { isNil } from 'lodash'
 import numeral from 'numeral'
 import React from 'react'
 import { StatisticProps } from '~/@types/spending'
@@ -14,7 +15,7 @@ const Statistic: React.FC<StatisticProps> = ({ data, loading }) => {
                         <span className={clsx('xl:text-base text-sm font-medium text-gray-500 block w-full', color)}>
                             <span className='truncate block w-full text-center'>{numeral(value || 0).format()}</span>
                         </span>
-                        {getLoan && (
+                        {!isNil(getLoan) && (
                             <span className='xl:text-sm text-xs font-medium block w-full text-yellow-500'>
                                 <span className='truncate block w-full text-center'>
                                     [Vay {numeral(getLoan || 0).format()}]

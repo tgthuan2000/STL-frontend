@@ -18,7 +18,8 @@ export const GETALL_RECENT_SPENDING = groq`
         amount,
         realPaid,
         paid,
-        date
+        date,
+        estimatePaidDate
     }
 `
 
