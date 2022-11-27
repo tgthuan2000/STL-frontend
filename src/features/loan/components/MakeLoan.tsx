@@ -3,9 +3,10 @@ import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { IUserLoan } from '~/@types/loan'
-import { ICategorySpending, IMethodSpending } from '~/@types/spending'
-import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
+import { IAddIncomeForm, IUserLoan } from '~/@types/loan'
+import { IMethodSpending } from '~/@types/spending'
+import { Button } from '~/components'
+import { Input, DatePicker, TextArea, AutoComplete } from '~/components/_base'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
@@ -13,14 +14,6 @@ import { GET_USER_LOAN } from '~/schema/query/loan'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 
-interface IAddIncomeForm {
-    amount: number | string
-    categorySpending: ICategorySpending | null
-    methodSpending: IMethodSpending | null
-    date: Date | null
-    description: string
-    userLoan: IUserLoan[] | null
-}
 interface Data {
     methodSpending: IMethodSpending[]
     userLoan: IUserLoan[]

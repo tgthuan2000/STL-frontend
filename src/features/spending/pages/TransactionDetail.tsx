@@ -3,7 +3,13 @@ import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ICategorySpending, IMethodSpending, ISpendingData } from '~/@types/spending'
+import {
+    DataCategory,
+    IDetailSpendingForm,
+    ISpendingData,
+    TransactionDetailFormData,
+    TransactionDetailQueryData,
+} from '~/@types/spending'
 import { KIND_SPENDING } from '~/constant/spending'
 import { TEMPLATE } from '~/constant/template'
 import { useCache, useLoading } from '~/context'
@@ -11,24 +17,8 @@ import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING, GET_TRANSACTION_DETAIL } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
-import { TransactionDetailForm, TransactionDetailFormData } from '../components'
+import { TransactionDetailForm } from '../components'
 
-export interface IDetailSpendingForm {
-    amount: number
-    categorySpending?: ICategorySpending
-    methodSpending: IMethodSpending
-    methodReference?: IMethodSpending
-    date: Date
-    description: string
-    surplus: number
-}
-export interface Data {
-    transaction: ISpendingData[]
-    methodSpending: IMethodSpending[]
-}
-export interface DataCategory {
-    categorySpending: ICategorySpending[]
-}
 const TransactionDetail = () => {
     const navigate = useNavigate()
     const { userProfile } = useAuth()
@@ -38,16 +28,17 @@ const TransactionDetail = () => {
     const { METHOD_SPENDING_DESC_SURPLUS, METHOD_SPENDING, RECENT_SPENDING, ALL_RECENT_SPENDING, STATISTIC_SPENDING } =
         useServiceQuery()
 
-    const [{ transaction, methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
-        {
-            transaction: GET_TRANSACTION_DETAIL,
-            methodSpending: GET_METHOD_SPENDING,
-        },
-        {
-            userId: userProfile?._id as string,
-            id: id as string,
-        }
-    )
+    const [{ transaction, methodSpending }, fetchData, deleteCacheData, reloadData] =
+        useQuery<TransactionDetailQueryData>(
+            {
+                transaction: GET_TRANSACTION_DETAIL,
+                methodSpending: GET_METHOD_SPENDING,
+            },
+            {
+                userId: userProfile?._id as string,
+                id: id as string,
+            }
+        )
 
     const kindSpending = useMemo(() => {
         try {
@@ -129,7 +120,7 @@ const TransactionDetail = () => {
         }
     }
 
-    const handleReloadData = async (keys: keyof Data) => {
+    const handleReloadData = async (keys: keyof TransactionDetailQueryData) => {
         const res = deleteCacheData(keys)
         console.log(res)
         reloadData()
@@ -290,20 +281,6 @@ const TransactionDetail = () => {
                         })
                     __.patch(patchMethod)
                 }
-
-                // refund surplus, countUsed for method reference
-                // if (_transaction.methodReference) {
-                //     const patchMethodReference = client
-                //         .patch(_transaction.methodReference._id)
-                //         .setIfMissing({ surplus: 0, countUsed: 0 })
-                //         .dec({
-                //             countUsed: 1,
-                //         })
-                //          .inc({
-                //             surplus: (_transaction.amount as number) * condition,
-                //          })
-                //     __.patch(patchMethodReference)
-                // }
             }
 
             // delete transaction
@@ -324,9 +301,6 @@ const TransactionDetail = () => {
             console.log(error)
         } finally {
             setSubmitLoading(false)
-            // navigate('/spending', {
-            //     replace: true,
-            // })
             navigate(-1)
         }
     }

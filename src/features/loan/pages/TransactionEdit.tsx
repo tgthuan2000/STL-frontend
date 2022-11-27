@@ -3,8 +3,8 @@ import moment from 'moment'
 import { useEffect } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
-import { IUserLoan } from '~/@types/loan'
-import { IMethodSpending, ISpendingData } from '~/@types/spending'
+import { IMakeGetLoanForm, TransactionEditFormData, TransactionEditQueryData } from '~/@types/loan'
+import { ISpendingData } from '~/@types/spending'
 import { KIND_SPENDING } from '~/constant/spending'
 import { TEMPLATE } from '~/constant/template'
 import { useCache, useLoading } from '~/context'
@@ -13,21 +13,7 @@ import { client } from '~/sanityConfig'
 import { GET_TRANSACTION_DETAIL, GET_USER_LOAN } from '~/schema/query/loan'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
-import { PaidForm, TransactionEditForm, TransactionEditFormData } from '../components'
-
-export interface Data {
-    transaction: ISpendingData[]
-    methodSpending: IMethodSpending[]
-    userLoan: IUserLoan[]
-}
-
-interface IMakeGetLoanForm {
-    amount: number | string
-    methodReference: IMethodSpending | null
-    date: Date | null
-    description: string
-    userLoan: IUserLoan | null
-}
+import { TransactionEditForm } from '../components'
 
 const TransactionEdit = () => {
     const navigate = useNavigate()
@@ -46,17 +32,18 @@ const TransactionEdit = () => {
     } = useServiceQuery()
     const { deleteCache } = useCache()
 
-    const [{ transaction, methodSpending, userLoan }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
-        {
-            transaction: GET_TRANSACTION_DETAIL,
-            methodSpending: GET_METHOD_SPENDING,
-            userLoan: GET_USER_LOAN,
-        },
-        {
-            userId: userProfile?._id as string,
-            id: id as string,
-        }
-    )
+    const [{ transaction, methodSpending, userLoan }, fetchData, deleteCacheData, reloadData] =
+        useQuery<TransactionEditQueryData>(
+            {
+                transaction: GET_TRANSACTION_DETAIL,
+                methodSpending: GET_METHOD_SPENDING,
+                userLoan: GET_USER_LOAN,
+            },
+            {
+                userId: userProfile?._id as string,
+                id: id as string,
+            }
+        )
 
     const trans = head(transaction.data)
 
@@ -132,7 +119,7 @@ const TransactionEdit = () => {
 
             let res
             setTimeout(() => {
-                const resetStore: (keyof Data)[] = ['transaction']
+                const resetStore: (keyof TransactionEditQueryData)[] = ['transaction']
                 if (trans?.methodReference?._id !== methodReference?._id) {
                     resetStore.push('methodSpending')
                 }
@@ -153,7 +140,7 @@ const TransactionEdit = () => {
         }
     }
 
-    const handleReloadData = async (keys: keyof Data) => {
+    const handleReloadData = async (keys: keyof TransactionEditQueryData) => {
         const res = deleteCacheData(keys)
         console.log(res)
         reloadData()

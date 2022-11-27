@@ -1,26 +1,20 @@
-import clsx from 'clsx'
 import { isEmpty, isUndefined } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { IUserLoan } from '~/@types/loan'
+import { IMakeGetLoanForm, IUserLoan } from '~/@types/loan'
 import { IMethodSpending } from '~/@types/spending'
-import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
+import { Button } from '~/components'
+import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { SlideOverHOC, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_USER_LOAN } from '~/schema/query/loan'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
+import StatusLoan from './common/StatusLoan'
 
-interface IMakeGetLoanForm {
-    amount: number | string
-    methodReference: IMethodSpending | null
-    date: Date | null
-    description: string
-    userLoan: IUserLoan | null
-}
 interface Data {
     methodSpending: IMethodSpending[]
     userLoan: IUserLoan[]
@@ -56,7 +50,7 @@ const MakeGetLoan = () => {
         defaultValues: {
             amount: '',
             methodReference: null,
-            date: null,
+            estimatePaidDate: null,
             userLoan: null,
             description: '',
         },
@@ -64,7 +58,7 @@ const MakeGetLoan = () => {
 
     const onsubmit: SubmitHandler<IMakeGetLoanForm> = async (data) => {
         setSubmitLoading(true)
-        let { amount, methodReference, description, date, userLoan } = data
+        let { amount, methodReference, description, estimatePaidDate, userLoan } = data
         amount = Number(amount)
         description = description.trim()
 
@@ -72,7 +66,8 @@ const MakeGetLoan = () => {
             _type: 'spending',
             amount,
             description: `${methodReference ? 'Cộng gốc' : 'Tạm vay'}${description ? `\n${description}` : ''}`,
-            date: date ? moment(date).format() : undefined,
+            date: moment().format(), // for statistic
+            estimatePaidDate: estimatePaidDate ? moment(estimatePaidDate).format() : undefined,
             paid: false,
             kindSpending: {
                 _type: 'reference',
@@ -197,19 +192,10 @@ const MakeGetLoan = () => {
                                 }
                             />
 
-                            <p>
-                                Trạng thái vay:{' '}
-                                <span
-                                    className={clsx(
-                                        'font-medium',
-                                        form.watch('methodReference') ? 'text-indigo-500' : 'text-orange-500'
-                                    )}
-                                >
-                                    {form.watch('methodReference') ? 'Cộng gốc' : 'Tạm vay'}
-                                </span>
-                            </p>
+                            <StatusLoan form={form} name='methodReference' />
 
-                            <DatePicker name='date' form={form} label='Ngày trả' />
+                            <DatePicker name='estimatePaidDate' form={form} label='Ngày trả' />
+
                             <AutoComplete
                                 name='userLoan'
                                 form={form}
@@ -222,6 +208,7 @@ const MakeGetLoan = () => {
                                 loading={userLoan.loading}
                                 onReload={isEmpty(userLoan.data) ? undefined : () => handleReloadData('userLoan')}
                                 showImage
+                                surplusName='Tài sản'
                             />
 
                             <TextArea name='description' form={form} label='Ghi chú' />

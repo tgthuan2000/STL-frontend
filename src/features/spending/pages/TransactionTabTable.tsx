@@ -2,10 +2,10 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
+import numeral from 'numeral'
 import { Fragment, useEffect, useMemo, useState } from 'react'
-import NumberFormat from 'react-number-format'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { ISpendingData } from '~/@types/spending'
+import { ISpendingData, RecentQueryData } from '~/@types/spending'
 import { TimeFilter } from '~/components'
 import LoadingButton from '~/components/Loading/LoadingButton'
 import { TimeFilterPayload } from '~/components/TimeFilter'
@@ -20,9 +20,6 @@ import { getDate } from '~/services'
 import useAuth from '~/store/auth'
 import { getLinkSpending } from '~/utils'
 
-interface IRecent {
-    recent: ISpendingData[]
-}
 const TransactionTabTable = () => {
     const { userProfile } = useAuth()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
@@ -97,11 +94,12 @@ const TransactionTabTable = () => {
         }
     }, [])
 
-    const [{ query, params }, setQuery] = useState<{ query: QueryTypeUseQuery<IRecent>; params: ParamsTypeUseQuery }>(
-        defaultValues
-    )
+    const [{ query, params }, setQuery] = useState<{
+        query: QueryTypeUseQuery<RecentQueryData>
+        params: ParamsTypeUseQuery
+    }>(defaultValues)
 
-    const [{ recent }, fetchData, deleteCacheData, reload, error] = useQuery<IRecent>(query, params)
+    const [{ recent }, fetchData, deleteCacheData, reload, error] = useQuery<RecentQueryData>(query, params)
 
     useEffect(() => {
         fetchData()
@@ -281,22 +279,16 @@ const MainTable = ({ data }: MainTableProps) => {
                                 </td>
                                 <td className={clsx('whitespace-nowrap px-1 pt-4 text-sm text-center')}>
                                     {[KIND_SPENDING.RECEIVE, KIND_SPENDING.TRANSFER_TO].includes(kindSpending.key) && (
-                                        <NumberFormat
-                                            className={clsx('text-green-500', 'font-medium')}
-                                            value={amount}
-                                            displayType='text'
-                                            thousandSeparator
-                                        />
+                                        <span className={clsx('text-green-500', 'font-medium')}>
+                                            {numeral(amount).format()}
+                                        </span>
                                     )}
                                 </td>
                                 <td className={clsx('whitespace-nowrap pl-1 pr-2 pt-4 text-sm text-center')}>
                                     {[KIND_SPENDING.COST, KIND_SPENDING.TRANSFER_FROM].includes(kindSpending.key) && (
-                                        <NumberFormat
-                                            className={clsx('text-red-500', 'font-medium')}
-                                            value={KIND_SPENDING.GET_LOAN ? realPaid : amount}
-                                            displayType='text'
-                                            thousandSeparator
-                                        />
+                                        <span className={clsx('text-red-500', 'font-medium')}>
+                                            {numeral(KIND_SPENDING.GET_LOAN ? realPaid : amount).format()}
+                                        </span>
                                     )}
                                 </td>
                             </tr>

@@ -2,7 +2,8 @@ import { head, isEmpty } from 'lodash'
 import { useEffect } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
-import { IMethodSpending, ISpendingData } from '~/@types/spending'
+import { PaidForm, TransactionDetailQueryData, TransactionDetailFormData } from '~/@types/loan'
+import { ISpendingData } from '~/@types/spending'
 import { KIND_SPENDING } from '~/constant/spending'
 import { TEMPLATE } from '~/constant/template'
 import { useCache, useLoading } from '~/context'
@@ -11,12 +12,7 @@ import { client } from '~/sanityConfig'
 import { GET_TRANSACTION_DETAIL } from '~/schema/query/loan'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
-import { PaidForm, TransactionDetailForm, TransactionDetailFormData } from '../components'
-
-export interface Data {
-    transaction: ISpendingData[]
-    methodSpending: IMethodSpending[]
-}
+import { TransactionDetailForm } from '../components'
 
 const TransactionDetail = () => {
     const navigate = useNavigate()
@@ -35,16 +31,17 @@ const TransactionDetail = () => {
     } = useServiceQuery()
     const { deleteCache } = useCache()
 
-    const [{ transaction, methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
-        {
-            transaction: GET_TRANSACTION_DETAIL,
-            methodSpending: GET_METHOD_SPENDING,
-        },
-        {
-            userId: userProfile?._id as string,
-            id: id as string,
-        }
-    )
+    const [{ transaction, methodSpending }, fetchData, deleteCacheData, reloadData] =
+        useQuery<TransactionDetailQueryData>(
+            {
+                transaction: GET_TRANSACTION_DETAIL,
+                methodSpending: GET_METHOD_SPENDING,
+            },
+            {
+                userId: userProfile?._id as string,
+                id: id as string,
+            }
+        )
 
     const trans = head(transaction.data)
 
@@ -115,7 +112,7 @@ const TransactionDetail = () => {
         }
     }
 
-    const handleReloadData = async (keys: keyof Data) => {
+    const handleReloadData = async (keys: keyof TransactionDetailQueryData) => {
         const res = deleteCacheData(keys)
         console.log(res)
         reloadData()

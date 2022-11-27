@@ -1,22 +1,19 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { isEmpty, isEqual } from 'lodash'
-import { useEffect, useMemo, useState } from 'react'
+import { BadgeCheckIcon, ExclamationCircleIcon } from '@heroicons/react/outline'
+import { isEmpty } from 'lodash'
+import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { IMethodSpending } from '~/@types/spending'
-import { Button, Input } from '~/components'
+import { AddMethodQueryData, IAddMethodForm } from '~/@types/spending'
+import { Button } from '~/components'
+import { Input } from '~/components/_base'
 import { SlideOverHOC, useCache, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
+import { searchName } from '../services'
 
-interface IAddMethodForm {
-    name: string
-}
-interface Data {
-    methodSpending: IMethodSpending[]
-}
 const AddMethod = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
@@ -31,7 +28,7 @@ const AddMethod = () => {
         },
     })
 
-    const [{ methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
+    const [{ methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<AddMethodQueryData>(
         { methodSpending: GET_METHOD_SPENDING },
         { userId: userProfile?._id as string }
     )
@@ -106,38 +103,36 @@ const AddMethod = () => {
                                     <>
                                         {!isEmpty(sameMethodList) ? (
                                             <>
-                                                <h4>Đang có một số phương thức gần giống tên:</h4>
+                                                <h4></h4>
+                                                <span className='text-yellow-500 flex items-center gap-1'>
+                                                    <ExclamationCircleIcon className='h-6 w-6' />
+                                                    Một số phương thức gần giống tên
+                                                </span>
+
                                                 <ul className='mt-1 list-disc pl-5'>
                                                     {sameMethodList?.map((item) => {
-                                                        let component: any = <>{item.name}</>
-                                                        const index = item.name
-                                                            .toLowerCase()
-                                                            .indexOf(watchName.toLowerCase())
-                                                        if (index !== -1) {
-                                                            const start = item.name.slice(0, index)
-                                                            const middle = item.name.slice(
-                                                                index,
-                                                                index + watchName.length
-                                                            )
-                                                            const end = item.name.slice(index + watchName.length)
-                                                            component = (
-                                                                <>
-                                                                    {start}
-                                                                    <span className='font-medium text-green-600'>
-                                                                        {middle}
-                                                                    </span>
-                                                                    {end}
-                                                                </>
-                                                            )
+                                                        const component = searchName(item.name, watchName)
+                                                        if (typeof component === 'string') {
+                                                            return <li key={item._id}>{component}</li>
                                                         }
-                                                        return <li key={item._id}>{component}</li>
+                                                        const [start, middle, end] = component
+                                                        return (
+                                                            <li key={item._id}>
+                                                                {start}
+                                                                <span className='font-medium text-yellow-600'>
+                                                                    {middle}
+                                                                </span>
+                                                                {end}
+                                                            </li>
+                                                        )
                                                     })}
                                                 </ul>
                                             </>
                                         ) : (
-                                            <div className='text-green-500'>
+                                            <span className='text-green-500 flex items-center gap-1'>
+                                                <BadgeCheckIcon className='h-6 w-6' />
                                                 Không có phương thức nào gần giống tên!
-                                            </div>
+                                            </span>
                                         )}
                                     </>
                                 )}

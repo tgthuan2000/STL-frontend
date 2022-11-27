@@ -19,12 +19,7 @@ const Method = () => {
 
     const [{ method }, fetchData] = useQuery<{
         method: IMethodSpending[]
-    }>(
-        {
-            method: GET_METHOD_SPENDING_DESC_SURPLUS,
-        },
-        { userId: userProfile?._id as string }
-    )
+    }>({ method: GET_METHOD_SPENDING_DESC_SURPLUS }, { userId: userProfile?._id as string })
     useEffect(() => {
         if (!isEmpty(kindSpending)) {
             fetchData()

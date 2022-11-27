@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
-import NumberFormat from 'react-number-format'
 import clsx from 'clsx'
 import { MethodProps } from '~/@types/spending'
 import { isEmpty } from 'lodash'
 import { TEMPLATE } from '~/constant/template'
+import numeral from 'numeral'
+import React from 'react'
 
-const Method = ({ data, loading }: MethodProps) => {
+const Method: React.FC<MethodProps> = ({ data, loading }) => {
     if (loading) return <MethodSkeleton />
 
     if (!isEmpty(data)) {
@@ -22,17 +23,16 @@ const Method = ({ data, loading }: MethodProps) => {
                                     <h4 className='font-medium'>{item.name}</h4>
                                 </div>
                                 <div className='w-1/3 truncate text-right'>
-                                    <NumberFormat
-                                        value={item.surplus}
-                                        displayType='text'
-                                        thousandSeparator
+                                    <span
                                         className={clsx(
                                             'font-medium',
                                             { 'text-red-500': item.surplus < 0 },
                                             { 'text-green-500': item.surplus > 0 },
                                             { 'text-gray-500': item.surplus === 0 }
                                         )}
-                                    />
+                                    >
+                                        {numeral(item.surplus).format()}
+                                    </span>
                                 </div>
                             </Link>
                         </li>

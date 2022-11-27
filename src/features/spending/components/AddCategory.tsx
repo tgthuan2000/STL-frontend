@@ -3,9 +3,9 @@ import { isEmpty } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { IKindSpending } from '~/@types/context'
-import { ICategorySpending } from '~/@types/spending'
-import { Button, Input, Selection } from '~/components'
+import { AddCategoryQueryData, IAddCategoryForm } from '~/@types/spending'
+import { Button } from '~/components'
+import { Input, Selection } from '~/components/_base'
 import { KIND_SPENDING } from '~/constant/spending'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import useQuery, { ParamsTypeUseQuery, QueryTypeUseQuery } from '~/hook/useQuery'
@@ -13,15 +13,8 @@ import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING } from '~/schema/query/spending'
 import { getCategorySpending } from '~/services/query'
 import useAuth from '~/store/auth'
-
-interface IAddCategoryForm {
-    name: string
-    kindSpending: IKindSpending | null
-}
-
-interface Data {
-    categorySpending: ICategorySpending[]
-}
+import { searchName } from '../services'
+import { BadgeCheckIcon, ExclamationCircleIcon } from '@heroicons/react/outline'
 
 const AddCategory = () => {
     const { setIsOpen } = useSlideOver()
@@ -64,11 +57,12 @@ const AddCategory = () => {
         reloadData()
     }, [defaultValues])
 
-    const [{ query, params }, setQuery] = useState<{ query: QueryTypeUseQuery<Data>; params: ParamsTypeUseQuery }>(
-        defaultValues
-    )
+    const [{ query, params }, setQuery] = useState<{
+        query: QueryTypeUseQuery<AddCategoryQueryData>
+        params: ParamsTypeUseQuery
+    }>(defaultValues)
 
-    const [{ categorySpending }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(query, params)
+    const [{ categorySpending }, fetchData, deleteCacheData, reloadData] = useQuery<AddCategoryQueryData>(query, params)
 
     const onsubmit: SubmitHandler<IAddCategoryForm> = async (data) => {
         setSubmitLoading(true)
@@ -152,36 +146,37 @@ const AddCategory = () => {
                                     <>
                                         {!isEmpty(sameCategoryList) ? (
                                             <>
-                                                <h4>Đang có một số thể loại gần giống tên:</h4>
+                                                <span className='text-yellow-500 flex items-center gap-1'>
+                                                    <ExclamationCircleIcon className='h-6 w-6' />
+                                                    Một số thể loại gần giống tên
+                                                </span>
+
                                                 <ul className='mt-1 list-disc pl-5'>
-                                                    {sameCategoryList?.map((item) => {
-                                                        let component: any = <>{item.name}</>
-                                                        const index = item.name
-                                                            .toLowerCase()
-                                                            .indexOf(watchName.toLowerCase())
-                                                        if (index !== -1) {
-                                                            const start = item.name.slice(0, index)
-                                                            const middle = item.name.slice(
-                                                                index,
-                                                                index + watchName.length
-                                                            )
-                                                            const end = item.name.slice(index + watchName.length)
-                                                            component = (
-                                                                <>
+                                                    <ul className='mt-1 list-disc pl-5'>
+                                                        {sameCategoryList?.map((item) => {
+                                                            const component = searchName(item.name, watchName)
+                                                            if (typeof component === 'string') {
+                                                                return <li key={item._id}>{component}</li>
+                                                            }
+                                                            const [start, middle, end] = component
+                                                            return (
+                                                                <li key={item._id}>
                                                                     {start}
-                                                                    <span className='font-medium text-green-600'>
+                                                                    <span className='font-medium text-yellow-600'>
                                                                         {middle}
                                                                     </span>
                                                                     {end}
-                                                                </>
+                                                                </li>
                                                             )
-                                                        }
-                                                        return <li key={item._id}>{component}</li>
-                                                    })}
+                                                        })}
+                                                    </ul>
                                                 </ul>
                                             </>
                                         ) : (
-                                            <div className='text-green-500'>Không có thể loại nào gần giống tên!</div>
+                                            <span className='text-green-500 flex items-center gap-1'>
+                                                <BadgeCheckIcon className='h-6 w-6' />
+                                                Không có thể loại nào gần giống tên!
+                                            </span>
                                         )}
                                     </>
                                 )}

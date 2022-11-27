@@ -1,14 +1,15 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
+import numeral from 'numeral'
 import { forwardRef, useId } from 'react'
 import { Controller } from 'react-hook-form'
-import NumberFormat from 'react-number-format'
 import { InputProps } from '~/@types/components'
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
     ({ className, label, name, type = 'text', form, rules, disabled, ...props }, ref) => {
         const id = useId()
         const [parent] = useAutoAnimate<HTMLDivElement>()
+        const [numberWrap] = useAutoAnimate<HTMLDivElement>()
         return (
             <Controller
                 name={name}
@@ -34,8 +35,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                             />
                         </div>
                         {type === 'number' && (
-                            <div className='mt-1 ml-2 text-sm'>
-                                <NumberFormat value={field.value} displayType='text' thousandSeparator />
+                            <div ref={numberWrap} className='pl-2 pt-1'>
+                                {field.value && numeral(field.value).format()}
                             </div>
                         )}
                         <div ref={parent}>

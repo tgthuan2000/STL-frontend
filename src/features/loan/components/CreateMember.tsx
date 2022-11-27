@@ -1,32 +1,28 @@
-import { SanityAssetDocument } from '@sanity/client'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { Button, Input, UploadImage } from '~/components'
+import { ICreateMemberForm } from '~/@types/loan'
+import { Button } from '~/components'
+import { Input, UploadImage } from '~/components/_base'
 import { SlideOverHOC, useLoading, useSlideOver } from '~/context'
 import { client } from '~/sanityConfig'
 import useAuth from '~/store/auth'
-
-interface IMakeTransferForm {
-    userName: string
-    image: SanityAssetDocument | null
-}
 
 const defaultValues = {
     userName: '',
     image: null,
 }
 
-const MakeTransfer = () => {
+const CreateMember = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { userProfile } = useAuth()
     const { loading, setSubmitLoading } = useLoading()
 
-    const form = useForm<IMakeTransferForm>({
+    const form = useForm<ICreateMemberForm>({
         defaultValues,
     })
 
-    const onsubmit: SubmitHandler<IMakeTransferForm> = async (data) => {
+    const onsubmit: SubmitHandler<ICreateMemberForm> = async (data) => {
         setSubmitLoading(true)
         let { userName, image } = data
         // delete spaces between and last first
@@ -111,4 +107,4 @@ const MakeTransfer = () => {
     )
 }
 
-export default SlideOverHOC(MakeTransfer)
+export default SlideOverHOC(CreateMember)
