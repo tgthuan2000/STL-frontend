@@ -9,6 +9,7 @@ import { AutoCompleteProps } from '~/@types/components'
 import numeral from 'numeral'
 import { urlFor } from '~/sanityConfig'
 import UserSvg from '../_constant/UserSvg'
+import { toast } from 'react-toastify'
 
 const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
     (
@@ -88,7 +89,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                         setLoadingAddMore(false)
                     }
                 } else {
-                    alert('Could not find "addMore" function in Autocomplete')
+                    toast.warn<string>('Could not find "addMore" function in Autocomplete')
                 }
             } else {
                 setSelectedItem(value)
