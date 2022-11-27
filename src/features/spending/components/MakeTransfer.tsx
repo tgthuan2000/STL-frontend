@@ -3,25 +3,14 @@ import moment from 'moment'
 import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { IMethodSpending } from '~/@types/spending'
-import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
+import { IMakeTransferForm, IMethodSpending, MakeTransferQueryData } from '~/@types/spending'
+import { Button } from '~/components'
+import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
-
-interface IMakeTransferForm {
-    amount: string | number
-    methodSpendingFrom: IMethodSpending | null
-    methodSpendingTo: IMethodSpending | null
-    date: Date
-    description: string
-}
-
-interface Data {
-    methodSpending: IMethodSpending[]
-}
 
 const MakeTransfer = () => {
     const { setIsOpen } = useSlideOver()
@@ -32,7 +21,7 @@ const MakeTransfer = () => {
     const { getKindSpendingId } = useConfig()
     const { METHOD_SPENDING_DESC_SURPLUS, RECENT_SPENDING, ALL_RECENT_SPENDING } = useServiceQuery()
 
-    const [{ methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
+    const [{ methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<MakeTransferQueryData>(
         {
             methodSpending: GET_METHOD_SPENDING,
         },
@@ -175,7 +164,7 @@ const MakeTransfer = () => {
         }
     }
 
-    const handleReloadData = async (keys: keyof Data) => {
+    const handleReloadData = async (keys: keyof MakeTransferQueryData) => {
         const res = deleteCacheData(keys)
         console.log(res)
         reloadData()

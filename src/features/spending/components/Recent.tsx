@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import moment from 'moment'
-import NumberFormat from 'react-number-format'
 import clsx from 'clsx'
 import { RecentProps } from '~/@types/spending'
 import { KIND_SPENDING } from '~/constant/spending'
@@ -8,8 +7,10 @@ import { DATE_FORMAT } from '~/constant'
 import { isEmpty } from 'lodash'
 import { getLinkSpending } from '~/utils'
 import { TEMPLATE } from '~/constant/template'
+import numeral from 'numeral'
+import React from 'react'
 
-const Recent = ({ data, loading }: RecentProps) => {
+const Recent: React.FC<RecentProps> = ({ data, loading }) => {
     if (loading) return <RecentSkeleton />
 
     if (!isEmpty(data)) {
@@ -47,7 +48,8 @@ const Recent = ({ data, loading }: RecentProps) => {
                                             {item.categorySpending?.name ?? item.kindSpending.name}
                                         </h4>
                                     </span>
-                                    <NumberFormat
+
+                                    <span
                                         className={clsx(
                                             { 'text-red-500': item.kindSpending.key === KIND_SPENDING.COST },
                                             { 'text-green-500': item.kindSpending.key === KIND_SPENDING.RECEIVE },
@@ -65,10 +67,9 @@ const Recent = ({ data, loading }: RecentProps) => {
                                             },
                                             'font-medium'
                                         )}
-                                        value={item.amount}
-                                        displayType='text'
-                                        thousandSeparator
-                                    />
+                                    >
+                                        {numeral(item.amount).format()}
+                                    </span>
                                 </div>
                             </div>
                             {item.description && (

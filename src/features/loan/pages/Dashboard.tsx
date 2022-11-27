@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { useEffect } from 'react'
-import { IUserLoan } from '~/@types/loan'
+import { DashboardQueryData, IUserLoan } from '~/@types/loan'
 import { ISpendingData } from '~/@types/spending'
 import { Box2, ButtonMenuLoan, Divider } from '~/components'
 import { menuLoanMobile } from '~/constant/components'
@@ -9,28 +9,13 @@ import { useQuery, useScrollIntoView, useWindowSize } from '~/hook'
 import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
 import useAuth from '~/store/auth'
 
-export interface DataMethodSanity {
-    _id: string
-    name: string
-    cost: number[]
-    receive: number[]
-    'transfer-from': number[]
-    'transfer-to': number[]
-}
-
-interface IData {
-    recent: ISpendingData[]
-    paydue: ISpendingData[]
-    statistic: IUserLoan[]
-}
-
 const Dashboard = () => {
     const { width } = useWindowSize()
     const { userProfile } = useAuth()
     const { getKindSpendingId } = useConfig()
     const wrapRef = useScrollIntoView<HTMLDivElement>()
 
-    const [{ recent, paydue, statistic }, fetchData, deleteCache, reload] = useQuery<IData>(
+    const [{ recent, paydue, statistic }, fetchData, deleteCache, reload] = useQuery<DashboardQueryData>(
         {
             recent: GET_RECENT_LOAN,
             paydue: GET_PAY_DUE_LOAN,

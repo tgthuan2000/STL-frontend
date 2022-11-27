@@ -57,52 +57,44 @@ const Selection: React.FC<SelectionProps> = ({
                                         </span>
                                     </Listbox.Button>
 
-                                    <Transition
-                                        show={open}
-                                        as={Fragment}
-                                        leave='transition ease-in duration-50'
-                                        leaveFrom='opacity-100'
-                                        leaveTo='opacity-0'
-                                    >
-                                        <Listbox.Options className='absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
-                                            {data.map((item) => (
-                                                <Listbox.Option
-                                                    key={item[idKey]}
-                                                    className={({ active }) =>
-                                                        clsx(
-                                                            active ? 'text-white bg-indigo-600' : 'text-gray-900',
-                                                            'cursor-default select-none relative py-2 pl-8 pr-4'
-                                                        )
-                                                    }
-                                                    value={item}
-                                                >
-                                                    {({ selected, active }) => (
-                                                        <>
+                                    <Listbox.Options className='absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
+                                        {data.map((item) => (
+                                            <Listbox.Option
+                                                key={item[idKey]}
+                                                className={({ active }) =>
+                                                    clsx(
+                                                        active ? 'text-white bg-indigo-600' : 'text-gray-900',
+                                                        'cursor-default select-none relative py-2 pl-8 pr-4'
+                                                    )
+                                                }
+                                                value={item}
+                                            >
+                                                {({ selected, active }) => (
+                                                    <>
+                                                        <span
+                                                            className={clsx(
+                                                                selected ? 'font-medium' : 'font-light',
+                                                                'block truncate'
+                                                            )}
+                                                        >
+                                                            {item[valueKey]}
+                                                        </span>
+
+                                                        {selected ? (
                                                             <span
                                                                 className={clsx(
-                                                                    selected ? 'font-medium' : 'font-light',
-                                                                    'block truncate'
+                                                                    active ? 'text-white' : 'text-indigo-600',
+                                                                    'absolute inset-y-0 left-0 flex items-center pl-1.5'
                                                                 )}
                                                             >
-                                                                {item[valueKey]}
+                                                                <CheckIcon className='h-5 w-5' aria-hidden='true' />
                                                             </span>
-
-                                                            {selected ? (
-                                                                <span
-                                                                    className={clsx(
-                                                                        active ? 'text-white' : 'text-indigo-600',
-                                                                        'absolute inset-y-0 left-0 flex items-center pl-1.5'
-                                                                    )}
-                                                                >
-                                                                    <CheckIcon className='h-5 w-5' aria-hidden='true' />
-                                                                </span>
-                                                            ) : null}
-                                                        </>
-                                                    )}
-                                                </Listbox.Option>
-                                            ))}
-                                        </Listbox.Options>
-                                    </Transition>
+                                                        ) : null}
+                                                    </>
+                                                )}
+                                            </Listbox.Option>
+                                        ))}
+                                    </Listbox.Options>
                                 </div>
                             </>
                         )}

@@ -1,42 +1,22 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { ArrowSmLeftIcon, TrashIcon, PencilIcon } from '@heroicons/react/outline'
+import { ArrowSmLeftIcon, TrashIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import React from 'react'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { IUserLoan } from '~/@types/loan'
-import { IMethodSpending, ISpendingData } from '~/@types/spending'
-import { AutoComplete, AvatarUser, Button, DatePicker, Divider, Input, TextArea, Toggle } from '~/components'
-import { DATE_FORMAT } from '~/constant'
+import { TransactionEditFormProps } from '~/@types/loan'
+import { Button } from '~/components'
+import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useLoading } from '~/context'
 import { useScrollIntoView } from '~/hook'
 import { getColorPrize } from '~/services'
-import { Data } from '../pages/TransactionEdit'
-import Group from './Group'
+import IconButton from './common/IconButton'
+import StatusLoan from './common/StatusLoan'
 
-interface D<T> {
-    loading: boolean
-    data: T[] | undefined
-    query: string
-    params?: {} | undefined
-}
-export interface TransactionEditFormData {
-    title: string
-    onsubmit: SubmitHandler<any>
-    handleReloadData: (keys: keyof Data) => Promise<void>
-    handleDeleteTransaction: () => void
-    methodSpending: D<IMethodSpending>
-    transaction: ISpendingData
-    userLoan: D<IUserLoan>
-    handleAddMoreMethodSpending: (name: string) => Promise<{ _id: string; name: string } | undefined>
-}
-interface TransactionEditFormProps {
-    data: TransactionEditFormData
-}
-const TransactionEditForm = ({ data }: TransactionEditFormProps) => {
+const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
     const {
         onsubmit,
         handleDeleteTransaction,
@@ -56,7 +36,7 @@ const TransactionEditForm = ({ data }: TransactionEditFormProps) => {
             description: transaction.description?.split('\n').slice(1).join('\n') || '',
             methodReference: transaction.methodReference ?? null,
             amount: transaction.realPaid ?? transaction.amount,
-            date: moment(transaction.date).toDate(),
+            estimatePaidDate: moment(transaction.estimatePaidDate).toDate(),
             userLoan: transaction.userLoan ?? null,
             surplus: transaction.surplus ?? null,
         },
@@ -76,14 +56,13 @@ const TransactionEditForm = ({ data }: TransactionEditFormProps) => {
                 </div>
 
                 {!transaction.paid && (
-                    <span
-                        className='h-8 lg:h-9 w-8 lg:w-9 hover:opacity-50 transition-opacity text-gray-600 cursor-pointer bg-slate-200 p-1.5 rounded-lg'
+                    <IconButton
                         onClick={() =>
                             window.confirm('Bạn có chắc muốn xóa giao dịch này ?') && handleDeleteTransaction()
                         }
                     >
                         <TrashIcon />
-                    </span>
+                    </IconButton>
                 )}
             </div>
             <div className='bg-white rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>
@@ -148,19 +127,7 @@ const TransactionEditForm = ({ data }: TransactionEditFormProps) => {
                                             }
                                         />
 
-                                        <p>
-                                            Trạng thái vay:{' '}
-                                            <span
-                                                className={clsx(
-                                                    'font-medium',
-                                                    form.watch('methodReference')
-                                                        ? 'text-indigo-500'
-                                                        : 'text-orange-500'
-                                                )}
-                                            >
-                                                {form.watch('methodReference') ? 'Cộng gốc' : 'Tạm vay'}
-                                            </span>
-                                        </p>
+                                        <StatusLoan form={form} name='methodReference' />
 
                                         <AutoComplete
                                             name='userLoan'
@@ -178,7 +145,7 @@ const TransactionEditForm = ({ data }: TransactionEditFormProps) => {
                                             showImage
                                         />
 
-                                        <DatePicker name='date' form={form} label='Hạn trả' />
+                                        <DatePicker name='estimatePaidDate' form={form} label='Hạn trả' />
 
                                         <TextArea name='description' form={form} label='Ghi chú' />
                                     </div>

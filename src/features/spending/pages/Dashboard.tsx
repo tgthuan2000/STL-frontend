@@ -1,7 +1,7 @@
 import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
-import { IMethodSpending, ISpendingData, IStatisticData } from '~/@types/spending'
+import { DashboardQueryData } from '~/@types/spending'
 import { Box, ButtonMenu, Divider } from '~/components'
 import { DATE_FORMAT } from '~/constant'
 import { menuMobile } from '~/constant/components'
@@ -13,39 +13,15 @@ import useAuth from '~/store/auth'
 import { sum } from '~/services'
 import { Method, Recent, Statistic } from '../components'
 
-interface IData {
-    recent: ISpendingData[]
-    method: IMethodSpending[]
-    statistic: IStatisticData[]
-}
-
-// const F_GET_METHOD_SPENDING = (kindSpending: any[]) => `
-//     *[_type == "methodSpending"]
-//     {
-//         _id,
-//         name,
-//         user-> {
-//             userName
-//         },
-//         ${kindSpending
-//             .map(
-//                 ({ _id, key }) =>
-//                     `"${key}": *[_type == "spending" && methodSpending._ref == ^._id && kindSpending._ref == "${_id}"].amount`
-//             )
-//             .join(',')}
-//     }
-// `
-
 const Dashboard = () => {
     const { width } = useWindowSize()
     const { userProfile } = useAuth()
     const { kindSpending, getKindSpendingId, getKindSpendingIds } = useConfig()
     const wrapRef = useScrollIntoView<HTMLDivElement>()
-    const [{ method, recent, statistic }, fetchData, deleteCache, reload] = useQuery<IData>(
+    const [{ method, recent, statistic }, fetchData, deleteCache, reload] = useQuery<DashboardQueryData>(
         {
             recent: GET_RECENT_SPENDING,
             method: GET_METHOD_SPENDING_DESC_SURPLUS,
-            // method: F_GET_METHOD_SPENDING(kindSpending),
             statistic: GET_STATISTIC_SPENDING,
         },
         {
@@ -63,22 +39,6 @@ const Dashboard = () => {
         }
     }, [kindSpending])
 
-    // const dataMethod = useMemo(() => {
-    //     if (!method.data) return
-
-    //     const methodMap = (method.data as any[]).map(
-    //         ({ cost, receive, 'transfer-from': transferFrom, 'transfer-to': transferTo, ...data }) => ({
-    //             ...data,
-    //             cost: sum([...cost, ...transferFrom]),
-    //             receive: sum([...receive, ...transferTo]),
-    //         })
-    //     )
-
-    //     return methodMap
-    // }, [method.data])
-
-    // console.log(dataMethod?.map((d) => ({ data: d.receive - d.cost, name: d.name, userName: d.user.userName })))
-
     const dataStatistic = useMemo(() => {
         const data = statistic.data
         if (!data || isEmpty(data)) return
@@ -89,7 +49,7 @@ const Dashboard = () => {
                     [value.key]: sum(value.data),
                 }
             },
-            { cost: 0, receive: 0 }
+            { cost: 0, receive: 0, loan: 0, 'get-loan': 0 }
         )
         const surplus = _.receive - _.cost
         return {
@@ -97,18 +57,19 @@ const Dashboard = () => {
             data: [
                 {
                     _id: getKindSpendingId('RECEIVE') as string,
-                    value: _.receive,
+                    value: _.receive + _['get-loan'],
+                    getLoan: _['get-loan'],
                     name: 'Thu nhập',
                     color: 'text-green-500',
                 },
                 {
                     _id: getKindSpendingId('COST') as string,
-                    value: _.cost,
+                    value: _.cost + _.loan,
                     name: 'Chi phí',
                     color: 'text-red-500',
                 },
                 {
-                    _id: getKindSpendingId('TRANSFER_FROM') as string,
+                    _id: 'Surplus' as string,
                     value: surplus,
                     name: 'Số dư',
                     color: surplus >= 0 ? 'text-green-500' : 'text-red-500',

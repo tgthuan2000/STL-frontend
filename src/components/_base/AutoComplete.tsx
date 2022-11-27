@@ -8,7 +8,7 @@ import { Controller } from 'react-hook-form'
 import { AutoCompleteProps } from '~/@types/components'
 import numeral from 'numeral'
 import { urlFor } from '~/sanityConfig'
-import UserSvg from './UserSvg'
+import UserSvg from '../_constant/UserSvg'
 
 const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
     (
@@ -28,6 +28,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
             onChange,
             showImage,
             disabledClear,
+            surplusName = 'Số dư',
         },
         ref
     ) => {
@@ -262,7 +263,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                         <div ref={parent}>
                             {!isNil(surplus) && (
                                 <div className='mt-1 ml-3'>
-                                    Số dư:{' '}
+                                    {surplusName}:{' '}
                                     <strong
                                         className={clsx(
                                             { 'text-green-400': surplus > 0 },

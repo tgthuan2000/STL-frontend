@@ -3,39 +3,18 @@ import clsx from 'clsx'
 import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import React from 'react'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { ICategorySpending, IMethodSpending, ISpendingData } from '~/@types/spending'
-import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
+import { IDetailSpendingForm, TransactionDetailFormProps } from '~/@types/spending'
+import { Button } from '~/components'
+import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useLoading } from '~/context'
 import { useScrollIntoView } from '~/hook'
 import { getColorPrize } from '~/services'
-import { Data, DataCategory, IDetailSpendingForm } from '../pages/TransactionDetail'
 
-interface D<T> {
-    loading: boolean
-    data: T[] | undefined
-    query: string
-    params?: {} | undefined
-}
-export interface TransactionDetailFormData {
-    onsubmit: SubmitHandler<IDetailSpendingForm>
-    title: string
-    handleReloadData: (keys: keyof Data) => Promise<void>
-    handleReloadDataCategory: (keys: keyof DataCategory) => Promise<void>
-    handleAddMoreMethodSpending: (name: string) => Promise<{ _id: string; name: string } | undefined>
-    handleAddMoreCategorySpending: (name: string) => Promise<{ _id: string; name: string } | undefined>
-    handleDeleteTransaction: () => void
-    categorySpending: D<ICategorySpending>
-    methodSpending: D<IMethodSpending>
-    transaction: ISpendingData
-}
-
-interface TransactionDetailFormProps {
-    data: TransactionDetailFormData
-}
-const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
+const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) => {
     const {
         onsubmit,
         title,

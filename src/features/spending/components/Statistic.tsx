@@ -1,23 +1,26 @@
 import clsx from 'clsx'
-import NumberFormat from 'react-number-format'
+import numeral from 'numeral'
+import React from 'react'
 import { StatisticProps } from '~/@types/spending'
 
-const Statistic = ({ data, loading }: StatisticProps) => {
+const Statistic: React.FC<StatisticProps> = ({ data, loading }) => {
     if (loading) return <StatisticSkeleton />
     return (
         <div className='grid grid-cols-3 xl:gap-x-4 py-6'>
-            {data?.map(({ _id, name, color, value }) => {
+            {data?.map(({ _id, name, color, value, getLoan }) => {
                 return (
-                    <div key={_id} className='flex flex-col justify-center items-center gap-y-2 overflow-hidden w-full'>
+                    <div key={_id} className='flex flex-col justify-start items-center gap-y-2 overflow-hidden w-full'>
                         <h4 className={clsx('xl:text-lg text-base font-medium', color)}>{name}</h4>
                         <span className={clsx('xl:text-base text-sm font-medium text-gray-500 block w-full', color)}>
-                            <NumberFormat
-                                className='truncate block w-full text-center'
-                                value={value || 0}
-                                displayType='text'
-                                thousandSeparator
-                            />
+                            <span className='truncate block w-full text-center'>{numeral(value || 0).format()}</span>
                         </span>
+                        {getLoan && (
+                            <span className='xl:text-sm text-xs font-medium block w-full text-yellow-500'>
+                                <span className='truncate block w-full text-center'>
+                                    [Vay {numeral(getLoan || 0).format()}]
+                                </span>
+                            </span>
+                        )}
                     </div>
                 )
             })}

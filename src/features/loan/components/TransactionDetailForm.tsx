@@ -4,38 +4,19 @@ import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import React from 'react'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { IMethodSpending, ISpendingData } from '~/@types/spending'
-import { AutoComplete, AvatarUser, Button, Divider, Input, Toggle } from '~/components'
+import { PaidForm, TransactionDetailFormProps } from '~/@types/loan'
+import { AvatarUser, Button, Divider } from '~/components'
+import { AutoComplete, Input, Toggle } from '~/components/_base'
 import { DATE_FORMAT } from '~/constant'
 import { useLoading } from '~/context'
 import { useScrollIntoView } from '~/hook'
-import { Data } from '../pages/TransactionDetail'
+import IconButton from './common/IconButton'
 import Group from './Group'
 
-interface D<T> {
-    loading: boolean
-    data: T[] | undefined
-    query: string
-    params?: {} | undefined
-}
-export interface TransactionDetailFormData {
-    onsubmit: SubmitHandler<PaidForm>
-    handleReloadData: (keys: keyof Data) => Promise<void>
-    handleDeleteTransaction: () => void
-    methodSpending: D<IMethodSpending>
-    transaction: ISpendingData
-}
-export interface PaidForm {
-    paid: boolean
-    methodSpending: IMethodSpending | null
-    amount: number
-}
-interface TransactionDetailFormProps {
-    data: TransactionDetailFormData
-}
-const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
+const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) => {
     const { onsubmit, handleDeleteTransaction, handleReloadData, methodSpending, transaction } = data
     const navigate = useNavigate()
     const { loading } = useLoading()
@@ -64,20 +45,16 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
 
                 {!transaction.paid && (
                     <div className='flex gap-2'>
-                        <span
-                            className='h-8 lg:h-9 w-8 lg:w-9 hover:opacity-50 transition-opacity text-gray-600 cursor-pointer bg-slate-200 p-1.5 rounded-lg'
-                            onClick={() => navigate(`/loan/transaction/${transaction._id}/edit`)}
-                        >
+                        <IconButton onClick={() => navigate(`/loan/transaction/${transaction._id}/edit`)}>
                             <PencilIcon />
-                        </span>
-                        <span
-                            className='h-8 lg:h-9 w-8 lg:w-9 hover:opacity-50 transition-opacity text-gray-600 cursor-pointer bg-slate-200 p-1.5 rounded-lg'
+                        </IconButton>
+                        <IconButton
                             onClick={() =>
                                 window.confirm('Bạn có chắc muốn xóa giao dịch này ?') && handleDeleteTransaction()
                             }
                         >
                             <TrashIcon />
-                        </span>
+                        </IconButton>
                     </div>
                 )}
             </div>
@@ -181,6 +158,11 @@ const TransactionDetailForm = ({ data }: TransactionDetailFormProps) => {
                                             {transaction.methodReference?.name || 'Không có'}
                                         </Group>
                                         {transaction.date && (
+                                            <Group label='Thời điểm thực hiện' className='justify-between'>
+                                                {moment(transaction.date).format(DATE_FORMAT.D_DATE_TIME)}
+                                            </Group>
+                                        )}
+                                        {transaction.estimatePaidDate && (
                                             <Group label='Hạn trả' className='justify-between'>
                                                 {moment(transaction.date).format(DATE_FORMAT.D_DATE_TIME)}
                                             </Group>

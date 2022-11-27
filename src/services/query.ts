@@ -1,5 +1,15 @@
-import { SanityDocument } from '@sanity/client'
 import moment from 'moment'
+import {
+    GetAllRecentSpending,
+    GetCategorySpending,
+    GetMethodKindSpending,
+    GetMethodSpending,
+    GetPayDueLoan,
+    GetRecentLoan,
+    GetRecentSpending,
+    GetStatisticLoan,
+    GetStatisticSpending,
+} from '~/@types/query'
 import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
 import {
     GETALL_RECENT_SPENDING,
@@ -11,10 +21,6 @@ import {
 } from '~/schema/query/spending'
 import { getDateOfMonth } from '.'
 
-interface GetCategorySpending<T extends Record<string, any>> {
-    userProfile: SanityDocument<T> | null
-    kindSpending: string
-}
 export const getCategorySpending = <T extends Record<string, any>>({
     userProfile,
     kindSpending,
@@ -25,10 +31,6 @@ export const getCategorySpending = <T extends Record<string, any>>({
     }
 }
 
-// ---------------------------------------------------------------------------------------------------------------------
-interface GetMethodKindSpending<T extends Record<string, any>> {
-    userProfile: SanityDocument<T> | null
-}
 export const getMethodSpendingDescSurplus = <T extends Record<string, any>>({
     userProfile,
 }: GetMethodKindSpending<T>) => {
@@ -38,10 +40,6 @@ export const getMethodSpendingDescSurplus = <T extends Record<string, any>>({
     }
 }
 
-// ---------------------------------------------------------------------------------------------------------------------
-interface GetMethodSpending<T extends Record<string, any>> {
-    userProfile: SanityDocument<T> | null
-}
 export const getMethodSpending = <T extends Record<string, any>>({ userProfile }: GetMethodSpending<T>) => {
     return {
         methodSpending: GET_METHOD_SPENDING,
@@ -49,10 +47,6 @@ export const getMethodSpending = <T extends Record<string, any>>({ userProfile }
     }
 }
 
-// ---------------------------------------------------------------------------------------------------------------------
-interface GetStatisticSpending<T extends Record<string, any>> {
-    userProfile: SanityDocument<T> | null
-}
 export const getStatisticSpending = <T extends Record<string, any>>({ userProfile }: GetStatisticSpending<T>) => {
     return {
         statistic: GET_STATISTIC_SPENDING,
@@ -60,10 +54,6 @@ export const getStatisticSpending = <T extends Record<string, any>>({ userProfil
     }
 }
 
-// ---------------------------------------------------------------------------------------------------------------------
-interface GetRecentSpending<T extends Record<string, any>> {
-    userProfile: SanityDocument<T> | null
-}
 export const getRecentSpending = <T extends Record<string, any>>({ userProfile }: GetRecentSpending<T>) => {
     return {
         recent: GET_RECENT_SPENDING,
@@ -71,10 +61,6 @@ export const getRecentSpending = <T extends Record<string, any>>({ userProfile }
     }
 }
 
-// ---------------------------------------------------------------------------------------------------------------------
-interface GetAllRecentSpending<T extends Record<string, any>> {
-    userProfile: SanityDocument<T> | null
-}
 export const getAllRecentSpending = <T extends Record<string, any>>({ userProfile }: GetAllRecentSpending<T>) => {
     return {
         recent: GETALL_RECENT_SPENDING,
@@ -82,13 +68,8 @@ export const getAllRecentSpending = <T extends Record<string, any>>({ userProfil
     }
 }
 
-// ---------------------------------------------------------------------------------------------------------------------
 // LOAN
-interface GetRecentLoan<T extends Record<string, any>> {
-    userProfile: SanityDocument<T> | null
-    kindLoan: string
-    kindGetLoan: string
-}
+
 export const getRecentLoan = <T extends Record<string, any>>({
     userProfile,
     kindLoan,
@@ -100,12 +81,6 @@ export const getRecentLoan = <T extends Record<string, any>>({
     }
 }
 
-// ---------------------------------------------------------------------------------------------------------------------
-interface GetPayDueLoan<T extends Record<string, any>> {
-    userProfile: SanityDocument<T> | null
-    kindLoan: string
-    kindGetLoan: string
-}
 export const getPayDueLoan = <T extends Record<string, any>>({
     userProfile,
     kindLoan,
@@ -123,10 +98,7 @@ export const getPayDueLoan = <T extends Record<string, any>>({
         },
     }
 }
-// ---------------------------------------------------------------------------------------------------------------------
-interface GetStatisticLoan<T extends Record<string, any>> {
-    userProfile: SanityDocument<T> | null
-}
+
 export const getStatisticLoan = <T extends Record<string, any>>({ userProfile }: GetStatisticLoan<T>) => {
     return {
         recent: GET_STATISTIC_LOAN,

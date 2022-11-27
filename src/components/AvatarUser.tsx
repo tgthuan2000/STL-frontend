@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import React from 'react'
 import { AvatarUserProps } from '~/@types/components'
 import { urlFor } from '~/sanityConfig'
-import UserSvg from './UserSvg'
+import UserSvg from './_constant/UserSvg'
 
 const AvatarUser: React.FC<AvatarUserProps> = ({ image, size = 'medium' }) => {
     const getSize = {

@@ -3,25 +3,14 @@ import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { ICategorySpending, IMethodSpending } from '~/@types/spending'
-import { AutoComplete, Button, DatePicker, Input, TextArea } from '~/components'
+import { IAddCostForm, MakeCostQueryData } from '~/@types/spending'
+import { Button } from '~/components'
+import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
-
-interface IAddCostForm {
-    amount: number | string
-    categorySpending: ICategorySpending | null
-    methodSpending: IMethodSpending | null
-    description: string
-    date: Date
-}
-interface Data {
-    methodSpending: IMethodSpending[]
-    categorySpending: ICategorySpending[]
-}
 
 const MakeCost = () => {
     const { setIsOpen } = useSlideOver()
@@ -36,7 +25,7 @@ const MakeCost = () => {
         return getKindSpendingId('COST')
     }, [getKindSpendingId])
 
-    const [{ categorySpending, methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
+    const [{ categorySpending, methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<MakeCostQueryData>(
         {
             methodSpending: GET_METHOD_SPENDING,
             categorySpending: GET_CATEGORY_SPENDING,
@@ -191,7 +180,7 @@ const MakeCost = () => {
         }
     }
 
-    const handleReloadData = async (keys: keyof Data) => {
+    const handleReloadData = async (keys: keyof MakeCostQueryData) => {
         const res = deleteCacheData(keys)
         console.log(res)
         reloadData()

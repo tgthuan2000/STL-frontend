@@ -1,11 +1,6 @@
 import clsx from 'clsx'
 import React from 'react'
-
-interface GroupProps {
-    children: React.ReactNode
-    label: string
-    className?: string
-}
+import { GroupProps } from '~/@types/loan'
 
 const Group: React.FC<GroupProps> = ({ children, label, className }) => {
     return (
