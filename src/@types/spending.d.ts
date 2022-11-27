@@ -22,6 +22,7 @@ export interface IMethodSpending {
 export interface ISpendingData {
     _id: string
     _createdAt: string
+    _updatedAt: string
     amount: number
     kindSpending: IKindSpending
     surplus: number

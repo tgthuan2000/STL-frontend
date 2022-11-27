@@ -120,11 +120,36 @@ const MainTable = ({ data }: MainTableProps) => {
     const navigate = useNavigate()
     const { width } = useWindowSize()
 
+    const getDate = (date: string, title: string) => {
+        return width <= 900 ? (
+            <>
+                <span>{moment(date).format(DATE_FORMAT.D_DATE)}</span>
+                <br />
+                <span>{moment(date).format(DATE_FORMAT.TIME)}</span>
+            </>
+        ) : (
+            <span>
+                {title}: {moment(date).format(DATE_FORMAT.D_DATE_TIME)}
+            </span>
+        )
+    }
+
     return (
         <>
             {data.map(
                 (
-                    { _id, date, description, methodSpending, kindSpending, categorySpending, amount, realPaid, paid },
+                    {
+                        _id,
+                        date,
+                        estimatePaidDate,
+                        description,
+                        methodSpending,
+                        kindSpending,
+                        categorySpending,
+                        amount,
+                        realPaid,
+                        paid,
+                    },
                     index,
                     data
                 ) => {
@@ -132,17 +157,12 @@ const MainTable = ({ data }: MainTableProps) => {
                     return (
                         <Fragment key={_id}>
                             <tr onClick={() => navigate(to)}>
-                                <td className={clsx('whitespace-nowrap pt-4 pl-2 pr-3 sm:pl-6 lg:pl-8')}>
-                                    {date ? (
-                                        width <= 900 ? (
-                                            <>
-                                                <span>{moment(date).format(DATE_FORMAT.D_DATE)}</span>
-                                                <br />
-                                                <span>{moment(date).format(DATE_FORMAT.TIME)}</span>
-                                            </>
-                                        ) : (
-                                            <span>{moment(date).format(DATE_FORMAT.D_DATE_TIME)}</span>
-                                        )
+                                <td className={clsx('whitespace-nowrap lg:pt-4 pt-0 pl-2 pr-3 sm:pl-6 lg:pl-8')}>
+                                    {moment(date).format(DATE_FORMAT.D_DATE_TIME) !== 'Invalid date' && (
+                                        <span className='block mb-2'>{getDate(date as string, 'Ngày tạo')}</span>
+                                    )}
+                                    {estimatePaidDate ? (
+                                        getDate(estimatePaidDate, 'Hạn trả')
                                     ) : (
                                         <span>{TEMPLATE.EMPTY_DATE}</span>
                                     )}
@@ -150,23 +170,25 @@ const MainTable = ({ data }: MainTableProps) => {
                                         {methodSpending?.name || TEMPLATE.EMPTY_METHOD_SPENDING_SHORT}
                                     </h3>
                                 </td>
-                                <td className='flex items-center justify-center gap-x-2 px-1 pt-4 text-center truncate'>
-                                    <span
-                                        className={clsx(
-                                            'inline-block h-1.5 w-1.5 rounded-full',
-                                            paid ? 'bg-green-500' : 'bg-radical-red-500'
-                                        )}
-                                    />
-                                    <p className='text-sm font-medium text-gray-900'>
-                                        {categorySpending?.name ?? kindSpending.name}
-                                    </p>
+                                <td className='gap-x-2 px-1 lg:pt-4 pt-0'>
+                                    <div className='flex items-center justify-center gap-x-2 text-center truncate'>
+                                        <span
+                                            className={clsx(
+                                                'inline-block h-1.5 w-1.5 rounded-full',
+                                                paid ? 'bg-green-500' : 'bg-radical-red-500'
+                                            )}
+                                        />
+                                        <p className='text-sm font-medium text-gray-900'>
+                                            {categorySpending?.name ?? kindSpending.name}
+                                        </p>
+                                    </div>
                                 </td>
-                                <td className={clsx('whitespace-nowrap px-1 pt-4 text-sm text-center')}>
+                                <td className={clsx('whitespace-nowrap px-1 lg:pt-4 pt-0 text-sm text-center')}>
                                     <span className={clsx('text-green-500', 'font-medium')}>
                                         {numeral(KIND_SPENDING.GET_LOAN ? amount : realPaid).format()}
                                     </span>
                                 </td>
-                                <td className={clsx('whitespace-nowrap pl-1 pr-2 pt-4 text-sm text-center')}>
+                                <td className={clsx('whitespace-nowrap pl-1 pr-2 lg:pt-4 pt-0 text-sm text-center')}>
                                     <span className={clsx('text-red-500', 'font-medium')}>
                                         {numeral(KIND_SPENDING.GET_LOAN ? realPaid : amount).format()}
                                     </span>
