@@ -56,7 +56,7 @@ const TransactionEdit = () => {
 
     const onsubmit: SubmitHandler<IMakeGetLoanForm> = async (data) => {
         setSubmitLoading(true)
-        let { amount, methodReference, description, date, userLoan } = data
+        let { amount, methodReference, description, estimatePaidDate, userLoan } = data
         amount = Number(amount)
         description = description.trim()
 
@@ -66,7 +66,7 @@ const TransactionEdit = () => {
             const documentSpending = {
                 amount,
                 description: `${methodReference ? 'Cộng gốc' : 'Tạm vay'}${description ? `\n${description}` : ''}`,
-                date: date ? moment(date).format() : undefined,
+                estimatePaidDate: estimatePaidDate ? moment(estimatePaidDate).format() : undefined,
                 ...(methodReference
                     ? {
                           surplus: methodReference.surplus,

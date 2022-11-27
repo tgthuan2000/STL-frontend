@@ -157,14 +157,19 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                         <Group label='Phương thức nhận tiền' className='justify-between'>
                                             {transaction.methodReference?.name || 'Không có'}
                                         </Group>
-                                        {transaction.date && (
-                                            <Group label='Thời điểm thực hiện' className='justify-between'>
-                                                {moment(transaction.date).format(DATE_FORMAT.D_DATE_TIME)}
+                                        {transaction._createdAt && (
+                                            <Group label='Thời điểm tạo' className='justify-between'>
+                                                {moment(transaction._createdAt).format(DATE_FORMAT.D_DATE_TIME)}
+                                            </Group>
+                                        )}
+                                        {transaction._updatedAt && (
+                                            <Group label='Cập nhật gần nhất' className='justify-between'>
+                                                {moment(transaction._updatedAt).format(DATE_FORMAT.D_DATE_TIME)}
                                             </Group>
                                         )}
                                         {transaction.estimatePaidDate && (
                                             <Group label='Hạn trả' className='justify-between'>
-                                                {moment(transaction.date).format(DATE_FORMAT.D_DATE_TIME)}
+                                                {moment(transaction.estimatePaidDate).format(DATE_FORMAT.D_DATE_TIME)}
                                             </Group>
                                         )}
                                         {transaction.paidDate && (

@@ -40,7 +40,8 @@ export const GETALL_RECENT_SPENDING_FILTER_DATE_RANGE = groq`
         amount,
         realPaid,
         paid,
-        date
+        date,
+        estimatePaidDate
     }
 `
 
