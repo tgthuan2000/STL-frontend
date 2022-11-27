@@ -4,6 +4,7 @@ import { isEmpty } from 'lodash'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { AddMethodQueryData, IAddMethodForm } from '~/@types/spending'
 import { Button } from '~/components'
 import { Input } from '~/components/_base'
@@ -60,7 +61,7 @@ const AddMethod = () => {
             // navigate to dashboard
             const result = deleteCache([METHOD_SPENDING_DESC_SURPLUS, METHOD_SPENDING])
             console.log(result)
-            alert('Tạo mới phương thức thanh toán thành công!')
+            toast.success<string>('Tạo mới phương thức thanh toán thành công!')
             // setIsOpen(false)
             // navigate(-1)
         } catch (error) {

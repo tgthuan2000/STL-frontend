@@ -3,6 +3,7 @@ import moment from 'moment'
 import { useEffect } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { IMakeGetLoanForm, TransactionEditFormData, TransactionEditQueryData } from '~/@types/loan'
 import { ISpendingData } from '~/@types/spending'
 import { KIND_SPENDING } from '~/constant/spending'
@@ -132,7 +133,7 @@ const TransactionEdit = () => {
                 reloadData()
             }, 0)
 
-            alert('Cập nhật giao dịch thành công!')
+            toast.success<string>('Cập nhật giao dịch thành công!')
         } catch (error) {
             console.log(error)
         } finally {

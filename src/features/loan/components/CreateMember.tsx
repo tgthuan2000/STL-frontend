@@ -1,5 +1,6 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { ICreateMemberForm } from '~/@types/loan'
 import { Button } from '~/components'
 import { Input, UploadImage } from '~/components/_base'
@@ -56,7 +57,7 @@ const CreateMember = () => {
             form.reset(defaultValues, {
                 keepDefaultValues: true,
             })
-            alert('Tạo thành viên thành công!')
+            toast.success<string>('Tạo thành viên thành công!')
             // setIsOpen(false)
             // navigate(-1)
         } catch (error) {

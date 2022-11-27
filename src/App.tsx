@@ -5,6 +5,8 @@ import { Loading } from './components'
 import { ConfigProvider, LoadingProvider } from './context'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { CacheProvider } from './context/CacheContext'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const AuthFeature = React.lazy(() => import('./features/auth'))
 const SpendingFeature = React.lazy(() => import('./features/spending'))
@@ -15,6 +17,18 @@ function App() {
     return (
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
             <BrowserRouter>
+                <ToastContainer
+                    position='bottom-left'
+                    autoClose={5000}
+                    hideProgressBar
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme='colored'
+                />
                 <LoadingProvider>
                     <Loading />
                     <Suspense fallback={<div>Loading...</div>}>
