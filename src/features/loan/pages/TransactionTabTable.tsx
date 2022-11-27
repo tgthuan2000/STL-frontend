@@ -154,6 +154,10 @@ const MainTable = ({ data }: MainTableProps) => {
                     data
                 ) => {
                     const to = getLinkSpending(kindSpending.key, _id)
+                    const isGetLoan = KIND_SPENDING.GET_LOAN === kindSpending.key
+                    const receive = isGetLoan ? amount : realPaid
+                    const cost = isGetLoan ? realPaid : amount
+
                     return (
                         <Fragment key={_id}>
                             <tr onClick={() => navigate(to)}>
@@ -184,14 +188,18 @@ const MainTable = ({ data }: MainTableProps) => {
                                     </div>
                                 </td>
                                 <td className={clsx('whitespace-nowrap px-1 lg:pt-4 pt-0 text-sm text-center')}>
-                                    <span className={clsx('text-green-500', 'font-medium')}>
-                                        {numeral(KIND_SPENDING.GET_LOAN ? amount : realPaid).format()}
-                                    </span>
+                                    {receive && (
+                                        <span className={clsx('text-green-500', 'font-medium')}>
+                                            {numeral(receive).format()}
+                                        </span>
+                                    )}
                                 </td>
                                 <td className={clsx('whitespace-nowrap pl-1 pr-2 lg:pt-4 pt-0 text-sm text-center')}>
-                                    <span className={clsx('text-red-500', 'font-medium')}>
-                                        {numeral(KIND_SPENDING.GET_LOAN ? realPaid : amount).format()}
-                                    </span>
+                                    {cost && (
+                                        <span className={clsx('text-red-500', 'font-medium')}>
+                                            {numeral(cost).format()}
+                                        </span>
+                                    )}
                                 </td>
                             </tr>
                             <tr onClick={() => navigate(to)}>

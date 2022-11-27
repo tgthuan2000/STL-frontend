@@ -287,7 +287,7 @@ const MainTable = ({ data }: MainTableProps) => {
                                 <td className={clsx('whitespace-nowrap pl-1 pr-2 pt-4 text-sm text-center')}>
                                     {[KIND_SPENDING.COST, KIND_SPENDING.TRANSFER_FROM].includes(kindSpending.key) && (
                                         <span className={clsx('text-red-500', 'font-medium')}>
-                                            {numeral(KIND_SPENDING.GET_LOAN ? realPaid : amount).format()}
+                                            {numeral(amount).format()}
                                         </span>
                                     )}
                                 </td>
