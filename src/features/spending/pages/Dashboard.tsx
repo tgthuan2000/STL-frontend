@@ -7,21 +7,30 @@ import { DATE_FORMAT } from '~/constant'
 import { menuMobile } from '~/constant/components'
 import { useConfig } from '~/context'
 import { useScrollIntoView, useQuery, useWindowSize } from '~/hook'
-import { GET_METHOD_SPENDING_DESC_SURPLUS, GET_RECENT_SPENDING, GET_STATISTIC_SPENDING } from '~/schema/query/spending'
+import {
+    GET_BUDGETS_BY_MONTH,
+    GET_METHOD_SPENDING_DESC_SURPLUS,
+    GET_RECENT_SPENDING,
+    GET_STATISTIC_SPENDING,
+} from '~/schema/query/spending'
 import { getDateOfMonth } from '~/services'
 import useAuth from '~/store/auth'
 import { sum } from '~/services'
-import { Method, Recent, Statistic } from '../components'
+import { Budget, Method, Recent, Statistic } from '../components'
+import clsx from 'clsx'
+import { useNavigate } from 'react-router-dom'
 
 const Dashboard = () => {
     const { width } = useWindowSize()
     const { userProfile } = useAuth()
-    const { kindSpending, getKindSpendingId, getKindSpendingIds } = useConfig()
+    const navigate = useNavigate()
+    const { kindSpending, budgetSpending, getKindSpendingId, getKindSpendingIds } = useConfig()
     const wrapRef = useScrollIntoView<HTMLDivElement>()
-    const [{ method, recent, statistic }, fetchData, deleteCache, reload] = useQuery<DashboardQueryData>(
+    const [{ method, recent, budget, statistic }, fetchData, deleteCache, reload] = useQuery<DashboardQueryData>(
         {
             recent: GET_RECENT_SPENDING,
             method: GET_METHOD_SPENDING_DESC_SURPLUS,
+            budget: GET_BUDGETS_BY_MONTH,
             statistic: GET_STATISTIC_SPENDING,
         },
         {
@@ -31,8 +40,11 @@ const Dashboard = () => {
             to: 5,
             startDate: getDateOfMonth('start'),
             endDate: getDateOfMonth('end'),
+            budgetKind: getKindSpendingId('COST') as string,
+            budgetId: budgetSpending._id as string,
         }
     )
+
     useEffect(() => {
         if (!isEmpty(kindSpending)) {
             fetchData()
@@ -79,7 +91,7 @@ const Dashboard = () => {
     }, [statistic.data])
 
     const handleReload = () => {
-        const res = deleteCache('statistic', 'recent', 'method')
+        const res = deleteCache('statistic', 'recent', 'method', 'budget')
         console.log(res)
         reload()
     }
@@ -97,7 +109,7 @@ const Dashboard = () => {
             {/* Show analytics */}
             <Box>
                 <Box.Content
-                    className='xl:col-span-2 col-span-1'
+                    className='xl:row-start-1 xl:col-start-1 xl:col-span-2 col-span-1'
                     title={dataStatistic?.dateRange.join(' - ') || ' '}
                     onReload={handleReload}
                     loading={statistic.loading}
@@ -106,7 +118,21 @@ const Dashboard = () => {
                 >
                     <Statistic data={dataStatistic?.data} loading={statistic.loading} />
                 </Box.Content>
+
                 <Box.Content
+                    className='xl:row-start-2 xl:col-start-1 col-span-1'
+                    title='Ngân sách'
+                    to='budget'
+                    onReload={handleReload}
+                    loading={budget.loading}
+                    fullWidth
+                    seeMore={false}
+                >
+                    <Budget data={budget.data} loading={budget.loading} />
+                </Box.Content>
+
+                <Box.Content
+                    className={clsx('xl:row-start-3 xl:col-start-1 col-span-1')}
                     title='Giao dịch gần đây'
                     to='transaction'
                     onReload={handleReload}
@@ -115,7 +141,9 @@ const Dashboard = () => {
                 >
                     <Recent data={recent.data} loading={recent.loading} />
                 </Box.Content>
+
                 <Box.Content
+                    className='xl:row-start-2 xl:row-span-6 xl:col-start-2 col-span-1'
                     title='Phương thức thanh toán'
                     to='method'
                     onReload={handleReload}

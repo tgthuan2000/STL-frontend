@@ -1,3 +1,4 @@
+import moment from 'moment'
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { IConfig, IConfigContext } from '~/@types/context'
 import { KIND_SPENDING } from '~/constant/spending'
@@ -7,6 +8,7 @@ import { useLoading } from './LoadingContext'
 
 const ConfigContext = createContext<IConfigContext>({
     kindSpending: [],
+    budgetSpending: { _id: null },
     getKindSpendingId: () => '',
     getKindSpendingIds: () => [''],
     ok: false,
@@ -15,6 +17,7 @@ const ConfigContext = createContext<IConfigContext>({
 const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
     const [config, setConfig] = useState<IConfig>({
         kindSpending: [],
+        budgetSpending: { _id: null },
     })
     const [ok, setOk] = useState(false)
 
@@ -24,7 +27,9 @@ const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
         const getConfig = async () => {
             try {
                 setConfigLoading(true)
-                const res: IConfig = await client.fetch(GET_CONFIG)
+                const res: IConfig = await client.fetch(GET_CONFIG, {
+                    date: moment().format('YYYY-MM-01'),
+                })
                 setConfig(res)
                 setOk(true)
             } catch (error) {
@@ -59,6 +64,7 @@ const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
     const value: IConfigContext = {
         ok,
         kindSpending: config.kindSpending,
+        budgetSpending: config.budgetSpending,
         getKindSpendingId,
         getKindSpendingIds,
     }

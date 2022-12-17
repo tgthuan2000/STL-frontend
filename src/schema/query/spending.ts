@@ -128,3 +128,39 @@ export const GET_STATISTIC_SPENDING = groq`
         "data": *[_type == "spending" && user._ref == $userId  && kindSpending._ref == ^._id && $startDate <= date && date <= $endDate].amount,
     }
 `
+
+export const GET_BUDGET_DETAIL_BY_MONTH = groq`
+    *[_type == 'budgetDetail' && user._ref == $userId && budgetSpending._ref == $budgetId] | order(_createdAt desc)
+    {
+        _id,
+        _createdAt,
+        _updatedAt,
+        methodSpending-> {
+            _id,
+            name,
+        },
+        amount,
+        "amounts": *[_type == "spending" && user._ref == $userId && $startDate <= date && date <= $endDate && kindSpending._ref == $budgetKind && methodSpending._ref == ^.methodSpending._ref].amount
+    }
+`
+
+export const GET_BUDGET_BY_MONTH = groq`
+    *[_type == 'budget' && user._ref == $userId && _id == $budgetId][0]
+    {
+        _id,
+        _createdAt,
+        _updatedAt,
+        date,
+        "MethodSpending": ${GET_BUDGET_DETAIL_BY_MONTH}
+    }
+`
+export const GET_BUDGETS_BY_MONTH = groq`
+    *[_type == 'budget' && user._ref == $userId && _id == $budgetId]
+    {
+        _id,
+        _createdAt,
+        _updatedAt,
+        date,
+        "MethodSpending": ${GET_BUDGET_DETAIL_BY_MONTH}
+    }
+`

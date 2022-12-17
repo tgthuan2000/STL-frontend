@@ -14,6 +14,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
     loading,
     className,
     fullWidth,
+    customHeaderEvent,
 }) => {
     const [parent] = useAutoAnimate<HTMLDivElement>()
     return (
@@ -24,7 +25,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
                 className
             )}
         >
-            <Title title={title} onReload={onReload} loading={loading} />
+            <Title title={title} onReload={onReload} loading={loading} customEvent={customHeaderEvent} />
             <div ref={parent}>{children}</div>
             <SeeMore seeMore={seeMore} to={to} />
         </div>

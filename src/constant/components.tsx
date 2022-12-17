@@ -9,11 +9,12 @@ import {
     TemplateIcon,
     TrendingUpIcon,
     UserAddIcon,
+    PuzzleIcon,
 } from '@heroicons/react/outline'
 import { googleLogout } from '@react-oauth/google'
 import { IMenuBtn } from '~/@types/components'
 import { CreateMember, MakeGetLoan } from '~/features/loan/components'
-import { MakeIncome, MakeCost, MakeTransfer, AddCategory, AddMethod } from '~/features/spending/components'
+import { MakeIncome, MakeCost, MakeTransfer, MakeBudget, AddCategory, AddMethod } from '~/features/spending/components'
 
 export const menuMobile: IMenuBtn[] = [
     {
@@ -118,6 +119,17 @@ export const menuSpendingPC: IMenuBtn[] = [
             slide: 'transfer',
         },
     },
+    {
+        title: 'Ngân sách',
+        color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300',
+        icon: PuzzleIcon,
+        children: () => <MakeBudget />,
+        to: '?slide=budget',
+        query: {
+            slide: 'budget',
+        },
+    },
+
     {
         title: 'Đăng xuất',
         color: 'text-gray-700 bg-gray-200 hover:bg-gray-300',
