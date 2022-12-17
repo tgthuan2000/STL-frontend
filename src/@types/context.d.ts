@@ -1,5 +1,6 @@
 import { KIND_LOAN } from '~/constant/loan'
 import { KIND_SPENDING } from '~/constant/spending'
+import { IBudgetSpending } from './spending'
 
 type LoadingItems = {
     config: boolean
@@ -19,6 +20,7 @@ export interface IKindSpending {
 
 export interface IConfigContext {
     kindSpending: IKindSpending[]
+    budgetSpending: { _id: string | undefined | null }
     getKindSpendingId: (KEY: keyof typeof KIND_SPENDING) => string | undefined
     getKindSpendingIds: (...KEYS: (keyof typeof KIND_SPENDING)[]) => string[]
     ok: boolean
@@ -67,4 +69,5 @@ export type QueryParams = { [key: string]: string | number | undefined | string[
 
 export interface IConfig {
     kindSpending: IKindSpending[]
+    budgetSpending: { _id: string | undefined | null }
 }

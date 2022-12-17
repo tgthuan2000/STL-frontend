@@ -28,3 +28,5 @@ export const hashCode = (s: string) => {
 export const getColorPrize = (variable: any) => {
     return [{ 'text-green-500': variable > 0 }, { 'text-red-500': variable < 0 }, { 'text-gray-500': variable === 0 }]
 }
+
+export const getBudgetId = (userId: string, month?: moment.MomentInput) => moment(month).format('YYYY-MM-') + userId
