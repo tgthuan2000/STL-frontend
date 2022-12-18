@@ -1,8 +1,8 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { PlusCircleIcon, TrashIcon } from '@heroicons/react/outline'
+import { PlusCircleIcon, RefreshIcon, TrashIcon } from '@heroicons/react/outline'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { IMethodSpending, MakeBudgetQueryData } from '~/@types/spending'
@@ -14,6 +14,8 @@ import { client } from '~/sanityConfig'
 import { GET_BUDGET_BY_MONTH, GET_METHOD_SPENDING } from '~/schema/query/spending'
 import { getBudgetId, getDateOfMonth } from '~/services'
 import useAuth from '~/store/auth'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 interface IMakeBudgetForm {
     date: Date
@@ -30,6 +32,29 @@ const defaultStateRef = {
     updates: [],
 }
 
+const schema = yup.object().shape({
+    date: yup.date().typeError('Yêu cầu chọn ngày!').required('Yêu cầu chọn ngày!'),
+    MethodSpending: yup.array().of(
+        yup.object().shape({
+            _id: yup.string().nullable(),
+            amount: yup
+                .number()
+                .nullable()
+                .required('Bất buộc nhập!')
+                .typeError('Hãy nhập số')
+                .moreThan(0, 'Hạn mức cần lớn hơn 0'),
+            methodSpending: yup
+                .object()
+                .shape({
+                    _id: yup.string().required(),
+                    name: yup.string().required(),
+                })
+                .nullable()
+                .required('Yêu cầu chọn phương thức!'),
+        })
+    ),
+})
+
 const MakeBudget = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
@@ -37,6 +62,17 @@ const MakeBudget = () => {
     const { getKindSpendingId } = useConfig()
     const { loading, setSubmitLoading } = useLoading()
     const stateRef = useRef<StateRef>(defaultStateRef)
+    const [{ query, params }, setQueryData] = useState({
+        query: { methodSpending: GET_METHOD_SPENDING, budgetSpending: GET_BUDGET_BY_MONTH },
+        params: {
+            userId: userProfile?._id as string,
+            budgetId: getBudgetId(userProfile?._id as string),
+            budgetKind: getKindSpendingId('COST') as string,
+            startDate: getDateOfMonth('start'),
+            endDate: getDateOfMonth('end'),
+        },
+    })
+    const firstRef = useRef(false)
 
     const setStateRef = (option: keyof StateRef, method: 'push' | 'remove', value: any) => {
         const prevValues = stateRef.current
@@ -49,19 +85,21 @@ const MakeBudget = () => {
     }
 
     const [{ methodSpending, budgetSpending }, fetchData, deleteCacheData, reloadData] = useQuery<MakeBudgetQueryData>(
-        { methodSpending: GET_METHOD_SPENDING, budgetSpending: GET_BUDGET_BY_MONTH },
-        {
-            userId: userProfile?._id as string,
-            budgetId: getBudgetId(userProfile?._id as string),
-            budgetKind: getKindSpendingId('COST') as string,
-            startDate: getDateOfMonth('start'),
-            endDate: getDateOfMonth('end'),
-        }
+        query,
+        params
     )
     const [wrapRef] = useAutoAnimate<HTMLDivElement>()
+    const [loadingRef] = useAutoAnimate<HTMLButtonElement>()
+
+    useEffect(() => {
+        if (firstRef.current) {
+            reloadData()
+        }
+    }, [query, params])
 
     useEffect(() => {
         fetchData()
+        firstRef.current = true
     }, [])
 
     const form = useForm<IMakeBudgetForm>({
@@ -70,6 +108,7 @@ const MakeBudget = () => {
             date: new Date(),
             MethodSpending: [],
         },
+        resolver: yupResolver(schema),
     })
 
     useEffect(() => {
@@ -83,6 +122,9 @@ const MakeBudget = () => {
             budgetData?.MethodSpending.forEach((item) => {
                 setStateRef('updates', 'push', item._id)
             })
+        } else {
+            form.setValue('MethodSpending', [])
+            stateRef.current = defaultStateRef
         }
     }, [budgetSpending.data])
 
@@ -203,6 +245,21 @@ const MakeBudget = () => {
         }
     }
 
+    const handleChangeDate = (date: Date) => {
+        const _date = moment(date)
+        const _id = getBudgetId(userProfile?._id as string, _date)
+        setQueryData((prev) => ({
+            ...prev,
+            params: {
+                ...prev.params,
+                budgetId: _id,
+                startDate: getDateOfMonth('start', _date),
+                endDate: getDateOfMonth('end', _date),
+            },
+        }))
+        deleteCacheData('budgetSpending')
+    }
+
     return (
         <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
             <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
@@ -213,24 +270,31 @@ const MakeBudget = () => {
                                 <DatePicker
                                     name='date'
                                     form={form}
-                                    rules={{
-                                        required: 'Yêu cầu chọn ngày!',
-                                    }}
                                     showMonthYearPicker
                                     showTimeInput={false}
                                     format='MONTH'
                                     label='Tháng'
                                     disabledClear
+                                    onChange={handleChangeDate}
                                 />
                             </div>
+
                             <Button
                                 type='button'
                                 color='outline-prussianBlue'
                                 className='items-center gap-1 truncate'
                                 onClick={handleAddItem}
+                                disabled={budgetSpending.loading || methodSpending.loading || loading.submit}
+                                ref={loadingRef}
                             >
-                                <PlusCircleIcon className='h-6 w-6' />
-                                Thêm phương thức
+                                {budgetSpending.loading ? (
+                                    <RefreshIcon className='h-6 w-6 animate-spin -scale-100' />
+                                ) : (
+                                    <>
+                                        <PlusCircleIcon className='h-6 w-6' />
+                                        Thêm phương thức
+                                    </>
+                                )}
                             </Button>
                             <div className='space-y-6' ref={wrapRef}>
                                 {fields.map((item, index) => (
@@ -254,9 +318,6 @@ const MakeBudget = () => {
                                                 <AutoComplete
                                                     name={`MethodSpending.${index}.methodSpending`}
                                                     form={form}
-                                                    rules={{
-                                                        required: 'Yêu cầu chọn phương thức!',
-                                                    }}
                                                     data={methodSpending.data}
                                                     label='Phương thức'
                                                     loading={methodSpending.loading}
@@ -272,13 +333,6 @@ const MakeBudget = () => {
                                                 <Input
                                                     name={`MethodSpending.${index}.amount`}
                                                     form={form}
-                                                    rules={{
-                                                        required: 'Bắt buộc nhập!',
-                                                        min: {
-                                                            value: 0,
-                                                            message: 'Hạn mức phải lớn hơn 0!',
-                                                        },
-                                                    }}
                                                     type='number'
                                                     label='Hạn mức'
                                                 />

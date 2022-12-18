@@ -130,7 +130,7 @@ export const GET_STATISTIC_SPENDING = groq`
 `
 
 export const GET_BUDGET_DETAIL_BY_MONTH = groq`
-    *[_type == 'budgetDetail' && user._ref == $userId && budgetSpending._ref == $budgetId] | order(_createdAt desc)
+    *[_type == 'budgetDetail' && user._ref == $userId && budgetSpending._ref == $budgetId] | order(_createdAt asc)
     {
         _id,
         _createdAt,
