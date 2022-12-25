@@ -264,6 +264,17 @@ export const menuSpendingPages: IMenuBtn[] = [
         to: 'method',
     },
     {
+        title: 'Ngân sách',
+        color: 'text-yellow-700',
+        icon: PuzzleIcon,
+        children: () => <MakeBudget />,
+        to: '?slide=budget',
+        query: {
+            slide: 'budget',
+        },
+        divider: true,
+    },
+    {
         title: 'Tạo mới phương thức thanh toán',
         color: 'text-cyan-700',
         icon: QrcodeIcon,
@@ -272,7 +283,6 @@ export const menuSpendingPages: IMenuBtn[] = [
         query: {
             slide: 'add-method',
         },
-        divider: true,
     },
     {
         title: 'Tạo mới thể loại',
