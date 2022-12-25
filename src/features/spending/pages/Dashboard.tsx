@@ -41,7 +41,7 @@ const Dashboard = () => {
             startDate: getDateOfMonth('start'),
             endDate: getDateOfMonth('end'),
             budgetKind: getKindSpendingId('COST') as string,
-            budgetId: budgetSpending._id as string,
+            budgetId: budgetSpending?._id as string,
         }
     )
 
