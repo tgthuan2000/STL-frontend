@@ -34,6 +34,7 @@ const Budget: React.FC<BudgetProps> = ({ data, loading }) => {
                 {head(data)?.MethodSpending?.map((item, index) => {
                     const totalAmounts = sum(item.amounts)
                     const percent = (totalAmounts * 100) / item.amount
+                    const isOver = percent > 100
 
                     const bgColor = colors.bg[index % colors.bg.length]
                     const textColor = colors.text[index % colors.text.length]
@@ -57,13 +58,16 @@ const Budget: React.FC<BudgetProps> = ({ data, loading }) => {
                                     className='absolute h-full rounded-full transition-all'
                                 />
                             </div>
-                            <div className='flex justify-between mb-4 px-2'>
-                                <span className={clsx('font-normal', textColor)}>
+                            <div
+                                className={clsx(
+                                    'flex justify-between mb-4 px-2 font-normal',
+                                    isOver ? 'text-radical-red-500' : textColor
+                                )}
+                            >
+                                <span>
                                     CP: {numeral(totalAmounts).format()} • {numeral(percent).format()}%
                                 </span>
-                                <span className={clsx('font-normal', textColor)}>
-                                    CL: {numeral(item.amount - totalAmounts).format()}
-                                </span>
+                                <span>CL: {numeral(item.amount - totalAmounts).format()}</span>
                             </div>
                         </li>
                     )
