@@ -7,10 +7,8 @@ export const GET_CONFIG = groq`
             key,
             name
         },
-        "kindLoan": *[_type == "kindLoan"] {
+        "budgetSpending": *[_type == "budget" && date == $date][0] {
             _id,
-            key,
-            name
-        }
+        },
     }
 `

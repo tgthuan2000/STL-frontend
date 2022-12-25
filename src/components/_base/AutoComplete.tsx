@@ -30,6 +30,8 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
             showImage,
             disabledClear,
             surplusName = 'Số dư',
+            disabledShowSurplus,
+            multiple,
         },
         ref
     ) => {
@@ -117,6 +119,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                             value={selectedItem}
                             onChange={(value) => handleChange(value, field.onChange)}
                             disabled={disabled || loading}
+                            multiple={multiple}
                         >
                             <div className='flex justify-between items-center'>
                                 <Combobox.Label className='inline-block text-sm font-medium text-gray-700'>
@@ -262,7 +265,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                             </div>
                         </Combobox>
                         <div ref={parent}>
-                            {!isNil(surplus) && (
+                            {!isNil(surplus) && !disabledShowSurplus && (
                                 <div className='mt-1 ml-3'>
                                     {surplusName}:{' '}
                                     <strong

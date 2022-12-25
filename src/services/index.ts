@@ -1,11 +1,11 @@
 import { isEmpty } from 'lodash'
 import moment from 'moment'
 
-export const getDateOfMonth = (type: 'start' | 'end' = 'start') => {
+export const getDateOfMonth = (type: 'start' | 'end' = 'start', date?: moment.MomentInput) => {
     if (type === 'start') {
-        return moment().utc(true).startOf('month').toISOString()
+        return moment(date).utc(true).startOf('month').toISOString()
     }
-    return moment().utc(true).endOf('month').toISOString()
+    return moment(date).utc(true).endOf('month').toISOString()
 }
 
 export const getDate = (date: Date, type: 'start' | 'end' = 'start', of: moment.unitOfTime.StartOf = 'day') => {
@@ -28,3 +28,5 @@ export const hashCode = (s: string) => {
 export const getColorPrize = (variable: any) => {
     return [{ 'text-green-500': variable > 0 }, { 'text-red-500': variable < 0 }, { 'text-gray-500': variable === 0 }]
 }
+
+export const getBudgetId = (userId: string, month?: moment.MomentInput) => moment(month).format('YYYY-MM-') + userId

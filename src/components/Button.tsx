@@ -24,7 +24,20 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                         'border-transparent bg-radical-red-600 text-white hover:bg-radical-red-700':
                             color === 'radicalRed',
                     },
-                    { 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50': color === 'outline' },
+                    { 'border-transparent bg-yellow-600 text-white hover:bg-yellow-700': color === 'yellow' },
+                    { 'border-gray-400 bg-white text-gray-500 hover:bg-gray-50': color === 'outline' },
+                    { 'border-cyan-400 bg-white text-cyan-500 hover:bg-cyan-50': color === 'outline-cyan' },
+                    { 'border-green-400 bg-white text-green-500 hover:bg-green-50': color === 'outline-green' },
+                    { 'border-blue-400 bg-white text-blue-500 hover:bg-blue-50': color === 'outline-blue' },
+                    {
+                        'border-prussian-blue-400 bg-white text-prussian-blue-500 hover:bg-prussian-blue-50':
+                            color === 'outline-prussianBlue',
+                    },
+                    {
+                        'border-radical-red-400 bg-white text-radical-red-500 hover:bg-radical-red-50':
+                            color === 'outline-radicalRed',
+                    },
+                    { 'border-yellow-400 bg-white text-yellow-500 hover:bg-yellow-50': color === 'outline-yellow' },
                     className
                 )}
             >

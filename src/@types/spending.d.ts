@@ -18,7 +18,24 @@ export interface IMethodSpending {
     surplus: number
     user: IUserProfile
 }
-
+export interface IBudgetSpending {
+    _id: string
+    _createdAt: string
+    _updatedAt: string
+    date: string
+    user: IUserProfile
+    MethodSpending: IBudgetDetail[]
+}
+export interface IBudgetDetail {
+    _id: string
+    _createdAt: string
+    _updatedAt: string
+    amount: number
+    amounts: number[]
+    methodSpending: IMethodSpending
+    budgetSpending: IBudgetSpending
+    user: IUserProfile
+}
 export interface ISpendingData {
     _id: string
     _createdAt: string
@@ -85,6 +102,10 @@ export interface RecentProps {
     data: ISpendingData[] | undefined
     loading: boolean
 }
+export interface BudgetProps {
+    data: IBudgetSpending[] | undefined
+    loading: boolean
+}
 
 interface Statistic {
     _id: string
@@ -124,6 +145,10 @@ export interface MakeIncomeQueryData {
     methodSpending: IMethodSpending[]
     categorySpending: ICategorySpending[]
 }
+export interface MakeBudgetQueryData {
+    methodSpending: IMethodSpending[]
+    budgetSpending: IBudgetSpending
+}
 
 export interface MakeTransferQueryData {
     methodSpending: IMethodSpending[]
@@ -137,6 +162,7 @@ export interface TransactionDetailQueryData {
 export interface DashboardQueryData {
     recent: ISpendingData[]
     method: IMethodSpending[]
+    budget: IBudgetSpending[]
     statistic: IStatisticData[]
 }
 interface RecentQueryData {

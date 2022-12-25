@@ -26,7 +26,9 @@ export interface AutoCompleteProps {
     onChange?: (value: any) => void
     showImage?: boolean
     disabledClear?: boolean
+    disabledShowSurplus?: boolean
     surplusName?: string
+    multiple?: boolean
 }
 
 export interface SelectionProps {
@@ -98,7 +100,22 @@ export interface ButtonProps {
     children: React.ReactNode
     type: 'button' | 'submit' | 'reset'
     onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
-    color: 'primary' | 'outline' | 'cyan' | 'green' | 'blue' | 'radicalRed' | 'prussianBlue'
+    color:
+        | 'outline'
+        | 'primary'
+        | 'cyan'
+        | 'green'
+        | 'blue'
+        | 'radicalRed'
+        | 'prussianBlue'
+        | 'yellow'
+        | 'outline-primary'
+        | 'outline-cyan'
+        | 'outline-green'
+        | 'outline-blue'
+        | 'outline-radicalRed'
+        | 'outline-prussianBlue'
+        | 'outline-yellow'
     disabled?: boolean
 }
 
@@ -111,6 +128,7 @@ export interface ContentBoxProps {
     loading?: boolean
     className?: string
     fullWidth?: boolean
+    customHeaderEvent?: React.ReactNode
 }
 
 export interface ContentLoanBox2Props {
