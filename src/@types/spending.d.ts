@@ -162,7 +162,7 @@ export interface TransactionDetailQueryData {
 export interface DashboardQueryData {
     recent: ISpendingData[]
     method: IMethodSpending[]
-    budget: IBudgetSpending[]
+    budget?: IBudgetSpending[]
     statistic: IStatisticData[]
 }
 interface RecentQueryData {
