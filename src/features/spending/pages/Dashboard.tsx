@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash'
+import { head, isEmpty } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { DashboardQueryData } from '~/@types/spending'
@@ -98,6 +98,8 @@ const Dashboard = () => {
         reload()
     }
 
+    const isHaveBudget = !isEmpty(head(budget?.data)?.MethodSpending)
+
     return (
         <div ref={wrapRef}>
             {width < 1280 && (
@@ -125,7 +127,7 @@ const Dashboard = () => {
                     className='xl:row-start-2 xl:col-start-1 col-span-1'
                     title='Ngân sách'
                     to='budget'
-                    onReload={handleReload}
+                    onReload={isHaveBudget ? handleReload : undefined}
                     loading={budget?.loading}
                     fullWidth
                     seeMore={false}
