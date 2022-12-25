@@ -28,7 +28,7 @@ const Budget: React.FC<BudgetProps> = ({ data, loading }) => {
     const [ref] = useAutoAnimate<HTMLUListElement>()
     if (loading && isEmpty(data)) return <BudgetSkeleton />
 
-    if (!isEmpty(data)) {
+    if (!isEmpty(head(data)?.MethodSpending)) {
         return (
             <ul role='list' className='divide-y divide-gray-300q' ref={ref}>
                 {head(data)?.MethodSpending?.map((item, index) => {
