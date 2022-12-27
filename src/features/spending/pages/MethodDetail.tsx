@@ -280,8 +280,8 @@ const MainTable = ({ data }: MainTableProps) => {
                                     </h3>
                                 </td>
                                 <td className='px-1 lg:pt-4 pt-0'>
-                                    <div className='text-center truncate'>
-                                        <p className='text-sm font-medium text-gray-900'>
+                                    <div className='text-center'>
+                                        <p className='text-sm font-medium text-gray-900 truncate'>
                                             {categorySpending?.name ?? kindSpending.name}
                                         </p>
                                     </div>
