@@ -171,13 +171,8 @@ const MethodDetail = () => {
         reload()
     }
 
-    const name = head(method.data)?.methodSpending.name
-
     return (
         <div ref={wrapRef}>
-            <h4 className={clsx('text-sm font-medium ml-3', !!name ? 'text-indigo-800' : 'text-radical-red-700')}>
-                {name || 'Phương thức này không có giao dịch hoặc không tồn tại!'}
-            </h4>
             <div className='sm:px-6 lg:px-8'>
                 <div className='mt-4 flex flex-col'>
                     <div className='-my-2 -mx-4 sm:-mx-6 lg:-mx-8'>
