@@ -8,3 +8,8 @@ export enum DATE_FORMAT {
     MONTH = 'MM/yyyy',
     YEAR = 'yyyy',
 }
+
+export enum TAGS {
+    ENUM = 'enum',
+    ALTERNATE = 'alternate',
+}

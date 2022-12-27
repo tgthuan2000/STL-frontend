@@ -1,6 +1,7 @@
 import { isEqual } from 'lodash'
 import React, { createContext, useContext, useRef } from 'react'
 import { ICacheContext, ICacheData, QueryParams } from '~/@types/context'
+import { TAGS } from '~/constant'
 import { client } from '~/sanityConfig'
 import { hashCode } from '~/services'
 
@@ -13,14 +14,15 @@ const CacheContext = createContext<ICacheContext>({
 })
 
 const CacheProvider = ({ children }: { children: React.ReactNode }) => {
-    const cacheRef = useRef<Array<ICacheData<any>>>([])
+    const cacheRef = useRef<ICacheData<any>>(Object.assign({}, ...Object.values(TAGS).map((tag) => ({ [tag]: [] }))))
 
-    const updateCache = <T extends { [x: string]: any }>(res: T) => {
-        let cache: Array<ICacheData<any>> = JSON.parse(JSON.stringify(cacheRef.current))
+    const updateCache = <T extends ICacheData<any>>(groups: T) => {
+        let cache: ICacheData<T> = JSON.parse(JSON.stringify(cacheRef.current))
 
-        Object.keys(res).forEach((k) => {
-            const { key, data } = res[k]
-            if (cache.length >= CACHE_LIMIT_RANGE) {
+        Object.keys(groups).forEach((groupKey) => {
+            const groupData = groups[groupKey] as Array<{ key: number; data: T }>
+            const cacheData = cache[groupKey] as Array<{ key: number; data: T }>
+            if (cacheData.length >= CACHE_LIMIT_RANGE) {
                 cache = cache.slice(1)
             }
             cache.push({ key, data })
@@ -28,6 +30,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
 
         cacheRef.current = cache
     }
+    console.log(cacheRef.current)
     const deleteCache = (payloads: { [x: string]: any }[]) => {
         const cache: Array<ICacheData<any>> = JSON.parse(JSON.stringify(cacheRef.current))
         let count = 0
@@ -47,7 +50,8 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
 
     const fetchApi = async <T extends { [x: string]: any }>(
         callApi: { [x: string]: { value: string; key: number; data: any[] } },
-        params: { [y: string]: string | number | string[] }
+        params: { [y: string]: string | number | string[] },
+        tags: { [x: string]: TAGS }
     ) => {
         const data = {} as T
         const keys = Object.keys(callApi)
@@ -55,13 +59,14 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
         const res: T = await client.fetch(q, params)
         Object.assign(data, res)
 
-        const temp = {} as T
+        const groups = {} as T
         keys.forEach((key) =>
-            Object.assign(temp, {
-                [key]: { ...callApi[key], data: res[key] },
+            Object.assign(groups, {
+                [tags[key]]: [{ ...callApi[key], data: res[key] }],
             })
         )
-        updateCache(temp)
+
+        updateCache(groups)
 
         return data
     }

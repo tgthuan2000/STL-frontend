@@ -1,6 +1,7 @@
 import { get, isEmpty, isEqual } from 'lodash'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Data, useQueryType } from '~/@types/hook'
+import { TAGS } from '~/constant'
 import { useCache } from '~/context'
 
 const filterQueryParams = <T>(query: QueryTypeUseQuery<T>, params: ParamsTypeUseQuery = {}) => {
@@ -50,14 +51,17 @@ const assignLoading = <T extends { [x: string]: string }>(prev: Data<T>) => {
 
 export type ParamsTypeUseQuery = { [y: string]: string | number | string[] }
 export type QueryTypeUseQuery<T> = { [Property in keyof T]: string }
+export type TagsTypeUseQuery<T> = { [Property in keyof T]: TAGS }
 
 const useQuery = <T extends { [x: string]: any }>(
     query: QueryTypeUseQuery<T>,
-    params: ParamsTypeUseQuery = {}
+    params: ParamsTypeUseQuery = {},
+    tags: TagsTypeUseQuery<T>
 ): useQueryType<T> => {
     const { fetchApi, deleteCache, checkInCache } = useCache()
     const queryRef = useRef(query)
     const paramsRef = useRef(params)
+    const tagsRef = useRef(tags)
     const [reload, setReload] = useState(false)
     const [error, setError] = useState(false)
 
@@ -68,6 +72,10 @@ const useQuery = <T extends { [x: string]: any }>(
     useEffect(() => {
         paramsRef.current = params
     }, [params])
+
+    useEffect(() => {
+        tagsRef.current = tags
+    }, [tags])
 
     const [data, setData] = useState<Data<T>>(() => filterQueryParams(queryRef.current, paramsRef.current))
 
@@ -85,7 +93,7 @@ const useQuery = <T extends { [x: string]: any }>(
         // fetch data not in cache and cache it
         if (!isEqual(callApi, {})) {
             try {
-                const data = await fetchApi<T>(callApi, paramsRef.current)
+                const data = await fetchApi<T>(callApi, paramsRef.current, tagsRef.current)
                 // setData fetched
                 setData((prev) => formatTransform<T>(prev, data, queryRef.current, paramsRef.current))
             } catch (error) {

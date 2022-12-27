@@ -1,3 +1,4 @@
+import { TAGS } from '~/constant'
 import { KIND_LOAN } from '~/constant/loan'
 import { KIND_SPENDING } from '~/constant/spending'
 import { IBudgetSpending } from './spending'
@@ -34,7 +35,8 @@ export interface ISlideOverContext {
 }
 export type FetchApi = <T extends { [x: string]: any }>(
     callApi: { [x: string]: { value: string; key: number; data: any[] } },
-    params: { [y: string]: string | number | string[] }
+    params: { [y: string]: string | number | string[] },
+    tags: { [x: string]: TAGS }
 ) => Promise<T>
 
 export type CheckInCache = <
@@ -61,8 +63,7 @@ export interface ICacheContext {
     deleteCache: (payloads: { [x: string]: any }[]) => string
 }
 export interface ICacheData<T> {
-    key: number
-    data: T
+    [Property in TAGS]: Array<{ key: number; data: T }>
 }
 
 export type QueryParams = { [key: string]: string | number | undefined | string[] }
