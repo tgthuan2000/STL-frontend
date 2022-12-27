@@ -20,7 +20,7 @@ import { getDate } from '~/services'
 import useAuth from '~/store/auth'
 import { getLinkSpending } from '~/utils'
 
-const TransactionTabTable = () => {
+const TransactionRecentTable = () => {
     const { userProfile } = useAuth()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
     const { width } = useWindowSize()
@@ -172,11 +172,11 @@ const TransactionTabTable = () => {
                         <div className='flex justify-between items-center'>
                             <TimeFilter onSubmit={handleFilterSubmit} />
 
-                            {width > 768 && (
-                                <div className='mr-3'>
-                                    <LoadingButton onReload={onReload} disabled={recent.loading} />
-                                </div>
-                            )}
+                            {/* {width > 768 && ( */}
+                            <div className='mr-3'>
+                                <LoadingButton onReload={onReload} disabled={recent.loading} />
+                            </div>
+                            {/* )} */}
                         </div>
                         <div className='inline-block w-full py-2 align-middle'>
                             <div className='shadow-sm ring-1 ring-black ring-opacity-5'>
@@ -230,7 +230,7 @@ const TransactionTabTable = () => {
         </>
     )
 }
-export default TransactionTabTable
+export default TransactionRecentTable
 
 interface MainTableProps {
     data: ISpendingData[]
@@ -294,14 +294,14 @@ const MainTable = ({ data }: MainTableProps) => {
                                     </h3>
                                 </td>
                                 <td className='px-1 lg:pt-4 pt-0'>
-                                    <div className='flex items-center justify-center gap-x-2 text-center truncate'>
+                                    <div className='flex items-center justify-center gap-x-2 text-center'>
                                         <span
                                             className={clsx(
                                                 'inline-block h-1.5 w-1.5 rounded-full',
                                                 paid ? 'bg-green-500' : 'bg-radical-red-500'
                                             )}
                                         />
-                                        <p className='text-sm font-medium text-gray-900'>
+                                        <p className='text-sm font-medium text-gray-900 truncate'>
                                             {categorySpending?.name ?? kindSpending.name}
                                         </p>
                                     </div>

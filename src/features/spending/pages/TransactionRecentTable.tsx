@@ -171,11 +171,11 @@ const TransactionRecentTable = () => {
                     <div className='-my-2 -mx-4 sm:-mx-6 lg:-mx-8'>
                         <div className='flex justify-between items-center'>
                             <TimeFilter onSubmit={handleFilterSubmit} />
-                            {width > 768 && (
-                                <div className='mr-3'>
-                                    <LoadingButton onReload={onReload} disabled={recent.loading} />
-                                </div>
-                            )}
+                            {/* {width > 768 && ( */}
+                            <div className='mr-3'>
+                                <LoadingButton onReload={onReload} disabled={recent.loading} />
+                            </div>
+                            {/* )} */}
                         </div>
                         {error ? (
                             <p className='m-5 text-radical-red-500 font-medium'>{TEMPLATE.ERROR}</p>
