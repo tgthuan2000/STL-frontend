@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash'
+import { head, isEmpty } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { DashboardQueryData } from '~/@types/spending'
@@ -26,12 +26,14 @@ const Dashboard = () => {
     const navigate = useNavigate()
     const { kindSpending, budgetSpending, getKindSpendingId, getKindSpendingIds } = useConfig()
     const wrapRef = useScrollIntoView<HTMLDivElement>()
+    const budgetId = budgetSpending?._id
+
     const [{ method, recent, budget, statistic }, fetchData, deleteCache, reload] = useQuery<DashboardQueryData>(
         {
             recent: GET_RECENT_SPENDING,
             method: GET_METHOD_SPENDING_DESC_SURPLUS,
-            budget: GET_BUDGETS_BY_MONTH,
             statistic: GET_STATISTIC_SPENDING,
+            ...(budgetId && { budget: GET_BUDGETS_BY_MONTH }),
         },
         {
             userId: userProfile?._id as string,
@@ -41,7 +43,7 @@ const Dashboard = () => {
             startDate: getDateOfMonth('start'),
             endDate: getDateOfMonth('end'),
             budgetKind: getKindSpendingId('COST') as string,
-            budgetId: budgetSpending._id as string,
+            ...(budgetId && { budgetId }),
         }
     )
 
@@ -96,6 +98,8 @@ const Dashboard = () => {
         reload()
     }
 
+    const isHaveBudget = !isEmpty(head(budget?.data)?.MethodSpending)
+
     return (
         <div ref={wrapRef}>
             {width < 1280 && (
@@ -123,12 +127,12 @@ const Dashboard = () => {
                     className='xl:row-start-2 xl:col-start-1 col-span-1'
                     title='Ngân sách'
                     to='budget'
-                    onReload={handleReload}
-                    loading={budget.loading}
+                    onReload={isHaveBudget ? handleReload : undefined}
+                    loading={budget?.loading}
                     fullWidth
                     seeMore={false}
                 >
-                    <Budget data={budget.data} loading={budget.loading} />
+                    <Budget data={budget?.data} loading={Boolean(budget?.loading)} />
                 </Box.Content>
 
                 <Box.Content

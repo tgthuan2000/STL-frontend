@@ -162,13 +162,16 @@ export interface TransactionDetailQueryData {
 export interface DashboardQueryData {
     recent: ISpendingData[]
     method: IMethodSpending[]
-    budget: IBudgetSpending[]
+    budget?: IBudgetSpending[]
     statistic: IStatisticData[]
 }
-interface RecentQueryData {
+export interface RecentQueryData {
     recent: ISpendingData[]
 }
 
+export interface MethodQueryData {
+    method: ISpendingData[]
+}
 /* OTHERS */
 export interface TransactionDetailFormData {
     onsubmit: SubmitHandler<IDetailSpendingForm>
