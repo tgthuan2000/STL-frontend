@@ -20,7 +20,7 @@ import { getDate } from '~/services'
 import useAuth from '~/store/auth'
 import { getLinkSpending } from '~/utils'
 
-const TransactionTabTable = () => {
+const TransactionRecentTable = () => {
     const { userProfile } = useAuth()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
     const { width } = useWindowSize()
@@ -233,7 +233,7 @@ const TransactionTabTable = () => {
         </>
     )
 }
-export default TransactionTabTable
+export default TransactionRecentTable
 
 interface MainTableProps {
     data: ISpendingData[]
@@ -254,7 +254,7 @@ const MainTable = ({ data }: MainTableProps) => {
                     return (
                         <Fragment key={_id}>
                             <tr onClick={() => navigate(to)}>
-                                <td className={clsx('whitespace-nowrap lg:pt-4 pt-0 pl-2 pr-3 sm:pl-6 lg:pl-8')}>
+                                <td className={clsx('whitespace-nowrap lg:pt-4 pt-3 pl-2 pr-3 sm:pl-6 lg:pl-8')}>
                                     {date ? (
                                         width <= 900 ? (
                                             <>
