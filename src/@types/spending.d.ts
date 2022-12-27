@@ -165,10 +165,13 @@ export interface DashboardQueryData {
     budget?: IBudgetSpending[]
     statistic: IStatisticData[]
 }
-interface RecentQueryData {
+export interface RecentQueryData {
     recent: ISpendingData[]
 }
 
+export interface MethodQueryData {
+    method: ISpendingData[]
+}
 /* OTHERS */
 export interface TransactionDetailFormData {
     onsubmit: SubmitHandler<IDetailSpendingForm>
