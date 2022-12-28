@@ -1,6 +1,6 @@
 import { isEqual } from 'lodash'
 import React, { createContext, useContext, useRef } from 'react'
-import { ICacheContext, ICacheData, QueryParams } from '~/@types/context'
+import { DataCache, DeleteCache, ICacheContext, ICacheData, QueryParams, TagsField } from '~/@types/context'
 import { TAGS } from '~/constant'
 import { client } from '~/sanityConfig'
 import { hashCode } from '~/services'
@@ -16,23 +16,30 @@ const CacheContext = createContext<ICacheContext>({
 const CacheProvider = ({ children }: { children: React.ReactNode }) => {
     const cacheRef = useRef<ICacheData<any>>(Object.assign({}, ...Object.values(TAGS).map((tag) => ({ [tag]: [] }))))
 
-    const updateCache = <T extends ICacheData<any>>(groups: T) => {
-        let cache: ICacheData<T> = JSON.parse(JSON.stringify(cacheRef.current))
+    const updateCache = <T extends ICacheData<T>>(groups: T) => {
+        let cache: {
+            [Property in TAGS]: DataCache<T>
+        } = JSON.parse(JSON.stringify(cacheRef.current))
 
-        Object.keys(groups).forEach((groupKey) => {
-            const groupData = groups[groupKey] as Array<{ key: number; data: T }>
-            const cacheData = cache[groupKey] as Array<{ key: number; data: T }>
-            if (cacheData.length >= CACHE_LIMIT_RANGE) {
-                cache = cache.slice(1)
+        for (const group of Object.entries(groups)) {
+            const [key, value] = group as [TagsField, DataCache<T>]
+            const cacheData = cache[key]
+
+            if (cacheData) {
+                if (cacheData.length >= CACHE_LIMIT_RANGE) {
+                    cacheData.shift()
+                }
+
+                cache[key] = [...cacheData, ...value]
             }
-            cache.push({ key, data })
-        })
-
+        }
         cacheRef.current = cache
     }
-    console.log(cacheRef.current)
-    const deleteCache = (payloads: { [x: string]: any }[]) => {
-        const cache: Array<ICacheData<any>> = JSON.parse(JSON.stringify(cacheRef.current))
+
+    const deleteCache: DeleteCache = (payloads) => {
+        const cache: {
+            [Property in TAGS]: DataCache<any>
+        } = JSON.parse(JSON.stringify(cacheRef.current))
         let count = 0
 
         payloads.forEach((payload) => {
@@ -59,12 +66,13 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
         const res: T = await client.fetch(q, params)
         Object.assign(data, res)
 
-        const groups = {} as T
-        keys.forEach((key) =>
+        const groups: ICacheData<T> = {}
+
+        keys.forEach((key) => {
             Object.assign(groups, {
                 [tags[key]]: [{ ...callApi[key], data: res[key] }],
             })
-        )
+        })
 
         updateCache(groups)
 

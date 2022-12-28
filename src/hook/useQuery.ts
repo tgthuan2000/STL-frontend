@@ -107,7 +107,7 @@ const useQuery = <T extends { [x: string]: any }>(
         (...keys: Array<keyof T>) => {
             const items = keys.map((key) => {
                 const { params, query } = data[key]
-                return { [key]: query, params }
+                return { [key]: query, params, tags: tagsRef.current[key] }
             })
             return deleteCache(items)
         },

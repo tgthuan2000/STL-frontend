@@ -1,6 +1,7 @@
 import { TAGS } from '~/constant'
 import { KIND_LOAN } from '~/constant/loan'
 import { KIND_SPENDING } from '~/constant/spending'
+import { TagsTypeUseQuery } from '~/hook/useQuery'
 import { IBudgetSpending } from './spending'
 
 type LoadingItems = {
@@ -39,11 +40,7 @@ export type FetchApi = <T extends { [x: string]: any }>(
     tags: { [x: string]: TAGS }
 ) => Promise<T>
 
-export type CheckInCache = <
-    T extends {
-        [x: string]: any
-    }
->(
+export type CheckInCache = <T extends { [x: string]: any }>(
     query: { [Property in keyof T]: string },
     params?: QueryParams
 ) => {
@@ -57,13 +54,24 @@ export type CheckInCache = <
     }
 }
 
+export type DeleteCache = <T extends { [x: string]: any }>(
+    payloads: {
+        [x: string]: any
+        params: any
+        tags: TagsTypeUseQuery<T>[keyof T]
+    }[]
+) => string
+
 export interface ICacheContext {
     fetchApi: FetchApi
     checkInCache: CheckInCache
-    deleteCache: (payloads: { [x: string]: any }[]) => string
+    deleteCache: DeleteCache
 }
+
+export type DataCache<T> = Array<{ key: number; data: T; value: string }>
+export type TagsField = `${TAGS}`
 export interface ICacheData<T> {
-    [Property in TAGS]: Array<{ key: number; data: T }>
+    [Property in TAGS]?: DataCache<T>
 }
 
 export type QueryParams = { [key: string]: string | number | undefined | string[] }

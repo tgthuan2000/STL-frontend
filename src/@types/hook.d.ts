@@ -1,3 +1,5 @@
+import { TAGS } from '~/constant'
+
 export type Data<T> = {
     [Property in keyof T]: {
         loading: boolean
