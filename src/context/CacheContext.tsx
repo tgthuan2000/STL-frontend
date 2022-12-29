@@ -44,9 +44,9 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
 
         payloads.forEach((payload) => {
             const queryHash = hashCode(JSON.stringify(payload))
-            const indexCache = cache.length > 0 ? cache.findIndex((c) => c.key === queryHash) : -1
+            const indexCache = cache.alternate.length > 0 ? cache.alternate.findIndex((c) => c.key === queryHash) : -1
             if (indexCache !== -1) {
-                cache.splice(indexCache, 1)
+                cache.alternate.splice(indexCache, 1)
                 count++
             }
         })
@@ -88,7 +88,9 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
             [x: string]: { value: string; key: number; data: any[] }
         } = {}
         const data = {} as T
-        const cache: Array<ICacheData<any>> = JSON.parse(JSON.stringify(cacheRef.current))
+        const cache: {
+            [Property in TAGS]: DataCache<any>
+        } = JSON.parse(JSON.stringify(cacheRef.current))
 
         Object.keys(query).forEach((key) => {
             const value = query[key]
@@ -102,9 +104,9 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
                   )
             const queryHash = hashCode(JSON.stringify({ [key]: value, params: p }))
 
-            const indexCache = cache.length > 0 ? cache.findIndex((c) => c.key === queryHash) : -1
+            const indexCache = cache.alternate.length > 0 ? cache.alternate.findIndex((c) => c.key === queryHash) : -1
             if (indexCache !== -1) {
-                Object.assign(data, { [key]: cache[indexCache].data })
+                Object.assign(data, { [key]: cache.alternate[indexCache].data })
             } else {
                 Object.assign(callApi, { [key]: { value, key: queryHash } })
             }
