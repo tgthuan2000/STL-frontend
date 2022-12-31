@@ -16,6 +16,7 @@ import { getBudgetId, getDateOfMonth } from '~/services'
 import useAuth from '~/store/auth'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { TAGS } from '~/constant'
 
 interface IMakeBudgetForm {
     date: Date
@@ -62,7 +63,7 @@ const MakeBudget = () => {
     const { getKindSpendingId } = useConfig()
     const { loading, setSubmitLoading } = useLoading()
     const stateRef = useRef<StateRef>(defaultStateRef)
-    const [{ query, params }, setQueryData] = useState({
+    const [{ query, params, tags }, setQueryData] = useState({
         query: { methodSpending: GET_METHOD_SPENDING, budgetSpending: GET_BUDGET_BY_MONTH },
         params: {
             userId: userProfile?._id as string,
@@ -70,6 +71,10 @@ const MakeBudget = () => {
             budgetKind: getKindSpendingId('COST') as string,
             startDate: getDateOfMonth('start'),
             endDate: getDateOfMonth('end'),
+        },
+        tags: {
+            methodSpending: TAGS.ENUM,
+            budgetSpending: TAGS.ALTERNATE,
         },
     })
     const firstRef = useRef(false)
@@ -86,7 +91,8 @@ const MakeBudget = () => {
 
     const [{ methodSpending, budgetSpending }, fetchData, deleteCacheData, reloadData] = useQuery<MakeBudgetQueryData>(
         query,
-        params
+        params,
+        tags
     )
     const [wrapRef] = useAutoAnimate<HTMLDivElement>()
     const [loadingRef] = useAutoAnimate<HTMLButtonElement>()
@@ -202,7 +208,7 @@ const MakeBudget = () => {
 
             // create methodSpending
             const creates = MethodSpending.filter((item) => !item._id || !updates.concat(removes).includes(item._id))
-            console.log({ creates, updates, removes })
+
             if (!isEmpty(creates)) {
                 creates.forEach((item) => {
                     const { amount, methodSpending } = item

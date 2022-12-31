@@ -3,19 +3,20 @@ import clsx from 'clsx'
 import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
-import { Fragment, useEffect, useMemo, useState } from 'react'
+import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { Waypoint } from 'react-waypoint'
 import { ISpendingData, RecentQueryData } from '~/@types/spending'
 import { TimeFilter } from '~/components'
 import LoadingButton from '~/components/Loading/LoadingButton'
 import { TimeFilterPayload } from '~/components/TimeFilter'
-import { DATE_FORMAT } from '~/constant'
+import { COUNT_PAGINATE, DATE_FORMAT, TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { E_FILTER_DATE, TEMPLATE } from '~/constant/template'
 import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
-import { ParamsTypeUseQuery, QueryTypeUseQuery } from '~/hook/useQuery'
-import { GETALL_RECENT_SPENDING, GETALL_RECENT_SPENDING_FILTER_DATE_RANGE } from '~/schema/query/spending'
+import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
+import { GET_RECENT_SPENDING_PAGINATE, GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE } from '~/schema/query/spending'
 import { getDate } from '~/services'
 import useAuth from '~/store/auth'
 import { getLinkSpending } from '~/utils'
@@ -29,22 +30,25 @@ const TransactionRecentTable = () => {
 
     const getAll = useMemo(() => {
         return {
-            query: { recent: GETALL_RECENT_SPENDING },
+            query: { recent: GET_RECENT_SPENDING_PAGINATE },
             params: {
                 userId: userProfile?._id as string,
                 kindSpendingIds: getKindSpendingIds('GET_LOAN', 'LOAN'),
+                __fromRecent: 0,
+                __toRecent: COUNT_PAGINATE,
             },
+            tags: { recent: TAGS.ALTERNATE },
         }
     }, [])
 
     const defaultValues = useMemo(() => {
         try {
-            let query = GETALL_RECENT_SPENDING,
+            let query = GET_RECENT_SPENDING_PAGINATE,
                 params = {}
 
             const d = Object.fromEntries([...searchParams])
             if (!isEmpty(d)) {
-                query = GETALL_RECENT_SPENDING_FILTER_DATE_RANGE
+                query = GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE
                 let { type, data } = d
                 data = JSON.parse(data)
 
@@ -81,12 +85,9 @@ const TransactionRecentTable = () => {
                 }
             }
             return {
+                ...getAll,
                 query: { recent: query },
-                params: {
-                    userId: userProfile?._id as string,
-                    kindSpendingIds: getKindSpendingIds('GET_LOAN', 'LOAN'),
-                    ...params,
-                },
+                params: { ...getAll.params, ...params },
             }
         } catch (error) {
             console.log(error)
@@ -94,12 +95,13 @@ const TransactionRecentTable = () => {
         }
     }, [])
 
-    const [{ query, params }, setQuery] = useState<{
+    const [{ query, params, tags }, setQuery] = useState<{
         query: QueryTypeUseQuery<RecentQueryData>
         params: ParamsTypeUseQuery
+        tags: TagsTypeUseQuery<RecentQueryData>
     }>(defaultValues)
 
-    const [{ recent }, fetchData, deleteCacheData, reload] = useQuery<RecentQueryData>(query, params)
+    const [{ recent }, fetchData, deleteCacheData, reload] = useQuery<RecentQueryData>(query, params, tags)
 
     useEffect(() => {
         fetchData()
@@ -118,50 +120,71 @@ const TransactionRecentTable = () => {
                 break
             case E_FILTER_DATE.DATE:
                 const date = data.data as Date
-                setQuery({
-                    query: { recent: GETALL_RECENT_SPENDING_FILTER_DATE_RANGE },
+                setQuery((prev) => ({
+                    ...prev,
+                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
                         startDate: getDate(date, 'start'),
                         endDate: getDate(date, 'end'),
                     },
-                })
+                }))
                 break
             case E_FILTER_DATE.DATE_RANGE:
                 const [startDate, endDate] = data.data as Date[]
-                setQuery({
-                    query: { recent: GETALL_RECENT_SPENDING_FILTER_DATE_RANGE },
+                setQuery((prev) => ({
+                    ...prev,
+                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
                         startDate: getDate(startDate, 'start'),
                         endDate: getDate(endDate, 'end'),
                     },
-                })
+                }))
                 break
             case E_FILTER_DATE.MONTH:
                 const month = data.data as Date
-                setQuery({
-                    query: { recent: GETALL_RECENT_SPENDING_FILTER_DATE_RANGE },
+                setQuery((prev) => ({
+                    ...prev,
+                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
                         startDate: getDate(month, 'start', 'month'),
                         endDate: getDate(month, 'end', 'month'),
                     },
-                })
+                }))
                 break
             case E_FILTER_DATE.YEAR:
                 const year = data.data as Date
-                setQuery({
-                    query: { recent: GETALL_RECENT_SPENDING_FILTER_DATE_RANGE },
+                setQuery((prev) => ({
+                    ...prev,
+                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
                         startDate: getDate(year, 'start', 'year'),
                         endDate: getDate(year, 'end', 'year'),
                     },
-                })
+                }))
                 break
         }
         reload()
+    }
+
+    const handleScrollGetMore = () => {
+        const length = recent?.data?.data.length
+
+        if (length) {
+            setQuery((prev) => ({
+                ...prev,
+                params: { ...prev.params, __fromRecent: length, __toRecent: length + COUNT_PAGINATE },
+            }))
+            reload('recent')
+        }
+    }
+
+    const handleClickReload = () => {
+        setQuery((prev) => ({ ...prev, params: { ...prev.params, __fromRecent: 0, __toRecent: COUNT_PAGINATE } }))
+        onReload()
     }
 
     return (
@@ -174,7 +197,7 @@ const TransactionRecentTable = () => {
 
                             {/* {width > 768 && ( */}
                             <div className='mr-3'>
-                                <LoadingButton onReload={onReload} disabled={recent.loading} />
+                                <LoadingButton onReload={handleClickReload} disabled={recent.loading} />
                             </div>
                             {/* )} */}
                         </div>
@@ -213,12 +236,14 @@ const TransactionRecentTable = () => {
                                         </tr>
                                     </thead>
                                     <tbody ref={parentRef} className='bg-white'>
-                                        {recent.loading ? (
-                                            <SkeletonTransactionTable />
-                                        ) : !recent.data || isEmpty(recent.data) ? (
+                                        {!recent.loading && (!recent.data?.data || isEmpty(recent.data.data)) ? (
                                             <EmptyTransactionTable />
                                         ) : (
-                                            <MainTable data={recent.data} />
+                                            <MainTable
+                                                data={recent.data}
+                                                loading={recent.loading}
+                                                onGetMore={handleScrollGetMore}
+                                            />
                                         )}
                                     </tbody>
                                 </table>
@@ -233,11 +258,31 @@ const TransactionRecentTable = () => {
 export default TransactionRecentTable
 
 interface MainTableProps {
-    data: ISpendingData[]
+    data:
+        | {
+              data: ISpendingData[]
+              hasNextPage: boolean
+          }
+        | undefined
+    loading: boolean
+    onGetMore: () => void
 }
-const MainTable = ({ data }: MainTableProps) => {
+
+const MainTable: React.FC<MainTableProps> = ({ data, onGetMore, loading }) => {
     const navigate = useNavigate()
     const { width } = useWindowSize()
+    const wpLoading = useRef(false)
+
+    const handleGetMoreData = () => {
+        wpLoading.current = true
+        onGetMore()
+    }
+
+    useEffect(() => {
+        if (!loading && wpLoading.current) {
+            wpLoading.current = false
+        }
+    }, [loading])
 
     const getDate = (date: string, title: string) => {
         return width <= 900 ? (
@@ -255,106 +300,126 @@ const MainTable = ({ data }: MainTableProps) => {
 
     return (
         <>
-            {data.map(
-                (
-                    {
-                        _id,
-                        date,
-                        estimatePaidDate,
-                        description,
-                        methodSpending,
-                        kindSpending,
-                        categorySpending,
-                        amount,
-                        realPaid,
-                        paid,
-                    },
-                    index,
-                    data
-                ) => {
-                    const to = getLinkSpending(kindSpending.key, _id)
-                    const isGetLoan = KIND_SPENDING.GET_LOAN === kindSpending.key
-                    const receive = isGetLoan ? amount : realPaid
-                    const cost = isGetLoan ? realPaid : amount
+            {(!loading || wpLoading.current) &&
+                data?.data.map(
+                    (
+                        {
+                            _id,
+                            date,
+                            estimatePaidDate,
+                            description,
+                            methodSpending,
+                            kindSpending,
+                            categorySpending,
+                            amount,
+                            realPaid,
+                            paid,
+                        },
+                        index,
+                        data
+                    ) => {
+                        const to = getLinkSpending(kindSpending.key, _id)
+                        const isGetLoan = KIND_SPENDING.GET_LOAN === kindSpending.key
+                        const receive = isGetLoan ? amount : realPaid
+                        const cost = isGetLoan ? realPaid : amount
 
-                    return (
-                        <Fragment key={_id}>
-                            <tr onClick={() => navigate(to)}>
-                                <td className={clsx('whitespace-nowrap lg:pt-4 pt-0 pl-2 pr-3 sm:pl-6 lg:pl-8')}>
-                                    {moment(date).format(DATE_FORMAT.D_DATE_TIME) !== 'Invalid date' && (
-                                        <span className='block mt-1'>{getDate(date as string, 'Ngày tạo')}</span>
-                                    )}
-                                    {estimatePaidDate ? (
-                                        getDate(estimatePaidDate, 'Hạn trả')
-                                    ) : (
-                                        <span>{TEMPLATE.EMPTY_DATE}</span>
-                                    )}
-                                    <h3 className='mt-1 font-medium'>
-                                        {methodSpending?.name || TEMPLATE.EMPTY_METHOD_SPENDING_SHORT}
-                                    </h3>
-                                </td>
-                                <td className='px-1 lg:pt-4 pt-0'>
-                                    <div className='flex items-center justify-center gap-x-2 text-center'>
-                                        <span
-                                            className={clsx(
-                                                'inline-block h-1.5 w-1.5 rounded-full',
-                                                paid ? 'bg-green-500' : 'bg-radical-red-500'
-                                            )}
-                                        />
-                                        <p className='text-sm font-medium text-gray-900 truncate'>
-                                            {categorySpending?.name ?? kindSpending.name}
-                                        </p>
-                                    </div>
-                                </td>
-                                <td className={clsx('whitespace-nowrap px-1 lg:pt-4 pt-0 text-sm text-center')}>
-                                    {!isNil(receive) && (
-                                        <span className={clsx('text-green-500', 'font-medium')}>
-                                            {numeral(receive).format()}
-                                        </span>
-                                    )}
-                                </td>
-                                <td className={clsx('whitespace-nowrap pl-1 pr-2 lg:pt-4 pt-0 text-sm text-center')}>
-                                    {!isNil(cost) && (
-                                        <span className={clsx('text-red-500', 'font-medium')}>
-                                            {numeral(cost).format()}
-                                        </span>
-                                    )}
-                                </td>
-                            </tr>
-                            <tr onClick={() => navigate(to)}>
-                                <td
-                                    colSpan={4}
-                                    className={clsx(
-                                        data && index !== data.length - 1 ? 'border-b border-gray-200' : '',
-                                        'whitespace-nowrap pb-4 pl-2 pr-2 sm:pl-6 lg:pl-8'
-                                    )}
-                                >
-                                    {description && (
-                                        <div
-                                            title={description}
-                                            className='mt-2 max-w-[450px] sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] cursor-default'
-                                        >
-                                            {description.split('\n').map((line, index) => (
-                                                <span key={index} className='block truncate'>
-                                                    {line}
-                                                </span>
-                                            ))}
+                        return (
+                            <Fragment key={_id}>
+                                <tr onClick={() => navigate(to)}>
+                                    <td className={clsx('whitespace-nowrap lg:pt-4 pt-0 pl-2 pr-3 sm:pl-6 lg:pl-8')}>
+                                        {moment(date).format(DATE_FORMAT.D_DATE_TIME) !== 'Invalid date' && (
+                                            <span className='block mt-1'>{getDate(date as string, 'Ngày tạo')}</span>
+                                        )}
+                                        {estimatePaidDate ? (
+                                            getDate(estimatePaidDate, 'Hạn trả')
+                                        ) : (
+                                            <span>{TEMPLATE.EMPTY_DATE}</span>
+                                        )}
+                                        <h3 className='mt-1 font-medium'>
+                                            {methodSpending?.name || TEMPLATE.EMPTY_METHOD_SPENDING_SHORT}
+                                        </h3>
+                                    </td>
+                                    <td className='px-1 lg:pt-4 pt-0'>
+                                        <div className='flex items-center justify-center gap-x-2 text-center'>
+                                            <span
+                                                className={clsx(
+                                                    'inline-block h-1.5 w-1.5 rounded-full',
+                                                    paid ? 'bg-green-500' : 'bg-radical-red-500'
+                                                )}
+                                            />
+                                            <p className='text-sm font-medium text-gray-900 truncate'>
+                                                {categorySpending?.name ?? kindSpending.name}
+                                            </p>
                                         </div>
-                                    )}
-                                </td>
-                            </tr>
-                        </Fragment>
-                    )
-                }
+                                    </td>
+                                    <td className={clsx('whitespace-nowrap px-1 lg:pt-4 pt-0 text-sm text-center')}>
+                                        {!isNil(receive) && (
+                                            <span className={clsx('text-green-500', 'font-medium')}>
+                                                {numeral(receive).format()}
+                                            </span>
+                                        )}
+                                    </td>
+                                    <td
+                                        className={clsx('whitespace-nowrap pl-1 pr-2 lg:pt-4 pt-0 text-sm text-center')}
+                                    >
+                                        {!isNil(cost) && (
+                                            <span className={clsx('text-red-500', 'font-medium')}>
+                                                {numeral(cost).format()}
+                                            </span>
+                                        )}
+                                    </td>
+                                </tr>
+                                <tr onClick={() => navigate(to)}>
+                                    <td
+                                        colSpan={4}
+                                        className={clsx(
+                                            (data && index !== data.length - 1) || loading
+                                                ? 'border-b border-gray-200'
+                                                : '',
+                                            'whitespace-nowrap pb-4 pl-2 pr-2 sm:pl-6 lg:pl-8'
+                                        )}
+                                    >
+                                        {description && (
+                                            <div
+                                                title={description}
+                                                className='mt-2 max-w-[450px] sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] cursor-default'
+                                            >
+                                                {description.split('\n').map((line, index) => (
+                                                    <span key={index} className='block truncate'>
+                                                        {line}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </td>
+                                </tr>
+                            </Fragment>
+                        )
+                    }
+                )}
+
+            {loading ? (
+                <SkeletonTransactionTable elNumber={wpLoading.current ? 2 : 10} />
+            ) : (
+                data?.hasNextPage && (
+                    <tr>
+                        <td colSpan={4}>
+                            <Waypoint onEnter={handleGetMoreData} bottomOffset='-20%' />
+                        </td>
+                    </tr>
+                )
             )}
         </>
     )
 }
 
-const SkeletonTransactionTable = () => {
+interface SkeletonTransactionTableProps {
+    elNumber?: number
+}
+const SkeletonTransactionTable: React.FC<SkeletonTransactionTableProps> = ({ elNumber = 2 }) => {
     return (
         <>
-            {Array.from(Array(10)).map((item, index, data) => (
+            {Array.from(Array(elNumber)).map((item, index, data) => (
                 <Fragment key={index}>
                     <tr className=' animate-pulse'>
                         <td className='py-4 px-2'>
@@ -399,7 +464,7 @@ const EmptyTransactionTable = () => {
     return (
         <tr>
             <td colSpan={4} className='whitespace-nowrap py-4 px-2'>
-                <span className='block truncate w-full text-center text-lg text-gray-700 font-base'>
+                <span className='block truncate w-full text-center text-md text-gray-700 font-base'>
                     {TEMPLATE.EMPTY_DATA}
                 </span>
             </td>

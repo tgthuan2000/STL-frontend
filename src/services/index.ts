@@ -19,6 +19,21 @@ export const sum = (arr: number[]) => {
     return isEmpty(arr) ? 0 : arr.reduce((a, b) => a + b, 0)
 }
 
+export const deleteObjKeys = (obj: { [x: string]: any }, keys: string[]) => {
+    const clone = JSON.parse(JSON.stringify(obj))
+
+    Object.keys(obj).forEach((key) => {
+        keys.forEach((k) => {
+            if (key.startsWith(k)) {
+                delete clone[key]
+                return
+            }
+        })
+    })
+
+    return clone
+}
+
 export const hashCode = (s: string) => {
     let h = 0
     for (let i = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0

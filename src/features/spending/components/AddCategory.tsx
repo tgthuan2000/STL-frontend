@@ -8,7 +8,7 @@ import { Button } from '~/components'
 import { Input, Selection } from '~/components/_base'
 import { KIND_SPENDING } from '~/constant/spending'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
-import useQuery, { ParamsTypeUseQuery, QueryTypeUseQuery } from '~/hook/useQuery'
+import useQuery, { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING } from '~/schema/query/spending'
 import { getCategorySpending } from '~/services/query'
@@ -16,6 +16,7 @@ import useAuth from '~/store/auth'
 import { searchName } from '../services'
 import { BadgeCheckIcon, ExclamationCircleIcon } from '@heroicons/react/outline'
 import { toast } from 'react-toastify'
+import { TAGS } from '~/constant'
 
 const AddCategory = () => {
     const { setIsOpen } = useSlideOver()
@@ -50,6 +51,9 @@ const AddCategory = () => {
                 userId: userProfile?._id as string,
                 kindSpending: watchKind as string,
             },
+            tags: {
+                categorySpending: TAGS.ENUM,
+            },
         }
     }, [watchKind])
 
@@ -58,12 +62,17 @@ const AddCategory = () => {
         reloadData()
     }, [defaultValues])
 
-    const [{ query, params }, setQuery] = useState<{
+    const [{ query, params, tags }, setQuery] = useState<{
         query: QueryTypeUseQuery<AddCategoryQueryData>
         params: ParamsTypeUseQuery
+        tags: TagsTypeUseQuery<AddCategoryQueryData>
     }>(defaultValues)
 
-    const [{ categorySpending }, fetchData, deleteCacheData, reloadData] = useQuery<AddCategoryQueryData>(query, params)
+    const [{ categorySpending }, fetchData, deleteCacheData, reloadData] = useQuery<AddCategoryQueryData>(
+        query,
+        params,
+        tags
+    )
 
     const onsubmit: SubmitHandler<IAddCategoryForm> = async (data) => {
         setSubmitLoading(true)

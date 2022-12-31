@@ -6,14 +6,14 @@ export type Data<T> = {
         data: undefined | T[Property]
         query: string
         params?: ParamsTypeUseQuery
+        tags: TAGS
     }
 }
 
-export type useQueryType<T> = [Data<T>, () => Promise<void>, (...keys: Array<keyof T>) => string, () => void, Boolean]
-
-export interface Query<T> {
-    loading: boolean
-    data: T[] | undefined
-    query: string
-    params?: {} | undefined
-}
+export type useQueryType<T> = [
+    Data<T>,
+    () => Promise<void>,
+    (...keys: Array<keyof T>) => string,
+    (...keys: Array<keyof T>) => void,
+    Boolean
+]

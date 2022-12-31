@@ -8,6 +8,7 @@ import { IMakeGetLoanForm, IUserLoan } from '~/@types/loan'
 import { IMethodSpending } from '~/@types/spending'
 import { Button } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
+import { TAGS } from '~/constant'
 import { SlideOverHOC, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
@@ -32,13 +33,9 @@ const MakeGetLoan = () => {
     }, [kindSpending])
 
     const [{ methodSpending, userLoan }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
-        {
-            methodSpending: GET_METHOD_SPENDING,
-            userLoan: GET_USER_LOAN,
-        },
-        {
-            userId: userProfile?._id as string,
-        }
+        { methodSpending: GET_METHOD_SPENDING, userLoan: GET_USER_LOAN },
+        { userId: userProfile?._id as string },
+        { methodSpending: TAGS.ENUM, userLoan: TAGS.ENUM }
     )
 
     useEffect(() => {

@@ -7,7 +7,7 @@ export const GET_CONFIG = groq`
             key,
             name
         },
-        "budgetSpending": *[_type == "budget" && date == $date][0] {
+        "budgetSpending": *[_type == "budget" && date == $date && user._ref == $userId][0] {
             _id,
         },
     }

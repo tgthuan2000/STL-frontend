@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import { IMakeTransferForm, IMethodSpending, MakeTransferQueryData } from '~/@types/spending'
 import { Button } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
+import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
@@ -20,15 +21,12 @@ const MakeTransfer = () => {
     const { deleteCache } = useCache()
     const { loading, setSubmitLoading } = useLoading()
     const { getKindSpendingId } = useConfig()
-    const { METHOD_SPENDING_DESC_SURPLUS, RECENT_SPENDING, ALL_RECENT_SPENDING } = useServiceQuery()
+    const { METHOD_SPENDING_DESC_SURPLUS, RECENT_SPENDING, RECENT_SPENDING_PAGINATE } = useServiceQuery()
 
     const [{ methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<MakeTransferQueryData>(
-        {
-            methodSpending: GET_METHOD_SPENDING,
-        },
-        {
-            userId: userProfile?._id as string,
-        }
+        { methodSpending: GET_METHOD_SPENDING },
+        { userId: userProfile?._id as string },
+        { methodSpending: TAGS.ENUM }
     )
 
     useEffect(() => {
@@ -113,7 +111,7 @@ const MakeTransfer = () => {
 
             await client.transaction().create(document1).patch(patch1).create(document2).patch(patch2).commit()
             // navigate to dashboard
-            let res = deleteCache([METHOD_SPENDING_DESC_SURPLUS, RECENT_SPENDING, ALL_RECENT_SPENDING])
+            let res = deleteCache([METHOD_SPENDING_DESC_SURPLUS, RECENT_SPENDING, RECENT_SPENDING_PAGINATE])
             console.log(res)
 
             setTimeout(() => {

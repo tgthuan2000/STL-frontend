@@ -23,26 +23,55 @@ export const GETALL_RECENT_SPENDING = groq`
     }
 `
 
-export const GETALL_RECENT_SPENDING_FILTER_DATE_RANGE = groq`
-    *[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && $startDate <= date && date <= $endDate] | order(_updatedAt desc)
+export const GET_RECENT_SPENDING_PAGINATE = groq`
     {
-        _id,
-        categorySpending-> {
-            name
-        },
-        methodSpending-> {
-            name
-        },
-        kindSpending-> {
-            name,
-            key
-        },
-        description,
-        amount,
-        realPaid,
-        paid,
-        date,
-        estimatePaidDate
+        "data": *[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds] | order(_updatedAt desc)[$__fromRecent...$__toRecent]
+            {
+                _id,
+                categorySpending-> {
+                    name
+                },
+                methodSpending-> {
+                    name
+                },
+                kindSpending-> {
+                    name,
+                    key
+                },
+                description,
+                amount,
+                realPaid,
+                paid,
+                date,
+                estimatePaidDate
+            },
+        "hasNextPage": count(*[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds]) > $__toRecent
+    }
+`
+
+export const GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE = groq`
+    {
+        "data": *[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && $startDate <= date && date <= $endDate] | order(_updatedAt desc)[$__fromRecent...$__toRecent]
+            {
+                _id,
+                categorySpending-> {
+                    name
+                },
+                methodSpending-> {
+                    name
+                },
+                kindSpending-> {
+                    name,
+                    key
+                },
+                description,
+                amount,
+                realPaid,
+                paid,
+                date,
+                estimatePaidDate
+            },
+        "hasNextPage": count(*[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && $startDate <= date && date <= $endDate]) > $__toRecent
     }
 `
 
@@ -69,6 +98,32 @@ export const GETALL_RECENT_SPENDING_BY_METHOD = groq`
     }
 `
 
+export const GET_RECENT_SPENDING_BY_METHOD_PAGINATE = groq`
+    {
+        "data": *[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && methodSpending._ref in $methodSpendingIds] | order(_updatedAt desc)[$__fromMethod...$__toMethod]
+            {
+                _id,
+                categorySpending-> {
+                    name
+                },
+                methodSpending-> {
+                    name
+                },
+                kindSpending-> {
+                    name,
+                    key
+                },
+                description,
+                amount,
+                realPaid,
+                paid,
+                date,
+                estimatePaidDate
+            },
+        "hasNextPage": count(*[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && methodSpending._ref in $methodSpendingIds]) > $__toMethod
+    }
+`
+
 export const GETALL_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD = groq`
     *[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && methodSpending._ref in $methodSpendingIds && $startDate <= date && date <= $endDate] | order(_updatedAt desc)
     {
@@ -89,6 +144,32 @@ export const GETALL_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD = groq`
         paid,
         date,
         estimatePaidDate
+    }
+`
+
+export const GET_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD_PAGINATE = groq`
+    {
+        "data": *[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && methodSpending._ref in $methodSpendingIds && $startDate <= date && date <= $endDate] | order(_updatedAt desc)[$__fromMethod...$__toMethod]
+            {
+                _id,
+                categorySpending-> {
+                    name
+                },
+                methodSpending-> {
+                    name
+                },
+                kindSpending-> {
+                    name,
+                    key
+                },
+                description,
+                amount,
+                realPaid,
+                paid,
+                date,
+                estimatePaidDate
+            },
+        "hasNextPage": count(*[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && methodSpending._ref in $methodSpendingIds && $startDate <= date && date <= $endDate]) > $__toMethod
     }
 `
 

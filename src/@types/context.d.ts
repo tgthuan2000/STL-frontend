@@ -35,31 +35,32 @@ export interface ISlideOverContext {
     setTitle: React.Dispatch<React.SetStateAction<string>>
 }
 export type FetchApi = <T extends { [x: string]: any }>(
-    callApi: { [x: string]: { value: string; key: number; data: any[] } },
+    callApi: { [x: string]: { query: string; key: number } },
     params: { [y: string]: string | number | string[] },
     tags: { [x: string]: TAGS }
 ) => Promise<T>
 
 export type CheckInCache = <T extends { [x: string]: any }>(
     query: { [Property in keyof T]: string },
-    params?: QueryParams
+    params?: QueryParams,
+    tags: { [x: string]: TAGS },
+    keys: Array<keyof T>
 ) => {
     data: T
     callApi: {
         [x: string]: {
-            value: string
+            query: string
             key: number
-            data: any[]
         }
     }
 }
 
 export type DeleteCache = <T extends { [x: string]: any }>(
-    payloads: {
-        [x: string]: any
-        params: any
+    payloads: Array<{
+        query: string
+        params: { [y: string]: string | number | string[] }
         tags: TagsTypeUseQuery<T>[keyof T]
-    }[]
+    }>
 ) => string
 
 export interface ICacheContext {
@@ -68,7 +69,7 @@ export interface ICacheContext {
     deleteCache: DeleteCache
 }
 
-export type DataCache<T> = Array<{ key: number; data: T; value: string }>
+export type DataCache<T> = Array<{ key: number; data: { data: T; hasNextPage: boolean } | T }>
 export type TagsField = `${TAGS}`
 export interface ICacheData<T> {
     [Property in TAGS]?: DataCache<T>

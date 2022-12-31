@@ -4,6 +4,7 @@ import { SubmitHandler } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { PaidForm, TransactionDetailQueryData, TransactionDetailFormData } from '~/@types/loan'
 import { ISpendingData } from '~/@types/spending'
+import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { TEMPLATE } from '~/constant/template'
 import { useCache, useLoading } from '~/context'
@@ -23,7 +24,7 @@ const TransactionDetail = () => {
         METHOD_SPENDING_DESC_SURPLUS,
         METHOD_SPENDING,
         RECENT_SPENDING,
-        ALL_RECENT_SPENDING,
+        RECENT_SPENDING_PAGINATE,
         STATISTIC_SPENDING,
         GET_RECENT_LOAN,
         GET_PAY_DUE_LOAN,
@@ -33,14 +34,9 @@ const TransactionDetail = () => {
 
     const [{ transaction, methodSpending }, fetchData, deleteCacheData, reloadData] =
         useQuery<TransactionDetailQueryData>(
-            {
-                transaction: GET_TRANSACTION_DETAIL,
-                methodSpending: GET_METHOD_SPENDING,
-            },
-            {
-                userId: userProfile?._id as string,
-                id: id as string,
-            }
+            { transaction: GET_TRANSACTION_DETAIL, methodSpending: GET_METHOD_SPENDING },
+            { userId: userProfile?._id as string, id: id as string },
+            { methodSpending: TAGS.ENUM, transaction: TAGS.ALTERNATE }
         )
 
     const trans = head(transaction.data)
@@ -95,7 +91,7 @@ const TransactionDetail = () => {
                     METHOD_SPENDING_DESC_SURPLUS,
                     METHOD_SPENDING,
                     RECENT_SPENDING,
-                    ALL_RECENT_SPENDING,
+                    RECENT_SPENDING_PAGINATE,
                     STATISTIC_SPENDING,
                     GET_RECENT_LOAN,
                     GET_PAY_DUE_LOAN,
@@ -160,7 +156,7 @@ const TransactionDetail = () => {
                 METHOD_SPENDING_DESC_SURPLUS,
                 METHOD_SPENDING,
                 RECENT_SPENDING,
-                ALL_RECENT_SPENDING,
+                RECENT_SPENDING_PAGINATE,
                 STATISTIC_SPENDING,
                 GET_RECENT_LOAN,
                 GET_PAY_DUE_LOAN,
