@@ -1,11 +1,11 @@
-import React, { Fragment, useMemo, useState } from 'react'
-import { Listbox, Transition } from '@headlessui/react'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Listbox } from '@headlessui/react'
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
 import clsx from 'clsx'
 import { SelectionProps } from '~/@types/components'
 import { people } from '~/constant/components'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import _ from 'lodash'
+import _, { find, get, isNil } from 'lodash'
 import { Controller } from 'react-hook-form'
 
 const Selection: React.FC<SelectionProps> = ({
@@ -18,10 +18,21 @@ const Selection: React.FC<SelectionProps> = ({
     form,
     rules,
     name,
+    disabled,
 }) => {
     const value = useMemo(() => form.getValues(name), [JSON.stringify(form.getValues(name))])
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const [selected, setSelected] = useState(value)
+
+    useEffect(() => {
+        setSelected((prev: any) => {
+            if (isNil(prev)) {
+                return
+            }
+
+            return find(data, [idKey, get(selected, idKey)])
+        })
+    }, [data])
 
     const handleChange = (value: any, onChange: (value: any) => void) => {
         setSelected(value)
@@ -34,8 +45,12 @@ const Selection: React.FC<SelectionProps> = ({
             control={form.control}
             rules={rules}
             render={({ field, fieldState: { error } }) => (
-                <div className={clsx(className)}>
-                    <Listbox value={selected} onChange={(value) => handleChange(value, field.onChange)}>
+                <div className={className}>
+                    <Listbox
+                        value={selected}
+                        onChange={(value) => handleChange(value, field.onChange)}
+                        disabled={disabled}
+                    >
                         {({ open }) => (
                             <>
                                 {label && (

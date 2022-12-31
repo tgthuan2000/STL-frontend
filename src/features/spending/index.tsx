@@ -7,7 +7,7 @@ const Method = React.lazy(() => import('./pages/Method'))
 const MethodDetail = React.lazy(() => import('./pages/MethodDetail'))
 const Transaction = React.lazy(() => import('../../components/Transaction'))
 const TransactionDetail = React.lazy(() => import('./pages/TransactionDetail'))
-const TransactionRecentTable = React.lazy(() => import('./pages/TransactionRecentTable'))
+const TransactionRecent = React.lazy(() => import('./pages/TransactionRecent'))
 
 const Spending = () => {
     return (
@@ -15,7 +15,7 @@ const Spending = () => {
             <Route path='/' element={<SpendingFeature />}>
                 <Route index element={<Dashboard />} />
                 <Route path='transaction' element={<Transaction title='Giao dịch' />}>
-                    <Route index element={<TransactionRecentTable />} />
+                    <Route index element={<TransactionRecent />} />
                 </Route>
                 <Route path='transaction/:id' element={<TransactionDetail />} />
                 <Route path='method' element={<Transaction title='Phương thức thanh toán' />}>
