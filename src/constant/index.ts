@@ -7,6 +7,7 @@ export enum DATE_FORMAT {
     WEEK = 'w',
     MONTH = 'MM/yyyy',
     YEAR = 'yyyy',
+    TIME_DATE = 'HH:mm - DD/MM/yyyy',
 }
 
 export enum TAGS {

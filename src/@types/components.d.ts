@@ -1,5 +1,5 @@
 import { SanityImageAssetDocument } from '@sanity/client'
-import React, { HTMLInputTypeAttribute } from 'react'
+import React, { HTMLInputTypeAttribute, ReactNode } from 'react'
 import { Control, FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
 import { NavigateFunction } from 'react-router-dom'
 import { DATE_FORMAT } from '~/constant'
@@ -41,6 +41,20 @@ export interface SelectionProps {
     placeholder?: string
     form: UseFormReturn<any, object>
     rules?: Rules
+    disabled?: boolean
+}
+
+export interface DropdownProps {
+    name: string
+    className?: string
+    label?: ReactNode
+    data?: Array<Array<any>>
+    idKey?: string
+    valueKey?: string
+    placeholder?: string
+    form: UseFormReturn<any, object>
+    rules?: Rules
+    disabled?: boolean
 }
 
 export interface SlideOverProps {
