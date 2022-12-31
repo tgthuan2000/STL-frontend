@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IMakeGetLoanForm, TransactionEditFormData, TransactionEditQueryData } from '~/@types/loan'
 import { ISpendingData } from '~/@types/spending'
+import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { TEMPLATE } from '~/constant/template'
 import { useCache, useLoading } from '~/context'
@@ -25,7 +26,7 @@ const TransactionEdit = () => {
         METHOD_SPENDING_DESC_SURPLUS,
         METHOD_SPENDING,
         RECENT_SPENDING,
-        ALL_RECENT_SPENDING,
+        RECENT_SPENDING_PAGINATE,
         STATISTIC_SPENDING,
         GET_RECENT_LOAN,
         GET_PAY_DUE_LOAN,
@@ -43,6 +44,11 @@ const TransactionEdit = () => {
             {
                 userId: userProfile?._id as string,
                 id: id as string,
+            },
+            {
+                methodSpending: TAGS.ENUM,
+                transaction: TAGS.ALTERNATE,
+                userLoan: TAGS.ENUM,
             }
         )
 
@@ -189,7 +195,7 @@ const TransactionEdit = () => {
                 METHOD_SPENDING_DESC_SURPLUS,
                 METHOD_SPENDING,
                 RECENT_SPENDING,
-                ALL_RECENT_SPENDING,
+                RECENT_SPENDING_PAGINATE,
                 STATISTIC_SPENDING,
                 GET_RECENT_LOAN,
                 GET_PAY_DUE_LOAN,

@@ -4,6 +4,7 @@ import { IConfig, IConfigContext } from '~/@types/context'
 import { KIND_SPENDING } from '~/constant/spending'
 import { client } from '~/sanityConfig'
 import { GET_CONFIG } from '~/schema/query/config'
+import useAuth from '~/store/auth'
 import { useLoading } from './LoadingContext'
 
 const ConfigContext = createContext<IConfigContext>({
@@ -15,6 +16,7 @@ const ConfigContext = createContext<IConfigContext>({
 })
 
 const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
+    const { userProfile } = useAuth()
     const [config, setConfig] = useState<IConfig>({
         kindSpending: [],
         budgetSpending: { _id: null },
@@ -29,6 +31,7 @@ const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
                 setConfigLoading(true)
                 const res: IConfig = await client.fetch(GET_CONFIG, {
                     date: moment().format('YYYY-MM-01'),
+                    userId: userProfile?._id as string,
                 })
                 setConfig(res)
                 setOk(true)

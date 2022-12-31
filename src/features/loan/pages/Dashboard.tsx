@@ -1,8 +1,8 @@
 import moment from 'moment'
 import { useEffect } from 'react'
-import { DashboardQueryData, IUserLoan } from '~/@types/loan'
-import { ISpendingData } from '~/@types/spending'
+import { DashboardQueryData } from '~/@types/loan'
 import { Box2, ButtonMenuLoan, Divider } from '~/components'
+import { TAGS } from '~/constant'
 import { menuLoanMobile } from '~/constant/components'
 import { useConfig } from '~/context'
 import { useQuery, useScrollIntoView, useWindowSize } from '~/hook'
@@ -28,6 +28,11 @@ const Dashboard = () => {
             dueDate: moment().utc(true).add(7, 'days').toISOString(),
             kindLoan: getKindSpendingId('LOAN') as string,
             kindGetLoan: getKindSpendingId('GET_LOAN') as string,
+        },
+        {
+            paydue: TAGS.ALTERNATE,
+            recent: TAGS.ALTERNATE,
+            statistic: TAGS.ALTERNATE,
         }
     )
 

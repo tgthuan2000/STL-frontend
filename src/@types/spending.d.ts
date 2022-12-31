@@ -166,11 +166,17 @@ export interface DashboardQueryData {
     statistic: IStatisticData[]
 }
 export interface RecentQueryData {
-    recent: ISpendingData[]
+    recent: {
+        data: ISpendingData[]
+        hasNextPage: boolean
+    }
 }
 
 export interface MethodQueryData {
-    method: ISpendingData[]
+    method: {
+        data: ISpendingData[]
+        hasNextPage: boolean
+    }
 }
 /* OTHERS */
 export interface TransactionDetailFormData {

@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import { IAddIncomeForm, MakeIncomeQueryData } from '~/@types/spending'
 import { Button } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
+import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
@@ -20,7 +21,8 @@ const MakeIncome = () => {
     const { deleteCache } = useCache()
     const { getKindSpendingId } = useConfig()
     const { loading, setSubmitLoading } = useLoading()
-    const { METHOD_SPENDING_DESC_SURPLUS, RECENT_SPENDING, ALL_RECENT_SPENDING, STATISTIC_SPENDING } = useServiceQuery()
+    const { METHOD_SPENDING_DESC_SURPLUS, RECENT_SPENDING, RECENT_SPENDING_PAGINATE, STATISTIC_SPENDING } =
+        useServiceQuery()
 
     const kindSpendingId = useMemo(() => {
         return getKindSpendingId('RECEIVE')
@@ -35,6 +37,10 @@ const MakeIncome = () => {
             {
                 userId: userProfile?._id as string,
                 kindSpending: kindSpendingId as string,
+            },
+            {
+                categorySpending: TAGS.ENUM,
+                methodSpending: TAGS.ENUM,
             }
         )
 
@@ -100,7 +106,7 @@ const MakeIncome = () => {
             let res = deleteCache([
                 METHOD_SPENDING_DESC_SURPLUS,
                 RECENT_SPENDING,
-                ALL_RECENT_SPENDING,
+                RECENT_SPENDING_PAGINATE,
                 STATISTIC_SPENDING,
             ])
             console.log(res)

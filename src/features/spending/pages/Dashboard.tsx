@@ -3,7 +3,7 @@ import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { DashboardQueryData } from '~/@types/spending'
 import { Box, ButtonMenu, Divider } from '~/components'
-import { DATE_FORMAT } from '~/constant'
+import { DATE_FORMAT, TAGS } from '~/constant'
 import { menuMobile } from '~/constant/components'
 import { useConfig } from '~/context'
 import { useScrollIntoView, useQuery, useWindowSize } from '~/hook'
@@ -44,6 +44,12 @@ const Dashboard = () => {
             endDate: getDateOfMonth('end'),
             budgetKind: getKindSpendingId('COST') as string,
             ...(budgetId && { budgetId }),
+        },
+        {
+            recent: TAGS.ALTERNATE,
+            method: TAGS.ALTERNATE,
+            statistic: TAGS.ALTERNATE,
+            ...(budgetId && { budget: TAGS.ALTERNATE }),
         }
     )
 
