@@ -20,7 +20,7 @@ const useServiceQuery = () => {
         RECEIVE_CATEGORY_SPENDING: services.getCategorySpending({ userProfile, kindSpending: receive }),
         TRANSFER_FROM_CATEGORY_SPENDING: services.getCategorySpending({ userProfile, kindSpending: transferFrom }),
         TRANSFER_TO_CATEGORY_SPENDING: services.getCategorySpending({ userProfile, kindSpending: transferTo }),
-        ALL_RECENT_SPENDING: services.getAllRecentSpending({ userProfile }),
+        RECENT_SPENDING_PAGINATE: services.getRecentSpendingPaginate({ userProfile }),
         METHOD_SPENDING: services.getMethodSpending({ userProfile }),
         METHOD_SPENDING_DESC_SURPLUS: services.getMethodSpendingDescSurplus({ userProfile }),
         RECENT_SPENDING: services.getRecentSpending({ userProfile }),

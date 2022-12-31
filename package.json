@@ -30,6 +30,7 @@
     "react-hook-form": "^7.33.1",
     "react-router-dom": "^6.3.0",
     "react-toastify": "^9.1.1",
+    "react-waypoint": "^10.3.0",
     "url": "^0.11.0",
     "yup": "^0.32.11",
     "zustand": "^4.0.0-rc.1"

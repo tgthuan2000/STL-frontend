@@ -1,5 +1,11 @@
 import { SanityDocument } from '@sanity/client'
 
+export type QueryResult = {
+    query: string
+    params: { [y: string]: string | number | string[] }
+    tags: TAGS
+}
+
 export interface GetCategorySpending<T extends Record<string, any>> {
     userProfile: SanityDocument<T> | null
     kindSpending: string
@@ -20,7 +26,7 @@ export interface GetRecentSpending<T extends Record<string, any>> {
     userProfile: SanityDocument<T> | null
 }
 
-export interface GetAllRecentSpending<T extends Record<string, any>> {
+export interface GetRecentSpendingPaginate<T extends Record<string, any>> {
     userProfile: SanityDocument<T> | null
 }
 

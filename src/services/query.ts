@@ -1,15 +1,17 @@
 import moment from 'moment'
 import {
-    GetAllRecentSpending,
     GetCategorySpending,
     GetMethodKindSpending,
     GetMethodSpending,
     GetPayDueLoan,
     GetRecentLoan,
     GetRecentSpending,
+    GetRecentSpendingPaginate,
     GetStatisticLoan,
     GetStatisticSpending,
+    QueryResult,
 } from '~/@types/query'
+import { TAGS } from '~/constant'
 import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
 import {
     GETALL_RECENT_SPENDING,
@@ -17,6 +19,7 @@ import {
     GET_METHOD_SPENDING,
     GET_METHOD_SPENDING_DESC_SURPLUS,
     GET_RECENT_SPENDING,
+    GET_RECENT_SPENDING_PAGINATE,
     GET_STATISTIC_SPENDING,
 } from '~/schema/query/spending'
 import { getDateOfMonth } from '.'
@@ -24,47 +27,65 @@ import { getDateOfMonth } from '.'
 export const getCategorySpending = <T extends Record<string, any>>({
     userProfile,
     kindSpending,
-}: GetCategorySpending<T>) => {
+}: GetCategorySpending<T>): QueryResult => {
     return {
-        categorySpending: GET_CATEGORY_SPENDING,
-        params: { userId: userProfile?._id, kindSpending },
+        query: GET_CATEGORY_SPENDING,
+        params: { userId: userProfile?._id as string, kindSpending },
+        tags: TAGS.ENUM,
     }
 }
 
 export const getMethodSpendingDescSurplus = <T extends Record<string, any>>({
     userProfile,
-}: GetMethodKindSpending<T>) => {
+}: GetMethodKindSpending<T>): QueryResult => {
     return {
-        method: GET_METHOD_SPENDING_DESC_SURPLUS,
-        params: { userId: userProfile?._id },
+        query: GET_METHOD_SPENDING_DESC_SURPLUS,
+        params: { userId: userProfile?._id as string },
+        tags: TAGS.ALTERNATE,
     }
 }
 
-export const getMethodSpending = <T extends Record<string, any>>({ userProfile }: GetMethodSpending<T>) => {
+export const getMethodSpending = <T extends Record<string, any>>({
+    userProfile,
+}: GetMethodSpending<T>): QueryResult => {
     return {
-        methodSpending: GET_METHOD_SPENDING,
-        params: { userId: userProfile?._id },
+        query: GET_METHOD_SPENDING,
+        params: { userId: userProfile?._id as string },
+        tags: TAGS.ENUM,
     }
 }
 
-export const getStatisticSpending = <T extends Record<string, any>>({ userProfile }: GetStatisticSpending<T>) => {
+export const getStatisticSpending = <T extends Record<string, any>>({
+    userProfile,
+}: GetStatisticSpending<T>): QueryResult => {
     return {
-        statistic: GET_STATISTIC_SPENDING,
-        params: { userId: userProfile?._id, startDate: getDateOfMonth('start'), endDate: getDateOfMonth('end') },
+        query: GET_STATISTIC_SPENDING,
+        params: {
+            userId: userProfile?._id as string,
+            startDate: getDateOfMonth('start'),
+            endDate: getDateOfMonth('end'),
+        },
+        tags: TAGS.ALTERNATE,
     }
 }
 
-export const getRecentSpending = <T extends Record<string, any>>({ userProfile }: GetRecentSpending<T>) => {
+export const getRecentSpending = <T extends Record<string, any>>({
+    userProfile,
+}: GetRecentSpending<T>): QueryResult => {
     return {
-        recent: GET_RECENT_SPENDING,
-        params: { userId: userProfile?._id, from: 0, to: 5 },
+        query: GET_RECENT_SPENDING,
+        params: { userId: userProfile?._id as string, from: 0, to: 5 },
+        tags: TAGS.ALTERNATE,
     }
 }
 
-export const getAllRecentSpending = <T extends Record<string, any>>({ userProfile }: GetAllRecentSpending<T>) => {
+export const getRecentSpendingPaginate = <T extends Record<string, any>>({
+    userProfile,
+}: GetRecentSpendingPaginate<T>): QueryResult => {
     return {
-        recent: GETALL_RECENT_SPENDING,
-        params: { userId: userProfile?._id },
+        query: GET_RECENT_SPENDING_PAGINATE,
+        params: { userId: userProfile?._id as string },
+        tags: TAGS.ALTERNATE,
     }
 }
 
@@ -74,10 +95,11 @@ export const getRecentLoan = <T extends Record<string, any>>({
     userProfile,
     kindLoan,
     kindGetLoan,
-}: GetRecentLoan<T>) => {
+}: GetRecentLoan<T>): QueryResult => {
     return {
-        recent: GET_RECENT_LOAN,
-        params: { userId: userProfile?._id, from: 0, to: 10, kindLoan, kindGetLoan },
+        query: GET_RECENT_LOAN,
+        params: { userId: userProfile?._id as string, from: 0, to: 10, kindLoan, kindGetLoan },
+        tags: TAGS.ALTERNATE,
     }
 }
 
@@ -85,27 +107,29 @@ export const getPayDueLoan = <T extends Record<string, any>>({
     userProfile,
     kindLoan,
     kindGetLoan,
-}: GetPayDueLoan<T>) => {
+}: GetPayDueLoan<T>): QueryResult => {
     return {
-        recent: GET_PAY_DUE_LOAN,
+        query: GET_PAY_DUE_LOAN,
         params: {
-            userId: userProfile?._id,
+            userId: userProfile?._id as string,
             from: 0,
             to: 10,
             dueDate: moment().utc(true).add(7, 'days').toISOString(),
             kindLoan,
             kindGetLoan,
         },
+        tags: TAGS.ALTERNATE,
     }
 }
 
-export const getStatisticLoan = <T extends Record<string, any>>({ userProfile }: GetStatisticLoan<T>) => {
+export const getStatisticLoan = <T extends Record<string, any>>({ userProfile }: GetStatisticLoan<T>): QueryResult => {
     return {
-        recent: GET_STATISTIC_LOAN,
+        query: GET_STATISTIC_LOAN,
         params: {
-            userId: userProfile?._id,
+            userId: userProfile?._id as string,
             from: 0,
             to: 10,
         },
+        tags: TAGS.ALTERNATE,
     }
 }
