@@ -1,23 +1,24 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
-import { head, isEmpty } from 'lodash'
+import { isEmpty } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
-import { Fragment, useEffect, useMemo, useState } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { Waypoint } from 'react-waypoint'
 import { ISpendingData, MethodQueryData } from '~/@types/spending'
 import { TimeFilter } from '~/components'
 import LoadingButton from '~/components/Loading/LoadingButton'
 import { TimeFilterPayload } from '~/components/TimeFilter'
-import { DATE_FORMAT } from '~/constant'
+import { COUNT_PAGINATE, DATE_FORMAT, TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { E_FILTER_DATE, TEMPLATE } from '~/constant/template'
 import { useConfig } from '~/context'
 import { useQuery, useScrollIntoView, useWindowSize } from '~/hook'
-import { ParamsTypeUseQuery, QueryTypeUseQuery } from '~/hook/useQuery'
+import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
 import {
-    GETALL_RECENT_SPENDING_BY_METHOD,
-    GETALL_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD,
+    GET_RECENT_SPENDING_BY_METHOD_PAGINATE,
+    GET_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD_PAGINATE,
 } from '~/schema/query/spending'
 import { getDate } from '~/services'
 import useAuth from '~/store/auth'
@@ -34,23 +35,26 @@ const MethodDetail = () => {
 
     const getAll = useMemo(() => {
         return {
-            query: { method: GETALL_RECENT_SPENDING_BY_METHOD },
+            query: { method: GET_RECENT_SPENDING_BY_METHOD_PAGINATE },
             params: {
                 userId: userProfile?._id as string,
                 kindSpendingIds: getKindSpendingIds('COST', 'RECEIVE', 'TRANSFER_FROM', 'TRANSFER_TO'),
                 methodSpendingIds: [id as string],
+                __fromMethod: 0,
+                __toMethod: COUNT_PAGINATE,
             },
+            tags: { method: TAGS.ALTERNATE },
         }
     }, [])
 
     const defaultValues = useMemo(() => {
         try {
-            let query = GETALL_RECENT_SPENDING_BY_METHOD,
+            let query = GET_RECENT_SPENDING_BY_METHOD_PAGINATE,
                 params = {}
 
             const d = Object.fromEntries([...searchParams])
             if (!isEmpty(d)) {
-                query = GETALL_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD
+                query = GET_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD_PAGINATE
                 let { type, data } = d
                 data = JSON.parse(data)
 
@@ -87,13 +91,9 @@ const MethodDetail = () => {
                 }
             }
             return {
+                ...getAll,
                 query: { method: query },
-                params: {
-                    userId: userProfile?._id as string,
-                    kindSpendingIds: getKindSpendingIds('COST', 'RECEIVE', 'TRANSFER_FROM', 'TRANSFER_TO'),
-                    methodSpendingIds: [id as string],
-                    ...params,
-                },
+                params: { ...getAll.params, ...params },
             }
         } catch (error) {
             console.log(error)
@@ -101,12 +101,13 @@ const MethodDetail = () => {
         }
     }, [])
 
-    const [{ query, params }, setQuery] = useState<{
+    const [{ query, params, tags }, setQuery] = useState<{
         query: QueryTypeUseQuery<MethodQueryData>
         params: ParamsTypeUseQuery
+        tags: TagsTypeUseQuery<MethodQueryData>
     }>(defaultValues)
 
-    const [{ method }, fetchData, deleteCacheData, reload, error] = useQuery<MethodQueryData>(query, params)
+    const [{ method }, fetchData, deleteCacheData, reload, error] = useQuery<MethodQueryData>(query, params, tags)
 
     useEffect(() => {
         fetchData()
@@ -125,50 +126,71 @@ const MethodDetail = () => {
                 break
             case E_FILTER_DATE.DATE:
                 const date = data.data as Date
-                setQuery({
-                    query: { method: GETALL_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD },
+                setQuery((prev) => ({
+                    ...prev,
+                    query: { method: GET_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD_PAGINATE },
                     params: {
                         ...defaultValues.params,
                         startDate: getDate(date, 'start'),
                         endDate: getDate(date, 'end'),
                     },
-                })
+                }))
                 break
             case E_FILTER_DATE.DATE_RANGE:
                 const [startDate, endDate] = data.data as Date[]
-                setQuery({
-                    query: { method: GETALL_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD },
+                setQuery((prev) => ({
+                    ...prev,
+                    query: { method: GET_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD_PAGINATE },
                     params: {
                         ...defaultValues.params,
                         startDate: getDate(startDate, 'start'),
                         endDate: getDate(endDate, 'end'),
                     },
-                })
+                }))
                 break
             case E_FILTER_DATE.MONTH:
                 const month = data.data as Date
-                setQuery({
-                    query: { method: GETALL_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD },
+                setQuery((prev) => ({
+                    ...prev,
+                    query: { method: GET_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD_PAGINATE },
                     params: {
                         ...defaultValues.params,
                         startDate: getDate(month, 'start', 'month'),
                         endDate: getDate(month, 'end', 'month'),
                     },
-                })
+                }))
                 break
             case E_FILTER_DATE.YEAR:
                 const year = data.data as Date
-                setQuery({
-                    query: { method: GETALL_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD },
+                setQuery((prev) => ({
+                    ...prev,
+                    query: { method: GET_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD_PAGINATE },
                     params: {
                         ...defaultValues.params,
                         startDate: getDate(year, 'start', 'year'),
                         endDate: getDate(year, 'end', 'year'),
                     },
-                })
+                }))
                 break
         }
-        reload()
+        onReload()
+    }
+
+    const handleScrollGetMore = () => {
+        const length = method?.data?.data.length
+
+        if (length) {
+            setQuery((prev) => ({
+                ...prev,
+                params: { ...prev.params, __fromMethod: length, __toMethod: length + COUNT_PAGINATE },
+            }))
+            reload('method')
+        }
+    }
+
+    const handleClickReload = () => {
+        setQuery((prev) => ({ ...prev, params: { ...prev.params, __fromMethod: 0, __toMethod: COUNT_PAGINATE } }))
+        onReload()
     }
 
     return (
@@ -180,7 +202,7 @@ const MethodDetail = () => {
                             <TimeFilter onSubmit={handleFilterSubmit} />
                             {/* {width > 768 && ( */}
                             <div className='mr-3'>
-                                <LoadingButton onReload={onReload} disabled={method.loading} />
+                                <LoadingButton onReload={handleClickReload} disabled={method.loading} />
                             </div>
                             {/* )} */}
                         </div>
@@ -222,12 +244,14 @@ const MethodDetail = () => {
                                             </tr>
                                         </thead>
                                         <tbody ref={parentRef} className='bg-white'>
-                                            {method.loading ? (
-                                                <SkeletonTransactionTable />
-                                            ) : !method.data || isEmpty(method.data) ? (
+                                            {!method.loading && (!method.data?.data || isEmpty(method.data.data)) ? (
                                                 <EmptyTransactionTable />
                                             ) : (
-                                                <MainTable data={method.data} />
+                                                <MainTable
+                                                    data={method.data}
+                                                    loading={method.loading}
+                                                    onGetMore={handleScrollGetMore}
+                                                />
                                             )}
                                         </tbody>
                                     </table>
@@ -243,98 +267,152 @@ const MethodDetail = () => {
 export default MethodDetail
 
 interface MainTableProps {
-    data: ISpendingData[]
+    data:
+        | {
+              data: ISpendingData[]
+              hasNextPage: boolean
+          }
+        | undefined
+    loading: boolean
+    onGetMore: () => void
 }
-const MainTable = ({ data }: MainTableProps) => {
+const MainTable: React.FC<MainTableProps> = ({ data, onGetMore, loading }) => {
     const navigate = useNavigate()
     const { width } = useWindowSize()
+    const wpLoading = useRef(false)
+
+    const handleGetMoreData = () => {
+        wpLoading.current = true
+        onGetMore()
+    }
+
+    useEffect(() => {
+        if (!loading && wpLoading.current) {
+            wpLoading.current = false
+        }
+    }, [loading])
 
     return (
         <>
-            {data.map(
-                (
-                    { _id, date, description, methodSpending, kindSpending, categorySpending, amount, realPaid, paid },
-                    index,
-                    data
-                ) => {
-                    const to = getLinkSpending(kindSpending.key, _id)
-                    return (
-                        <Fragment key={_id}>
-                            <tr onClick={() => navigate(to)}>
-                                <td className={clsx('whitespace-nowrap lg:pt-4 pt-3 pl-2 pr-3 sm:pl-6 lg:pl-8')}>
-                                    {date ? (
-                                        width <= 900 ? (
-                                            <>
-                                                <span>{moment(date).format(DATE_FORMAT.D_DATE)}</span>
-                                                <br />
-                                                <span>{moment(date).format(DATE_FORMAT.TIME)}</span>
-                                            </>
+            {(!loading || wpLoading.current) &&
+                data?.data.map(
+                    (
+                        {
+                            _id,
+                            date,
+                            description,
+                            methodSpending,
+                            kindSpending,
+                            categorySpending,
+                            amount,
+                            realPaid,
+                            paid,
+                        },
+                        index,
+                        data
+                    ) => {
+                        const to = getLinkSpending(kindSpending.key, _id)
+                        return (
+                            <Fragment key={_id}>
+                                <tr onClick={() => navigate(to)}>
+                                    <td className={clsx('whitespace-nowrap lg:pt-4 pt-3 pl-2 pr-3 sm:pl-6 lg:pl-8')}>
+                                        {date ? (
+                                            width <= 900 ? (
+                                                <>
+                                                    <span>{moment(date).format(DATE_FORMAT.D_DATE)}</span>
+                                                    <br />
+                                                    <span>{moment(date).format(DATE_FORMAT.TIME)}</span>
+                                                </>
+                                            ) : (
+                                                <span>{moment(date).format(DATE_FORMAT.D_DATE_TIME)}</span>
+                                            )
                                         ) : (
-                                            <span>{moment(date).format(DATE_FORMAT.D_DATE_TIME)}</span>
-                                        )
-                                    ) : (
-                                        <span>{TEMPLATE.EMPTY_DATE}</span>
-                                    )}
-                                    <h3 className='mt-1 font-medium'>
-                                        {methodSpending?.name || TEMPLATE.EMPTY_METHOD_SPENDING_SHORT}
-                                    </h3>
-                                </td>
-                                <td className='px-1 lg:pt-4 pt-0'>
-                                    <div className='text-center'>
-                                        <p className='text-sm font-medium text-gray-900 truncate'>
-                                            {categorySpending?.name ?? kindSpending.name}
-                                        </p>
-                                    </div>
-                                </td>
-                                <td className={clsx('whitespace-nowrap px-1 lg:pt-4 pt-0 text-sm text-center')}>
-                                    {[KIND_SPENDING.RECEIVE, KIND_SPENDING.TRANSFER_TO].includes(kindSpending.key) && (
-                                        <span className={clsx('text-green-500', 'font-medium')}>
-                                            {numeral(amount).format()}
-                                        </span>
-                                    )}
-                                </td>
-                                <td className={clsx('whitespace-nowrap pl-1 pr-2 lg:pt-4 pt-0 text-sm text-center')}>
-                                    {[KIND_SPENDING.COST, KIND_SPENDING.TRANSFER_FROM].includes(kindSpending.key) && (
-                                        <span className={clsx('text-red-500', 'font-medium')}>
-                                            {numeral(amount).format()}
-                                        </span>
-                                    )}
-                                </td>
-                            </tr>
-                            <tr onClick={() => navigate(to)}>
-                                <td
-                                    colSpan={4}
-                                    className={clsx(
-                                        data && index !== data.length - 1 ? 'border-b border-gray-200' : '',
-                                        'whitespace-nowrap pb-4 pl-2 pr-2 sm:pl-6 lg:pl-8'
-                                    )}
-                                >
-                                    {description && (
-                                        <div
-                                            title={description}
-                                            className='mt-2 max-w-[450px] sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] cursor-default'
-                                        >
-                                            {description.split('\n').map((line, index) => (
-                                                <span key={index} className='block truncate'>
-                                                    {line}
-                                                </span>
-                                            ))}
+                                            <span>{TEMPLATE.EMPTY_DATE}</span>
+                                        )}
+                                        <h3 className='mt-1 font-medium'>
+                                            {methodSpending?.name || TEMPLATE.EMPTY_METHOD_SPENDING_SHORT}
+                                        </h3>
+                                    </td>
+                                    <td className='px-1 lg:pt-4 pt-0'>
+                                        <div className='text-center'>
+                                            <p className='text-sm font-medium text-gray-900 truncate'>
+                                                {categorySpending?.name ?? kindSpending.name}
+                                            </p>
                                         </div>
-                                    )}
-                                </td>
-                            </tr>
-                        </Fragment>
-                    )
-                }
+                                    </td>
+                                    <td className={clsx('whitespace-nowrap px-1 lg:pt-4 pt-0 text-sm text-center')}>
+                                        {[KIND_SPENDING.RECEIVE, KIND_SPENDING.TRANSFER_TO].includes(
+                                            kindSpending.key
+                                        ) && (
+                                            <span className={clsx('text-green-500', 'font-medium')}>
+                                                {numeral(amount).format()}
+                                            </span>
+                                        )}
+                                    </td>
+                                    <td
+                                        className={clsx('whitespace-nowrap pl-1 pr-2 lg:pt-4 pt-0 text-sm text-center')}
+                                    >
+                                        {[KIND_SPENDING.COST, KIND_SPENDING.TRANSFER_FROM].includes(
+                                            kindSpending.key
+                                        ) && (
+                                            <span className={clsx('text-red-500', 'font-medium')}>
+                                                {numeral(amount).format()}
+                                            </span>
+                                        )}
+                                    </td>
+                                </tr>
+                                <tr onClick={() => navigate(to)}>
+                                    <td
+                                        colSpan={4}
+                                        className={clsx(
+                                            (data && index !== data.length - 1) || loading
+                                                ? 'border-b border-gray-200'
+                                                : '',
+                                            'whitespace-nowrap pb-4 pl-2 pr-2 sm:pl-6 lg:pl-8'
+                                        )}
+                                    >
+                                        {description && (
+                                            <div
+                                                title={description}
+                                                className='mt-2 max-w-[450px] sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] cursor-default'
+                                            >
+                                                {description.split('\n').map((line, index) => (
+                                                    <span key={index} className='block truncate'>
+                                                        {line}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </td>
+                                </tr>
+                            </Fragment>
+                        )
+                    }
+                )}
+
+            {loading ? (
+                <SkeletonTransactionTable elNumber={wpLoading.current ? 2 : 10} />
+            ) : (
+                data?.hasNextPage && (
+                    <tr>
+                        <td colSpan={4}>
+                            <Waypoint onEnter={handleGetMoreData} bottomOffset='-20%' />
+                        </td>
+                    </tr>
+                )
             )}
         </>
     )
 }
 
-const SkeletonTransactionTable = () => {
+interface SkeletonTransactionTableProps {
+    elNumber?: number
+}
+
+const SkeletonTransactionTable: React.FC<SkeletonTransactionTableProps> = ({ elNumber }) => {
     return (
         <>
-            {Array.from(Array(10)).map((item, index, data) => (
+            {Array.from(Array(elNumber)).map((item, index, data) => (
                 <Fragment key={index}>
                     <tr className=' animate-pulse'>
                         <td className='py-4 px-2'>

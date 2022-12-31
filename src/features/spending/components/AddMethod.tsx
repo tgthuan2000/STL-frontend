@@ -8,6 +8,7 @@ import { toast } from 'react-toastify'
 import { AddMethodQueryData, IAddMethodForm } from '~/@types/spending'
 import { Button } from '~/components'
 import { Input } from '~/components/_base'
+import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
@@ -31,7 +32,8 @@ const AddMethod = () => {
 
     const [{ methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<AddMethodQueryData>(
         { methodSpending: GET_METHOD_SPENDING },
-        { userId: userProfile?._id as string }
+        { userId: userProfile?._id as string },
+        { methodSpending: TAGS.ENUM }
     )
 
     useEffect(() => {

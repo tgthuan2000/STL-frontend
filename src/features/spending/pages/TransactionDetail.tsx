@@ -10,6 +10,7 @@ import {
     TransactionDetailFormData,
     TransactionDetailQueryData,
 } from '~/@types/spending'
+import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { TEMPLATE } from '~/constant/template'
 import { useCache, useLoading } from '~/context'
@@ -25,8 +26,13 @@ const TransactionDetail = () => {
     const { setSubmitLoading } = useLoading()
     const { id } = useParams()
     const { deleteCache } = useCache()
-    const { METHOD_SPENDING_DESC_SURPLUS, METHOD_SPENDING, RECENT_SPENDING, ALL_RECENT_SPENDING, STATISTIC_SPENDING } =
-        useServiceQuery()
+    const {
+        METHOD_SPENDING_DESC_SURPLUS,
+        METHOD_SPENDING,
+        RECENT_SPENDING,
+        RECENT_SPENDING_PAGINATE,
+        STATISTIC_SPENDING,
+    } = useServiceQuery()
 
     const [{ transaction, methodSpending }, fetchData, deleteCacheData, reloadData] =
         useQuery<TransactionDetailQueryData>(
@@ -37,6 +43,10 @@ const TransactionDetail = () => {
             {
                 userId: userProfile?._id as string,
                 id: id as string,
+            },
+            {
+                methodSpending: TAGS.ENUM,
+                transaction: TAGS.ALTERNATE,
             }
         )
 
@@ -51,13 +61,12 @@ const TransactionDetail = () => {
 
     const [{ categorySpending }, fetchDataCategory, deleteCacheDataCategory, reloadDataCategory] =
         useQuery<DataCategory>(
-            {
-                categorySpending: GET_CATEGORY_SPENDING,
-            },
+            { categorySpending: GET_CATEGORY_SPENDING },
             {
                 userId: userProfile?._id as string,
                 kindSpending: kindSpending?._id as string,
-            }
+            },
+            { categorySpending: TAGS.ENUM }
         )
 
     useEffect(() => {
@@ -231,7 +240,7 @@ const TransactionDetail = () => {
                 METHOD_SPENDING_DESC_SURPLUS,
                 METHOD_SPENDING,
                 RECENT_SPENDING,
-                ALL_RECENT_SPENDING,
+                RECENT_SPENDING_PAGINATE,
                 STATISTIC_SPENDING,
             ])
             console.log(caches)
@@ -293,7 +302,7 @@ const TransactionDetail = () => {
                 METHOD_SPENDING_DESC_SURPLUS,
                 METHOD_SPENDING,
                 RECENT_SPENDING,
-                ALL_RECENT_SPENDING,
+                RECENT_SPENDING_PAGINATE,
                 STATISTIC_SPENDING,
             ])
             console.log(caches)

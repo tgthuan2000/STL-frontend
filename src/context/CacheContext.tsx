@@ -1,10 +1,20 @@
-import { isEqual } from 'lodash'
+import { get, isEqual } from 'lodash'
 import React, { createContext, useContext, useRef } from 'react'
-import { ICacheContext, ICacheData, QueryParams } from '~/@types/context'
+import { DataCache, DeleteCache, ICacheContext, ICacheData, QueryParams, TagsField } from '~/@types/context'
+import { TAGS } from '~/constant'
 import { client } from '~/sanityConfig'
-import { hashCode } from '~/services'
+import { deleteObjKeys, hashCode } from '~/services'
 
-const CACHE_LIMIT_RANGE = 8
+const CACHE_RANGE = {
+    [TAGS.ALTERNATE]: 8,
+    [TAGS.ENUM]: Infinity,
+}
+
+const clone = <T extends ICacheData<T>>(
+    obj: ICacheData<any>
+): {
+    [Property in TAGS]: DataCache<T>
+} => JSON.parse(JSON.stringify(obj))
 
 const CacheContext = createContext<ICacheContext>({
     fetchApi: <T,>() => Promise.resolve({} as T),
@@ -13,30 +23,70 @@ const CacheContext = createContext<ICacheContext>({
 })
 
 const CacheProvider = ({ children }: { children: React.ReactNode }) => {
-    const cacheRef = useRef<Array<ICacheData<any>>>([])
+    const cacheRef = useRef<ICacheData<any>>(Object.assign({}, ...Object.values(TAGS).map((tag) => ({ [tag]: [] }))))
 
-    const updateCache = <T extends { [x: string]: any }>(res: T) => {
-        let cache: Array<ICacheData<any>> = JSON.parse(JSON.stringify(cacheRef.current))
+    /*
+        INPUT: data need to be cached
+        OUTPUT: update cache
+    */
+    const updateCache = <T extends ICacheData<T>>(groups: T) => {
+        let cache = clone<T>(cacheRef.current)
 
-        Object.keys(res).forEach((k) => {
-            const { key, data } = res[k]
-            if (cache.length >= CACHE_LIMIT_RANGE) {
-                cache = cache.slice(1)
+        /* Check space in cache & cached data */
+        for (const group of Object.entries(groups)) {
+            const [tags, data] = group as [TagsField, DataCache<T>]
+            const __cache = cache[tags]
+
+            if (__cache) {
+                data.forEach((d) => {
+                    const indexCached = __cache.findIndex((c) => c.key === d.key)
+                    if (indexCached !== -1) {
+                        const { data } = __cache[indexCached]
+
+                        cache[tags][indexCached] = {
+                            ...cache[tags][indexCached],
+                            data: {
+                                hasNextPage: get(d.data, 'hasNextPage', false),
+                                data: [...get(data, 'data', []), ...get(d.data, 'data', [])],
+                            } as any,
+                        }
+                        return
+                    }
+                    /* Check spacing of cache (remove first element of array if have not space) */
+                    if (__cache.length >= get(CACHE_RANGE, tags, 0)) {
+                        __cache.shift()
+                    }
+                    /* Cache data */
+                    cache[tags] = [...__cache, ...data]
+                })
             }
-            cache.push({ key, data })
-        })
-
+        }
         cacheRef.current = cache
     }
-    const deleteCache = (payloads: { [x: string]: any }[]) => {
-        const cache: Array<ICacheData<any>> = JSON.parse(JSON.stringify(cacheRef.current))
+
+    /*
+        INPUT: payloads Array<{ query, params, tags }> elements need to be deleted
+        OUTPUT: Delete cached data
+    */
+    const deleteCache: DeleteCache = (payloads) => {
+        let cache = clone<any>(cacheRef.current)
         let count = 0
 
         payloads.forEach((payload) => {
-            const queryHash = hashCode(JSON.stringify(payload))
-            const indexCache = cache.length > 0 ? cache.findIndex((c) => c.key === queryHash) : -1
+            const { query, params, tags } = payload
+
+            const __params = deleteObjKeys(params, ['__from', '__to'])
+            /* queryHash: hash query & params (exclude from, to params) */
+            const queryHash = hashCode(JSON.stringify({ query, params: __params }))
+
+            /* __cache: cache data of tag */
+            const __cache = cache[tags]
+
+            /* indexCache: index of cached data */
+            const indexCache = __cache.length > 0 ? __cache.findIndex((c) => c.key === queryHash) : -1
             if (indexCache !== -1) {
-                cache.splice(indexCache, 1)
+                __cache.splice(indexCache, 1)
+                cache[tags] = __cache
                 count++
             }
         })
@@ -45,55 +95,82 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
         return 'Deleted ' + count + ' cached data'
     }
 
+    /*
+        INPUT: callApi: { x: { query: queryString, key: hash query & params } },  params: all params, tags: { x: TAGS }
+        OUTPUT: data called from API
+    */
     const fetchApi = async <T extends { [x: string]: any }>(
-        callApi: { [x: string]: { value: string; key: number; data: any[] } },
-        params: { [y: string]: string | number | string[] }
+        callApi: { [x: string]: { query: string; key: number } },
+        params: { [y: string]: string | number | string[] },
+        tags: { [x: string]: TAGS }
     ) => {
         const data = {} as T
+        /* keys: key of query (EX: recent, methodSpending, v.v) */
         const keys = Object.keys(callApi)
-        const q = '{' + keys.map((key) => `"${key}": ${callApi[key].value}`).join(', ') + '}'
+        /* q: Query string */
+        const q = '{' + keys.map((key) => `"${key}": ${callApi[key].query}`).join(', ') + '}'
+        /* Call API */
         const res: T = await client.fetch(q, params)
         Object.assign(data, res)
 
-        const temp = {} as T
-        keys.forEach((key) =>
-            Object.assign(temp, {
-                [key]: { ...callApi[key], data: res[key] },
+        const groups: ICacheData<T> = {}
+
+        keys.forEach((key) => {
+            Object.assign(groups, {
+                [tags[key]]: [{ ...callApi[key], data: data[key] }],
             })
-        )
-        updateCache(temp)
+        })
+
+        updateCache(groups)
 
         return data
     }
+
+    /*
+        INPUT: query params tags
+        OUTPUT: data (cached) & callApi (not in cache) { x: { value: queryString, key: hash query & params } }
+    */
     const checkInCache = <T extends { [x: string]: any }>(
         query: {
             [Property in keyof T]: string
         },
-        params: QueryParams = {}
+        params: QueryParams = {},
+        tags: { [x: string]: TAGS },
+        keys: Array<keyof T> = []
     ) => {
+        const __params = deleteObjKeys(params, ['__from', '__to'])
         const callApi: {
-            [x: string]: { value: string; key: number; data: any[] }
+            [x: string]: { query: string; key: number }
         } = {}
         const data = {} as T
-        const cache: Array<ICacheData<any>> = JSON.parse(JSON.stringify(cacheRef.current))
+
+        const cache = clone<T>(cacheRef.current)
 
         Object.keys(query).forEach((key) => {
             const value = query[key]
-            const p = isEqual(params, {})
+            /* p: GET params of query string */
+            const p = isEqual(__params, {})
                 ? {}
                 : Object.assign(
                       {},
-                      ...Object.keys(params)
+                      ...Object.keys(__params)
                           .filter((x) => value.includes(x))
-                          .map((v) => ({ [v]: params[v] }))
+                          .map((v) => ({ [v]: __params[v] }))
                   )
-            const queryHash = hashCode(JSON.stringify({ [key]: value, params: p }))
 
-            const indexCache = cache.length > 0 ? cache.findIndex((c) => c.key === queryHash) : -1
+            /* queryHash: hash query & params (exclude from to params) */
+            const queryHash = hashCode(JSON.stringify({ query: value, params: p }))
+
+            /* __cache: cache data of tag */
+            const __cache = cache[tags[key]]
+
+            /* indexCache: index of cache data => in one loop return 1 element: data (cached) OR callApi (not in cache) */
+            const indexCache =
+                __cache.length > 0 && !keys.includes(key) ? __cache.findIndex((c) => c.key === queryHash) : -1
             if (indexCache !== -1) {
-                Object.assign(data, { [key]: cache[indexCache].data })
+                Object.assign(data, { [key]: __cache[indexCache].data })
             } else {
-                Object.assign(callApi, { [key]: { value, key: queryHash } })
+                Object.assign(callApi, { [key]: { query: value, key: queryHash } })
             }
         })
 
