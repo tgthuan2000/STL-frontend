@@ -6,23 +6,27 @@ import { DATE_FORMAT } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { TEMPLATE } from '~/constant/template'
 
+const getDate = (date: string, width: number) => {
+    return width <= 900 ? (
+        <>
+            <span>{moment(date).format(DATE_FORMAT.D_DATE)}</span>
+            <br />
+            <span>{moment(date).format(DATE_FORMAT.TIME)}</span>
+        </>
+    ) : (
+        <span>{moment(date).format(DATE_FORMAT.D_DATE_TIME)}</span>
+    )
+}
+
 export const columns: (width: number) => Array<TableColumn> = (width) => [
     {
         key: 'date',
         title: 'Ngày',
         label: 'string',
         renderRow: ({ date, methodSpending }) => (
-            <td className={clsx('whitespace-nowrap lg:pt-4 pt-3 pl-2 pr-3 sm:pl-6 lg:pl-8')}>
-                {date ? (
-                    width <= 900 ? (
-                        <>
-                            <span>{moment(date).format(DATE_FORMAT.D_DATE)}</span>
-                            <br />
-                            <span>{moment(date).format(DATE_FORMAT.TIME)}</span>
-                        </>
-                    ) : (
-                        <span>{moment(date).format(DATE_FORMAT.D_DATE_TIME)}</span>
-                    )
+            <td className='whitespace-nowrap pt-3 pl-2 pr-3 sm:pl-3 sm:text-sm text-xs'>
+                {moment(date).format(DATE_FORMAT.D_DATE_TIME) !== 'Invalid date' ? (
+                    getDate(date, width)
                 ) : (
                     <span>{TEMPLATE.EMPTY_DATE}</span>
                 )}
@@ -35,7 +39,7 @@ export const columns: (width: number) => Array<TableColumn> = (width) => [
         title: 'Thể loại',
         label: 'string',
         renderRow: ({ categorySpending, kindSpending }) => (
-            <td className='px-1 lg:pt-4 pt-0'>
+            <td className='px-1'>
                 <div className='text-center'>
                     <p className='text-sm font-medium text-gray-900 truncate'>
                         {categorySpending?.name ?? kindSpending.name}
@@ -46,24 +50,24 @@ export const columns: (width: number) => Array<TableColumn> = (width) => [
     },
     {
         key: 'receive',
-        title: 'Thu nhập',
+        title: <p className='text-green-500'>Thu nhập</p>,
         label: 'string',
         renderRow: ({ kindSpending, amount }) => (
-            <td className={clsx('whitespace-nowrap px-1 lg:pt-4 pt-0 text-sm text-center')}>
+            <td className='whitespace-nowrap px-1 text-sm text-center'>
                 {[KIND_SPENDING.RECEIVE, KIND_SPENDING.TRANSFER_TO].includes(kindSpending.key) && (
-                    <span className={clsx('text-green-500', 'font-medium')}>{numeral(amount).format()}</span>
+                    <span className='text-green-500 font-medium'>{numeral(amount).format()}</span>
                 )}
             </td>
         ),
     },
     {
         key: 'cost',
-        title: 'Chi phí',
+        title: <p className='text-red-500'>Chi phí</p>,
         label: 'string',
         renderRow: ({ kindSpending, amount }) => (
-            <td className={clsx('whitespace-nowrap pl-1 pr-2 lg:pt-4 pt-0 text-sm text-center')}>
+            <td className='whitespace-nowrap px-1 text-sm text-center'>
                 {[KIND_SPENDING.COST, KIND_SPENDING.TRANSFER_FROM].includes(kindSpending.key) && (
-                    <span className={clsx('text-red-500', 'font-medium')}>{numeral(amount).format()}</span>
+                    <span className='text-red-500 font-medium'>{numeral(amount).format()}</span>
                 )}
             </td>
         ),
@@ -79,7 +83,7 @@ export const subRow: (
         colSpan={4}
         className={clsx(
             { 'border-b border-gray-200': (data && index !== data.length - 1) || loading },
-            'whitespace-nowrap pb-4 pl-2 pr-2 sm:pl-6 lg:pl-8'
+            'whitespace-nowrap pb-3 px-2 sm:pl-3 sm:text-sm text-xs'
         )}
     >
         {description && (
@@ -134,7 +138,7 @@ export const renderList: (data: any, index: number) => React.ReactNode = (
                 <p className='inline-block text-xs lg:text-sm my-0.5'>{moment(date).format(DATE_FORMAT.TIME_DATE)}</p>
                 <span className='font-normal truncate text-xs lg:text-sm'>{methodSpending.name}</span>
             </div>
-            <p className='whitespace-pre-wrap text-xs lg:text-sm'>{description}</p>
+            <p className='whitespace-pre-wrap text-xs lg:text-sm mt-1'>{description}</p>
         </div>
     </div>
 )

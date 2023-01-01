@@ -1,8 +1,9 @@
 import { SanityImageAssetDocument } from '@sanity/client'
 import React, { HTMLInputTypeAttribute, ReactNode } from 'react'
-import { Control, FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
+import { FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
 import { NavigateFunction } from 'react-router-dom'
 import { DATE_FORMAT } from '~/constant'
+import { DATA_LIST_MODE } from '~/constant/component'
 import { IUserLoan } from './loan'
 import { ISpendingData } from './spending'
 
@@ -212,4 +213,33 @@ export interface TabItemProps {
     tab: TabData
     navigate: NavigateFunction
     tabsRef: React.RefObject<HTMLAnchorElement[]>
+}
+
+export interface DataListViewTable {
+    columns: Array<TableColumn>
+}
+
+export interface DataListViewList {
+    groupBy: (data: any) => any
+    renderTitle: (data: any) => React.ReactNode
+    renderList: (data: any, index: number) => React.ReactNode
+}
+
+export interface DataListViewMode {
+    table: DataListViewTable
+    list: DataListViewList
+}
+
+export interface DataListViewProps {
+    mode: DATA_LIST_MODE
+    data: any[] | undefined
+    hasNextPage: boolean
+    loading: boolean
+    onGetMore: () => void
+    onRowClick: (data: any) => string
+    view: DataListViewMode
+}
+
+export interface SkeletonProps {
+    elNumber?: number
 }
