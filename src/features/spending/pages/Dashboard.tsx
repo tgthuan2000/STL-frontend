@@ -1,4 +1,4 @@
-import { head, isEmpty } from 'lodash'
+import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { DashboardQueryData } from '~/@types/spending'
@@ -18,12 +18,10 @@ import useAuth from '~/store/auth'
 import { sum } from '~/services'
 import { Budget, Method, Recent, Statistic } from '../components'
 import clsx from 'clsx'
-import { useNavigate } from 'react-router-dom'
 
 const Dashboard = () => {
     const { width } = useWindowSize()
     const { userProfile } = useAuth()
-    const navigate = useNavigate()
     const { kindSpending, budgetSpending, getKindSpendingId, getKindSpendingIds } = useConfig()
     const wrapRef = useScrollIntoView<HTMLDivElement>()
     const budgetId = budgetSpending?._id
@@ -104,8 +102,6 @@ const Dashboard = () => {
         reload()
     }
 
-    const isHaveBudget = !isEmpty(head(budget?.data)?.MethodSpending)
-
     return (
         <div ref={wrapRef}>
             {width < 1280 && (
@@ -133,7 +129,7 @@ const Dashboard = () => {
                     className='xl:row-start-2 xl:col-start-1 col-span-1'
                     title='Ngân sách'
                     to='budget'
-                    onReload={isHaveBudget ? handleReload : undefined}
+                    onReload={handleReload}
                     loading={budget?.loading}
                     fullWidth
                     seeMore={false}
