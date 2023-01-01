@@ -132,9 +132,10 @@ const useQuery = <T extends { [x: string]: any }>(
 
     const deletedCaches = useCallback(
         (...keys: Array<keyof T>) => {
+            const filters = filterQueryParams(queryRef.current, paramsRef.current, tagsRef.current)
             const items = keys.map((key) => {
-                if (data[key]) {
-                    const { params, query, tags } = data[key]
+                if (filters[key]) {
+                    const { query, params, tags } = filters[key]
                     return { query, params, tags }
                 }
             })
@@ -144,7 +145,7 @@ const useQuery = <T extends { [x: string]: any }>(
             }
             return null
         },
-        [deleteCache, query, data]
+        [deleteCache, queryRef, paramsRef, tagsRef]
     )
 
     const reloadData = (...keys: Array<keyof T>) => {
