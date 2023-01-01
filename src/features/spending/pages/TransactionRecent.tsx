@@ -14,7 +14,7 @@ import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/
 import { GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE, GET_RECENT_SPENDING_PAGINATE } from '~/schema/query/spending'
 import { getDate } from '~/services'
 import useAuth from '~/store/auth'
-import { FireIcon, RefreshIcon, TableIcon, ViewListIcon } from '@heroicons/react/outline'
+import { CalendarIcon, FireIcon, RefreshIcon, TableIcon, ViewListIcon } from '@heroicons/react/outline'
 import { Dropdown } from '~/components/_base'
 import { useForm } from 'react-hook-form'
 import { TransactionRecentList, TransactionRecentTable } from '../components/TransactionRecent'
@@ -24,14 +24,23 @@ export enum DATA_LIST_MODE {
     LIST = 2,
 }
 
+export enum DATA_LIST_GROUP {
+    DATE = 1,
+    MONTH = 2,
+    YEAR = 3,
+}
+
 interface TransactionRecentViewProps {
     mode: DATA_LIST_MODE
     data: { data: ISpendingData[]; hasNextPage: boolean } | undefined
     loading: boolean
     onGetMore: () => void
+    groupBy: DATA_LIST_GROUP
 }
 
-export type TransactionRecentDataProps = Omit<TransactionRecentViewProps, 'mode'>
+export type TransactionRecentDataProps = Omit<TransactionRecentViewProps, 'mode' | 'groupBy'> & {
+    groupBy?: DATA_LIST_GROUP
+}
 
 export interface TransactionRecentSkeletonProps {
     elNumber?: number
@@ -214,7 +223,18 @@ const TransactionRecent = () => {
         []
     )
 
-    const form = useForm({ defaultValues: { viewMode: dropdownOptions[0][0] } })
+    const listGroupOptions = useMemo(
+        () => [
+            [
+                { id: DATA_LIST_GROUP.DATE, name: 'Ngày' },
+                { id: DATA_LIST_GROUP.MONTH, name: 'Tháng' },
+                { id: DATA_LIST_GROUP.YEAR, name: 'Năm' },
+            ],
+        ],
+        []
+    )
+
+    const form = useForm({ defaultValues: { viewMode: dropdownOptions[0][0], listGroup: listGroupOptions[0][0] } })
 
     return (
         <>
@@ -223,18 +243,29 @@ const TransactionRecent = () => {
                     <div className='-my-2 -mx-4 sm:-mx-6 lg:-mx-8'>
                         <div className='flex justify-between items-center'>
                             <TimeFilter onSubmit={handleFilterSubmit} />
-                            {/* {width > 768 && ( */}
 
-                            <Dropdown
-                                form={form}
-                                name='viewMode'
-                                data={dropdownOptions}
-                                idKey='id'
-                                valueKey='name'
-                                label={<FireIcon className='h-6' />}
-                                disabled={recent.loading}
-                            />
-                            {/* )} */}
+                            <div className='flex items-center'>
+                                {form.watch('viewMode') && form.watch('viewMode').id === DATA_LIST_MODE.LIST && (
+                                    <Dropdown
+                                        form={form}
+                                        name='listGroup'
+                                        data={listGroupOptions}
+                                        idKey='id'
+                                        valueKey='name'
+                                        label={<ViewListIcon className='h-6' />}
+                                        disabled={recent.loading}
+                                    />
+                                )}
+                                <Dropdown
+                                    form={form}
+                                    name='viewMode'
+                                    data={dropdownOptions}
+                                    idKey='id'
+                                    valueKey='name'
+                                    label={<FireIcon className='h-6' />}
+                                    disabled={recent.loading}
+                                />
+                            </div>
                         </div>
                         {error ? (
                             <p className='m-5 text-radical-red-500 font-medium'>{TEMPLATE.ERROR}</p>
@@ -245,6 +276,7 @@ const TransactionRecent = () => {
                                     data={recent.data}
                                     loading={recent.loading}
                                     onGetMore={handleScrollGetMore}
+                                    groupBy={form.watch('listGroup')?.id}
                                 />
                             </div>
                         )}
@@ -256,11 +288,11 @@ const TransactionRecent = () => {
 }
 export default TransactionRecent
 
-const View: React.FC<TransactionRecentViewProps> = ({ mode, ...props }) => {
+const View: React.FC<TransactionRecentViewProps> = ({ mode, groupBy, ...props }) => {
     switch (mode) {
         case DATA_LIST_MODE.TABLE:
             return <TransactionRecentTable {...props} />
         case DATA_LIST_MODE.LIST:
-            return <TransactionRecentList {...props} />
+            return <TransactionRecentList groupBy={groupBy} {...props} />
     }
 }
