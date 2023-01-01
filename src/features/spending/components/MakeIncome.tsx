@@ -103,7 +103,7 @@ const MakeIncome = () => {
 
             await client.transaction().create(document).patch(patchMethod).patch(patchCategory).commit()
             // navigate to dashboard
-            let res = deleteCache([
+            let res: string | null = deleteCache([
                 METHOD_SPENDING_DESC_SURPLUS,
                 RECENT_SPENDING,
                 RECENT_SPENDING_PAGINATE,

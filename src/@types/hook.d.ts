@@ -13,7 +13,7 @@ export type Data<T> = {
 export type useQueryType<T> = [
     Data<T>,
     () => Promise<void>,
-    (...keys: Array<keyof T>) => string,
+    (...keys: Array<keyof T>) => string | null,
     (...keys: Array<keyof T>) => void,
     Boolean
 ]

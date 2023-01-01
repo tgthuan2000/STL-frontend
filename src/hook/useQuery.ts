@@ -133,10 +133,16 @@ const useQuery = <T extends { [x: string]: any }>(
     const deletedCaches = useCallback(
         (...keys: Array<keyof T>) => {
             const items = keys.map((key) => {
-                const { params, query, tags } = data[key]
-                return { query, params, tags }
+                if (data[key]) {
+                    const { params, query, tags } = data[key]
+                    return { query, params, tags }
+                }
             })
-            return deleteCache(items)
+            const arr = items.filter(Boolean) as Array<{ query: string; params: any; tags: TAGS }>
+            if (!isEmpty(arr)) {
+                return deleteCache(arr)
+            }
+            return null
         },
         [deleteCache, query, data]
     )

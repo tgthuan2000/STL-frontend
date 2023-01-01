@@ -111,7 +111,11 @@ const MakeTransfer = () => {
 
             await client.transaction().create(document1).patch(patch1).create(document2).patch(patch2).commit()
             // navigate to dashboard
-            let res = deleteCache([METHOD_SPENDING_DESC_SURPLUS, RECENT_SPENDING, RECENT_SPENDING_PAGINATE])
+            let res: string | null = deleteCache([
+                METHOD_SPENDING_DESC_SURPLUS,
+                RECENT_SPENDING,
+                RECENT_SPENDING_PAGINATE,
+            ])
             console.log(res)
 
             setTimeout(() => {
