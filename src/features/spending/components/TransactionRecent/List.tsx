@@ -3,24 +3,33 @@ import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
-import { Fragment, useEffect, useRef, useMemo } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Waypoint } from 'react-waypoint'
 import { DATE_FORMAT } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { TEMPLATE } from '~/constant/template'
-import { useWindowSize } from '~/hook'
-import { TransactionRecentDataProps, TransactionRecentSkeletonProps } from '../../pages/TransactionRecent'
+import {
+    DATA_LIST_GROUP,
+    TransactionRecentDataProps,
+    TransactionRecentSkeletonProps,
+} from '../../pages/TransactionRecent'
 import { getLinkSpending } from '~/utils'
 import { ISpendingData } from '~/@types/spending'
 
-const List: React.FC<TransactionRecentDataProps> = ({ data, ...props }) => {
+const __groupBy = {
+    1: DATE_FORMAT.D_DATE,
+    2: DATE_FORMAT.MONTH,
+    3: DATE_FORMAT.YEAR,
+}
+
+const List: React.FC<TransactionRecentDataProps> = ({ data, groupBy = DATA_LIST_GROUP.DATE, ...props }) => {
     const { loading } = props
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
 
     const refactorData = useMemo(() => {
         return data?.data.reduce((acc: { [x: string]: ISpendingData[] }, cur) => {
-            const date = moment(cur.date).format(DATE_FORMAT.D_DATE)
+            const date = moment(cur.date).format(__groupBy[groupBy])
             if (acc[date]) {
                 acc[date].push(cur)
             } else {
@@ -28,7 +37,7 @@ const List: React.FC<TransactionRecentDataProps> = ({ data, ...props }) => {
             }
             return acc
         }, {})
-    }, [data])
+    }, [data, groupBy])
 
     return (
         <div className='inline-block w-full py-2' ref={parentRef}>
@@ -40,14 +49,14 @@ const List: React.FC<TransactionRecentDataProps> = ({ data, ...props }) => {
         </div>
     )
 }
-type ListDataProps = Omit<TransactionRecentDataProps, 'data'> & {
+type ListDataProps = Omit<TransactionRecentDataProps, 'data' | 'groupBy'> & {
     data: { [x: string]: ISpendingData[] } | undefined
     hasNextPage?: boolean
 }
 
 const ListData: React.FC<ListDataProps> = ({ data, onGetMore, loading, hasNextPage }) => {
+    const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
     const navigate = useNavigate()
-    const { width } = useWindowSize()
     const wpLoading = useRef(false)
 
     const handleGetMoreData = () => {
@@ -62,7 +71,7 @@ const ListData: React.FC<ListDataProps> = ({ data, onGetMore, loading, hasNextPa
     }, [loading])
 
     return (
-        <div className='sm:rounded-lg overflow-hidden'>
+        <div className='sm:rounded-lg overflow-hidden' ref={parentRef}>
             {(!loading || wpLoading.current) &&
                 data &&
                 Object.keys(data).map((date, index) => (
