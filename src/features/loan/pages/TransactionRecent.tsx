@@ -4,9 +4,9 @@ import { get, isEmpty } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { DataListViewList, DataListViewTable } from '~/@types/components'
-import { MethodQueryData } from '~/@types/spending'
+import { RecentQueryData } from '~/@types/spending'
 import { DataListView, TimeFilter } from '~/components'
 import { TimeFilterPayload } from '~/components/TimeFilter'
 import { Dropdown } from '~/components/_base'
@@ -16,45 +16,40 @@ import { E_FILTER_DATE, TEMPLATE } from '~/constant/template'
 import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
-import {
-    GET_RECENT_SPENDING_BY_METHOD_PAGINATE,
-    GET_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD_PAGINATE,
-} from '~/schema/query/spending'
+import { GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE, GET_RECENT_SPENDING_PAGINATE } from '~/schema/query/spending'
 import { getDate } from '~/services'
 import useAuth from '~/store/auth'
 import { getLinkSpending } from '~/utils'
 import * as __services from '../services/dataListView'
 
-const MethodDetail = () => {
+const TransactionRecent = () => {
     const { userProfile } = useAuth()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
     const { width } = useWindowSize()
     const { getKindSpendingIds } = useConfig()
     const [searchParams] = useSearchParams()
-    const { id } = useParams()
 
     const getAll = useMemo(() => {
         return {
-            query: { method: GET_RECENT_SPENDING_BY_METHOD_PAGINATE },
+            query: { recent: GET_RECENT_SPENDING_PAGINATE },
             params: {
                 userId: userProfile?._id as string,
-                kindSpendingIds: getKindSpendingIds('COST', 'RECEIVE', 'TRANSFER_FROM', 'TRANSFER_TO'),
-                methodSpendingIds: [id as string],
-                __fromMethod: 0,
-                __toMethod: COUNT_PAGINATE,
+                kindSpendingIds: getKindSpendingIds('GET_LOAN', 'LOAN'),
+                __fromRecent: 0,
+                __toRecent: COUNT_PAGINATE,
             },
-            tags: { method: TAGS.ALTERNATE },
+            tags: { recent: TAGS.ALTERNATE },
         }
     }, [])
 
     const defaultValues = useMemo(() => {
         try {
-            let query = GET_RECENT_SPENDING_BY_METHOD_PAGINATE,
+            let query = GET_RECENT_SPENDING_PAGINATE,
                 params = {}
 
             const d = Object.fromEntries([...searchParams])
             if (!isEmpty(d)) {
-                query = GET_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD_PAGINATE
+                query = GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE
                 let { type, data } = d
                 data = JSON.parse(data)
 
@@ -92,7 +87,7 @@ const MethodDetail = () => {
             }
             return {
                 ...getAll,
-                query: { method: query },
+                query: { recent: query },
                 params: { ...getAll.params, ...params },
             }
         } catch (error) {
@@ -102,19 +97,19 @@ const MethodDetail = () => {
     }, [])
 
     const [{ query, params, tags }, setQuery] = useState<{
-        query: QueryTypeUseQuery<MethodQueryData>
+        query: QueryTypeUseQuery<RecentQueryData>
         params: ParamsTypeUseQuery
-        tags: TagsTypeUseQuery<MethodQueryData>
+        tags: TagsTypeUseQuery<RecentQueryData>
     }>(defaultValues)
 
-    const [{ method }, fetchData, deleteCacheData, reload, error] = useQuery<MethodQueryData>(query, params, tags)
+    const [{ recent }, fetchData, deleteCacheData, reload, error] = useQuery<RecentQueryData>(query, params, tags)
 
     useEffect(() => {
         fetchData()
     }, [])
 
     const onReload = () => {
-        const res = deleteCacheData('method')
+        const res = deleteCacheData('recent')
         console.log(res)
         reload()
     }
@@ -128,7 +123,7 @@ const MethodDetail = () => {
                 const date = data.data as Date
                 setQuery((prev) => ({
                     ...prev,
-                    query: { method: GET_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD_PAGINATE },
+                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
                         startDate: getDate(date, 'start'),
@@ -140,7 +135,7 @@ const MethodDetail = () => {
                 const [startDate, endDate] = data.data as Date[]
                 setQuery((prev) => ({
                     ...prev,
-                    query: { method: GET_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD_PAGINATE },
+                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
                         startDate: getDate(startDate, 'start'),
@@ -152,7 +147,7 @@ const MethodDetail = () => {
                 const month = data.data as Date
                 setQuery((prev) => ({
                     ...prev,
-                    query: { method: GET_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD_PAGINATE },
+                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
                         startDate: getDate(month, 'start', 'month'),
@@ -164,7 +159,7 @@ const MethodDetail = () => {
                 const year = data.data as Date
                 setQuery((prev) => ({
                     ...prev,
-                    query: { method: GET_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD_PAGINATE },
+                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
                         startDate: getDate(year, 'start', 'year'),
@@ -173,23 +168,23 @@ const MethodDetail = () => {
                 }))
                 break
         }
-        onReload()
+        reload()
     }
 
     const handleScrollGetMore = () => {
-        const length = method?.data?.data.length
+        const length = recent?.data?.data.length
 
         if (length) {
             setQuery((prev) => ({
                 ...prev,
-                params: { ...prev.params, __fromMethod: length, __toMethod: length + COUNT_PAGINATE },
+                params: { ...prev.params, __fromRecent: length, __toRecent: length + COUNT_PAGINATE },
             }))
-            reload('method')
+            reload('recent')
         }
     }
 
     const handleClickReload = () => {
-        setQuery((prev) => ({ ...prev, params: { ...prev.params, __fromMethod: 0, __toMethod: COUNT_PAGINATE } }))
+        setQuery((prev) => ({ ...prev, params: { ...prev.params, __fromRecent: 0, __toRecent: COUNT_PAGINATE } }))
         onReload()
     }
 
@@ -251,7 +246,7 @@ const MethodDetail = () => {
                                     idKey='id'
                                     valueKey='name'
                                     label={<ViewListIcon className='h-6' />}
-                                    disabled={method.loading}
+                                    disabled={recent.loading}
                                 />
                             )}
                             <Dropdown
@@ -261,7 +256,7 @@ const MethodDetail = () => {
                                 idKey='id'
                                 valueKey='name'
                                 label={<FireIcon className='h-6' />}
-                                disabled={method.loading}
+                                disabled={recent.loading}
                             />
                         </div>
                     </div>
@@ -271,10 +266,10 @@ const MethodDetail = () => {
                         <div ref={parentRef}>
                             <DataListView
                                 mode={form.watch('viewMode')?.id}
-                                loading={method.loading}
+                                loading={recent.loading}
                                 onGetMore={handleScrollGetMore}
-                                data={method.data?.data}
-                                hasNextPage={Boolean(method.data?.hasNextPage)}
+                                data={recent.data?.data}
+                                hasNextPage={Boolean(recent.data?.hasNextPage)}
                                 onRowClick={(data) => getLinkSpending(get(data, 'kindSpending.key'), get(data, '_id'))}
                                 view={{
                                     table: tableProps,
@@ -288,4 +283,4 @@ const MethodDetail = () => {
         </div>
     )
 }
-export default MethodDetail
+export default TransactionRecent

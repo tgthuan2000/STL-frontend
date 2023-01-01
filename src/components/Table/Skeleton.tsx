@@ -1,9 +1,6 @@
 import clsx from 'clsx'
 import { Fragment } from 'react'
-
-export interface SkeletonProps {
-    elNumber?: number
-}
+import { SkeletonProps } from '~/@types/components'
 
 const SkeletonTable: React.FC<SkeletonProps> = ({ elNumber = 2 }) => {
     return (

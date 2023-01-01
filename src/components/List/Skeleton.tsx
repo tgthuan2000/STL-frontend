@@ -1,5 +1,5 @@
 import React from 'react'
-import { SkeletonProps } from '../Table/Skeleton'
+import { SkeletonProps } from '~/@types/components'
 
 const SkeletonList: React.FC<SkeletonProps> = ({ elNumber = 2 }) => {
     return (

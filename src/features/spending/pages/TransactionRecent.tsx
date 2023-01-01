@@ -1,12 +1,17 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { FireIcon, RefreshIcon, TableIcon, ViewListIcon } from '@heroicons/react/outline'
 import { get, isEmpty } from 'lodash'
 import moment from 'moment'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
-import { ISpendingData, RecentQueryData } from '~/@types/spending'
-import { TimeFilter, Table, List } from '~/components'
+import { DataListViewList, DataListViewTable } from '~/@types/components'
+import { RecentQueryData } from '~/@types/spending'
+import { DataListView, TimeFilter } from '~/components'
 import { TimeFilterPayload } from '~/components/TimeFilter'
-import { COUNT_PAGINATE, DATE_FORMAT, TAGS } from '~/constant'
+import { Dropdown } from '~/components/_base'
+import { COUNT_PAGINATE, TAGS } from '~/constant'
+import { DATA_LIST_GROUP, DATA_LIST_MODE, __groupBy } from '~/constant/component'
 import { E_FILTER_DATE, TEMPLATE } from '~/constant/template'
 import { useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
@@ -14,62 +19,8 @@ import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/
 import { GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE, GET_RECENT_SPENDING_PAGINATE } from '~/schema/query/spending'
 import { getDate } from '~/services'
 import useAuth from '~/store/auth'
-import { FireIcon, RefreshIcon, TableIcon, ViewListIcon } from '@heroicons/react/outline'
-import { Dropdown } from '~/components/_base'
-import { useForm } from 'react-hook-form'
-import { TableColumn } from '~/components/Table'
 import { getLinkSpending } from '~/utils'
-import * as __services from '../services/transactionRecent'
-
-export enum DATA_LIST_MODE {
-    TABLE = 1,
-    LIST = 2,
-}
-
-export enum DATA_LIST_GROUP {
-    DATE = 1,
-    MONTH = 2,
-    YEAR = 3,
-}
-
-const __groupBy = {
-    1: DATE_FORMAT.D_DATE,
-    2: DATE_FORMAT.MONTH,
-    3: DATE_FORMAT.YEAR,
-}
-
-export interface TableProps {
-    columns: Array<TableColumn>
-}
-
-export interface ListProps {
-    groupBy: (data: any) => any
-    renderTitle: (data: any) => React.ReactNode
-    renderList: (data: any, index: number) => React.ReactNode
-}
-
-interface ViewMode {
-    table: TableProps
-    list: ListProps
-}
-
-interface TransactionRecentViewProps {
-    mode: DATA_LIST_MODE
-    data: ISpendingData[] | undefined
-    hasNextPage: boolean
-    loading: boolean
-    onGetMore: () => void
-    onRowClick: (data: ISpendingData) => string
-    view: ViewMode
-}
-
-export type TransactionRecentDataProps = Omit<TransactionRecentViewProps, 'mode' | 'groupBy'> & {
-    groupBy?: DATA_LIST_GROUP
-}
-
-export interface TransactionRecentSkeletonProps {
-    elNumber?: number
-}
+import * as __services from '../services/dataListView'
 
 const TransactionRecent = () => {
     const { userProfile } = useAuth()
@@ -262,7 +213,7 @@ const TransactionRecent = () => {
     const form = useForm({ defaultValues: { viewMode: dropdownOptions[0][0], listGroup: listGroupOptions[0][0] } })
     const { width } = useWindowSize()
 
-    const tableProps: TableProps = useMemo(
+    const tableProps: DataListViewTable = useMemo(
         () => ({
             columns: __services.columns(width),
             subRow: __services.subRow,
@@ -270,7 +221,7 @@ const TransactionRecent = () => {
         [width]
     )
 
-    const listProps: ListProps = useMemo(
+    const listProps: DataListViewList = useMemo(
         () => ({
             groupBy: __services.groupBy(__groupBy[form.watch('listGroup')?.id]),
             renderList: __services.renderList,
@@ -280,70 +231,58 @@ const TransactionRecent = () => {
     )
 
     return (
-        <>
-            <div className='sm:px-6 lg:px-8'>
-                <div className='mt-4 flex flex-col'>
-                    <div className='-my-2 -mx-4 sm:-mx-6 lg:-mx-8'>
-                        <div className='flex justify-between items-center'>
+        <div className='sm:px-6 lg:px-8'>
+            <div className='mt-4 flex flex-col'>
+                <div className='-my-2 -mx-4 sm:-mx-6 lg:-mx-8'>
+                    <div className='flex justify-between items-center flex-col sm:flex-row'>
+                        <div className='self-start sm:self-auto'>
                             <TimeFilter onSubmit={handleFilterSubmit} />
-
-                            <div className='flex items-center'>
-                                {form.watch('viewMode') && form.watch('viewMode').id === DATA_LIST_MODE.LIST && (
-                                    <Dropdown
-                                        form={form}
-                                        name='listGroup'
-                                        data={listGroupOptions}
-                                        idKey='id'
-                                        valueKey='name'
-                                        label={<ViewListIcon className='h-6' />}
-                                        disabled={recent.loading}
-                                    />
-                                )}
+                        </div>
+                        <div className='flex items-center self-end sm:self-auto'>
+                            {form.watch('viewMode') && form.watch('viewMode').id === DATA_LIST_MODE.LIST && (
                                 <Dropdown
                                     form={form}
-                                    name='viewMode'
-                                    data={dropdownOptions}
+                                    name='listGroup'
+                                    data={listGroupOptions}
                                     idKey='id'
                                     valueKey='name'
-                                    label={<FireIcon className='h-6' />}
+                                    label={<ViewListIcon className='h-6' />}
                                     disabled={recent.loading}
                                 />
-                            </div>
+                            )}
+                            <Dropdown
+                                form={form}
+                                name='viewMode'
+                                data={dropdownOptions}
+                                idKey='id'
+                                valueKey='name'
+                                label={<FireIcon className='h-6' />}
+                                disabled={recent.loading}
+                            />
                         </div>
-                        {error ? (
-                            <p className='m-5 text-radical-red-500 font-medium'>{TEMPLATE.ERROR}</p>
-                        ) : (
-                            <div ref={parentRef}>
-                                <View
-                                    mode={form.watch('viewMode')?.id}
-                                    loading={recent.loading}
-                                    onGetMore={handleScrollGetMore}
-                                    data={recent.data?.data}
-                                    hasNextPage={Boolean(recent.data?.hasNextPage)}
-                                    onRowClick={(data) =>
-                                        getLinkSpending(get(data, 'kindSpending.key'), get(data, '_id'))
-                                    }
-                                    view={{
-                                        table: tableProps,
-                                        list: listProps,
-                                    }}
-                                />
-                            </div>
-                        )}
                     </div>
+                    {error ? (
+                        <p className='m-5 text-radical-red-500 font-medium'>{TEMPLATE.ERROR}</p>
+                    ) : (
+                        <div ref={parentRef}>
+                            <DataListView
+                                mode={form.watch('viewMode')?.id}
+                                loading={recent.loading}
+                                onGetMore={handleScrollGetMore}
+                                data={recent.data?.data}
+                                hasNextPage={Boolean(recent.data?.hasNextPage)}
+                                onRowClick={(data) => getLinkSpending(get(data, 'kindSpending.key'), get(data, '_id'))}
+                                view={{
+                                    table: tableProps,
+                                    list: listProps,
+                                }}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
-        </>
+        </div>
     )
-}
-
-const View: React.FC<TransactionRecentViewProps> = ({ mode, view: { list, table }, ...props }) => {
-    switch (mode) {
-        case DATA_LIST_MODE.TABLE:
-            return <Table {...table} {...props} />
-        case DATA_LIST_MODE.LIST:
-            return <List {...list} {...props} />
-    }
 }
 
 export default TransactionRecent

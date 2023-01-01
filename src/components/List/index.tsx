@@ -1,6 +1,6 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { isEmpty, isNil } from 'lodash'
-import React, { useMemo, useRef } from 'react'
+import React, { useMemo } from 'react'
 import { getLinkSpending } from '~/utils'
 import BodyList from './Body'
 import EmptyListTemplate from './Empty'
@@ -36,7 +36,7 @@ const List: React.FC<ListProps> = ({ loading, data, EmptyList, groupBy, ...props
     }, [data, groupBy])
 
     return (
-        <div ref={parentRef}>
+        <div className='inline-block w-full py-2 align-middle' ref={parentRef}>
             {!loading && (!data || isEmpty(data)) ? (
                 EmptyList
             ) : (

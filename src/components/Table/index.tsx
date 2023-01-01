@@ -9,7 +9,7 @@ import SkeletonTableTemplate from './Skeleton'
 
 export interface TableColumn {
     key: string
-    title: string
+    title: React.ReactNode
     label: string
     renderRow: (item: any, index: number) => React.ReactNode
     sort?: boolean
@@ -38,7 +38,7 @@ const Table: React.FC<TableProps> = ({ columns, loading, data, EmptyTable, ...pr
                     key={column.key}
                     scope='col'
                     className={clsx(
-                        'text-center whitespace-nowrap border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter',
+                        'text-center whitespace-nowrap border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-sm font-normal text-gray-900 backdrop-blur backdrop-filter',
                         column.className
                     )}
                 >
