@@ -69,7 +69,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                                                     <button
                                                         className={clsx(
                                                             option[idKey] === get(selected, idKey, null)
-                                                                ? 'text-indigo-500'
+                                                                ? 'text-indigo-500 font-normal'
                                                                 : 'text-gray-900',
                                                             'group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-indigo-500 hover:text-white'
                                                         )}
