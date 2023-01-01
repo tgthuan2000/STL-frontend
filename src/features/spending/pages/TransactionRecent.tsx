@@ -1,23 +1,25 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { isEmpty } from 'lodash'
+import { get, isEmpty } from 'lodash'
 import moment from 'moment'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ISpendingData, RecentQueryData } from '~/@types/spending'
-import { TimeFilter } from '~/components'
+import { TimeFilter, Table, List } from '~/components'
 import { TimeFilterPayload } from '~/components/TimeFilter'
-import { COUNT_PAGINATE, TAGS } from '~/constant'
+import { COUNT_PAGINATE, DATE_FORMAT, TAGS } from '~/constant'
 import { E_FILTER_DATE, TEMPLATE } from '~/constant/template'
 import { useConfig } from '~/context'
-import { useQuery } from '~/hook'
+import { useQuery, useWindowSize } from '~/hook'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
 import { GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE, GET_RECENT_SPENDING_PAGINATE } from '~/schema/query/spending'
 import { getDate } from '~/services'
 import useAuth from '~/store/auth'
-import { CalendarIcon, FireIcon, RefreshIcon, TableIcon, ViewListIcon } from '@heroicons/react/outline'
+import { FireIcon, RefreshIcon, TableIcon, ViewListIcon } from '@heroicons/react/outline'
 import { Dropdown } from '~/components/_base'
 import { useForm } from 'react-hook-form'
-import { TransactionRecentList, TransactionRecentTable } from '../components/TransactionRecent'
+import { TableColumn } from '~/components/Table'
+import { getLinkSpending } from '~/utils'
+import * as __services from '../services/transactionRecent'
 
 export enum DATA_LIST_MODE {
     TABLE = 1,
@@ -30,12 +32,35 @@ export enum DATA_LIST_GROUP {
     YEAR = 3,
 }
 
+const __groupBy = {
+    1: DATE_FORMAT.D_DATE,
+    2: DATE_FORMAT.MONTH,
+    3: DATE_FORMAT.YEAR,
+}
+
+export interface TableProps {
+    columns: Array<TableColumn>
+}
+
+export interface ListProps {
+    groupBy: (data: any) => any
+    renderTitle: (data: any) => React.ReactNode
+    renderList: (data: any, index: number) => React.ReactNode
+}
+
+interface ViewMode {
+    table: TableProps
+    list: ListProps
+}
+
 interface TransactionRecentViewProps {
     mode: DATA_LIST_MODE
-    data: { data: ISpendingData[]; hasNextPage: boolean } | undefined
+    data: ISpendingData[] | undefined
+    hasNextPage: boolean
     loading: boolean
     onGetMore: () => void
-    groupBy: DATA_LIST_GROUP
+    onRowClick: (data: ISpendingData) => string
+    view: ViewMode
 }
 
 export type TransactionRecentDataProps = Omit<TransactionRecentViewProps, 'mode' | 'groupBy'> & {
@@ -235,6 +260,24 @@ const TransactionRecent = () => {
     )
 
     const form = useForm({ defaultValues: { viewMode: dropdownOptions[0][0], listGroup: listGroupOptions[0][0] } })
+    const { width } = useWindowSize()
+
+    const tableProps: TableProps = useMemo(
+        () => ({
+            columns: __services.columns(width),
+            subRow: __services.subRow,
+        }),
+        [width]
+    )
+
+    const listProps: ListProps = useMemo(
+        () => ({
+            groupBy: __services.groupBy(__groupBy[form.watch('listGroup')?.id]),
+            renderList: __services.renderList,
+            renderTitle: __services.renderTitle,
+        }),
+        [JSON.stringify(form.watch('listGroup'))]
+    )
 
     return (
         <>
@@ -273,10 +316,17 @@ const TransactionRecent = () => {
                             <div ref={parentRef}>
                                 <View
                                     mode={form.watch('viewMode')?.id}
-                                    data={recent.data}
                                     loading={recent.loading}
                                     onGetMore={handleScrollGetMore}
-                                    groupBy={form.watch('listGroup')?.id}
+                                    data={recent.data?.data}
+                                    hasNextPage={Boolean(recent.data?.hasNextPage)}
+                                    onRowClick={(data) =>
+                                        getLinkSpending(get(data, 'kindSpending.key'), get(data, '_id'))
+                                    }
+                                    view={{
+                                        table: tableProps,
+                                        list: listProps,
+                                    }}
                                 />
                             </div>
                         )}
@@ -286,13 +336,14 @@ const TransactionRecent = () => {
         </>
     )
 }
-export default TransactionRecent
 
-const View: React.FC<TransactionRecentViewProps> = ({ mode, groupBy, ...props }) => {
+const View: React.FC<TransactionRecentViewProps> = ({ mode, view: { list, table }, ...props }) => {
     switch (mode) {
         case DATA_LIST_MODE.TABLE:
-            return <TransactionRecentTable {...props} />
+            return <Table {...table} {...props} />
         case DATA_LIST_MODE.LIST:
-            return <TransactionRecentList groupBy={groupBy} {...props} />
+            return <List {...list} {...props} />
     }
 }
+
+export default TransactionRecent
