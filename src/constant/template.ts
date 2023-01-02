@@ -8,6 +8,9 @@ export const TEMPLATE = {
     LOADING: 'Đang tải dữ liệu',
     ERROR: 'Đã có lỗi xảy ra!',
     ALREADY_PAID: 'Giao dịch đã thực hiện hoàn tất, không được chỉnh sửa thêm!',
+    EMPTY_NOTIFY: 'Hiện tại chưa có thông báo',
+    EMPTY_DESCRIPTION: 'Không có mô tả',
+    NEW_NOTIFY: 'Bạn nhận được 1 thông báo mới',
 }
 
 export enum E_FILTER_DATE {

@@ -6,6 +6,7 @@ import { NavLink } from 'react-router-dom'
 import { SideBarProps } from '~/@types/layout'
 import { navigation } from '~/constant/layout'
 import useAuth from '~/store/auth'
+import TopBar from './TopBar'
 
 const Sidebar: React.FC<SideBarProps> = ({ children }) => {
     const { userProfile, removeUserProfile } = useAuth()
@@ -194,16 +195,9 @@ const Sidebar: React.FC<SideBarProps> = ({ children }) => {
                     </div>
                 </div>
                 <div className='md:pl-64 flex flex-col flex-1'>
-                    <div className='sticky top-0 z-10 md:hidden pl-1 py-1 sm:pl-3 sm:pt-3 bg-gray-700'>
-                        <button
-                            type='button'
-                            className='-ml-0.5 -mt-0.5 h-12 w-12 inline-flex items-center justify-center rounded-md text-gray-200 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500'
-                            onClick={() => setSidebarOpen(true)}
-                        >
-                            <span className='sr-only'>Open sidebar</span>
-                            <MenuIcon className='h-6 w-6' aria-hidden='true' />
-                        </button>
-                    </div>
+                    {/* --- Top bar --- */}
+                    <TopBar onClickSidebar={setSidebarOpen} />
+
                     <main className='flex-1'>
                         <div className='py-6'>
                             <div className='max-w-7xl mx-auto px-4 sm:px-6 md:px-8'>

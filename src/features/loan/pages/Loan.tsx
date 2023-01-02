@@ -19,7 +19,7 @@ const Loan = () => {
                 </main>
                 {width >= 1280 ? (
                     <aside className='hidden xl:block xl:col-span-1'>
-                        <div className='sticky z-20 top-6 space-y-4'>
+                        <div className='sticky z-20 top-[70px] space-y-4'>
                             <ButtonMenu data={menuLoanPC} />
                         </div>
                     </aside>

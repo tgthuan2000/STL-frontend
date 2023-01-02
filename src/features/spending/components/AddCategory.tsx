@@ -102,7 +102,7 @@ const AddCategory = () => {
             ])
             console.log(result)
             toast.success<string>('Tạo mới thể loại thành công!')
-            form.reset({ name: '' }, { keepDefaultValues: true })
+            form.reset({ name: '', kindSpending }, { keepDefaultValues: true })
         } catch (error) {
             console.log(error)
         } finally {
