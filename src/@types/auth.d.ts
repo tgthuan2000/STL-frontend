@@ -25,7 +25,7 @@ export type IFetchGoogleResponse = (
     res: CredentialResponse,
     addUser: AddUserProfile,
     setLoading: (value: boolean) => void
-) => void
+) => Promise<void>
 
 export interface GoogleData {
     sub: string
@@ -33,3 +33,9 @@ export interface GoogleData {
     name: string
     email: string
 }
+
+export type ILoginByEmailPassword = (
+    data: { email: string; password: string },
+    addUser: AddUserProfile,
+    setLoading: (value: boolean) => void
+) => Promise<void>
