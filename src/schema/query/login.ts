@@ -1,10 +1,15 @@
 import groq from 'groq'
 
-export const LOGIN_BY_EMAIL_PASSWORD = groq`
-    *[_type == "user" && userName == $userName][0] {
+export const GET_PASSWORD_BY_EMAIL = groq`
+    *[_type == "user" && email == $email][0] {
+        password,
+    }
+`
+
+export const GET_DATA_BY_EMAIL = groq`
+    *[_type == "user" && email == $email][0] {
         _id,
         userName,
-        password,
         email,
         image,
     }

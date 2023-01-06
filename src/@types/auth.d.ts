@@ -34,8 +34,12 @@ export interface GoogleData {
     email: string
 }
 
+export interface LoginForm {
+    password: string
+    data: SanityDocument<IUserProfile>
+}
 export type ILoginByEmailPassword = (
-    data: { email: string; password: string },
+    data: LoginForm,
     addUser: AddUserProfile,
     setLoading: (value: boolean) => void
 ) => Promise<void>
