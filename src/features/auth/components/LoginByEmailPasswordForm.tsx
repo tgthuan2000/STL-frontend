@@ -101,7 +101,7 @@ const LoginByEmailPasswordForm: React.FC<LoginByEmailPasswordFormProps> = ({ onS
                     <form onSubmit={passwordForm.handleSubmit(onSubmitPassword)}>
                         <div className='space-y-2'>
                             {previewData && (
-                                <div className='py-2 px-4 bg-white shadow-md rounded-lg'>
+                                <div className='py-2 px-4 bg-white shadow-md rounded-lg select-none'>
                                     <div className='flex gap-2 items-center'>
                                         <img
                                             src={previewData.image}
