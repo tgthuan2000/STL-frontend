@@ -81,7 +81,7 @@ const LoginByEmailPasswordForm: React.FC<LoginByEmailPasswordFormProps> = ({ onS
             <button
                 className='p-1 bg-slate-200 hover:bg-slate-700 cursor-pointer transition-colors group rounded-full inline-block disabled:opacity-50'
                 onClick={handleBack}
-                disabled={loading.submit}
+                disabled={loading.submit || loading.config}
             >
                 <ArrowSmLeftIcon className='h-6 text-gray-700 group-hover:text-white transition-colors' />
             </button>
@@ -122,9 +122,9 @@ const LoginByEmailPasswordForm: React.FC<LoginByEmailPasswordFormProps> = ({ onS
                                 form={passwordForm}
                                 label='Mật khẩu'
                                 type='password'
-                                disabled={loading.submit}
+                                disabled={loading.config}
                             />
-                            <Button className='!text-xs' color='cyan' type='submit' disabled={loading.submit}>
+                            <Button className='!text-xs' color='cyan' type='submit' disabled={loading.config}>
                                 Đăng nhập
                             </Button>
                         </div>
