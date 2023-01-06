@@ -1,12 +1,13 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { GoogleLogin } from '@react-oauth/google'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { Button } from '~/components'
 import { useLoading } from '~/context'
 import useAuth from '~/store/auth'
-import { LoginByEmailPasswordForm } from '../components'
 import { fetchGoogleResponse, loginByEmailPassword } from '../services'
+
+const LoginByEmailPasswordForm = React.lazy(() => import('../components/LoginByEmailPasswordForm'))
 
 const Auth = () => {
     const { addUserProfile, userProfile } = useAuth()
