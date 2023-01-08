@@ -52,7 +52,6 @@
         "typescript": "^4.6.3",
         "vite": "^2.9.9",
         "vite-tsconfig-paths": "^3.5.0",
-        "@tailwindcss/forms": "^0.5.2",
         "@types/bcryptjs": "^2.4.2"
     }
 }
