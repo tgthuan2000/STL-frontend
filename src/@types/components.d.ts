@@ -70,6 +70,7 @@ export interface InputProps {
     disabled?: boolean
     form: UseFormReturn<any, object>
     rules?: Rules
+    autoFocus?: boolean
 }
 export interface UploadImageProps {
     className?: string

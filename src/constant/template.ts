@@ -11,6 +11,7 @@ export const TEMPLATE = {
     EMPTY_NOTIFY: 'Hiện tại chưa có thông báo',
     EMPTY_DESCRIPTION: 'Không có mô tả',
     NEW_NOTIFY: 'Bạn nhận được 1 thông báo mới',
+    COMING_SOON: 'Chức năng đang được phát triển!',
 }
 
 export enum E_FILTER_DATE {
