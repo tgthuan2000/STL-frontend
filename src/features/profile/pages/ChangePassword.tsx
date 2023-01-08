@@ -11,6 +11,7 @@ import useAuth from '~/store/auth'
 import * as yup from 'yup'
 import { client } from '~/sanityConfig'
 import bcrypt from 'bcryptjs'
+import { GET_PASSWORD_BY_ID } from '~/schema/query/login'
 
 const schema = yup.object().shape({
     'old-password': yup
@@ -56,7 +57,18 @@ const ChangePassword = () => {
         try {
             setSubmitLoading(true)
             const __ = client.transaction()
-            const { 'new-password': newPassword } = data
+            const { 'new-password': newPassword, 'old-password': oldPassword } = data
+
+            if (isHasPassword) {
+                const d = await client.fetch<{ password: string }>(GET_PASSWORD_BY_ID, {
+                    _id: userProfile?._id,
+                })
+                const isCorrectPassword = bcrypt.compareSync(oldPassword, d.password)
+                if (!isCorrectPassword) {
+                    toast.error('Mật khẩu cũ không đúng!')
+                    return
+                }
+            }
 
             __.patch(userProfile?._id as string, {
                 set: {
