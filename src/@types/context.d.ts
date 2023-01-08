@@ -1,5 +1,6 @@
 import { TAGS } from '~/constant'
 import { KIND_LOAN } from '~/constant/loan'
+import { PERMISSION } from '~/constant/permission'
 import { KIND_SPENDING } from '~/constant/spending'
 import { TagsTypeUseQuery } from '~/hook/useQuery'
 import { IBudgetSpending } from './spending'
@@ -23,8 +24,10 @@ export interface IKindSpending {
 export interface IConfigContext {
     kindSpending: IKindSpending[]
     budgetSpending: { _id: string | undefined | null }
+    role: IRoleControl | null | undefined
     getKindSpendingId: (KEY: keyof typeof KIND_SPENDING) => string | undefined
     getKindSpendingIds: (...KEYS: (keyof typeof KIND_SPENDING)[]) => string[]
+    hasPermissions: (keys: Array<PERMISSION>) => boolean
     ok: boolean
 }
 
@@ -77,7 +80,19 @@ export interface ICacheData<T> {
 
 export type QueryParams = { [key: string]: string | number | undefined | string[] }
 
+export interface IPermissions {
+    _id: PERMISSION
+    name: string
+    key: string
+}
+export interface IRoleControl {
+    _id: string
+    name: string
+    key: string
+    permissions: IPermissions[]
+}
 export interface IConfig {
     kindSpending: IKindSpending[]
     budgetSpending: { _id: string | undefined | null }
+    role: { role: IRoleControl } | null
 }

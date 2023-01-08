@@ -5,8 +5,9 @@ import { useScrollIntoView } from '~/hook'
 
 interface TransactionProps {
     title?: string
+    children?: React.ReactNode
 }
-const Transaction: React.FC<TransactionProps> = ({ title = 'Title tab' }) => {
+const Transaction: React.FC<TransactionProps> = ({ title = 'Title tab', children }) => {
     const navigate = useNavigate()
     const wrapRef = useScrollIntoView<HTMLDivElement>()
 
@@ -21,9 +22,7 @@ const Transaction: React.FC<TransactionProps> = ({ title = 'Title tab' }) => {
                 />
                 <h4 className='xl:text-2xl text-xl font-semibold'>{title}</h4>
             </div>
-            <div>
-                <Outlet />
-            </div>
+            <div>{children ? children : <Outlet />}</div>
         </div>
     )
 }

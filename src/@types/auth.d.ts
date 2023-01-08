@@ -7,6 +7,8 @@ export interface IUserProfile {
     image: string
     email: string
     userName: string
+    google: string
+    isHasPassword: boolean
 }
 
 interface SetUserProfile {
