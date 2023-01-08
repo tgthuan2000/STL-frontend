@@ -10,5 +10,14 @@ export const GET_CONFIG = groq`
         "budgetSpending": *[_type == "budget" && date == $date && user._ref == $userId][0] {
             _id,
         },
+        "role": *[_type == "user" && _id == $userId][0] {
+            role -> {
+                _id,
+                name,
+                permissions[] -> {
+                    _id,
+                }
+            }
+        }
     }
 `

@@ -7,6 +7,8 @@ export interface IUserProfile {
     image: string
     email: string
     userName: string
+    google: string
+    isHasPassword: boolean
 }
 
 interface SetUserProfile {
@@ -25,7 +27,7 @@ export type IFetchGoogleResponse = (
     res: CredentialResponse,
     addUser: AddUserProfile,
     setLoading: (value: boolean) => void
-) => void
+) => Promise<void>
 
 export interface GoogleData {
     sub: string
@@ -33,3 +35,13 @@ export interface GoogleData {
     name: string
     email: string
 }
+
+export interface LoginForm {
+    password: string
+    data: SanityDocument<IUserProfile>
+}
+export type ILoginByEmailPassword = (
+    data: LoginForm,
+    addUser: AddUserProfile,
+    setLoading: (value: boolean) => void
+) => Promise<void>
