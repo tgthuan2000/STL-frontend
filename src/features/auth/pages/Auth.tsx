@@ -27,7 +27,12 @@ const Auth = () => {
                         onError={() => {}}
                     />
                     <span className='text-xs'>Hoặc</span>
-                    <Button className='!text-xs' type='button' color='cyan' onClick={() => setShowFormLogin(true)}>
+                    <Button
+                        className='!text-xs !w-auto'
+                        type='button'
+                        color='cyan'
+                        onClick={() => setShowFormLogin(true)}
+                    >
                         Đăng nhập bằng email & mật khẩu
                     </Button>
                 </>
