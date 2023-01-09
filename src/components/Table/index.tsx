@@ -14,6 +14,7 @@ export interface TableColumn {
     renderRow: (item: any, index: number) => React.ReactNode
     sort?: boolean
     className?: string
+    colSpan?: number
 }
 
 export interface TableProps {
@@ -41,6 +42,7 @@ const Table: React.FC<TableProps> = ({ columns, loading, data, EmptyTable, ...pr
                         'text-center whitespace-nowrap border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-sm font-normal text-gray-900 backdrop-blur backdrop-filter',
                         column.className
                     )}
+                    colSpan={column.colSpan ?? 1}
                 >
                     {column.title}
                 </th>

@@ -22,3 +22,10 @@ export interface NotifyPaginate {
     total: number
     hasNextPage: boolean
 }
+
+export interface NotifyQueryData {
+    notify: {
+        data: Notify[]
+        hasNextPage: boolean
+    }
+}
