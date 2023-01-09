@@ -1,6 +1,7 @@
 import { SanityImageAssetDocument } from '@sanity/client'
 import React, { HTMLInputTypeAttribute, ReactNode } from 'react'
 import { FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
+import { ReactQuillProps } from 'react-quill'
 import { NavigateFunction } from 'react-router-dom'
 import { DATE_FORMAT } from '~/constant'
 import { DATA_LIST_MODE } from '~/constant/component'
@@ -72,6 +73,17 @@ export interface InputProps {
     rules?: Rules
     autoFocus?: boolean
 }
+
+interface RichTextProps extends ReactQuillProps {
+    className?: string
+    label?: string
+    name: string
+    disabled?: boolean
+    form: UseFormReturn<any, object>
+    rules?: Rules
+    placeholder?: string
+}
+
 export interface UploadImageProps {
     className?: string
     label?: string
@@ -111,7 +123,7 @@ export interface TextAreaProps {
     form: UseFormReturn<any, object>
     rules?: Rules
 }
-export interface ButtonProps {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string
     children: React.ReactNode
     type: 'button' | 'submit' | 'reset'

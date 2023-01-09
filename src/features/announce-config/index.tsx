@@ -1,15 +1,37 @@
 import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
+import { Transaction } from '~/components'
 
 const Dashboard = React.lazy(() => import('./pages/Dashboard'))
-const Detail = React.lazy(() => import('./pages/Detail'))
+const Create = React.lazy(() => import('./pages/Create'))
 
 const Auth = () => {
     return (
         <Routes>
-            <Route index element={<Dashboard />} />
-            <Route path='create' element={<Detail />} />
-            <Route path=':id' element={<Detail />} />
+            <Route
+                index
+                element={
+                    <Transaction title='Quản lý thông báo' hasBack={false}>
+                        <Dashboard />
+                    </Transaction>
+                }
+            />
+            <Route
+                path='create'
+                element={
+                    <Transaction title='Tạo thông báo'>
+                        <Create />
+                    </Transaction>
+                }
+            />
+            <Route
+                path=':id'
+                element={
+                    <Transaction title='Chỉnh sửa thông báo'>
+                        <Create />
+                    </Transaction>
+                }
+            />
             <Route path='*' element={<Navigate to='/' />} />
         </Routes>
     )

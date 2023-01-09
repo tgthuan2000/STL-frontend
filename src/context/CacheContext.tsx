@@ -8,6 +8,7 @@ import { deleteObjKeys, hashCode } from '~/services'
 const CACHE_RANGE = {
     [TAGS.ALTERNATE]: 8,
     [TAGS.ENUM]: Infinity,
+    [TAGS.SHORT]: 10,
 }
 
 const clone = <T extends ICacheData<T>>(

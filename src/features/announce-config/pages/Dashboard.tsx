@@ -5,10 +5,10 @@ import { get, isEmpty } from 'lodash'
 import moment from 'moment'
 import React, { Fragment, useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { DataListViewList, DataListViewTable } from '~/@types/components'
 import { NotifyQueryData } from '~/@types/notify'
-import { DataListView, TimeFilter } from '~/components'
+import { Button, DataListView, TimeFilter } from '~/components'
 import { TimeFilterPayload } from '~/components/TimeFilter'
 import { Dropdown } from '~/components/_base'
 import { COUNT_PAGINATE, TAGS } from '~/constant'
@@ -252,6 +252,11 @@ const Dashboard = () => {
                                 label={<FireIcon className='h-6' />}
                                 disabled={notify.loading}
                             />
+                            <Link to='create'>
+                                <Button type='button' color='green'>
+                                    Tạo thông báo
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                     {error ? (

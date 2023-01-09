@@ -49,7 +49,10 @@ const formatTransform = <T extends { [x: string]: any }>(
             [key]: {
                 loading: false,
                 data: keys.includes(key)
-                    ? { hasNextPage: _d.hasNextPage, data: prev[key].data?.data.concat(_d.data) }
+                    ? {
+                          hasNextPage: _d.hasNextPage,
+                          data: prev[key].data ? prev[key].data?.data.concat(_d.data) : _d.data,
+                      }
                     : _d,
                 query: query[key],
                 params: filters[key].params,
