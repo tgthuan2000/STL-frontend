@@ -239,6 +239,10 @@ export interface DataListViewProps {
     onGetMore: () => void
     onRowClick: (data: any) => string
     view: DataListViewMode
+    SkeletonTable?: (loading: boolean) => React.ReactNode
+    EmptyTable?: React.ReactNode
+    SkeletonList?: (loading: boolean) => React.ReactNode
+    EmptyList?: React.ReactNode
 }
 
 export interface SkeletonProps {
