@@ -4,6 +4,7 @@ import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import React from 'react'
 
 export interface IUserProfile {
+    _id: string
     image: string
     email: string
     userName: string
