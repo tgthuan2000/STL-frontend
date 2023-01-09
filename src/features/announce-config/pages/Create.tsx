@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { Input, RichText, Selection, TextArea } from '~/components/_base'
+import { Input, RichText, TextArea, Toggle } from '~/components/_base'
 import { Button, LazySearchSelect, Progress } from '~/components'
 import { useLoading } from '~/context'
 import { ArrowSmLeftIcon, TrashIcon } from '@heroicons/react/outline'
@@ -17,6 +17,7 @@ import { useQuery } from '~/hook'
 import { SEARCH_USER_PAGINATE } from '~/schema/query/user'
 import { COUNT_PAGINATE, TAGS } from '~/constant'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
+import clsx from 'clsx'
 
 interface NotifyContentForm {
     content: string
@@ -28,6 +29,7 @@ interface NotifyTitleDescForm {
 }
 interface NotifyAssignForm {
     users: IUserProfile[]
+    sendAll: boolean
 }
 
 const step1Schema = yup.object().shape({
@@ -41,7 +43,14 @@ const step2Schema = yup.object().shape({
 
 const step3Schema = yup.object().shape({
     search: yup.object().nullable(),
-    users: yup.array().min(1, 'Vui lòng chọn ít nhất 1 người nhận'),
+    users: yup
+        .array()
+        .nullable()
+        .when('sendAll', {
+            is: false,
+            then: yup.array().min(1, 'Vui lòng chọn ít nhất 1 người nhận'),
+        }),
+    sendAll: yup.boolean(),
 })
 
 const createProgressOptions: Array<ProgressItem> = [
@@ -183,7 +192,7 @@ const Step1: React.FC<Step1Props> = ({ id, onSubmit }) => {
     }
     return (
         <form id={id} onSubmit={form.handleSubmit(handleSubmit)} className='flex h-full flex-col'>
-            <div className='mb-5'>
+            <div className='mt-3 mb-5'>
                 <RichText form={form} name='content' label='Nội dung' placeholder='Nhập nội dung thông báo' />
             </div>
         </form>
@@ -210,7 +219,7 @@ const Step2: React.FC<Step2Props> = ({ id, onSubmit }) => {
     return (
         <form id={id} onSubmit={form.handleSubmit(handleSubmit)} className='flex h-full flex-col'>
             <div className='space-y-5 mb-5'>
-                <Input label='Tiêu đề' form={form} name='title' />
+                <Input label='Tiêu đề' form={form} name='title' autoFocus />
                 <TextArea label='Mô tả ngắn' form={form} name='description' />
             </div>
         </form>
@@ -237,12 +246,13 @@ const Step3: React.FC<Step3Props> = ({ id, onSubmit }) => {
     }>({
         query: { users: SEARCH_USER_PAGINATE },
         params: { search: '', __fromUser: 0, __toUser: COUNT_PAGINATE },
-        tags: { users: TAGS.ALTERNATE },
+        tags: { users: TAGS.SHORT },
     })
 
+    const searchFirst = useRef(false)
     const [{ users }, fetchData, deleteCacheData, reload] = useQuery<QueryData>(query, params, tags)
     const form = useForm<NotifyAssignForm>({
-        defaultValues: { users: [] },
+        defaultValues: { users: [], sendAll: false },
         resolver: yupResolver(step3Schema),
     })
     const handleSubmit = async (data: NotifyAssignForm) => {
@@ -266,15 +276,18 @@ const Step3: React.FC<Step3Props> = ({ id, onSubmit }) => {
     }
 
     const handleSearch = (search: string) => {
+        if (!searchFirst.current) {
+            searchFirst.current = true
+        }
         setQuery((prev) => ({
             ...prev,
             params: {
                 ...prev.params,
-                search,
+                search: '*' + search + '*',
             },
         }))
 
-        reload('users')
+        reload()
     }
 
     const handleScrollGetMore = () => {
@@ -292,15 +305,52 @@ const Step3: React.FC<Step3Props> = ({ id, onSubmit }) => {
     return (
         <form id={id} onSubmit={form.handleSubmit(handleSubmit)} className='flex h-full flex-col'>
             <div className='space-y-5 mb-5'>
+                <div className='mt-5'>
+                    <Toggle form={form} name='sendAll' label='Gửi cho tất cả mọi người' />
+                </div>
                 <LazySearchSelect
                     options={users.data?.data}
+                    autoFocus
                     hasNextPage={users.data?.hasNextPage}
-                    loading={users.loading}
+                    loading={searchFirst.current ? users.loading : false}
                     label='Tìm kiếm'
+                    disabled={form.watch('sendAll')}
                     onChange={handleChange}
                     onSearch={handleSearch}
                     onGetMore={handleScrollGetMore}
+                    getOptionLabel={(option, active) => {
+                        return (
+                            <div className='flex items-center gap-2'>
+                                {option.image ? (
+                                    <img src={option.image} alt={option.userName} className='h-8 w-8 rounded-full' />
+                                ) : (
+                                    <span className='inline-block h-8 w-8 rounded-full overflow-hidden bg-gray-100'>
+                                        <UserSvg />
+                                    </span>
+                                )}
+                                <div className='flex-1'>
+                                    <p
+                                        className={clsx(
+                                            'font-medium truncate',
+                                            active ? 'text-white' : 'text-gray-900'
+                                        )}
+                                    >
+                                        {option.userName}
+                                    </p>
+                                    <small
+                                        className={clsx(
+                                            'font-normal truncate block',
+                                            active ? 'text-white' : 'text-gray-500'
+                                        )}
+                                    >
+                                        {option.email}
+                                    </small>
+                                </div>
+                            </div>
+                        )
+                    }}
                 />
+
                 <div>
                     <p className='inline-block text-sm font-medium text-gray-700'>Danh sách người nhận thông báo</p>
                     <div className='mt-1 select-none border rounded-lg' ref={userRef}>
@@ -308,7 +358,7 @@ const Step3: React.FC<Step3Props> = ({ id, onSubmit }) => {
                             <p className='px-4 py-2 text-center'>{TEMPLATE.EMPTY_DATA}</p>
                         ) : (
                             __users.map((user) => (
-                                <div className='px-4 py-2 flex gap-2 items-center'>
+                                <div key={user._id} className='px-4 py-2 flex gap-2 items-center'>
                                     {user.image ? (
                                         <img
                                             src={user.image}
@@ -324,21 +374,29 @@ const Step3: React.FC<Step3Props> = ({ id, onSubmit }) => {
                                         <p className='font-medium text-gray-900 truncate'>{user.userName}</p>
                                         <small className='font-normal text-gray-500 truncate block'>{user.email}</small>
                                     </div>
-                                    <span
-                                        className='p-2 bg-slate-100 hover:bg-slate-200 transition-all rounded-lg cursor-pointer'
+                                    <button
+                                        className='p-2 bg-slate-100 hover:bg-slate-200 disabled:hover:bg-slate-100 disabled:cursor-not-allowed group transition-all rounded-lg cursor-pointer'
                                         onClick={() => {
                                             form.setValue(
                                                 'users',
                                                 __users.filter((u) => u._id !== user._id)
                                             )
                                         }}
+                                        disabled={form.watch('sendAll')}
                                     >
-                                        <TrashIcon className='h-5 text-radical-red-500' />
-                                    </span>
+                                        <TrashIcon className='h-5 text-radical-red-500 group-disabled:text-gray-500' />
+                                    </button>
                                 </div>
                             ))
                         )}
                     </div>
+                    <Controller
+                        name='users'
+                        control={form.control}
+                        render={({ fieldState: { error } }) =>
+                            error ? <p className='text-sm text-red-500'>{error.message}</p> : <></>
+                        }
+                    />
                 </div>
             </div>
         </form>

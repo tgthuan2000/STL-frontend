@@ -2,12 +2,11 @@ import { Combobox } from '@headlessui/react'
 import { RefreshIcon, SearchIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import { useForm } from 'react-hook-form'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Controller } from 'react-hook-form'
 import { Waypoint } from 'react-waypoint'
 import { isEmpty } from 'lodash'
 import { TEMPLATE } from '~/constant/template'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 interface LazySearchSelectProps {
     className?: string
@@ -19,7 +18,10 @@ interface LazySearchSelectProps {
     onGetMore?: () => void
     onSearch?: (value: string) => void
     valueKey?: string
+    labelKey?: string
     loading?: boolean
+    getOptionLabel?: (option: any, active: boolean) => React.ReactNode
+    autoFocus?: boolean
 }
 const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
     className,
@@ -31,9 +33,11 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
     onGetMore,
     onSearch,
     valueKey = '_id',
+    labelKey = 'name',
     loading,
+    getOptionLabel,
+    autoFocus,
 }) => {
-    const [optionsRef] = useAutoAnimate<HTMLUListElement>()
     const form = useForm({
         defaultValues: {
             search: '',
@@ -109,12 +113,13 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
                                 className={clsx(
                                     'w-full h-10 rounded-md border border-gray-300 py-2 pl-3 pr-10 shadow-sm sm:text-sm focus:outline-none',
                                     loading || disabled
-                                        ? 'bg-gray-50 text-gray-500 select-none'
+                                        ? 'bg-gray-50 text-gray-500 select-none cursor-not-allowed'
                                         : 'bg-white text-gray-900'
                                 )}
                                 onChange={(e) => handleSearch(e.target.value, field.onChange)}
                                 spellCheck={false}
                                 autoComplete='off'
+                                autoFocus={autoFocus}
                             />
                             <span className='absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>
                                 {loading ? (
@@ -130,10 +135,7 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
                                 )}
                             </span>
 
-                            <Combobox.Options
-                                ref={optionsRef}
-                                className='absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'
-                            >
+                            <Combobox.Options className='absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
                                 {loading ? (
                                     <Combobox.Option value={null} disabled>
                                         <p className='p-2 text-center text-xs text-gray-500'>Loading...</p>
@@ -148,7 +150,7 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
                                             <>
                                                 {options?.map((item, index) => (
                                                     <Combobox.Option
-                                                        key={index}
+                                                        key={item[valueKey]}
                                                         className={({ active }) =>
                                                             clsx(
                                                                 active ? 'text-white bg-indigo-600' : 'text-gray-900',
@@ -157,7 +159,13 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
                                                         }
                                                         value={item}
                                                     >
-                                                        <span className='block truncate font-light'>Nguyen Van A</span>
+                                                        {({ active }) => (
+                                                            <>
+                                                                {getOptionLabel?.(item, active) ?? (
+                                                                    <p>{item[labelKey]}</p>
+                                                                )}
+                                                            </>
+                                                        )}
                                                     </Combobox.Option>
                                                 ))}
                                             </>

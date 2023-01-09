@@ -4,6 +4,7 @@ import 'react-quill/dist/quill.snow.css'
 import { Controller } from 'react-hook-form'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { RichTextProps } from '~/@types/components'
+import './index.css'
 
 const toolbar = [
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
