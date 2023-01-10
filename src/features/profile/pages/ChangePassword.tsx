@@ -94,7 +94,7 @@ const ChangePassword = () => {
                     <div className='max-w-lg w-full mx-auto'>
                         <div className='flex h-full flex-col'>
                             {userProfile && !isHasPassword && (
-                                <div className='flex items-center gap-2 text-white bg-yellow-500 p-3 rounded-md select-none'>
+                                <div className='flex items-center gap-2 text-white bg-yellow-500 p-3 rounded-md select-none mx-2'>
                                     <ExclamationIcon className='h-6' />
                                     <p className='font-normal'>Tài khoản này chưa đặt mật khẩu!</p>
                                 </div>
