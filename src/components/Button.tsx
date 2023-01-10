@@ -12,7 +12,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 type={type}
                 disabled={disabled}
                 className={clsx(
-                    'whitespace-nowrap select-none border min-w-[100px] w-auto inline-flex justify-center rounded-md sm:py-2 py-3 px-4 text-sm font-medium shadow-sm focus:outline-none disabled:opacity-30',
+                    'whitespace-nowrap select-none border min-w-[100px] w-auto gap-0.5 inline-flex justify-center items-center rounded-md sm:py-2 py-3 px-4 text-sm font-medium shadow-sm focus:outline-none disabled:opacity-30',
                     { 'border-transparent bg-cyan-600 text-white hover:bg-cyan-700': color === 'cyan' },
                     { 'border-transparent bg-green-600 text-white hover:bg-green-700': color === 'green' },
                     { 'border-transparent bg-blue-600 text-white hover:bg-blue-700': color === 'blue' },

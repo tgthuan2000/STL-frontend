@@ -1,5 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { FireIcon, RefreshIcon, TableIcon, ViewListIcon } from '@heroicons/react/outline'
+import { BellIcon, FireIcon, RefreshIcon, TableIcon, ViewListIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import { get, isEmpty } from 'lodash'
 import moment from 'moment'
@@ -252,8 +252,9 @@ const Dashboard = () => {
                                 label={<FireIcon className='h-6' />}
                                 disabled={notify.loading}
                             />
-                            <Link to='create'>
+                            <Link to='create' className='mr-2 sm:mr-0'>
                                 <Button type='button' color='green'>
+                                    <BellIcon className='h-6' />
                                     Tạo thông báo
                                 </Button>
                             </Link>

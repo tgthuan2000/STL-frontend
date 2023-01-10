@@ -29,3 +29,24 @@ export interface NotifyQueryData {
         hasNextPage: boolean
     }
 }
+
+export interface DraftNotify {
+    title?: string
+    content?: string
+    description?: string
+    users?: Array<IUserProfile>
+    sendAll?: boolean
+}
+
+export interface NotifyContentForm {
+    content: string
+}
+
+export interface NotifyTitleDescForm {
+    title: string
+    description: string
+}
+export interface NotifyAssignForm {
+    users: IUserProfile[]
+    sendAll: boolean
+}
