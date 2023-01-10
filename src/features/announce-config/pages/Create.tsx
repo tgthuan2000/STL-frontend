@@ -9,7 +9,12 @@ import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { createProgressOptions } from '~/constant/progress'
 import { useLoading } from '~/context'
 import { useLocalStorage } from '~/hook'
+import { localStorageValue } from '~/hook/useLocalStorage'
+import { client } from '~/sanityConfig'
 import { CreateStep1, CreateStep2, CreateStep3, CreateStep4 } from '../components'
+import { uuid } from '@sanity/uuid'
+import { isEmpty } from 'lodash'
+import { GET_USERS_ID } from '~/schema/query/user'
 
 const Create = () => {
     const [, setDraftNotify, removeDraft] = useLocalStorage<DraftNotify>(LOCAL_STORAGE_KEY.STL_DRAFT_NOTIFY)
@@ -55,12 +60,51 @@ const Create = () => {
         }
     }
 
-    const onSubmitStep4 = async () => {
+    const onSubmitStep4 = async (data: localStorageValue<DraftNotify>) => {
         try {
             setSubmitLoading(true)
-            removeDraft()
-            navigate(-1)
-            toast.success('Tạo thông báo thành công')
+
+            if (data) {
+                const notifyId = uuid()
+                const __ = client.transaction()
+
+                const createNotifyAssign = (data: Array<{ _id: string }> | undefined) => {
+                    if (!isEmpty(data)) {
+                        data?.forEach((d) => {
+                            const doc = {
+                                _type: 'assignNotify',
+                                notify: { _type: 'reference', _ref: notifyId },
+                                user: { _type: 'reference', _ref: d._id },
+                                read: false,
+                            }
+                            __.create(doc)
+                        })
+                    }
+                }
+
+                /* CREATE NOTIFY */
+                const documentCreateNotify = {
+                    _id: notifyId,
+                    _type: 'notify',
+                    title: data.title,
+                    description: data.description,
+                    content: data.content,
+                }
+                __.createIfNotExists(documentCreateNotify)
+
+                /* CREATE NOTIFY ASSIGN */
+                if (data.sendAll) {
+                    const data = await client.fetch<Array<{ _id: string }>>(GET_USERS_ID)
+                    createNotifyAssign(data)
+                } else {
+                    createNotifyAssign(data.users)
+                }
+
+                await __.commit()
+                removeDraft()
+                navigate('/announce-config', { replace: true })
+                toast.success('Tạo thông báo thành công')
+            }
         } catch (error) {
             console.log(error)
             toast.error('Tạo thông báo thất bại')
@@ -68,6 +112,8 @@ const Create = () => {
             setSubmitLoading(false)
         }
     }
+
+    const handleSchedule = () => {}
 
     const getStepId = (step: number) => `step-${step}`
 
@@ -89,8 +135,6 @@ const Create = () => {
         }
         navigate(-1)
     }
-
-    const handleSchedule = () => {}
 
     const stepId = useMemo(() => getStepId(step), [step])
 

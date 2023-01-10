@@ -110,7 +110,7 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
     return (
         <form id={id} onSubmit={form.handleSubmit(handleSubmit)} className='flex h-full flex-col'>
             <div className='space-y-5 mb-5'>
-                <div className='mt-5'>
+                <div className='mt-3'>
                     <Toggle form={form} name='sendAll' label='Gửi cho tất cả mọi người' />
                 </div>
                 <LazySearchSelect

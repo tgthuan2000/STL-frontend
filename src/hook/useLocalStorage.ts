@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 
-type value<T> = T | undefined
-type valueSet<T> = T & ((value: value<T>) => T)
-type UseLocalStorageResult<T> = [value: value<T>, set: (value: valueSet<T>) => void, remove: () => void]
+export type localStorageValue<T> = T | undefined
+type valueSet<T> = T & ((value: localStorageValue<T>) => T)
+type UseLocalStorageResult<T> = [value: localStorageValue<T>, set: (value: valueSet<T>) => void, remove: () => void]
 
 const useLocalStorage = <T>(key: LOCAL_STORAGE_KEY): UseLocalStorageResult<T> => {
-    const [value, setValue] = useState<value<T>>(() => {
+    const [value, setValue] = useState<localStorageValue<T>>(() => {
         try {
             const item = window.localStorage.getItem(key)
             return item ? JSON.parse(item) : undefined

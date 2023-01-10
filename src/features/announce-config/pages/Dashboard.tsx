@@ -255,7 +255,7 @@ const Dashboard = () => {
                             <Link to='create' className='mr-2 sm:mr-0'>
                                 <Button type='button' color='green'>
                                     <BellIcon className='h-6' />
-                                    Tạo thông báo
+                                    Tạo mới
                                 </Button>
                             </Link>
                         </div>
