@@ -16,7 +16,9 @@ const Step4: React.FC<CreateStep4Props> = ({ id, onSubmit }) => {
     const [draftNotify] = useLocalStorage<DraftNotify>(LOCAL_STORAGE_KEY.STL_DRAFT_NOTIFY)
     const form = useForm()
     const handleSubmit = async () => {
-        await onSubmit(draftNotify)
+        if (window.confirm('Bạn có chắc chắn muốn gửi thông báo này?')) {
+            await onSubmit(draftNotify)
+        }
     }
     return (
         <div>

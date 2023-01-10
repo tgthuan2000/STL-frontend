@@ -4,8 +4,9 @@ import { Transaction } from '~/components'
 
 const Dashboard = React.lazy(() => import('./pages/Dashboard'))
 const Create = React.lazy(() => import('./pages/Create'))
+const Detail = React.lazy(() => import('./pages/Detail'))
 
-const Auth = () => {
+const AnnounceConfig = () => {
     return (
         <Routes>
             <Route
@@ -28,7 +29,7 @@ const Auth = () => {
                 path=':id'
                 element={
                     <Transaction title='Chỉnh sửa thông báo'>
-                        <Create />
+                        <Detail />
                     </Transaction>
                 }
             />
@@ -37,4 +38,4 @@ const Auth = () => {
     )
 }
 
-export default Auth
+export default AnnounceConfig
