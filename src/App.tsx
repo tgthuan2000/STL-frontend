@@ -16,6 +16,7 @@ const TimeKeepingFeature = React.lazy(() => import('./features/time-keeping'))
 const ProfileFeature = React.lazy(() => import('./features/profile'))
 const AnnounceConfigFeature = React.lazy(() => import('./features/announce-config'))
 const AccountFeature = React.lazy(() => import('./features/account'))
+const NotifyFeature = React.lazy(() => import('./features/notify'))
 
 function App() {
     return (
@@ -93,6 +94,14 @@ function App() {
                                     element={
                                         <PermissionCheck permissions={[PERMISSION.PROFILE_READ]}>
                                             <ProfileFeature />
+                                        </PermissionCheck>
+                                    }
+                                />
+                                <Route
+                                    path='notify/*'
+                                    element={
+                                        <PermissionCheck permissions={[PERMISSION.PROFILE_READ]}>
+                                            <NotifyFeature />
                                         </PermissionCheck>
                                     }
                                 />

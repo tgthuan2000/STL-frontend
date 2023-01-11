@@ -50,3 +50,7 @@ export interface NotifyAssignForm {
     users: IUserProfile[]
     sendAll: boolean
 }
+
+export interface NotifyDetailQueryData {
+    notify: SanityDocument<NotifyItem>
+}
