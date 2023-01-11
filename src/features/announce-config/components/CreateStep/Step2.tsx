@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { DraftNotify, NotifyTitleDescForm } from '~/@types/notify'
-import { Input, TextArea } from '~/components/_base'
+import { Input, RichText } from '~/components/_base'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { useLocalStorage } from '~/hook'
 
@@ -32,7 +32,13 @@ const Step2: React.FC<CreateStep2Props> = ({ id, onSubmit }) => {
         <form id={id} onSubmit={form.handleSubmit(handleSubmit)} className='flex h-full flex-col'>
             <div className='space-y-5 mb-5'>
                 <Input label='Tiêu đề' form={form} name='title' autoFocus />
-                <TextArea label='Mô tả ngắn' form={form} name='description' />
+                <RichText
+                    label='Mô tả ngắn'
+                    form={form}
+                    name='description'
+                    placeholder='Nhập nội dung'
+                    className='xs'
+                />
             </div>
         </form>
     )

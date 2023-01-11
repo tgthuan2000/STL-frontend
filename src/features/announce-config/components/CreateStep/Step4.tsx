@@ -28,16 +28,6 @@ const Step4: React.FC<CreateStep4Props> = ({ id, onSubmit }) => {
                 className='flex h-full flex-col sm:gap-3 gap-2 mb-4'
             >
                 <div>
-                    <p className='inline-block font-medium text-gray-900'>Tiêu đề</p>
-                    <div className='p-2'>{draftNotify?.title}</div>
-                </div>
-                <div>
-                    <p className='inline-block font-medium text-gray-900'>Mô tả ngắn</p>
-                    <div className='font-normal text-gray-700 text-xs sm:text-sm p-2'>
-                        {draftNotify?.description || TEMPLATE.EMPTY_DESCRIPTION}
-                    </div>
-                </div>
-                <div>
                     <p className='inline-block font-medium text-gray-900'>Danh sách người nhận</p>
                     {draftNotify?.sendAll ? (
                         <div className='p-2'>
@@ -70,8 +60,19 @@ const Step4: React.FC<CreateStep4Props> = ({ id, onSubmit }) => {
                     )}
                 </div>
                 <div>
+                    <p className='inline-block font-medium text-gray-900'>Tiêu đề</p>
+                    <div className='p-2'>{draftNotify?.title}</div>
+                </div>
+                <div>
+                    <p className='inline-block font-medium text-gray-900'>Mô tả ngắn</p>
+                    <div className='prose text-xs border rounded-lg sm:p-5 p-3 m-2'>
+                        {draftNotify?.description ? parse(draftNotify.description) : TEMPLATE.EMPTY_DESCRIPTION}
+                    </div>
+                </div>
+
+                <div>
                     <p className='inline-block font-medium text-gray-900'>Nội dung</p>
-                    <div className='prose border rounded-lg p-5 m-2'>
+                    <div className='prose text-xs border rounded-lg sm:p-5 p-3 m-2'>
                         {draftNotify?.content && parse(draftNotify.content)}
                     </div>
                 </div>
