@@ -1,23 +1,24 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { BellIcon, FireIcon, RefreshIcon, TableIcon, ViewListIcon } from '@heroicons/react/outline'
-import clsx from 'clsx'
-import { get, isEmpty } from 'lodash'
+import { isEmpty } from 'lodash'
 import moment from 'moment'
 import React, { Fragment, useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useSearchParams } from 'react-router-dom'
-import { DataListViewList, DataListViewTable } from '~/@types/components'
+import { DataListViewList, DataListViewTable, IDataListView } from '~/@types/components'
 import { NotifyQueryData } from '~/@types/notify'
 import { Button, DataListView, TimeFilter } from '~/components'
 import { TimeFilterPayload } from '~/components/TimeFilter'
 import { Dropdown } from '~/components/_base'
 import { COUNT_PAGINATE, TAGS } from '~/constant'
 import { DATA_LIST_GROUP, DATA_LIST_MODE, __groupBy } from '~/constant/component'
+import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { E_FILTER_DATE, TEMPLATE } from '~/constant/template'
-import { useQuery, useWindowSize } from '~/hook'
+import { useLocalStorage, useQuery, useWindowSize } from '~/hook'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
 import { GET_NOTIFY_CONFIG_PAGINATE, GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE } from '~/schema/query/notify'
 import { getDate } from '~/services'
+import { getDefaultMode } from '~/utils'
 import * as __services from '../services/dataListView'
 
 const Dashboard = () => {
@@ -204,7 +205,25 @@ const Dashboard = () => {
         []
     )
 
-    const form = useForm({ defaultValues: { viewMode: dropdownOptions[0][0], listGroup: listGroupOptions[0][0] } })
+    const [dataListView, setDataListView] = useLocalStorage<IDataListView>(LOCAL_STORAGE_KEY.STL_DATALIST_VIEW)
+
+    const form = useForm({
+        defaultValues: {
+            viewMode: getDefaultMode<DATA_LIST_MODE>(dropdownOptions, dataListView?.viewMode),
+            listGroup: getDefaultMode<DATA_LIST_GROUP>(listGroupOptions, dataListView?.listGroup),
+        },
+    })
+
+    useEffect(() => {
+        const viewMode = form.watch('viewMode')
+        setDataListView((prev) => ({ ...prev, viewMode: viewMode.id }))
+    }, [JSON.stringify(form.watch('viewMode'))])
+
+    useEffect(() => {
+        const listGroup = form.watch('listGroup')
+        setDataListView((prev) => ({ ...prev, listGroup: listGroup.id }))
+    }, [JSON.stringify(form.watch('listGroup'))])
+
     const { width } = useWindowSize()
 
     const tableProps: DataListViewTable = useMemo(
@@ -216,7 +235,7 @@ const Dashboard = () => {
 
     const listProps: DataListViewList = useMemo(
         () => ({
-            groupBy: __services.groupBy(__groupBy[form.watch('listGroup')?.id]),
+            groupBy: __services.groupBy(__groupBy[form.watch('listGroup').id]),
             renderList: __services.renderList,
             renderTitle: __services.renderTitle,
         }),

@@ -5,16 +5,17 @@ import moment from 'moment'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useParams, useSearchParams } from 'react-router-dom'
-import { DataListViewList, DataListViewTable } from '~/@types/components'
+import { DataListViewList, DataListViewTable, IDataListView } from '~/@types/components'
 import { MethodQueryData } from '~/@types/spending'
 import { DataListView, TimeFilter } from '~/components'
 import { TimeFilterPayload } from '~/components/TimeFilter'
 import { Dropdown } from '~/components/_base'
 import { COUNT_PAGINATE, TAGS } from '~/constant'
 import { DATA_LIST_GROUP, DATA_LIST_MODE, __groupBy } from '~/constant/component'
+import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { E_FILTER_DATE, TEMPLATE } from '~/constant/template'
 import { useConfig } from '~/context'
-import { useQuery, useWindowSize } from '~/hook'
+import { useLocalStorage, useQuery, useWindowSize } from '~/hook'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
 import {
     GET_RECENT_SPENDING_BY_METHOD_PAGINATE,
@@ -22,7 +23,7 @@ import {
 } from '~/schema/query/spending'
 import { getDate } from '~/services'
 import useAuth from '~/store/auth'
-import { getLinkSpending } from '~/utils'
+import { getDefaultMode, getLinkSpending } from '~/utils'
 import * as __services from '../services/dataListView'
 
 const MethodDetail = () => {
@@ -215,7 +216,24 @@ const MethodDetail = () => {
         []
     )
 
-    const form = useForm({ defaultValues: { viewMode: dropdownOptions[0][0], listGroup: listGroupOptions[0][0] } })
+    const [dataListView, setDataListView] = useLocalStorage<IDataListView>(LOCAL_STORAGE_KEY.STL_DATALIST_VIEW)
+
+    const form = useForm({
+        defaultValues: {
+            viewMode: getDefaultMode<DATA_LIST_MODE>(dropdownOptions, dataListView?.viewMode),
+            listGroup: getDefaultMode<DATA_LIST_GROUP>(listGroupOptions, dataListView?.listGroup),
+        },
+    })
+
+    useEffect(() => {
+        const viewMode = form.watch('viewMode')
+        setDataListView((prev) => ({ ...prev, viewMode: viewMode.id }))
+    }, [JSON.stringify(form.watch('viewMode'))])
+
+    useEffect(() => {
+        const listGroup = form.watch('listGroup')
+        setDataListView((prev) => ({ ...prev, listGroup: listGroup.id }))
+    }, [JSON.stringify(form.watch('listGroup'))])
 
     const tableProps: DataListViewTable = useMemo(
         () => ({
