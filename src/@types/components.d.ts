@@ -4,7 +4,7 @@ import { FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
 import { ReactQuillProps } from 'react-quill'
 import { NavigateFunction } from 'react-router-dom'
 import { DATE_FORMAT } from '~/constant'
-import { DATA_LIST_MODE } from '~/constant/component'
+import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
 import { IUserLoan } from './loan'
 import { ISpendingData } from './spending'
 
@@ -259,4 +259,9 @@ export interface DataListViewProps {
 
 export interface SkeletonProps {
     elNumber?: number
+}
+
+export interface IDataListView {
+    viewMode?: DATA_LIST_MODE
+    listGroup?: DATA_LIST_GROUP
 }
