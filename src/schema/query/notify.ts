@@ -17,7 +17,6 @@ export const GET_NOTIFY_PAGINATE = groq`
                 _updatedAt,
                 title,
                 description,
-                content,
                 "viewers": count(viewers)
             }
         },
@@ -60,7 +59,7 @@ export const SUBSCRIPTION_NOTIFY = groq`
     *[_type == "assignNotify" && user._ref == $userId]
 `
 
-export const GET_NOTIFY = groq`
+export const GET_NOTIFY_SUBSCRIPTION = groq`
     *[_type == "assignNotify" && _id == $notifyId][0] {
         _id,
         _createdAt,
@@ -75,6 +74,17 @@ export const GET_NOTIFY = groq`
             _updatedAt,
             title,
             description,
+            content,
+            "viewers": count(viewers)
+        }
+    }
+`
+
+export const GET_NOTIFY_BY_USER = groq`
+    *[_type == "assignNotify" && notify._ref == $notifyId && user._ref == $userId][0] {
+        _createdAt,
+        notify-> {
+            title,
             content,
             "viewers": count(viewers)
         }

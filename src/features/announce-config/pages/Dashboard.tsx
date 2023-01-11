@@ -16,7 +16,7 @@ import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { E_FILTER_DATE, TEMPLATE } from '~/constant/template'
 import { useLocalStorage, useQuery, useWindowSize } from '~/hook'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
-import { GET_NOTIFY_CONFIG_PAGINATE, GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE } from '~/schema/query/notify'
+import { GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE, GET_NOTIFY_CONFIG_PAGINATE } from '~/schema/query/notify'
 import { getDate } from '~/services'
 import { getDefaultMode } from '~/utils'
 import * as __services from '../services/dataListView'
@@ -289,7 +289,7 @@ const Dashboard = () => {
                                 onGetMore={handleScrollGetMore}
                                 data={notify.data?.data}
                                 hasNextPage={Boolean(notify.data?.hasNextPage)}
-                                onRowClick={(data) => `/announce-config/${data._id}}`}
+                                onRowClick={(data) => `/announce-config/${data._id}`}
                                 view={{
                                     table: tableProps,
                                     list: listProps,

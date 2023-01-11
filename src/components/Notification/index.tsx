@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash'
 import React, { useCallback, useEffect, useState } from 'react'
 import { NotifyItem, NotifyPaginate } from '~/@types/notify'
 import { client } from '~/sanityConfig'
-import { SUBSCRIPTION_NOTIFY, GET_NOTIFY_PAGINATE, GET_NOTIFY } from '~/schema/query/notify'
+import { SUBSCRIPTION_NOTIFY, GET_NOTIFY_PAGINATE, GET_NOTIFY_SUBSCRIPTION } from '~/schema/query/notify'
 import useAuth from '~/store/auth'
 import EmptyNotify from './Empty'
 import NotificationItem, { ItemReadEvent, ReadDetailEvent } from './Item'
@@ -66,7 +66,7 @@ const Notification: React.FC<NotificationProps> = ({ leftSide = false }) => {
 
                     setTimeout(async () => {
                         try {
-                            const data = await client.fetch<SanityDocument<NotifyItem>>(GET_NOTIFY, {
+                            const data = await client.fetch<SanityDocument<NotifyItem>>(GET_NOTIFY_SUBSCRIPTION, {
                                 notifyId: __._id,
                             })
 
