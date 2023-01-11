@@ -8,6 +8,7 @@ import { NotifyItem } from '~/@types/notify'
 import { DATE_FORMAT } from '~/constant'
 import { TEMPLATE } from '~/constant/template'
 import { getSpacingTime } from '~/services'
+import parse from 'html-react-parser'
 
 export type ItemReadEvent = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -44,12 +45,12 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, o
                         </span>
                     </div>
                     <p
-                        className={clsx('whitespace-pre-wrap mt-1 line-clamp-2', {
-                            'italic text-xs text-gray-400': !data.notify.description,
-                            'text-xs lg:text-sm text-gray-500': !!data.notify.description,
+                        className={clsx('prose text-xs mt-1 line-clamp-3 max-w-[calc(100%-80px)]', {
+                            'italic text-gray-400': !data.notify.description,
+                            'text-gray-500': !!data.notify.description,
                         })}
                     >
-                        {data.notify.description ?? TEMPLATE.EMPTY_DESCRIPTION}
+                        {data.notify.description ? parse(data.notify.description) : TEMPLATE.EMPTY_DESCRIPTION}
                     </p>
                     <div className='mt-2 flex justify-between items-center'>
                         <div>
@@ -72,7 +73,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, o
                                 )
                             ) : (
                                 <p className='text-xs text-gray-400'>
-                                    Đã xem vào lúc: <b>{moment(data._updatedAt).format(DATE_FORMAT.TIME_DATE)}</b>
+                                    Đã xem: <b>{moment(data._updatedAt).format(DATE_FORMAT.TIME_DATE)}</b>
                                 </p>
                             )}
                         </div>

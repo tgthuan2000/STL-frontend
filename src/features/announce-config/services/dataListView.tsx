@@ -4,6 +4,7 @@ import numeral from 'numeral'
 import { TableColumn } from '~/components/Table'
 import { DATE_FORMAT } from '~/constant'
 import { TEMPLATE } from '~/constant/template'
+import parse from 'html-react-parser'
 
 const getDate = (date: string, width: number) => {
     return width <= 900 ? (
@@ -22,20 +23,21 @@ export const columns: (width: number) => Array<TableColumn> = (width) => [
         key: 'title',
         title: 'Nội dung',
         label: 'string',
-        colSpan: 2,
+        colSpan: 3,
         renderRow: ({ title, description }: { title: string; description: string }) => (
-            <td className='whitespace-nowrap pt-3 pl-2 pr-3 sm:pl-3 sm:text-sm text-xs' colSpan={2}>
+            <td className='whitespace-nowrap pt-3 pl-2 pr-3 sm:pl-3 sm:text-sm text-xs' colSpan={3}>
                 <p className='font-medium'>{title}</p>
                 {description ? (
-                    <div title={description} className='mt-2 cursor-default'>
-                        {description.split('\n').map((line, index) => (
-                            <span key={index} className='block truncate'>
-                                {line}
-                            </span>
-                        ))}
-                    </div>
+                    <span
+                        className={clsx('prose text-xs mt-1 line-clamp-3', {
+                            'italic text-gray-400': !description,
+                            'text-gray-500': !!description,
+                        })}
+                    >
+                        {parse(description)}
+                    </span>
                 ) : (
-                    <p className='text-gray-400 italic font-normal text-xs'>{TEMPLATE.EMPTY_DESCRIPTION}</p>
+                    <p className='text-gray-400 italic font-normal text-xs mt-1'>{TEMPLATE.EMPTY_DESCRIPTION}</p>
                 )}
             </td>
         ),
@@ -90,7 +92,18 @@ export const renderList: (data: any, index: number) => React.ReactNode = (
                 </p>
             </div>
             <div className='flex justify-between'>
-                <p className='whitespace-pre-wrap text-xs lg:text-sm mt-1'>{description}</p>
+                {description ? (
+                    <span
+                        className={clsx('prose text-xs mt-1 line-clamp-3', {
+                            'italic text-gray-400': !description,
+                            'text-gray-500': !!description,
+                        })}
+                    >
+                        {parse(description)}
+                    </span>
+                ) : (
+                    <p className='text-gray-400 italic font-normal text-xs mt-1'>{TEMPLATE.EMPTY_DESCRIPTION}</p>
+                )}
                 <div className='text-right'>
                     <p className='sm:text-sm text-xs'>
                         Ngày tạo: <b>{moment(_createdAt).format(DATE_FORMAT.D_DATE_TIME)}</b>
