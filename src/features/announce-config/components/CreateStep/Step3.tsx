@@ -101,7 +101,7 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
         if (length) {
             setQuery((prev) => ({
                 ...prev,
-                params: { ...prev.params, __fromUsers: length, __toUsers: length + COUNT_PAGINATE },
+                params: { ...prev.params, __fromUser: length, __toUser: length + COUNT_PAGINATE },
             }))
             reload('users')
         }
