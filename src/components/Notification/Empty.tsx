@@ -1,6 +1,6 @@
 import React from 'react'
 import { TEMPLATE } from '~/constant/template'
-import EmptyNotifyGif from '~/loading.gif'
+import EmptyNotifyGif from '~/assets/loading.gif'
 
 const EmptyNotify = () => {
     return (

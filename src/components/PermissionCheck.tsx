@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PERMISSION } from '~/constant/permission'
 import { useConfig } from '~/context'
-import WarningGif from '~/warning.gif'
+import WarningGif from '~/assets/warning.gif'
 
 interface PermissionCheckProps {
     permissions: PERMISSION[]
