@@ -18,6 +18,7 @@ import Waiting from '~/newtons-cradle.gif'
 import { Waypoint } from 'react-waypoint'
 import SkeletonNotify from './Skeleton'
 import { Howl, Howler } from 'howler'
+import { useLoading } from '~/context'
 
 const sound = new Howl({
     src: ['notify-sound-2.wav'],
@@ -39,6 +40,7 @@ const Notification: React.FC<NotificationProps> = ({ leftSide = false }) => {
     const [loadNewNotify, setLoadNewNotify] = useState(false)
     const [hasNextPage, setHasNextPage] = useState(false)
     const [isClickReadAll, setClickReadAll] = useState(false)
+    const { setSubmitLoading } = useLoading()
 
     const fetch = useCallback(async (__fromNotify = 0, __toNotify = 10) => {
         setLoading(true)
@@ -157,9 +159,11 @@ const Notification: React.FC<NotificationProps> = ({ leftSide = false }) => {
 
     const handleReadDetail: ReadDetailEvent = async (data) => {
         if (data.read === false) {
+            setSubmitLoading(true)
             const __ = client.transaction()
             readNotify(__, data.notify._id, data._id)
             await __.commit({ autoGenerateArrayKeys: true })
+            setSubmitLoading(false)
         }
         navigate(`/notify/${data.notify._id}`)
     }

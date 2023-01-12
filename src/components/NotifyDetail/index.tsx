@@ -26,7 +26,7 @@ const NotifyDetail = () => {
         fetchData().then(() => {
             setSubmitLoading(false)
         })
-    }, [])
+    }, [id])
 
     const data: DetailFormData = {
         notify: notify.data as SanityDocument<NotifyItem>,
