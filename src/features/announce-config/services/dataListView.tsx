@@ -26,7 +26,7 @@ export const columns: (width: number) => Array<TableColumn> = (width) => [
         colSpan: 2,
         renderRow: ({ title, description }: { title: string; description: string }) => (
             <td className='whitespace-nowrap pt-3 pl-2 pr-3 sm:pl-3 sm:text-sm text-xs' colSpan={2}>
-                <p className='font-medium'>{title}</p>
+                <p className='font-medium truncate'>{title}</p>
                 {description ? (
                     <span
                         className={clsx('prose text-xs mt-1 line-clamp-3', {
