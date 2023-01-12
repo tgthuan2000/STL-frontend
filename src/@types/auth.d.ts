@@ -46,3 +46,18 @@ export type ILoginByEmailPassword = (
     addUser: AddUserProfile,
     setLoading: (value: boolean) => void
 ) => Promise<void>
+
+export interface LoginByEmailPasswordFormProps {
+    onSubmit: (data: LoginForm) => Promise<void>
+    onBack: () => void
+}
+
+export interface Step1Props {
+    onSubmit: (data: { email: string }) => void
+}
+
+export type SubmitPassword = (payloads: { password: string }, data: SanityDocument<IUserProfile>) => void
+export interface Step2Props {
+    previewData: SanityDocument<IUserProfile>[] | null
+    onSubmit: SubmitPassword
+}

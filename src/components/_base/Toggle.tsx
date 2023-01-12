@@ -1,9 +1,9 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Switch } from '@headlessui/react'
 import clsx from 'clsx'
+import { forwardRef } from 'react'
 import { Controller } from 'react-hook-form'
 import { ToggleProps } from '~/@types/components'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { forwardRef } from 'react'
 
 const Toggle = forwardRef<HTMLElement, ToggleProps>(({ label, form, name, rules, disabled }, ref) => {
     const [parent] = useAutoAnimate<HTMLDivElement>()

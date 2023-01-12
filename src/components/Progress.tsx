@@ -2,18 +2,8 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { CheckIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import React, { Fragment } from 'react'
+import { ProgressItem, ProgressProps } from '~/@types/components'
 
-export interface ProgressItem {
-    step: number
-    label: string
-}
-
-interface ProgressProps {
-    step: number
-    options: ProgressItem[]
-    className?: string
-    onStepClick?: (option: ProgressItem) => void
-}
 const Progress: React.FC<ProgressProps> = ({ step, options, className, onStepClick }) => {
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const handleClickStepItem = (option: ProgressItem) => {

@@ -1,13 +1,9 @@
 import { ArrowSmLeftIcon } from '@heroicons/react/outline'
 import React from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
+import { TransactionProps } from '~/@types/components'
 import { useScrollIntoView } from '~/hook'
 
-interface TransactionProps {
-    title?: string
-    children?: React.ReactNode
-    hasBack?: boolean
-}
 const Transaction: React.FC<TransactionProps> = ({ title = 'Title tab', hasBack = true, children }) => {
     const wrapRef = useScrollIntoView<HTMLDivElement>()
 

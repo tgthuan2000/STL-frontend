@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import { Fragment, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Waypoint } from 'react-waypoint'
-import { TableProps } from '.'
+import { TableProps } from '~/@types/components'
 
 const BodyTable: React.FC<TableProps> = ({
     data,

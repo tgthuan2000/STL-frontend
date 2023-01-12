@@ -3,13 +3,13 @@ import { Combobox } from '@headlessui/react'
 import { CheckIcon, RefreshIcon, SelectorIcon, XIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import { find, get, isNil } from 'lodash'
+import numeral from 'numeral'
 import { forwardRef, useEffect, useMemo, useState } from 'react'
 import { Controller } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import { AutoCompleteProps } from '~/@types/components'
-import numeral from 'numeral'
 import { urlFor } from '~/sanityConfig'
 import UserSvg from '../_constant/UserSvg'
-import { toast } from 'react-toastify'
 
 const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
     (

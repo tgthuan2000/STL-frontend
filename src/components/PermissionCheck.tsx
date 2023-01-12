@@ -1,13 +1,8 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { PERMISSION } from '~/constant/permission'
-import { useConfig } from '~/context'
+import { PermissionCheckProps } from '~/@types/components'
 import WarningGif from '~/assets/warning.gif'
-
-interface PermissionCheckProps {
-    permissions: PERMISSION[]
-    children: React.ReactNode
-}
+import { useConfig } from '~/context'
 
 const PermissionCheck: React.FC<PermissionCheckProps> = ({ permissions, children }) => {
     const { hasPermissions } = useConfig()

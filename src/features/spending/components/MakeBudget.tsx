@@ -1,32 +1,22 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { PlusCircleIcon, RefreshIcon, TrashIcon } from '@heroicons/react/outline'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { IMethodSpending, MakeBudgetQueryData } from '~/@types/spending'
+import * as yup from 'yup'
+import { IMakeBudgetForm, MakeBudgetQueryData, StateRef } from '~/@types/spending'
 import { Button } from '~/components'
 import { AutoComplete, DatePicker, Input } from '~/components/_base'
+import { TAGS } from '~/constant'
 import { useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_BUDGET_BY_MONTH, GET_METHOD_SPENDING } from '~/schema/query/spending'
 import { getBudgetId, getDateOfMonth } from '~/services'
 import useAuth from '~/store/auth'
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { TAGS } from '~/constant'
-
-interface IMakeBudgetForm {
-    date: Date
-    MethodSpending: Array<{ _id: string; amount: number; methodSpending: IMethodSpending }>
-}
-
-interface StateRef {
-    removes: string[]
-    updates: string[]
-}
 
 const defaultStateRef = {
     removes: [],

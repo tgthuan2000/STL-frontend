@@ -1,19 +1,11 @@
 import { UserIcon } from '@heroicons/react/outline'
-import { SanityDocument } from '@sanity/client'
 import moment from 'moment'
 import React from 'react'
-import { NotifyItem } from '~/@types/notify'
+import { NotifyDetailFormProps } from '~/@types/components'
 import { DATE_FORMAT } from '~/constant'
 import Prose from '../Prose'
 
-export interface DetailFormData {
-    notify: SanityDocument<NotifyItem>
-}
-
-export interface DetailFormProps {
-    data: DetailFormData
-}
-const NotifyDetailForm: React.FC<DetailFormProps> = ({ data }) => {
+const NotifyDetailForm: React.FC<NotifyDetailFormProps> = ({ data }) => {
     const { notify } = data
     const createdAt = notify._createdAt || notify.notify._createdAt
     return (

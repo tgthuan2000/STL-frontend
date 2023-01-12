@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom'
 import clsx from 'clsx'
-import { MethodProps } from '~/@types/spending'
 import { isEmpty } from 'lodash'
-import { TEMPLATE } from '~/constant/template'
 import numeral from 'numeral'
 import React from 'react'
+import { Link } from 'react-router-dom'
+import { MethodProps } from '~/@types/spending'
+import { TEMPLATE } from '~/constant/template'
 
 const Method: React.FC<MethodProps> = ({ data, loading }) => {
     if (loading) return <MethodSkeleton />

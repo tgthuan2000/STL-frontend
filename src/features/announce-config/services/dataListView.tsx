@@ -1,10 +1,10 @@
 import clsx from 'clsx'
 import moment from 'moment'
 import numeral from 'numeral'
-import { TableColumn } from '~/components/Table'
+import { TableColumn } from '~/@types/components'
+import { Prose } from '~/components'
 import { DATE_FORMAT } from '~/constant'
 import { TEMPLATE } from '~/constant/template'
-import { Prose } from '~/components'
 
 const getDate = (date: string, width: number) => {
     return width <= 900 ? (

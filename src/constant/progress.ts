@@ -1,4 +1,4 @@
-import { ProgressItem } from '~/components/Progress'
+import { ProgressItem } from '~/@types/components'
 
 export const createProgressOptions: Array<ProgressItem> = [
     { step: 1, label: 'Nội dung' },

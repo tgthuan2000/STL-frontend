@@ -1,11 +1,6 @@
 import clsx from 'clsx'
 import React from 'react'
-import { UseFormReturn } from 'react-hook-form'
-
-interface StatusLoanProps {
-    form: UseFormReturn<any, object>
-    name: string
-}
+import { StatusLoanProps } from '~/@types/loan'
 
 const StatusLoan: React.FC<StatusLoanProps> = ({ form, name }) => {
     const watchName = form.watch(name)

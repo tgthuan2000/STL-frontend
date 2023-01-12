@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
@@ -6,18 +7,16 @@ import { Box, ButtonMenu, Divider } from '~/components'
 import { DATE_FORMAT, TAGS } from '~/constant'
 import { menuMobile } from '~/constant/components'
 import { useConfig } from '~/context'
-import { useScrollIntoView, useQuery, useWindowSize } from '~/hook'
+import { useQuery, useScrollIntoView, useWindowSize } from '~/hook'
 import {
     GET_BUDGETS_BY_MONTH,
     GET_METHOD_SPENDING_DESC_SURPLUS,
     GET_RECENT_SPENDING,
     GET_STATISTIC_SPENDING,
 } from '~/schema/query/spending'
-import { getDateOfMonth } from '~/services'
+import { getDateOfMonth, sum } from '~/services'
 import useAuth from '~/store/auth'
-import { sum } from '~/services'
 import { Budget, Method, Recent, Statistic } from '../components'
-import clsx from 'clsx'
 
 const Dashboard = () => {
     const { width } = useWindowSize()

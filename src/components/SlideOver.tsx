@@ -1,9 +1,9 @@
-import React, { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
-import { useLoading, useSlideOver } from '~/context'
+import React, { Fragment } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SlideOverProps } from '~/@types/components'
+import { useLoading, useSlideOver } from '~/context'
 
 const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
     const { isOpen, setIsOpen, title } = useSlideOver()

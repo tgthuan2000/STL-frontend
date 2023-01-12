@@ -1,15 +1,9 @@
 import clsx from 'clsx'
 import React from 'react'
+import { BoxTitleProps } from '~/@types/components'
 import LoadingButton from '~/components/Loading/LoadingButton'
 
-interface TitleProps {
-    title?: string
-    onReload?: () => void
-    loading?: boolean
-    customEvent?: React.ReactNode
-}
-
-const Title: React.FC<TitleProps> = ({ title, onReload, loading, customEvent }) => {
+const Title: React.FC<BoxTitleProps> = ({ title, onReload, loading, customEvent }) => {
     if (!title) return null
     return (
         <div className='flex justify-between items-center border-b border-gray-200 bg-gray-50 px-4 py-2'>

@@ -1,11 +1,14 @@
-import { SanityImageAssetDocument } from '@sanity/client'
+import { SanityDocument, SanityImageAssetDocument } from '@sanity/client'
 import React, { HTMLInputTypeAttribute, ReactNode } from 'react'
 import { FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
 import { ReactQuillProps } from 'react-quill'
 import { NavigateFunction } from 'react-router-dom'
 import { DATE_FORMAT } from '~/constant'
 import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
+import { PERMISSION } from '~/constant/permission'
+import { IFILTER_DATE } from '~/constant/template'
 import { IUserLoan } from './loan'
+import { NotifyItem } from './notify'
 import { ISpendingData } from './spending'
 
 type Rules = Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
@@ -115,6 +118,17 @@ export interface DateProps {
         readOnly?: boolean
     }
 }
+
+export interface DatePickerInputProps {
+    error?: FieldError
+    label?: string
+    className?: string
+    disabledClear?: boolean
+    disabled?: boolean
+    field: ControllerRenderProps<any, string>
+    readOnlyInput?: boolean
+}
+
 export interface TextAreaProps {
     className?: string
     label?: string
@@ -264,4 +278,136 @@ export interface SkeletonProps {
 export interface IDataListView {
     viewMode?: DATA_LIST_MODE
     listGroup?: DATA_LIST_GROUP
+}
+
+export interface SettingIconProps {
+    className?: string
+}
+
+export interface BoxTitleProps {
+    title?: string
+    onReload?: () => void
+    loading?: boolean
+    customEvent?: React.ReactNode
+}
+
+export interface ListProps {
+    groupBy: (data: any) => string
+    data: Array<any> | undefined
+    loading: boolean
+    EmptyList?: React.ReactNode
+    SkeletonList?: (loading: boolean) => React.ReactNode
+    onGetMore?: () => void
+    onRowClick: (data: any) => string
+    hasNextPage: boolean
+    renderTitle: (data: any) => React.ReactNode
+    renderList: (data: any, index: number) => React.ReactNode
+}
+
+export type BodyListProps = Omit<ListProps, 'EmptyList' | 'groupBy' | 'data'> & { data: { [x: string]: any[] } }
+
+export interface NotificationProps {
+    leftSide?: boolean
+}
+
+export type ItemReadEvent = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    data: SanityDocument<NotifyItem>
+) => Promise<void>
+export type ReadDetailEvent = (data: SanityDocument<NotifyItem>) => Promise<void>
+export interface NotificationItemProps {
+    data: SanityDocument<NotifyItem>
+    onItemRead: ItemReadEvent
+    onReadDetail: ReadDetailEvent
+}
+
+export interface NotifyDetailFormData {
+    notify: SanityDocument<NotifyItem>
+}
+
+export interface NotifyDetailFormProps {
+    data: NotifyDetailFormData
+}
+
+export interface TableColumn {
+    key: string
+    title: React.ReactNode
+    label: string
+    renderRow: (item: any, index: number) => React.ReactNode
+    sort?: boolean
+    className?: string
+    colSpan?: number
+}
+
+export interface TableProps {
+    columns: Array<TableColumn>
+    data: Array<any> | undefined
+    loading: boolean
+    EmptyTable?: React.ReactNode
+    SkeletonTable?: (loading: boolean) => React.ReactNode
+    onGetMore?: () => void
+    onRowClick: (data: any) => string
+    hasNextPage: boolean
+    subRow?: (data: any, index: number, origin: any[]) => React.ReactNode
+}
+
+export interface LazySearchSelectProps {
+    className?: string
+    onChange: (value: any) => void
+    disabled?: boolean
+    label?: string
+    options?: any[]
+    hasNextPage?: boolean
+    onGetMore?: () => void
+    onSearch?: (value: string) => void
+    valueKey?: string
+    labelKey?: string
+    loading?: boolean
+    getOptionLabel?: (option: any, active: boolean) => React.ReactNode
+    autoFocus?: boolean
+}
+
+export interface PermissionCheckProps {
+    permissions: PERMISSION[]
+    children: React.ReactNode
+}
+
+export interface ProgressItem {
+    step: number
+    label: string
+}
+
+export interface ProgressProps {
+    step: number
+    options: ProgressItem[]
+    className?: string
+    onStepClick?: (option: ProgressItem) => void
+}
+
+export interface ProseProps {
+    children: string
+    className?: string
+}
+
+export type DateRange = [Date, Date]
+export type FilterDateType = 'isDateRangeFilter' | 'isDateFilter' | 'isMonthFilter' | 'isYearFilter'
+export interface TimeFilterProps {
+    onSubmit: (data: TimeFilterPayload) => void
+}
+export interface IFilterDate {
+    date?: Date | null
+    month?: Date | null
+    year?: Date | null
+    dateRange?: DateRange | null
+    filter: IFILTER_DATE | null
+}
+export type TimeFilterPayload = {
+    id: number
+    data: Date | DateRange | null | undefined
+}
+
+export interface TransactionProps {
+    title?: string
+    children?: React.ReactNode
+    hasBack?: boolean
 }

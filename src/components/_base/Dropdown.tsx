@@ -1,10 +1,10 @@
-import { Menu } from '@headlessui/react'
-import React, { useEffect, useMemo, useState } from 'react'
-import { DropdownProps } from '~/@types/components'
-import clsx from 'clsx'
-import { Controller } from 'react-hook-form'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { Menu } from '@headlessui/react'
+import clsx from 'clsx'
 import { find, flatMapDeep, get, isNil } from 'lodash'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Controller } from 'react-hook-form'
+import { DropdownProps } from '~/@types/components'
 
 const Dropdown: React.FC<DropdownProps> = ({
     label,

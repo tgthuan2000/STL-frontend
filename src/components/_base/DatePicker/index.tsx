@@ -1,14 +1,14 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { XIcon } from '@heroicons/react/outline'
+import clsx from 'clsx'
+import moment from 'moment'
 import { forwardRef, useId } from 'react'
-import { DateProps } from '~/@types/components'
 import DP, { ReactDatePicker } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { useWindowSize } from '~/hook'
-import moment from 'moment'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Controller, ControllerRenderProps, FieldError } from 'react-hook-form'
-import clsx from 'clsx'
-import { XIcon } from '@heroicons/react/outline'
+import { DatePickerInputProps, DateProps } from '~/@types/components'
 import { DATE_FORMAT } from '~/constant'
+import { useWindowSize } from '~/hook'
 import './index.css'
 
 const DatePicker = forwardRef<ReactDatePicker<never, undefined>, DateProps>(
@@ -61,16 +61,6 @@ const DatePicker = forwardRef<ReactDatePicker<never, undefined>, DateProps>(
 )
 
 export default DatePicker
-
-export interface DatePickerInputProps {
-    error?: FieldError
-    label?: string
-    className?: string
-    disabledClear?: boolean
-    disabled?: boolean
-    field: ControllerRenderProps<any, string>
-    readOnlyInput?: boolean
-}
 
 const Input = forwardRef<HTMLInputElement, DatePickerInputProps>(
     ({ label, error, className, disabledClear, disabled, field, readOnlyInput, ...props }, ref) => {

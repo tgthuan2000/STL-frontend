@@ -1,14 +1,14 @@
-import React, { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { MenuIcon, XIcon } from '@heroicons/react/outline'
+import { XIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
+import React, { Fragment, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { SideBarProps } from '~/@types/layout'
 import { navigation } from '~/constant/layout'
+import { useConfig } from '~/context'
 import useAuth from '~/store/auth'
 import TopBar from './TopBar'
 import User from './User'
-import { useConfig } from '~/context'
 
 const Sidebar: React.FC<SideBarProps> = ({ children }) => {
     const { userProfile, removeUserProfile } = useAuth()
