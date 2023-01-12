@@ -23,9 +23,9 @@ export const columns: (width: number) => Array<TableColumn> = (width) => [
         key: 'title',
         title: 'Nội dung',
         label: 'string',
-        colSpan: 3,
+        colSpan: 2,
         renderRow: ({ title, description }: { title: string; description: string }) => (
-            <td className='whitespace-nowrap pt-3 pl-2 pr-3 sm:pl-3 sm:text-sm text-xs' colSpan={3}>
+            <td className='whitespace-nowrap pt-3 pl-2 pr-3 sm:pl-3 sm:text-sm text-xs' colSpan={2}>
                 <p className='font-medium'>{title}</p>
                 {description ? (
                     <span

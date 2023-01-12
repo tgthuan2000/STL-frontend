@@ -9,7 +9,7 @@ export const SEARCH_USER_PAGINATE = groq`
             email,
             image,
         },
-        "hasNextPage": count(*[_type == "notify"]) > $__toUser      
+        "hasNextPage": count(*[_type == "user"]) > $__toUser      
     }
 `
 

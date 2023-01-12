@@ -317,7 +317,7 @@ const SkeletonTableNotify: React.FC<SkeletonTableNotifyProps> = ({ elNumber }) =
             {Array.from(Array(elNumber)).map((item, index, data) => (
                 <Fragment key={index}>
                     <tr className='animate-pulse'>
-                        <td className='py-4 px-2' colSpan={3}>
+                        <td className='py-4 px-2' colSpan={2}>
                             <span className='flex flex-col gap-2 w-full'>
                                 <span className='block bg-gray-200 h-4 w-1/2 rounded-full' />
                                 <span className='block bg-gray-200 h-4 w-3/4 rounded-full' />
@@ -348,7 +348,7 @@ const SkeletonTableNotify: React.FC<SkeletonTableNotifyProps> = ({ elNumber }) =
 const EmptyTableNotify = () => {
     return (
         <tr>
-            <td colSpan={6} className='whitespace-nowrap py-4 px-2'>
+            <td colSpan={5} className='whitespace-nowrap py-4 px-2'>
                 <span className='block truncate w-full text-center text-md text-gray-700 font-base'>
                     {TEMPLATE.EMPTY_DATA}
                 </span>
