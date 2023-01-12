@@ -81,18 +81,20 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
     }
 
     const handleSearch = (search: string) => {
-        if (!searchFirst.current) {
-            searchFirst.current = true
-        }
-        setQuery((prev) => ({
-            ...prev,
-            params: {
-                ...prev.params,
-                search: '*' + search + '*',
-            },
-        }))
+        if (search) {
+            if (!searchFirst.current) {
+                searchFirst.current = true
+            }
+            setQuery((prev) => ({
+                ...prev,
+                params: {
+                    ...prev.params,
+                    search: '*' + search.toLowerCase() + '*',
+                },
+            }))
 
-        reload()
+            reload()
+        }
     }
 
     const handleScrollGetMore = () => {
