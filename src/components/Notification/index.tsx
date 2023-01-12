@@ -17,6 +17,11 @@ import { TEMPLATE } from '~/constant/template'
 import Waiting from '~/newtons-cradle.gif'
 import { Waypoint } from 'react-waypoint'
 import SkeletonNotify from './Skeleton'
+import { Howl, Howler } from 'howler'
+
+const sound = new Howl({
+    src: ['notify-sound-2.wav'],
+})
 
 interface NotificationProps {
     leftSide?: boolean
@@ -93,6 +98,7 @@ const Notification: React.FC<NotificationProps> = ({ leftSide = false }) => {
                                         setTimeout(() => {
                                             setLoadNewNotify(false)
                                         }, 3000)
+                                        sound.play()
                                         break
                                     }
                                 }
