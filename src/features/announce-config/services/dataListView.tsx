@@ -4,7 +4,7 @@ import numeral from 'numeral'
 import { TableColumn } from '~/components/Table'
 import { DATE_FORMAT } from '~/constant'
 import { TEMPLATE } from '~/constant/template'
-import parse from 'html-react-parser'
+import { Prose } from '~/components'
 
 const getDate = (date: string, width: number) => {
     return width <= 900 ? (
@@ -28,14 +28,14 @@ export const columns: (width: number) => Array<TableColumn> = (width) => [
             <td className='whitespace-nowrap pt-3 pl-2 pr-3 sm:pl-3 sm:text-sm text-xs' colSpan={2}>
                 <p className='font-medium truncate'>{title}</p>
                 {description ? (
-                    <span
-                        className={clsx('prose text-xs mt-1 line-clamp-3', {
+                    <Prose
+                        className={clsx('text-xs mt-1 line-clamp-3', {
                             'italic text-gray-400': !description,
                             'text-gray-500': !!description,
                         })}
                     >
-                        {parse(description)}
-                    </span>
+                        {description}
+                    </Prose>
                 ) : (
                     <p className='text-gray-400 italic font-normal text-xs mt-1'>{TEMPLATE.EMPTY_DESCRIPTION}</p>
                 )}
@@ -93,14 +93,14 @@ export const renderList: (data: any, index: number) => React.ReactNode = (
             </div>
             <div className='flex justify-between'>
                 {description ? (
-                    <span
-                        className={clsx('prose text-xs mt-1 line-clamp-3', {
+                    <Prose
+                        className={clsx('text-xs mt-1 line-clamp-3', {
                             'italic text-gray-400': !description,
                             'text-gray-500': !!description,
                         })}
                     >
-                        {parse(description)}
-                    </span>
+                        {description}
+                    </Prose>
                 ) : (
                     <p className='text-gray-400 italic font-normal text-xs mt-1'>{TEMPLATE.EMPTY_DESCRIPTION}</p>
                 )}

@@ -100,7 +100,9 @@ function App() {
                                 <Route
                                     path='notify/*'
                                     element={
-                                        <PermissionCheck permissions={[PERMISSION.PROFILE_READ]}>
+                                        <PermissionCheck
+                                            permissions={[PERMISSION.PROFILE_READ, PERMISSION.ANNOUNCE_CONFIG]}
+                                        >
                                             <NotifyFeature />
                                         </PermissionCheck>
                                     }

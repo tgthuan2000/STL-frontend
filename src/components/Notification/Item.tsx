@@ -8,7 +8,7 @@ import { NotifyItem } from '~/@types/notify'
 import { DATE_FORMAT } from '~/constant'
 import { TEMPLATE } from '~/constant/template'
 import { getSpacingTime } from '~/services'
-import parse from 'html-react-parser'
+import Prose from '../Prose'
 
 export type ItemReadEvent = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -44,14 +44,14 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, o
                             <UserIcon className='h-4 w-4' />
                         </span>
                     </div>
-                    <p
-                        className={clsx('prose text-xs mt-1 line-clamp-3 max-w-[calc(100%-80px)]', {
+                    <Prose
+                        className={clsx('text-xs mt-1 line-clamp-3 max-w-[calc(100%-80px)]', {
                             'italic text-gray-400': !data.notify.description,
                             'text-gray-500': !!data.notify.description,
                         })}
                     >
-                        {data.notify.description ? parse(data.notify.description) : TEMPLATE.EMPTY_DESCRIPTION}
-                    </p>
+                        {data.notify.description ?? TEMPLATE.EMPTY_DESCRIPTION}
+                    </Prose>
                     <div className='mt-2 flex justify-between items-center'>
                         <div>
                             {!data.read ? (
