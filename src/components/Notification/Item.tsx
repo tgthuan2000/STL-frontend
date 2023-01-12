@@ -1,25 +1,13 @@
 import { Menu } from '@headlessui/react'
 import { CheckIcon, UserIcon } from '@heroicons/react/outline'
-import { SanityDocument } from '@sanity/client'
 import clsx from 'clsx'
 import moment from 'moment'
 import React, { useState } from 'react'
-import { NotifyItem } from '~/@types/notify'
+import { NotificationItemProps } from '~/@types/components'
 import { DATE_FORMAT } from '~/constant'
 import { TEMPLATE } from '~/constant/template'
 import { getSpacingTime } from '~/services'
 import Prose from '../Prose'
-
-export type ItemReadEvent = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    data: SanityDocument<NotifyItem>
-) => Promise<void>
-export type ReadDetailEvent = (data: SanityDocument<NotifyItem>) => Promise<void>
-interface NotificationItemProps {
-    data: SanityDocument<NotifyItem>
-    onItemRead: ItemReadEvent
-    onReadDetail: ReadDetailEvent
-}
 
 const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, onReadDetail }) => {
     const [isClickRead, setIsClickRead] = useState(false)

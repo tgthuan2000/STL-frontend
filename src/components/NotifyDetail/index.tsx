@@ -1,6 +1,7 @@
 import { SanityDocument } from '@sanity/client'
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { NotifyDetailFormData } from '~/@types/components'
 import { NotifyDetailQueryData, NotifyItem } from '~/@types/notify'
 import { TAGS } from '~/constant'
 import { TEMPLATE } from '~/constant/template'
@@ -8,7 +9,7 @@ import { useLoading } from '~/context'
 import { useQuery } from '~/hook'
 import { GET_NOTIFY_ADMIN, GET_NOTIFY_BY_USER } from '~/schema/query/notify'
 import useAuth from '~/store/auth'
-import NotifyDetailForm, { DetailFormData } from './Form'
+import NotifyDetailForm from './Form'
 
 interface NotifyDetailProps {
     isAdmin?: boolean
@@ -32,7 +33,7 @@ const NotifyDetail: React.FC<NotifyDetailProps> = ({ isAdmin = false }) => {
         })
     }, [id])
 
-    const data: DetailFormData = {
+    const data: NotifyDetailFormData = {
         notify: notify.data as SanityDocument<NotifyItem>,
     }
 

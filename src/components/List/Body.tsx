@@ -2,9 +2,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Fragment, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Waypoint } from 'react-waypoint'
-import { ListProps } from '.'
-
-type BodyListProps = Omit<ListProps, 'EmptyList' | 'groupBy' | 'data'> & { data: { [x: string]: any[] } }
+import { BodyListProps } from '~/@types/components'
 
 const BodyList: React.FC<BodyListProps> = ({
     loading,

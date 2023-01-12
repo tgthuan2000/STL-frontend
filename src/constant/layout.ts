@@ -1,4 +1,5 @@
-import { BellIcon, CalendarIcon, CashIcon, SwitchVerticalIcon, UserIcon } from '@heroicons/react/outline'
+import { BellIcon, CashIcon, LockClosedIcon, LogoutIcon, SwitchVerticalIcon, UserIcon } from '@heroicons/react/outline'
+import { OptionMenu } from '~/@types/layout'
 import { PERMISSION } from './permission'
 
 interface Navigation {
@@ -31,4 +32,37 @@ export const navigation: Array<Navigation> = [
         icon: UserIcon,
         permissions: [PERMISSION.ACCOUNT_READ],
     },
+]
+
+export const userOptionData: Array<Array<OptionMenu>> = [
+    [
+        {
+            id: 1,
+            label: 'Thông tin cá nhân',
+            onClick: ({ navigate, closeSidebar }) => {
+                navigate('/profile')
+                closeSidebar()
+            },
+            icon: UserIcon,
+        },
+        {
+            id: 2,
+            label: ({ userProfile }) => (userProfile?.isHasPassword ? 'Đổi' : 'Đặt') + ' mật khẩu',
+            onClick: ({ navigate, closeSidebar }) => {
+                navigate('/profile/change-password')
+                closeSidebar()
+            },
+            icon: LockClosedIcon,
+        },
+    ],
+    [
+        {
+            id: 3,
+            label: 'Đăng xuất',
+            onClick: ({ logout }) => {
+                logout()
+            },
+            icon: LogoutIcon,
+        },
+    ],
 ]

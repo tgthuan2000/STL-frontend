@@ -4,17 +4,17 @@ import {
     LogoutIcon,
     MinusCircleIcon,
     PlusCircleIcon,
+    PuzzleIcon,
     QrcodeIcon,
     SwitchHorizontalIcon,
     TemplateIcon,
     TrendingUpIcon,
     UserAddIcon,
-    PuzzleIcon,
 } from '@heroicons/react/outline'
 import { googleLogout } from '@react-oauth/google'
 import { IMenuBtn } from '~/@types/components'
 import { CreateMember, MakeGetLoan } from '~/features/loan/components'
-import { MakeIncome, MakeCost, MakeTransfer, MakeBudget, AddCategory, AddMethod } from '~/features/spending/components'
+import { AddCategory, AddMethod, MakeBudget, MakeCost, MakeIncome, MakeTransfer } from '~/features/spending/components'
 
 export const menuMobile: IMenuBtn[] = [
     {

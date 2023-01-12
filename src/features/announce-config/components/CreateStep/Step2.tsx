@@ -1,6 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
+import { CreateStep2Props } from '~/@types/announce-config'
 import { DraftNotify, NotifyTitleDescForm } from '~/@types/notify'
 import { Input, RichText } from '~/components/_base'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
@@ -10,11 +11,6 @@ const schema = yup.object().shape({
     title: yup.string().required('Vui lòng nhập tiêu đề thông báo'),
     description: yup.string(),
 })
-
-interface CreateStep2Props {
-    id: string
-    onSubmit: (data: NotifyTitleDescForm) => void
-}
 
 const Step2: React.FC<CreateStep2Props> = ({ id, onSubmit }) => {
     const [draftNotify] = useLocalStorage<DraftNotify>(LOCAL_STORAGE_KEY.STL_DRAFT_NOTIFY)

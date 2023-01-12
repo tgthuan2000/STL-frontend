@@ -1,9 +1,5 @@
 import React from 'react'
-
-interface IconButtonProps {
-    children: React.ReactNode
-    onClick?: React.MouseEventHandler<HTMLSpanElement>
-}
+import { IconButtonProps } from '~/@types/loan'
 
 const IconButton: React.FC<IconButtonProps> = ({ children, onClick }) => {
     return (

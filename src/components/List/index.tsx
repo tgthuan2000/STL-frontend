@@ -1,23 +1,11 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { isEmpty, isNil } from 'lodash'
 import React, { useMemo } from 'react'
+import { ListProps } from '~/@types/components'
 import { getLinkSpending } from '~/utils'
 import BodyList from './Body'
 import EmptyListTemplate from './Empty'
 import SkeletonListTemplate from './Skeleton'
-
-export interface ListProps {
-    groupBy: (data: any) => string
-    data: Array<any> | undefined
-    loading: boolean
-    EmptyList?: React.ReactNode
-    SkeletonList?: (loading: boolean) => React.ReactNode
-    onGetMore?: () => void
-    onRowClick: (data: any) => string
-    hasNextPage: boolean
-    renderTitle: (data: any) => React.ReactNode
-    renderList: (data: any, index: number) => React.ReactNode
-}
 
 const List: React.FC<ListProps> = ({ loading, data, EmptyList, groupBy, ...props }) => {
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()

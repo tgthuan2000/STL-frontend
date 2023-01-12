@@ -1,31 +1,15 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { yupResolver } from '@hookform/resolvers/yup'
+import clsx from 'clsx'
+import { find, get, isEmpty } from 'lodash'
+import moment from 'moment'
 import React, { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
-import { AutoComplete, DatePicker } from '~/components/_base'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import * as yup from 'yup'
-import { E_FILTER_DATE, IFILTER_DATE, TABS_FILTER_DATE } from '~/constant/template'
-import { find, get, isEmpty } from 'lodash'
-import clsx from 'clsx'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-import moment from 'moment'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-
-type DateRange = [Date, Date]
-type FilterDateType = 'isDateRangeFilter' | 'isDateFilter' | 'isMonthFilter' | 'isYearFilter'
-interface TimeFilterProps {
-    onSubmit: (data: TimeFilterPayload) => void
-}
-interface IFilterDate {
-    date?: Date | null
-    month?: Date | null
-    year?: Date | null
-    dateRange?: DateRange | null
-    filter: IFILTER_DATE | null
-}
-export type TimeFilterPayload = {
-    id: number
-    data: Date | DateRange | null | undefined
-}
+import { DateRange, FilterDateType, IFilterDate, TimeFilterPayload, TimeFilterProps } from '~/@types/components'
+import { AutoComplete, DatePicker } from '~/components/_base'
+import { E_FILTER_DATE, TABS_FILTER_DATE } from '~/constant/template'
 
 const schema = yup.object().shape({
     date: yup.date().nullable(),

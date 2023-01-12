@@ -1,5 +1,7 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { ArrowSmLeftIcon, CalendarIcon } from '@heroicons/react/outline'
+import { uuid } from '@sanity/uuid'
+import { isEmpty } from 'lodash'
 import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -11,10 +13,8 @@ import { useLoading } from '~/context'
 import { useLocalStorage } from '~/hook'
 import { localStorageValue } from '~/hook/useLocalStorage'
 import { client } from '~/sanityConfig'
-import { CreateStep1, CreateStep2, CreateStep3, CreateStep4 } from '../components'
-import { uuid } from '@sanity/uuid'
-import { isEmpty } from 'lodash'
 import { GET_USERS_ID } from '~/schema/query/user'
+import { CreateStep1, CreateStep2, CreateStep3, CreateStep4 } from '../components'
 
 const Create = () => {
     const [, setDraftNotify, removeDraft] = useLocalStorage<DraftNotify>(LOCAL_STORAGE_KEY.STL_DRAFT_NOTIFY)

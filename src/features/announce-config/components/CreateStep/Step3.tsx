@@ -6,7 +6,7 @@ import { isEmpty } from 'lodash'
 import { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
-import { IUserProfile } from '~/@types/auth'
+import { CreateStep3Props, QueryDataStep3 } from '~/@types/announce-config'
 import { DraftNotify, NotifyAssignForm } from '~/@types/notify'
 import { LazySearchSelect } from '~/components'
 import { Toggle } from '~/components/_base'
@@ -17,17 +17,6 @@ import { TEMPLATE } from '~/constant/template'
 import { useLocalStorage } from '~/hook'
 import useQuery, { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
 import { SEARCH_USER_PAGINATE } from '~/schema/query/user'
-
-interface CreateStep3Props {
-    id: string
-    onSubmit: (data: NotifyAssignForm) => void
-}
-export interface QueryData {
-    users: {
-        data: IUserProfile[]
-        hasNextPage: boolean
-    }
-}
 
 const schema = yup.object().shape({
     search: yup.object().nullable(),
@@ -46,9 +35,9 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
     const [userRef] = useAutoAnimate<HTMLDivElement>()
 
     const [{ query, params, tags }, setQuery] = useState<{
-        query: QueryTypeUseQuery<QueryData>
+        query: QueryTypeUseQuery<QueryDataStep3>
         params: ParamsTypeUseQuery
-        tags: TagsTypeUseQuery<QueryData>
+        tags: TagsTypeUseQuery<QueryDataStep3>
     }>({
         query: { users: SEARCH_USER_PAGINATE },
         params: { search: '', __fromUser: 0, __toUser: COUNT_PAGINATE },
@@ -56,7 +45,7 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
     })
 
     const searchFirst = useRef(false)
-    const [{ users }, , , reload] = useQuery<QueryData>(query, params, tags)
+    const [{ users }, , , reload] = useQuery<QueryDataStep3>(query, params, tags)
     const form = useForm<NotifyAssignForm>({
         defaultValues: { users: draftNotify?.users ?? [], sendAll: draftNotify?.sendAll ?? false },
         resolver: yupResolver(schema),

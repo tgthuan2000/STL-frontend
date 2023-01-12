@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 const useScrollIntoView = <T extends HTMLDivElement>() => {
     const ref = useRef<T>(null)

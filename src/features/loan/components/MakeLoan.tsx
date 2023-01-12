@@ -4,10 +4,9 @@ import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { IAddIncomeForm, IUserLoan } from '~/@types/loan'
-import { IMethodSpending } from '~/@types/spending'
+import { IAddIncomeForm, QueryDataMakeLoan } from '~/@types/loan'
 import { Button } from '~/components'
-import { Input, DatePicker, TextArea, AutoComplete } from '~/components/_base'
+import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery } from '~/hook'
@@ -16,10 +15,6 @@ import { GET_USER_LOAN } from '~/schema/query/loan'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 
-interface Data {
-    methodSpending: IMethodSpending[]
-    userLoan: IUserLoan[]
-}
 const MakeLoan = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
@@ -32,7 +27,7 @@ const MakeLoan = () => {
         return getKindSpendingId('LOAN')
     }, [kindSpending])
 
-    const [{ methodSpending, userLoan }, fetchData, deleteCacheData, reloadData] = useQuery<Data>(
+    const [{ methodSpending, userLoan }, fetchData, deleteCacheData, reloadData] = useQuery<QueryDataMakeLoan>(
         { methodSpending: GET_METHOD_SPENDING, userLoan: GET_USER_LOAN },
         { userId: userProfile?._id as string },
         { methodSpending: TAGS.ENUM, userLoan: TAGS.ENUM }
@@ -128,7 +123,7 @@ const MakeLoan = () => {
         }
     }
 
-    const handleReloadData = async (keys: keyof Data) => {
+    const handleReloadData = async (keys: keyof QueryDataMakeLoan) => {
         const res = deleteCacheData(keys)
         console.log(res)
         reloadData()

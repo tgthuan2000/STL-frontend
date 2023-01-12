@@ -1,8 +1,5 @@
 import React from 'react'
-
-interface SettingIconProps {
-    className?: string
-}
+import { SettingIconProps } from '~/@types/components'
 
 const SettingIcon: React.FC<SettingIconProps> = ({ className }) => {
     return (

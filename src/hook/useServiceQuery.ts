@@ -1,7 +1,7 @@
-import { useConfig } from '~/context'
-import useAuth from '~/store/auth'
-import * as services from '~/services/query'
 import { useMemo } from 'react'
+import { useConfig } from '~/context'
+import * as services from '~/services/query'
+import useAuth from '~/store/auth'
 
 const useServiceQuery = () => {
     let { userProfile } = useAuth()

@@ -1,11 +1,9 @@
 import { MenuIcon } from '@heroicons/react/outline'
 import React from 'react'
+import { TopBarProps } from '~/@types/layout'
 import { Notification } from '~/components'
 import { useWindowSize } from '~/hook'
 
-interface TopBarProps {
-    onClickSidebar: (state: boolean) => void
-}
 const TopBar: React.FC<TopBarProps> = ({ onClickSidebar }) => {
     const { width } = useWindowSize()
     if (width < 768)

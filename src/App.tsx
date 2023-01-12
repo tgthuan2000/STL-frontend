@@ -1,13 +1,13 @@
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import React, { Suspense } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import { DefaultLayout } from '~/layout'
-import { Loading, PermissionCheck } from './components'
-import { ConfigProvider, LoadingProvider } from './context'
-import { GoogleOAuthProvider } from '@react-oauth/google'
-import { CacheProvider } from './context/CacheContext'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { DefaultLayout } from '~/layout'
+import { Loading, PermissionCheck } from './components'
 import { PERMISSION } from './constant/permission'
+import { ConfigProvider, LoadingProvider } from './context'
+import { CacheProvider } from './context/CacheContext'
 
 const AuthFeature = React.lazy(() => import('./features/auth'))
 const SpendingFeature = React.lazy(() => import('./features/spending'))

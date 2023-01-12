@@ -14,7 +14,6 @@ import {
 import { TAGS } from '~/constant'
 import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
 import {
-    GETALL_RECENT_SPENDING,
     GET_CATEGORY_SPENDING,
     GET_METHOD_SPENDING,
     GET_METHOD_SPENDING_DESC_SURPLUS,

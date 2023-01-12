@@ -1,5 +1,6 @@
 import { SanityAssetDocument, SanityImageAssetDocument } from '@sanity/client'
-import { SubmitHandler } from 'react-hook-form'
+import React from 'react'
+import { SubmitHandler, UseFormReturn } from 'react-hook-form'
 import { Query } from './hook'
 import { ICategorySpending, IMethodSpending, ISpendingData } from './spending'
 
@@ -41,11 +42,6 @@ interface IMakeGetLoanForm {
 }
 
 /* PROPS */
-export interface StatusLoanProps {
-    data: ISpendingData[] | undefined
-    loading: boolean
-    label: string
-}
 export interface PayDueLoanProps {
     data: ISpendingData[] | undefined
     loading: boolean
@@ -109,4 +105,24 @@ export interface PaidForm {
     paid: boolean
     methodSpending: IMethodSpending | null
     amount: number
+}
+
+export interface IconButtonProps {
+    children: React.ReactNode
+    onClick?: React.MouseEventHandler<HTMLSpanElement>
+}
+
+export interface StatusLoanProps {
+    form: UseFormReturn<any, object>
+    name: string
+}
+
+export interface QueryDataMakeGetLoan {
+    methodSpending: IMethodSpending[]
+    userLoan: IUserLoan[]
+}
+
+interface QueryDataMakeLoan {
+    methodSpending: IMethodSpending[]
+    userLoan: IUserLoan[]
 }

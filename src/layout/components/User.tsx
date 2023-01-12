@@ -1,67 +1,9 @@
 import { Menu } from '@headlessui/react'
-import { LockClosedIcon } from '@heroicons/react/outline'
-import { LogoutIcon, UserIcon } from '@heroicons/react/solid'
-import { SanityDocument } from '@sanity/client'
 import React from 'react'
-import { NavigateFunction, useNavigate } from 'react-router-dom'
-import { IUserProfile } from '~/@types/auth'
+import { useNavigate } from 'react-router-dom'
+import { UserProps } from '~/@types/layout'
 import { UserSvg } from '~/components/_constant'
-
-interface UserProps {
-    onLogout: () => void
-    onCloseSideBar: () => void
-    userProfile: SanityDocument<IUserProfile> | undefined | null
-}
-
-interface OptionData {
-    logout: () => void
-    data: OptionMenu
-    navigate: NavigateFunction
-    closeSidebar: () => void
-}
-type OptionFuncData =
-    | string
-    | ((data: { userProfile: SanityDocument<IUserProfile> | null | undefined }) => React.ReactNode)
-
-interface OptionMenu {
-    id: number
-    label: OptionFuncData
-    onClick: (data: OptionData) => void
-    icon: React.FC<{ className?: string }>
-}
-
-const data: Array<Array<OptionMenu>> = [
-    [
-        {
-            id: 1,
-            label: 'Thông tin cá nhân',
-            onClick: ({ navigate, closeSidebar }) => {
-                navigate('/profile')
-                closeSidebar()
-            },
-            icon: UserIcon,
-        },
-        {
-            id: 2,
-            label: ({ userProfile }) => (userProfile?.isHasPassword ? 'Đổi' : 'Đặt') + ' mật khẩu',
-            onClick: ({ navigate, closeSidebar }) => {
-                navigate('/profile/change-password')
-                closeSidebar()
-            },
-            icon: LockClosedIcon,
-        },
-    ],
-    [
-        {
-            id: 3,
-            label: 'Đăng xuất',
-            onClick: ({ logout }) => {
-                logout()
-            },
-            icon: LogoutIcon,
-        },
-    ],
-]
+import { userOptionData } from '~/constant/layout'
 
 const User: React.FC<UserProps> = ({ userProfile, onLogout, onCloseSideBar }) => {
     const navigate = useNavigate()
@@ -86,7 +28,7 @@ const User: React.FC<UserProps> = ({ userProfile, onLogout, onCloseSideBar }) =>
             </Menu.Button>
 
             <Menu.Items className='absolute bottom-full left-1/2 mt-2 select-none whitespace-nowrap origin-top-right divide-y overflow-hidden divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                {data.map((options, index) => {
+                {userOptionData.map((options, index) => {
                     return (
                         <div className='px-1 py-1 space-y-0.5' key={index}>
                             {options?.map((option) => {

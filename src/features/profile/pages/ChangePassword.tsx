@@ -1,17 +1,17 @@
 import { ExclamationIcon } from '@heroicons/react/outline'
 import { yupResolver } from '@hookform/resolvers/yup'
+import bcrypt from 'bcryptjs'
 import { get } from 'lodash'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import * as yup from 'yup'
 import { Button, Transaction } from '~/components'
 import { Input } from '~/components/_base'
 import { useLoading } from '~/context'
-import useAuth from '~/store/auth'
-import * as yup from 'yup'
 import { client } from '~/sanityConfig'
-import bcrypt from 'bcryptjs'
 import { GET_PASSWORD_BY_ID } from '~/schema/query/login'
+import useAuth from '~/store/auth'
 
 const schema = yup.object().shape({
     'old-password': yup

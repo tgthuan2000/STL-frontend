@@ -1,10 +1,10 @@
 import clsx from 'clsx'
+import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { MenuButtonProps } from '~/@types/components'
+import { Divider, SlideOver } from '~/components'
 import { useSlideOver } from '~/context'
-import { SlideOver, Divider } from '~/components'
 import useAuth from '~/store/auth'
-import React from 'react'
 
 const ButtonItem: React.FC<MenuButtonProps> = ({ data }) => {
     const { title, color, icon: Icon, children, to, query, divider, action } = data

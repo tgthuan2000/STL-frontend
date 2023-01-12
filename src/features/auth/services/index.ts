@@ -1,13 +1,12 @@
+import { SanityDocument } from '@sanity/client'
+import bcrypt from 'bcryptjs'
 import jwtDecode from 'jwt-decode'
-import { GoogleData, IFetchGoogleResponse, ILoginByEmailPassword } from '~/@types/auth'
+import { isNil } from 'lodash'
+import { toast } from 'react-toastify'
+import { GoogleData, IFetchGoogleResponse, ILoginByEmailPassword, IUserProfile } from '~/@types/auth'
+import { ROLE } from '~/constant/role'
 import { client } from '~/sanityConfig'
 import { GET_DATA_BY_EMAIL, GET_DATA_USER_BY_ID, GET_PASSWORD_BY_ID } from '~/schema/query/login'
-import bcrypt from 'bcryptjs'
-import { SanityDocument } from '@sanity/client'
-import { IUserProfile } from '~/@types/auth'
-import { toast } from 'react-toastify'
-import { isNil } from 'lodash'
-import { ROLE } from '~/constant/role'
 
 export const fetchGoogleResponse: IFetchGoogleResponse = async (res, addUser, setLoading) => {
     try {

@@ -1,12 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Listbox } from '@headlessui/react'
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
 import clsx from 'clsx'
+import { find, get, isNil } from 'lodash'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Controller } from 'react-hook-form'
 import { SelectionProps } from '~/@types/components'
 import { people } from '~/constant/components'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { find, get, isNil } from 'lodash'
-import { Controller } from 'react-hook-form'
 
 const Selection: React.FC<SelectionProps> = ({
     label,

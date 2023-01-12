@@ -1,17 +1,11 @@
 import { useForm } from 'react-hook-form'
+import { CreateStep4Props } from '~/@types/announce-config'
 import { DraftNotify } from '~/@types/notify'
-import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
-import { useLocalStorage } from '~/hook'
-import parse from 'html-react-parser'
-import { UserSvg } from '~/components/_constant'
-import { TEMPLATE } from '~/constant/template'
-import { localStorageValue } from '~/hook/useLocalStorage'
 import { Prose } from '~/components'
-
-interface CreateStep4Props {
-    id: string
-    onSubmit: (data: localStorageValue<DraftNotify>) => Promise<void>
-}
+import { UserSvg } from '~/components/_constant'
+import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
+import { TEMPLATE } from '~/constant/template'
+import { useLocalStorage } from '~/hook'
 
 const Step4: React.FC<CreateStep4Props> = ({ id, onSubmit }) => {
     const [draftNotify] = useLocalStorage<DraftNotify>(LOCAL_STORAGE_KEY.STL_DRAFT_NOTIFY)

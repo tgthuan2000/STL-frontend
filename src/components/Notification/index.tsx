@@ -1,32 +1,26 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Menu } from '@headlessui/react'
-import BellIcon from '~/assets/notification.gif'
+import { SanityDocument, Transaction } from '@sanity/client'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import React, { useCallback, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Waypoint } from 'react-waypoint'
+import { ItemReadEvent, NotificationProps, ReadDetailEvent } from '~/@types/components'
 import { NotifyItem, NotifyPaginate } from '~/@types/notify'
+import Waiting from '~/assets/newtons-cradle.gif'
+import BellIcon from '~/assets/notification.gif'
+import { notifySound } from '~/constant/component'
+import { TEMPLATE } from '~/constant/template'
+import { useLoading } from '~/context'
+import { useWindowSize } from '~/hook'
 import { client } from '~/sanityConfig'
-import { SUBSCRIPTION_NOTIFY, GET_NOTIFY_PAGINATE, GET_NOTIFY_SUBSCRIPTION } from '~/schema/query/notify'
+import { GET_NOTIFY_PAGINATE, GET_NOTIFY_SUBSCRIPTION, SUBSCRIPTION_NOTIFY } from '~/schema/query/notify'
 import useAuth from '~/store/auth'
 import EmptyNotify from './Empty'
-import NotificationItem, { ItemReadEvent, ReadDetailEvent } from './Item'
-import { useNavigate } from 'react-router-dom'
-import { SanityDocument, Transaction } from '@sanity/client'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { useWindowSize } from '~/hook'
-import { TEMPLATE } from '~/constant/template'
-import Waiting from '~/assets/newtons-cradle.gif'
-import { Waypoint } from 'react-waypoint'
+import NotificationItem from './Item'
 import SkeletonNotify from './Skeleton'
-import { Howl, Howler } from 'howler'
-import { useLoading } from '~/context'
 
-const sound = new Howl({
-    src: ['notify-sound-2.wav'],
-})
-
-interface NotificationProps {
-    leftSide?: boolean
-}
 const Notification: React.FC<NotificationProps> = ({ leftSide = false }) => {
     const { userProfile } = useAuth()
     const { width } = useWindowSize()
@@ -100,7 +94,7 @@ const Notification: React.FC<NotificationProps> = ({ leftSide = false }) => {
                                         setTimeout(() => {
                                             setLoadNewNotify(false)
                                         }, 3000)
-                                        sound.play()
+                                        notifySound.play()
                                         break
                                     }
                                 }

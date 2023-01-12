@@ -1,11 +1,7 @@
 import clsx from 'clsx'
-import React from 'react'
 import parse from 'html-react-parser'
-
-interface ProseProps {
-    children: string
-    className?: string
-}
+import React from 'react'
+import { ProseProps } from '~/@types/components'
 
 const Prose: React.FC<ProseProps> = ({ children, className }) => {
     return (

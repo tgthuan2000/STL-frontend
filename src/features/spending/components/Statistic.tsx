@@ -1,5 +1,4 @@
 import clsx from 'clsx'
-import { isNil } from 'lodash'
 import numeral from 'numeral'
 import React from 'react'
 import { StatisticProps } from '~/@types/spending'

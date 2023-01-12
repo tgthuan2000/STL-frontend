@@ -1,18 +1,11 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import React, { useId } from 'react'
+import { Controller } from 'react-hook-form'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
-import { Controller } from 'react-hook-form'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { RichTextProps } from '~/@types/components'
+import { toolbarRichText } from '~/constant/component'
 import './index.css'
-
-const toolbar = [
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-    [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-    ['link', 'image'],
-    ['clean'],
-]
 
 const RichText: React.FC<RichTextProps> = ({ name, form, label, className, rules, disabled, ...props }) => {
     const id = useId()
@@ -33,7 +26,7 @@ const RichText: React.FC<RichTextProps> = ({ name, form, label, className, rules
                         <ReactQuill
                             id={id}
                             theme='snow'
-                            modules={{ toolbar }}
+                            modules={{ toolbar: toolbarRichText }}
                             className={disabled ? 'bg-gray-100 cursor-not-allowed select-none' : 'bg-white'}
                             readOnly={disabled}
                             {...field}

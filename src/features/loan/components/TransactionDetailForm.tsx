@@ -1,5 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { ArrowSmLeftIcon, TrashIcon, PencilIcon } from '@heroicons/react/outline'
+import { ArrowSmLeftIcon, PencilIcon, TrashIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import moment from 'moment'

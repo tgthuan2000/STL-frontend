@@ -1,28 +1,13 @@
 import { Combobox } from '@headlessui/react'
 import { RefreshIcon, SearchIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
-import { useForm } from 'react-hook-form'
-import React, { useEffect, useRef } from 'react'
-import { Controller } from 'react-hook-form'
-import { Waypoint } from 'react-waypoint'
 import { isEmpty } from 'lodash'
+import React, { useEffect, useRef } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { Waypoint } from 'react-waypoint'
+import { LazySearchSelectProps } from '~/@types/components'
 import { TEMPLATE } from '~/constant/template'
 
-interface LazySearchSelectProps {
-    className?: string
-    onChange: (value: any) => void
-    disabled?: boolean
-    label?: string
-    options?: any[]
-    hasNextPage?: boolean
-    onGetMore?: () => void
-    onSearch?: (value: string) => void
-    valueKey?: string
-    labelKey?: string
-    loading?: boolean
-    getOptionLabel?: (option: any, active: boolean) => React.ReactNode
-    autoFocus?: boolean
-}
 const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
     className,
     onChange,
