@@ -29,7 +29,7 @@ const AnnounceConfig = () => {
                 path=':id'
                 element={
                     <Transaction title='Chi tiết thông báo'>
-                        <Detail />
+                        <Detail isAdmin />
                     </Transaction>
                 }
             />

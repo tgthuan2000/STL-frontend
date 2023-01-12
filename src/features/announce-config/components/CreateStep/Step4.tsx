@@ -6,6 +6,7 @@ import parse from 'html-react-parser'
 import { UserSvg } from '~/components/_constant'
 import { TEMPLATE } from '~/constant/template'
 import { localStorageValue } from '~/hook/useLocalStorage'
+import { Prose } from '~/components'
 
 interface CreateStep4Props {
     id: string
@@ -65,15 +66,15 @@ const Step4: React.FC<CreateStep4Props> = ({ id, onSubmit }) => {
                 </div>
                 <div>
                     <p className='inline-block font-medium text-gray-900'>Mô tả ngắn</p>
-                    <div className='prose text-xs border rounded-lg sm:p-5 p-3 m-2'>
-                        {draftNotify?.description ? parse(draftNotify.description) : TEMPLATE.EMPTY_DESCRIPTION}
+                    <div className='border sm:p-5 p-3 m-2 rounded-lg'>
+                        <Prose>{draftNotify?.description ?? TEMPLATE.EMPTY_DESCRIPTION}</Prose>
                     </div>
                 </div>
 
                 <div>
                     <p className='inline-block font-medium text-gray-900'>Nội dung</p>
-                    <div className='prose text-xs border rounded-lg sm:p-5 p-3 m-2'>
-                        {draftNotify?.content && parse(draftNotify.content)}
+                    <div className='border sm:p-5 p-3 m-2 rounded-lg'>
+                        <Prose>{draftNotify?.content ?? TEMPLATE.EMPTY_DATA}</Prose>
                     </div>
                 </div>
             </form>
