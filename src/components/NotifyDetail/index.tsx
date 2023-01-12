@@ -21,7 +21,7 @@ const NotifyDetail: React.FC<NotifyDetailProps> = ({ isAdmin = false }) => {
 
     const [{ notify }, fetchData] = useQuery<NotifyDetailQueryData>(
         { notify: isAdmin ? GET_NOTIFY_ADMIN : GET_NOTIFY_BY_USER },
-        { notifyId: id as string, ...(isAdmin && { userId: userProfile?._id as string }) },
+        { notifyId: id as string, ...(!isAdmin && { userId: userProfile?._id as string }) },
         { notify: TAGS.ALTERNATE }
     )
 
