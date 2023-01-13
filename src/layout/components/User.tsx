@@ -2,7 +2,7 @@ import { Menu } from '@headlessui/react'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UserProps } from '~/@types/layout'
-import { UserSvg } from '~/components/_constant'
+import { Image } from '~/components'
 import { userOptionData } from '~/constant/layout'
 
 const User: React.FC<UserProps> = ({ userProfile, onLogout, onCloseSideBar }) => {
@@ -12,13 +12,7 @@ const User: React.FC<UserProps> = ({ userProfile, onLogout, onCloseSideBar }) =>
             <Menu.Button className='block'>
                 <div className='flex items-center'>
                     <div className='flex-shrink-0'>
-                        {userProfile?.image ? (
-                            <img className='inline-block h-10 w-10 rounded-full' src={userProfile?.image} alt='' />
-                        ) : (
-                            <div className='h-10 w-10 rounded-full overflow-hidden flex-shrink-0 bg-gray-400'>
-                                <UserSvg />
-                            </div>
-                        )}
+                        <Image src={userProfile?.image} />
                     </div>
                     <div className='ml-3 text-left flex-1 overflow-hidden'>
                         <p className='text-base font-normal text-white'>{userProfile?.userName}</p>

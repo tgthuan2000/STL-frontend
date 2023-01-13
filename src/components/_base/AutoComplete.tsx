@@ -9,7 +9,7 @@ import { Controller } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { AutoCompleteProps } from '~/@types/components'
 import { urlFor } from '~/sanityConfig'
-import UserSvg from '../_constant/UserSvg'
+import Image from '../Image'
 
 const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
     (
@@ -196,18 +196,13 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                                     {({ active, selected }) => (
                                                         <>
                                                             <div className='flex items-center gap-2'>
-                                                                {showImage &&
-                                                                    (item.image ? (
-                                                                        <img
-                                                                            src={urlFor(item.image)}
-                                                                            alt={item.name}
-                                                                            className='h-7 w-7 rounded-full'
-                                                                        />
-                                                                    ) : (
-                                                                        <span className='inline-block h-7 w-7 rounded-full overflow-hidden bg-gray-100'>
-                                                                            <UserSvg />
-                                                                        </span>
-                                                                    ))}
+                                                                {showImage && (
+                                                                    <Image
+                                                                        src={urlFor(item.image)}
+                                                                        alt={item.name}
+                                                                        size='small'
+                                                                    />
+                                                                )}
                                                                 <span
                                                                     className={clsx(
                                                                         'block truncate',
