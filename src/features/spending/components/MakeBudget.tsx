@@ -86,6 +86,7 @@ const MakeBudget = () => {
     )
     const [wrapRef] = useAutoAnimate<HTMLDivElement>()
     const [loadingRef] = useAutoAnimate<HTMLButtonElement>()
+    const [loadingRef2] = useAutoAnimate<HTMLButtonElement>()
 
     useEffect(() => {
         if (firstRef.current) {
@@ -275,23 +276,46 @@ const MakeBudget = () => {
                                 />
                             </div>
 
-                            <Button
-                                type='button'
-                                color='outline-prussianBlue'
-                                className='items-center gap-1 truncate'
-                                onClick={handleAddItem}
-                                disabled={budgetSpending.loading || methodSpending.loading || loading.submit}
-                                ref={loadingRef}
-                            >
-                                {budgetSpending.loading ? (
-                                    <RefreshIcon className='h-6 w-6 animate-spin -scale-100' />
-                                ) : (
-                                    <>
-                                        <PlusCircleIcon className='h-6 w-6' />
-                                        Thêm phương thức
-                                    </>
-                                )}
-                            </Button>
+                            <div className='flex justify-between items-center'>
+                                <Button
+                                    type='button'
+                                    color='outline-prussianBlue'
+                                    className='items-center gap-1 truncate'
+                                    onClick={handleAddItem}
+                                    disabled={budgetSpending.loading || methodSpending.loading || loading.submit}
+                                    ref={loadingRef}
+                                >
+                                    {budgetSpending.loading ? (
+                                        <RefreshIcon className='h-6 w-6 animate-spin -scale-100' />
+                                    ) : (
+                                        <>
+                                            <PlusCircleIcon className='h-6 w-6' />
+                                            Thêm phương thức
+                                        </>
+                                    )}
+                                </Button>
+                                <Button
+                                    type='button'
+                                    color='outline-yellow'
+                                    className='items-center gap-1 truncate'
+                                    onClick={() =>
+                                        handleChangeDate(moment(form.getValues('date')).subtract(1, 'month').toDate())
+                                    }
+                                    disabled={
+                                        budgetSpending.loading ||
+                                        methodSpending.loading ||
+                                        loading.submit ||
+                                        !isEmpty(fields)
+                                    }
+                                    ref={loadingRef2}
+                                >
+                                    {budgetSpending.loading ? (
+                                        <RefreshIcon className='h-6 w-6 animate-spin -scale-100' />
+                                    ) : (
+                                        <>Như tháng trước đó</>
+                                    )}
+                                </Button>
+                            </div>
                             <div className='space-y-6' ref={wrapRef}>
                                 {fields.map((item, index) => (
                                     <div key={item.id}>
