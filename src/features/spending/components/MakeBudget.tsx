@@ -126,7 +126,11 @@ const MakeBudget = () => {
             stateRef.current = defaultStateRef
         }
         return () => {
-            stateRef.current = defaultStateRef
+            if (!isPrevMonthClick.current) {
+                stateRef.current = defaultStateRef
+            } else {
+                stateRef.current.updates = []
+            }
         }
     }, [budgetSpending.data])
 
