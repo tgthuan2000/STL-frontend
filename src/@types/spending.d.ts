@@ -207,7 +207,7 @@ export interface DataCategory {
 
 export interface IMakeBudgetForm {
     date: Date
-    MethodSpending: Array<{ _id: string; amount: number; methodSpending: IMethodSpending }>
+    MethodSpending: Array<{ _id: string; amount: number; methodSpending: IMethodSpending }> | undefined
 }
 
 export interface StateRef {
