@@ -1,8 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { CreateStep4Props } from '~/@types/announce-config'
 import { DraftNotify } from '~/@types/notify'
-import { Prose } from '~/components'
-import { UserSvg } from '~/components/_constant'
+import { Image, Prose } from '~/components'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { TEMPLATE } from '~/constant/template'
 import { useLocalStorage } from '~/hook'
@@ -34,17 +33,8 @@ const Step4: React.FC<CreateStep4Props> = ({ id, onSubmit }) => {
                         <div className='border rounded-lg m-2'>
                             {draftNotify?.users?.map((user) => (
                                 <div key={user._id} className='px-4 py-2 flex gap-2 items-center'>
-                                    {user.image ? (
-                                        <img
-                                            src={user.image}
-                                            alt={user.userName}
-                                            className='h-8 w-8 rounded-full flex-shrink-0 object-cover'
-                                        />
-                                    ) : (
-                                        <div className='h-8 w-8 rounded-full overflow-hidden flex-shrink-0 bg-gray-400'>
-                                            <UserSvg />
-                                        </div>
-                                    )}
+                                    <Image src={user.image} alt={user.userName} size='small' />
+
                                     <div className='flex-1'>
                                         <p className='font-medium text-gray-900 truncate'>{user.userName}</p>
                                         <small className='font-normal text-gray-500 truncate block'>{user.email}</small>

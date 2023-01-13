@@ -411,3 +411,11 @@ export interface TransactionProps {
     children?: React.ReactNode
     hasBack?: boolean
 }
+
+export interface ImageProps {
+    src: string | undefined
+    alt?: string
+    className?: string
+    errorComp?: React.ReactNode
+    size?: 'small' | 'medium' | 'large'
+}

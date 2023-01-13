@@ -1,11 +1,11 @@
 import { CredentialResponse } from '@react-oauth/google'
-import { SanityDocument } from '@sanity/client'
+import { SanityAssetDocument, SanityDocument } from '@sanity/client'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import React from 'react'
 
 export interface IUserProfile {
     _id: string
-    image: string
+    image: SanityAssetDocument<string> | string
     email: string
     userName: string
     google: string

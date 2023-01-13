@@ -8,9 +8,8 @@ import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { CreateStep3Props, QueryDataStep3 } from '~/@types/announce-config'
 import { DraftNotify, NotifyAssignForm } from '~/@types/notify'
-import { LazySearchSelect } from '~/components'
+import { Image, LazySearchSelect } from '~/components'
 import { Toggle } from '~/components/_base'
-import { UserSvg } from '~/components/_constant'
 import { COUNT_PAGINATE, TAGS } from '~/constant'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { TEMPLATE } from '~/constant/template'
@@ -117,13 +116,7 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                     getOptionLabel={(option, active) => {
                         return (
                             <div className='flex items-center gap-2'>
-                                {option.image ? (
-                                    <img src={option.image} alt={option.userName} className='h-8 w-8 rounded-full' />
-                                ) : (
-                                    <span className='inline-block h-8 w-8 rounded-full overflow-hidden bg-gray-100'>
-                                        <UserSvg />
-                                    </span>
-                                )}
+                                <Image src={option.image} alt={option.userName} size='small' />
                                 <div className='flex-1'>
                                     <p
                                         className={clsx(
@@ -155,17 +148,7 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                         ) : (
                             __users.map((user) => (
                                 <div key={user._id} className='px-4 py-2 flex gap-2 items-center'>
-                                    {user.image ? (
-                                        <img
-                                            src={user.image}
-                                            alt={user.userName}
-                                            className='h-8 w-8 rounded-full flex-shrink-0 object-cover'
-                                        />
-                                    ) : (
-                                        <div className='h-8 w-8 rounded-full overflow-hidden flex-shrink-0 bg-gray-400'>
-                                            <UserSvg />
-                                        </div>
-                                    )}
+                                    <Image src={user.image} alt={user.userName} size='small' />
                                     <div className='flex-1'>
                                         <p className='font-medium text-gray-900 truncate'>{user.userName}</p>
                                         <small className='font-normal text-gray-500 truncate block'>{user.email}</small>
