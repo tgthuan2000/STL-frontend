@@ -73,10 +73,10 @@ const MakeBudget = () => {
         const prevValues = stateRef.current
 
         const methods = {
-            push: [...prevValues[option], value],
-            remove: prevValues[option].filter((item) => item !== value),
+            push: () => [...prevValues[option], value],
+            remove: () => prevValues[option].filter((item) => item !== value),
         }
-        stateRef.current = { ...prevValues, [option]: methods[method] }
+        stateRef.current = { ...prevValues, [option]: methods[method]() }
     }
 
     const [{ methodSpending, budgetSpending }, fetchData, deleteCacheData, reloadData] = useQuery<MakeBudgetQueryData>(
@@ -115,15 +115,17 @@ const MakeBudget = () => {
             form.setValue('MethodSpending', budgetData?.MethodSpending)
             if (!isPrevMonthClick.current) {
                 form.setValue('date', moment(budgetData?.date).toDate())
+                budgetData?.MethodSpending.forEach((item) => {
+                    setStateRef('updates', 'push', item._id)
+                })
             } else {
                 isPrevMonthClick.current = false
             }
-
-            budgetData?.MethodSpending.forEach((item) => {
-                setStateRef('updates', 'push', item._id)
-            })
         } else {
             form.setValue('MethodSpending', [])
+            stateRef.current = defaultStateRef
+        }
+        return () => {
             stateRef.current = defaultStateRef
         }
     }, [budgetSpending.data])
@@ -167,12 +169,12 @@ const MakeBudget = () => {
             const { MethodSpending, date } = data
             const _date = moment(date)
             const _id = getBudgetId(userProfile?._id as string, _date)
-            const dateFormated = _date.format('YYYY-MM-01')
+            const dateFormatted = _date.format('YYYY-MM-01')
             const __ = client.transaction()
             __.createIfNotExists({
                 _type: 'budget',
                 _id,
-                date: dateFormated,
+                date: dateFormatted,
                 user: { _type: 'reference', _ref: userProfile?._id },
             })
 
@@ -221,7 +223,11 @@ const MakeBudget = () => {
             await __.commit()
             stateRef.current = defaultStateRef
             deleteCacheData('budgetSpending')
-            reloadData()
+            if (params.budgetId === _id) {
+                reloadData()
+            } else {
+                setQueryDataFn(date)
+            }
         } catch (error) {
             console.log(error)
         } finally {
@@ -246,6 +252,11 @@ const MakeBudget = () => {
     }
 
     const handleChangeDate = (date: Date) => {
+        setQueryDataFn(date)
+        deleteCacheData('budgetSpending')
+    }
+
+    const setQueryDataFn = (date: Date) => {
         const _date = moment(date)
         const _id = getBudgetId(userProfile?._id as string, _date)
         setQueryData((prev) => ({
@@ -257,7 +268,6 @@ const MakeBudget = () => {
                 endDate: getDateOfMonth('end', _date),
             },
         }))
-        deleteCacheData('budgetSpending')
     }
 
     const handlePreviousMonth = () => {
