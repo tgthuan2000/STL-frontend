@@ -417,5 +417,6 @@ export interface ImageProps {
     alt?: string
     className?: string
     errorComp?: React.ReactNode
-    size?: 'small' | 'medium' | 'large'
+    size?: 'small' | 'medium' | 'large' | 'custom'
+    className?: string
 }
