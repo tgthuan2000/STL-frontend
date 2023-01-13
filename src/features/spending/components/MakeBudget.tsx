@@ -1,5 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { PlusCircleIcon, RefreshIcon, TrashIcon } from '@heroicons/react/outline'
+import { ArrowSmLeftIcon, PlusCircleIcon, RefreshIcon, TrashIcon } from '@heroicons/react/outline'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
@@ -87,6 +87,7 @@ const MakeBudget = () => {
     const [wrapRef] = useAutoAnimate<HTMLDivElement>()
     const [loadingRef] = useAutoAnimate<HTMLButtonElement>()
     const [loadingRef2] = useAutoAnimate<HTMLButtonElement>()
+    const isPrevMonthClick = useRef(false)
 
     useEffect(() => {
         if (firstRef.current) {
@@ -111,10 +112,12 @@ const MakeBudget = () => {
     useEffect(() => {
         const budgetData = budgetSpending.data
         if (!isEmpty(budgetData)) {
-            form.reset({
-                date: moment(budgetData?.date).toDate(),
-                MethodSpending: budgetData?.MethodSpending,
-            })
+            form.setValue('MethodSpending', budgetData?.MethodSpending)
+            if (!isPrevMonthClick.current) {
+                form.setValue('date', moment(budgetData?.date).toDate())
+            } else {
+                isPrevMonthClick.current = false
+            }
 
             budgetData?.MethodSpending.forEach((item) => {
                 setStateRef('updates', 'push', item._id)
@@ -178,7 +181,7 @@ const MakeBudget = () => {
             // update methodSpending
             if (!isEmpty(updates)) {
                 updates.forEach((item) => {
-                    const found = MethodSpending.find((i) => i._id === item)
+                    const found = MethodSpending?.find((i) => i._id === item)
                     if (found) {
                         const { amount, methodSpending } = found
                         __.patch(item, {
@@ -198,9 +201,9 @@ const MakeBudget = () => {
             }
 
             // create methodSpending
-            const creates = MethodSpending.filter((item) => !item._id || !updates.concat(removes).includes(item._id))
+            const creates = MethodSpending?.filter((item) => !item._id || !updates.concat(removes).includes(item._id))
 
-            if (!isEmpty(creates)) {
+            if (creates && !isEmpty(creates)) {
                 creates.forEach((item) => {
                     const { amount, methodSpending } = item
                     if (amount && methodSpending) {
@@ -257,6 +260,11 @@ const MakeBudget = () => {
         deleteCacheData('budgetSpending')
     }
 
+    const handlePreviousMonth = () => {
+        isPrevMonthClick.current = true
+        handleChangeDate(moment(form.getValues('date')).subtract(1, 'month').toDate())
+    }
+
     return (
         <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
             <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
@@ -298,9 +306,7 @@ const MakeBudget = () => {
                                     type='button'
                                     color='outline-yellow'
                                     className='items-center gap-1 truncate'
-                                    onClick={() =>
-                                        handleChangeDate(moment(form.getValues('date')).subtract(1, 'month').toDate())
-                                    }
+                                    onClick={handlePreviousMonth}
                                     disabled={
                                         budgetSpending.loading ||
                                         methodSpending.loading ||
@@ -312,7 +318,7 @@ const MakeBudget = () => {
                                     {budgetSpending.loading ? (
                                         <RefreshIcon className='h-6 w-6 animate-spin -scale-100' />
                                     ) : (
-                                        <>Như tháng trước đó</>
+                                        <ArrowSmLeftIcon className='h-6 w-6' />
                                     )}
                                 </Button>
                             </div>
