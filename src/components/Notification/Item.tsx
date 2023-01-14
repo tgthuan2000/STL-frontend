@@ -33,10 +33,13 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, o
                         </span>
                     </div>
                     <Prose
-                        className={clsx('text-xs mt-1 line-clamp-3 max-w-[calc(100%-80px)]', {
-                            'italic text-gray-400': !data.notify.description,
-                            'text-gray-500': !!data.notify.description,
-                        })}
+                        className={clsx(
+                            'text-xs mt-1 sm:max-w-[calc(100%-80px)] max-w-[calc(100%-40px)] line-clamp-3',
+                            {
+                                'italic text-gray-400': !data.notify.description,
+                                'text-gray-500': !!data.notify.description,
+                            }
+                        )}
                     >
                         {data.notify.description ?? TEMPLATE.EMPTY_DESCRIPTION}
                     </Prose>

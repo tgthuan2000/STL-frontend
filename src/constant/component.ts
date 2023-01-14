@@ -36,4 +36,5 @@ export const getSizeAvatarUser = {
     small: 'h-8 w-8',
     medium: 'h-10 w-10',
     large: 'h-12 w-12',
+    custom: '',
 }

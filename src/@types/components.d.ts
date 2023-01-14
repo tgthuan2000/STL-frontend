@@ -417,5 +417,13 @@ export interface ImageProps {
     alt?: string
     className?: string
     errorComp?: React.ReactNode
-    size?: 'small' | 'medium' | 'large'
+    size?: 'small' | 'medium' | 'large' | 'custom'
+    className?: string
+}
+
+export interface ChipProps {
+    children: React.ReactNode
+    onClick?: (data: any) => void
+    disabled?: boolean
+    hidden?: boolean
 }
