@@ -238,3 +238,13 @@ export interface MakeBudgetProps {
     onDelItem: (key: StateRefKey, id: string | null | undefined) => void
     loading?: boolean
 }
+
+export interface BudgetItemProps {
+    name: string
+    textColor: string
+    amount: number
+    percent: number
+    bgColor: string
+    isOver: boolean
+    totalAmounts: number
+}
