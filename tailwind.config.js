@@ -3,6 +3,22 @@ module.exports = {
     content: ['./src/**/*.{js,ts,jsx,tsx}'],
     theme: {
         extend: {
+            keyframes: {
+                bgAnimate: {
+                    '0%, 100%': {
+                        backgroundPosition: '0% 50%',
+                    },
+                    '50%': {
+                        backgroundPosition: '100% 50%',
+                    },
+                },
+            },
+            animation: {
+                'bg-animate': 'bgAnimate 3s ease infinite',
+            },
+            backgroundSize: {
+                '400%': '400%',
+            },
             colors: {
                 white: '#ffffff',
                 gray: {

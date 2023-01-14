@@ -158,6 +158,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
         | 'outline-radicalRed'
         | 'outline-prussianBlue'
         | 'outline-yellow'
+        | 'custom'
     disabled?: boolean
 }
 
