@@ -28,9 +28,9 @@ const Auth = () => {
                     />
                     <span className='text-xs'>Hoặc</span>
                     <Button
-                        className='!text-xs !w-auto'
+                        className='sm:!text-sm !text-xs sm:!py-3 sm:!px-6 !w-auto bg-gradient-to-r from-[#12c2e9] via-[#c471ed] to-[#f64f59] animate-bg-animate bg-400% text-white'
                         type='button'
-                        color='cyan'
+                        color='custom'
                         onClick={() => setShowFormLogin(true)}
                     >
                         Đăng nhập bằng email & mật khẩu
