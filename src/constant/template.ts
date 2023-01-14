@@ -12,6 +12,7 @@ export const TEMPLATE = {
     EMPTY_DESCRIPTION: 'Không có mô tả',
     NEW_NOTIFY: 'Bạn nhận được 1 thông báo mới',
     COMING_SOON: 'Chức năng đang được phát triển!',
+    NOT_ROLE: 'Bạn không thể truy cập trang này do tài khoản không có quyền!',
 }
 
 export enum E_FILTER_DATE {
