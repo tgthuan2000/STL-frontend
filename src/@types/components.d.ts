@@ -228,17 +228,17 @@ export interface Box2Props {
     onReload: () => void
 }
 
-interface TabData {
+interface TabsLinkData {
     name: string
     href: string
 }
 
-export interface TabsProps {
-    data: TabData[]
+export interface TabsLinkProps {
+    data: TabsLinkData[]
 }
 
-export interface TabItemProps {
-    tab: TabData
+export interface TabLinkItemProps {
+    tab: TabsLinkData
     navigate: NavigateFunction
     tabsRef: React.RefObject<HTMLAnchorElement[]>
 }

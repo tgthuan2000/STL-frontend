@@ -1,3 +1,5 @@
+import React from 'react'
+import { UseFormReturn } from 'react-hook-form'
 import { KIND_SPENDING } from '~/constant/spending'
 import { IUserProfile } from './auth'
 import { IKindSpending } from './context'
@@ -24,7 +26,8 @@ export interface IBudgetSpending {
     _updatedAt: string
     date: string
     user: IUserProfile
-    MethodSpending: IBudgetDetail[]
+    MethodSpending: Array<IBudgetDetail & { methodSpending: IMethodSpending }>
+    CategorySpending: Array<IBudgetDetail & { categorySpending: ICategorySpending }>
 }
 export interface IBudgetDetail {
     _id: string
@@ -32,7 +35,6 @@ export interface IBudgetDetail {
     _updatedAt: string
     amount: number
     amounts: number[]
-    methodSpending: IMethodSpending
     budgetSpending: IBudgetSpending
     user: IUserProfile
 }
@@ -103,7 +105,7 @@ export interface RecentProps {
     loading: boolean
 }
 export interface BudgetProps {
-    data: IBudgetSpending[] | undefined
+    data: IBudgetSpending | undefined
     loading: boolean
 }
 
@@ -147,6 +149,7 @@ export interface MakeIncomeQueryData {
 }
 export interface MakeBudgetQueryData {
     methodSpending: IMethodSpending[]
+    categorySpending: ICategorySpending[]
     budgetSpending: IBudgetSpending
 }
 
@@ -162,7 +165,7 @@ export interface TransactionDetailQueryData {
 export interface DashboardQueryData {
     recent: ISpendingData[]
     method: IMethodSpending[]
-    budget?: IBudgetSpending[]
+    budget?: IBudgetSpending
     statistic: IStatisticData[]
 }
 export interface RecentQueryData {
@@ -208,9 +211,30 @@ export interface DataCategory {
 export interface IMakeBudgetForm {
     date: Date
     MethodSpending: Array<{ _id: string; amount: number; methodSpending: IMethodSpending }> | undefined
+    CategorySpending: Array<{ _id: string; amount: number; categorySpending: ICategorySpending }> | undefined
 }
 
+export type StateRefKey = 'CategorySpending' | 'MethodSpending'
+
+type StateRefType = { [key in StateRefKey]: string[] }
 export interface StateRef {
-    removes: string[]
-    updates: string[]
+    removes: StateRefType
+    updates: StateRefType
+}
+
+export interface TabsProps {
+    options: any[]
+    idKey?: string
+    tabLabelKey?: string
+    tabContentKey?: string
+    getOptionLabel?: (option: any) => React.ReactNode
+    getOptionContent?: (option: any) => React.ReactNode
+    className?: string
+}
+
+export interface MakeBudgetProps {
+    form: UseFormReturn<IMakeBudgetForm, object>
+    budgetLoading: any
+    onDelItem: (key: StateRefKey, id: string | null | undefined) => void
+    loading?: boolean
 }
