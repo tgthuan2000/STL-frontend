@@ -1,6 +1,7 @@
 import moment from 'moment'
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
-import { IConfig, IConfigContext } from '~/@types/context'
+import { IConfig, IConfigContext, IRoleControl } from '~/@types/context'
+import { PERMISSION } from '~/constant/permission'
 import { KIND_SPENDING } from '~/constant/spending'
 import { client } from '~/sanityConfig'
 import { GET_CONFIG } from '~/schema/query/config'
@@ -10,16 +11,19 @@ import { useLoading } from './LoadingContext'
 const ConfigContext = createContext<IConfigContext>({
     kindSpending: [],
     budgetSpending: { _id: null },
+    role: null,
     getKindSpendingId: () => '',
     getKindSpendingIds: () => [''],
+    hasPermissions: () => false,
     ok: false,
 })
 
 const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
     const { userProfile } = useAuth()
-    const [config, setConfig] = useState<IConfig>({
+    const [config, setConfig] = useState<Omit<IConfig, 'role'> & { role: IRoleControl | null }>({
         kindSpending: [],
         budgetSpending: { _id: null },
+        role: null,
     })
     const [ok, setOk] = useState(false)
 
@@ -29,11 +33,15 @@ const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
         const getConfig = async () => {
             try {
                 setConfigLoading(true)
-                const res: IConfig = await client.fetch(GET_CONFIG, {
+                const { budgetSpending, kindSpending, role }: IConfig = await client.fetch(GET_CONFIG, {
                     date: moment().format('YYYY-MM-01'),
                     userId: userProfile?._id as string,
                 })
-                setConfig(res)
+                setConfig({
+                    budgetSpending,
+                    kindSpending,
+                    role: role?.role as IRoleControl,
+                })
                 setOk(true)
             } catch (error) {
                 console.log(error)
@@ -64,12 +72,25 @@ const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
         },
         [config.kindSpending]
     )
+
+    const hasPermissions = useCallback(
+        (permissions: Array<PERMISSION>) => {
+            if (!config.role) {
+                return false
+            }
+            return config.role.permissions.some((item) => permissions.includes(item._id))
+        },
+        [config.role]
+    )
+
     const value: IConfigContext = {
         ok,
         kindSpending: config.kindSpending,
         budgetSpending: config.budgetSpending,
+        role: config.role,
         getKindSpendingId,
         getKindSpendingIds,
+        hasPermissions,
     }
 
     return <ConfigContext.Provider value={value}>{children}</ConfigContext.Provider>

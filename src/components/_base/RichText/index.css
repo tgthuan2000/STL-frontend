@@ -1,0 +1,19 @@
+.ql-editor {
+    @apply min-h-[400px];
+}
+
+.xs .ql-editor {
+    @apply min-h-[60px];
+}
+
+.sm .ql-editor {
+    @apply min-h-[120px];
+}
+
+.md .ql-editor {
+    @apply min-h-[200px];
+}
+
+.lg .ql-editor {
+    @apply min-h-[300px];
+}

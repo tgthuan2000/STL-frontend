@@ -1,11 +1,14 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { BadgeCheckIcon, ExclamationCircleIcon } from '@heroicons/react/outline'
 import { isEmpty } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { AddCategoryQueryData, IAddCategoryForm } from '~/@types/spending'
 import { Button } from '~/components'
 import { Input, Selection } from '~/components/_base'
+import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import useQuery, { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
@@ -14,9 +17,6 @@ import { GET_CATEGORY_SPENDING } from '~/schema/query/spending'
 import { getCategorySpending } from '~/services/query'
 import useAuth from '~/store/auth'
 import { searchName } from '../services'
-import { BadgeCheckIcon, ExclamationCircleIcon } from '@heroicons/react/outline'
-import { toast } from 'react-toastify'
-import { TAGS } from '~/constant'
 
 const AddCategory = () => {
     const { setIsOpen } = useSlideOver()
@@ -102,7 +102,7 @@ const AddCategory = () => {
             ])
             console.log(result)
             toast.success<string>('Tạo mới thể loại thành công!')
-            form.reset({ name: '' }, { keepDefaultValues: true })
+            form.reset({ name: '', kindSpending }, { keepDefaultValues: true })
         } catch (error) {
             console.log(error)
         } finally {

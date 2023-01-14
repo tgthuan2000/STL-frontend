@@ -1,32 +1,22 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { PlusCircleIcon, RefreshIcon, TrashIcon } from '@heroicons/react/outline'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { IMethodSpending, MakeBudgetQueryData } from '~/@types/spending'
-import { Button } from '~/components'
+import * as yup from 'yup'
+import { IMakeBudgetForm, MakeBudgetQueryData, StateRef } from '~/@types/spending'
+import { Button, Chip } from '~/components'
 import { AutoComplete, DatePicker, Input } from '~/components/_base'
+import { TAGS } from '~/constant'
 import { useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_BUDGET_BY_MONTH, GET_METHOD_SPENDING } from '~/schema/query/spending'
 import { getBudgetId, getDateOfMonth } from '~/services'
 import useAuth from '~/store/auth'
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { TAGS } from '~/constant'
-
-interface IMakeBudgetForm {
-    date: Date
-    MethodSpending: Array<{ _id: string; amount: number; methodSpending: IMethodSpending }>
-}
-
-interface StateRef {
-    removes: string[]
-    updates: string[]
-}
 
 const defaultStateRef = {
     removes: [],
@@ -83,10 +73,10 @@ const MakeBudget = () => {
         const prevValues = stateRef.current
 
         const methods = {
-            push: [...prevValues[option], value],
-            remove: prevValues[option].filter((item) => item !== value),
+            push: () => [...prevValues[option], value],
+            remove: () => prevValues[option].filter((item) => item !== value),
         }
-        stateRef.current = { ...prevValues, [option]: methods[method] }
+        stateRef.current = { ...prevValues, [option]: methods[method]() }
     }
 
     const [{ methodSpending, budgetSpending }, fetchData, deleteCacheData, reloadData] = useQuery<MakeBudgetQueryData>(
@@ -96,6 +86,7 @@ const MakeBudget = () => {
     )
     const [wrapRef] = useAutoAnimate<HTMLDivElement>()
     const [loadingRef] = useAutoAnimate<HTMLButtonElement>()
+    const isPrevMonthClick = useRef(false)
 
     useEffect(() => {
         if (firstRef.current) {
@@ -120,17 +111,25 @@ const MakeBudget = () => {
     useEffect(() => {
         const budgetData = budgetSpending.data
         if (!isEmpty(budgetData)) {
-            form.reset({
-                date: moment(budgetData?.date).toDate(),
-                MethodSpending: budgetData?.MethodSpending,
-            })
-
-            budgetData?.MethodSpending.forEach((item) => {
-                setStateRef('updates', 'push', item._id)
-            })
+            form.setValue('MethodSpending', budgetData?.MethodSpending)
+            if (!isPrevMonthClick.current) {
+                form.setValue('date', moment(budgetData?.date).toDate())
+                budgetData?.MethodSpending.forEach((item) => {
+                    setStateRef('updates', 'push', item._id)
+                })
+            } else {
+                isPrevMonthClick.current = false
+            }
         } else {
             form.setValue('MethodSpending', [])
             stateRef.current = defaultStateRef
+        }
+        return () => {
+            if (!isPrevMonthClick.current) {
+                stateRef.current = defaultStateRef
+            } else {
+                stateRef.current.updates = []
+            }
         }
     }, [budgetSpending.data])
 
@@ -173,12 +172,12 @@ const MakeBudget = () => {
             const { MethodSpending, date } = data
             const _date = moment(date)
             const _id = getBudgetId(userProfile?._id as string, _date)
-            const dateFormated = _date.format('YYYY-MM-01')
+            const dateFormatted = _date.format('YYYY-MM-01')
             const __ = client.transaction()
             __.createIfNotExists({
                 _type: 'budget',
                 _id,
-                date: dateFormated,
+                date: dateFormatted,
                 user: { _type: 'reference', _ref: userProfile?._id },
             })
 
@@ -187,7 +186,7 @@ const MakeBudget = () => {
             // update methodSpending
             if (!isEmpty(updates)) {
                 updates.forEach((item) => {
-                    const found = MethodSpending.find((i) => i._id === item)
+                    const found = MethodSpending?.find((i) => i._id === item)
                     if (found) {
                         const { amount, methodSpending } = found
                         __.patch(item, {
@@ -207,9 +206,9 @@ const MakeBudget = () => {
             }
 
             // create methodSpending
-            const creates = MethodSpending.filter((item) => !item._id || !updates.concat(removes).includes(item._id))
+            const creates = MethodSpending?.filter((item) => !item._id || !updates.concat(removes).includes(item._id))
 
-            if (!isEmpty(creates)) {
+            if (creates && !isEmpty(creates)) {
                 creates.forEach((item) => {
                     const { amount, methodSpending } = item
                     if (amount && methodSpending) {
@@ -227,7 +226,11 @@ const MakeBudget = () => {
             await __.commit()
             stateRef.current = defaultStateRef
             deleteCacheData('budgetSpending')
-            reloadData()
+            if (params.budgetId === _id) {
+                reloadData()
+            } else {
+                setQueryDataFn(date)
+            }
         } catch (error) {
             console.log(error)
         } finally {
@@ -252,6 +255,11 @@ const MakeBudget = () => {
     }
 
     const handleChangeDate = (date: Date) => {
+        setQueryDataFn(date)
+        deleteCacheData('budgetSpending')
+    }
+
+    const setQueryDataFn = (date: Date) => {
         const _date = moment(date)
         const _id = getBudgetId(userProfile?._id as string, _date)
         setQueryData((prev) => ({
@@ -263,7 +271,11 @@ const MakeBudget = () => {
                 endDate: getDateOfMonth('end', _date),
             },
         }))
-        deleteCacheData('budgetSpending')
+    }
+
+    const handlePreviousMonth = () => {
+        isPrevMonthClick.current = true
+        handleChangeDate(moment(form.getValues('date')).subtract(1, 'month').toDate())
     }
 
     return (
@@ -284,24 +296,32 @@ const MakeBudget = () => {
                                     onChange={handleChangeDate}
                                 />
                             </div>
-
-                            <Button
-                                type='button'
-                                color='outline-prussianBlue'
-                                className='items-center gap-1 truncate'
-                                onClick={handleAddItem}
-                                disabled={budgetSpending.loading || methodSpending.loading || loading.submit}
-                                ref={loadingRef}
-                            >
-                                {budgetSpending.loading ? (
-                                    <RefreshIcon className='h-6 w-6 animate-spin -scale-100' />
-                                ) : (
-                                    <>
-                                        <PlusCircleIcon className='h-6 w-6' />
-                                        Thêm phương thức
-                                    </>
-                                )}
-                            </Button>
+                            <div className='flex flex-col gap-2 items-start'>
+                                <Button
+                                    type='button'
+                                    color='outline-prussianBlue'
+                                    className='items-center gap-1 truncate'
+                                    onClick={handleAddItem}
+                                    disabled={budgetSpending.loading || methodSpending.loading || loading.submit}
+                                    ref={loadingRef}
+                                >
+                                    {budgetSpending.loading ? (
+                                        <RefreshIcon className='h-6 w-6 animate-spin -scale-100' />
+                                    ) : (
+                                        <>
+                                            <PlusCircleIcon className='h-6 w-6' />
+                                            Thêm phương thức
+                                        </>
+                                    )}
+                                </Button>
+                                <Chip
+                                    onClick={handlePreviousMonth}
+                                    disabled={budgetSpending.loading || methodSpending.loading || loading.submit}
+                                    hidden={!isEmpty(fields)}
+                                >
+                                    Chọn theo tháng trước
+                                </Chip>
+                            </div>
                             <div className='space-y-6' ref={wrapRef}>
                                 {fields.map((item, index) => (
                                     <div key={item.id}>

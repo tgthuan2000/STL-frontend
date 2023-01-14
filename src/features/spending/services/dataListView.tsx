@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import moment from 'moment'
 import numeral from 'numeral'
-import { TableColumn } from '~/components/Table'
+import { TableColumn } from '~/@types/components'
 import { DATE_FORMAT } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { TEMPLATE } from '~/constant/template'

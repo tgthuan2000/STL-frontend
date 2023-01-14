@@ -1,5 +1,5 @@
-import React from 'react'
 import { RefreshIcon } from '@heroicons/react/outline'
+import React from 'react'
 import { LoadingButtonProps } from '~/@types/components'
 
 const LoadingButton: React.FC<LoadingButtonProps> = ({ onReload, disabled }) => {

@@ -1,12 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Listbox } from '@headlessui/react'
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
 import clsx from 'clsx'
+import { find, get, isNil } from 'lodash'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Controller } from 'react-hook-form'
 import { SelectionProps } from '~/@types/components'
 import { people } from '~/constant/components'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-import _, { find, get, isNil } from 'lodash'
-import { Controller } from 'react-hook-form'
 
 const Selection: React.FC<SelectionProps> = ({
     label,
@@ -62,7 +62,7 @@ const Selection: React.FC<SelectionProps> = ({
                                     <Listbox.Button className='relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'>
                                         <span
                                             className={clsx('block truncate', {
-                                                'text-gray-400': _.isNull(field.value),
+                                                'text-gray-400': isNil(field.value),
                                             })}
                                         >
                                             {field.value?.[valueKey] ?? placeholder}

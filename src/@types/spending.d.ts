@@ -204,3 +204,13 @@ export interface IDetailSpendingForm {
 export interface DataCategory {
     categorySpending: ICategorySpending[]
 }
+
+export interface IMakeBudgetForm {
+    date: Date
+    MethodSpending: Array<{ _id: string; amount: number; methodSpending: IMethodSpending }> | undefined
+}
+
+export interface StateRef {
+    removes: string[]
+    updates: string[]
+}

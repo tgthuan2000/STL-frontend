@@ -4,17 +4,17 @@ import {
     LogoutIcon,
     MinusCircleIcon,
     PlusCircleIcon,
+    PuzzleIcon,
     QrcodeIcon,
     SwitchHorizontalIcon,
     TemplateIcon,
     TrendingUpIcon,
     UserAddIcon,
-    PuzzleIcon,
 } from '@heroicons/react/outline'
 import { googleLogout } from '@react-oauth/google'
 import { IMenuBtn } from '~/@types/components'
 import { CreateMember, MakeGetLoan } from '~/features/loan/components'
-import { MakeIncome, MakeCost, MakeTransfer, MakeBudget, AddCategory, AddMethod } from '~/features/spending/components'
+import { AddCategory, AddMethod, MakeBudget, MakeCost, MakeIncome, MakeTransfer } from '~/features/spending/components'
 
 export const menuMobile: IMenuBtn[] = [
     {
@@ -317,14 +317,14 @@ export const menuLoanPages: IMenuBtn[] = [
 ]
 
 export const people = [
-    { id: 1, name: 'Wade Cooper' },
-    { id: 2, name: 'Arlene Mccoy' },
-    { id: 3, name: 'Devon Webb' },
-    { id: 4, name: 'Tom Cook' },
-    { id: 5, name: 'Tanya Fox' },
-    { id: 6, name: 'Hellen Schmidt' },
-    { id: 7, name: 'Caroline Schultz' },
-    { id: 8, name: 'Mason Heaney' },
-    { id: 9, name: 'Claudie Smitham' },
-    { id: 10, name: 'Emil Schaefer' },
+    { _id: 1, name: 'Wade Cooper' },
+    { _id: 2, name: 'Arlene Mccoy' },
+    { _id: 3, name: 'Devon Webb' },
+    { _id: 4, name: 'Tom Cook' },
+    { _id: 5, name: 'Tanya Fox' },
+    { _id: 6, name: 'Hellen Schmidt' },
+    { _id: 7, name: 'Caroline Schultz' },
+    { _id: 8, name: 'Mason Heaney' },
+    { _id: 9, name: 'Claudie Smitham' },
+    { _id: 10, name: 'Emil Schaefer' },
 ]

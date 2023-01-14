@@ -1,28 +1,12 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
-import { BudgetProps } from '~/@types/spending'
 import { head, isEmpty } from 'lodash'
-import { TEMPLATE } from '~/constant/template'
 import numeral from 'numeral'
 import React from 'react'
+import { BudgetProps } from '~/@types/spending'
+import { colors } from '~/constant/spending'
+import { TEMPLATE } from '~/constant/template'
 import { sum } from '~/services'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-
-const C = ['indigo-500', 'green-500', 'yellow-500', 'blue-500', 'orange-500', 'purple-500', 'pink-500']
-
-const Bg = [
-    'rgb(99, 102, 241)',
-    'rgb(16, 185, 129)',
-    'rgb(245, 158, 11)',
-    'rgb(59 130 246)',
-    'rgb(249, 115, 22)',
-    'rgb(168, 85, 247)',
-    'rgb(236, 72, 153)',
-]
-
-const colors = {
-    bg: Bg,
-    text: C.map((c) => `text-${c}`),
-}
 
 const Budget: React.FC<BudgetProps> = ({ data, loading }) => {
     const [ref] = useAutoAnimate<HTMLUListElement>()

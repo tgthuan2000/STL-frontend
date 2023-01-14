@@ -1,12 +1,15 @@
 import { CredentialResponse } from '@react-oauth/google'
-import { SanityDocument } from '@sanity/client'
+import { SanityAssetDocument, SanityDocument } from '@sanity/client'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import React from 'react'
 
 export interface IUserProfile {
-    image: string
+    _id: string
+    image: SanityAssetDocument<string> | string
     email: string
     userName: string
+    google: string
+    isHasPassword: boolean
 }
 
 interface SetUserProfile {
@@ -25,11 +28,36 @@ export type IFetchGoogleResponse = (
     res: CredentialResponse,
     addUser: AddUserProfile,
     setLoading: (value: boolean) => void
-) => void
+) => Promise<void>
 
 export interface GoogleData {
     sub: string
     picture: string
     name: string
     email: string
+}
+
+export interface LoginForm {
+    password: string
+    data: SanityDocument<IUserProfile>
+}
+export type ILoginByEmailPassword = (
+    data: LoginForm,
+    addUser: AddUserProfile,
+    setLoading: (value: boolean) => void
+) => Promise<void>
+
+export interface LoginByEmailPasswordFormProps {
+    onSubmit: (data: LoginForm) => Promise<void>
+    onBack: () => void
+}
+
+export interface Step1Props {
+    onSubmit: (data: { email: string }) => void
+}
+
+export type SubmitPassword = (payloads: { password: string }, data: SanityDocument<IUserProfile>) => void
+export interface Step2Props {
+    previewData: SanityDocument<IUserProfile>[] | null
+    onSubmit: SubmitPassword
 }

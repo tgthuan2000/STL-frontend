@@ -45,3 +45,22 @@ export const getColorPrize = (variable: any) => {
 }
 
 export const getBudgetId = (userId: string, month?: moment.MomentInput) => moment(month).format('YYYY-MM-') + userId
+
+export const getSpacingTime = (time: string) => {
+    const now = new Date()
+    const date = new Date(time)
+    const diff = Math.abs(now.getTime() - date.getTime())
+    const diffDays = Math.ceil(diff / (1000 * 3600 * 24))
+    const diffHours = Math.ceil(diff / (1000 * 3600))
+    const diffMinutes = Math.ceil(diff / (1000 * 60))
+    if (diffDays > 1) {
+        return `${diffDays} ngày trước`
+    }
+    if (diffHours > 1) {
+        return `${diffHours} giờ trước`
+    }
+    if (diffMinutes > 1) {
+        return `${diffMinutes} phút trước`
+    }
+    return 'Vừa xong'
+}

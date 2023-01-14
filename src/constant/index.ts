@@ -13,6 +13,7 @@ export enum DATE_FORMAT {
 export enum TAGS {
     ENUM = 'enum',
     ALTERNATE = 'alternate',
+    SHORT = 'short',
 }
 
 export const COUNT_PAGINATE = 15

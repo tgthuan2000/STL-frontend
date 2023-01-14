@@ -4,9 +4,8 @@ import clsx from 'clsx'
 import { ChangeEvent, forwardRef, useId, useState } from 'react'
 import { Controller } from 'react-hook-form'
 import { UploadImageProps } from '~/@types/components'
+import { acceptImageType } from '~/constant/component'
 import { client, urlFor } from '~/sanityConfig'
-
-const acceptImageType = ['image/jpeg', 'image/png', 'image/jpg']
 
 const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
     ({ className, label, name, form, rules, disabled, ...props }, ref) => {

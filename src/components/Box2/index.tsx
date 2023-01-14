@@ -1,7 +1,6 @@
-import React from 'react'
 import { Box2Props } from '~/@types/components'
 import AnimateWrap from '../AnimateWrap'
-import { ContentUserLoan, ContentLoan } from './Content'
+import { ContentLoan, ContentUserLoan } from './Content'
 import Title from './Title'
 
 const Box2 = ({ data, label, onReload, loading = false, children }: Box2Props) => {

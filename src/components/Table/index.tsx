@@ -2,31 +2,11 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import React, { useMemo, useRef } from 'react'
+import { TableProps } from '~/@types/components'
 import { getLinkSpending } from '~/utils'
 import BodyTable from './Body'
 import EmptyTableTemplate from './Empty'
 import SkeletonTableTemplate from './Skeleton'
-
-export interface TableColumn {
-    key: string
-    title: React.ReactNode
-    label: string
-    renderRow: (item: any, index: number) => React.ReactNode
-    sort?: boolean
-    className?: string
-}
-
-export interface TableProps {
-    columns: Array<TableColumn>
-    data: Array<any> | undefined
-    loading: boolean
-    EmptyTable?: React.ReactNode
-    SkeletonTable?: (loading: boolean) => React.ReactNode
-    onGetMore?: () => void
-    onRowClick: (data: any) => string
-    hasNextPage: boolean
-    subRow?: (data: any, index: number, origin: any[]) => React.ReactNode
-}
 
 const Table: React.FC<TableProps> = ({ columns, loading, data, EmptyTable, ...props }) => {
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
@@ -41,6 +21,7 @@ const Table: React.FC<TableProps> = ({ columns, loading, data, EmptyTable, ...pr
                         'text-center whitespace-nowrap border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-sm font-normal text-gray-900 backdrop-blur backdrop-filter',
                         column.className
                     )}
+                    colSpan={column.colSpan ?? 1}
                 >
                     {column.title}
                 </th>
