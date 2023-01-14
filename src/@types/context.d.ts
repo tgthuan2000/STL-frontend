@@ -1,9 +1,7 @@
 import { TAGS } from '~/constant'
-import { KIND_LOAN } from '~/constant/loan'
 import { PERMISSION } from '~/constant/permission'
 import { KIND_SPENDING } from '~/constant/spending'
 import { TagsTypeUseQuery } from '~/hook/useQuery'
-import { IBudgetSpending } from './spending'
 
 type LoadingItems = {
     config: boolean

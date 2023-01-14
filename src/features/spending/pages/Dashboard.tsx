@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
@@ -9,14 +8,14 @@ import { menuMobile } from '~/constant/components'
 import { useConfig } from '~/context'
 import { useQuery, useScrollIntoView, useWindowSize } from '~/hook'
 import {
-    GET_BUDGETS_BY_MONTH,
+    GET_BUDGET_BY_MONTH,
     GET_METHOD_SPENDING_DESC_SURPLUS,
     GET_RECENT_SPENDING,
     GET_STATISTIC_SPENDING,
 } from '~/schema/query/spending'
 import { getDateOfMonth, sum } from '~/services'
 import useAuth from '~/store/auth'
-import { Budget, Method, Recent, Statistic } from '../components'
+import { BudgetCategory, BudgetMethod, Method, Recent, Statistic } from '../components'
 
 const Dashboard = () => {
     const { width } = useWindowSize()
@@ -30,7 +29,7 @@ const Dashboard = () => {
             recent: GET_RECENT_SPENDING,
             method: GET_METHOD_SPENDING_DESC_SURPLUS,
             statistic: GET_STATISTIC_SPENDING,
-            ...(budgetId && { budget: GET_BUDGETS_BY_MONTH }),
+            ...(budgetId && { budget: GET_BUDGET_BY_MONTH }),
         },
         {
             userId: userProfile?._id as string,
@@ -124,39 +123,49 @@ const Dashboard = () => {
                     <Statistic data={dataStatistic?.data} loading={statistic.loading} />
                 </Box.Content>
 
-                <Box.Content
-                    className='xl:row-start-2 xl:col-start-1 col-span-1'
-                    title='Ngân sách'
-                    to='budget'
-                    onReload={handleReload}
-                    loading={budget?.loading}
-                    fullWidth
-                    seeMore={false}
-                >
-                    <Budget data={budget?.data} loading={Boolean(budget?.loading)} />
-                </Box.Content>
+                <div className='xl:row-start-2 xl:col-start-1 col-span-1 flex flex-col xl:gap-6 gap-4'>
+                    <Box.Content
+                        title='Ngân sách theo loại'
+                        onReload={handleReload}
+                        loading={budget?.loading}
+                        fullWidth
+                        seeMore={false}
+                    >
+                        <BudgetCategory data={budget?.data} loading={Boolean(budget?.loading)} />
+                    </Box.Content>
 
-                <Box.Content
-                    className={clsx('xl:row-start-3 xl:col-start-1 col-span-1')}
-                    title='Giao dịch gần đây'
-                    to='transaction'
-                    onReload={handleReload}
-                    loading={recent.loading}
-                    fullWidth
-                >
-                    <Recent data={recent.data} loading={recent.loading} />
-                </Box.Content>
+                    <Box.Content
+                        title='Ngân sách theo phương thức'
+                        onReload={handleReload}
+                        loading={budget?.loading}
+                        fullWidth
+                        seeMore={false}
+                    >
+                        <BudgetMethod data={budget?.data} loading={Boolean(budget?.loading)} />
+                    </Box.Content>
+                </div>
 
-                <Box.Content
-                    className='xl:row-start-2 xl:row-span-6 xl:col-start-2 col-span-1'
-                    title='Phương thức thanh toán'
-                    to='method'
-                    onReload={handleReload}
-                    loading={method.loading}
-                    fullWidth
-                >
-                    <Method data={method.data} loading={method.loading} />
-                </Box.Content>
+                <div className='xl:row-start-2 xl:col-start-2 col-span-1 flex flex-col xl:gap-6 gap-4'>
+                    <Box.Content
+                        title='Giao dịch gần đây'
+                        to='transaction'
+                        onReload={handleReload}
+                        loading={recent.loading}
+                        fullWidth
+                    >
+                        <Recent data={recent.data} loading={recent.loading} />
+                    </Box.Content>
+
+                    <Box.Content
+                        title='Phương thức thanh toán'
+                        to='method'
+                        onReload={handleReload}
+                        loading={method.loading}
+                        fullWidth
+                    >
+                        <Method data={method.data} loading={method.loading} />
+                    </Box.Content>
+                </div>
             </Box>
         </div>
     )
