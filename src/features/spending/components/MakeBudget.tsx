@@ -1,5 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { ArrowSmLeftIcon, PlusCircleIcon, RefreshIcon, TrashIcon } from '@heroicons/react/outline'
+import { PlusCircleIcon, RefreshIcon, TrashIcon } from '@heroicons/react/outline'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
@@ -8,7 +8,7 @@ import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 import { IMakeBudgetForm, MakeBudgetQueryData, StateRef } from '~/@types/spending'
-import { Button } from '~/components'
+import { Button, Chip } from '~/components'
 import { AutoComplete, DatePicker, Input } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { useConfig, useLoading, useSlideOver } from '~/context'
@@ -86,7 +86,6 @@ const MakeBudget = () => {
     )
     const [wrapRef] = useAutoAnimate<HTMLDivElement>()
     const [loadingRef] = useAutoAnimate<HTMLButtonElement>()
-    const [loadingRef2] = useAutoAnimate<HTMLButtonElement>()
     const isPrevMonthClick = useRef(false)
 
     useEffect(() => {
@@ -297,8 +296,7 @@ const MakeBudget = () => {
                                     onChange={handleChangeDate}
                                 />
                             </div>
-
-                            <div className='flex justify-between items-center'>
+                            <div className='flex flex-col gap-2 items-start'>
                                 <Button
                                     type='button'
                                     color='outline-prussianBlue'
@@ -316,25 +314,13 @@ const MakeBudget = () => {
                                         </>
                                     )}
                                 </Button>
-                                <Button
-                                    type='button'
-                                    color='outline-yellow'
-                                    className='items-center gap-1 truncate'
+                                <Chip
                                     onClick={handlePreviousMonth}
-                                    disabled={
-                                        budgetSpending.loading ||
-                                        methodSpending.loading ||
-                                        loading.submit ||
-                                        !isEmpty(fields)
-                                    }
-                                    ref={loadingRef2}
+                                    disabled={budgetSpending.loading || methodSpending.loading || loading.submit}
+                                    hidden={!isEmpty(fields)}
                                 >
-                                    {budgetSpending.loading ? (
-                                        <RefreshIcon className='h-6 w-6 animate-spin -scale-100' />
-                                    ) : (
-                                        <ArrowSmLeftIcon className='h-6 w-6' />
-                                    )}
-                                </Button>
+                                    Chọn theo tháng trước
+                                </Chip>
                             </div>
                             <div className='space-y-6' ref={wrapRef}>
                                 {fields.map((item, index) => (
