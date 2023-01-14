@@ -1,5 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { XIcon } from '@heroicons/react/outline'
+import { CalendarIcon, XIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import moment from 'moment'
 import { forwardRef, useId } from 'react'
@@ -93,7 +93,7 @@ const Input = forwardRef<HTMLInputElement, DatePickerInputProps>(
                     {!disabledClear && !disabled && (
                         <span
                             ref={closeRef}
-                            className='absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none'
+                            className='absolute inset-y-0 right-6 flex items-center rounded-r-md px-2 focus:outline-none'
                         >
                             {field.value && (
                                 <XIcon
@@ -109,6 +109,9 @@ const Input = forwardRef<HTMLInputElement, DatePickerInputProps>(
                             )}
                         </span>
                     )}
+                    <span className='absolute inset-y-0 right-0 flex items-center rounded-r-md px-2'>
+                        <CalendarIcon className='cursor-default h-5 w-5 text-gray-400' aria-hidden='true' />
+                    </span>
                 </div>
 
                 <div ref={parent}>

@@ -2,7 +2,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Combobox } from '@headlessui/react'
 import { CheckIcon, RefreshIcon, SelectorIcon, XIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
-import { find, get, isNil } from 'lodash'
+import { filter, find, get, isNil } from 'lodash'
 import numeral from 'numeral'
 import { forwardRef, useEffect, useMemo, useState } from 'react'
 import { Controller } from 'react-hook-form'
@@ -62,11 +62,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
         }, [selectedItem])
 
         const filterData =
-            query === ''
-                ? data
-                : data.filter((item) => {
-                      return item[valueKey].toLowerCase().includes(query.toLowerCase())
-                  })
+            query === '' ? data : filter(data, (item) => item[valueKey].toLowerCase().includes(query.toLowerCase()))
 
         const handleChange = async (value: any, fieldChange: (...event: any[]) => void) => {
             if (typeof value === 'string') {
