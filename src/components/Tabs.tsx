@@ -1,7 +1,7 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Tab } from '@headlessui/react'
 import clsx from 'clsx'
-import React, { Fragment, memo, Suspense } from 'react'
+import React, { memo, Suspense } from 'react'
 import { TabsProps } from '~/@types/spending'
 
 const Tabs: React.FC<TabsProps> = ({
@@ -36,13 +36,13 @@ const Tabs: React.FC<TabsProps> = ({
                     ))}
                 </Tab.List>
                 <Tab.Panels ref={panelRef}>
-                    <Suspense fallback={<div>Loading...</div>}>
-                        {options.map((option, index) => (
-                            <Tab.Panel key={option[idKey] ?? index}>
+                    {options.map((option, index) => (
+                        <Tab.Panel key={option[idKey] ?? index}>
+                            <Suspense fallback={<div>Loading...</div>}>
                                 {getOptionContent?.(option) ?? option[tabContentKey]}
-                            </Tab.Panel>
-                        ))}
-                    </Suspense>
+                            </Suspense>
+                        </Tab.Panel>
+                    ))}
                 </Tab.Panels>
             </Tab.Group>
         </div>
