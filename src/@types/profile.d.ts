@@ -24,3 +24,7 @@ export interface profileOption {
     values: profileValue[]
 }
 export type profileOptionFn = () => profileOption[]
+
+export interface ProfileQueryData {
+    profile: {}
+}
