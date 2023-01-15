@@ -13,7 +13,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, o
     const [isClickRead, setIsClickRead] = useState(false)
 
     return (
-        <div className='px-1 py-1 space-y-0.5'>
+        <div className='px-2 py-1 space-y-0.5'>
             <Menu.Item>
                 <div
                     className={clsx('flex flex-col w-full rounded-md px-2 py-2 hover:bg-slate-50 cursor-pointer', {
