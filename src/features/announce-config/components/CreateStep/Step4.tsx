@@ -30,7 +30,7 @@ const Step4: React.FC<CreateStep4Props> = ({ id, onSubmit }) => {
                             </p>
                         </div>
                     ) : (
-                        <div className='border rounded-lg m-2'>
+                        <div className='border rounded-lg m-2 max-w-sm'>
                             {draftNotify?.users?.map((user) => (
                                 <div key={user._id} className='px-4 py-2 flex gap-2 items-center'>
                                     <Image src={user.image} alt={user.userName} size='small' />
@@ -46,7 +46,7 @@ const Step4: React.FC<CreateStep4Props> = ({ id, onSubmit }) => {
                 </div>
                 <div>
                     <p className='inline-block font-medium text-gray-900'>Tiêu đề</p>
-                    <div className='p-2'>{draftNotify?.title}</div>
+                    <div className='p-2 sm:text-lg text-base'>{draftNotify?.title}</div>
                 </div>
                 <div>
                     <p className='inline-block font-medium text-gray-900'>Mô tả ngắn</p>
