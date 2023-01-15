@@ -1,12 +1,21 @@
 import { PencilAltIcon } from '@heroicons/react/outline'
-import clsx from 'clsx'
 import moment from 'moment'
-import { Button, Image, Transaction } from '~/components'
+import { Button, Image, TimeFilter, Transaction } from '~/components'
 import { DATE_FORMAT } from '~/constant'
 import useAuth from '~/store/auth'
+import { ProfileInfo, ProfileInfoGroup } from '../components'
+import { useMemo } from 'react'
+import * as profileServices from '../services/profile'
+import clsx from 'clsx'
 
 const Dashboard = () => {
     const { userProfile } = useAuth()
+
+    const profileOptions = useMemo(() => {
+        const data = profileServices.getProfileOptions()
+        return data
+    }, [])
+
     return (
         <Transaction title='Thông tin cá nhân'>
             <div className='relative mt-20 max-w-7xl mx-auto w-full'>
@@ -25,9 +34,10 @@ const Dashboard = () => {
                         <Button
                             type='button'
                             color='primary'
-                            className='rounded-lg bg-gray-200 inline-flex shadow border justify-center items-center hover:bg-gray-700 transition-all text-gray-700 hover:text-white'
+                            className='rounded-lg bg-gray-200 min-w-0 inline-flex shadow border justify-center items-center hover:bg-gray-700 transition-all text-gray-700 hover:text-white'
                         >
-                            <PencilAltIcon className='h-4 w-4' /> Cập nhật
+                            <PencilAltIcon className='h-4 w-4' />{' '}
+                            <span className='hidden sm:inline-block'>Cập nhật</span>
                         </Button>
                     </div>
                     {/* USER INFO */}
@@ -41,27 +51,23 @@ const Dashboard = () => {
                         </span>
                     </div>
                     {/* DASHBOARD */}
-                    <div className='mt-2 sm:mt-5 space-y-2'>
-                        <ProfileInfoGroup title='Phương thức thanh toán' className='grid grid-cols-2 gap-2'>
-                            <button className='relative px-2 pt-6 pb-2 bg-slate-200 rounded-md'>
-                                <label className='absolute top-1 left-1 text-xs font-normal text-gray-700'>
-                                    Được sử dụng nhiều nhất
-                                </label>
-                                <p>Data</p>
-                            </button>
-                            <button className='relative px-2 pt-6 pb-2 bg-slate-200 rounded-md'>
-                                <label className='absolute top-1 left-1 text-xs font-normal text-gray-700'>
-                                    Được sử dụng nhiều nhất
-                                </label>
-                                <p>Data</p>
-                            </button>
-                            <button className='relative px-2 pt-6 pb-2 bg-slate-200 rounded-md'>
-                                <label className='absolute top-1 left-1 text-xs font-normal text-gray-700'>
-                                    Được sử dụng nhiều nhất
-                                </label>
-                                <p>Data</p>
-                            </button>
-                        </ProfileInfoGroup>
+                    <div className='mt-2 sm:mt-5 sm:space-y-5 space-y-2'>
+                        <TimeFilter onSubmit={() => {}} />
+
+                        <div className='grid gap-2 xl:grid-cols-4 grid-cols-1'>
+                            {profileOptions.map((profile, index) => (
+                                <ProfileInfoGroup
+                                    key={index}
+                                    title={profile.title}
+                                    className='flex flex-wrap gap-2'
+                                    wrapClassName={profile.className}
+                                >
+                                    {profile.values.map((value, index) => (
+                                        <ProfileInfo key={value.id} label={value.title} data={value.data} />
+                                    ))}
+                                </ProfileInfoGroup>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -70,19 +76,3 @@ const Dashboard = () => {
 }
 
 export default Dashboard
-
-interface ProfileInfoGroupProps {
-    title: string
-    children: React.ReactNode
-    className?: string
-}
-
-const ProfileInfoGroup: React.FC<ProfileInfoGroupProps> = ({ title, children, className }) => {
-    return (
-        <div>
-            <h4 className='text-gray-700 font-normal'>{title}</h4>
-            <hr />
-            <div className={clsx('pt-1', className)}>{children}</div>
-        </div>
-    )
-}
