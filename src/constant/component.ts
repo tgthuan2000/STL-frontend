@@ -1,4 +1,5 @@
 import { Howl } from 'howler'
+import { Quill } from 'react-quill'
 import { DATE_FORMAT } from '.'
 
 export enum DATA_LIST_MODE {
@@ -18,14 +19,42 @@ export const __groupBy = {
     3: DATE_FORMAT.YEAR,
 }
 
-export const toolbarRichText = [
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-    [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-    ['link', 'image'],
-    ['clean'],
-]
-
+export const reactQuillOptions = {
+    modules: {
+        toolbar: [
+            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }],
+            [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+            ['link', 'image'],
+            ['clean'],
+        ],
+        imageResize: {
+            parchment: Quill.import('parchment'),
+            modules: ['Resize', 'DisplaySize'],
+        },
+        clipboard: {
+            // toggle to add extra line breaks when pasting HTML:
+            matchVisual: false,
+        },
+    },
+    formats: [
+        'header',
+        'font',
+        'size',
+        'bold',
+        'italic',
+        'underline',
+        'strike',
+        'blockquote',
+        'list',
+        'bullet',
+        'indent',
+        'link',
+        'image',
+        'align',
+    ],
+}
 export const acceptImageType = ['image/jpeg', 'image/png', 'image/jpg']
 
 export const notifySound = new Howl({

@@ -31,6 +31,7 @@ const Step2: React.FC<Step2Props> = ({ previewData, onSubmit }) => {
         if (!chose) return
         onSubmit(data, chose)
     }
+
     return (
         <div className='space-y-3'>
             {!isEmpty(previewData) && (
@@ -39,6 +40,7 @@ const Step2: React.FC<Step2Props> = ({ previewData, onSubmit }) => {
                         const checked = data._id === chose?._id
                         return (
                             <div
+                                key={data._id}
                                 className='px-4 py-2 flex gap-2 items-center cursor-pointer'
                                 onClick={() => !checked && setChose(data)}
                             >
