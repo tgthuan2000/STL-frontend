@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { cloneDeep, get, isEmpty } from 'lodash'
+import { cloneDeep, isEmpty } from 'lodash'
 import moment from 'moment'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -271,10 +271,12 @@ const MakeBudget = () => {
         }
         return [
             {
+                id: '1',
                 label: 'Phương thức',
                 content: <Method optionData={methodSpending.data} optionLoading={methodSpending.loading} {...props} />,
             },
             {
+                id: '2',
                 label: 'Thể loại',
                 content: (
                     <Category optionData={categorySpending.data} optionLoading={categorySpending.loading} {...props} />
