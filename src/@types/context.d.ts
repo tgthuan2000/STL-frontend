@@ -91,6 +91,6 @@ export interface IRoleControl {
 }
 export interface IConfig {
     kindSpending: IKindSpending[]
-    budgetSpending: { _id: string | undefined | null }
+    budgetSpending: { _id: string }
     role: { role: IRoleControl } | null
 }
