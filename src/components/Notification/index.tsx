@@ -200,7 +200,7 @@ const Notification: React.FC<NotificationProps> = ({ leftSide = false }) => {
                     <>
                         <div className='flex justify-between'>
                             <h1 className='p-2 font-medium text-base'>Thông báo</h1>
-                            <button
+                            {/* <button
                                 className='group p-2 text-sm text-cyan-500 font-medium hover:underline disabled:hover:no-underline flex items-center gap-1'
                                 disabled={isClickReadAll}
                                 onClick={handleReadAll}
@@ -208,7 +208,7 @@ const Notification: React.FC<NotificationProps> = ({ leftSide = false }) => {
                             >
                                 {isClickReadAll && <img src={Waiting} className='h-6 w-6' />}
                                 <span className='group-disabled:opacity-50 '>Đã xem tất cả</span>
-                            </button>
+                            </button> */}
                         </div>
                         <div className='max-h-[60vh] overflow-auto' ref={parentRef}>
                             {notify.map((data) => (
