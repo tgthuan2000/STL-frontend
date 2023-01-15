@@ -1,6 +1,7 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { ArrowSmLeftIcon, CalendarIcon } from '@heroicons/react/outline'
 import { uuid } from '@sanity/uuid'
+import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -141,52 +142,60 @@ const Create = () => {
     return (
         <div className='sm:mt-10 mt-5'>
             <div className='bg-white min-h-[80vh] rounded-xl shadow-lg py-6 px-4 sm:py-8'>
-                <div className='max-w-xl w-full mx-auto'>
-                    <Progress step={step} options={createProgressOptions} />
+                <Progress step={step} options={createProgressOptions} className='max-w-xl w-full mx-auto' />
+                <div ref={stepParent}>
                     {step > 1 && (
-                        <button
-                            className='mb-2 p-1 bg-slate-200 hover:bg-slate-700 cursor-pointer transition-colors group rounded-full inline-block disabled:opacity-50'
-                            onClick={handleBack}
-                            disabled={loading.submit}
+                        <div
+                            className={clsx('w-full mx-auto', {
+                                'max-w-xl': ![4].includes(step),
+                            })}
                         >
-                            <ArrowSmLeftIcon className='h-6 text-gray-700 group-hover:text-white transition-colors' />
-                        </button>
+                            <button
+                                className='mb-2 p-1 bg-slate-200 hover:bg-slate-700 cursor-pointer transition-colors group rounded-full inline-block disabled:opacity-50'
+                                onClick={handleBack}
+                                disabled={loading.submit}
+                            >
+                                <ArrowSmLeftIcon className='h-6 text-gray-700 group-hover:text-white transition-colors' />
+                            </button>
+                        </div>
                     )}
-                    <div ref={stepParent}>
-                        {stepData}
-                        <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
-                            <div className='flex sm:justify-start justify-end space-x-3' ref={buttonRef}>
+                    {stepData}
+                    <div
+                        className={clsx('flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6 w-full mx-auto', {
+                            'max-w-xl': ![1, 4].includes(step),
+                        })}
+                    >
+                        <div className='flex sm:justify-start justify-end space-x-3' ref={buttonRef}>
+                            <Button
+                                color={step === 4 ? 'radicalRed' : 'blue'}
+                                type='submit'
+                                form={stepId}
+                                disabled={loading.submit}
+                            >
+                                {step === 4 ? 'Gửi thông báo' : 'Tiếp theo'}
+                            </Button>
+                            {/* {step === 4 && (
                                 <Button
-                                    color={step === 4 ? 'radicalRed' : 'blue'}
-                                    type='submit'
-                                    form={stepId}
-                                    disabled={loading.submit}
+                                    color='cyan'
+                                    type='button'
+                                    disabled={loading.submit || true}
+                                    onClick={handleSchedule}
                                 >
-                                    {step === 4 ? 'Gửi thông báo' : 'Tiếp theo'}
+                                    <CalendarIcon className='h-6' />
+                                    Lên lịch hẹn
                                 </Button>
-                                {step === 4 && (
-                                    <Button
-                                        color='cyan'
-                                        type='button'
-                                        disabled={loading.submit || true}
-                                        onClick={handleSchedule}
-                                    >
-                                        <CalendarIcon className='h-6' />
-                                        Lên lịch hẹn
-                                    </Button>
-                                )}
-                                {step === 1 && (
-                                    <Button
-                                        color='outline'
-                                        type='button'
-                                        onClick={() => {
-                                            navigate(-1)
-                                        }}
-                                    >
-                                        Hủy bỏ
-                                    </Button>
-                                )}
-                            </div>
+                            )} */}
+                            {step === 1 && (
+                                <Button
+                                    color='outline'
+                                    type='button'
+                                    onClick={() => {
+                                        navigate(-1)
+                                    }}
+                                >
+                                    Hủy bỏ
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </div>

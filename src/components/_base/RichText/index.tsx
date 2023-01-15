@@ -1,11 +1,16 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import ImageResize from 'quill-image-resize-module-react'
 import React, { useId } from 'react'
 import { Controller } from 'react-hook-form'
-import ReactQuill from 'react-quill'
+import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { RichTextProps } from '~/@types/components'
-import { toolbarRichText } from '~/constant/component'
+import { reactQuillOptions } from '~/constant/component'
 import './index.css'
+
+Quill.register('modules/imageResize', ImageResize)
+Quill.register(Quill.import('attributors/style/direction'), true)
+Quill.register(Quill.import('attributors/style/align'), true)
 
 const RichText: React.FC<RichTextProps> = ({ name, form, label, className, rules, disabled, ...props }) => {
     const id = useId()
@@ -26,9 +31,9 @@ const RichText: React.FC<RichTextProps> = ({ name, form, label, className, rules
                         <ReactQuill
                             id={id}
                             theme='snow'
-                            modules={{ toolbar: toolbarRichText }}
                             className={disabled ? 'bg-gray-100 cursor-not-allowed select-none' : 'bg-white'}
                             readOnly={disabled}
+                            {...reactQuillOptions}
                             {...field}
                             {...props}
                         />
