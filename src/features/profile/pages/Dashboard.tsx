@@ -1,5 +1,6 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { PencilAltIcon } from '@heroicons/react/outline'
+import clsx from 'clsx'
 import moment from 'moment'
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
@@ -219,7 +220,7 @@ const Dashboard = () => {
                                         <ProfileInfoGroup
                                             key={index}
                                             title={profile.title}
-                                            className='flex flex-wrap gap-2'
+                                            className={clsx('flex gap-2', profile.wrapClassName)}
                                             wrapClassName={profile.className}
                                         >
                                             {profile.values.map((value, index) => (
