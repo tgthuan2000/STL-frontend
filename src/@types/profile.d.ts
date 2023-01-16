@@ -25,6 +25,7 @@ export interface profileOption {
     id: profileId
     title: string
     className: string
+    wrapClassName?: string
     values: profileValue[]
 }
 export type profileOptionFn = (data: ProfileQueryData) => profileOption[]
@@ -49,7 +50,8 @@ export interface CategoryProfile {
 export interface BudgetProfile {
     _id: string
     date: string
-    total: number[]
+    totalMethod: number[]
+    totalCategory: number[]
 }
 export interface ProfileQueryData {
     method: MethodProfile[] | undefined
