@@ -394,6 +394,7 @@ export type DateRange = [Date, Date]
 export type FilterDateType = 'isDateRangeFilter' | 'isDateFilter' | 'isMonthFilter' | 'isYearFilter'
 export interface TimeFilterProps {
     onSubmit: (data: TimeFilterPayload) => void
+    excludes?: E_FILTER_DATE[]
 }
 export interface IFilterDate {
     date?: Date | null
