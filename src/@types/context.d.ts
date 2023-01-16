@@ -18,13 +18,14 @@ export interface IKindSpending {
     key: KIND_SPENDING
     name: string
 }
-
+export type GetKindSpendingId = (KEY: keyof typeof KIND_SPENDING) => string | undefined
+export type GetKindSpendingIds = (...KEYS: (keyof typeof KIND_SPENDING)[]) => string[]
 export interface IConfigContext {
     kindSpending: IKindSpending[]
     budgetSpending: { _id: string | undefined | null }
     role: IRoleControl | null | undefined
-    getKindSpendingId: (KEY: keyof typeof KIND_SPENDING) => string | undefined
-    getKindSpendingIds: (...KEYS: (keyof typeof KIND_SPENDING)[]) => string[]
+    getKindSpendingId: GetKindSpendingId
+    getKindSpendingIds: GetKindSpendingIds
     hasPermissions: (keys: Array<PERMISSION>) => boolean
     ok: boolean
 }
