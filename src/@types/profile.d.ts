@@ -7,6 +7,7 @@ export interface ProfileInfoGroupProps {
     children: React.ReactNode
     className?: string
     wrapClassName?: string
+    hidden?: boolean
 }
 type profileData = string | number | React.ReactNode
 type profileId = string | number
@@ -27,6 +28,7 @@ export interface profileOption {
     className: string
     wrapClassName?: string
     values: profileValue[]
+    hidden?: boolean
 }
 export type profileOptionFn = (data: ProfileQueryData) => profileOption[]
 
@@ -57,4 +59,31 @@ export interface ProfileQueryData {
     method: MethodProfile[] | undefined
     category: CategoryProfile[] | undefined
     budget: BudgetProfile[] | undefined
+}
+
+export type CategoryRespond = Array<
+    Omit<MethodProfile, 'costs' | 'receives' | 'countUsed'> & { costs: number; receives: number; countUsed: number }
+>
+export interface MethodResult {
+    maxCost: { costs: number }
+    maxReceive: { receives: number }
+    maxUsed: { countUsed: number }
+}
+
+export interface CategoryResult {
+    maxCostUsed?: { countUsed: number }
+    maxReceiveUsed?: { countUsed: number }
+    maxCost?: { costs: number }
+    maxReceive?: { receives: number }
+}
+
+export interface BudgetResult {
+    maxTotalMethod: { totalMethod: number }
+    maxTotalCategory: { totalCategory: number }
+}
+
+export interface ProfileService {
+    method: (method: MethodProfile[] | undefined) => MethodResult | undefined
+    category: (category: CategoryProfile[] | undefined) => CategoryResult | undefined
+    budget: (budget: BudgetProfile[] | undefined) => BudgetResult | undefined
 }

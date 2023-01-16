@@ -70,7 +70,7 @@ const dateRangeSuggestions = [
     { id: E_DATE_RANGE_SUGGESTION.LAST_WEEK, label: 'Tuần trước' },
 ]
 
-const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit }) => {
+const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit, excludes = [] }) => {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
     const [parent] = useAutoAnimate<HTMLDivElement>()
@@ -195,6 +195,8 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit }) => {
         }
     }, [isDateRangeFilter, dateRange])
 
+    const dataOptions = useMemo(() => TABS_FILTER_DATE.filter((tab) => !excludes.includes(tab.id)), [excludes])
+
     return (
         <div className='mb-2 flex flex-wrap gap-2 mx-3'>
             <AutoComplete
@@ -202,7 +204,7 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit }) => {
                 valueKey='labelName'
                 name='filter'
                 form={form}
-                data={TABS_FILTER_DATE}
+                data={dataOptions}
                 label='Bộ lọc'
                 onChange={form.handleSubmit(onsubmit)}
             />

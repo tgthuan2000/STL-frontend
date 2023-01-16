@@ -1,36 +1,11 @@
 import { get, sum } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
-import { BudgetProfile, CategoryProfile, MethodProfile, profileOptionFn } from '~/@types/profile'
+import { BudgetProfile, CategoryProfile, CategoryRespond, profileOptionFn, ProfileService } from '~/@types/profile'
 import { DATE_FORMAT } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 
-type CategoryRespond = Array<Omit<MethodProfile, 'costs' | 'receives'> & { costs: number; receives: number }>
-interface MethodResult {
-    maxCost: { costs: number }
-    maxReceive: { receives: number }
-    maxUsed: { countUsed: number }
-}
-
-interface CategoryResult {
-    maxCostUsed?: { countUsed: number }
-    maxReceiveUsed?: { countUsed: number }
-    maxCost?: { costs: number }
-    maxReceive?: { receives: number }
-}
-
-interface BudgetResult {
-    maxTotalMethod: { totalMethod: number }
-    maxTotalCategory: { totalCategory: number }
-}
-
-interface __ {
-    method: (method: MethodProfile[] | undefined) => MethodResult | undefined
-    category: (category: CategoryProfile[] | undefined) => CategoryResult | undefined
-    budget: (budget: BudgetProfile[] | undefined) => BudgetResult | undefined
-}
-
-const __: __ = {
+const __: ProfileService = {
     method: (method) => {
         // sum costs and receives
         const map = method?.map((m) => ({ ...m, costs: sum(m.costs), receives: sum(m.receives) }))
@@ -118,7 +93,7 @@ const __: __ = {
     budget: (budget: BudgetProfile[] | undefined) => {
         // sum costs and receives
         const map = budget?.map((b) => ({ ...b, totalMethod: sum(b.totalMethod), totalCategory: sum(b.totalCategory) }))
-        console.log(budget)
+
         // get max total
         const res = map?.reduce(
             (res, acc) => {
@@ -147,9 +122,10 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
     return [
         {
             id: 1,
+            hidden: !get(_method, 'maxUsed._id') && !get(_method, 'maxReceive._id') && !get(_method, 'maxCost._id'),
             title: 'Phương thức thanh toán',
-            wrapClassName: 'xl:flex-row xl:flex-wrap flex-col',
-            className: 'xl:row-start-2 xl:col-start-2 xl:col-span-3 xl:row-span-1',
+            wrapClassName: 'xl:row-start-2 xl:col-start-2 xl:col-span-3 xl:row-span-1',
+            className: 'xl:flex-row xl:flex-wrap flex-col',
             values: [
                 {
                     id: 1,
@@ -192,9 +168,14 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
         },
         {
             id: 2,
+            hidden:
+                !get(_category, 'maxCostUsed._id') &&
+                !get(_category, 'maxReceiveUsed._id') &&
+                !get(_category, 'maxCost._id') &&
+                !get(_category, 'maxReceive._id'),
             title: 'Thể loại',
-            wrapClassName: 'flex-col',
-            className: 'xl:row-start-1 xl:col-start-1 xl:col-span-1 xl:row-span-3',
+            wrapClassName: 'xl:row-start-1 xl:col-start-1 xl:col-span-1 xl:row-span-3',
+            className: 'flex-col',
             values: [
                 {
                     id: 1,
@@ -254,9 +235,10 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
         },
         {
             id: 3,
+            hidden: !get(_budget, 'maxTotalMethod._id') && !get(_budget, 'maxTotalCategory._id'),
             title: 'Ngân sách',
-            wrapClassName: 'flex-col',
-            className: 'xl:row-start-1 xl:col-start-2 xl:col-span-1 xl:row-span-1',
+            wrapClassName: 'xl:row-start-1 xl:col-start-2 xl:col-span-1 xl:row-span-1',
+            className: 'flex-col',
             values: [
                 {
                     id: 1,
