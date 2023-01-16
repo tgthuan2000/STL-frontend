@@ -4,6 +4,7 @@
     "version": "0.0.0",
     "scripts": {
         "dev": "vite",
+        "dev:github": "vite --mode github",
         "build": "tsc && vite build",
         "preview": "vite preview"
     },
