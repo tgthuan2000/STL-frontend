@@ -30,7 +30,8 @@ export const GET_BUDGET_PROFILE_STATISTIC = groq`
     {
         _id,
         date,
-        "total": *[_type in ["budgetMethodDetail", "budgetCategoryDetail"] && budgetSpending._ref == ^._id].amount,
+        "totalMethod": *[_type == "budgetMethodDetail" && budgetSpending._ref == ^._id].amount,
+        "totalCategory": *[_type == "budgetCategoryDetail" && budgetSpending._ref == ^._id].amount,
     }
 `
 
