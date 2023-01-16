@@ -40,9 +40,9 @@ export const GET_METHOD_PROFILE_STATISTIC_FILTER_DATE_RANGE = groq`
     {
         _id,
         name,
-        countUsed,
-        "receives": *[_type == "spending" && methodSpending._ref == ^._id && kindSpending._ref in $receiveKindIds].amount,
-        "costs": *[_type == "spending" && methodSpending._ref == ^._id && kindSpending._ref in $costKindIds].amount,
+        "countUsed": count(*[_type == "spending" && methodSpending._ref == ^._id && kindSpending._ref in $receiveCostKindIds && date >= $startDate && date <= $endDate]),
+        "receives": *[_type == "spending" && methodSpending._ref == ^._id && kindSpending._ref in $receiveKindIds && date >= $startDate && date <= $endDate].amount,
+        "costs": *[_type == "spending" && methodSpending._ref == ^._id && kindSpending._ref in $costKindIds && date >= $startDate && date <= $endDate].amount,
     }
 `
 
@@ -51,20 +51,21 @@ export const GET_CATEGORY_PROFILE_STATISTIC_FILTER_DATE_RANGE = groq`
     {
         _id,
         name,
-        countUsed,
+        "countUsed": count(*[_type == "spending" && categorySpending._ref == ^._id && kindSpending._ref in $receiveCostKindIds && date >= $startDate && date <= $endDate]),
         kindSpending-> {
-            _id,
+            key,
         },
-        "receives": *[_type == "spending" && categorySpending._ref == ^._id && kindSpending._ref in $receiveKindIds].amount,
-        "costs": *[_type == "spending" && categorySpending._ref == ^._id && kindSpending._ref in $costKindIds].amount,
+        "receives": *[_type == "spending" && categorySpending._ref == ^._id && kindSpending._ref in $receiveKindIds && date >= $startDate && date <= $endDate].amount,
+        "costs": *[_type == "spending" && categorySpending._ref == ^._id && kindSpending._ref in $costKindIds && date >= $startDate && date <= $endDate].amount,
     }
 `
 
 export const GET_BUDGET_PROFILE_STATISTIC_FILTER_DATE_RANGE = groq`
-    *[_type == "budget" && user._ref == $userId]
+    *[_type == "budget" && user._ref == $userId && date >= $startDate && date <= $endDate]
     {
         _id,
         date,
-        "total": *[_type in ["budgetMethodDetail", "budgetCategoryDetail"] && budgetSpending._ref == ^._id].amount,
+        "totalMethod": *[_type == "budgetMethodDetail" && budgetSpending._ref == ^._id].amount,
+        "totalCategory": *[_type == "budgetCategoryDetail" && budgetSpending._ref == ^._id].amount,
     }
 `

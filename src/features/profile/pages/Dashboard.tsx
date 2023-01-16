@@ -1,6 +1,7 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { PencilAltIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
+import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
@@ -9,23 +10,34 @@ import { ProfileQueryData } from '~/@types/profile'
 import { Button, Image, TimeFilter, Transaction } from '~/components'
 import { DATE_FORMAT, TAGS } from '~/constant'
 import { E_FILTER_DATE, TEMPLATE } from '~/constant/template'
-import { useConfig } from '~/context'
+import { useConfig, useLoading } from '~/context'
 import { useQuery } from '~/hook'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
 import {
     GET_BUDGET_PROFILE_STATISTIC,
+    GET_BUDGET_PROFILE_STATISTIC_FILTER_DATE_RANGE,
     GET_CATEGORY_PROFILE_STATISTIC,
+    GET_CATEGORY_PROFILE_STATISTIC_FILTER_DATE_RANGE,
     GET_METHOD_PROFILE_STATISTIC,
+    GET_METHOD_PROFILE_STATISTIC_FILTER_DATE_RANGE,
 } from '~/schema/query/profile'
+import { getDate } from '~/services'
 import useAuth from '~/store/auth'
-import { ProfileInfo, ProfileInfoGroup } from '../components'
+import { ProfileInfo, ProfileInfoGroup, ProfileInfoSkeleton } from '../components'
 import * as profileServices from '../services/profile'
 
+const filterQuery = {
+    method: GET_METHOD_PROFILE_STATISTIC_FILTER_DATE_RANGE,
+    category: GET_CATEGORY_PROFILE_STATISTIC_FILTER_DATE_RANGE,
+    budget: GET_BUDGET_PROFILE_STATISTIC_FILTER_DATE_RANGE,
+}
+const excludeOptions = [E_FILTER_DATE.DATE]
 const Dashboard = () => {
     const { userProfile } = useAuth()
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const [searchParams] = useSearchParams()
     const { getKindSpendingIds } = useConfig()
+    const { loading, setConfigLoading } = useLoading()
 
     const getAll = useMemo(() => {
         return {
@@ -48,48 +60,48 @@ const Dashboard = () => {
             let query = getAll.query,
                 params = {}
 
-            // const d = Object.fromEntries([...searchParams])
-            // if (!isEmpty(d)) {
-            //     query = GET_PROFILE_STATISTIC_FILTER_DATE_RANGE
-            //     let { type, data } = d
-            //     data = JSON.parse(data)
+            const d = Object.fromEntries([...searchParams])
+            if (!isEmpty(d)) {
+                query = filterQuery
+                let { type, data } = d
+                data = JSON.parse(data)
 
-            //     switch (Number(type)) {
-            //         case E_FILTER_DATE.DATE_RANGE: {
-            //             const [startDate, endDate] = data
-            //             params = {
-            //                 startDate: getDate(moment(startDate).toDate(), 'start'),
-            //                 endDate: getDate(moment(endDate).toDate(), 'end'),
-            //             }
-            //             break
-            //         }
-            //         case E_FILTER_DATE.MONTH: {
-            //             params = {
-            //                 startDate: getDate(moment(data).toDate(), 'start', 'month'),
-            //                 endDate: getDate(moment(data).toDate(), 'end', 'month'),
-            //             }
-            //             break
-            //         }
-            //         case E_FILTER_DATE.YEAR: {
-            //             params = {
-            //                 startDate: getDate(moment(data).toDate(), 'start', 'year'),
-            //                 endDate: getDate(moment(data).toDate(), 'end', 'year'),
-            //             }
-            //             break
-            //         }
-            //     }
-            // }
+                switch (Number(type)) {
+                    case E_FILTER_DATE.DATE_RANGE: {
+                        const [startDate, endDate] = data
+                        params = {
+                            startDate: getDate(moment(startDate).toDate(), 'start'),
+                            endDate: getDate(moment(endDate).toDate(), 'end'),
+                        }
+                        break
+                    }
+                    case E_FILTER_DATE.MONTH: {
+                        params = {
+                            startDate: getDate(moment(data).toDate(), 'start', 'month'),
+                            endDate: getDate(moment(data).toDate(), 'end', 'month'),
+                        }
+                        break
+                    }
+                    case E_FILTER_DATE.YEAR: {
+                        params = {
+                            startDate: getDate(moment(data).toDate(), 'start', 'year'),
+                            endDate: getDate(moment(data).toDate(), 'end', 'year'),
+                        }
+                        break
+                    }
+                }
+            }
+
             return {
                 ...getAll,
                 query,
-                params: { ...getAll.params, ...params },
+                params: { ...getAll.params, ...params, receiveCostKindIds: getKindSpendingIds('RECEIVE', 'COST') },
             }
         } catch (error) {
             console.log(error)
             return getAll
         }
     }, [])
-
     const [{ query, params, tags }, setQuery] = useState<{
         query: QueryTypeUseQuery<ProfileQueryData>
         params: ParamsTypeUseQuery
@@ -103,7 +115,8 @@ const Dashboard = () => {
     )
 
     useEffect(() => {
-        fetchData()
+        setConfigLoading(true)
+        fetchData().then(() => setConfigLoading(false))
     }, [])
 
     const onReload = () => {
@@ -128,42 +141,45 @@ const Dashboard = () => {
             case E_FILTER_DATE.ALL:
                 setQuery(getAll)
                 break
-            // case E_FILTER_DATE.DATE_RANGE:
-            //     const [startDate, endDate] = data.data as Date[]
-            //     setQuery((prev) => ({
-            //         ...prev,
-            //         query: { profile: GET_PROFILE_STATISTIC_FILTER_DATE_RANGE },
-            //         params: {
-            //             ...defaultValues.params,
-            //             startDate: getDate(startDate, 'start'),
-            //             endDate: getDate(endDate, 'end'),
-            //         },
-            //     }))
-            //     break
-            // case E_FILTER_DATE.MONTH:
-            //     const month = data.data as Date
-            //     setQuery((prev) => ({
-            //         ...prev,
-            //         query: { profile: GET_PROFILE_STATISTIC_FILTER_DATE_RANGE },
-            //         params: {
-            //             ...defaultValues.params,
-            //             startDate: getDate(month, 'start', 'month'),
-            //             endDate: getDate(month, 'end', 'month'),
-            //         },
-            //     }))
-            //     break
-            // case E_FILTER_DATE.YEAR:
-            //     const year = data.data as Date
-            //     setQuery((prev) => ({
-            //         ...prev,
-            //         query: { profile: GET_PROFILE_STATISTIC_FILTER_DATE_RANGE },
-            //         params: {
-            //             ...defaultValues.params,
-            //             startDate: getDate(year, 'start', 'year'),
-            //             endDate: getDate(year, 'end', 'year'),
-            //         },
-            //     }))
-            //     break
+            case E_FILTER_DATE.DATE_RANGE:
+                const [startDate, endDate] = data.data as Date[]
+                setQuery((prev) => ({
+                    ...prev,
+                    query: filterQuery,
+                    params: {
+                        ...defaultValues.params,
+                        startDate: getDate(startDate, 'start'),
+                        endDate: getDate(endDate, 'end'),
+                        receiveCostKindIds: getKindSpendingIds('RECEIVE', 'COST'),
+                    },
+                }))
+                break
+            case E_FILTER_DATE.MONTH:
+                const month = data.data as Date
+                setQuery((prev) => ({
+                    ...prev,
+                    query: filterQuery,
+                    params: {
+                        ...defaultValues.params,
+                        startDate: getDate(month, 'start', 'month'),
+                        endDate: getDate(month, 'end', 'month'),
+                        receiveCostKindIds: getKindSpendingIds('RECEIVE', 'COST'),
+                    },
+                }))
+                break
+            case E_FILTER_DATE.YEAR:
+                const year = data.data as Date
+                setQuery((prev) => ({
+                    ...prev,
+                    query: filterQuery,
+                    params: {
+                        ...defaultValues.params,
+                        startDate: getDate(year, 'start', 'year'),
+                        endDate: getDate(year, 'end', 'year'),
+                        receiveCostKindIds: getKindSpendingIds('RECEIVE', 'COST'),
+                    },
+                }))
+                break
         }
 
         onReload()
@@ -207,21 +223,24 @@ const Dashboard = () => {
 
                     <div className='mt-2 sm:mt-5 sm:space-y-5 space-y-2'>
                         <div className='sm:px-3'>
-                            <TimeFilter onSubmit={() => {}} />
+                            <TimeFilter onSubmit={handleFilterSubmit} excludes={excludeOptions} />
                         </div>
                         <div className='sm:shadow-lg overflow-hidden sm:bg-gradient-to-tl sm:from-indigo-500 sm:via-purple-500 sm:to-pink-500 sm:p-3'>
                             <div className='grid xl:grid-cols-4 grid-cols-1 backdrop-blur-lg' ref={parent}>
-                                {method.loading || budget.loading || category.loading ? (
+                                {loading.config ? (
                                     <p className='animate-pulse my-5 sm:my-3 sm:text-lg text-sm text-gray-700 sm:text-white font-normal text-center'>
                                         {TEMPLATE.LOADING}
                                     </p>
+                                ) : isEmpty(profileOptions) ? (
+                                    <ProfileInfoSkeleton />
                                 ) : (
                                     profileOptions.map((profile, index) => (
                                         <ProfileInfoGroup
                                             key={index}
                                             title={profile.title}
-                                            className={clsx('flex gap-2', profile.wrapClassName)}
-                                            wrapClassName={profile.className}
+                                            className={clsx('flex gap-2', profile.className)}
+                                            wrapClassName={profile.wrapClassName}
+                                            hidden={profile.hidden}
                                         >
                                             {profile.values.map((value, index) => (
                                                 <ProfileInfo
