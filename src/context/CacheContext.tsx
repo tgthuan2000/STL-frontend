@@ -6,7 +6,7 @@ import { client } from '~/sanityConfig'
 import { deleteObjKeys, hashCode } from '~/services'
 
 const CACHE_RANGE = {
-    [TAGS.ALTERNATE]: 8,
+    [TAGS.ALTERNATE]: 10,
     [TAGS.ENUM]: Infinity,
     [TAGS.SHORT]: 10,
 }
@@ -22,6 +22,8 @@ const CacheContext = createContext<ICacheContext>({
     deleteCache: () => '',
     checkInCache: <T,>() => ({ data: {} as T, callApi: {} }),
 })
+
+const DeleteObjKeys = ['__from', '__to', '__start', '__end']
 
 const CacheProvider = ({ children }: { children: React.ReactNode }) => {
     const cacheRef = useRef<ICacheData<any>>(Object.assign({}, ...Object.values(TAGS).map((tag) => ({ [tag]: [] }))))
@@ -53,9 +55,11 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
                         }
                         return
                     }
+
                     /* Check spacing of cache (remove first element of array if have not space) */
-                    if (__cache.length >= get(CACHE_RANGE, tags, 0)) {
-                        __cache.shift()
+                    const calc = __cache.length + data.length - get(CACHE_RANGE, tags, 0)
+                    if (calc >= 0) {
+                        __cache.splice(0, calc)
                     }
                     /* Cache data */
                     cache[tags] = [...__cache, ...data]
@@ -76,7 +80,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
         payloads.forEach((payload) => {
             const { query, params, tags } = payload
 
-            const __params = deleteObjKeys(params, ['__from', '__to'])
+            const __params = deleteObjKeys(params, DeleteObjKeys)
             /* queryHash: hash query & params (exclude from, to params) */
             const queryHash = hashCode(JSON.stringify({ query, params: __params }))
 
@@ -114,12 +118,14 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
         const res: T = await client.fetch(q, params)
         Object.assign(data, res)
 
-        const groups: ICacheData<T> = {}
+        const groups: any = {
+            [TAGS.ALTERNATE]: [],
+            [TAGS.ENUM]: [],
+            [TAGS.SHORT]: [],
+        }
 
         keys.forEach((key) => {
-            Object.assign(groups, {
-                [tags[key]]: [{ ...callApi[key], data: data[key] }],
-            })
+            groups[tags[key]] = [...groups[tags[key]], { ...callApi[key], data: data[key] }]
         })
 
         updateCache(groups)
@@ -139,7 +145,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
         tags: { [x: string]: TAGS },
         keys: Array<keyof T> = []
     ) => {
-        const __params = deleteObjKeys(params, ['__from', '__to'])
+        const __params = deleteObjKeys(params, DeleteObjKeys)
         const callApi: {
             [x: string]: { query: string; key: number }
         } = {}

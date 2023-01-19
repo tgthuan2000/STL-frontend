@@ -5,7 +5,7 @@ import useAuth from '~/store/auth'
 
 const useServiceQuery = () => {
     let { userProfile } = useAuth()
-    const { getKindSpendingId } = useConfig()
+    const { getKindSpendingId, getKindSpendingIds } = useConfig()
 
     const cost = useMemo(() => getKindSpendingId('COST') as string, [])
     const receive = useMemo(() => getKindSpendingId('RECEIVE') as string, [])
@@ -20,10 +20,19 @@ const useServiceQuery = () => {
         RECEIVE_CATEGORY_SPENDING: services.getCategorySpending({ userProfile, kindSpending: receive }),
         TRANSFER_FROM_CATEGORY_SPENDING: services.getCategorySpending({ userProfile, kindSpending: transferFrom }),
         TRANSFER_TO_CATEGORY_SPENDING: services.getCategorySpending({ userProfile, kindSpending: transferTo }),
-        RECENT_SPENDING_PAGINATE: services.getRecentSpendingPaginate({ userProfile }),
+        RECENT_SPENDING_PAGINATE: services.getRecentSpendingPaginate({ userProfile, getKindSpendingIds }),
+        RECENT_LOAN_PAGINATE: services.getRecentLoanPaginate({ userProfile, getKindSpendingIds }),
+        RECENT_LOAN_FILTER_DATE_RANGE_PAGINATE: services.getRecentLoanFilterDateRangePaginate({
+            userProfile,
+            getKindSpendingIds,
+        }),
+        RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE: services.getRecentSpendingFilterDateRangePaginate({
+            userProfile,
+            getKindSpendingIds,
+        }),
         METHOD_SPENDING: services.getMethodSpending({ userProfile }),
         METHOD_SPENDING_DESC_SURPLUS: services.getMethodSpendingDescSurplus({ userProfile }),
-        RECENT_SPENDING: services.getRecentSpending({ userProfile }),
+        RECENT_SPENDING: services.getRecentSpending({ userProfile, getKindSpendingIds }),
         STATISTIC_SPENDING: services.getStatisticSpending({ userProfile }),
 
         // LOAN

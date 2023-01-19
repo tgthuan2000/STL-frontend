@@ -40,9 +40,9 @@ export const GET_METHOD_PROFILE_STATISTIC_FILTER_DATE_RANGE = groq`
     {
         _id,
         name,
-        "countUsed": count(*[_type == "spending" && methodSpending._ref == ^._id && kindSpending._ref in $receiveCostKindIds && date >= $startDate && date <= $endDate]),
-        "receives": *[_type == "spending" && methodSpending._ref == ^._id && kindSpending._ref in $receiveKindIds && date >= $startDate && date <= $endDate].amount,
-        "costs": *[_type == "spending" && methodSpending._ref == ^._id && kindSpending._ref in $costKindIds && date >= $startDate && date <= $endDate].amount,
+        "countUsed": count(*[_type == "spending" && methodSpending._ref == ^._id && kindSpending._ref in $receiveCostKindIds && date >= $__startDate && date <= $__endDate]),
+        "receives": *[_type == "spending" && methodSpending._ref == ^._id && kindSpending._ref in $receiveKindIds && date >= $__startDate && date <= $__endDate].amount,
+        "costs": *[_type == "spending" && methodSpending._ref == ^._id && kindSpending._ref in $costKindIds && date >= $__startDate && date <= $__endDate].amount,
     }
 `
 
@@ -51,17 +51,17 @@ export const GET_CATEGORY_PROFILE_STATISTIC_FILTER_DATE_RANGE = groq`
     {
         _id,
         name,
-        "countUsed": count(*[_type == "spending" && categorySpending._ref == ^._id && kindSpending._ref in $receiveCostKindIds && date >= $startDate && date <= $endDate]),
+        "countUsed": count(*[_type == "spending" && categorySpending._ref == ^._id && kindSpending._ref in $receiveCostKindIds && date >= $__startDate && date <= $__endDate]),
         kindSpending-> {
             key,
         },
-        "receives": *[_type == "spending" && categorySpending._ref == ^._id && kindSpending._ref in $receiveKindIds && date >= $startDate && date <= $endDate].amount,
-        "costs": *[_type == "spending" && categorySpending._ref == ^._id && kindSpending._ref in $costKindIds && date >= $startDate && date <= $endDate].amount,
+        "receives": *[_type == "spending" && categorySpending._ref == ^._id && kindSpending._ref in $receiveKindIds && date >= $__startDate && date <= $__endDate].amount,
+        "costs": *[_type == "spending" && categorySpending._ref == ^._id && kindSpending._ref in $costKindIds && date >= $__startDate && date <= $__endDate].amount,
     }
 `
 
 export const GET_BUDGET_PROFILE_STATISTIC_FILTER_DATE_RANGE = groq`
-    *[_type == "budget" && user._ref == $userId && date >= $startDate && date <= $endDate]
+    *[_type == "budget" && user._ref == $userId && date >= $__startDate && date <= $__endDate]
     {
         _id,
         date,
