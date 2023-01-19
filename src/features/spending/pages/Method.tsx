@@ -6,7 +6,7 @@ import { useEffect, useMemo } from 'react'
 import { IMethodSpending } from '~/@types/spending'
 import { TAGS } from '~/constant'
 import { TEMPLATE } from '~/constant/template'
-import { useConfig } from '~/context'
+import { useCheck, useConfig } from '~/context'
 import { useQuery, useScrollIntoView, useWindowSize } from '~/hook'
 import { GET_METHOD_SPENDING_DESC_SURPLUS } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
@@ -18,14 +18,17 @@ const Method = () => {
     const wrapRef = useScrollIntoView<HTMLDivElement>()
     const { width } = useWindowSize()
 
-    const [{ method }, fetchData] = useQuery<{
+    const [{ method }, fetchData, , reload] = useQuery<{
         method: IMethodSpending[]
     }>({ method: GET_METHOD_SPENDING_DESC_SURPLUS }, { userId: userProfile?._id as string }, { method: TAGS.ALTERNATE })
+
     useEffect(() => {
         if (!isEmpty(kindSpending)) {
             fetchData()
         }
     }, [kindSpending])
+
+    useCheck(reload)
 
     const isMobileScreen = width < 768
 

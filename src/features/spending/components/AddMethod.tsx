@@ -9,7 +9,7 @@ import { AddMethodQueryData, IAddMethodForm } from '~/@types/spending'
 import { Button } from '~/components'
 import { Input } from '~/components/_base'
 import { TAGS } from '~/constant'
-import { SlideOverHOC, useCache, useLoading, useSlideOver } from '~/context'
+import { SlideOverHOC, useCache, useCheck, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
@@ -22,6 +22,7 @@ const AddMethod = () => {
     const { userProfile } = useAuth()
     const { loading, setSubmitLoading } = useLoading()
     const { deleteCache } = useCache()
+    const { needCheckWhenLeave } = useCheck()
     const { METHOD_SPENDING_DESC_SURPLUS, METHOD_SPENDING } = useServiceQuery()
     const [alertRef] = useAutoAnimate<HTMLDivElement>()
     const form = useForm<IAddMethodForm>({
@@ -64,6 +65,7 @@ const AddMethod = () => {
             const result = deleteCache([METHOD_SPENDING_DESC_SURPLUS, METHOD_SPENDING])
             console.log(result)
             toast.success<string>('Tạo mới phương thức thanh toán thành công!')
+            needCheckWhenLeave()
             // setIsOpen(false)
             // navigate(-1)
         } catch (error) {
