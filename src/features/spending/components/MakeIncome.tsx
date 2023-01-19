@@ -8,7 +8,7 @@ import { IAddIncomeForm, MakeIncomeQueryData } from '~/@types/spending'
 import { Button } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { TAGS } from '~/constant'
-import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
+import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
@@ -20,6 +20,7 @@ const MakeIncome = () => {
     const { userProfile } = useAuth()
     const { deleteCache } = useCache()
     const { getKindSpendingId } = useConfig()
+    const { needCheckWhenLeave } = useCheck()
     const { loading, setSubmitLoading } = useLoading()
     const { METHOD_SPENDING_DESC_SURPLUS, RECENT_SPENDING, RECENT_SPENDING_PAGINATE, STATISTIC_SPENDING } =
         useServiceQuery()
@@ -129,6 +130,7 @@ const MakeIncome = () => {
                 }
             )
             toast.success<string>('Tạo thu nhập thành công!')
+            needCheckWhenLeave()
             // setIsOpen(false)
             // navigate(-1)
         } catch (error) {

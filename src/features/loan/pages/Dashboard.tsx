@@ -4,7 +4,7 @@ import { DashboardQueryData } from '~/@types/loan'
 import { Box2, ButtonMenuLoan, Divider } from '~/components'
 import { TAGS } from '~/constant'
 import { menuLoanMobile } from '~/constant/components'
-import { useConfig } from '~/context'
+import { useCheck, useConfig } from '~/context'
 import { useQuery, useScrollIntoView, useWindowSize } from '~/hook'
 import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
 import useAuth from '~/store/auth'
@@ -35,6 +35,8 @@ const Dashboard = () => {
             statistic: TAGS.ALTERNATE,
         }
     )
+
+    useCheck(reload)
 
     useEffect(() => {
         fetchData()

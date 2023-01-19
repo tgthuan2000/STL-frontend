@@ -8,8 +8,8 @@ import { IAddIncomeForm, QueryDataMakeLoan } from '~/@types/loan'
 import { Button } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { TAGS } from '~/constant'
-import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
-import { useQuery } from '~/hook'
+import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
+import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_USER_LOAN } from '~/schema/query/loan'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
@@ -19,9 +19,11 @@ const MakeLoan = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { userProfile } = useAuth()
-    const { deleteCache } = useCache()
     const { getKindSpendingId, kindSpending } = useConfig()
     const { loading, setSubmitLoading } = useLoading()
+    const { needCheckWhenLeave } = useCheck()
+    const { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } = useServiceQuery()
+    const { deleteCache } = useCache()
 
     const kindLoanId = useMemo(() => {
         return getKindSpendingId('LOAN')
@@ -114,6 +116,8 @@ const MakeLoan = () => {
                 }
             )
             toast.success<string>('Thực hiện tạo vay thành công!')
+            deleteCache([GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN])
+            needCheckWhenLeave()
             // setIsOpen(false)
             // navigate(-1)
         } catch (error) {

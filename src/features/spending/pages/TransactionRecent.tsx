@@ -13,7 +13,7 @@ import { COUNT_PAGINATE, TAGS } from '~/constant'
 import { DATA_LIST_GROUP, DATA_LIST_MODE, __groupBy } from '~/constant/component'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { E_FILTER_DATE, TEMPLATE } from '~/constant/template'
-import { useConfig } from '~/context'
+import { useCheck, useConfig } from '~/context'
 import { useLocalStorage, useQuery, useWindowSize } from '~/hook'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
 import { GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE, GET_RECENT_SPENDING_PAGINATE } from '~/schema/query/spending'
@@ -102,6 +102,8 @@ const TransactionRecent = () => {
     }>(defaultValues)
 
     const [{ recent }, fetchData, deleteCacheData, reload, error] = useQuery<RecentQueryData>(query, params, tags)
+
+    useCheck(reload)
 
     useEffect(() => {
         fetchData()
