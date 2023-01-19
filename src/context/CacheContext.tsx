@@ -55,9 +55,11 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
                         }
                         return
                     }
+
                     /* Check spacing of cache (remove first element of array if have not space) */
-                    if (__cache.length >= get(CACHE_RANGE, tags, 0)) {
-                        __cache.shift()
+                    const calc = __cache.length + data.length - get(CACHE_RANGE, tags, 0)
+                    if (calc >= 0) {
+                        __cache.splice(0, calc)
                     }
                     /* Cache data */
                     cache[tags] = [...__cache, ...data]
