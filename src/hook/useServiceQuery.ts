@@ -32,7 +32,7 @@ const useServiceQuery = () => {
         }),
         METHOD_SPENDING: services.getMethodSpending({ userProfile }),
         METHOD_SPENDING_DESC_SURPLUS: services.getMethodSpendingDescSurplus({ userProfile }),
-        RECENT_SPENDING: services.getRecentSpending({ userProfile }),
+        RECENT_SPENDING: services.getRecentSpending({ userProfile, getKindSpendingIds }),
         STATISTIC_SPENDING: services.getStatisticSpending({ userProfile }),
 
         // LOAN

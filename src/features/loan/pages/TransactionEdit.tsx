@@ -48,7 +48,7 @@ const TransactionEdit = () => {
             },
             {
                 methodSpending: TAGS.ENUM,
-                transaction: TAGS.ALTERNATE,
+                transaction: TAGS.SHORT,
                 userLoan: TAGS.ENUM,
             }
         )

@@ -43,7 +43,7 @@ const MethodDetail = () => {
                 __fromMethod: 0,
                 __toMethod: COUNT_PAGINATE,
             },
-            tags: { method: TAGS.ALTERNATE },
+            tags: { method: TAGS.SHORT },
         }
     }, [])
 

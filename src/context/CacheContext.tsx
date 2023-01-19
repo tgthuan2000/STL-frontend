@@ -1,4 +1,4 @@
-import { get, isEqual, merge } from 'lodash'
+import { get, isEqual } from 'lodash'
 import React, { createContext, useContext, useRef } from 'react'
 import { DataCache, DeleteCache, ICacheContext, ICacheData, QueryParams, TagsField } from '~/@types/context'
 import { TAGS } from '~/constant'
@@ -6,7 +6,7 @@ import { client } from '~/sanityConfig'
 import { deleteObjKeys, hashCode } from '~/services'
 
 const CACHE_RANGE = {
-    [TAGS.ALTERNATE]: 8,
+    [TAGS.ALTERNATE]: 10,
     [TAGS.ENUM]: Infinity,
     [TAGS.SHORT]: 10,
 }
@@ -67,7 +67,6 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
             }
         }
         cacheRef.current = cache
-        console.log(cacheRef.current)
     }
 
     /*
@@ -97,7 +96,6 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
             }
         })
         cacheRef.current = cache
-        console.log(cacheRef.current)
 
         return 'Deleted ' + count + ' cached data'
     }

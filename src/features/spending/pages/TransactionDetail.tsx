@@ -47,7 +47,7 @@ const TransactionDetail = () => {
             },
             {
                 methodSpending: TAGS.ENUM,
-                transaction: TAGS.ALTERNATE,
+                transaction: TAGS.SHORT,
             }
         )
 

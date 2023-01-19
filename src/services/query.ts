@@ -71,10 +71,16 @@ export const getStatisticSpending = <T extends Record<string, any>>({
 
 export const getRecentSpending = <T extends Record<string, any>>({
     userProfile,
+    getKindSpendingIds,
 }: GetRecentSpending<T>): QueryResult => {
     return {
         query: GET_RECENT_SPENDING,
-        params: { userId: userProfile?._id as string, from: 0, to: 5 },
+        params: {
+            userId: userProfile?._id as string,
+            kindSpendingIds: getKindSpendingIds('COST', 'RECEIVE', 'TRANSFER_FROM', 'TRANSFER_TO'),
+            from: 0,
+            to: 5,
+        },
         tags: TAGS.ALTERNATE,
     }
 }
