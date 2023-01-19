@@ -70,22 +70,22 @@ const Dashboard = () => {
                     case E_FILTER_DATE.DATE_RANGE: {
                         const [startDate, endDate] = data
                         params = {
-                            startDate: getDate(moment(startDate).toDate(), 'start'),
-                            endDate: getDate(moment(endDate).toDate(), 'end'),
+                            __startDate: getDate(moment(startDate).toDate(), 'start'),
+                            __endDate: getDate(moment(endDate).toDate(), 'end'),
                         }
                         break
                     }
                     case E_FILTER_DATE.MONTH: {
                         params = {
-                            startDate: getDate(moment(data).toDate(), 'start', 'month'),
-                            endDate: getDate(moment(data).toDate(), 'end', 'month'),
+                            __startDate: getDate(moment(data).toDate(), 'start', 'month'),
+                            __endDate: getDate(moment(data).toDate(), 'end', 'month'),
                         }
                         break
                     }
                     case E_FILTER_DATE.YEAR: {
                         params = {
-                            startDate: getDate(moment(data).toDate(), 'start', 'year'),
-                            endDate: getDate(moment(data).toDate(), 'end', 'year'),
+                            __startDate: getDate(moment(data).toDate(), 'start', 'year'),
+                            __endDate: getDate(moment(data).toDate(), 'end', 'year'),
                         }
                         break
                     }
@@ -148,8 +148,8 @@ const Dashboard = () => {
                     query: filterQuery,
                     params: {
                         ...defaultValues.params,
-                        startDate: getDate(startDate, 'start'),
-                        endDate: getDate(endDate, 'end'),
+                        __startDate: getDate(startDate, 'start'),
+                        __endDate: getDate(endDate, 'end'),
                         receiveCostKindIds: getKindSpendingIds('RECEIVE', 'COST'),
                     },
                 }))
@@ -161,8 +161,8 @@ const Dashboard = () => {
                     query: filterQuery,
                     params: {
                         ...defaultValues.params,
-                        startDate: getDate(month, 'start', 'month'),
-                        endDate: getDate(month, 'end', 'month'),
+                        __startDate: getDate(month, 'start', 'month'),
+                        __endDate: getDate(month, 'end', 'month'),
                         receiveCostKindIds: getKindSpendingIds('RECEIVE', 'COST'),
                     },
                 }))
@@ -174,8 +174,8 @@ const Dashboard = () => {
                     query: filterQuery,
                     params: {
                         ...defaultValues.params,
-                        startDate: getDate(year, 'start', 'year'),
-                        endDate: getDate(year, 'end', 'year'),
+                        __startDate: getDate(year, 'start', 'year'),
+                        __endDate: getDate(year, 'end', 'year'),
                         receiveCostKindIds: getKindSpendingIds('RECEIVE', 'COST'),
                     },
                 }))

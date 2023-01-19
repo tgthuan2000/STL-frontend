@@ -51,7 +51,7 @@ export const GET_RECENT_SPENDING_PAGINATE = groq`
 
 export const GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE = groq`
     {
-        "data": *[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && $startDate <= date && date <= $endDate] | order(_updatedAt desc)[$__fromRecent...$__toRecent]
+        "data": *[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && $__startDate <= date && date <= $__endDate] | order(_updatedAt desc)[$__fromRecent...$__toRecent]
             {
                 _id,
                 categorySpending-> {
@@ -71,7 +71,7 @@ export const GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE = groq`
                 date,
                 estimatePaidDate
             },
-        "hasNextPage": count(*[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && $startDate <= date && date <= $endDate]) > $__toRecent
+        "hasNextPage": count(*[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && $__startDate <= date && date <= $__endDate]) > $__toRecent
     }
 `
 
@@ -149,7 +149,7 @@ export const GETALL_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD = groq`
 
 export const GET_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD_PAGINATE = groq`
     {
-        "data": *[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && methodSpending._ref in $methodSpendingIds && $startDate <= date && date <= $endDate] | order(_updatedAt desc)[$__fromMethod...$__toMethod]
+        "data": *[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && methodSpending._ref in $methodSpendingIds && $__startDate <= date && date <= $__endDate] | order(_updatedAt desc)[$__fromMethod...$__toMethod]
             {
                 _id,
                 categorySpending-> {
@@ -169,7 +169,7 @@ export const GET_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD_PAGINATE = groq`
                 date,
                 estimatePaidDate
             },
-        "hasNextPage": count(*[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && methodSpending._ref in $methodSpendingIds && $startDate <= date && date <= $endDate]) > $__toMethod
+        "hasNextPage": count(*[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && methodSpending._ref in $methodSpendingIds && $__startDate <= date && date <= $__endDate]) > $__toMethod
     }
 `
 

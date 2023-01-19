@@ -49,30 +49,30 @@ const Dashboard = () => {
                 switch (Number(type)) {
                     case E_FILTER_DATE.DATE: {
                         params = {
-                            startDate: getDate(moment(data).toDate(), 'start'),
-                            endDate: getDate(moment(data).toDate(), 'end'),
+                            __startDate: getDate(moment(data).toDate(), 'start'),
+                            __endDate: getDate(moment(data).toDate(), 'end'),
                         }
                         break
                     }
                     case E_FILTER_DATE.DATE_RANGE: {
                         const [startDate, endDate] = data
                         params = {
-                            startDate: getDate(moment(startDate).toDate(), 'start'),
-                            endDate: getDate(moment(endDate).toDate(), 'end'),
+                            __startDate: getDate(moment(startDate).toDate(), 'start'),
+                            __endDate: getDate(moment(endDate).toDate(), 'end'),
                         }
                         break
                     }
                     case E_FILTER_DATE.MONTH: {
                         params = {
-                            startDate: getDate(moment(data).toDate(), 'start', 'month'),
-                            endDate: getDate(moment(data).toDate(), 'end', 'month'),
+                            __startDate: getDate(moment(data).toDate(), 'start', 'month'),
+                            __endDate: getDate(moment(data).toDate(), 'end', 'month'),
                         }
                         break
                     }
                     case E_FILTER_DATE.YEAR: {
                         params = {
-                            startDate: getDate(moment(data).toDate(), 'start', 'year'),
-                            endDate: getDate(moment(data).toDate(), 'end', 'year'),
+                            __startDate: getDate(moment(data).toDate(), 'start', 'year'),
+                            __endDate: getDate(moment(data).toDate(), 'end', 'year'),
                         }
                         break
                     }
@@ -119,8 +119,8 @@ const Dashboard = () => {
                     query: { notify: GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
-                        startDate: getDate(date, 'start'),
-                        endDate: getDate(date, 'end'),
+                        __startDate: getDate(date, 'start'),
+                        __endDate: getDate(date, 'end'),
                     },
                 }))
                 break
@@ -131,8 +131,8 @@ const Dashboard = () => {
                     query: { notify: GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
-                        startDate: getDate(startDate, 'start'),
-                        endDate: getDate(endDate, 'end'),
+                        __startDate: getDate(startDate, 'start'),
+                        __endDate: getDate(endDate, 'end'),
                     },
                 }))
                 break
@@ -143,8 +143,8 @@ const Dashboard = () => {
                     query: { notify: GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
-                        startDate: getDate(month, 'start', 'month'),
-                        endDate: getDate(month, 'end', 'month'),
+                        __startDate: getDate(month, 'start', 'month'),
+                        __endDate: getDate(month, 'end', 'month'),
                     },
                 }))
                 break
@@ -155,8 +155,8 @@ const Dashboard = () => {
                     query: { notify: GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
-                        startDate: getDate(year, 'start', 'year'),
-                        endDate: getDate(year, 'end', 'year'),
+                        __startDate: getDate(year, 'start', 'year'),
+                        __endDate: getDate(year, 'end', 'year'),
                     },
                 }))
                 break

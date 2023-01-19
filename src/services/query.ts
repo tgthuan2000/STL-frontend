@@ -18,6 +18,7 @@ import {
     GET_METHOD_SPENDING,
     GET_METHOD_SPENDING_DESC_SURPLUS,
     GET_RECENT_SPENDING,
+    GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE,
     GET_RECENT_SPENDING_PAGINATE,
     GET_STATISTIC_SPENDING,
 } from '~/schema/query/spending'
@@ -70,20 +71,72 @@ export const getStatisticSpending = <T extends Record<string, any>>({
 
 export const getRecentSpending = <T extends Record<string, any>>({
     userProfile,
+    getKindSpendingIds,
 }: GetRecentSpending<T>): QueryResult => {
     return {
         query: GET_RECENT_SPENDING,
-        params: { userId: userProfile?._id as string, from: 0, to: 5 },
+        params: {
+            userId: userProfile?._id as string,
+            kindSpendingIds: getKindSpendingIds('COST', 'RECEIVE', 'TRANSFER_FROM', 'TRANSFER_TO'),
+            from: 0,
+            to: 5,
+        },
+        tags: TAGS.ALTERNATE,
+    }
+}
+
+export const getRecentLoanPaginate = <T extends Record<string, any>>({
+    userProfile,
+    getKindSpendingIds,
+}: GetRecentSpendingPaginate<T>): QueryResult => {
+    return {
+        query: GET_RECENT_SPENDING_PAGINATE,
+        params: {
+            userId: userProfile?._id as string,
+            kindSpendingIds: getKindSpendingIds('GET_LOAN', 'LOAN'),
+        },
+        tags: TAGS.ALTERNATE,
+    }
+}
+
+export const getRecentLoanFilterDateRangePaginate = <T extends Record<string, any>>({
+    userProfile,
+    getKindSpendingIds,
+}: GetRecentSpendingPaginate<T>): QueryResult => {
+    return {
+        query: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE,
+        params: {
+            userId: userProfile?._id as string,
+            kindSpendingIds: getKindSpendingIds('GET_LOAN', 'LOAN'),
+        },
         tags: TAGS.ALTERNATE,
     }
 }
 
 export const getRecentSpendingPaginate = <T extends Record<string, any>>({
     userProfile,
+    getKindSpendingIds,
 }: GetRecentSpendingPaginate<T>): QueryResult => {
     return {
         query: GET_RECENT_SPENDING_PAGINATE,
-        params: { userId: userProfile?._id as string },
+        params: {
+            userId: userProfile?._id as string,
+            kindSpendingIds: getKindSpendingIds('COST', 'RECEIVE', 'TRANSFER_FROM', 'TRANSFER_TO'),
+        },
+        tags: TAGS.ALTERNATE,
+    }
+}
+
+export const getRecentSpendingFilterDateRangePaginate = <T extends Record<string, any>>({
+    userProfile,
+    getKindSpendingIds,
+}: GetRecentSpendingPaginate<T>): QueryResult => {
+    return {
+        query: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE,
+        params: {
+            userId: userProfile?._id as string,
+            kindSpendingIds: getKindSpendingIds('COST', 'RECEIVE', 'TRANSFER_FROM', 'TRANSFER_TO'),
+        },
         tags: TAGS.ALTERNATE,
     }
 }
