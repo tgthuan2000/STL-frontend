@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { DefaultLayout } from '~/layout'
 import { ErrorFallback, Loading, PermissionCheck } from './components'
 import { PERMISSION } from './constant/permission'
-import { ConfigProvider, LoadingProvider } from './context'
+import { ConfigProvider, LoadingProvider, CheckingProvider } from './context'
 import { CacheProvider } from './context/CacheContext'
 
 const AuthFeature = React.lazy(() => import('./features/auth'))
@@ -37,83 +37,85 @@ function App() {
                         theme='colored'
                     />
                     <LoadingProvider>
-                        <Loading />
-                        <Suspense fallback={<div>Loading...</div>}>
-                            <Routes>
-                                <Route
-                                    path='/'
-                                    element={
-                                        <ConfigProvider>
-                                            <CacheProvider>
-                                                <DefaultLayout />
-                                            </CacheProvider>
-                                        </ConfigProvider>
-                                    }
-                                >
-                                    <Route index element={<Navigate to='spending' />} />
+                        <CheckingProvider>
+                            <Loading />
+                            <Suspense fallback={<div>Loading...</div>}>
+                                <Routes>
                                     <Route
-                                        path='spending/*'
+                                        path='/'
                                         element={
-                                            <PermissionCheck permissions={[PERMISSION.SPENDING_READ]}>
-                                                <SpendingFeature />
-                                            </PermissionCheck>
+                                            <ConfigProvider>
+                                                <CacheProvider>
+                                                    <DefaultLayout />
+                                                </CacheProvider>
+                                            </ConfigProvider>
                                         }
-                                    />
-                                    <Route
-                                        path='timekeeping/*'
-                                        element={
-                                            <PermissionCheck permissions={[PERMISSION.TIMEKEEPING_READ]}>
-                                                <TimeKeepingFeature />
-                                            </PermissionCheck>
-                                        }
-                                    />
-                                    <Route
-                                        path='loan/*'
-                                        element={
-                                            <PermissionCheck permissions={[PERMISSION.LOAN_READ]}>
-                                                <LoanFeature />
-                                            </PermissionCheck>
-                                        }
-                                    />
-                                    <Route
-                                        path='announce-config/*'
-                                        element={
-                                            <PermissionCheck permissions={[PERMISSION.ANNOUNCE_CONFIG]}>
-                                                <AnnounceConfigFeature />
-                                            </PermissionCheck>
-                                        }
-                                    />
-                                    <Route
-                                        path='account/*'
-                                        element={
-                                            <PermissionCheck permissions={[PERMISSION.ACCOUNT_READ]}>
-                                                <AccountFeature />
-                                            </PermissionCheck>
-                                        }
-                                    />
-                                    <Route
-                                        path='profile/*'
-                                        element={
-                                            <PermissionCheck permissions={[PERMISSION.PROFILE_READ]}>
-                                                <ProfileFeature />
-                                            </PermissionCheck>
-                                        }
-                                    />
-                                    <Route
-                                        path='notify/*'
-                                        element={
-                                            <PermissionCheck
-                                                permissions={[PERMISSION.PROFILE_READ, PERMISSION.ANNOUNCE_CONFIG]}
-                                            >
-                                                <NotifyFeature />
-                                            </PermissionCheck>
-                                        }
-                                    />
-                                    <Route path='*' element={<Navigate to='/' />} />
-                                </Route>
-                                <Route path='/auth' element={<AuthFeature />} />
-                            </Routes>
-                        </Suspense>
+                                    >
+                                        <Route index element={<Navigate to='spending' />} />
+                                        <Route
+                                            path='spending/*'
+                                            element={
+                                                <PermissionCheck permissions={[PERMISSION.SPENDING_READ]}>
+                                                    <SpendingFeature />
+                                                </PermissionCheck>
+                                            }
+                                        />
+                                        <Route
+                                            path='timekeeping/*'
+                                            element={
+                                                <PermissionCheck permissions={[PERMISSION.TIMEKEEPING_READ]}>
+                                                    <TimeKeepingFeature />
+                                                </PermissionCheck>
+                                            }
+                                        />
+                                        <Route
+                                            path='loan/*'
+                                            element={
+                                                <PermissionCheck permissions={[PERMISSION.LOAN_READ]}>
+                                                    <LoanFeature />
+                                                </PermissionCheck>
+                                            }
+                                        />
+                                        <Route
+                                            path='announce-config/*'
+                                            element={
+                                                <PermissionCheck permissions={[PERMISSION.ANNOUNCE_CONFIG]}>
+                                                    <AnnounceConfigFeature />
+                                                </PermissionCheck>
+                                            }
+                                        />
+                                        <Route
+                                            path='account/*'
+                                            element={
+                                                <PermissionCheck permissions={[PERMISSION.ACCOUNT_READ]}>
+                                                    <AccountFeature />
+                                                </PermissionCheck>
+                                            }
+                                        />
+                                        <Route
+                                            path='profile/*'
+                                            element={
+                                                <PermissionCheck permissions={[PERMISSION.PROFILE_READ]}>
+                                                    <ProfileFeature />
+                                                </PermissionCheck>
+                                            }
+                                        />
+                                        <Route
+                                            path='notify/*'
+                                            element={
+                                                <PermissionCheck
+                                                    permissions={[PERMISSION.PROFILE_READ, PERMISSION.ANNOUNCE_CONFIG]}
+                                                >
+                                                    <NotifyFeature />
+                                                </PermissionCheck>
+                                            }
+                                        />
+                                        <Route path='*' element={<Navigate to='/' />} />
+                                    </Route>
+                                    <Route path='/auth' element={<AuthFeature />} />
+                                </Routes>
+                            </Suspense>
+                        </CheckingProvider>
                     </LoadingProvider>
                 </ErrorBoundary>
             </BrowserRouter>

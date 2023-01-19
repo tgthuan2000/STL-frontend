@@ -5,7 +5,7 @@ import { DashboardQueryData } from '~/@types/spending'
 import { Box, ButtonMenu, Divider } from '~/components'
 import { DATE_FORMAT, TAGS } from '~/constant'
 import { menuMobile } from '~/constant/components'
-import { useConfig } from '~/context'
+import { useCheck, useConfig } from '~/context'
 import { useQuery, useScrollIntoView, useWindowSize } from '~/hook'
 import {
     GET_BUDGET_BY_MONTH,
@@ -48,6 +48,8 @@ const Dashboard = () => {
             ...(budgetId && { budget: TAGS.ALTERNATE }),
         }
     )
+
+    useCheck(reload)
 
     useEffect(() => {
         if (!isEmpty(kindSpending)) {

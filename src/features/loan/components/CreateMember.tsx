@@ -4,7 +4,8 @@ import { toast } from 'react-toastify'
 import { ICreateMemberForm } from '~/@types/loan'
 import { Button } from '~/components'
 import { Input, UploadImage } from '~/components/_base'
-import { SlideOverHOC, useLoading, useSlideOver } from '~/context'
+import { SlideOverHOC, useCache, useCheck, useLoading, useSlideOver } from '~/context'
+import { useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import useAuth from '~/store/auth'
 
@@ -18,6 +19,9 @@ const CreateMember = () => {
     const navigate = useNavigate()
     const { userProfile } = useAuth()
     const { loading, setSubmitLoading } = useLoading()
+    const { needCheckWhenLeave } = useCheck()
+    const { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } = useServiceQuery()
+    const { deleteCache } = useCache()
 
     const form = useForm<ICreateMemberForm>({
         defaultValues,
@@ -58,6 +62,8 @@ const CreateMember = () => {
                 keepDefaultValues: true,
             })
             toast.success<string>('Tạo thành viên thành công!')
+            deleteCache([GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN])
+            needCheckWhenLeave()
             // setIsOpen(false)
             // navigate(-1)
         } catch (error) {

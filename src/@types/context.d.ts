@@ -1,3 +1,4 @@
+import React from 'react'
 import { TAGS } from '~/constant'
 import { PERMISSION } from '~/constant/permission'
 import { KIND_SPENDING } from '~/constant/spending'
@@ -94,4 +95,12 @@ export interface IConfig {
     kindSpending: IKindSpending[]
     budgetSpending: { _id: string }
     role: { role: IRoleControl } | null
+}
+
+export interface ICheckingContext {
+    check: boolean
+    needCheck: () => void
+    needCheckWhenLeave: () => void
+    cancelCheck: () => void
+    checkWhenLeave: boolean
 }

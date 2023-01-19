@@ -9,7 +9,7 @@ import { IMakeBudgetForm, MakeBudgetQueryData, StateRef, StateRefKey } from '~/@
 import { Button, Chip, Tabs } from '~/components'
 import { DatePicker } from '~/components/_base'
 import { TAGS } from '~/constant'
-import { useConfig, useLoading, useSlideOver } from '~/context'
+import { useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_BUDGET_BY_MONTH, GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
@@ -79,6 +79,7 @@ const MakeBudget = () => {
     const { userProfile } = useAuth()
     const { getKindSpendingId } = useConfig()
     const { loading, setSubmitLoading } = useLoading()
+    const { needCheckWhenLeave } = useCheck()
     const stateRef = useRef<StateRef>(defaultStateRef)
     const [{ query, params, tags }, setQueryData] = useState({
         query: {
@@ -222,6 +223,7 @@ const MakeBudget = () => {
             } else {
                 setQueryDataFn(date)
             }
+            needCheckWhenLeave()
         } catch (error) {
             console.log(error)
         } finally {
