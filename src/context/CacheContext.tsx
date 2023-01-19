@@ -1,4 +1,4 @@
-import { get, isEqual } from 'lodash'
+import { get, isEqual, merge } from 'lodash'
 import React, { createContext, useContext, useRef } from 'react'
 import { DataCache, DeleteCache, ICacheContext, ICacheData, QueryParams, TagsField } from '~/@types/context'
 import { TAGS } from '~/constant'
@@ -65,6 +65,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
             }
         }
         cacheRef.current = cache
+        console.log(cacheRef.current)
     }
 
     /*
@@ -94,6 +95,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
             }
         })
         cacheRef.current = cache
+        console.log(cacheRef.current)
 
         return 'Deleted ' + count + ' cached data'
     }
@@ -116,12 +118,14 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
         const res: T = await client.fetch(q, params)
         Object.assign(data, res)
 
-        const groups: ICacheData<T> = {}
+        const groups: any = {
+            [TAGS.ALTERNATE]: [],
+            [TAGS.ENUM]: [],
+            [TAGS.SHORT]: [],
+        }
 
         keys.forEach((key) => {
-            Object.assign(groups, {
-                [tags[key]]: [{ ...callApi[key], data: data[key] }],
-            })
+            groups[tags[key]] = [...groups[tags[key]], { ...callApi[key], data: data[key] }]
         })
 
         updateCache(groups)
