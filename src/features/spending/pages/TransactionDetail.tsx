@@ -31,6 +31,7 @@ const TransactionDetail = () => {
         METHOD_SPENDING,
         RECENT_SPENDING,
         RECENT_SPENDING_PAGINATE,
+        RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE,
         STATISTIC_SPENDING,
     } = useServiceQuery()
 
@@ -241,6 +242,7 @@ const TransactionDetail = () => {
                 METHOD_SPENDING,
                 RECENT_SPENDING,
                 RECENT_SPENDING_PAGINATE,
+                RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE,
                 STATISTIC_SPENDING,
             ])
             console.log(caches)
@@ -303,6 +305,7 @@ const TransactionDetail = () => {
                 METHOD_SPENDING,
                 RECENT_SPENDING,
                 RECENT_SPENDING_PAGINATE,
+                RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE,
                 STATISTIC_SPENDING,
             ])
             console.log(caches)

@@ -1,4 +1,5 @@
 import { SanityDocument } from '@sanity/client'
+import { GetKindSpendingIds } from './context'
 
 export type QueryResult = {
     query: string
@@ -28,6 +29,7 @@ export interface GetRecentSpending<T extends Record<string, any>> {
 
 export interface GetRecentSpendingPaginate<T extends Record<string, any>> {
     userProfile: SanityDocument<T> | null
+    getKindSpendingIds: GetKindSpendingIds
 }
 
 export interface GetRecentLoan<T extends Record<string, any>> {

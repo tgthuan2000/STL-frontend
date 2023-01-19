@@ -126,8 +126,8 @@ const TransactionRecent = () => {
                     query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
-                        startDate: getDate(date, 'start'),
-                        endDate: getDate(date, 'end'),
+                        __startDate: getDate(date, 'start'),
+                        __endDate: getDate(date, 'end'),
                     },
                 }))
                 break
@@ -138,8 +138,8 @@ const TransactionRecent = () => {
                     query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
-                        startDate: getDate(startDate, 'start'),
-                        endDate: getDate(endDate, 'end'),
+                        __startDate: getDate(startDate, 'start'),
+                        __endDate: getDate(endDate, 'end'),
                     },
                 }))
                 break
@@ -150,8 +150,8 @@ const TransactionRecent = () => {
                     query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
-                        startDate: getDate(month, 'start', 'month'),
-                        endDate: getDate(month, 'end', 'month'),
+                        __startDate: getDate(month, 'start', 'month'),
+                        __endDate: getDate(month, 'end', 'month'),
                     },
                 }))
                 break
@@ -162,8 +162,8 @@ const TransactionRecent = () => {
                     query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
-                        startDate: getDate(year, 'start', 'year'),
-                        endDate: getDate(year, 'end', 'year'),
+                        __startDate: getDate(year, 'start', 'year'),
+                        __endDate: getDate(year, 'end', 'year'),
                     },
                 }))
                 break

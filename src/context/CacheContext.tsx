@@ -23,6 +23,8 @@ const CacheContext = createContext<ICacheContext>({
     checkInCache: <T,>() => ({ data: {} as T, callApi: {} }),
 })
 
+const DeleteObjKeys = ['__from', '__to', '__start', '__end']
+
 const CacheProvider = ({ children }: { children: React.ReactNode }) => {
     const cacheRef = useRef<ICacheData<any>>(Object.assign({}, ...Object.values(TAGS).map((tag) => ({ [tag]: [] }))))
 
@@ -76,7 +78,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
         payloads.forEach((payload) => {
             const { query, params, tags } = payload
 
-            const __params = deleteObjKeys(params, ['__from', '__to'])
+            const __params = deleteObjKeys(params, DeleteObjKeys)
             /* queryHash: hash query & params (exclude from, to params) */
             const queryHash = hashCode(JSON.stringify({ query, params: __params }))
 
@@ -139,7 +141,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
         tags: { [x: string]: TAGS },
         keys: Array<keyof T> = []
     ) => {
-        const __params = deleteObjKeys(params, ['__from', '__to'])
+        const __params = deleteObjKeys(params, DeleteObjKeys)
         const callApi: {
             [x: string]: { query: string; key: number }
         } = {}
