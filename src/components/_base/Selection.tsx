@@ -54,7 +54,7 @@ const Selection: React.FC<SelectionProps> = ({
                         {({ open }) => (
                             <>
                                 {label && (
-                                    <Listbox.Label className='inline-block text-sm font-medium text-gray-700'>
+                                    <Listbox.Label className='inline-block text-sm font-medium text-gray-700 dark:text-slate-100'>
                                         {label}
                                     </Listbox.Label>
                                 )}

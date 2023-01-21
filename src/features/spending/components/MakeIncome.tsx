@@ -197,7 +197,7 @@ const MakeIncome = () => {
         <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
             <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
                 <div className='flex flex-1 flex-col justify-between'>
-                    <div className='divide-y divide-gray-200 px-4 sm:px-6'>
+                    <div className='px-4 sm:px-6'>
                         <div className='space-y-6 pt-6 pb-5'>
                             <Input
                                 name='amount'
@@ -259,7 +259,7 @@ const MakeIncome = () => {
                     </div>
                 </div>
             </div>
-            <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
+            <div className='flex-shrink-0 border-t border-gray-200 dark:border-slate-600 px-4 py-5 sm:px-6'>
                 <div className='flex sm:justify-start justify-end space-x-3'>
                     <Button color='green' type='submit' disabled={loading.submit}>
                         Lưu

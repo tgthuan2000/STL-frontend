@@ -4,9 +4,12 @@ import { useNavigate } from 'react-router-dom'
 import { UserProps } from '~/@types/layout'
 import { Image } from '~/components'
 import { userOptionData } from '~/constant/layout'
+import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
+import { useLocalStorage } from '~/hook'
 
 const User: React.FC<UserProps> = ({ userProfile, onLogout, onCloseSideBar }) => {
     const navigate = useNavigate()
+    const theme = useLocalStorage<string>(LOCAL_STORAGE_KEY.STL_THEME)
     return (
         <Menu as='div' className='relative flex bg-gray-700 p-4 cursor-pointer select-none'>
             <Menu.Button className='block'>
@@ -37,13 +40,17 @@ const User: React.FC<UserProps> = ({ userProfile, onLogout, onCloseSideBar }) =>
                                                     data: option,
                                                     navigate,
                                                     closeSidebar: onCloseSideBar,
+                                                    theme,
                                                 })
                                             }}
                                         >
-                                            {Icon && <Icon className='mr-2 h-5 w-5' aria-hidden='true' />}
+                                            {Icon && <Icon className='mr-2 h-5 w-5' aria-hidden='true' theme={theme} />}
                                             {typeof option.label === 'string'
                                                 ? option.label
-                                                : option.label({ userProfile })}
+                                                : option.label({
+                                                      userProfile,
+                                                      theme,
+                                                  })}
                                         </button>
                                     </Menu.Item>
                                 )

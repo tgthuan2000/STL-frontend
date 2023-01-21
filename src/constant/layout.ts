@@ -1,5 +1,8 @@
 import { BellIcon, CashIcon, LockClosedIcon, LogoutIcon, SwitchVerticalIcon, UserIcon } from '@heroicons/react/outline'
 import { OptionMenu } from '~/@types/layout'
+import { ThemeIcon } from '~/components'
+import { localStorageValue } from '~/hook/useLocalStorage'
+import { LOCAL_STORAGE_KEY } from './localStorage'
 import { PERMISSION } from './permission'
 
 interface Navigation {
@@ -58,6 +61,20 @@ export const userOptionData: Array<Array<OptionMenu>> = [
     [
         {
             id: 3,
+            label: ({ theme: [value] }) => (checkDarkTheme(value) ? 'Chế độ sáng' : 'Chế độ tối'),
+            onClick: ({ theme: [value, set] }) => {
+                if (checkDarkTheme(value)) {
+                    document.documentElement.classList.remove('dark')
+                    set('light')
+                } else {
+                    document.documentElement.classList.add('dark')
+                    set('dark')
+                }
+            },
+            icon: ThemeIcon,
+        },
+        {
+            id: 4,
             label: 'Đăng xuất',
             onClick: ({ logout }) => {
                 logout()
@@ -66,3 +83,11 @@ export const userOptionData: Array<Array<OptionMenu>> = [
         },
     ],
 ]
+
+const checkDarkTheme = (value: localStorageValue<string>) => {
+    return (
+        LOCAL_STORAGE_KEY.STL_THEME in localStorage &&
+        value === 'dark' &&
+        document.documentElement.classList.contains('dark')
+    )
+}

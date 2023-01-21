@@ -18,7 +18,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 render={({ field, fieldState: { error } }) => (
                     <div className={clsx(className)}>
                         {label && (
-                            <label htmlFor={id} className='inline-block font-medium text-gray-900'>
+                            <label htmlFor={id} className='inline-block font-medium text-gray-900 dark:text-slate-100'>
                                 {label}
                             </label>
                         )}
@@ -29,13 +29,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                                 disabled={disabled}
                                 spellCheck={false}
                                 autoComplete='off'
-                                className='block p-2 w-full rounded-md border border-gray-300 shadow-sm font-light disabled:bg-gray-100 disabled:text-gray-400'
+                                className='block p-2 w-full rounded-md border border-gray-300 shadow-sm font-light disabled:bg-gray-100 disabled:text-gray-400 bg-white dark:bg-slate-700 dark:border-slate-800 dark:text-slate-200 dark:disabled:bg-slate-800 dark:disabled:text-slate-600'
                                 {...field}
                                 {...props}
                             />
                         </div>
                         {type === 'number' && (
-                            <div ref={numberWrap} className='pl-2 pt-1'>
+                            <div ref={numberWrap} className='pl-2 pt-1 text-slate-300'>
                                 {field.value && numeral(field.value).format()}
                             </div>
                         )}
