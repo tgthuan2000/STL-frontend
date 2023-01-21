@@ -53,12 +53,12 @@ const Dropdown: React.FC<DropdownProps> = ({
                     <Menu as='div' className='mr-3 relative inline-block z-[2]'>
                         <Menu.Button
                             disabled={disabled}
-                            className='inline-flex w-full justify-center rounded-md bg-black bg-opacity-20 lg:px-4 px-2 lg:py-2 py-1 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
+                            className='inline-flex w-full justify-center rounded-md bg-black dark:bg-slate-500 disabled:bg-slate-500 dark:text-pink-500 bg-opacity-20 lg:px-4 px-2 lg:py-2 py-1 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
                         >
                             {label}
                         </Menu.Button>
 
-                        <Menu.Items className='absolute right-0 mt-2 select-none whitespace-nowrap origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
+                        <Menu.Items className='absolute right-0 mt-2 select-none whitespace-nowrap origin-top-right divide-y divide-gray-100 dark:divide-slate-600 rounded-md bg-white dark:bg-slate-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
                             {data.map((options, index) => {
                                 return (
                                     <div className='px-1 py-1 space-y-0.5' key={index}>
@@ -70,7 +70,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                                                         className={clsx(
                                                             option[idKey] === get(selected, idKey, null)
                                                                 ? 'text-indigo-500 font-normal'
-                                                                : 'text-gray-900',
+                                                                : 'text-gray-900 dark:text-slate-200',
                                                             'group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-indigo-500 hover:text-white'
                                                         )}
                                                         onClick={() => handleChange(option, field.onChange)}

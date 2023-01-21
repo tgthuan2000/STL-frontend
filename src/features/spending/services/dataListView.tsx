@@ -41,7 +41,7 @@ export const columns: (width: number) => Array<TableColumn> = (width) => [
         renderRow: ({ categorySpending, kindSpending }) => (
             <td className='px-1'>
                 <div className='text-center'>
-                    <p className='text-sm font-medium text-gray-900 truncate'>
+                    <p className='text-sm font-medium text-gray-900 dark:text-slate-200 truncate'>
                         {categorySpending?.name ?? kindSpending.name}
                     </p>
                 </div>
@@ -82,7 +82,7 @@ export const subRow: (
     <td
         colSpan={4}
         className={clsx(
-            { 'border-b border-gray-200': (data && index !== data.length - 1) || loading },
+            { 'border-b border-gray-200 dark:border-slate-700': (data && index !== data.length - 1) || loading },
             'whitespace-nowrap pb-3 px-2 sm:pl-3 sm:text-sm text-xs'
         )}
     >
