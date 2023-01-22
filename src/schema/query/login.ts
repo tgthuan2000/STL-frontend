@@ -15,6 +15,7 @@ export const GET_DATA_BY_EMAIL = groq`
         image,
         google,
         "isHasPassword": defined(password),
+        allowSendMail,
     }
 `
 
@@ -27,5 +28,6 @@ export const GET_DATA_USER_BY_ID = groq`
         image,
         google,
         "isHasPassword": defined(password),
+        allowSendMail,
     }
 `

@@ -10,6 +10,7 @@ export interface IUserProfile {
     userName: string
     google: string
     isHasPassword: boolean
+    allowSendMail: boolean
 }
 
 interface SetUserProfile {

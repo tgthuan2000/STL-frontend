@@ -1,5 +1,5 @@
+import { EmailJSResponseStatus } from '@emailjs/browser'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { ArrowSmLeftIcon, CalendarIcon } from '@heroicons/react/outline'
 import { uuid } from '@sanity/uuid'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
@@ -8,14 +8,23 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { DraftNotify, NotifyAssignForm, NotifyContentForm, NotifyTitleDescForm } from '~/@types/notify'
 import { BackButton, Button, Progress } from '~/components'
+import { EMAIL_TEMPLATES } from '~/constant/email-template'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { createProgressOptions } from '~/constant/progress'
 import { useLoading } from '~/context'
-import { useLocalStorage } from '~/hook'
+import { useLocalStorage, useMail } from '~/hook'
 import { localStorageValue } from '~/hook/useLocalStorage'
 import { client } from '~/sanityConfig'
 import { GET_USERS_ID } from '~/schema/query/user'
 import { CreateStep1, CreateStep2, CreateStep3, CreateStep4 } from '../components'
+
+interface UserEmail {
+    _id: string
+    userName: string
+    email: string
+    allowSendMail: boolean
+    sendMail: boolean
+}
 
 const Create = () => {
     const [, setDraftNotify, removeDraft] = useLocalStorage<DraftNotify>(LOCAL_STORAGE_KEY.STL_DRAFT_NOTIFY)
@@ -24,6 +33,7 @@ const Create = () => {
     const navigate = useNavigate()
     const { loading, setSubmitLoading } = useLoading()
     const [step, setStep] = useState(1)
+    const [sendMail] = useMail(EMAIL_TEMPLATES.NEW_NOTIFY)
 
     const onSubmitStep1 = async (data: NotifyContentForm) => {
         try {
@@ -68,6 +78,7 @@ const Create = () => {
             if (data) {
                 const notifyId = uuid()
                 const __ = client.transaction()
+                const sentUsers: Array<Promise<EmailJSResponseStatus>> = []
 
                 const createNotifyAssign = (data: Array<{ _id: string }> | undefined) => {
                     if (!isEmpty(data)) {
@@ -79,6 +90,32 @@ const Create = () => {
                                 read: false,
                             }
                             __.create(doc)
+                        })
+                    }
+                }
+
+                const createSendMail = (
+                    data: Array<UserEmail> | undefined,
+                    callback: (mail: Promise<EmailJSResponseStatus>) => void
+                ) => {
+                    if (!isEmpty(data)) {
+                        data?.filter((d, i, s) => d.allowSendMail && d.sendMail && s.indexOf(d) === i).forEach((d) => {
+                            if (!d.email || !d.userName || !notifyId || !import.meta.env.VITE_APP_URL) {
+                                console.log('Lỗi biến', {
+                                    email: d.email,
+                                    userName: d.userName,
+                                    notifyId,
+                                    url: import.meta.env.VITE_APP_URL,
+                                })
+                                toast.error('Lỗi gửi email')
+                                return
+                            }
+                            const mail = sendMail({
+                                to_name: d.userName,
+                                to_email: d.email,
+                                url: `${import.meta.env.VITE_APP_URL}/notify/${notifyId}`,
+                            })
+                            callback(mail)
                         })
                     }
                 }
@@ -95,13 +132,23 @@ const Create = () => {
 
                 /* CREATE NOTIFY ASSIGN */
                 if (data.sendAll) {
-                    const data = await client.fetch<Array<{ _id: string }>>(GET_USERS_ID)
-                    createNotifyAssign(data)
+                    const users = await client.fetch<Array<UserEmail>>(GET_USERS_ID)
+                    createNotifyAssign(users)
+                    /* Xử lí gửi email */
+                    createSendMail(users, sentUsers.push)
                 } else {
                     createNotifyAssign(data.users)
+                    /* Xử lí gửi email */
+                    createSendMail(data.users, sentUsers.push)
                 }
 
                 await __.commit()
+
+                if (!isEmpty(sentUsers)) {
+                    const data = await Promise.all(sentUsers)
+                    console.log(data)
+                }
+
                 removeDraft()
                 navigate('/announce-config', { replace: true })
                 toast.success('Tạo thông báo thành công')
@@ -119,6 +166,7 @@ const Create = () => {
     const getStepId = (step: number) => `step-${step}`
 
     const stepData = useMemo(() => {
+        // An object that maps step numbers to components
         const steps: { [x: number]: React.ReactNode } = {
             1: <CreateStep1 id={getStepId(1)} onSubmit={onSubmitStep1} />,
             2: <CreateStep2 id={getStepId(2)} onSubmit={onSubmitStep2} />,
@@ -126,6 +174,7 @@ const Create = () => {
             4: <CreateStep4 id={getStepId(4)} onSubmit={onSubmitStep4} />,
         }
 
+        // Return the component for the current step, or a placeholder if the step does not exist
         return steps[step] ?? 'Unknown step'
     }, [step])
 

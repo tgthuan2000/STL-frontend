@@ -1,5 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { TrashIcon } from '@heroicons/react/outline'
+import { MailIcon, TrashIcon } from '@heroicons/react/outline'
 import { yupResolver } from '@hookform/resolvers/yup'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
@@ -58,7 +58,7 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
     const handleChange = (data: any) => {
         if (data) {
             if (!__users.find((u) => u._id === data._id)) {
-                form.setValue('users', [...__users, data])
+                form.setValue('users', [...__users, { ...data, sendMail: data.allowSendMail }])
             } else {
                 form.setValue(
                     'users',
@@ -105,7 +105,15 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
         >
             <div className='space-y-5 mb-5'>
                 <div className='mt-3'>
-                    <Toggle form={form} name='sendAll' label='Gửi cho tất cả mọi người' />
+                    <Toggle
+                        form={form}
+                        name='sendAll'
+                        label={
+                            <p>
+                                Gửi cho tất cả mọi người <i className='text-gray-400'>(Gửi mail đến tất cả)</i>
+                            </p>
+                        }
+                    />
                 </div>
                 <LazySearchSelect
                     options={users.data?.data}
@@ -154,7 +162,7 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                                 {TEMPLATE.EMPTY_DATA}
                             </p>
                         ) : (
-                            __users.map((user) => (
+                            __users.map((user, index) => (
                                 <div key={user._id} className='px-4 py-2 flex gap-2 items-center'>
                                     <Image src={user.image} alt={user.userName} size='small' />
                                     <div className='flex-1'>
@@ -165,8 +173,35 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                                             {user.email}
                                         </small>
                                     </div>
+                                    {user.allowSendMail && (
+                                        <button
+                                            title='Gửi thông báo qua email'
+                                            type='button'
+                                            disabled={form.watch('sendAll')}
+                                            className={clsx(
+                                                `
+                                                    p-2 
+                                                    transition-all 
+                                                    rounded-lg 
+                                                    cursor-pointer
+                                                    hover:bg-cyan-500
+                                                    disabled:bg-slate-700
+                                                    disabled:text-gray-500
+                                                    disabled:cursor-not-allowed
+                                                `,
+                                                user.sendMail
+                                                    ? 'bg-cyan-400 text-gray-100'
+                                                    : 'bg-slate-100 dark:bg-slate-700 text-gray-400'
+                                            )}
+                                            onClick={() => {
+                                                form.setValue(`users.${index}.sendMail`, !user.sendMail)
+                                            }}
+                                        >
+                                            <MailIcon className='h-5' />
+                                        </button>
+                                    )}
                                     <button
-                                        className='p-2 bg-slate-100 hover:bg-slate-200 disabled:hover:bg-slate-100 disabled:cursor-not-allowed dark:bg-slate-700 group transition-all rounded-lg cursor-pointer'
+                                        className='p-2 bg-slate-100 hover:bg-slate-200 disabled:hover:bg-slate-100 disabled:cursor-not-allowed text-radical-red-500 disabled:text-gray-500 dark:bg-slate-700 transition-all rounded-lg cursor-pointer'
                                         onClick={() => {
                                             form.setValue(
                                                 'users',
@@ -176,7 +211,7 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                                         disabled={form.watch('sendAll')}
                                         type='button'
                                     >
-                                        <TrashIcon className='h-5 text-radical-red-500 group-disabled:text-gray-500' />
+                                        <TrashIcon className='h-5' />
                                     </button>
                                 </div>
                             ))

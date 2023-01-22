@@ -1,3 +1,4 @@
+import { EmailJSResponseStatus } from '@emailjs/browser'
 import { TAGS } from '~/constant'
 
 export type Data<T> = {
@@ -17,3 +18,16 @@ export type useQueryType<T> = [
     (...keys: Array<keyof T>) => void,
     Boolean
 ]
+
+export type IUseMail = (
+    templateId: string,
+    serviceId?: string
+) => [(params: MailParams) => Promise<EmailJSResponseStatus>]
+
+export interface MailParams extends Record<string, unknown> {
+    from_name?: string
+    from_email?: string
+    to_name?: string
+    to_email?: string
+    message?: string
+}
