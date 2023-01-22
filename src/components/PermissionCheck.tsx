@@ -13,11 +13,11 @@ const PermissionCheck: React.FC<PermissionCheckProps> = ({ permissions, children
     }
 
     return (
-        <div className='flex flex-col gap-2 max-w-4xl mx-auto items-center justify-center bg-white rounded-lg p-5'>
-            <img src={WarningGif} className='w-80' />
+        <div className='flex flex-col gap-2 max-w-4xl mx-auto items-center justify-center bg-white dark:bg-slate-800 rounded-lg p-5'>
+            <img src={WarningGif} className='w-80 rounded-xl' />
             <p className='font-normal text-radical-red-500 text-lg text-center'>{TEMPLATE.NOT_ROLE}</p>
             <button
-                className='hover:underline hover:text-prussian-blue-400 transition-colors text-base'
+                className='hover:underline hover:text-prussian-blue-400 text-gray-900 dark:text-slate-200 transition-colors text-base'
                 onClick={() => navigation('/')}
             >
                 Quay lại trang chủ
