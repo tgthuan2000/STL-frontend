@@ -23,6 +23,7 @@ const Prose: React.FC<ProseProps> = ({ children, className }) => {
                     dark:prose-h4:text-slate-200 
                     dark:prose-h5:text-slate-200 
                     dark:prose-h6:text-slate-200
+                    dark:prose-li:text-slate-200
                 `,
                 className
             )}
