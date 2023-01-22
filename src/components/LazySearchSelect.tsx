@@ -123,12 +123,14 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
                             <Combobox.Options className='absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
                                 {loading ? (
                                     <Combobox.Option value={null} disabled>
-                                        <p className='p-2 text-center text-xs text-gray-500'>Loading...</p>
+                                        <p className='p-2 text-center text-xs text-gray-500 dark:text-slate-200'>
+                                            Loading...
+                                        </p>
                                     </Combobox.Option>
                                 ) : (
                                     <>
                                         {isEmpty(options) ? (
-                                            <p className='p-2 text-center text-xs text-gray-500'>
+                                            <p className='p-2 text-center text-xs text-gray-500 dark:text-slate-200'>
                                                 {TEMPLATE.EMPTY_DATA}
                                             </p>
                                         ) : (

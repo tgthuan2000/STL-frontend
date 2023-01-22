@@ -27,7 +27,7 @@ const DefaultLayout = () => {
     return (
         <SideBar>
             {ok && (
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<div className='text-gray-900 dark:text-slate-200'>Loading...</div>}>
                     <Outlet />
                 </Suspense>
             )}
