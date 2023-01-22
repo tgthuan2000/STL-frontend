@@ -1,7 +1,8 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { GoogleLogin } from '@react-oauth/google'
+import { get } from 'lodash'
 import React, { useState } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { Button } from '~/components'
 import { useLoading } from '~/context'
 import useAuth from '~/store/auth'
@@ -12,11 +13,12 @@ const LoginByEmailPasswordForm = React.lazy(() => import('../components/LoginByE
 const Auth = () => {
     const { addUserProfile, userProfile } = useAuth()
     const { setConfigLoading } = useLoading()
+    const { state } = useLocation()
 
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const [showFormLogin, setShowFormLogin] = useState(false)
 
-    if (userProfile) return <Navigate to='/' />
+    if (userProfile) return <Navigate to={get(state, 'url', '/')} />
 
     return (
         <div className='h-screen flex flex-col gap-2 items-center justify-center overflow-hidden' ref={parent}>

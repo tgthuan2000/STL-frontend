@@ -20,6 +20,6 @@ export const GET_USERS_ID = groq`
         userName,
         email,
         allowSendMail,
-        "sendEmail": allowSendMail,
+        "sendMail": allowSendMail,
     }
 `

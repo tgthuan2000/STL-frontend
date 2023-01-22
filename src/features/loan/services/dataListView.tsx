@@ -123,7 +123,12 @@ export const renderList: (data: any, index: number) => React.ReactNode = (
     >
         <div className='flex flex-1 flex-col text-gray-900 dark:text-slate-200'>
             <div className='flex justify-between items-center'>
-                <div className='flex items-center justify-center gap-x-2 text-center'>
+                <div
+                    className={clsx(
+                        'flex items-center justify-center gap-x-2 text-center',
+                        paid ? 'text-green-500' : 'text-radical-red-500'
+                    )}
+                >
                     <span
                         className={clsx(
                             'inline-block h-1.5 w-1.5 rounded-full',
