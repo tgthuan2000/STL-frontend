@@ -38,7 +38,7 @@ const BodyList: React.FC<BodyListProps> = ({
                     Object.keys(data).map((key, index) => (
                         <div key={key}>
                             {renderTitle(key)}
-                            <ul className='divide-y'>
+                            <ul className='divide-y dark:divide-slate-700'>
                                 {data[key].map((item, index) => {
                                     const to = onRowClick(item)
                                     return (

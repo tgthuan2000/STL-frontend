@@ -37,7 +37,7 @@ const NotifyDetail: React.FC<NotifyDetailProps> = ({ isAdmin = false }) => {
         notify: notify.data as SanityDocument<NotifyItem>,
     }
 
-    if (notify.loading) return <div>{TEMPLATE.LOADING}</div>
+    if (notify.loading) return <div className='text-gray-900 dark:text-slate-200'>{TEMPLATE.LOADING}</div>
 
     if (!notify.data) return <div className='text-radical-red-500 font-normal'>{TEMPLATE.ERROR}</div>
 

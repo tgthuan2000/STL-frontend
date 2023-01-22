@@ -177,7 +177,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                                         clsx(
                                                             'relative cursor-default select-none py-2 pl-8 pr-4',
                                                             active
-                                                                ? 'bg-indigo-600 text-white'
+                                                                ? 'bg-indigo-600 text-white dark:bg-cyan-500'
                                                                 : 'text-gray-900 dark:text-slate-200'
                                                         )
                                                     }

@@ -41,7 +41,7 @@ export const columns: (width: number) => Array<TableColumn> = (width) => [
         renderRow: ({ categorySpending, kindSpending }) => (
             <td className='px-1'>
                 <div className='text-center'>
-                    <p className='text-sm font-medium text-gray-900 dark:text-slate-200 truncate'>
+                    <p className='text-sm font-medium text-gray-900 dark:text-black truncate'>
                         {categorySpending?.name ?? kindSpending.name}
                     </p>
                 </div>
@@ -107,21 +107,22 @@ export const renderList: (data: any, index: number) => React.ReactNode = (
 ) => (
     <div
         className={clsx(
-            'flex items-center p-2 hover:bg-gray-200 cursor-pointer',
-            index % 2 ? 'bg-white' : 'bg-gray-50'
+            'flex items-center p-2 hover:bg-gray-200 dark:hover:bg-slate-500 cursor-pointer',
+            index % 2 ? 'bg-white dark:bg-slate-700' : 'bg-gray-50 dark:bg-slate-600'
         )}
     >
-        <div className='flex flex-1 flex-col'>
+        <div className='flex flex-1 flex-col text-gray-900 dark:text-slate-200'>
             <div className='flex justify-between items-center'>
-                <h5 className='lg:text-base text-sm font-normal truncate'>
+                <h5 className='lg:text-base text-sm font-normal truncate text-black'>
                     {categorySpending?.name || kindSpending.name}
                 </h5>
                 <p
                     className={clsx(
                         {
-                            'text-green-500': [KIND_SPENDING.RECEIVE, KIND_SPENDING.TRANSFER_TO].includes(
-                                kindSpending.key
-                            ),
+                            'text-green-500 dark:text-teal-400': [
+                                KIND_SPENDING.RECEIVE,
+                                KIND_SPENDING.TRANSFER_TO,
+                            ].includes(kindSpending.key),
                         },
                         {
                             'text-red-500': [KIND_SPENDING.COST, KIND_SPENDING.TRANSFER_FROM].includes(
@@ -144,7 +145,9 @@ export const renderList: (data: any, index: number) => React.ReactNode = (
 )
 
 export const renderTitle = (data: any) => (
-    <h4 className='font-normal lg:font-light lg:text-lg text-base text-gray-900 bg-cyan-200 p-2'>{data}</h4>
+    <h4 className='font-normal lg:font-light lg:text-lg text-base text-gray-900 bg-cyan-200 dark:bg-slate-800 dark:text-sky-400 p-2'>
+        {data}
+    </h4>
 )
 
 export const groupBy = (id: any) => (data: any) => moment(data.date).format(id)

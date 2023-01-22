@@ -53,7 +53,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                     <Menu as='div' className='mr-3 relative inline-block z-[2]'>
                         <Menu.Button
                             disabled={disabled}
-                            className='inline-flex w-full justify-center rounded-md bg-black dark:bg-slate-500 disabled:bg-slate-500 dark:text-pink-500 bg-opacity-20 lg:px-4 px-2 lg:py-2 py-1 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
+                            className='inline-flex w-full justify-center rounded-md bg-black dark:bg-slate-700 disabled:bg-slate-500 dark:text-teal-500 bg-opacity-20 lg:px-4 px-2 lg:py-2 py-1 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
                         >
                             {label}
                         </Menu.Button>
@@ -69,9 +69,9 @@ const Dropdown: React.FC<DropdownProps> = ({
                                                     <button
                                                         className={clsx(
                                                             option[idKey] === get(selected, idKey, null)
-                                                                ? 'text-indigo-500 font-normal'
+                                                                ? 'text-indigo-500 dark:text-sky-500 font-normal'
                                                                 : 'text-gray-900 dark:text-slate-200',
-                                                            'group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-indigo-500 hover:text-white'
+                                                            'group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-indigo-500 hover:text-white dark:hover:bg-sky-500 dark:hover:text-white'
                                                         )}
                                                         onClick={() => handleChange(option, field.onChange)}
                                                     >

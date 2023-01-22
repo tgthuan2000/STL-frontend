@@ -108,12 +108,6 @@ const TransactionDetail = () => {
         }
     }
 
-    const handleReloadData = async (keys: keyof TransactionDetailQueryData) => {
-        const res = deleteCacheData(keys)
-        console.log(res)
-        reloadData()
-    }
-
     const handleDeleteTransaction = async () => {
         try {
             setSubmitLoading(true)
@@ -173,13 +167,13 @@ const TransactionDetail = () => {
 
     const data: TransactionDetailFormData = {
         onsubmit,
-        handleReloadData,
         handleDeleteTransaction,
         methodSpending,
         transaction: trans as ISpendingData,
     }
 
-    if (transaction.loading || methodSpending.loading) return <div>{TEMPLATE.LOADING}</div>
+    if (transaction.loading || methodSpending.loading)
+        return <div className='text-gray-900 dark:text-slate-200'>{TEMPLATE.LOADING}</div>
 
     if (isEmpty(transaction.data)) return <div>{TEMPLATE.EMPTY_DATA}</div>
 

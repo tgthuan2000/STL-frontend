@@ -49,9 +49,7 @@ export const columns: (width: number) => Array<TableColumn> = (width) => [
                             paid ? 'bg-green-500' : 'bg-radical-red-500'
                         )}
                     />
-                    <p className='text-sm font-medium text-gray-900 truncate'>
-                        {categorySpending?.name ?? kindSpending.name}
-                    </p>
+                    <p className='text-sm font-medium truncate'>{categorySpending?.name ?? kindSpending.name}</p>
                 </div>
             </td>
         ),
@@ -94,7 +92,7 @@ export const subRow: (
     <td
         colSpan={4}
         className={clsx(
-            { 'border-b border-gray-200': (data && index !== data.length - 1) || loading },
+            { 'border-b border-gray-200 dark:border-slate-700': (data && index !== data.length - 1) || loading },
             'whitespace-nowrap pb-3 px-2 sm:pl-3 sm:text-sm text-xs'
         )}
     >
@@ -119,11 +117,11 @@ export const renderList: (data: any, index: number) => React.ReactNode = (
 ) => (
     <div
         className={clsx(
-            'flex items-center p-2 hover:bg-gray-200 cursor-pointer',
-            index % 2 ? 'bg-white' : 'bg-gray-50'
+            'flex items-center p-2 hover:bg-gray-200 dark:hover:bg-slate-500 cursor-pointer',
+            index % 2 ? 'bg-white dark:bg-slate-700' : 'bg-gray-50 dark:bg-slate-600'
         )}
     >
-        <div className='flex flex-1 flex-col'>
+        <div className='flex flex-1 flex-col text-gray-900 dark:text-slate-200'>
             <div className='flex justify-between items-center'>
                 <div className='flex items-center justify-center gap-x-2 text-center'>
                     <span
@@ -132,9 +130,7 @@ export const renderList: (data: any, index: number) => React.ReactNode = (
                             paid ? 'bg-green-500' : 'bg-radical-red-500'
                         )}
                     />
-                    <p className='text-sm font-medium text-gray-900 truncate'>
-                        {categorySpending?.name ?? kindSpending.name}
-                    </p>
+                    <p className='text-sm font-medium truncate'>{categorySpending?.name ?? kindSpending.name}</p>
                 </div>
                 <p
                     className={clsx(
@@ -168,7 +164,9 @@ export const renderList: (data: any, index: number) => React.ReactNode = (
 )
 
 export const renderTitle = (data: any) => (
-    <h4 className='font-normal lg:font-light lg:text-lg text-base text-gray-900 bg-cyan-200 p-2'>{data}</h4>
+    <h4 className='font-normal lg:font-light lg:text-lg text-base text-gray-900 bg-cyan-200 dark:bg-slate-800 dark:text-sky-400 p-2'>
+        {data}
+    </h4>
 )
 
 export const groupBy = (id: any) => (data: any) => moment(data.date).format(id)

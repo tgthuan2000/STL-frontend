@@ -19,7 +19,7 @@ import { AddCategory, AddMethod, MakeBudget, MakeCost, MakeIncome, MakeTransfer 
 export const menuMobile: IMenuBtn[] = [
     {
         title: 'Thêm thu nhập',
-        color: 'text-green-700 bg-green-200 hover:bg-green-300',
+        color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
         icon: PlusCircleIcon,
         children: () => <MakeIncome />,
         to: '?slide=add-income',
@@ -29,7 +29,7 @@ export const menuMobile: IMenuBtn[] = [
     },
     {
         title: 'Thêm chi phí',
-        color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300',
+        color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
         icon: MinusCircleIcon,
         children: () => <MakeCost />,
         to: '?slide=add-payment',
@@ -39,7 +39,7 @@ export const menuMobile: IMenuBtn[] = [
     },
     {
         title: 'Chuyển khoản',
-        color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300',
+        color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
         icon: SwitchHorizontalIcon,
         children: () => <MakeTransfer />,
         to: '?slide=transfer',
@@ -49,7 +49,7 @@ export const menuMobile: IMenuBtn[] = [
     },
     {
         title: 'Giao dịch',
-        color: 'text-orange-700 bg-orange-200 hover:bg-orange-300',
+        color: 'text-orange-700 bg-orange-200 hover:bg-orange-300 dark:text-orange-500',
         icon: ClipboardListIcon,
         to: 'transaction',
     },
@@ -58,7 +58,7 @@ export const menuMobile: IMenuBtn[] = [
 export const menuLoanMobile: IMenuBtn[] = [
     {
         title: 'Vay tiền',
-        color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300',
+        color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
         icon: TrendingUpIcon,
         children: () => <MakeGetLoan />,
         to: '?slide=get-loan',
@@ -68,7 +68,7 @@ export const menuLoanMobile: IMenuBtn[] = [
     },
     // {
     //     title: 'Cho vay tiền',
-    //     color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300',
+    //     color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
     //     icon: TrendingDownIcon,
     //     children: () => <MakeLoan />,
     //     to: '?slide=loan',
@@ -78,7 +78,7 @@ export const menuLoanMobile: IMenuBtn[] = [
     // },
     {
         title: 'Tạo thành viên',
-        color: 'text-green-700 bg-green-200 hover:bg-green-300',
+        color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
         icon: UserAddIcon,
         children: () => <CreateMember />,
         to: '?slide=create-member',
@@ -91,7 +91,7 @@ export const menuLoanMobile: IMenuBtn[] = [
 export const menuSpendingPC: IMenuBtn[] = [
     {
         title: 'Thêm thu nhập',
-        color: 'text-green-700 bg-green-200 hover:bg-green-300',
+        color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
         icon: PlusCircleIcon,
         children: () => <MakeIncome />,
         to: '?slide=add-income',
@@ -101,7 +101,7 @@ export const menuSpendingPC: IMenuBtn[] = [
     },
     {
         title: 'Thêm chi phí',
-        color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300',
+        color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
         icon: MinusCircleIcon,
         children: () => <MakeCost />,
         to: '?slide=add-payment',
@@ -111,7 +111,7 @@ export const menuSpendingPC: IMenuBtn[] = [
     },
     {
         title: 'Chuyển khoản',
-        color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300',
+        color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
         icon: SwitchHorizontalIcon,
         children: () => <MakeTransfer />,
         to: '?slide=transfer',
@@ -121,7 +121,7 @@ export const menuSpendingPC: IMenuBtn[] = [
     },
     {
         title: 'Ngân sách',
-        color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300',
+        color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
         icon: PuzzleIcon,
         children: () => <MakeBudget />,
         to: '?slide=budget',
@@ -132,7 +132,7 @@ export const menuSpendingPC: IMenuBtn[] = [
 
     {
         title: 'Đăng xuất',
-        color: 'text-gray-700 bg-gray-200 hover:bg-gray-300',
+        color: 'text-gray-700 bg-gray-200 hover:bg-gray-300 dark:text-gray-500',
         icon: LogoutIcon,
         to: '/',
         action: (removeUserProfile) => {
@@ -143,25 +143,25 @@ export const menuSpendingPC: IMenuBtn[] = [
     },
     {
         title: 'Trang chủ',
-        color: 'text-red-700 bg-red-200 hover:bg-red-300',
+        color: 'text-red-700 bg-red-200 hover:bg-red-300 dark:text-red-500',
         icon: HomeIcon,
         to: '/spending',
     },
     {
         title: 'Giao dịch',
-        color: 'text-orange-700 bg-orange-200 hover:bg-orange-300',
+        color: 'text-orange-700 bg-orange-200 hover:bg-orange-300 dark:text-orange-500',
         icon: ClipboardListIcon,
         to: 'transaction',
     },
     {
         title: 'Phương thức thanh toán',
-        color: 'text-purple-700 bg-purple-200 hover:bg-purple-300',
+        color: 'text-purple-700 bg-purple-200 hover:bg-purple-300 dark:text-purple-500',
         icon: QrcodeIcon,
         to: 'method',
     },
     {
         title: 'Tạo mới phương thức thanh toán',
-        color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300',
+        color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
         icon: QrcodeIcon,
         children: () => <AddMethod />,
         to: '?slide=add-method',
@@ -172,7 +172,7 @@ export const menuSpendingPC: IMenuBtn[] = [
     },
     {
         title: 'Tạo mới thể loại',
-        color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300',
+        color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
         icon: TemplateIcon,
         children: () => <AddCategory />,
         to: '?slide=add-category',
@@ -185,7 +185,7 @@ export const menuSpendingPC: IMenuBtn[] = [
 export const menuLoanPC: IMenuBtn[] = [
     {
         title: 'Vay tiền',
-        color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300',
+        color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
         icon: TrendingUpIcon,
         children: () => <MakeGetLoan />,
         to: '?slide=get-loan',
@@ -195,7 +195,7 @@ export const menuLoanPC: IMenuBtn[] = [
     },
     // {
     //     title: 'Cho vay tiền',
-    //     color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300',
+    //     color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
     //     icon: TrendingDownIcon,
     //     children: () => <MakeLoan />,
     //     to: '?slide=loan',
@@ -205,7 +205,7 @@ export const menuLoanPC: IMenuBtn[] = [
     // },
     {
         title: 'Tạo thành viên',
-        color: 'text-green-700 bg-green-200 hover:bg-green-300',
+        color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
         icon: UserAddIcon,
         children: () => <CreateMember />,
         to: '?slide=create-member',
@@ -215,7 +215,7 @@ export const menuLoanPC: IMenuBtn[] = [
     },
     {
         title: 'Đăng xuất',
-        color: 'text-gray-700 bg-gray-200 hover:bg-gray-300',
+        color: 'text-gray-700 bg-gray-200 hover:bg-gray-300 dark:text-gray-500',
         icon: LogoutIcon,
         to: '/',
         action: (removeUserProfile) => {
@@ -226,19 +226,19 @@ export const menuLoanPC: IMenuBtn[] = [
     },
     {
         title: 'Trang chủ',
-        color: 'text-red-700 bg-red-200 hover:bg-red-300',
+        color: 'text-red-700 bg-red-200 hover:bg-red-300 dark:text-red-500',
         icon: HomeIcon,
         to: '/loan',
     },
     {
         title: 'Giao dịch',
-        color: 'text-orange-700 bg-orange-200 hover:bg-orange-300',
+        color: 'text-orange-700 bg-orange-200 hover:bg-orange-300 dark:text-orange-500',
         icon: ClipboardListIcon,
         to: 'transaction',
     },
     // {
     //     title: 'Phương thức thanh toán',
-    //     color: 'text-purple-700 bg-purple-200 hover:bg-purple-300',
+    //     color: 'text-purple-700 bg-purple-200 hover:bg-purple-300 dark:text-purple-500',
     //     icon: QrcodeIcon,
     //     to: 'method',
     // },
@@ -247,25 +247,25 @@ export const menuLoanPC: IMenuBtn[] = [
 export const menuSpendingPages: IMenuBtn[] = [
     {
         title: 'Trang chủ',
-        color: 'text-red-700',
+        color: 'text-red-700 dark:text-red-500',
         icon: HomeIcon,
         to: '/spending',
     },
     {
         title: 'Giao dịch',
-        color: 'text-orange-700',
+        color: 'text-orange-700 dark:text-orange-500',
         icon: ClipboardListIcon,
         to: 'transaction',
     },
     {
         title: 'PTTT',
-        color: 'text-purple-700',
+        color: 'text-purple-700 dark:text-purple-500',
         icon: QrcodeIcon,
         to: 'method',
     },
     {
         title: 'Ngân sách',
-        color: 'text-yellow-700',
+        color: 'text-yellow-700 dark:text-yellow-500',
         icon: PuzzleIcon,
         children: () => <MakeBudget />,
         to: '?slide=budget',
@@ -276,7 +276,7 @@ export const menuSpendingPages: IMenuBtn[] = [
     },
     {
         title: 'Tạo mới phương thức thanh toán',
-        color: 'text-cyan-700',
+        color: 'text-cyan-700 dark:text-cyan-500',
         icon: QrcodeIcon,
         children: () => <AddMethod />,
         to: '?slide=add-method',
@@ -286,7 +286,7 @@ export const menuSpendingPages: IMenuBtn[] = [
     },
     {
         title: 'Tạo mới thể loại',
-        color: 'text-cyan-700',
+        color: 'text-cyan-700 dark:text-cyan-500',
         icon: TemplateIcon,
         children: () => <AddCategory />,
         to: '?slide=add-category',
@@ -298,19 +298,19 @@ export const menuSpendingPages: IMenuBtn[] = [
 export const menuLoanPages: IMenuBtn[] = [
     {
         title: 'Trang chủ',
-        color: 'text-red-700',
+        color: 'text-red-700 dark:text-red-500',
         icon: HomeIcon,
         to: '/loan',
     },
     {
         title: 'Giao dịch',
-        color: 'text-orange-700',
+        color: 'text-orange-700 dark:text-orange-500',
         icon: ClipboardListIcon,
         to: 'transaction',
     },
     // {
     //     title: 'PTTT',
-    //     color: 'text-purple-700',
+    //     color: 'text-purple-700 dark:text-purple-500',
     //     icon: QrcodeIcon,
     //     to: 'method',
     // },

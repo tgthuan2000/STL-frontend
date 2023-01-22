@@ -34,7 +34,7 @@ const SkeletonTable: React.FC<SkeletonProps> = ({ elNumber = 2 }) => {
                         <td
                             colSpan={4}
                             className={clsx('pb-4 px-2', {
-                                'border-b border-gray-200': data && index !== data.length - 1,
+                                'border-b border-gray-200 dark:border-slate-600': data && index !== data.length - 1,
                             })}
                         >
                             <span className='block bg-gray-200 dark:bg-slate-600 h-4 w-4/5 rounded-full' />

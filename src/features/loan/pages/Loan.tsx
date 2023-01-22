@@ -9,7 +9,7 @@ const Loan = () => {
     const { loading } = useLoading()
     const { width } = useWindowSize()
 
-    if (loading.config) return <div>{TEMPLATE.LOADING}</div>
+    if (loading.config) return <div className='text-gray-900 dark:text-slate-200'>{TEMPLATE.LOADING}</div>
 
     return (
         <>
@@ -26,7 +26,7 @@ const Loan = () => {
                 ) : (
                     <>
                         <div className='h-16' />
-                        <aside className='block xl:hidden fixed bottom-0 bg-white border-t-2 border-gray-300 left-0 right-0 h-16'>
+                        <aside className='block xl:hidden fixed bottom-0 bg-white dark:bg-slate-700 border-t-2 border-gray-300 dark:border-slate-500 left-0 right-0 h-16'>
                             <ButtonMenuMobile data={menuLoanPages} />
                         </aside>
                     </>

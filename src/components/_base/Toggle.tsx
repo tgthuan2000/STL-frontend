@@ -19,7 +19,7 @@ const Toggle = forwardRef<HTMLElement, ToggleProps>(({ label, form, name, rules,
                             <Switch
                                 checked={field.value}
                                 className={clsx(
-                                    field.value ? 'bg-indigo-600' : 'bg-gray-200',
+                                    field.value ? 'bg-indigo-600 dark:bg-sky-500' : 'bg-gray-200 dark:bg-slate-700',
                                     'relative inline-flex h-6 w-11 items-center rounded-full transition-all'
                                 )}
                                 disabled={disabled}

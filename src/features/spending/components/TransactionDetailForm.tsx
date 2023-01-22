@@ -45,7 +45,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
     return (
         <div ref={wrapRef}>
             <div className='flex justify-between items-center mb-4'>
-                <div className='flex items-center text-gray-900 space-x-2 select-none'>
+                <div className='flex items-center text-gray-900 dark:text-slate-200 space-x-2 select-none'>
                     <ArrowSmLeftIcon
                         className='h-7 w-7 hover:opacity-50 cursor-pointer'
                         onClick={() => {

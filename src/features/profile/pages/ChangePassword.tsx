@@ -90,7 +90,7 @@ const ChangePassword = () => {
     return (
         <Transaction title='Đổi mật khẩu'>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-                <div className='bg-white rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>
+                <div className='bg-white dark:bg-slate-800 rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>
                     <div className='max-w-lg w-full mx-auto'>
                         <div className='flex h-full flex-col'>
                             {userProfile && !isHasPassword && (
@@ -130,7 +130,7 @@ const ChangePassword = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
+                            <div className='flex-shrink-0 border-t border-gray-200 dark:border-slate-600 px-4 py-5 sm:px-6'>
                                 <div className='flex sm:justify-start justify-end space-x-3'>
                                     <Button color='blue' type='submit' disabled={loading.submit}>
                                         Cập nhật
