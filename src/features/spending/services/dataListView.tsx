@@ -41,7 +41,7 @@ export const columns: (width: number) => Array<TableColumn> = (width) => [
         renderRow: ({ categorySpending, kindSpending }) => (
             <td className='px-1'>
                 <div className='text-center'>
-                    <p className='text-sm font-medium text-gray-900 dark:text-black truncate'>
+                    <p className='text-sm font-medium text-gray-900 dark:text-white truncate'>
                         {categorySpending?.name ?? kindSpending.name}
                     </p>
                 </div>
@@ -113,7 +113,7 @@ export const renderList: (data: any, index: number) => React.ReactNode = (
     >
         <div className='flex flex-1 flex-col text-gray-900 dark:text-slate-200'>
             <div className='flex justify-between items-center'>
-                <h5 className='lg:text-base text-sm font-normal truncate text-black'>
+                <h5 className='lg:text-base text-sm font-normal truncate text-gray-900 dark:text-slate-200'>
                     {categorySpending?.name || kindSpending.name}
                 </h5>
                 <p
