@@ -6,7 +6,7 @@ import Button from './Button'
 const ErrorFallback: React.ComponentType<FallbackProps> = ({ error, resetErrorBoundary }) => {
     const navigate = useNavigate()
 
-    if (error.message.includes('Failed to fetch dynamically imported module')) {
+    if (error.message.includes('dynamically imported module')) {
         return (
             <div className='p-4'>
                 <div className='p-2 rounded-lg bg-cyan-400 text-white'>
