@@ -7,7 +7,7 @@ import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { DraftNotify, NotifyAssignForm, NotifyContentForm, NotifyTitleDescForm } from '~/@types/notify'
-import { Button, Progress } from '~/components'
+import { BackButton, Button, Progress } from '~/components'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { createProgressOptions } from '~/constant/progress'
 import { useLoading } from '~/context'
@@ -141,7 +141,7 @@ const Create = () => {
 
     return (
         <div className='sm:mt-10 mt-5'>
-            <div className='bg-white min-h-[80vh] rounded-xl shadow-lg py-6 px-4 sm:py-8'>
+            <div className='bg-white dark:bg-slate-800 min-h-[80vh] rounded-xl shadow-lg py-6 px-4 sm:py-8'>
                 <Progress step={step} options={createProgressOptions} className='max-w-xl w-full mx-auto' />
                 <div ref={stepParent}>
                     {step > 1 && (
@@ -150,20 +150,17 @@ const Create = () => {
                                 'max-w-xl': ![4].includes(step),
                             })}
                         >
-                            <button
-                                className='mb-2 p-1 bg-slate-200 hover:bg-slate-700 cursor-pointer transition-colors group rounded-full inline-block disabled:opacity-50'
-                                onClick={handleBack}
-                                disabled={loading.submit}
-                            >
-                                <ArrowSmLeftIcon className='h-6 text-gray-700 group-hover:text-white transition-colors' />
-                            </button>
+                            <BackButton onClick={handleBack} disabled={loading.submit} />
                         </div>
                     )}
                     {stepData}
                     <div
-                        className={clsx('flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6 w-full mx-auto', {
-                            'max-w-xl': ![1, 4].includes(step),
-                        })}
+                        className={clsx(
+                            'flex-shrink-0 border-t border-gray-200 dark:border-slate-600 px-4 py-5 sm:px-6 w-full mx-auto',
+                            {
+                                'max-w-xl': ![1, 4].includes(step),
+                            }
+                        )}
                     >
                         <div className='flex sm:justify-start justify-end space-x-3' ref={buttonRef}>
                             <Button

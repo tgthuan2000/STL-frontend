@@ -89,7 +89,7 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
                         disabled={disabled}
                     >
                         {label && (
-                            <Combobox.Label className='inline-block text-sm font-medium text-gray-700'>
+                            <Combobox.Label className='inline-block text-sm font-medium text-gray-700 dark:text-slate-100'>
                                 {label}
                             </Combobox.Label>
                         )}
@@ -98,8 +98,8 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
                                 className={clsx(
                                     'w-full h-10 rounded-md border border-gray-300 py-2 pl-3 pr-10 shadow-sm sm:text-sm focus:outline-none',
                                     loading || disabled
-                                        ? 'bg-gray-50 text-gray-500 select-none cursor-not-allowed'
-                                        : 'bg-white text-gray-900'
+                                        ? 'bg-gray-50 text-gray-500 select-none cursor-not-allowed dark:bg-slate-600 dark:border-slate-700 dark:text-slate-300'
+                                        : 'bg-white text-gray-900 dark:bg-slate-700 dark:border-slate-800 dark:text-slate-200'
                                 )}
                                 onChange={(e) => handleSearch(e.target.value, field.onChange)}
                                 spellCheck={false}
@@ -116,11 +116,14 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
                                         <RefreshIcon className='h-5 w-5 text-gray-500 group-hover:text-gray-400 group-disabled:text-gray-300' />
                                     </button>
                                 ) : (
-                                    <SearchIcon className='h-5 w-5 text-gray-500' aria-hidden='true' />
+                                    <SearchIcon
+                                        className='h-5 w-5 text-gray-500 dark:text-slate-400'
+                                        aria-hidden='true'
+                                    />
                                 )}
                             </span>
 
-                            <Combobox.Options className='absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
+                            <Combobox.Options className='absolute z-10 mt-1 w-full bg-white dark:bg-slate-600 shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
                                 {loading ? (
                                     <Combobox.Option value={null} disabled>
                                         <p className='p-2 text-center text-xs text-gray-500 dark:text-slate-200'>
@@ -140,7 +143,9 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
                                                         key={item[valueKey]}
                                                         className={({ active }) =>
                                                             clsx(
-                                                                active ? 'text-white bg-indigo-600' : 'text-gray-900',
+                                                                active
+                                                                    ? 'text-white bg-indigo-600 dark:bg-cyan-500'
+                                                                    : 'text-gray-900 dark:text-slate-200',
                                                                 'cursor-default select-none relative py-2 pl-8 pr-4'
                                                             )
                                                         }
