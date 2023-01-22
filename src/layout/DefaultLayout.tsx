@@ -1,5 +1,5 @@
 import { Suspense, useLayoutEffect } from 'react'
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { useConfig } from '~/context'
 import { useLocalStorage } from '~/hook'
@@ -9,8 +9,8 @@ import SideBar from './components/SideBar'
 
 const privateHOC = (Component: () => JSX.Element) => () => {
     const { userProfile } = useAuth()
-
-    if (!userProfile) return <Navigate to='/auth' />
+    const { pathname } = useLocation()
+    if (!userProfile) return <Navigate to='/auth' state={{ url: pathname }} />
     return <Component />
 }
 

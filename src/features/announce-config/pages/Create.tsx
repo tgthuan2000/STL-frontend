@@ -135,11 +135,11 @@ const Create = () => {
                     const users = await client.fetch<Array<UserEmail>>(GET_USERS_ID)
                     createNotifyAssign(users)
                     /* Xử lí gửi email */
-                    createSendMail(users, sentUsers.push)
+                    createSendMail(users, (d) => sentUsers.push(d))
                 } else {
                     createNotifyAssign(data.users)
                     /* Xử lí gửi email */
-                    createSendMail(data.users, sentUsers.push)
+                    createSendMail(data.users, (d) => sentUsers.push(d))
                 }
 
                 await __.commit()

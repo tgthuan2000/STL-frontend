@@ -22,7 +22,7 @@ const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
     const { userProfile } = useAuth()
     const [config, setConfig] = useState<Omit<IConfig, 'role'> & { role: IRoleControl | null }>({
         kindSpending: [],
-        budgetSpending: { _id: getBudgetId(userProfile?._id as string) },
+        budgetSpending: { _id: null },
         role: null,
     })
     const [ok, setOk] = useState(false)
@@ -33,15 +33,18 @@ const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
         const getConfig = async () => {
             try {
                 setConfigLoading(true)
-                const { kindSpending, role }: IConfig = await client.fetch(GET_CONFIG, {
-                    userId: userProfile?._id as string,
-                })
-                setConfig((prev) => ({
-                    ...prev,
-                    kindSpending,
-                    role: role?.role as IRoleControl,
-                }))
-                setOk(true)
+                if (userProfile?._id) {
+                    const { kindSpending, role }: IConfig = await client.fetch(GET_CONFIG, {
+                        userId: userProfile?._id as string,
+                    })
+                    setConfig((prev) => ({
+                        ...prev,
+                        kindSpending,
+                        budgetSpending: { _id: getBudgetId(userProfile?._id as string) },
+                        role: role?.role as IRoleControl,
+                    }))
+                    setOk(true)
+                }
             } catch (error) {
                 console.log(error)
             } finally {
