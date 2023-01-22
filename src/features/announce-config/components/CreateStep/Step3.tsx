@@ -148,7 +148,9 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                     <p className='inline-block text-sm font-medium text-gray-700'>Danh sách người nhận thông báo</p>
                     <div className='mt-1 select-none border rounded-lg' ref={userRef}>
                         {isEmpty(__users) ? (
-                            <p className='px-4 py-2 text-center'>{TEMPLATE.EMPTY_DATA}</p>
+                            <p className='px-4 py-2 text-center text-gray-900 dark:text-slate-200'>
+                                {TEMPLATE.EMPTY_DATA}
+                            </p>
                         ) : (
                             __users.map((user) => (
                                 <div key={user._id} className='px-4 py-2 flex gap-2 items-center'>

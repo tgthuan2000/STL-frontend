@@ -43,7 +43,7 @@ const Method: React.FC<BudgetProps> = ({ data, loading }) => {
             </ul>
         )
     }
-    return <div className='py-2 text-center text-gray-700'>{TEMPLATE.EMPTY_DATA}</div>
+    return <div className='py-2 text-center text-gray-700 dark:text-slate-200'>{TEMPLATE.EMPTY_DATA}</div>
 }
 
 export default Method
