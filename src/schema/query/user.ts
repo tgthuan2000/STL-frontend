@@ -8,6 +8,7 @@ export const SEARCH_USER_PAGINATE = groq`
             userName,
             email,
             image,
+            allowSendMail,
         },
         "hasNextPage": count(*[_type == "user"]) > $__toUser      
     }
@@ -16,5 +17,9 @@ export const SEARCH_USER_PAGINATE = groq`
 export const GET_USERS_ID = groq`
     *[_type == "user"]{
         _id,
+        userName,
+        email,
+        allowSendMail,
+        "sendEmail": allowSendMail,
     }
 `

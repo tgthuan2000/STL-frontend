@@ -1,3 +1,4 @@
+import { MailIcon } from '@heroicons/react/outline'
 import { useForm } from 'react-hook-form'
 import { CreateStep4Props } from '~/@types/announce-config'
 import { DraftNotify } from '~/@types/notify'
@@ -15,7 +16,7 @@ const Step4: React.FC<CreateStep4Props> = ({ id, onSubmit }) => {
         }
     }
     return (
-        <div className='text-gray-900 dark:text-slate-200'>
+        <div className='mt-3 text-gray-900 dark:text-slate-200'>
             <form
                 id={id}
                 onSubmit={form.handleSubmit(handleSubmit)}
@@ -39,6 +40,11 @@ const Step4: React.FC<CreateStep4Props> = ({ id, onSubmit }) => {
                                         <p className='font-medium truncate'>{user.userName}</p>
                                         <small className='font-normal text-gray-500 truncate block'>{user.email}</small>
                                     </div>
+                                    {user.allowSendMail && user.sendMail && (
+                                        <span title='Gửi mail' className='text-cyan-400'>
+                                            <MailIcon className='h-5' />
+                                        </span>
+                                    )}
                                 </div>
                             ))}
                         </div>
