@@ -23,6 +23,7 @@ export const fetchGoogleResponse: IFetchGoogleResponse = async (res, addUser, se
                     userName: name,
                     email,
                     google: JSON.stringify(data),
+                    allowSendMail: true,
                     role: {
                         _type: 'reference',
                         _ref: ROLE.CLIENT,

@@ -34,7 +34,7 @@ export interface DraftNotify {
     title?: string
     content?: string
     description?: string
-    users?: Array<IUserProfile>
+    users?: Array<IUserProfile & { sendMail: boolean }>
     sendAll?: boolean
 }
 
@@ -47,7 +47,7 @@ export interface NotifyTitleDescForm {
     description: string
 }
 export interface NotifyAssignForm {
-    users: IUserProfile[]
+    users: Array<IUserProfile & { sendMail: boolean }>
     sendAll: boolean
 }
 

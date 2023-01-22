@@ -8,6 +8,7 @@ import { useSearchParams } from 'react-router-dom'
 import { TimeFilterPayload } from '~/@types/components'
 import { ProfileQueryData } from '~/@types/profile'
 import { Button, Image, TimeFilter, Transaction } from '~/components'
+import { Toggle } from '~/components/_base'
 import { DATE_FORMAT, TAGS } from '~/constant'
 import { E_FILTER_DATE, TEMPLATE } from '~/constant/template'
 import { useConfig, useLoading } from '~/context'
@@ -23,7 +24,7 @@ import {
 } from '~/schema/query/profile'
 import { getDate } from '~/services'
 import useAuth from '~/store/auth'
-import { ProfileInfo, ProfileInfoGroup, ProfileInfoSkeleton } from '../components'
+import { ProfileInfo, ProfileInfoGroup, ProfileInfoSkeleton, AllowSendMail } from '../components'
 import * as profileServices from '../services/profile'
 
 const filterQuery = {
@@ -218,6 +219,7 @@ const Dashboard = () => {
                         <span className='text-xs text-gray-500 dark:text-slate-300'>
                             Ngày tham gia: <b>{moment(userProfile?._createdAt).format(DATE_FORMAT.TIME_DATE)}</b>
                         </span>
+                        <AllowSendMail />
                     </div>
                     {/* DASHBOARD */}
 

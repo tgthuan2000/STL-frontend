@@ -26,7 +26,7 @@ const Auth = () => {
                         onSuccess={async (res) => await fetchGoogleResponse(res, addUserProfile, setConfigLoading)}
                         onError={() => {}}
                     />
-                    <span className='text-xs'>Hoặc</span>
+                    <span className='text-xs text-gray-900 dark:text-white'>Hoặc</span>
                     <Button
                         className='sm:!text-sm border-transparent !text-xs sm:!py-3 sm:!px-6 !w-auto bg-gradient-to-r from-[#12c2e9] via-[#c471ed] to-[#f64f59] animate-bg-animate bg-400% text-white'
                         type='button'
