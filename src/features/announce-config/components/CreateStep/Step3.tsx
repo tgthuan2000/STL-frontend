@@ -8,8 +8,8 @@ import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { CreateStep3Props, QueryDataStep3 } from '~/@types/announce-config'
 import { DraftNotify, NotifyAssignForm } from '~/@types/notify'
-import { Image, LazySearchSelect } from '~/components'
-import { Toggle } from '~/components/_base'
+import { Image } from '~/components'
+import { LazySearchSelect, Toggle } from '~/components/_base'
 import { COUNT_PAGINATE, TAGS } from '~/constant'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { TEMPLATE } from '~/constant/template'
@@ -125,7 +125,7 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                                     <p
                                         className={clsx(
                                             'font-medium truncate',
-                                            active ? 'text-white' : 'text-gray-900'
+                                            active ? 'text-white' : 'text-gray-900 dark:text-slate-200'
                                         )}
                                     >
                                         {option.userName}
@@ -133,7 +133,7 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                                     <small
                                         className={clsx(
                                             'font-normal truncate block',
-                                            active ? 'text-white' : 'text-gray-500'
+                                            active ? 'text-white' : 'text-gray-500 dark:text-slate-400'
                                         )}
                                     >
                                         {option.email}
@@ -145,8 +145,10 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                 />
 
                 <div>
-                    <p className='inline-block text-sm font-medium text-gray-700'>Danh sách người nhận thông báo</p>
-                    <div className='mt-1 select-none border rounded-lg' ref={userRef}>
+                    <p className='inline-block text-sm font-medium text-gray-700 dark:text-slate-100'>
+                        Danh sách người nhận thông báo
+                    </p>
+                    <div className='mt-1 select-none border dark:border-slate-700 rounded-lg' ref={userRef}>
                         {isEmpty(__users) ? (
                             <p className='px-4 py-2 text-center text-gray-900 dark:text-slate-200'>
                                 {TEMPLATE.EMPTY_DATA}
@@ -156,11 +158,15 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                                 <div key={user._id} className='px-4 py-2 flex gap-2 items-center'>
                                     <Image src={user.image} alt={user.userName} size='small' />
                                     <div className='flex-1'>
-                                        <p className='font-medium text-gray-900 truncate'>{user.userName}</p>
-                                        <small className='font-normal text-gray-500 truncate block'>{user.email}</small>
+                                        <p className='font-medium text-gray-900 dark:text-slate-200 truncate'>
+                                            {user.userName}
+                                        </p>
+                                        <small className='font-normal text-gray-500 dark:text-slate-400 truncate block'>
+                                            {user.email}
+                                        </small>
                                     </div>
                                     <button
-                                        className='p-2 bg-slate-100 hover:bg-slate-200 disabled:hover:bg-slate-100 disabled:cursor-not-allowed group transition-all rounded-lg cursor-pointer'
+                                        className='p-2 bg-slate-100 hover:bg-slate-200 disabled:hover:bg-slate-100 disabled:cursor-not-allowed dark:bg-slate-700 group transition-all rounded-lg cursor-pointer'
                                         onClick={() => {
                                             form.setValue(
                                                 'users',

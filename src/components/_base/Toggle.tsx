@@ -32,7 +32,7 @@ const Toggle = forwardRef<HTMLElement, ToggleProps>(({ label, form, name, rules,
                                     )}
                                 />
                             </Switch>
-                            {label}
+                            <span className='text-gray-900 dark:text-slate-200'>{label}</span>
                         </div>
                         <div ref={parent}>
                             {error && <div className='mt-1 text-radical-red-700 text-sm'>{error.message}</div>}

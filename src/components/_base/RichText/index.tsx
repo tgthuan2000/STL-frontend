@@ -23,7 +23,7 @@ const RichText: React.FC<RichTextProps> = ({ name, form, label, className, rules
             render={({ field, fieldState: { error } }) => (
                 <div className={className}>
                     {label && (
-                        <label htmlFor={id} className='inline-block font-medium text-gray-900'>
+                        <label htmlFor={id} className='inline-block font-medium text-gray-900 dark:text-slate-100'>
                             {label}
                         </label>
                     )}

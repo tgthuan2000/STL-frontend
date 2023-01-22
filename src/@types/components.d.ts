@@ -434,3 +434,8 @@ export interface ChipProps {
 export interface ThemeIconProps {
     theme: UseLocalStorageResult<string>
 }
+
+export interface BackButtonProps {
+    onClick: () => void
+    disabled?: boolean
+}
