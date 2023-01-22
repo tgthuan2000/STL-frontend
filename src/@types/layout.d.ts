@@ -1,6 +1,7 @@
 import { SanityDocument } from '@sanity/client'
 import React from 'react'
 import { NavigateFunction } from 'react-router-dom'
+import { UseLocalStorageResult } from '~/hook/useLocalStorage'
 import { IUserProfile } from './auth'
 
 export interface SideBarProps {
@@ -23,14 +24,19 @@ export interface OptionData {
     data: OptionMenu
     navigate: NavigateFunction
     closeSidebar: () => void
+    theme: UseLocalStorageResult<string>
 }
+
 export type OptionFuncData =
     | string
-    | ((data: { userProfile: SanityDocument<IUserProfile> | null | undefined }) => React.ReactNode)
+    | ((data: {
+          userProfile: SanityDocument<IUserProfile> | null | undefined
+          theme: UseLocalStorageResult<string>
+      }) => React.ReactNode)
 
 export interface OptionMenu {
     id: number
     label: OptionFuncData
     onClick: (data: OptionData) => void
-    icon: React.FC<{ className?: string }>
+    icon: React.FC<{ className?: string; theme: UseLocalStorageResult<string> }>
 }

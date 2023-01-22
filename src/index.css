@@ -13,11 +13,11 @@
 }
 
 html {
-    @apply h-full bg-gray-100;
+    @apply h-full;
 }
 
 body {
-    @apply h-full text-sm font-light overflow-x-hidden;
+    @apply h-full text-sm font-light overflow-x-hidden bg-gray-100 dark:bg-gray-900;
 }
 
 :focus-visible {

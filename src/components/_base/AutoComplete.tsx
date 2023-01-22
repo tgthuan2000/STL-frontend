@@ -1,6 +1,6 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Combobox } from '@headlessui/react'
-import { CheckIcon, RefreshIcon, SelectorIcon, XIcon } from '@heroicons/react/outline'
+import { CheckIcon, SelectorIcon, XIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import { filter, find, get, isNil } from 'lodash'
 import numeral from 'numeral'
@@ -10,6 +10,7 @@ import { toast } from 'react-toastify'
 import { AutoCompleteProps } from '~/@types/components'
 import { urlFor } from '~/sanityConfig'
 import Image from '../Image'
+import LoadingButton from '../Loading/LoadingButton'
 
 const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
     (
@@ -118,28 +119,18 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                             multiple={multiple}
                         >
                             <div className='flex justify-between items-center'>
-                                <Combobox.Label className='inline-block text-sm font-medium text-gray-700'>
+                                <Combobox.Label className='inline-block text-sm font-medium text-gray-700 dark:text-slate-100'>
                                     {label}
                                 </Combobox.Label>
-                                {onReload && (
-                                    <button
-                                        type='button'
-                                        className='cursor-pointer group disabled:cursor-wait disabled:animate-spin -scale-100'
-                                        onClick={onReload}
-                                        disabled={loading}
-                                        title='Tải lại'
-                                    >
-                                        <RefreshIcon className='h-4 w-4 text-gray-500 group-hover:text-gray-400 group-disabled:text-gray-300' />
-                                    </button>
-                                )}
+                                {onReload && <LoadingButton disabled={loading} onReload={onReload} />}
                             </div>
                             <div className='relative mt-1'>
                                 <Combobox.Input
                                     className={clsx(
                                         'w-full h-10 rounded-md border border-gray-300 py-2 pl-3 pr-10 shadow-sm sm:text-sm focus:outline-none',
                                         loading || disabled
-                                            ? 'bg-gray-50 text-gray-500 select-none'
-                                            : 'bg-white text-gray-900'
+                                            ? 'bg-gray-50 text-gray-500 select-none dark:bg-slate-600 dark:border-slate-700 dark:text-slate-300'
+                                            : 'bg-white text-gray-900 dark:bg-slate-700 dark:border-slate-800 dark:text-slate-200'
                                     )}
                                     displayValue={(item: any) =>
                                         loadingAddMore ? 'Đang thực hiện tạo mới...' : item?.[valueKey]
@@ -176,7 +167,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                 </Combobox.Button>
 
                                 {filterData.length > 0 ? (
-                                    <Combobox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
+                                    <Combobox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-slate-600 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
                                         {filterData.map((item) => {
                                             return (
                                                 <Combobox.Option
@@ -185,7 +176,9 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                                     className={({ active }) =>
                                                         clsx(
                                                             'relative cursor-default select-none py-2 pl-8 pr-4',
-                                                            active ? 'bg-indigo-600 text-white' : 'text-gray-900'
+                                                            active
+                                                                ? 'bg-indigo-600 text-white dark:bg-cyan-500'
+                                                                : 'text-gray-900 dark:text-slate-200'
                                                         )
                                                     }
                                                 >
@@ -213,7 +206,9 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                                                 <span
                                                                     className={clsx(
                                                                         'absolute inset-y-0 left-0 flex items-center pl-1.5',
-                                                                        active ? 'text-white' : 'text-indigo-600'
+                                                                        active
+                                                                            ? 'text-white'
+                                                                            : 'text-indigo-600 dark:text-cyan-500'
                                                                     )}
                                                                 >
                                                                     <CheckIcon className='h-5 w-5' aria-hidden='true' />
@@ -228,7 +223,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                 ) : (
                                     query.trim() !== '' &&
                                     addMore && (
-                                        <Combobox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
+                                        <Combobox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-slate-600 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
                                             <Combobox.Option
                                                 value={query.trim()}
                                                 className={({ active }) =>
@@ -258,7 +253,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                         <div ref={parent}>
                             {!isNil(surplus) && !disabledShowSurplus && (
                                 <div className='mt-1 ml-3'>
-                                    {surplusName}:{' '}
+                                    <span className='text-gray-900 dark:text-slate-200'>{surplusName}</span>:{' '}
                                     <strong
                                         className={clsx(
                                             { 'text-green-400': surplus > 0 },

@@ -35,7 +35,7 @@ const Step2: React.FC<Step2Props> = ({ previewData, onSubmit }) => {
     return (
         <div className='space-y-3'>
             {!isEmpty(previewData) && (
-                <div className='bg-white shadow-md rounded-lg select-none overflow-hidden'>
+                <div className='bg-white dark:bg-slate-800 shadow-md rounded-lg select-none overflow-hidden'>
                     {previewData?.map((data) => {
                         const checked = data._id === chose?._id
                         return (
@@ -56,7 +56,9 @@ const Step2: React.FC<Step2Props> = ({ previewData, onSubmit }) => {
                                     </div>
                                 )}
                                 <div className='flex-1 max-w-[250px]'>
-                                    <p className='font-medium text-gray-900 truncate'>{data.userName}</p>
+                                    <p className='font-medium text-gray-900 dark:text-slate-200 truncate'>
+                                        {data.userName}
+                                    </p>
                                     <small className='font-normal text-gray-500 truncate block'>{data.email}</small>
                                 </div>
                                 {checked && <CheckCircleIcon className='h-6 text-cyan-500' />}

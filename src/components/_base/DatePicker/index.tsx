@@ -71,7 +71,7 @@ const Input = forwardRef<HTMLInputElement, DatePickerInputProps>(
         return (
             <div>
                 {label && (
-                    <label htmlFor={id} className='inline-block font-medium text-gray-900'>
+                    <label htmlFor={id} className='inline-block font-medium text-gray-900 dark:text-slate-100'>
                         {label}
                     </label>
                 )}
@@ -83,7 +83,7 @@ const Input = forwardRef<HTMLInputElement, DatePickerInputProps>(
                         spellCheck={false}
                         autoComplete='off'
                         className={clsx(
-                            'block h-10 p-2 w-full rounded-md border border-gray-300 shadow-sm font-light',
+                            'block h-10 p-2 w-full rounded-md border border-gray-300 shadow-sm font-light bg-white dark:bg-slate-700 dark:border-slate-800 dark:text-slate-200',
                             className
                         )}
                         disabled={disabled}

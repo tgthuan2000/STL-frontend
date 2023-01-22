@@ -11,7 +11,7 @@ const LoadingButton: React.FC<LoadingButtonProps> = ({ onReload, disabled }) => 
             disabled={disabled}
             title='Tải lại'
         >
-            <RefreshIcon className='h-4 w-4 text-gray-500 group-hover:text-gray-400 group-disabled:text-gray-300' />
+            <RefreshIcon className='h-4 w-4 text-gray-500 dark:text-slate-200 group-hover:text-gray-400 group-disabled:text-gray-300' />
         </button>
     )
 }

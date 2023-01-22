@@ -28,7 +28,7 @@ const Auth = () => {
                     />
                     <span className='text-xs'>Hoặc</span>
                     <Button
-                        className='sm:!text-sm !text-xs sm:!py-3 sm:!px-6 !w-auto bg-gradient-to-r from-[#12c2e9] via-[#c471ed] to-[#f64f59] animate-bg-animate bg-400% text-white'
+                        className='sm:!text-sm border-transparent !text-xs sm:!py-3 sm:!px-6 !w-auto bg-gradient-to-r from-[#12c2e9] via-[#c471ed] to-[#f64f59] animate-bg-animate bg-400% text-white'
                         type='button'
                         color='custom'
                         onClick={() => setShowFormLogin(true)}

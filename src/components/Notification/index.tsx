@@ -171,13 +171,13 @@ const Notification: React.FC<NotificationProps> = ({ leftSide = false }) => {
             <Menu.Button className='px-2 pt-1 group'>
                 <div className='relative' ref={notifyRef}>
                     <img src={BellIcon} className='h-8 w-8 rounded' />
-                    <span className='absolute -top-3 -right-3 bg-radical-red-500 text-white rounded-full h-[22px] w-[22px] text-xs inline-flex justify-center items-center'>
+                    <span className='absolute -top-3 -right-3 bg-radical-red-500 dark:bg-prussian-blue-400 text-white rounded-full h-[22px] w-[22px] text-xs inline-flex justify-center items-center'>
                         {total > 99 ? '99+' : total}
                     </span>
                     {loadNewNotify && (
                         <span
                             className={clsx(
-                                'absolute bg-radical-red-500 text-white rounded-lg text-xs font-medium inline-flex justify-center items-center whitespace-nowrap p-2',
+                                'absolute bg-radical-red-500 dark:bg-prussian-blue-400 text-white rounded-lg text-xs font-medium inline-flex justify-center items-center whitespace-nowrap p-2',
                                 { '-bottom-1/2 left-10': width >= 768 },
                                 { 'top-1/2 right-10': width < 768 }
                             )}
@@ -190,7 +190,7 @@ const Notification: React.FC<NotificationProps> = ({ leftSide = false }) => {
 
             <Menu.Items
                 className={clsx(
-                    'absolute sm:w-[500px] w-[320px] mt-2 select-none whitespace-nowrap origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none',
+                    'absolute sm:w-[500px] w-[320px] mt-2 select-none whitespace-nowrap origin-top-left divide-y divide-gray-100 rounded-md bg-white dark:bg-slate-800 dark:divide-slate-600 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none',
                     leftSide ? 'right-0' : 'left-0'
                 )}
             >
@@ -199,7 +199,7 @@ const Notification: React.FC<NotificationProps> = ({ leftSide = false }) => {
                 ) : (
                     <>
                         <div className='flex justify-between'>
-                            <h1 className='p-2 font-medium text-base'>Thông báo</h1>
+                            <h1 className='p-2 font-medium text-base text-gray-900 dark:text-white'>Thông báo</h1>
                             {/* <button
                                 className='group p-2 text-sm text-cyan-500 font-medium hover:underline disabled:hover:no-underline flex items-center gap-1'
                                 disabled={isClickReadAll}

@@ -40,7 +40,7 @@ const BodyTable: React.FC<TableProps> = ({
                         <Fragment key={item._id}>
                             <tr
                                 onClick={() => navigate(to)}
-                                className={clsx('cursor-pointer', { 'bg-gray-50': !isEven })}
+                                className={clsx('cursor-pointer', { 'bg-gray-50 dark:bg-slate-600': !isEven })}
                             >
                                 {columns.map((column, index) => {
                                     return <Fragment key={column.key}>{column.renderRow(item, index)}</Fragment>
@@ -48,7 +48,7 @@ const BodyTable: React.FC<TableProps> = ({
                             </tr>
                             {subRow && (
                                 <tr
-                                    className={clsx('cursor-pointer', { 'bg-gray-50': !isEven })}
+                                    className={clsx('cursor-pointer', { 'bg-gray-50 dark:bg-slate-600': !isEven })}
                                     onClick={() => navigate(to)}
                                 >
                                     {subRow(item, index, data)}

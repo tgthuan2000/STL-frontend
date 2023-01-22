@@ -8,7 +8,22 @@ const Prose: React.FC<ProseProps> = ({ children, className }) => {
     return (
         <span
             className={clsx(
-                'prose prose-blockquote:font-normal prose-a:text-cyan-400 prose-a:font-light prose-blockquote:text-gray-600 prose-strong:font-medium',
+                `
+                    prose 
+                    prose-blockquote:font-normal 
+                    prose-a:font-light 
+                    prose-strong:font-medium 
+                    prose-a:text-cyan-400 
+                    prose-blockquote:text-gray-600 
+                    dark:prose-p:text-slate-200 
+                    dark:prose-blockquote:text-slate-200 
+                    dark:prose-h3:text-slate-200 
+                    dark:prose-h1:text-slate-200 
+                    dark:prose-h2:text-slate-200 
+                    dark:prose-h4:text-slate-200 
+                    dark:prose-h5:text-slate-200 
+                    dark:prose-h6:text-slate-200
+                `,
                 className
             )}
         >

@@ -7,6 +7,7 @@ import { DATE_FORMAT } from '~/constant'
 import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
 import { PERMISSION } from '~/constant/permission'
 import { IFILTER_DATE } from '~/constant/template'
+import { UseLocalStorageResult } from '~/hook/useLocalStorage'
 import { IUserLoan } from './loan'
 import { NotifyItem } from './notify'
 import { ISpendingData } from './spending'
@@ -428,4 +429,8 @@ export interface ChipProps {
     onClick?: (data: any) => void
     disabled?: boolean
     hidden?: boolean
+}
+
+export interface ThemeIconProps {
+    theme: UseLocalStorageResult<string>
 }

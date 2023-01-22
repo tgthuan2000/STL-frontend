@@ -16,7 +16,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(({ className, fo
             render={({ field, fieldState: { error } }) => (
                 <div className={clsx(className)}>
                     {label && (
-                        <label htmlFor={id} className='inline-block font-medium text-gray-900'>
+                        <label htmlFor={id} className='inline-block font-medium text-gray-900 dark:text-slate-100'>
                             {label}
                         </label>
                     )}
@@ -26,7 +26,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(({ className, fo
                             spellCheck={false}
                             autoComplete='off'
                             rows={6}
-                            className='block p-2 w-full rounded-md border border-gray-300 shadow-sm font-light'
+                            className='block p-2 w-full rounded-md border border-gray-300 shadow-sm font-light bg-white dark:bg-slate-700 dark:border-slate-800 dark:text-slate-200'
                             {...field}
                         />
                     </div>

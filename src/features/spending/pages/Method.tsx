@@ -5,9 +5,10 @@ import numeral from 'numeral'
 import { useEffect, useMemo } from 'react'
 import { IMethodSpending } from '~/@types/spending'
 import { TAGS } from '~/constant'
+import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { TEMPLATE } from '~/constant/template'
 import { useCheck, useConfig } from '~/context'
-import { useQuery, useScrollIntoView, useWindowSize } from '~/hook'
+import { useLocalStorage, useQuery, useScrollIntoView, useWindowSize } from '~/hook'
 import { GET_METHOD_SPENDING_DESC_SURPLUS } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 
@@ -42,7 +43,7 @@ const Method = () => {
     >(() => {
         return {
             data: map(dataFilter, ({ name, surplus }) => ({ name, [name]: surplus })),
-            theme: { fontFamily: 'Lexend', fontSize: 13 },
+            theme: { fontFamily: 'Lexend', fontSize: 13, textColor: 'black' },
             keys: map(dataFilter, 'name'),
             indexBy: 'name',
             animate: false,
@@ -125,14 +126,14 @@ const Method = () => {
     return (
         <div ref={wrapRef} className='mt-5'>
             <div
-                className='border border-gray-300 bg-white rounded-md xl:sticky xl:top-6 lg:py-2 lg:px-4'
+                className='border border-gray-300 bg-white dark:bg-slate-700 dark:border-slate-700 rounded-md xl:sticky xl:top-6 lg:py-2 lg:px-4'
                 style={{ height: dataFilter ? size(dataFilter) * 90 : 'auto' }}
                 ref={parent}
             >
                 {dataFilter ? (
                     <ResponsiveBar {...options} />
                 ) : (
-                    <div className='animate-pulse p-2'>{TEMPLATE.LOADING}</div>
+                    <div className='animate-pulse p-2 text-gray-900 dark:text-slate-200'>{TEMPLATE.LOADING}</div>
                 )}
             </div>
         </div>

@@ -193,17 +193,17 @@ const Dashboard = () => {
                     <Image
                         src={userProfile?.image}
                         size='custom'
-                        className='mx-auto h-28 sm:h-32 w-28 sm:w-32 border-2 shadow-lg'
+                        className='mx-auto h-28 sm:h-32 w-28 sm:w-32 border-2 dark:border-slate-700 shadow-lg'
                     />
                 </div>
                 {/* MAIN */}
-                <div className='relative min-h-screen bg-white rounded-lg shadow-lg pt-12 sm:pt-14 select-none'>
+                <div className='relative min-h-screen bg-white dark:bg-slate-800 rounded-lg shadow-lg pt-12 sm:pt-14 select-none'>
                     {/* TOOLS */}
                     <div className='absolute bottom-[calc(100%+12px)] right-2'>
                         <Button
                             type='button'
                             color='primary'
-                            className='rounded-lg bg-gray-200 min-w-0 inline-flex shadow border justify-center items-center hover:bg-gray-700 transition-all text-gray-700 hover:text-white'
+                            className='rounded-lg bg-gray-200 dark:bg-slate-700 dark:border-slate-700 dark:text-slate-200 dark:hover:opacity-50 min-w-0 inline-flex shadow border justify-center items-center hover:bg-gray-700 transition-all text-gray-700 hover:text-white'
                         >
                             <PencilAltIcon className='h-4 w-4' />{' '}
                             <span className='hidden sm:inline-block'>Cập nhật</span>
@@ -211,11 +211,11 @@ const Dashboard = () => {
                     </div>
                     {/* USER INFO */}
                     <div className='mt-2 flex flex-col justify-center items-center gap-1'>
-                        <h2 className='text-base sm:text-xl font-medium text-prussian-blue-700'>
+                        <h2 className='text-base sm:text-xl font-medium text-prussian-blue-700 dark:text-prussian-blue-300'>
                             {userProfile?.userName}
                         </h2>
-                        <p className='text-xs sm:text-sm text-gray-500'>{userProfile?.email}</p>
-                        <span className='text-xs text-gray-500'>
+                        <p className='text-xs sm:text-sm text-gray-500 dark:text-slate-300'>{userProfile?.email}</p>
+                        <span className='text-xs text-gray-500 dark:text-slate-300'>
                             Ngày tham gia: <b>{moment(userProfile?._createdAt).format(DATE_FORMAT.TIME_DATE)}</b>
                         </span>
                     </div>

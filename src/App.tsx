@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { DefaultLayout } from '~/layout'
 import { ErrorFallback, Loading, PermissionCheck } from './components'
 import { PERMISSION } from './constant/permission'
-import { ConfigProvider, LoadingProvider, CheckingProvider } from './context'
+import { CheckingProvider, ConfigProvider, LoadingProvider } from './context'
 import { CacheProvider } from './context/CacheContext'
 
 const AuthFeature = React.lazy(() => import('./features/auth'))
@@ -39,7 +39,7 @@ function App() {
                     <LoadingProvider>
                         <CheckingProvider>
                             <Loading />
-                            <Suspense fallback={<div>Loading...</div>}>
+                            <Suspense fallback={<div className='text-gray-900 dark:text-slate-200'>Loading...</div>}>
                                 <Routes>
                                     <Route
                                         path='/'

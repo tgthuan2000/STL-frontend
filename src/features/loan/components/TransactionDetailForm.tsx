@@ -1,7 +1,6 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { ArrowSmLeftIcon, PencilIcon, TrashIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
-import { isEmpty } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
 import React from 'react'
@@ -17,7 +16,7 @@ import IconButton from './common/IconButton'
 import Group from './Group'
 
 const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) => {
-    const { onsubmit, handleDeleteTransaction, handleReloadData, methodSpending, transaction } = data
+    const { onsubmit, handleDeleteTransaction, methodSpending, transaction } = data
     const navigate = useNavigate()
     const { loading } = useLoading()
     const wrapRef = useScrollIntoView<HTMLDivElement>()
@@ -33,7 +32,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
     return (
         <div ref={wrapRef}>
             <div className='flex justify-between items-center mb-4'>
-                <div className='flex items-center text-gray-900 space-x-2 select-none'>
+                <div className='flex items-center text-gray-900 dark:text-slate-200 space-x-2 select-none'>
                     <ArrowSmLeftIcon
                         className='h-7 w-7 hover:opacity-50 cursor-pointer'
                         onClick={() => {
@@ -58,7 +57,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                     </div>
                 )}
             </div>
-            <div className='bg-white rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>
+            <div className='bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-200 rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>
                 <div className='max-w-lg w-full mx-auto'>
                     <form
                         onSubmit={transaction.paid ? undefined : form.handleSubmit(onsubmit)}
@@ -66,7 +65,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                     >
                         <div className='h-0 flex-1'>
                             <div className='flex flex-1 flex-col justify-between'>
-                                <div className='divide-y divide-gray-200 px-4 sm:px-6'>
+                                <div className='divide-y divide-gray-200 dark:divide-slate-500 px-4 sm:px-6'>
                                     <div className='space-y-4 pt-6 pb-5'>
                                         <Group label='Trạng thái' className='flex-col'>
                                             <Toggle
@@ -88,11 +87,6 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                                             rules={{
                                                                 required: 'Yêu cầu chọn phương thức thanh toán!',
                                                             }}
-                                                            onReload={
-                                                                isEmpty(methodSpending.data) || transaction.paid
-                                                                    ? undefined
-                                                                    : () => handleReloadData('methodSpending')
-                                                            }
                                                             disabled={transaction.paid}
                                                         />
                                                         <Input
@@ -191,7 +185,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                 </div>
                             </div>
                         </div>
-                        <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
+                        <div className='flex-shrink-0 border-t border-gray-200 dark:border-slate-600 px-4 py-5 sm:px-6'>
                             <div className='flex sm:justify-start justify-end space-x-3'>
                                 {!transaction.paid && (
                                     <Button color='radicalRed' type='submit' disabled={loading.submit}>
