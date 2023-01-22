@@ -18,12 +18,12 @@ const ProfileInfoSkeleton = () => {
 
 const SkeletonItem = ({ quantity, className }: { quantity: number; className?: string }) => (
     <>
-        <div className='h-6 w-40 rounded-full bg-slate-200 animate-pulse' />
+        <div className='h-6 w-40 rounded-full bg-slate-200 dark:bg-slate-700 animate-pulse' />
         <div className={clsx('mt-2 flex gap-2 flex-col', className)}>
             {Array.from(Array(quantity)).map((_, i) => (
                 <div
                     key={i}
-                    className='flex-1 w-full overflow-hidden flex flex-col items-start gap-1 p-5 sm:py-7 sm:px-5 bg-slate-100 rounded animate-pulse'
+                    className='flex-1 w-full overflow-hidden flex flex-col items-start gap-1 p-5 sm:py-7 sm:px-5 bg-slate-100 dark:bg-slate-600 rounded animate-pulse'
                 >
                     <div className='flex-shrink-0 block w-full text-left truncate' />
                     <div className='flex-1 w-full' />

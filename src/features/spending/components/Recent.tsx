@@ -15,13 +15,16 @@ const Recent: React.FC<RecentProps> = ({ data, loading }) => {
 
     if (!isEmpty(data)) {
         return (
-            <ul role='list' className='divide-y divide-gray-300'>
+            <ul
+                role='list'
+                className='divide-y divide-gray-300 dark:divide-slate-700 text-gray-900 dark:text-slate-200'
+            >
                 {data?.map((item) => (
                     <li key={item._id}>
                         <Link
                             to={getLinkSpending(item.kindSpending.key, item._id)}
                             state={{ status: item.kindSpending._id }}
-                            className='px-3 py-2 flex flex-col hover:bg-gray-100 cursor-pointer'
+                            className='px-3 py-2 flex flex-col hover:bg-gray-100 dark:hover:bg-slate-600 cursor-pointer'
                         >
                             <div className='flex'>
                                 <div className='xl:w-2/3 w-1/2 overflow-hidden'>
@@ -87,24 +90,24 @@ const Recent: React.FC<RecentProps> = ({ data, loading }) => {
             </ul>
         )
     }
-    return <div className='py-2 text-center text-gray-700'>{TEMPLATE.EMPTY_DATA}</div>
+    return <div className='py-2 text-center text-gray-700 dark:text-slate-200'>{TEMPLATE.EMPTY_DATA}</div>
 }
 
 export default Recent
 
 const RecentSkeleton = () => (
-    <ul role='list' className='divide-y divide-gray-300 select-none pointer-events-none'>
+    <ul role='list' className='divide-y divide-gray-300 dark:divide-slate-700 select-none pointer-events-none'>
         {Array.from(Array(5)).map((value, index) => (
             <li key={index}>
                 <div className='px-4 py-3 flex'>
                     <div className='w-2/3 space-y-1'>
-                        <div className='animate-pulse bg-gray-200 rounded-full h-4 w-2/3' />
-                        <div className='animate-pulse bg-gray-200 rounded-full h-4 w-1/2' />
-                        <div className='animate-pulse bg-gray-200 rounded-full h-4 w-1/3' />
+                        <div className='animate-pulse bg-gray-200 dark:bg-slate-700 rounded-full h-4 w-2/3' />
+                        <div className='animate-pulse bg-gray-200 dark:bg-slate-700 rounded-full h-4 w-1/2' />
+                        <div className='animate-pulse bg-gray-200 dark:bg-slate-700 rounded-full h-4 w-1/3' />
                     </div>
                     <div className='w-1/3 space-y-1 flex flex-col items-end'>
-                        <div className='animate-pulse bg-gray-200 rounded-full h-4 w-1/2' />
-                        <div className='animate-pulse bg-gray-200 rounded-full h-4 w-full' />
+                        <div className='animate-pulse bg-gray-200 dark:bg-slate-700 rounded-full h-4 w-1/2' />
+                        <div className='animate-pulse bg-gray-200 dark:bg-slate-700 rounded-full h-4 w-full' />
                     </div>
                 </div>
             </li>

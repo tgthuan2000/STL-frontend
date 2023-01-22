@@ -14,7 +14,11 @@ const Category: React.FC<BudgetProps> = ({ data, loading }) => {
 
     if (!isEmpty(data?.CategorySpending)) {
         return (
-            <ul role='list' className='divide-y divide-gray-300q' ref={ref}>
+            <ul
+                role='list'
+                className='divide-y divide-gray-300 text-gray-900 dark:text-slate-200 dark:divide-slate-700'
+                ref={ref}
+            >
                 {data?.CategorySpending?.map((item, index) => {
                     const totalAmounts = sum(item.amounts)
                     const percent = (totalAmounts * 100) / item.amount
@@ -39,7 +43,7 @@ const Category: React.FC<BudgetProps> = ({ data, loading }) => {
             </ul>
         )
     }
-    return <div className='py-2 text-center text-gray-700'>{TEMPLATE.EMPTY_DATA}</div>
+    return <div className='py-2 text-center text-gray-700 dark:text-slate-200'>{TEMPLATE.EMPTY_DATA}</div>
 }
 
 export default Category

@@ -54,12 +54,19 @@ const Selection: React.FC<SelectionProps> = ({
                         {({ open }) => (
                             <>
                                 {label && (
-                                    <Listbox.Label className='inline-block text-sm font-medium text-gray-700'>
+                                    <Listbox.Label className='inline-block text-sm font-medium text-gray-700 dark:text-slate-100'>
                                         {label}
                                     </Listbox.Label>
                                 )}
                                 <div className='mt-1 relative'>
-                                    <Listbox.Button className='relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'>
+                                    <Listbox.Button
+                                        className={clsx(
+                                            'relative w-full rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
+                                            disabled
+                                                ? 'bg-gray-50 text-gray-500 select-none dark:bg-slate-600 dark:border-slate-700 dark:text-slate-300'
+                                                : 'bg-white text-gray-900 dark:bg-slate-700 dark:border-slate-800 dark:text-slate-200'
+                                        )}
+                                    >
                                         <span
                                             className={clsx('block truncate', {
                                                 'text-gray-400': isNil(field.value),
@@ -72,13 +79,15 @@ const Selection: React.FC<SelectionProps> = ({
                                         </span>
                                     </Listbox.Button>
 
-                                    <Listbox.Options className='absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
+                                    <Listbox.Options className='absolute z-10 mt-1 w-full bg-white dark:bg-slate-600 shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
                                         {data.map((item) => (
                                             <Listbox.Option
                                                 key={item[idKey]}
                                                 className={({ active }) =>
                                                     clsx(
-                                                        active ? 'text-white bg-indigo-600' : 'text-gray-900',
+                                                        active
+                                                            ? 'text-white bg-indigo-600 dark:bg-cyan-500'
+                                                            : 'text-gray-900 dark:text-slate-200',
                                                         'cursor-default select-none relative py-2 pl-8 pr-4'
                                                     )
                                                 }
@@ -98,7 +107,9 @@ const Selection: React.FC<SelectionProps> = ({
                                                         {selected ? (
                                                             <span
                                                                 className={clsx(
-                                                                    active ? 'text-white' : 'text-indigo-600',
+                                                                    active
+                                                                        ? 'text-white'
+                                                                        : 'text-indigo-600 dark:text-cyan-500',
                                                                     'absolute inset-y-0 left-0 flex items-center pl-1.5'
                                                                 )}
                                                             >

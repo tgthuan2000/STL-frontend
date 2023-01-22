@@ -95,7 +95,7 @@ export interface TransactionEditFormData {
 
 export interface TransactionDetailFormData {
     onsubmit: SubmitHandler<PaidForm>
-    handleReloadData: (keys: keyof TransactionDetailQueryData) => Promise<void>
+    // handleReloadData: (keys: keyof TransactionDetailQueryData) => Promise<void>
     handleDeleteTransaction: () => void
     methodSpending: Query<IMethodSpending>
     transaction: ISpendingData

@@ -11,13 +11,13 @@ const Method: React.FC<MethodProps> = ({ data, loading }) => {
 
     if (!isEmpty(data)) {
         return (
-            <ul role='list'>
+            <ul role='list' className='text-gray-900 dark:text-slate-200'>
                 {data?.map((item) => {
                     return (
                         <li key={item._id}>
                             <Link
                                 to={`/spending/method/${item._id}`}
-                                className='px-3 py-3 flex hover:bg-gray-100 cursor-pointer'
+                                className='px-3 py-3 flex hover:bg-gray-100 dark:hover:bg-slate-600 cursor-pointer'
                             >
                                 <div className='w-2/3 truncate'>
                                     <h4 className='font-medium'>{item.name}</h4>
@@ -41,7 +41,7 @@ const Method: React.FC<MethodProps> = ({ data, loading }) => {
             </ul>
         )
     }
-    return <div className='py-2 text-center text-gray-700'>{TEMPLATE.EMPTY_DATA}</div>
+    return <div className='py-2 text-center text-gray-700 dark:text-slate-200'>{TEMPLATE.EMPTY_DATA}</div>
 }
 
 export default Method
@@ -52,10 +52,10 @@ const MethodSkeleton = () => (
             <li key={index}>
                 <div className='px-4 py-4 flex'>
                     <div className='w-2/3 space-y-1'>
-                        <div className='animate-pulse bg-gray-200 rounded-full h-4 w-2/3' />
+                        <div className='animate-pulse bg-gray-200 dark:bg-slate-700 rounded-full h-4 w-2/3' />
                     </div>
                     <div className='w-1/3 space-y-1 flex flex-col items-end'>
-                        <div className='animate-pulse bg-gray-200 rounded-full h-4 w-2/3' />
+                        <div className='animate-pulse bg-gray-200 dark:bg-slate-700 rounded-full h-4 w-2/3' />
                     </div>
                 </div>
             </li>

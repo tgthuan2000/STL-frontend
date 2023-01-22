@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash'
+import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { DashboardQueryData } from '~/@types/spending'
@@ -59,7 +59,7 @@ const Dashboard = () => {
 
     const dataStatistic = useMemo(() => {
         const data = statistic.data
-        if (!data || isEmpty(data)) return
+        if (isNil(data) || isEmpty(data)) return
         const _ = data.reduce(
             (result, value) => {
                 return {

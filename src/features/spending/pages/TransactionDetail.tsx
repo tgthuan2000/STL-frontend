@@ -330,7 +330,7 @@ const TransactionDetail = () => {
         transaction: transaction.data?.[0] as ISpendingData,
     }
 
-    if (transaction.loading) return <div>{TEMPLATE.LOADING}</div>
+    if (transaction.loading) return <div className='text-gray-900 dark:text-slate-200'>{TEMPLATE.LOADING}</div>
 
     return <TransactionDetailForm data={data} />
 }

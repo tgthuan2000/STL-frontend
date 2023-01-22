@@ -25,7 +25,7 @@ const Spending = () => {
                 ) : (
                     <>
                         <div className='h-16' />
-                        <aside className='block xl:hidden fixed bottom-0 bg-white border-t-2 border-gray-300 left-0 right-0 h-16'>
+                        <aside className='block xl:hidden fixed bottom-0 bg-white dark:bg-slate-700 border-t-2 border-gray-300 dark:border-slate-500 left-0 right-0 h-16'>
                             <ButtonMenuMobile data={menuSpendingPages} />
                         </aside>
                     </>

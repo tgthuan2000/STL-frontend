@@ -9,7 +9,7 @@ const Transaction: React.FC<TransactionProps> = ({ title = 'Title tab', hasBack 
 
     return (
         <div ref={wrapRef}>
-            <div className='flex items-center text-gray-900 space-x-2 sm:mb-2 mb-4 select-none'>
+            <div className='flex items-center text-gray-900 dark:text-slate-200 space-x-2 sm:mb-2 mb-4 select-none'>
                 {hasBack && <BackButton />}
                 <h4 className='xl:text-2xl text-xl font-semibold'>{title}</h4>
             </div>

@@ -25,7 +25,7 @@ const TopBar: React.FC<TopBarProps> = ({ onClickSidebar }) => {
         )
 
     return (
-        <div className='top-0 z-20 sticky md:block hidden pt-3 pb-2 px-3 bg-white border shadow'>
+        <div className='top-0 z-20 sticky md:block hidden pt-3 pb-2 px-3 bg-white dark:bg-gray-900 dark:border-0 border shadow'>
             <div className='flex'>
                 {/* Notification  */}
                 <Notification />

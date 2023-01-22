@@ -57,11 +57,11 @@ const LoginByEmailPasswordForm: React.FC<LoginByEmailPasswordFormProps> = ({ onS
     return (
         <div className='space-y-2'>
             <button
-                className='p-1 bg-slate-200 hover:bg-slate-700 cursor-pointer transition-colors group rounded-full inline-block disabled:opacity-50'
+                className='p-1 bg-slate-200 hover:bg-slate-700 dark:bg-slate-800 dark:hover:bg-slate-200 cursor-pointer transition-colors group rounded-full inline-block disabled:opacity-50'
                 onClick={handleBack}
                 disabled={loading.submit || loading.config}
             >
-                <ArrowSmLeftIcon className='h-6 text-gray-700 group-hover:text-white transition-colors' />
+                <ArrowSmLeftIcon className='h-6 text-gray-700 group-hover:text-white dark:text-slate-200 dark:group-hover:text-slate-700 transition-colors' />
             </button>
 
             <div ref={stepParent}>{stepData}</div>

@@ -25,20 +25,32 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                             color === 'radicalRed',
                     },
                     { 'border-transparent bg-yellow-600 text-white hover:bg-yellow-700': color === 'yellow' },
-                    { 'border-gray-400 bg-transparent text-gray-500 hover:bg-gray-50': color === 'outline' },
-                    { 'border-cyan-400 bg-transparent text-cyan-500 hover:bg-cyan-50': color === 'outline-cyan' },
-                    { 'border-green-400 bg-transparent text-green-500 hover:bg-green-50': color === 'outline-green' },
-                    { 'border-blue-400 bg-transparent text-blue-500 hover:bg-blue-50': color === 'outline-blue' },
                     {
-                        'border-prussian-blue-400 bg-transparent text-prussian-blue-500 hover:bg-prussian-blue-50':
+                        'border-gray-400 bg-transparent text-gray-500 hover:bg-gray-50 dark:text-slate-200 dark:border-slate-500 dark:hover:bg-slate-600':
+                            color === 'outline',
+                    },
+                    {
+                        'border-cyan-400 bg-transparent text-cyan-500 hover:bg-cyan-50 dark:hover:bg-transparent dark:hover:opacity-70':
+                            color === 'outline-cyan',
+                    },
+                    {
+                        'border-green-400 bg-transparent text-green-500 hover:bg-green-50 dark:hover:bg-transparent dark:hover:opacity-70':
+                            color === 'outline-green',
+                    },
+                    {
+                        'border-blue-400 bg-transparent text-blue-500 hover:bg-blue-50 dark:hover:bg-transparent dark:hover:opacity-70':
+                            color === 'outline-blue',
+                    },
+                    {
+                        'border-prussian-blue-400 bg-transparent text-prussian-blue-500 hover:bg-prussian-blue-50 dark:hover:bg-transparent dark:hover:opacity-70':
                             color === 'outline-prussianBlue',
                     },
                     {
-                        'border-radical-red-400 bg-transparent text-radical-red-500 hover:bg-radical-red-50':
+                        'border-radical-red-400 bg-transparent text-radical-red-500 hover:bg-radical-red-50 dark:hover:bg-transparent dark:hover:opacity-70':
                             color === 'outline-radicalRed',
                     },
                     {
-                        'border-yellow-400 bg-transparent text-yellow-500 hover:bg-yellow-50':
+                        'border-yellow-400 bg-transparent text-yellow-500 hover:bg-yellow-50 dark:hover:bg-transparent dark:hover:opacity-70':
                             color === 'outline-yellow',
                     },
                     className

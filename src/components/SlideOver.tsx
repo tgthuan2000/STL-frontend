@@ -31,7 +31,7 @@ const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
                     leaveFrom='opacity-100'
                     leaveTo='opacity-0'
                 >
-                    <div className='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity' />
+                    <div className='fixed inset-0 bg-gray-500 bg-opacity-75 dark:bg-slate-900 dark:bg-opacity-80 transition-opacity' />
                 </Transition.Child>
 
                 <div className='fixed inset-0 overflow-hidden'>
@@ -47,16 +47,16 @@ const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
                                 leaveTo='translate-x-full opacity-0'
                             >
                                 <Dialog.Panel className='pointer-events-auto w-screen sm:max-w-md max-w-full'>
-                                    <div className='flex h-full flex-col overflow-y-auto bg-white shadow-xl'>
+                                    <div className='flex h-full flex-col overflow-y-auto bg-white dark:bg-slate-800 shadow-xl'>
                                         <div className='px-4 sm:px-6 pt-6'>
                                             <div className='flex items-start justify-between'>
-                                                <Dialog.Title className='text-lg font-medium text-gray-900'>
+                                                <Dialog.Title className='text-lg font-medium text-gray-900 dark:text-white'>
                                                     {title}
                                                 </Dialog.Title>
                                                 <div className='ml-3 flex h-7 items-center'>
                                                     <button
                                                         type='button'
-                                                        className='rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none'
+                                                        className='rounded-md bg-white dark:bg-transparent dark:text-slate-100 dark:hover:text-slate-200 text-gray-400 hover:text-gray-500 focus:outline-none'
                                                         onClick={() => {
                                                             setIsOpen(false)
                                                             navigate(-1)

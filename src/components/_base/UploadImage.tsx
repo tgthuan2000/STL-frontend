@@ -50,19 +50,22 @@ const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
                 render={({ fieldState: { error } }) => (
                     <div className={clsx(className)}>
                         {label && (
-                            <label htmlFor={id} className='inline-block font-medium text-gray-900'>
+                            <label htmlFor={id} className='inline-block font-medium text-gray-900 dark:text-slate-100'>
                                 {label}
                             </label>
                         )}
                         <div className='mt-1'>
                             {form.getValues(name) ? (
                                 <div
-                                    className={clsx('relative flex items-end gap-4 border rounded-md p-4', {
-                                        'animate-pulse cursor-wait': loading,
-                                    })}
+                                    className={clsx(
+                                        'relative flex items-end gap-4 border dark:border-slate-700 rounded-md p-4',
+                                        {
+                                            'animate-pulse cursor-wait': loading,
+                                        }
+                                    )}
                                 >
                                     <img
-                                        className='w-32 h-32 border bg-dark-white rounded-md object-cover'
+                                        className='w-32 h-32 border bg-white rounded-md object-cover'
                                         src={urlFor(form.getValues(name))}
                                         alt='#image'
                                     />
@@ -87,7 +90,7 @@ const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
                                     </label>
                                     <XIcon
                                         className={clsx(
-                                            'h-6 w-6 text-gray-500 hover:text-gray-700 absolute top-2 right-2',
+                                            'h-6 w-6 text-gray-500 hover:text-gray-700 dark:text-slate-500 dark:hover:text-slate-400 absolute top-2 right-2',
                                             loading ? 'cursor-wait' : 'cursor-pointer'
                                         )}
                                         onClick={() => !loading && form.setValue(name, null)}
@@ -98,7 +101,7 @@ const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
                                     <label
                                         htmlFor={id}
                                         className={clsx(
-                                            'text-gray-400 hover:text-gray-700 transition-colors hover:border-gray-700 cursor-pointer flex flex-col items-center justify-center gap-2 p-2 h-40 w-full rounded-md border border-dashed border-gray-300 shadow-sm font-light disabled:bg-gray-100 disabled:text-gray-400',
+                                            'text-gray-400 hover:text-gray-700 transition-colors hover:border-gray-700 dark:hover:text-slate-300 dark:hover:border-slate-300 cursor-pointer flex flex-col items-center justify-center gap-2 p-2 h-40 w-full rounded-md border border-dashed border-gray-300 shadow-sm font-light disabled:bg-gray-100 disabled:text-gray-400',
                                             { 'animate-pulse': loading }
                                         )}
                                     >

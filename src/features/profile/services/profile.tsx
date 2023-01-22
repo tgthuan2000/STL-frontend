@@ -133,7 +133,9 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                     title: 'Sử dụng nhiều nhất',
                     data: (
                         <div className='flex items-end justify-between font-normal'>
-                            <p className='line-clamp-2 text-left text-gray-700'>{get(_method, 'maxUsed.name')}</p>
+                            <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
+                                {get(_method, 'maxUsed.name')}
+                            </p>
                             <span className='text-cyan-400'>{get(_method, 'maxUsed.countUsed')}</span>
                         </div>
                     ),
@@ -144,7 +146,9 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                     title: 'Thu nhập nhiều nhất',
                     data: (
                         <div className='flex items-end justify-between font-normal'>
-                            <p className='line-clamp-2 text-left text-gray-700'>{get(_method, 'maxReceive.name')}</p>
+                            <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
+                                {get(_method, 'maxReceive.name')}
+                            </p>
                             <span className='text-green-400'>
                                 {numeral(get(_method, 'maxReceive.receives')).format()}
                             </span>
@@ -157,7 +161,9 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                     title: 'Chi phí nhiều nhất',
                     data: (
                         <div className='flex items-end justify-between font-normal'>
-                            <p className='line-clamp-2 text-left text-gray-700'>{get(_method, 'maxCost.name')}</p>
+                            <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
+                                {get(_method, 'maxCost.name')}
+                            </p>
                             <span className='text-radical-red-400'>
                                 {numeral(get(_method, 'maxCost.costs')).format()}
                             </span>
@@ -183,7 +189,9 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                     title: 'Chi phí sử dụng nhiều nhất',
                     data: (
                         <div className='flex items-end justify-between font-normal'>
-                            <p className='line-clamp-2 text-left text-gray-700'>{get(_category, 'maxCostUsed.name')}</p>
+                            <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
+                                {get(_category, 'maxCostUsed.name')}
+                            </p>
                             <span className='text-cyan-400'>
                                 {numeral(get(_category, 'maxCostUsed.countUsed')).format()}
                             </span>
@@ -196,7 +204,7 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                     title: 'Thu nhập sử dụng nhiều nhất',
                     data: (
                         <div className='flex items-end justify-between font-normal'>
-                            <p className='line-clamp-2 text-left text-gray-700'>
+                            <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
                                 {get(_category, 'maxReceiveUsed.name')}
                             </p>
                             <span className='text-cyan-400'>
@@ -211,7 +219,9 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                     title: 'Tổng chi phí nhiều nhất',
                     data: (
                         <div className='flex items-end justify-between font-normal'>
-                            <p className='line-clamp-2 text-left text-gray-700'>{get(_category, 'maxCost.name')}</p>
+                            <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
+                                {get(_category, 'maxCost.name')}
+                            </p>
                             <span className='text-radical-red-400'>
                                 {numeral(get(_category, 'maxCost.costs')).format()}
                             </span>
@@ -224,7 +234,9 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                     title: 'Tổng thu nhập nhiều nhất',
                     data: (
                         <div className='flex items-end justify-between font-normal'>
-                            <p className='line-clamp-2 text-left text-gray-700'>{get(_category, 'maxReceive.name')}</p>
+                            <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
+                                {get(_category, 'maxReceive.name')}
+                            </p>
                             <span className='text-green-400'>
                                 {numeral(get(_category, 'maxReceive.receives')).format()}
                             </span>
@@ -246,7 +258,7 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                     title: 'Số tiền cao nhất theo phương thức',
                     data: (
                         <div className='flex items-end justify-between font-normal'>
-                            <p className='line-clamp-2 text-left text-gray-700'>
+                            <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
                                 {moment(get(_budget, 'maxTotalMethod.date')).format(DATE_FORMAT.MONTH)}
                             </p>
                             <span className='text-yellow-400'>
@@ -261,7 +273,7 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                     title: 'Số tiền cao nhất theo loại',
                     data: (
                         <div className='flex items-end justify-between font-normal'>
-                            <p className='line-clamp-2 text-left text-gray-700'>
+                            <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
                                 {moment(get(_budget, 'maxTotalCategory.date')).format(DATE_FORMAT.MONTH)}
                             </p>
                             <span className='text-yellow-400'>

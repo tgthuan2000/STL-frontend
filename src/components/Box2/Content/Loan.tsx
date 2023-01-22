@@ -11,7 +11,11 @@ import { DATE_FORMAT } from '~/constant'
 const Content: React.FC<ContentLoanBox2Props> = ({ data, loading }) => {
     if (loading) return <Skeleton />
     if (isEmpty(data))
-        return <div className='text-center text-gray-500 py-4 px-8 rounded-xl bg-white'>Không có dữ liệu</div>
+        return (
+            <div className='text-center text-gray-500 py-4 px-8 rounded-xl bg-white dark:bg-slate-700 dark:text-white'>
+                Không có dữ liệu
+            </div>
+        )
     return (
         <>
             {data?.map((item) => {
@@ -48,12 +52,14 @@ const Content: React.FC<ContentLoanBox2Props> = ({ data, loading }) => {
                 return (
                     <Link
                         to={`transaction/${item._id}/detail`}
-                        className='flex flex-col group bg-white gap-x-3 gap-y-1 py-3 px-3 border rounded-md cursor-pointer shadow-md hover:shadow-lg hover:bg-gray-50 transition-all'
+                        className='flex flex-col group bg-white dark:bg-slate-800 dark:border-slate-800 gap-x-3 gap-y-1 py-3 px-3 border rounded-md cursor-pointer shadow-md hover:shadow-lg hover:bg-gray-50 transition-all'
                         key={item._id}
                     >
                         <AvatarUser size='small' image={item.userLoan?.image} />
 
-                        <span className='truncate flex-1 max-w-[150px]'>{item.userLoan?.userName}</span>
+                        <span className='truncate flex-1 max-w-[150px] text-gray-900 dark:text-slate-200'>
+                            {item.userLoan?.userName}
+                        </span>
                         <span title='Hạn trả' className={clsx('font-normal truncate', date?.color)}>
                             {isHaveEstimatePayDate &&
                                 moment(item.estimatePaidDate).format(DATE_FORMAT.D_DATE_TIME) + ' - '}{' '}
@@ -78,16 +84,16 @@ const Skeleton = () => {
                 return (
                     <div
                         key={index}
-                        className='animate-pulse flex flex-col group bg-white gap-x-3 gap-y-2 py-3 px-3 border rounded-md cursor-wait shadow-md'
+                        className='animate-pulse flex flex-col group bg-white dark:bg-slate-800 dark:border-slate-800 gap-x-3 gap-y-2 py-3 px-3 border rounded-md cursor-wait shadow-md'
                     >
                         <div className='flex flex-shrink-0'>
-                            <div className='w-8 h-8 rounded-full bg-gray-200' />
-                            <div className='w-8 h-8 rounded-full bg-gray-200' />
-                            <div className='w-8 h-8 rounded-full bg-gray-200' />
+                            <div className='w-8 h-8 rounded-full bg-gray-200 dark:bg-slate-700' />
+                            <div className='w-8 h-8 rounded-full bg-gray-200 dark:bg-slate-700' />
+                            <div className='w-8 h-8 rounded-full bg-gray-200 dark:bg-slate-700' />
                         </div>
-                        <span className='w-20 h-8 bg-gray-100 rounded-full' />
-                        <span className='w-40 h-8 bg-gray-100 rounded-full' />
-                        <span className='w-28 h-8 bg-gray-100 rounded-full' />
+                        <span className='w-20 h-8 bg-gray-100 dark:bg-slate-600 rounded-full' />
+                        <span className='w-40 h-8 bg-gray-100 dark:bg-slate-600 rounded-full' />
+                        <span className='w-28 h-8 bg-gray-100 dark:bg-slate-600 rounded-full' />
                     </div>
                 )
             })}

@@ -18,7 +18,7 @@ const Table: React.FC<TableProps> = ({ columns, loading, data, EmptyTable, ...pr
                     key={column.key}
                     scope='col'
                     className={clsx(
-                        'text-center whitespace-nowrap border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-sm font-normal text-gray-900 backdrop-blur backdrop-filter',
+                        'text-center whitespace-nowrap border-b dark:bg-slate-800 dark:text-slate-200 dark:border-slate-800 border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-sm font-normal text-gray-900 backdrop-blur backdrop-filter',
                         column.className
                     )}
                     colSpan={column.colSpan ?? 1}
@@ -33,10 +33,10 @@ const Table: React.FC<TableProps> = ({ columns, loading, data, EmptyTable, ...pr
         <div className='inline-block w-full py-2 align-middle'>
             <div className='shadow-sm ring-1 ring-black ring-opacity-5 sm:rounded-lg overflow-hidden'>
                 <table className='table-fixed w-full overflow-hidden border-separate' style={{ borderSpacing: 0 }}>
-                    <thead className='bg-gray-50 select-none'>
+                    <thead className='bg-gray-50 dark:bg-slate-700 select-none'>
                         <tr>{Columns}</tr>
                     </thead>
-                    <tbody ref={parentRef} className='bg-white'>
+                    <tbody ref={parentRef} className='bg-white dark:bg-slate-700 dark:text-slate-200'>
                         {!loading && (!data || isEmpty(data)) ? (
                             EmptyTable
                         ) : (

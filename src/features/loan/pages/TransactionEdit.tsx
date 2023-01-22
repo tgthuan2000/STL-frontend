@@ -245,9 +245,10 @@ const TransactionEdit = () => {
         transaction: trans as ISpendingData,
     }
 
-    if (transaction.loading || methodSpending.loading || userLoan.loading) return <div>{TEMPLATE.LOADING}</div>
+    if (transaction.loading || methodSpending.loading || userLoan.loading)
+        return <div className='text-gray-900 dark:text-slate-200'>{TEMPLATE.LOADING}</div>
 
-    if (isEmpty(transaction.data)) return <div>{TEMPLATE.EMPTY_DATA}</div>
+    if (isEmpty(transaction.data)) return <div className='text-gray-900 dark:text-slate-200'>{TEMPLATE.EMPTY_DATA}</div>
 
     if (trans?.paid) return <div>{TEMPLATE.ALREADY_PAID}</div>
 

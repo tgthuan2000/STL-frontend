@@ -45,7 +45,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
     return (
         <div ref={wrapRef}>
             <div className='flex justify-between items-center mb-4'>
-                <div className='flex items-center text-gray-900 space-x-2 select-none'>
+                <div className='flex items-center text-gray-900 dark:text-slate-200 space-x-2 select-none'>
                     <ArrowSmLeftIcon
                         className='h-7 w-7 hover:opacity-50 cursor-pointer'
                         onClick={() => {
@@ -61,7 +61,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                     KIND_SPENDING.TRANSFER_TO,
                 ].includes(transaction.kindSpending.key) && (
                     <span
-                        className='h-8 lg:h-9 w-8 lg:w-9 hover:opacity-50 transition-opacity text-gray-600 cursor-pointer bg-slate-200 p-1.5 rounded-lg'
+                        className='h-8 lg:h-9 w-8 lg:w-9 hover:opacity-50 transition-opacity text-gray-600 cursor-pointer bg-slate-200 dark:bg-slate-700 dark:text-slate-300 p-1.5 rounded-lg'
                         onClick={() =>
                             window.confirm('Bạn có chắc muốn xóa giao dịch này ?') && handleDeleteTransaction()
                         }
@@ -70,7 +70,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                     </span>
                 )}
             </div>
-            <div className='bg-white rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>
+            <div className='bg-white dark:bg-slate-800 rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>
                 <div className='max-w-lg w-full mx-auto'>
                     <form
                         onSubmit={!isEmpty(categorySpending.data) ? form.handleSubmit(onsubmit) : undefined}
@@ -95,14 +95,14 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                                     surplus
                                                 return (
                                                     <div className='flex justify-between'>
-                                                        <h4 className='inline-block font-medium text-gray-900'>
+                                                        <h4 className='inline-block font-medium text-gray-900 dark:text-slate-200'>
                                                             Số dư tại thời điểm
                                                         </h4>
                                                         <div className='flex items-center space-x-2 font-normal'>
                                                             <span className={clsx(...getColorPrize(calc))}>
                                                                 {numeral(calc).format()}
                                                             </span>
-                                                            <span className='inline-block w-px h-full border border-gray-400' />
+                                                            <span className='inline-block w-px h-full border border-gray-400 dark:border-slate-700' />
                                                             <span className={clsx(...getColorPrize(surplus))}>
                                                                 {numeral(surplus).format()}
                                                             </span>
@@ -225,7 +225,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                             </div>
                         </div>
                         {!isEmpty(categorySpending.data) && (
-                            <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
+                            <div className='flex-shrink-0 border-t border-gray-200 dark:border-slate-700 px-4 py-5 sm:px-6'>
                                 <div className='flex sm:justify-start justify-end space-x-3'>
                                     <Button color='blue' type='submit' disabled={loading.submit}>
                                         Cập nhật
