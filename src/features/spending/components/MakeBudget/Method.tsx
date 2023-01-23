@@ -1,10 +1,9 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { PlusCircleIcon, RefreshIcon, TrashIcon } from '@heroicons/react/outline'
-import { isEmpty } from 'lodash'
 import React from 'react'
 import { useFieldArray } from 'react-hook-form'
 import { IMethodSpending, MakeBudgetProps } from '~/@types/spending'
-import { Button, Chip } from '~/components'
+import { Button } from '~/components'
 import { AutoComplete, Input } from '~/components/_base'
 
 const Method: React.FC<MakeBudgetProps & { optionData: IMethodSpending[] | undefined; optionLoading: boolean }> = ({

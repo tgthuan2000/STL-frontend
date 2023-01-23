@@ -7,7 +7,7 @@ import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { DraftNotify, NotifyAssignForm, NotifyContentForm, NotifyTitleDescForm } from '~/@types/notify'
-import { BackButton, Button, Progress } from '~/components'
+import { BackButton, Button, Progress, SubmitWrap } from '~/components'
 import { EMAIL_TEMPLATES } from '~/constant/email-template'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { createProgressOptions } from '~/constant/progress'
@@ -29,7 +29,6 @@ interface UserEmail {
 const Create = () => {
     const [, setDraftNotify, removeDraft] = useLocalStorage<DraftNotify>(LOCAL_STORAGE_KEY.STL_DRAFT_NOTIFY)
     const [stepParent] = useAutoAnimate<HTMLDivElement>()
-    const [buttonRef] = useAutoAnimate<HTMLDivElement>()
     const navigate = useNavigate()
     const { loading, setSubmitLoading } = useLoading()
     const [step, setStep] = useState(1)
@@ -203,24 +202,16 @@ const Create = () => {
                         </div>
                     )}
                     {stepData}
-                    <div
-                        className={clsx(
-                            'flex-shrink-0 border-t border-gray-200 dark:border-slate-600 px-4 py-5 sm:px-6 w-full mx-auto',
-                            {
-                                'max-w-xl': ![1, 4].includes(step),
-                            }
-                        )}
-                    >
-                        <div className='flex sm:justify-start justify-end space-x-3' ref={buttonRef}>
-                            <Button
-                                color={step === 4 ? 'radicalRed' : 'blue'}
-                                type='submit'
-                                form={stepId}
-                                disabled={loading.submit}
-                            >
-                                {step === 4 ? 'Gửi thông báo' : 'Tiếp theo'}
-                            </Button>
-                            {/* {step === 4 && (
+                    <SubmitWrap className={clsx({ 'max-w-xl': ![1, 4].includes(step) })}>
+                        <Button
+                            color={step === 4 ? 'radicalRed' : 'blue'}
+                            type='submit'
+                            form={stepId}
+                            disabled={loading.submit}
+                        >
+                            {step === 4 ? 'Gửi thông báo' : 'Tiếp theo'}
+                        </Button>
+                        {/* {step === 4 && (
                                 <Button
                                     color='cyan'
                                     type='button'
@@ -231,19 +222,18 @@ const Create = () => {
                                     Lên lịch hẹn
                                 </Button>
                             )} */}
-                            {step === 1 && (
-                                <Button
-                                    color='outline'
-                                    type='button'
-                                    onClick={() => {
-                                        navigate(-1)
-                                    }}
-                                >
-                                    Hủy bỏ
-                                </Button>
-                            )}
-                        </div>
-                    </div>
+                        {step === 1 && (
+                            <Button
+                                color='outline'
+                                type='button'
+                                onClick={() => {
+                                    navigate(-1)
+                                }}
+                            >
+                                Hủy bỏ
+                            </Button>
+                        )}
+                    </SubmitWrap>
                 </div>
             </div>
         </div>

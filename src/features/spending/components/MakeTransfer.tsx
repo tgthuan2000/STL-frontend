@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IMakeTransferForm, MakeTransferQueryData } from '~/@types/spending'
-import { Button } from '~/components'
+import { Button, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
@@ -111,7 +111,7 @@ const MakeTransfer = () => {
                 .inc({ surplus: amount, countUsed: 1 })
 
             await client.transaction().create(document1).patch(patch1).create(document2).patch(patch2).commit()
-            // navigate to dashboard
+
             let res: string | null = deleteCache([
                 METHOD_SPENDING_DESC_SURPLUS,
                 RECENT_SPENDING,
@@ -126,20 +126,9 @@ const MakeTransfer = () => {
                 reloadData()
             }, 0)
 
-            form.reset(
-                {
-                    amount: '',
-                    methodSpendingFrom,
-                    methodSpendingTo,
-                },
-                {
-                    keepDefaultValues: true,
-                }
-            )
+            form.reset({ amount: '', methodSpendingFrom, methodSpendingTo }, { keepDefaultValues: true })
             toast.success<string>('Thực hiện chuyển khoản thành công!')
             needCheckWhenLeave()
-            // setIsOpen(false)
-            // navigate(-1)
         } catch (error) {
             console.log(error)
         } finally {
@@ -239,23 +228,21 @@ const MakeTransfer = () => {
                     </div>
                 </div>
             </div>
-            <div className='flex-shrink-0 border-t border-gray-200 dark:border-slate-600 px-4 py-5 sm:px-6'>
-                <div className='flex sm:justify-start justify-end space-x-3'>
-                    <Button color='blue' type='submit' disabled={loading.submit}>
-                        Chuyển khoản
-                    </Button>
-                    <Button
-                        color='outline'
-                        type='button'
-                        onClick={() => {
-                            setIsOpen(false)
-                            navigate(-1)
-                        }}
-                    >
-                        Hủy bỏ
-                    </Button>
-                </div>
-            </div>
+            <SubmitWrap>
+                <Button color='blue' type='submit' disabled={loading.submit}>
+                    Chuyển khoản
+                </Button>
+                <Button
+                    color='outline'
+                    type='button'
+                    onClick={() => {
+                        setIsOpen(false)
+                        navigate(-1)
+                    }}
+                >
+                    Hủy bỏ
+                </Button>
+            </SubmitWrap>
         </form>
     )
 }

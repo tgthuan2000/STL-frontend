@@ -1,9 +1,10 @@
-import React, { SetStateAction } from 'react'
+import React from 'react'
 import { URLSearchParams } from 'url'
 import { TimeFilterPayload } from '~/@types/components'
 import { NotifyQueryData } from '~/@types/notify'
-import { DATA_LIST_MODE } from '~/constant/component'
+import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
+import { DropdownResult, ListGroupResult } from '.'
 import { IUserProfile } from './auth'
 import { NotifyAssignForm, NotifyContentForm, NotifyTitleDescForm } from './notify'
 
@@ -47,21 +48,10 @@ type GetDefaultValue = (options: DefaultValueOption) => DefaultValueResult
 type FilterSubmit = (
     data: TimeFilterPayload,
     options: FilterSubmitOption
-) => SetStateAction<DefaultValueResult> | undefined
+) => React.SetStateAction<DefaultValueResult> | undefined
 
 type GetDropdownOptions = (options: DropdownOptions) => Array<Array<DropdownResult>>
 
-interface DropdownResult {
-    id: DATA_LIST_MODE | number
-    name: string
-    icon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element
-    onClick?: () => void
-}
-
-interface ListGroupResult {
-    id: DATA_LIST_GROUP
-    name: string
-}
 interface DropdownOptions {
     onReloadClick: () => void
 }

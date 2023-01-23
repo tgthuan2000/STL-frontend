@@ -5,31 +5,13 @@ import { get } from 'lodash'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import * as yup from 'yup'
-import { Button, Transaction } from '~/components'
+import { Button, SubmitWrap, Transaction } from '~/components'
 import { Input } from '~/components/_base'
 import { useLoading } from '~/context'
 import { client } from '~/sanityConfig'
 import { GET_PASSWORD_BY_ID } from '~/schema/query/login'
 import useAuth from '~/store/auth'
-
-const schema = yup.object().shape({
-    'old-password': yup
-        .string()
-        .nullable()
-        .when('__isHasPassword', {
-            is: true,
-            then: yup.string().required('Mật khẩu cũ không được để trống!'),
-        }),
-    'new-password': yup
-        .string()
-        .required('Mật khẩu mới không được để trống!')
-        .min(1, 'Mật khẩu mới phải có ít nhất 1 ký tự!'),
-    're-password': yup
-        .string()
-        .required('Nhập lại mật khẩu không được để trống!')
-        .oneOf([yup.ref('new-password')], 'Mật khẩu không khớp!'),
-})
+import { changePasswordSchema } from '../services/schema'
 
 const ChangePassword = () => {
     const { loading, setSubmitLoading } = useLoading()
@@ -46,7 +28,7 @@ const ChangePassword = () => {
             're-password': '',
             __isHasPassword: isHasPassword,
         },
-        resolver: yupResolver(schema),
+        resolver: yupResolver(changePasswordSchema),
     })
 
     const onSubmit: SubmitHandler<{
@@ -70,11 +52,7 @@ const ChangePassword = () => {
                 }
             }
 
-            __.patch(userProfile?._id as string, {
-                set: {
-                    password: bcrypt.hashSync(newPassword),
-                },
-            })
+            __.patch(userProfile?._id as string, { set: { password: bcrypt.hashSync(newPassword) } })
 
             await __.commit()
 
@@ -130,22 +108,20 @@ const ChangePassword = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className='flex-shrink-0 border-t border-gray-200 dark:border-slate-600 px-4 py-5 sm:px-6'>
-                                <div className='flex sm:justify-start justify-end space-x-3'>
-                                    <Button color='blue' type='submit' disabled={loading.submit}>
-                                        Cập nhật
-                                    </Button>
-                                    <Button
-                                        color='outline'
-                                        type='button'
-                                        onClick={() => {
-                                            navigate(-1)
-                                        }}
-                                    >
-                                        Hủy bỏ
-                                    </Button>
-                                </div>
-                            </div>
+                            <SubmitWrap>
+                                <Button color='blue' type='submit' disabled={loading.submit}>
+                                    Cập nhật
+                                </Button>
+                                <Button
+                                    color='outline'
+                                    type='button'
+                                    onClick={() => {
+                                        navigate(-1)
+                                    }}
+                                >
+                                    Hủy bỏ
+                                </Button>
+                            </SubmitWrap>
                         </div>
                     </div>
                 </div>

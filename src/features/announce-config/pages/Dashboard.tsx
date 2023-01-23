@@ -22,7 +22,7 @@ const Dashboard = () => {
     const [searchParams] = useSearchParams()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
     const defaultValues = useMemo(() => services.getDefaultValue({ searchParams }), [])
-    const dropdownOptions = useMemo(() => services.getDropdownOptions({ onReloadClick: handleClickReload }), [])
+    const dropdownOptions = useMemo(() => services.getDropdownOptions({ onReloadClick: () => handleClickReload() }), [])
     const listGroupOptions = useMemo(() => services.getListGroupOptions(), [])
     const [dataListView, setDataListView] = useLocalStorage<IDataListView>(LOCAL_STORAGE_KEY.STL_DATALIST_VIEW)
     const [{ query, params, tags }, setQuery] = useState<DefaultValueResult>(defaultValues)

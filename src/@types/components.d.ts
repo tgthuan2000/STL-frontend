@@ -439,3 +439,8 @@ export interface BackButtonProps {
     onClick: () => void
     disabled?: boolean
 }
+
+export interface SubmitWrapProps {
+    children: React.ReactNode
+    className?: string
+}
