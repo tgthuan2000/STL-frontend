@@ -17,7 +17,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, o
             <Menu.Item>
                 <div
                     className={clsx(
-                        'flex flex-col w-full rounded-md px-2 py-2 hover:bg-slate-50 dark:hover:bg-slate-600 cursor-pointer',
+                        'flex flex-col w-full rounded-md px-2 py-2 hover:bg-slate-200 dark:hover:bg-slate-600 cursor-pointer',
                         !data.read ? 'bg-gray-100 dark:bg-slate-700' : 'bg-transparent'
                     )}
                     onClick={() => onReadDetail(data)}

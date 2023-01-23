@@ -21,7 +21,7 @@ import EmptyNotify from './Empty'
 import NotificationItem from './Item'
 import SkeletonNotify from './Skeleton'
 
-const Notification: React.FC<NotificationProps> = ({ leftSide = false }) => {
+const Notification: React.FC<NotificationProps> = () => {
     const { userProfile } = useAuth()
     const { width } = useWindowSize()
     const [parentRef] = useAutoAnimate<HTMLDivElement>()
@@ -167,7 +167,7 @@ const Notification: React.FC<NotificationProps> = ({ leftSide = false }) => {
     }
 
     return (
-        <Menu as='div' className='mr-3 relative inline-block z-[2]'>
+        <Menu as='div' className='mr-3 relative inline-block'>
             <Menu.Button className='px-2 pt-1 group'>
                 <div className='relative' ref={notifyRef}>
                     <img src={BellIcon} className='h-8 w-8 rounded' />
@@ -190,8 +190,7 @@ const Notification: React.FC<NotificationProps> = ({ leftSide = false }) => {
 
             <Menu.Items
                 className={clsx(
-                    'absolute sm:w-[500px] w-[320px] mt-2 select-none whitespace-nowrap origin-top-left divide-y divide-gray-100 rounded-md bg-white dark:bg-slate-800 dark:divide-slate-600 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none',
-                    leftSide ? 'right-0' : 'left-0'
+                    'absolute right-0 sm:w-[500px] w-[320px] mt-2 select-none whitespace-nowrap origin-top-left divide-y divide-gray-100 rounded-md bg-white dark:bg-slate-800 dark:divide-slate-600 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none'
                 )}
             >
                 {isEmpty(notify) ? (

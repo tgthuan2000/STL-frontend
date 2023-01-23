@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { ICheckingContext } from '~/@types/context'
 
 const CheckingContext = createContext<ICheckingContext>({
