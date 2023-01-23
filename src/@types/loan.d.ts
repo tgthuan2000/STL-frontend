@@ -1,8 +1,11 @@
 import { SanityAssetDocument, SanityImageAssetDocument } from '@sanity/client'
 import React from 'react'
 import { SubmitHandler, UseFormReturn } from 'react-hook-form'
+import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
+import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
+import { DropdownResult, ListGroupResult } from '.'
 import { Query } from './hook'
-import { ICategorySpending, IMethodSpending, ISpendingData } from './spending'
+import { ICategorySpending, IMethodSpending, ISpendingData, RecentQueryData } from './spending'
 
 /* INTERFACES */
 export interface IUserLoan {
@@ -126,3 +129,46 @@ interface QueryDataMakeLoan {
     methodSpending: IMethodSpending[]
     userLoan: IUserLoan[]
 }
+
+/* --- SERVICES --- */
+
+export interface Services {
+    getAll: GetAll
+    getDefaultValue: GetDefaultValue
+    filterSubmit: FilterSubmit
+    getDropdownOptions: GetDropdownOptions
+    getListGroupOptions: GetLisGroupOptions
+}
+type GetAll = (options: GetAllOptions) => DefaultValueResult
+type GetLisGroupOptions = () => Array<Array<ListGroupResult>>
+type GetDefaultValue = (options: DefaultValueOption) => DefaultValueResult
+
+type FilterSubmit = (
+    data: TimeFilterPayload,
+    options: FilterSubmitOption
+) => React.SetStateAction<DefaultValueResult> | undefined
+
+type GetDropdownOptions = (options: DropdownOptions) => Array<Array<DropdownResult>>
+
+interface GetAllOptions {
+    kindSpendingIds: string[]
+    userId: string
+}
+interface DropdownOptions {
+    onReloadClick: () => void
+}
+interface FilterSubmitOption {
+    defaultValues: DefaultValueResult
+    getAll: DefaultValueResult
+}
+interface DefaultValueOption {
+    searchParams: URLSearchParams
+    getAll: DefaultValueResult
+}
+export interface DefaultValueResult {
+    query: QueryTypeUseQuery<RecentQueryData>
+    params: ParamsTypeUseQuery
+    tags: TagsTypeUseQuery<RecentQueryData>
+}
+
+/* --- SERVICES --- */

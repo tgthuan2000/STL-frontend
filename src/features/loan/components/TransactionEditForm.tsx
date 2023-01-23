@@ -7,7 +7,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { TransactionEditFormProps } from '~/@types/loan'
-import { Button } from '~/components'
+import { Button, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useLoading } from '~/context'
@@ -152,22 +152,20 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
                                 </div>
                             </div>
                         </div>
-                        <div className='flex-shrink-0 border-t border-gray-200 dark:border-slate-600 px-4 py-5 sm:px-6'>
-                            <div className='flex sm:justify-start justify-end space-x-3'>
-                                <Button color='blue' type='submit' disabled={loading.submit}>
-                                    Cập nhật
-                                </Button>
-                                <Button
-                                    color='outline'
-                                    type='button'
-                                    onClick={() => {
-                                        navigate(-1)
-                                    }}
-                                >
-                                    Hủy bỏ
-                                </Button>
-                            </div>
-                        </div>
+                        <SubmitWrap>
+                            <Button color='blue' type='submit' disabled={loading.submit}>
+                                Cập nhật
+                            </Button>
+                            <Button
+                                color='outline'
+                                type='button'
+                                onClick={() => {
+                                    navigate(-1)
+                                }}
+                            >
+                                Hủy bỏ
+                            </Button>
+                        </SubmitWrap>
                     </form>
                 </div>
             </div>

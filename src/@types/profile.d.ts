@@ -1,6 +1,6 @@
 import React from 'react'
 import { KIND_SPENDING } from '~/constant/spending'
-import { GetKindSpendingId } from './context'
+import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
 
 export interface ProfileInfoGroupProps {
     title: string
@@ -87,3 +87,46 @@ export interface ProfileService {
     category: (category: CategoryProfile[] | undefined) => CategoryResult | undefined
     budget: (budget: BudgetProfile[] | undefined) => BudgetResult | undefined
 }
+
+/* --- SERVICES --- */
+
+export interface Services {
+    filterQuery: FilterQuery
+    getAll: GetAll
+    getDefaultValue: GetDefaultValue
+    filterSubmit: FilterSubmit
+}
+type GetAll = (options: GetAllOptions) => DefaultValueResult
+type GetDefaultValue = (options: DefaultValueOption) => DefaultValueResult
+type FilterSubmit = (
+    data: TimeFilterPayload,
+    options: FilterSubmitOption
+) => React.SetStateAction<DefaultValueResult> | undefined
+interface FilterQuery {
+    method: string
+    category: string
+    budget: string
+}
+interface GetAllOptions {
+    receiveKindIds: string[]
+    costKindIds: string[]
+    userId: string
+}
+
+interface FilterSubmitOption {
+    defaultValues: DefaultValueResult
+    getAll: DefaultValueResult
+    receiveCostKindIds: string[]
+}
+interface DefaultValueOption {
+    receiveCostKindIds: string[]
+    searchParams: URLSearchParams
+    getAll: DefaultValueResult
+}
+export interface DefaultValueResult {
+    query: QueryTypeUseQuery<ProfileQueryData>
+    params: ParamsTypeUseQuery
+    tags: TagsTypeUseQuery<ProfileQueryData>
+}
+
+/* --- SERVICES --- */

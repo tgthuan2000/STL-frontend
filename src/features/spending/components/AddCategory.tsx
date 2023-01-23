@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { AddCategoryQueryData, IAddCategoryForm } from '~/@types/spending'
-import { Button } from '~/components'
+import { Button, SubmitWrap } from '~/components'
 import { Input, Selection } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
@@ -68,11 +68,7 @@ const AddCategory = () => {
         tags: TagsTypeUseQuery<AddCategoryQueryData>
     }>(defaultValues)
 
-    const [{ categorySpending }, fetchData, deleteCacheData, reloadData] = useQuery<AddCategoryQueryData>(
-        query,
-        params,
-        tags
-    )
+    const [{ categorySpending }, , , reloadData] = useQuery<AddCategoryQueryData>(query, params, tags)
 
     const onsubmit: SubmitHandler<IAddCategoryForm> = async (data) => {
         setSubmitLoading(true)
@@ -193,23 +189,21 @@ const AddCategory = () => {
                     </div>
                 </div>
             </div>
-            <div className='flex-shrink-0 border-t border-gray-200 dark:border-slate-600 px-4 py-5 sm:px-6'>
-                <div className='flex sm:justify-start justify-end space-x-3'>
-                    <Button color='cyan' type='submit' disabled={loading.submit}>
-                        Tạo
-                    </Button>
-                    <Button
-                        color='outline'
-                        type='button'
-                        onClick={() => {
-                            setIsOpen(false)
-                            navigate(-1)
-                        }}
-                    >
-                        Hủy bỏ
-                    </Button>
-                </div>
-            </div>
+            <SubmitWrap>
+                <Button color='cyan' type='submit' disabled={loading.submit}>
+                    Tạo
+                </Button>
+                <Button
+                    color='outline'
+                    type='button'
+                    onClick={() => {
+                        setIsOpen(false)
+                        navigate(-1)
+                    }}
+                >
+                    Hủy bỏ
+                </Button>
+            </SubmitWrap>
         </form>
     )
 }

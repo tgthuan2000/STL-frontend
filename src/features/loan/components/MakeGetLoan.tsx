@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IMakeGetLoanForm, QueryDataMakeGetLoan } from '~/@types/loan'
-import { Button } from '~/components'
+import { Button, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
@@ -62,13 +62,13 @@ const MakeGetLoan = () => {
             _type: 'spending',
             amount,
             description: `${methodReference ? 'Cộng gốc' : 'Tạm vay'}${description ? `\n${description}` : ''}`,
-            date: moment().format(), // for statistic
-            estimatePaidDate: estimatePaidDate ? moment(estimatePaidDate).format() : undefined,
-            paid: false,
             kindSpending: {
                 _type: 'reference',
                 _ref: kindLoanId,
             },
+            date: moment().format(), // for statistic
+            estimatePaidDate: estimatePaidDate ? moment(estimatePaidDate).format() : undefined,
+            paid: false,
             ...(methodReference && {
                 surplus: methodReference.surplus,
                 methodReference: {
@@ -130,22 +130,10 @@ const MakeGetLoan = () => {
                 reloadData()
             }, 0)
 
-            // navigate to dashboard
-            form.reset(
-                {
-                    amount: '',
-                    methodReference,
-                    userLoan,
-                },
-                {
-                    keepDefaultValues: true,
-                }
-            )
+            form.reset({ amount: '', methodReference, userLoan }, { keepDefaultValues: true })
             toast.success<string>('Thực hiện tạo vay thành công!')
             deleteCache([GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN])
             needCheckWhenLeave()
-            // setIsOpen(false)
-            // navigate(-1)
         } catch (error) {
             console.log(error)
         } finally {
@@ -214,23 +202,21 @@ const MakeGetLoan = () => {
                     </div>
                 </div>
             </div>
-            <div className='flex-shrink-0 border-t border-gray-200 dark:border-slate-600 px-4 py-5 sm:px-6'>
-                <div className='flex sm:justify-start justify-end space-x-3'>
-                    <Button color='radicalRed' type='submit' disabled={loading.submit}>
-                        Lưu
-                    </Button>
-                    <Button
-                        color='outline'
-                        type='button'
-                        onClick={() => {
-                            setIsOpen(false)
-                            navigate(-1)
-                        }}
-                    >
-                        Hủy bỏ
-                    </Button>
-                </div>
-            </div>
+            <SubmitWrap>
+                <Button color='radicalRed' type='submit' disabled={loading.submit}>
+                    Lưu
+                </Button>
+                <Button
+                    color='outline'
+                    type='button'
+                    onClick={() => {
+                        setIsOpen(false)
+                        navigate(-1)
+                    }}
+                >
+                    Hủy bỏ
+                </Button>
+            </SubmitWrap>
         </form>
     )
 }

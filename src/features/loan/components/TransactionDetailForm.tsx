@@ -7,7 +7,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { PaidForm, TransactionDetailFormProps } from '~/@types/loan'
-import { AvatarUser, Button, Divider } from '~/components'
+import { AvatarUser, Button, Divider, SubmitWrap } from '~/components'
 import { AutoComplete, Input, Toggle } from '~/components/_base'
 import { DATE_FORMAT } from '~/constant'
 import { useLoading } from '~/context'
@@ -185,24 +185,22 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                 </div>
                             </div>
                         </div>
-                        <div className='flex-shrink-0 border-t border-gray-200 dark:border-slate-600 px-4 py-5 sm:px-6'>
-                            <div className='flex sm:justify-start justify-end space-x-3'>
-                                {!transaction.paid && (
-                                    <Button color='radicalRed' type='submit' disabled={loading.submit}>
-                                        Trả
-                                    </Button>
-                                )}
-                                <Button
-                                    color='outline'
-                                    type='button'
-                                    onClick={() => {
-                                        navigate(-1)
-                                    }}
-                                >
-                                    Quay lại
+                        <SubmitWrap>
+                            {!transaction.paid && (
+                                <Button color='radicalRed' type='submit' disabled={loading.submit}>
+                                    Trả
                                 </Button>
-                            </div>
-                        </div>
+                            )}
+                            <Button
+                                color='outline'
+                                type='button'
+                                onClick={() => {
+                                    navigate(-1)
+                                }}
+                            >
+                                Quay lại
+                            </Button>
+                        </SubmitWrap>
                     </form>
                 </div>
             </div>

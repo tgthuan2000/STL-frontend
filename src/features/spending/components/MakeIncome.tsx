@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IAddIncomeForm, MakeIncomeQueryData } from '~/@types/spending'
-import { Button } from '~/components'
+import { Button, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
@@ -259,23 +259,21 @@ const MakeIncome = () => {
                     </div>
                 </div>
             </div>
-            <div className='flex-shrink-0 border-t border-gray-200 dark:border-slate-600 px-4 py-5 sm:px-6'>
-                <div className='flex sm:justify-start justify-end space-x-3'>
-                    <Button color='green' type='submit' disabled={loading.submit}>
-                        Lưu
-                    </Button>
-                    <Button
-                        color='outline'
-                        type='button'
-                        onClick={() => {
-                            setIsOpen(false)
-                            navigate(-1)
-                        }}
-                    >
-                        Hủy bỏ
-                    </Button>
-                </div>
-            </div>
+            <SubmitWrap>
+                <Button color='green' type='submit' disabled={loading.submit}>
+                    Lưu
+                </Button>
+                <Button
+                    color='outline'
+                    type='button'
+                    onClick={() => {
+                        setIsOpen(false)
+                        navigate(-1)
+                    }}
+                >
+                    Hủy bỏ
+                </Button>
+            </SubmitWrap>
         </form>
     )
 }
