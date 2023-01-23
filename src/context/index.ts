@@ -1,5 +1,6 @@
 export * from './CacheContext'
+export * from './CheckingContext'
 export * from './ConfigContext'
 export * from './LoadingContext'
+export * from './SideBarContext'
 export * from './SlideOverContext'
-export * from './CheckingContext'

@@ -1,4 +1,5 @@
 import { Menu } from '@headlessui/react'
+import clsx from 'clsx'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UserProps } from '~/@types/layout'
@@ -7,18 +8,19 @@ import { userOptionData } from '~/constant/layout'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { useLocalStorage } from '~/hook'
 
-const User: React.FC<UserProps> = ({ userProfile, onLogout, onCloseSideBar }) => {
+const User: React.FC<UserProps> = ({ userProfile, onLogout, onCloseSideBar, open = true }) => {
     const navigate = useNavigate()
     const theme = useLocalStorage<string>(LOCAL_STORAGE_KEY.STL_THEME)
+
     return (
         <Menu as='div' className='relative flex bg-gray-700 p-4 cursor-pointer select-none'>
-            <Menu.Button className='block'>
-                <div className='flex items-center'>
+            <Menu.Button className='block max-w-full'>
+                <div className='flex items-center justify-center gap-x-3'>
                     <div className='flex-shrink-0'>
-                        <Image src={userProfile?.image} />
+                        <Image size='large' src={userProfile?.image} />
                     </div>
-                    <div className='ml-3 text-left flex-1 overflow-hidden'>
-                        <p className='text-base font-normal text-white'>{userProfile?.userName}</p>
+                    <div className={clsx('text-left flex-1 overflow-hidden', !open && 'group-hover:block hidden')}>
+                        <p className='text-base font-normal text-white truncate'>{userProfile?.userName}</p>
                         <p className='text-sm font-normal text-gray-400 truncate'>{userProfile?.email}</p>
                     </div>
                 </div>

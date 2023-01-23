@@ -104,3 +104,14 @@ export interface ICheckingContext {
     cancelCheck: () => void
     checkWhenLeave: boolean
 }
+
+export interface ISideBarContext {
+    desktop: {
+        open: boolean
+        set: React.Dispatch<React.SetStateAction<boolean>>
+    }
+    mobile: {
+        open: boolean
+        set: React.Dispatch<React.SetStateAction<boolean>>
+    }
+}

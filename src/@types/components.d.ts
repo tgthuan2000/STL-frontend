@@ -308,9 +308,7 @@ export interface ListProps {
 
 export type BodyListProps = Omit<ListProps, 'EmptyList' | 'groupBy' | 'data'> & { data: { [x: string]: any[] } }
 
-export interface NotificationProps {
-    leftSide?: boolean
-}
+export interface NotificationProps {}
 
 export type ItemReadEvent = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -443,4 +441,8 @@ export interface BackButtonProps {
 export interface SubmitWrapProps {
     children: React.ReactNode
     className?: string
+}
+
+export interface AsideProps {
+    children: React.ReactNode
 }

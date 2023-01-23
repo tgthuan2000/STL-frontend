@@ -13,9 +13,20 @@ module.exports = {
                         backgroundPosition: '100% 50%',
                     },
                 },
+                text: {
+                    '0%, 100%': {
+                        backgroundSize: '200% 200%',
+                        backgroundPosition: 'left center',
+                    },
+                    '50%': {
+                        backgroundSize: '200% 200%',
+                        backgroundPosition: 'right center',
+                    },
+                },
             },
             animation: {
                 'bg-animate': 'bgAnimate 3s ease infinite',
+                text: 'text 5s ease infinite',
             },
             backgroundSize: {
                 '400%': '400%',
