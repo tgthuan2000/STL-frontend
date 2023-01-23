@@ -6,26 +6,20 @@ import { UserProps } from '~/@types/layout'
 import { Image } from '~/components'
 import { userOptionData } from '~/constant/layout'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
-import { useSideBar } from '~/context'
 import { useLocalStorage } from '~/hook'
 
-const User: React.FC<UserProps> = ({ userProfile, onLogout, onCloseSideBar }) => {
+const User: React.FC<UserProps> = ({ userProfile, onLogout, onCloseSideBar, open = true }) => {
     const navigate = useNavigate()
     const theme = useLocalStorage<string>(LOCAL_STORAGE_KEY.STL_THEME)
-    const { desktop } = useSideBar()
+
     return (
         <Menu as='div' className='relative flex bg-gray-700 p-4 cursor-pointer select-none'>
             <Menu.Button className='block max-w-full'>
-                <div className='flex items-center justify-center'>
+                <div className='flex items-center justify-center gap-x-3'>
                     <div className='flex-shrink-0'>
                         <Image size='large' src={userProfile?.image} />
                     </div>
-                    <div
-                        className={clsx(
-                            'ml-3 text-left flex-1 overflow-hidden',
-                            !desktop.open && 'group-hover:block hidden'
-                        )}
-                    >
+                    <div className={clsx('text-left flex-1 overflow-hidden', !open && 'group-hover:block hidden')}>
                         <p className='text-base font-normal text-white truncate'>{userProfile?.userName}</p>
                         <p className='text-sm font-normal text-gray-400 truncate'>{userProfile?.email}</p>
                     </div>

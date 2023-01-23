@@ -27,11 +27,11 @@ const DesktopSideBar = () => {
                 <div className='flex-1 flex flex-col pt-5 pb-4 overflow-y-auto overflow-x-hidden'>
                     <nav className='mt-5 flex-1 px-2 space-y-1'>
                         {_navigation.map((item) => (
-                            <NavLinkItem key={item.href} data={item} />
+                            <NavLinkItem key={item.href} data={item} open={desktop.open} />
                         ))}
                     </nav>
                 </div>
-                <User onLogout={removeUserProfile} userProfile={userProfile} />
+                <User onLogout={removeUserProfile} userProfile={userProfile} open={desktop.open} />
             </div>
         </div>
     )

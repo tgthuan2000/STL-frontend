@@ -2,10 +2,8 @@ import clsx from 'clsx'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { NavLinkItemProps } from '~/@types/layout'
-import { useSideBar } from '~/context'
 
-const NavLinkItem: React.FC<NavLinkItemProps> = ({ data, onClick }) => {
-    const { desktop } = useSideBar()
+const NavLinkItem: React.FC<NavLinkItemProps> = ({ data, onClick, open = true }) => {
     return (
         <NavLink
             key={data.name}
@@ -15,7 +13,7 @@ const NavLinkItem: React.FC<NavLinkItemProps> = ({ data, onClick }) => {
                 clsx(
                     isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                     'hover:text-gray-300 flex gap-2 items-center px-3 py-2 text-sm font-medium rounded-md select-none truncate',
-                    !desktop.open && 'group-hover:justify-start'
+                    !open && 'group-hover:justify-start'
                 )
             }
         >
@@ -25,7 +23,7 @@ const NavLinkItem: React.FC<NavLinkItemProps> = ({ data, onClick }) => {
                         className={clsx(isActive ? 'text-gray-300' : 'text-gray-400', 'flex-shrink-0 h-6 w-6')}
                         aria-hidden='true'
                     />
-                    <span className={clsx('flex-1', !desktop.open && 'group-hover:block hidden')}>{data.name}</span>
+                    <span className={clsx('flex-1', !open && 'group-hover:block hidden')}>{data.name}</span>
                 </>
             )}
         </NavLink>

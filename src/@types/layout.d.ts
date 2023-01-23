@@ -14,6 +14,7 @@ export interface UserProps {
     onLogout: () => void
     onCloseSideBar?: () => void
     userProfile: SanityDocument<IUserProfile> | undefined | null
+    open?: boolean
 }
 
 export interface OptionData {
@@ -41,4 +42,5 @@ export interface OptionMenu {
 export interface NavLinkItemProps {
     data: Navigation
     onClick?: () => void
+    open?: boolean
 }
