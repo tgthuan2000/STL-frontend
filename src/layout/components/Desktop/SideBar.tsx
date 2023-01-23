@@ -3,10 +3,10 @@ import { useMemo } from 'react'
 import { navigation } from '~/constant/layout'
 import { useConfig, useSideBar } from '~/context'
 import useAuth from '~/store/auth'
-import NavLinkItem from './NavLinkItem'
-import User from './User'
+import NavLinkItem from '../NavLinkItem'
+import User from '../User'
 
-const DesktopSideBar = () => {
+const SideBar = () => {
     const { hasPermissions } = useConfig()
     const { removeUserProfile, userProfile } = useAuth()
     const _navigation = useMemo(
@@ -37,4 +37,4 @@ const DesktopSideBar = () => {
     )
 }
 
-export default DesktopSideBar
+export default SideBar

@@ -1,4 +1,13 @@
-import { BellIcon, CashIcon, LockClosedIcon, LogoutIcon, SwitchVerticalIcon, UserIcon } from '@heroicons/react/outline'
+import {
+    BellIcon,
+    CalendarIcon,
+    CashIcon,
+    CogIcon,
+    LockClosedIcon,
+    LogoutIcon,
+    SwitchVerticalIcon,
+    UserIcon,
+} from '@heroicons/react/outline'
 import { OptionMenu } from '~/@types/layout'
 import { ThemeIcon } from '~/components'
 import { localStorageValue } from '~/hook/useLocalStorage'
@@ -21,6 +30,39 @@ export const navigation: Array<Navigation> = [
     //     permissions: [PERMISSION.TIMEKEEPING_READ],
     // },
     { name: 'Quản lý vay / cho vay', href: '/loan', icon: SwitchVerticalIcon, permissions: [PERMISSION.LOAN_READ] },
+
+    /* ADMIN */
+    {
+        name: 'Thông báo',
+        href: '/announce-config',
+        icon: BellIcon,
+        permissions: [PERMISSION.ANNOUNCE_CONFIG],
+    },
+    {
+        name: 'Quản lý tài khoản',
+        href: '/account',
+        icon: UserIcon,
+        permissions: [PERMISSION.ACCOUNT_READ],
+    },
+]
+
+export const navigationMobile: Array<Navigation> = [
+    /* CLIENT */
+    { name: 'Quản lý chi tiêu', href: '/spending', icon: CashIcon, permissions: [PERMISSION.SPENDING_READ] },
+    // {
+    //     name: 'Quản lý chấm công',
+    //     href: '/timekeeping',
+    //     icon: CalendarIcon,
+    //     permissions: [PERMISSION.TIMEKEEPING_READ],
+    // },
+    { name: 'Quản lý vay / cho vay', href: '/loan', icon: SwitchVerticalIcon, permissions: [PERMISSION.LOAN_READ] },
+    { name: 'Thông báo', href: '/announce', icon: BellIcon, permissions: [PERMISSION.ANNOUNCE_READ] },
+    {
+        name: 'Cai dat',
+        href: '/setting',
+        icon: CogIcon,
+        permissions: [PERMISSION.PROFILE_READ, PERMISSION.PROFILE_WRITE],
+    },
 
     /* ADMIN */
     {

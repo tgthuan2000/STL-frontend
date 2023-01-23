@@ -6,7 +6,6 @@ import { NavLinkItemProps } from '~/@types/layout'
 const NavLinkItem: React.FC<NavLinkItemProps> = ({ data, onClick, open = true }) => {
     return (
         <NavLink
-            key={data.name}
             to={data.href}
             onClick={onClick}
             className={({ isActive }) =>
