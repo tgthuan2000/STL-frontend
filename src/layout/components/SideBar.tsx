@@ -2,22 +2,32 @@ import clsx from 'clsx'
 import React from 'react'
 import { SideBarProps } from '~/@types/layout'
 import { SideBarProvider, useSideBar } from '~/context'
-import DesktopSideBar from './DesktopSideBar'
-import MobileSideBar from './MobileSideBar'
-import TopBar from './TopBar'
+import { useWindowSize } from '~/hook'
+import { DesktopSideBar, DesktopTopBar } from './Desktop'
+import { MobileSideBar, MobileTopBar } from './Mobile'
 
 const Sidebar: React.FC<SideBarProps> = ({ children }) => {
     const { desktop } = useSideBar()
+    const { width } = useWindowSize()
+    const mobileScreen = width < 768
 
     return (
         <div>
+            {mobileScreen ? (
+                <>
+                    {/* Mobile */}
+                    <MobileTopBar />
+                    <MobileSideBar />
+                </>
+            ) : (
+                <>
+                    {/* Desktop */}
+                    <DesktopTopBar />
+                    <DesktopSideBar />
+                </>
+            )}
             {/* Top bar */}
-            <TopBar />
-            <div className='h-16 w-full' />
-            {/* Sidebar for mobile */}
-            <MobileSideBar />
-            {/* Sidebar for desktop */}
-            <DesktopSideBar />
+            <div className={clsx('w-full', mobileScreen ? 'h-32' : 'h-16')} />
 
             <div className={clsx('flex flex-col flex-1 transition-all', desktop.open ? 'md:pl-64' : 'md:pl-16')}>
                 {/* --- Top bar --- */}

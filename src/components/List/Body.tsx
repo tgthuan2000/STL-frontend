@@ -13,6 +13,7 @@ const BodyList: React.FC<BodyListProps> = ({
     data,
     renderTitle,
     renderList,
+    onItemClick,
 }) => {
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
     const navigate = useNavigate()
@@ -43,7 +44,14 @@ const BodyList: React.FC<BodyListProps> = ({
                                     const to = onRowClick(item)
                                     return (
                                         <Fragment key={item._id}>
-                                            <li onClick={() => navigate(to)}>{renderList(item, index)}</li>
+                                            <li
+                                                onClick={async () => {
+                                                    await onItemClick?.(item)
+                                                    navigate(to)
+                                                }}
+                                            >
+                                                {renderList(item, index)}
+                                            </li>
                                         </Fragment>
                                     )
                                 })}

@@ -7,13 +7,14 @@ import 'react-toastify/dist/ReactToastify.css'
 import { DefaultLayout } from '~/layout'
 import { ErrorFallback, Loading, PermissionCheck } from './components'
 import { PERMISSION } from './constant/permission'
-import { CheckingProvider, ConfigProvider, LoadingProvider } from './context'
+import { CheckingProvider, ConfigProvider, LoadingProvider, NotifyProvider } from './context'
 import { CacheProvider } from './context/CacheContext'
 
 const AuthFeature = React.lazy(() => import('./features/auth'))
 const SpendingFeature = React.lazy(() => import('./features/spending'))
 const LoanFeature = React.lazy(() => import('./features/loan'))
 const TimeKeepingFeature = React.lazy(() => import('./features/time-keeping'))
+const AnnounceFeature = React.lazy(() => import('./features/announce'))
 const ProfileFeature = React.lazy(() => import('./features/profile'))
 const AnnounceConfigFeature = React.lazy(() => import('./features/announce-config'))
 const AccountFeature = React.lazy(() => import('./features/account'))
@@ -46,7 +47,9 @@ function App() {
                                         element={
                                             <ConfigProvider>
                                                 <CacheProvider>
-                                                    <DefaultLayout />
+                                                    <NotifyProvider>
+                                                        <DefaultLayout />
+                                                    </NotifyProvider>
                                                 </CacheProvider>
                                             </ConfigProvider>
                                         }
@@ -73,6 +76,14 @@ function App() {
                                             element={
                                                 <PermissionCheck permissions={[PERMISSION.LOAN_READ]}>
                                                     <LoanFeature />
+                                                </PermissionCheck>
+                                            }
+                                        />
+                                        <Route
+                                            path='announce/*'
+                                            element={
+                                                <PermissionCheck permissions={[PERMISSION.ANNOUNCE_READ]}>
+                                                    <AnnounceFeature />
                                                 </PermissionCheck>
                                             }
                                         />

@@ -8,7 +8,7 @@ import AvatarUser from '~/components/AvatarUser'
 
 const Content: React.FC<ContentUserLoanBox2Props> = ({ data, loading }) => {
     if (loading) return <Skeleton />
-    if (isEmpty(data))
+    if (isEmpty(data) || !Array.isArray(data))
         return (
             <div className='text-center text-gray-500 py-4 px-8 rounded-xl bg-white dark:bg-slate-700 dark:text-white'>
                 Không có dữ liệu
