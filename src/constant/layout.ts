@@ -5,7 +5,7 @@ import { localStorageValue } from '~/hook/useLocalStorage'
 import { LOCAL_STORAGE_KEY } from './localStorage'
 import { PERMISSION } from './permission'
 
-interface Navigation {
+export interface Navigation {
     name: string
     href: string
     icon: any
@@ -44,7 +44,7 @@ export const userOptionData: Array<Array<OptionMenu>> = [
             label: 'Thông tin cá nhân',
             onClick: ({ navigate, closeSidebar }) => {
                 navigate('/profile')
-                closeSidebar()
+                closeSidebar?.()
             },
             icon: UserIcon,
         },
@@ -53,7 +53,7 @@ export const userOptionData: Array<Array<OptionMenu>> = [
             label: ({ userProfile }) => (userProfile?.isHasPassword ? 'Đổi' : 'Đặt') + ' mật khẩu',
             onClick: ({ navigate, closeSidebar }) => {
                 navigate('/profile/change-password')
-                closeSidebar()
+                closeSidebar?.()
             },
             icon: LockClosedIcon,
         },
