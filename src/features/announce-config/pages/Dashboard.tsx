@@ -1,101 +1,33 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { BellIcon, FireIcon, RefreshIcon, TableIcon, ViewListIcon } from '@heroicons/react/outline'
-import { isEmpty } from 'lodash'
-import moment from 'moment'
-import React, { Fragment, useEffect, useMemo, useState } from 'react'
+import { BellIcon, FireIcon, ViewListIcon } from '@heroicons/react/outline'
+import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useSearchParams } from 'react-router-dom'
+import { DefaultValueResult } from '~/@types/announce-config'
 import { DataListViewList, DataListViewTable, IDataListView, TimeFilterPayload } from '~/@types/components'
 import { NotifyQueryData } from '~/@types/notify'
 import { Button, DataListView, TimeFilter } from '~/components'
 import { Dropdown } from '~/components/_base'
-import { COUNT_PAGINATE, TAGS } from '~/constant'
+import { COUNT_PAGINATE } from '~/constant'
 import { DATA_LIST_GROUP, DATA_LIST_MODE, __groupBy } from '~/constant/component'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
-import { E_FILTER_DATE, TEMPLATE } from '~/constant/template'
+import { TEMPLATE } from '~/constant/template'
 import { useLocalStorage, useQuery, useWindowSize } from '~/hook'
-import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
-import { GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE, GET_NOTIFY_CONFIG_PAGINATE } from '~/schema/query/notify'
-import { getDate } from '~/services'
 import { getDefaultMode } from '~/utils'
+import { EmptyTableNotify, SkeletonTableNotify } from '../components'
+import { services } from '../services'
 import * as __services from '../services/dataListView'
 
 const Dashboard = () => {
     const [searchParams] = useSearchParams()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
-
-    const getAll = useMemo(() => {
-        return {
-            query: { notify: GET_NOTIFY_CONFIG_PAGINATE },
-            params: {
-                __fromNotify: 0,
-                __toNotify: COUNT_PAGINATE,
-            },
-            tags: { notify: TAGS.ALTERNATE },
-        }
-    }, [])
-
-    const defaultValues = useMemo(() => {
-        try {
-            let query = GET_NOTIFY_CONFIG_PAGINATE,
-                params = {}
-
-            const d = Object.fromEntries([...searchParams])
-            if (!isEmpty(d)) {
-                query = GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE
-                let { type, data } = d
-                data = JSON.parse(data)
-
-                switch (Number(type)) {
-                    case E_FILTER_DATE.DATE: {
-                        params = {
-                            __startDate: getDate(moment(data).toDate(), 'start'),
-                            __endDate: getDate(moment(data).toDate(), 'end'),
-                        }
-                        break
-                    }
-                    case E_FILTER_DATE.DATE_RANGE: {
-                        const [startDate, endDate] = data
-                        params = {
-                            __startDate: getDate(moment(startDate).toDate(), 'start'),
-                            __endDate: getDate(moment(endDate).toDate(), 'end'),
-                        }
-                        break
-                    }
-                    case E_FILTER_DATE.MONTH: {
-                        params = {
-                            __startDate: getDate(moment(data).toDate(), 'start', 'month'),
-                            __endDate: getDate(moment(data).toDate(), 'end', 'month'),
-                        }
-                        break
-                    }
-                    case E_FILTER_DATE.YEAR: {
-                        params = {
-                            __startDate: getDate(moment(data).toDate(), 'start', 'year'),
-                            __endDate: getDate(moment(data).toDate(), 'end', 'year'),
-                        }
-                        break
-                    }
-                }
-            }
-            return {
-                ...getAll,
-                query: { notify: query },
-                params: { ...getAll.params, ...params },
-            }
-        } catch (error) {
-            console.log(error)
-            return getAll
-        }
-    }, [])
-
-    const [{ query, params, tags }, setQuery] = useState<{
-        query: QueryTypeUseQuery<NotifyQueryData>
-        params: ParamsTypeUseQuery
-        tags: TagsTypeUseQuery<NotifyQueryData>
-    }>(defaultValues)
-
+    const defaultValues = useMemo(() => services.getDefaultValue({ searchParams }), [])
+    const dropdownOptions = useMemo(() => services.getDropdownOptions({ onReloadClick: handleClickReload }), [])
+    const listGroupOptions = useMemo(() => services.getListGroupOptions(), [])
+    const [dataListView, setDataListView] = useLocalStorage<IDataListView>(LOCAL_STORAGE_KEY.STL_DATALIST_VIEW)
+    const [{ query, params, tags }, setQuery] = useState<DefaultValueResult>(defaultValues)
     const [{ notify }, fetchData, deleteCacheData, reload, error] = useQuery<NotifyQueryData>(query, params, tags)
+    const { width } = useWindowSize()
 
     useEffect(() => {
         fetchData()
@@ -108,61 +40,12 @@ const Dashboard = () => {
     }
 
     const handleFilterSubmit = (data: TimeFilterPayload) => {
-        switch (data.id) {
-            case E_FILTER_DATE.ALL:
-                setQuery(getAll)
-                break
-            case E_FILTER_DATE.DATE:
-                const date = data.data as Date
-                setQuery((prev) => ({
-                    ...prev,
-                    query: { notify: GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE },
-                    params: {
-                        ...defaultValues.params,
-                        __startDate: getDate(date, 'start'),
-                        __endDate: getDate(date, 'end'),
-                    },
-                }))
-                break
-            case E_FILTER_DATE.DATE_RANGE:
-                const [startDate, endDate] = data.data as Date[]
-                setQuery((prev) => ({
-                    ...prev,
-                    query: { notify: GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE },
-                    params: {
-                        ...defaultValues.params,
-                        __startDate: getDate(startDate, 'start'),
-                        __endDate: getDate(endDate, 'end'),
-                    },
-                }))
-                break
-            case E_FILTER_DATE.MONTH:
-                const month = data.data as Date
-                setQuery((prev) => ({
-                    ...prev,
-                    query: { notify: GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE },
-                    params: {
-                        ...defaultValues.params,
-                        __startDate: getDate(month, 'start', 'month'),
-                        __endDate: getDate(month, 'end', 'month'),
-                    },
-                }))
-                break
-            case E_FILTER_DATE.YEAR:
-                const year = data.data as Date
-                setQuery((prev) => ({
-                    ...prev,
-                    query: { notify: GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE },
-                    params: {
-                        ...defaultValues.params,
-                        __startDate: getDate(year, 'start', 'year'),
-                        __endDate: getDate(year, 'end', 'year'),
-                    },
-                }))
-                break
-        }
+        const _data = services.filterSubmit(data, { defaultValues })
 
-        onReload()
+        if (_data) {
+            setQuery(_data)
+            onReload()
+        }
     }
 
     const handleScrollGetMore = () => {
@@ -182,30 +65,6 @@ const Dashboard = () => {
         onReload()
     }
 
-    const dropdownOptions = useMemo(
-        () => [
-            [
-                { id: DATA_LIST_MODE.TABLE, name: 'Bảng', icon: TableIcon },
-                { id: DATA_LIST_MODE.LIST, name: 'Danh sách', icon: ViewListIcon },
-            ],
-            [{ id: 0, name: 'Làm mới', icon: RefreshIcon, onClick: handleClickReload }],
-        ],
-        []
-    )
-
-    const listGroupOptions = useMemo(
-        () => [
-            [
-                { id: DATA_LIST_GROUP.DATE, name: 'Ngày' },
-                { id: DATA_LIST_GROUP.MONTH, name: 'Tháng' },
-                { id: DATA_LIST_GROUP.YEAR, name: 'Năm' },
-            ],
-        ],
-        []
-    )
-
-    const [dataListView, setDataListView] = useLocalStorage<IDataListView>(LOCAL_STORAGE_KEY.STL_DATALIST_VIEW)
-
     const form = useForm({
         defaultValues: {
             viewMode: getDefaultMode<DATA_LIST_MODE>(dropdownOptions, dataListView?.viewMode),
@@ -222,8 +81,6 @@ const Dashboard = () => {
         const listGroup = form.watch('listGroup')
         setDataListView((prev) => ({ ...prev, listGroup: listGroup.id }))
     }, [JSON.stringify(form.watch('listGroup'))])
-
-    const { width } = useWindowSize()
 
     const tableProps: DataListViewTable = useMemo(
         () => ({
@@ -305,53 +162,3 @@ const Dashboard = () => {
 }
 
 export default Dashboard
-
-interface SkeletonTableNotifyProps {
-    elNumber: number
-}
-
-const SkeletonTableNotify: React.FC<SkeletonTableNotifyProps> = ({ elNumber }) => {
-    return (
-        <>
-            {Array.from(Array(elNumber)).map((item, index, data) => (
-                <Fragment key={index}>
-                    <tr className='animate-pulse'>
-                        <td className='py-4 px-2' colSpan={2}>
-                            <span className='flex flex-col gap-2 w-full'>
-                                <span className='block bg-gray-200 h-4 w-1/2 rounded-full' />
-                                <span className='block bg-gray-200 h-4 w-3/4 rounded-full' />
-                            </span>
-                        </td>
-                        <td className='py-4 px-2'>
-                            <span className='flex flex-col gap-2 w-full'>
-                                <span className='block mx-auto bg-gray-200 h-4 w-1/2 sm:w-1/3 rounded-full' />
-                            </span>
-                        </td>
-                        <td className='py-4 px-2'>
-                            <span className='flex flex-col gap-2 w-full'>
-                                <span className='block mx-auto bg-gray-200 h-4 w-1/2 rounded-full' />
-                            </span>
-                        </td>
-                        <td className='py-4 px-2'>
-                            <span className='flex flex-col gap-2 w-full'>
-                                <span className='block mx-auto bg-gray-200 h-4 w-1/2 rounded-full' />
-                            </span>
-                        </td>
-                    </tr>
-                </Fragment>
-            ))}
-        </>
-    )
-}
-
-const EmptyTableNotify = () => {
-    return (
-        <tr>
-            <td colSpan={5} className='whitespace-nowrap py-4 px-2'>
-                <span className='block truncate w-full text-center text-md text-gray-700 dark:text-slate-200 font-base'>
-                    {TEMPLATE.EMPTY_DATA}
-                </span>
-            </td>
-        </tr>
-    )
-}

@@ -1,5 +1,6 @@
 import { isEmpty } from 'lodash'
 import moment from 'moment'
+import { DATA_LIST_GROUP } from '~/constant/component'
 
 export const getDateOfMonth = (type: 'start' | 'end' = 'start', date?: moment.MomentInput) => {
     if (type === 'start') {
@@ -64,3 +65,9 @@ export const getSpacingTime = (time: string) => {
     }
     return 'Vừa xong'
 }
+
+export const listGroupOptions = [
+    { id: DATA_LIST_GROUP.DATE, name: 'Ngày' },
+    { id: DATA_LIST_GROUP.MONTH, name: 'Tháng' },
+    { id: DATA_LIST_GROUP.YEAR, name: 'Năm' },
+]
