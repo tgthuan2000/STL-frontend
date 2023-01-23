@@ -1,5 +1,4 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { ArrowSmLeftIcon } from '@heroicons/react/outline'
 import { SanityDocument } from '@sanity/client'
 import { isEmpty } from 'lodash'
 import React, { useMemo, useState } from 'react'

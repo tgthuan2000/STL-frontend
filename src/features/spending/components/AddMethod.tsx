@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { AddMethodQueryData, IAddMethodForm } from '~/@types/spending'
-import { Button } from '~/components'
+import { Button, SubmitWrap } from '~/components'
 import { Input } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useLoading, useSlideOver } from '~/context'
@@ -31,7 +31,7 @@ const AddMethod = () => {
         },
     })
 
-    const [{ methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<AddMethodQueryData>(
+    const [{ methodSpending }, fetchData] = useQuery<AddMethodQueryData>(
         { methodSpending: GET_METHOD_SPENDING },
         { userId: userProfile?._id as string },
         { methodSpending: TAGS.ENUM }
@@ -146,23 +146,21 @@ const AddMethod = () => {
                     </div>
                 </div>
             </div>
-            <div className='flex-shrink-0 border-t border-gray-200 dark:border-slate-600 px-4 py-5 sm:px-6'>
-                <div className='flex sm:justify-start justify-end space-x-3'>
-                    <Button color='cyan' type='submit' disabled={loading.submit}>
-                        Tạo
-                    </Button>
-                    <Button
-                        color='outline'
-                        type='button'
-                        onClick={() => {
-                            setIsOpen(false)
-                            navigate(-1)
-                        }}
-                    >
-                        Hủy bỏ
-                    </Button>
-                </div>
-            </div>
+            <SubmitWrap>
+                <Button color='cyan' type='submit' disabled={loading.submit}>
+                    Tạo
+                </Button>
+                <Button
+                    color='outline'
+                    type='button'
+                    onClick={() => {
+                        setIsOpen(false)
+                        navigate(-1)
+                    }}
+                >
+                    Hủy bỏ
+                </Button>
+            </SubmitWrap>
         </form>
     )
 }

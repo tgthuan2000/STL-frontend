@@ -8,31 +8,18 @@ import { useSearchParams } from 'react-router-dom'
 import { TimeFilterPayload } from '~/@types/components'
 import { ProfileQueryData } from '~/@types/profile'
 import { Button, Image, TimeFilter, Transaction } from '~/components'
-import { Toggle } from '~/components/_base'
-import { DATE_FORMAT, TAGS } from '~/constant'
+import { DATE_FORMAT } from '~/constant'
 import { E_FILTER_DATE, TEMPLATE } from '~/constant/template'
 import { useConfig, useLoading } from '~/context'
 import { useQuery } from '~/hook'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
-import {
-    GET_BUDGET_PROFILE_STATISTIC,
-    GET_BUDGET_PROFILE_STATISTIC_FILTER_DATE_RANGE,
-    GET_CATEGORY_PROFILE_STATISTIC,
-    GET_CATEGORY_PROFILE_STATISTIC_FILTER_DATE_RANGE,
-    GET_METHOD_PROFILE_STATISTIC,
-    GET_METHOD_PROFILE_STATISTIC_FILTER_DATE_RANGE,
-} from '~/schema/query/profile'
-import { getDate } from '~/services'
 import useAuth from '~/store/auth'
-import { ProfileInfo, ProfileInfoGroup, ProfileInfoSkeleton, AllowSendMail } from '../components'
+import { AllowSendMail, ProfileInfo, ProfileInfoGroup, ProfileInfoSkeleton } from '../components'
+import { services } from '../services'
 import * as profileServices from '../services/profile'
 
-const filterQuery = {
-    method: GET_METHOD_PROFILE_STATISTIC_FILTER_DATE_RANGE,
-    category: GET_CATEGORY_PROFILE_STATISTIC_FILTER_DATE_RANGE,
-    budget: GET_BUDGET_PROFILE_STATISTIC_FILTER_DATE_RANGE,
-}
 const excludeOptions = [E_FILTER_DATE.DATE]
+
 const Dashboard = () => {
     const { userProfile } = useAuth()
     const [parent] = useAutoAnimate<HTMLDivElement>()
@@ -40,69 +27,25 @@ const Dashboard = () => {
     const { getKindSpendingIds } = useConfig()
     const { loading, setConfigLoading } = useLoading()
 
-    const getAll = useMemo(() => {
-        return {
-            query: {
-                method: GET_METHOD_PROFILE_STATISTIC,
-                category: GET_CATEGORY_PROFILE_STATISTIC,
-                budget: GET_BUDGET_PROFILE_STATISTIC,
-            },
-            params: {
+    const getAll = useMemo(
+        () =>
+            services.getAll({
                 userId: userProfile?._id as string,
                 receiveKindIds: getKindSpendingIds('RECEIVE'),
                 costKindIds: getKindSpendingIds('COST'),
-            },
-            tags: { method: TAGS.ALTERNATE, category: TAGS.ALTERNATE, budget: TAGS.ALTERNATE },
-        }
-    }, [])
+            }),
+        []
+    )
 
-    const defaultValues = useMemo(() => {
-        try {
-            let query = getAll.query,
-                params = {}
-
-            const d = Object.fromEntries([...searchParams])
-            if (!isEmpty(d)) {
-                query = filterQuery
-                let { type, data } = d
-                data = JSON.parse(data)
-
-                switch (Number(type)) {
-                    case E_FILTER_DATE.DATE_RANGE: {
-                        const [startDate, endDate] = data
-                        params = {
-                            __startDate: getDate(moment(startDate).toDate(), 'start'),
-                            __endDate: getDate(moment(endDate).toDate(), 'end'),
-                        }
-                        break
-                    }
-                    case E_FILTER_DATE.MONTH: {
-                        params = {
-                            __startDate: getDate(moment(data).toDate(), 'start', 'month'),
-                            __endDate: getDate(moment(data).toDate(), 'end', 'month'),
-                        }
-                        break
-                    }
-                    case E_FILTER_DATE.YEAR: {
-                        params = {
-                            __startDate: getDate(moment(data).toDate(), 'start', 'year'),
-                            __endDate: getDate(moment(data).toDate(), 'end', 'year'),
-                        }
-                        break
-                    }
-                }
-            }
-
-            return {
-                ...getAll,
-                query,
-                params: { ...getAll.params, ...params, receiveCostKindIds: getKindSpendingIds('RECEIVE', 'COST') },
-            }
-        } catch (error) {
-            console.log(error)
-            return getAll
-        }
-    }, [])
+    const defaultValues = useMemo(
+        () =>
+            services.getDefaultValue({
+                getAll,
+                receiveCostKindIds: getKindSpendingIds('RECEIVE', 'COST'),
+                searchParams,
+            }),
+        []
+    )
     const [{ query, params, tags }, setQuery] = useState<{
         query: QueryTypeUseQuery<ProfileQueryData>
         params: ParamsTypeUseQuery
@@ -138,52 +81,15 @@ const Dashboard = () => {
     }, [method.loading, budget.loading, category.loading])
 
     const handleFilterSubmit = (data: TimeFilterPayload) => {
-        switch (data.id) {
-            case E_FILTER_DATE.ALL:
-                setQuery(getAll)
-                break
-            case E_FILTER_DATE.DATE_RANGE:
-                const [startDate, endDate] = data.data as Date[]
-                setQuery((prev) => ({
-                    ...prev,
-                    query: filterQuery,
-                    params: {
-                        ...defaultValues.params,
-                        __startDate: getDate(startDate, 'start'),
-                        __endDate: getDate(endDate, 'end'),
-                        receiveCostKindIds: getKindSpendingIds('RECEIVE', 'COST'),
-                    },
-                }))
-                break
-            case E_FILTER_DATE.MONTH:
-                const month = data.data as Date
-                setQuery((prev) => ({
-                    ...prev,
-                    query: filterQuery,
-                    params: {
-                        ...defaultValues.params,
-                        __startDate: getDate(month, 'start', 'month'),
-                        __endDate: getDate(month, 'end', 'month'),
-                        receiveCostKindIds: getKindSpendingIds('RECEIVE', 'COST'),
-                    },
-                }))
-                break
-            case E_FILTER_DATE.YEAR:
-                const year = data.data as Date
-                setQuery((prev) => ({
-                    ...prev,
-                    query: filterQuery,
-                    params: {
-                        ...defaultValues.params,
-                        __startDate: getDate(year, 'start', 'year'),
-                        __endDate: getDate(year, 'end', 'year'),
-                        receiveCostKindIds: getKindSpendingIds('RECEIVE', 'COST'),
-                    },
-                }))
-                break
+        const _data = services.filterSubmit(data, {
+            defaultValues,
+            getAll,
+            receiveCostKindIds: getKindSpendingIds('RECEIVE', 'COST'),
+        })
+        if (_data) {
+            setQuery(_data)
+            onReload()
         }
-
-        onReload()
     }
 
     return (

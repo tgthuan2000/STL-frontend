@@ -1,6 +1,9 @@
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
+import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
 import { KIND_SPENDING } from '~/constant/spending'
+import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
+import { DropdownResult, ListGroupResult } from '.'
 import { IUserProfile } from './auth'
 import { IKindSpending } from './context'
 import { Query } from './hook'
@@ -248,3 +251,80 @@ export interface BudgetItemProps {
     isOver: boolean
     totalAmounts: number
 }
+
+/* --- SERVICES --- */
+
+export interface TransactionServices {
+    getAll: TransactionGetAll
+    getDefaultValue: TransactionGetDefaultValue
+    filterSubmit: TransactionFilterSubmit
+    getDropdownOptions: GetDropdownOptions
+    getListGroupOptions: GetLisGroupOptions
+}
+
+type TransactionGetAll = (options: TransactionGetAllOptions) => TransactionDefaultValueResult
+type GetLisGroupOptions = () => Array<Array<ListGroupResult>>
+type TransactionGetDefaultValue = (options: TransactionDefaultValueOption) => TransactionDefaultValueResult
+
+type TransactionFilterSubmit = (
+    data: TimeFilterPayload,
+    options: TransactionFilterSubmitOption
+) => React.SetStateAction<TransactionDefaultValueResult> | undefined
+
+type GetDropdownOptions = (options: DropdownOptions) => Array<Array<DropdownResult>>
+
+interface TransactionGetAllOptions {
+    kindSpendingIds: string[]
+    userId: string
+}
+interface DropdownOptions {
+    onReloadClick: () => void
+}
+interface TransactionFilterSubmitOption {
+    defaultValues: TransactionDefaultValueResult
+    getAll: TransactionDefaultValueResult
+}
+interface TransactionDefaultValueOption {
+    searchParams: URLSearchParams
+    getAll: TransactionDefaultValueResult
+}
+export interface TransactionDefaultValueResult {
+    query: QueryTypeUseQuery<RecentQueryData>
+    params: ParamsTypeUseQuery
+    tags: TagsTypeUseQuery<RecentQueryData>
+}
+
+export interface MethodDetailServices {
+    getAll: MethodDetailGetAll
+    getDefaultValue: MethodGetDefaultValue
+    filterSubmit: MethodFilterSubmit
+    getDropdownOptions: GetDropdownOptions
+    getListGroupOptions: GetLisGroupOptions
+}
+
+type MethodDetailGetAll = (options: MethodDetailGetAllOptions) => MethodDetailDefaultValueResult
+interface MethodDetailGetAllOptions {
+    kindSpendingIds: string[]
+    userId: string
+    methodSpendingIds: string[]
+}
+type MethodGetDefaultValue = (options: MethodDetailDefaultValueOption) => MethodDetailDefaultValueResult
+type MethodFilterSubmit = (
+    data: TimeFilterPayload,
+    options: MethodDetailFilterSubmitOption
+) => React.SetStateAction<MethodDetailDefaultValueResult> | undefined
+interface MethodDetailFilterSubmitOption {
+    defaultValues: MethodDetailDefaultValueResult
+    getAll: MethodDetailDefaultValueResult
+}
+interface MethodDetailDefaultValueOption {
+    searchParams: URLSearchParams
+    getAll: MethodDetailDefaultValueResult
+}
+export interface MethodDetailDefaultValueResult {
+    query: QueryTypeUseQuery<MethodQueryData>
+    params: ParamsTypeUseQuery
+    tags: TagsTypeUseQuery<MethodQueryData>
+}
+
+/* --- SERVICES --- */

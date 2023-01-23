@@ -1,7 +1,6 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { FireIcon, RefreshIcon, TableIcon, ViewListIcon } from '@heroicons/react/outline'
-import { get, isEmpty } from 'lodash'
-import moment from 'moment'
+import { FireIcon, ViewListIcon } from '@heroicons/react/outline'
+import { get } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
@@ -9,91 +8,36 @@ import { DataListViewList, DataListViewTable, IDataListView, TimeFilterPayload }
 import { RecentQueryData } from '~/@types/spending'
 import { DataListView, TimeFilter } from '~/components'
 import { Dropdown } from '~/components/_base'
-import { COUNT_PAGINATE, TAGS } from '~/constant'
+import { COUNT_PAGINATE } from '~/constant'
 import { DATA_LIST_GROUP, DATA_LIST_MODE, __groupBy } from '~/constant/component'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
-import { E_FILTER_DATE, TEMPLATE } from '~/constant/template'
+import { TEMPLATE } from '~/constant/template'
 import { useCheck, useConfig } from '~/context'
 import { useLocalStorage, useQuery, useWindowSize } from '~/hook'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
-import { GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE, GET_RECENT_SPENDING_PAGINATE } from '~/schema/query/spending'
-import { getDate } from '~/services'
 import useAuth from '~/store/auth'
 import { getDefaultMode, getLinkSpending } from '~/utils'
 import * as __services from '../services/dataListView'
+import { services } from '../services/transaction'
 
 const TransactionRecent = () => {
     const { userProfile } = useAuth()
     const { getKindSpendingIds } = useConfig()
     const [searchParams] = useSearchParams()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
-
-    const getAll = useMemo(() => {
-        return {
-            query: { recent: GET_RECENT_SPENDING_PAGINATE },
-            params: {
+    const [dataListView, setDataListView] = useLocalStorage<IDataListView>(LOCAL_STORAGE_KEY.STL_DATALIST_VIEW)
+    const dropdownOptions = useMemo(() => services.getDropdownOptions({ onReloadClick: () => handleClickReload() }), [])
+    const listGroupOptions = useMemo(() => services.getListGroupOptions(), [])
+    const getAll = useMemo(
+        () =>
+            services.getAll({
                 userId: userProfile?._id as string,
                 kindSpendingIds: getKindSpendingIds('COST', 'RECEIVE', 'TRANSFER_FROM', 'TRANSFER_TO'),
-                __fromRecent: 0,
-                __toRecent: COUNT_PAGINATE,
-            },
-            tags: { recent: TAGS.ALTERNATE },
-        }
-    }, [])
+            }),
+        []
+    )
 
-    const defaultValues = useMemo(() => {
-        try {
-            let query = GET_RECENT_SPENDING_PAGINATE,
-                params = {}
-
-            const d = Object.fromEntries([...searchParams])
-            if (!isEmpty(d)) {
-                query = GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE
-                let { type, data } = d
-                data = JSON.parse(data)
-
-                switch (Number(type)) {
-                    case E_FILTER_DATE.DATE: {
-                        params = {
-                            __startDate: getDate(moment(data).toDate(), 'start'),
-                            __endDate: getDate(moment(data).toDate(), 'end'),
-                        }
-                        break
-                    }
-                    case E_FILTER_DATE.DATE_RANGE: {
-                        const [startDate, endDate] = data
-                        params = {
-                            __startDate: getDate(moment(startDate).toDate(), 'start'),
-                            __endDate: getDate(moment(endDate).toDate(), 'end'),
-                        }
-                        break
-                    }
-                    case E_FILTER_DATE.MONTH: {
-                        params = {
-                            __startDate: getDate(moment(data).toDate(), 'start', 'month'),
-                            __endDate: getDate(moment(data).toDate(), 'end', 'month'),
-                        }
-                        break
-                    }
-                    case E_FILTER_DATE.YEAR: {
-                        params = {
-                            __startDate: getDate(moment(data).toDate(), 'start', 'year'),
-                            __endDate: getDate(moment(data).toDate(), 'end', 'year'),
-                        }
-                        break
-                    }
-                }
-            }
-            return {
-                ...getAll,
-                query: { recent: query },
-                params: { ...getAll.params, ...params },
-            }
-        } catch (error) {
-            console.log(error)
-            return getAll
-        }
-    }, [])
+    const defaultValues = useMemo(() => services.getDefaultValue({ getAll, searchParams }), [])
 
     const [{ query, params, tags }, setQuery] = useState<{
         query: QueryTypeUseQuery<RecentQueryData>
@@ -116,61 +60,12 @@ const TransactionRecent = () => {
     }
 
     const handleFilterSubmit = (data: TimeFilterPayload) => {
-        switch (data.id) {
-            case E_FILTER_DATE.ALL:
-                setQuery(getAll)
-                break
-            case E_FILTER_DATE.DATE:
-                const date = data.data as Date
-                setQuery((prev) => ({
-                    ...prev,
-                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
-                    params: {
-                        ...defaultValues.params,
-                        __startDate: getDate(date, 'start'),
-                        __endDate: getDate(date, 'end'),
-                    },
-                }))
-                break
-            case E_FILTER_DATE.DATE_RANGE:
-                const [startDate, endDate] = data.data as Date[]
-                setQuery((prev) => ({
-                    ...prev,
-                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
-                    params: {
-                        ...defaultValues.params,
-                        __startDate: getDate(startDate, 'start'),
-                        __endDate: getDate(endDate, 'end'),
-                    },
-                }))
-                break
-            case E_FILTER_DATE.MONTH:
-                const month = data.data as Date
-                setQuery((prev) => ({
-                    ...prev,
-                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
-                    params: {
-                        ...defaultValues.params,
-                        __startDate: getDate(month, 'start', 'month'),
-                        __endDate: getDate(month, 'end', 'month'),
-                    },
-                }))
-                break
-            case E_FILTER_DATE.YEAR:
-                const year = data.data as Date
-                setQuery((prev) => ({
-                    ...prev,
-                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
-                    params: {
-                        ...defaultValues.params,
-                        __startDate: getDate(year, 'start', 'year'),
-                        __endDate: getDate(year, 'end', 'year'),
-                    },
-                }))
-                break
-        }
+        const _data = services.filterSubmit(data, { defaultValues, getAll })
 
-        onReload()
+        if (_data) {
+            setQuery(_data)
+            onReload()
+        }
     }
 
     const handleScrollGetMore = () => {
@@ -189,30 +84,6 @@ const TransactionRecent = () => {
         setQuery((prev) => ({ ...prev, params: { ...prev.params, __fromRecent: 0, __toRecent: COUNT_PAGINATE } }))
         onReload()
     }
-
-    const dropdownOptions = useMemo(
-        () => [
-            [
-                { id: DATA_LIST_MODE.TABLE, name: 'Bảng', icon: TableIcon },
-                { id: DATA_LIST_MODE.LIST, name: 'Danh sách', icon: ViewListIcon },
-            ],
-            [{ id: 0, name: 'Làm mới', icon: RefreshIcon, onClick: handleClickReload }],
-        ],
-        []
-    )
-
-    const listGroupOptions = useMemo(
-        () => [
-            [
-                { id: DATA_LIST_GROUP.DATE, name: 'Ngày' },
-                { id: DATA_LIST_GROUP.MONTH, name: 'Tháng' },
-                { id: DATA_LIST_GROUP.YEAR, name: 'Năm' },
-            ],
-        ],
-        []
-    )
-
-    const [dataListView, setDataListView] = useLocalStorage<IDataListView>(LOCAL_STORAGE_KEY.STL_DATALIST_VIEW)
 
     const form = useForm({
         defaultValues: {

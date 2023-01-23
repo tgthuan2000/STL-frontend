@@ -4,9 +4,8 @@ import moment from 'moment'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import * as yup from 'yup'
 import { IMakeBudgetForm, MakeBudgetQueryData, StateRef, StateRefKey } from '~/@types/spending'
-import { Button, Chip, Tabs } from '~/components'
+import { Button, Chip, SubmitWrap, Tabs } from '~/components'
 import { DatePicker } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { useCheck, useConfig, useLoading, useSlideOver } from '~/context'
@@ -16,6 +15,7 @@ import { GET_BUDGET_BY_MONTH, GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from 
 import { getBudgetId, getDateOfMonth } from '~/services'
 import useAuth from '~/store/auth'
 import * as servicesBudget from '../../services/budget'
+import { budgetSchema } from '../../services/schema'
 
 const Category = React.lazy(() => import('./Category'))
 const Method = React.lazy(() => import('./Method'))
@@ -31,51 +31,11 @@ const defaultStateRef = {
     },
 }
 
-const schema = yup.object().shape({
-    date: yup.date().typeError('Yêu cầu chọn ngày!').required('Yêu cầu chọn ngày!'),
-    MethodSpending: yup.array().of(
-        yup.object().shape({
-            _id: yup.string().nullable(),
-            amount: yup
-                .number()
-                .nullable()
-                .required('Bất buộc nhập!')
-                .typeError('Hãy nhập số')
-                .moreThan(0, 'Hạn mức cần lớn hơn 0'),
-            methodSpending: yup
-                .object()
-                .shape({
-                    _id: yup.string().required(),
-                    name: yup.string().required(),
-                })
-                .nullable()
-                .required('Yêu cầu chọn phương thức!'),
-        })
-    ),
-    CategorySpending: yup.array().of(
-        yup.object().shape({
-            _id: yup.string().nullable(),
-            amount: yup
-                .number()
-                .nullable()
-                .required('Bất buộc nhập!')
-                .typeError('Hãy nhập số')
-                .moreThan(0, 'Hạn mức cần lớn hơn 0'),
-            categorySpending: yup
-                .object()
-                .shape({
-                    _id: yup.string().required(),
-                    name: yup.string().required(),
-                })
-                .nullable()
-                .required('Yêu cầu chọn thể loại!'),
-        })
-    ),
-})
-
 const MakeBudget = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
+    const firstRef = useRef(false)
+    const isPrevMonthClick = useRef(false)
     const { userProfile } = useAuth()
     const { getKindSpendingId } = useConfig()
     const { loading, setSubmitLoading } = useLoading()
@@ -101,7 +61,15 @@ const MakeBudget = () => {
             budgetSpending: TAGS.ALTERNATE,
         },
     })
-    const firstRef = useRef(false)
+    const form = useForm<IMakeBudgetForm>({
+        mode: 'onChange',
+        defaultValues: {
+            date: new Date(),
+            MethodSpending: [],
+            CategorySpending: [],
+        },
+        resolver: yupResolver(budgetSchema),
+    })
 
     const setStateRef = (option: keyof StateRef, key: StateRefKey, method: 'push' | 'remove', value: any) => {
         const prevValues = stateRef.current
@@ -116,8 +84,6 @@ const MakeBudget = () => {
     const [{ methodSpending, categorySpending, budgetSpending }, fetchData, deleteCacheData, reloadData] =
         useQuery<MakeBudgetQueryData>(query, params, tags)
 
-    const isPrevMonthClick = useRef(false)
-
     useEffect(() => {
         if (firstRef.current) {
             reloadData()
@@ -128,16 +94,6 @@ const MakeBudget = () => {
         fetchData()
         firstRef.current = true
     }, [])
-
-    const form = useForm<IMakeBudgetForm>({
-        mode: 'onChange',
-        defaultValues: {
-            date: new Date(),
-            MethodSpending: [],
-            CategorySpending: [],
-        },
-        resolver: yupResolver(schema),
-    })
 
     useEffect(() => {
         const budgetData = budgetSpending.data
@@ -315,23 +271,21 @@ const MakeBudget = () => {
                     </div>
                 </div>
             </div>
-            <div className='flex-shrink-0 border-t border-gray-200 dark:border-slate-600 px-4 py-5 sm:px-6'>
-                <div className='flex sm:justify-start justify-end space-x-3'>
-                    <Button color='yellow' type='submit' disabled={loading.submit}>
-                        Lưu
-                    </Button>
-                    <Button
-                        color='outline'
-                        type='button'
-                        onClick={() => {
-                            setIsOpen(false)
-                            navigate(-1)
-                        }}
-                    >
-                        Hủy bỏ
-                    </Button>
-                </div>
-            </div>
+            <SubmitWrap>
+                <Button color='yellow' type='submit' disabled={loading.submit}>
+                    Lưu
+                </Button>
+                <Button
+                    color='outline'
+                    type='button'
+                    onClick={() => {
+                        setIsOpen(false)
+                        navigate(-1)
+                    }}
+                >
+                    Hủy bỏ
+                </Button>
+            </SubmitWrap>
         </form>
     )
 }

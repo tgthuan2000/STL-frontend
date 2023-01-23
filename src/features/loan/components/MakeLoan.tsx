@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IAddIncomeForm, QueryDataMakeLoan } from '~/@types/loan'
-import { Button } from '~/components'
+import { Button, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
@@ -104,22 +104,10 @@ const MakeLoan = () => {
 
             await __.commit()
 
-            // navigate to dashboard
-            form.reset(
-                {
-                    amount: '',
-                    methodSpending,
-                    userLoan,
-                },
-                {
-                    keepDefaultValues: true,
-                }
-            )
+            form.reset({ amount: '', methodSpending, userLoan }, { keepDefaultValues: true })
             toast.success<string>('Thực hiện tạo vay thành công!')
             deleteCache([GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN])
             needCheckWhenLeave()
-            // setIsOpen(false)
-            // navigate(-1)
         } catch (error) {
             console.log(error)
         } finally {
@@ -188,23 +176,21 @@ const MakeLoan = () => {
                     </div>
                 </div>
             </div>
-            <div className='flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6'>
-                <div className='flex sm:justify-start justify-end space-x-3'>
-                    <Button color='prussianBlue' type='submit' disabled={loading.submit}>
-                        Lưu
-                    </Button>
-                    <Button
-                        color='outline'
-                        type='button'
-                        onClick={() => {
-                            setIsOpen(false)
-                            navigate(-1)
-                        }}
-                    >
-                        Hủy bỏ
-                    </Button>
-                </div>
-            </div>
+            <SubmitWrap>
+                <Button color='prussianBlue' type='submit' disabled={loading.submit}>
+                    Lưu
+                </Button>
+                <Button
+                    color='outline'
+                    type='button'
+                    onClick={() => {
+                        setIsOpen(false)
+                        navigate(-1)
+                    }}
+                >
+                    Hủy bỏ
+                </Button>
+            </SubmitWrap>
         </form>
     )
 }
