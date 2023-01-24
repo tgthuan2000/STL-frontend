@@ -1,18 +1,18 @@
-import {
-    BellIcon,
-    CalendarIcon,
-    CashIcon,
-    CogIcon,
-    LockClosedIcon,
-    LogoutIcon,
-    SwitchVerticalIcon,
-    UserIcon,
-} from '@heroicons/react/outline'
-import { OptionMenu } from '~/@types/layout'
+import { BellIcon, CashIcon, LockClosedIcon, LogoutIcon, SwitchVerticalIcon, UserIcon } from '@heroicons/react/outline'
+import React from 'react'
+import { NavigationMobile, OptionMenu } from '~/@types/layout'
 import { ThemeIcon } from '~/components'
 import { localStorageValue } from '~/hook/useLocalStorage'
 import { LOCAL_STORAGE_KEY } from './localStorage'
 import { PERMISSION } from './permission'
+
+const AccountNavLink = React.lazy(() => import('~/components/NavLink/AccountNavLink'))
+const AnnounceConfigNavLink = React.lazy(() => import('~/components/NavLink/AnnounceConfigNavLink'))
+const LoanNavLink = React.lazy(() => import('~/components/NavLink/LoanNavLink'))
+const NotifyNavLink = React.lazy(() => import('~/components/NavLink/NotifyNavLink'))
+const ProfileNavLink = React.lazy(() => import('~/components/NavLink/ProfileNavLink'))
+const SettingNavLink = React.lazy(() => import('~/components/NavLink/SettingNavLink'))
+const SpendingNavLink = React.lazy(() => import('~/components/NavLink/SpendingNavLink'))
 
 export interface Navigation {
     name: string
@@ -46,37 +46,42 @@ export const navigation: Array<Navigation> = [
     },
 ]
 
-export const navigationMobile: Array<Navigation> = [
+export const navigationMobile: Array<NavigationMobile> = [
     /* ADMIN */
     {
         name: 'Thông báo',
         href: '/announce-config',
-        icon: BellIcon,
         permissions: [PERMISSION.ANNOUNCE_CONFIG],
+        component: AnnounceConfigNavLink,
     },
     {
         name: 'Quản lý tài khoản',
         href: '/account',
-        icon: UserIcon,
         permissions: [PERMISSION.ACCOUNT_READ],
+        component: AccountNavLink,
     },
 
     /* CLIENT */
-    { name: 'Quản lý chi tiêu', href: '/spending', icon: CashIcon, permissions: [PERMISSION.SPENDING_READ] },
+    {
+        name: 'Quản lý chi tiêu',
+        href: '/spending',
+        permissions: [PERMISSION.SPENDING_READ],
+        component: SpendingNavLink,
+    },
     // {
     //     name: 'Quản lý chấm công',
     //     href: '/timekeeping',
     //     icon: CalendarIcon,
     //     permissions: [PERMISSION.TIMEKEEPING_READ],
     // },
-    { name: 'Quản lý vay / cho vay', href: '/loan', icon: SwitchVerticalIcon, permissions: [PERMISSION.LOAN_READ] },
-    { name: 'Thông báo', href: '/notify', icon: BellIcon, permissions: [PERMISSION.ANNOUNCE_READ] },
-    { name: 'Thông tin cá nhân', href: '/profile', icon: UserIcon, permissions: [PERMISSION.PROFILE_READ] },
+    { name: 'Quản lý vay / cho vay', href: '/loan', permissions: [PERMISSION.LOAN_READ], component: LoanNavLink },
+    { name: 'Thông báo', href: '/notify', permissions: [PERMISSION.ANNOUNCE_READ], component: NotifyNavLink },
+    { name: 'Thông tin cá nhân', href: '/profile', permissions: [PERMISSION.PROFILE_READ], component: ProfileNavLink },
     {
         name: 'Cài đặt',
         href: '/setting',
-        icon: CogIcon,
         permissions: [PERMISSION.PROFILE_READ, PERMISSION.PROFILE_WRITE],
+        component: SettingNavLink,
     },
 ]
 

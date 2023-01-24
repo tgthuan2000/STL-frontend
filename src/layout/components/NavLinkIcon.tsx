@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React from 'react'
+import React, { Suspense } from 'react'
 import { NavLink } from 'react-router-dom'
 import { NavLinkItemProps } from '~/@types/layout'
 
@@ -17,7 +17,11 @@ const NavLinkIcon: React.FC<NavLinkItemProps> = ({ data }) => {
         >
             {({ isActive }) => (
                 <>
-                    <data.icon className='flex-shrink-0 h-7 w-7' aria-hidden='true' />
+                    <div className='relative'>
+                        <Suspense fallback={<div className='h-5 w-5 bg-gray-500 rounded-full animate-pulse' />}>
+                            <data.component />
+                        </Suspense>
+                    </div>
                     <span
                         className={clsx(
                             'absolute bottom-0 left-0 right-0 h-1 rounded-tl-full rounded-tr-full',
