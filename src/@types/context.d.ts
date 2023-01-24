@@ -1,8 +1,10 @@
+import { SanityDocument } from '@sanity/client'
 import React from 'react'
 import { TAGS } from '~/constant'
 import { PERMISSION } from '~/constant/permission'
 import { KIND_SPENDING } from '~/constant/spending'
 import { TagsTypeUseQuery } from '~/hook/useQuery'
+import { NotifyItem } from './notify'
 
 type LoadingItems = {
     config: boolean
@@ -114,4 +116,19 @@ export interface ISideBarContext {
         open: boolean
         set: React.Dispatch<React.SetStateAction<boolean>>
     }
+}
+
+export interface INotifyContext {
+    notify: SanityDocument<NotifyItem>[]
+    total: number
+    loadNewNotify: boolean
+    hasNextPage: boolean
+    loading: boolean
+    fetch: (__fromNotify?: number, __toNotify?: number) => Promise<void>
+    getMore: () => Promise<void>
+    readDetail: (data: SanityDocument<NotifyItem>) => Promise<string>
+}
+
+export interface IScrollToTopContext {
+    scrollToTop: () => void
 }

@@ -1,7 +1,6 @@
 export { default as useEventListener } from './useEventListener'
 export { default as useLocalStorage } from './useLocalStorage'
 export { default as useQuery } from './useQuery'
-export { default as useScrollIntoView } from './useScrollIntoView'
 export { default as useServiceQuery } from './useServiceQuery'
 export { default as useWindowSize } from './useWindowSize'
 export { default as useMail } from './useMail'

@@ -4,11 +4,11 @@ import { Fragment, useMemo } from 'react'
 import { navigation } from '~/constant/layout'
 import { useConfig, useSideBar } from '~/context'
 import useAuth from '~/store/auth'
-import Logo from './Logo'
-import NavLinkItem from './NavLinkItem'
-import User from './User'
+import Logo from '../Logo'
+import NavLinkItem from '../NavLinkItem'
+import User from '../User'
 
-const MobileSideBar = () => {
+const SideBar = () => {
     const { hasPermissions } = useConfig()
     const { removeUserProfile, userProfile } = useAuth()
     const _navigation = useMemo(
@@ -85,4 +85,4 @@ const MobileSideBar = () => {
     )
 }
 
-export default MobileSideBar
+export default SideBar

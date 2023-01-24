@@ -301,6 +301,7 @@ export interface ListProps {
     SkeletonList?: (loading: boolean) => React.ReactNode
     onGetMore?: () => void
     onRowClick: (data: any) => string
+    onItemClick?: (data: any) => void | Promise<any>
     hasNextPage: boolean
     renderTitle: (data: any) => React.ReactNode
     renderList: (data: any, index: number) => React.ReactNode
@@ -431,6 +432,7 @@ export interface ChipProps {
 
 export interface ThemeIconProps {
     theme: UseLocalStorageResult<string>
+    className?: string
 }
 
 export interface BackButtonProps {

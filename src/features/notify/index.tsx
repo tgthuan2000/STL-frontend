@@ -2,22 +2,25 @@ import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { Transaction } from '~/components'
 
-const NotifyPage = React.lazy(() => import('./pages/Notify'))
+const NotifyFeature = React.lazy(() => import('./pages/Notify'))
+const Dashboard = React.lazy(() => import('./pages/Dashboard'))
 const Detail = React.lazy(() => import('~/components/NotifyDetail'))
 
 const Notify = () => {
     return (
         <Routes>
-            {/* <Route index element={<NotifyPage />} /> */}
-            <Route
-                path=':id'
-                element={
-                    <Transaction title='Chi tiết thông báo'>
-                        <Detail />
-                    </Transaction>
-                }
-            />
-            <Route path='*' element={<Navigate to='/' />} />
+            <Route path='/' element={<NotifyFeature />}>
+                <Route index element={<Dashboard />} />
+                <Route
+                    path=':id'
+                    element={
+                        <Transaction title='Chi tiết thông báo'>
+                            <Detail />
+                        </Transaction>
+                    }
+                />
+                <Route path='*' element={<Navigate to='/' />} />
+            </Route>
         </Routes>
     )
 }

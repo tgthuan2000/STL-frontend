@@ -1,37 +1,47 @@
 import clsx from 'clsx'
 import React from 'react'
 import { SideBarProps } from '~/@types/layout'
-import { SideBarProvider, useSideBar } from '~/context'
-import DesktopSideBar from './DesktopSideBar'
-import MobileSideBar from './MobileSideBar'
-import TopBar from './TopBar'
+import { ScrollToTopProvider, SideBarProvider, useSideBar } from '~/context'
+import { useWindowSize } from '~/hook'
+import { DesktopSideBar, DesktopTopBar } from './Desktop'
+import { MobileSideBar, MobileTopBar } from './Mobile'
 
 const Sidebar: React.FC<SideBarProps> = ({ children }) => {
     const { desktop } = useSideBar()
+    const { width } = useWindowSize()
+    const mobileScreen = width < 768
 
     return (
         <div>
-            {/* Top bar */}
-            <TopBar />
-            <div className='h-16 w-full' />
-            {/* Sidebar for mobile */}
-            <MobileSideBar />
-            {/* Sidebar for desktop */}
-            <DesktopSideBar />
+            {mobileScreen ? (
+                <>
+                    {/* Mobile */}
+                    <MobileTopBar />
+                    <MobileSideBar />
+                </>
+            ) : (
+                <>
+                    {/* Desktop */}
+                    <DesktopTopBar />
+                    <DesktopSideBar />
+                </>
+            )}
 
-            <div className={clsx('flex flex-col flex-1 transition-all', desktop.open ? 'md:pl-64' : 'md:pl-16')}>
-                {/* --- Top bar --- */}
+            <ScrollToTopProvider>
+                <div className={clsx('flex flex-col flex-1 transition-all', desktop.open ? 'md:pl-64' : 'md:pl-16')}>
+                    {/* --- Top bar --- */}
 
-                <main className='flex-1'>
-                    <div className='py-6'>
-                        <div className='max-w-7xl mx-auto px-4 sm:px-6 md:px-8'>
-                            {/* Replace with your content */}
-                            <div className='min-h-screen sm:min-h-[calc(100vh-50px)]'>{children}</div>
-                            {/* /End replace */}
+                    <main className='flex-1'>
+                        <div className='py-6'>
+                            <div className='max-w-7xl mx-auto px-4 sm:px-6 md:px-8'>
+                                {/* Replace with your content */}
+                                <div className='min-h-screen sm:min-h-[calc(100vh-50px)]'>{children}</div>
+                                {/* /End replace */}
+                            </div>
                         </div>
-                    </div>
-                </main>
-            </div>
+                    </main>
+                </div>
+            </ScrollToTopProvider>
         </div>
     )
 }
