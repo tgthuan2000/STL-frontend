@@ -1,4 +1,4 @@
-import { CheckIcon, UserIcon } from '@heroicons/react/outline'
+import { UserIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import moment from 'moment'
 import { Prose } from '~/components'
@@ -38,18 +38,11 @@ export const renderList: (data: any, index: number) => React.ReactNode = (data, 
             {data.notify.description ?? TEMPLATE.EMPTY_DESCRIPTION}
         </Prose>
         <div className='mt-2 flex justify-between items-center'>
-            <div>
-                {!data.read ? (
-                    <p className='text-cyan-500 dark:text-orange-400 font-normal flex items-center gap-0.5'>
-                        <CheckIcon className='h-4 w-4' />
-                        Đã xem
-                    </p>
-                ) : (
-                    <p className='text-xs text-gray-600 dark:text-orange-400'>
-                        Đã xem: <b>{moment(data._updatedAt).format(DATE_FORMAT.TIME_DATE)}</b>
-                    </p>
-                )}
-            </div>
+            {data.read && (
+                <p className='text-xs text-gray-600 dark:text-orange-400'>
+                    Đã xem: <b>{moment(data._updatedAt).format(DATE_FORMAT.TIME_DATE)}</b>
+                </p>
+            )}
             <p className='italic text-xs text-gray-600 dark:text-slate-100'>{getSpacingTime(data.notify._createdAt)}</p>
         </div>
     </div>
