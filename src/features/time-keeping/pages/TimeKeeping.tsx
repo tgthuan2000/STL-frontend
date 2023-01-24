@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
+import { Outlet } from 'react-router-dom'
 import { useLoading } from '~/context'
 
 const TimeKeeping = () => {
@@ -11,7 +12,13 @@ const TimeKeeping = () => {
 
         return () => timeout && clearTimeout(timeout)
     }, [])
-    return <div>TimeKeeping</div>
+    return (
+        <div>
+            <Suspense fallback={<div className='text-gray-900 dark:text-white'>Loading...</div>}>
+                <Outlet />
+            </Suspense>
+        </div>
+    )
 }
 
 export default TimeKeeping

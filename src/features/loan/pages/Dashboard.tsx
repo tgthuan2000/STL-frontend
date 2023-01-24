@@ -5,7 +5,7 @@ import { Box2, ButtonMenuLoan, Divider, Transaction } from '~/components'
 import { TAGS } from '~/constant'
 import { menuLoanMobile } from '~/constant/components'
 import { useCheck, useConfig } from '~/context'
-import { useQuery, useScrollIntoView, useWindowSize } from '~/hook'
+import { useQuery, useWindowSize } from '~/hook'
 import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
 import useAuth from '~/store/auth'
 

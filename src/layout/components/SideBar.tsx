@@ -1,5 +1,6 @@
 import clsx from 'clsx'
-import React from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import { SideBarProps } from '~/@types/layout'
 import { SideBarProvider, useSideBar } from '~/context'
 import { useWindowSize } from '~/hook'
@@ -10,6 +11,23 @@ const Sidebar: React.FC<SideBarProps> = ({ children }) => {
     const { desktop } = useSideBar()
     const { width } = useWindowSize()
     const mobileScreen = width < 768
+
+    const ref = useRef<HTMLDivElement>(null)
+    const { pathname } = useLocation()
+
+    const scrollToTop = useCallback(() => {
+        if (ref.current) {
+            ref.current.scrollIntoView({
+                behavior: 'smooth',
+            })
+        }
+    }, [ref.current])
+
+    useEffect(() => {
+        return () => {
+            scrollToTop()
+        }
+    }, [pathname])
 
     return (
         <div>
@@ -26,8 +44,8 @@ const Sidebar: React.FC<SideBarProps> = ({ children }) => {
                     <DesktopSideBar />
                 </>
             )}
-            {/* Top bar */}
-            <div className={clsx('w-full', mobileScreen ? 'h-32' : 'h-16')} />
+
+            <div ref={ref} className='h-16 -mt-16' />
 
             <div className={clsx('flex flex-col flex-1 transition-all', desktop.open ? 'md:pl-64' : 'md:pl-16')}>
                 {/* --- Top bar --- */}
