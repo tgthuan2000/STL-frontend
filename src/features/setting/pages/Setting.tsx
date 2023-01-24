@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
 
-const Notify = () => {
+const Setting = () => {
     return (
         <div>
             <Outlet />
@@ -8,4 +8,4 @@ const Notify = () => {
     )
 }
 
-export default Notify
+export default Setting

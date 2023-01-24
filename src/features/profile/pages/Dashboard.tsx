@@ -11,7 +11,7 @@ import { Button, Image, TimeFilter, Transaction } from '~/components'
 import { DATE_FORMAT } from '~/constant'
 import { E_FILTER_DATE, TEMPLATE } from '~/constant/template'
 import { useConfig, useLoading } from '~/context'
-import { useQuery } from '~/hook'
+import { useQuery, useWindowSize } from '~/hook'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
 import useAuth from '~/store/auth'
 import { AllowSendMail, ProfileInfo, ProfileInfoGroup, ProfileInfoSkeleton } from '../components'
@@ -26,6 +26,7 @@ const Dashboard = () => {
     const [searchParams] = useSearchParams()
     const { getKindSpendingIds } = useConfig()
     const { loading, setConfigLoading } = useLoading()
+    const { width } = useWindowSize()
 
     const getAll = useMemo(
         () =>
@@ -59,8 +60,7 @@ const Dashboard = () => {
     )
 
     useEffect(() => {
-        setConfigLoading(true)
-        fetchData().then(() => setConfigLoading(false))
+        fetchData()
     }, [])
 
     const onReload = () => {
@@ -93,7 +93,7 @@ const Dashboard = () => {
     }
 
     return (
-        <Transaction title='Thông tin cá nhân'>
+        <Transaction title='Thông tin cá nhân' hasBack={width > 768}>
             <div className='relative mt-20 max-w-7xl mx-auto w-full'>
                 {/* IMAGE */}
                 <div className='absolute z-[1] bottom-full left-1/2 -translate-x-1/2 -mb-12 sm:-mb-14 select-none'>
@@ -104,7 +104,7 @@ const Dashboard = () => {
                     />
                 </div>
                 {/* MAIN */}
-                <div className='relative min-h-screen bg-white dark:bg-slate-800 rounded-lg shadow-lg pt-12 sm:pt-14 select-none'>
+                <div className='relative min-h-screen bg-white dark:bg-slate-800 -mx-4 sm:rounded-lg shadow-lg pt-12 sm:pt-14 select-none'>
                     {/* TOOLS */}
                     <div className='absolute bottom-[calc(100%+12px)] right-2'>
                         <Button
@@ -133,7 +133,7 @@ const Dashboard = () => {
                         <div className='sm:px-3'>
                             <TimeFilter onSubmit={handleFilterSubmit} excludes={excludeOptions} />
                         </div>
-                        <div className='sm:shadow-lg overflow-hidden sm:bg-gradient-to-tl sm:from-indigo-500 sm:via-purple-500 sm:to-pink-500 sm:p-3'>
+                        <div className='sm:shadow-lg overflow-hidden sm:bg-gradient-to-tl sm:from-indigo-500 sm:via-purple-500 sm:to-pink-500 sm:p-3 px-1'>
                             <div className='grid xl:grid-cols-4 grid-cols-1 backdrop-blur-lg' ref={parent}>
                                 {loading.config ? (
                                     <p className='animate-pulse my-5 sm:my-3 sm:text-lg text-sm text-gray-700 sm:text-white font-normal text-center'>

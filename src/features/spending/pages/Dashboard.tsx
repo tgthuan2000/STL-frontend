@@ -2,7 +2,7 @@ import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { DashboardQueryData } from '~/@types/spending'
-import { Box, ButtonMenu, Divider } from '~/components'
+import { Box, ButtonMenu, Divider, Transaction } from '~/components'
 import { DATE_FORMAT, TAGS } from '~/constant'
 import { menuMobile } from '~/constant/components'
 import { useCheck, useConfig } from '~/context'
@@ -21,7 +21,6 @@ const Dashboard = () => {
     const { width } = useWindowSize()
     const { userProfile } = useAuth()
     const { kindSpending, budgetSpending, getKindSpendingId, getKindSpendingIds } = useConfig()
-    const wrapRef = useScrollIntoView<HTMLDivElement>()
     const budgetId = budgetSpending?._id
 
     const [{ method, recent, budget, statistic }, fetchData, deleteCache, reload] = useQuery<DashboardQueryData>(
@@ -103,7 +102,7 @@ const Dashboard = () => {
     }
 
     return (
-        <div ref={wrapRef}>
+        <Transaction hasBack={false} title='Quản lý chi tiêu'>
             {width < 1280 && (
                 <div className='xl:hidden block'>
                     <ButtonMenu data={menuMobile} />
@@ -169,7 +168,7 @@ const Dashboard = () => {
                     </Box.Content>
                 </div>
             </Box>
-        </div>
+        </Transaction>
     )
 }
 

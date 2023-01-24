@@ -14,11 +14,11 @@ const AuthFeature = React.lazy(() => import('./features/auth'))
 const SpendingFeature = React.lazy(() => import('./features/spending'))
 const LoanFeature = React.lazy(() => import('./features/loan'))
 const TimeKeepingFeature = React.lazy(() => import('./features/time-keeping'))
-const AnnounceFeature = React.lazy(() => import('./features/announce'))
 const ProfileFeature = React.lazy(() => import('./features/profile'))
 const AnnounceConfigFeature = React.lazy(() => import('./features/announce-config'))
 const AccountFeature = React.lazy(() => import('./features/account'))
 const NotifyFeature = React.lazy(() => import('./features/notify'))
+const SettingFeature = React.lazy(() => import('./features/setting'))
 
 function App() {
     return (
@@ -80,14 +80,6 @@ function App() {
                                             }
                                         />
                                         <Route
-                                            path='announce/*'
-                                            element={
-                                                <PermissionCheck permissions={[PERMISSION.ANNOUNCE_READ]}>
-                                                    <AnnounceFeature />
-                                                </PermissionCheck>
-                                            }
-                                        />
-                                        <Route
                                             path='announce-config/*'
                                             element={
                                                 <PermissionCheck permissions={[PERMISSION.ANNOUNCE_CONFIG]}>
@@ -118,6 +110,14 @@ function App() {
                                                     permissions={[PERMISSION.PROFILE_READ, PERMISSION.ANNOUNCE_CONFIG]}
                                                 >
                                                     <NotifyFeature />
+                                                </PermissionCheck>
+                                            }
+                                        />
+                                        <Route
+                                            path='setting/*'
+                                            element={
+                                                <PermissionCheck permissions={[PERMISSION.PROFILE_READ]}>
+                                                    <SettingFeature />
                                                 </PermissionCheck>
                                             }
                                         />
