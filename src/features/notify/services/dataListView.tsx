@@ -56,7 +56,7 @@ export const renderList: (data: any, index: number) => React.ReactNode = (data, 
 )
 
 export const renderTitle = (data: any) => (
-    <h4 className='font-normal lg:font-light lg:text-lg text-base text-gray-900 bg-cyan-200 dark:bg-slate-700 dark:text-sky-400 p-2'>
+    <h4 className='font-normal lg:font-light lg:text-lg text-base text-gray-900 bg-cyan-200 dark:bg-transparent dark:text-sky-400 p-2'>
         {data}
     </h4>
 )

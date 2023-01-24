@@ -432,6 +432,7 @@ export interface ChipProps {
 
 export interface ThemeIconProps {
     theme: UseLocalStorageResult<string>
+    className?: string
 }
 
 export interface BackButtonProps {

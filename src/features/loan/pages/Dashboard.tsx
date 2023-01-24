@@ -1,7 +1,7 @@
 import moment from 'moment'
 import { useEffect } from 'react'
 import { DashboardQueryData } from '~/@types/loan'
-import { Box2, ButtonMenuLoan, Divider } from '~/components'
+import { Box2, ButtonMenuLoan, Divider, Transaction } from '~/components'
 import { TAGS } from '~/constant'
 import { menuLoanMobile } from '~/constant/components'
 import { useCheck, useConfig } from '~/context'
@@ -13,7 +13,6 @@ const Dashboard = () => {
     const { width } = useWindowSize()
     const { userProfile } = useAuth()
     const { getKindSpendingId } = useConfig()
-    const wrapRef = useScrollIntoView<HTMLDivElement>()
 
     const [{ recent, paydue, statistic }, fetchData, deleteCache, reload] = useQuery<DashboardQueryData>(
         {
@@ -49,7 +48,7 @@ const Dashboard = () => {
     }
 
     return (
-        <div ref={wrapRef}>
+        <Transaction hasBack={false} title='Quản lý vay/cho vay'>
             {width < 1280 && (
                 <div className='xl:hidden block'>
                     <ButtonMenuLoan data={menuLoanMobile} />
@@ -77,7 +76,7 @@ const Dashboard = () => {
 
                 <ListMember label='Đang cho vay' data={member.data} loading={member.loading} /> */}
             </div>
-        </div>
+        </Transaction>
     )
 }
 
