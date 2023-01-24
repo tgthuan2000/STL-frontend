@@ -1,6 +1,6 @@
 import { BellIcon, CashIcon, LockClosedIcon, LogoutIcon, SwitchVerticalIcon, UserIcon } from '@heroicons/react/outline'
 import React from 'react'
-import { NavigationMobile, OptionMenu } from '~/@types/layout'
+import { NavigationMobile, NavLinkIconProps, OptionMenu } from '~/@types/layout'
 import { ThemeIcon } from '~/components'
 import { localStorageValue } from '~/hook/useLocalStorage'
 import { LOCAL_STORAGE_KEY } from './localStorage'
@@ -19,6 +19,12 @@ export interface Navigation {
     href: string
     icon: any
     permissions: Array<PERMISSION>
+}
+export interface MobileNavigation {
+    name: string
+    href: string
+    permissions: Array<PERMISSION>
+    component: React.FC<NavLinkIconProps>
 }
 export const navigation: Array<Navigation> = [
     /* CLIENT */

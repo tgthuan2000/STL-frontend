@@ -1,9 +1,9 @@
 import clsx from 'clsx'
 import React, { Suspense } from 'react'
 import { NavLink } from 'react-router-dom'
-import { NavLinkItemProps } from '~/@types/layout'
+import { NavLinkIconProps } from '~/@types/layout'
 
-const NavLinkIcon: React.FC<NavLinkItemProps> = ({ data }) => {
+const NavLinkIcon: React.FC<NavLinkIconProps> = ({ data }) => {
     return (
         <NavLink
             to={data.href}

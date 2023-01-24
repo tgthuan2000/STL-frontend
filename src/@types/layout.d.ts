@@ -40,6 +40,12 @@ export interface OptionMenu {
 }
 export type NavigationMobile = Omit<Navigation, 'icon'> & { component: React.FC<MobileNavLink> }
 export interface NavLinkItemProps {
+    data: Navigation
+    onClick?: () => void
+    open?: boolean
+}
+
+export interface NavLinkIconProps {
     data: NavigationMobile
     onClick?: () => void
     open?: boolean
