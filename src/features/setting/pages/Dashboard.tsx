@@ -11,7 +11,7 @@ const Dashboard = () => {
                         key={option.id}
                         className={clsx(
                             option.className,
-                            'cursor-pointer font-normal rounded flex flex-wrap gap-2 items-center justify-center text-lg'
+                            'cursor-pointer font-normal rounded flex flex-col gap-2 items-center justify-center text-lg p-2'
                         )}
                     />
                 ))}
