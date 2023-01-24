@@ -11,7 +11,6 @@ import { AvatarUser, Button, Divider, SubmitWrap } from '~/components'
 import { AutoComplete, Input, Toggle } from '~/components/_base'
 import { DATE_FORMAT } from '~/constant'
 import { useLoading } from '~/context'
-import { useScrollIntoView } from '~/hook'
 import IconButton from './common/IconButton'
 import Group from './Group'
 
@@ -19,7 +18,6 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
     const { onsubmit, handleDeleteTransaction, methodSpending, transaction } = data
     const navigate = useNavigate()
     const { loading } = useLoading()
-    const wrapRef = useScrollIntoView<HTMLDivElement>()
     const form = useForm<PaidForm>({
         defaultValues: {
             paid: transaction.paid,
@@ -30,7 +28,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
     const [parent] = useAutoAnimate<HTMLDivElement>()
 
     return (
-        <div ref={wrapRef}>
+        <div>
             <div className='flex justify-between items-center mb-4'>
                 <div className='flex items-center text-gray-900 dark:text-slate-200 space-x-2 select-none'>
                     <ArrowSmLeftIcon

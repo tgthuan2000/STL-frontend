@@ -7,7 +7,7 @@ import { IMethodSpending } from '~/@types/spending'
 import { TAGS } from '~/constant'
 import { TEMPLATE } from '~/constant/template'
 import { useCheck, useConfig } from '~/context'
-import { useQuery, useScrollIntoView, useWindowSize } from '~/hook'
+import { useQuery, useWindowSize } from '~/hook'
 import { GET_METHOD_SPENDING_DESC_SURPLUS } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 
@@ -15,7 +15,6 @@ const Method = () => {
     const { kindSpending } = useConfig()
     const { userProfile } = useAuth()
     const [parent] = useAutoAnimate<HTMLDivElement>()
-    const wrapRef = useScrollIntoView<HTMLDivElement>()
     const { width } = useWindowSize()
 
     const [{ method }, fetchData, , reload] = useQuery<{
@@ -123,7 +122,7 @@ const Method = () => {
     }, [isMobileScreen, dataFilter])
 
     return (
-        <div ref={wrapRef} className='mt-5'>
+        <div className='mt-5'>
             <div
                 className='border border-gray-300 bg-white dark:bg-slate-700 dark:border-slate-700 rounded-md xl:sticky xl:top-6 lg:py-2 lg:px-4'
                 style={{ height: dataFilter ? size(dataFilter) * 90 : 'auto' }}

@@ -11,7 +11,6 @@ import { Button, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useLoading } from '~/context'
-import { useScrollIntoView } from '~/hook'
 import { getColorPrize } from '~/services'
 import IconButton from './common/IconButton'
 import StatusLoan from './common/StatusLoan'
@@ -29,7 +28,6 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
     } = data
     const navigate = useNavigate()
     const { loading } = useLoading()
-    const wrapRef = useScrollIntoView<HTMLDivElement>()
     const form = useForm<any>({
         defaultValues: {
             paid: transaction.paid,
@@ -43,7 +41,7 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
     })
 
     return (
-        <div ref={wrapRef}>
+        <div>
             <div className='flex justify-between items-center mb-4'>
                 <div className='flex items-center text-gray-900 dark:text-slate-200 space-x-2 select-none'>
                     <ArrowSmLeftIcon

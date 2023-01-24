@@ -6,7 +6,7 @@ import { Box, ButtonMenu, Divider, Transaction } from '~/components'
 import { DATE_FORMAT, TAGS } from '~/constant'
 import { menuMobile } from '~/constant/components'
 import { useCheck, useConfig } from '~/context'
-import { useQuery, useScrollIntoView, useWindowSize } from '~/hook'
+import { useQuery, useWindowSize } from '~/hook'
 import {
     GET_BUDGET_BY_MONTH,
     GET_METHOD_SPENDING_DESC_SURPLUS,
