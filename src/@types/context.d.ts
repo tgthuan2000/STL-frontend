@@ -129,6 +129,6 @@ export interface INotifyContext {
     readDetail: (data: SanityDocument<NotifyItem>) => Promise<string>
 }
 
-export interface IScrollIntoViewContext {
+export interface IScrollToTopContext {
     scrollToTop: () => void
 }
