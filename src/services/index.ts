@@ -1,5 +1,6 @@
-import { isEmpty } from 'lodash'
+import { isEmpty, cloneDeep } from 'lodash'
 import moment from 'moment'
+import { List, _List } from '~/@types'
 import { DATA_LIST_GROUP } from '~/constant/component'
 
 export const getDateOfMonth = (type: 'start' | 'end' = 'start', date?: moment.MomentInput) => {
@@ -71,3 +72,26 @@ export const listGroupOptions = [
     { id: DATA_LIST_GROUP.MONTH, name: 'Tháng' },
     { id: DATA_LIST_GROUP.YEAR, name: 'Năm' },
 ]
+
+export const listToTree = <T extends _List>(_list: T[]) => {
+    let list: Array<List<T>> = cloneDeep(_list),
+        map: { [x: string]: number } = {},
+        node: List<T>,
+        roots: Array<List<T>> = []
+
+    for (let i = 0; i < list.length; i += 1) {
+        map[list[i]._id] = i // initialize the map
+        list[i].children = [] // initialize the children
+    }
+
+    for (let i = 0; i < list.length; i += 1) {
+        node = list[i]
+        if (node.parentId) {
+            // if you have dangling branches check that map[node.parent_id] exists
+            list[map[node.parentId]]?.children?.push(node)
+        } else {
+            roots.push(node)
+        }
+    }
+    return roots
+}

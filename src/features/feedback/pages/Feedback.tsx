@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
 
-const Profile = () => {
+const Feedback = () => {
     return (
         <Suspense fallback={<div className='text-gray-900 dark:text-white'>Loading...</div>}>
             <Outlet />
@@ -9,4 +9,4 @@ const Profile = () => {
     )
 }
 
-export default Profile
+export default Feedback

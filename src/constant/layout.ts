@@ -1,4 +1,12 @@
-import { BellIcon, CashIcon, LockClosedIcon, LogoutIcon, SwitchVerticalIcon, UserIcon } from '@heroicons/react/outline'
+import {
+    BellIcon,
+    CashIcon,
+    ChatAlt2Icon,
+    LockClosedIcon,
+    LogoutIcon,
+    SwitchVerticalIcon,
+    UserIcon,
+} from '@heroicons/react/outline'
 import React from 'react'
 import { NavigationMobile, NavLinkIconProps, OptionMenu } from '~/@types/layout'
 import { ThemeIcon } from '~/components'
@@ -129,6 +137,14 @@ export const userOptionData: Array<Array<OptionMenu>> = [
         },
         {
             id: 4,
+            label: 'Gửi phản hồi',
+            onClick: ({ navigate }) => {
+                navigate('/feedback')
+            },
+            icon: ChatAlt2Icon,
+        },
+        {
+            id: 5,
             label: 'Đăng xuất',
             onClick: ({ logout }) => {
                 logout()
