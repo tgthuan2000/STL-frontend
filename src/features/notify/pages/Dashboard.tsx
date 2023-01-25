@@ -1,3 +1,4 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useMemo } from 'react'
 import { DataListViewList } from '~/@types/components'
 import { List, Transaction } from '~/components'
@@ -6,7 +7,8 @@ import { useNotify } from '~/context'
 import * as __services from '../services/dataListView'
 
 const Dashboard = () => {
-    const { notify, hasNextPage, loading, getMore, readDetail } = useNotify()
+    const { notify, hasNextPage, loading, getMore } = useNotify()
+    const [parent] = useAutoAnimate<HTMLDivElement>()
 
     const listProps: DataListViewList & { onRowClick: (data: any) => string } = useMemo(
         () => ({
@@ -20,15 +22,8 @@ const Dashboard = () => {
 
     return (
         <Transaction hasBack={false} title='Thông báo'>
-            <div className='-mx-4'>
-                <List
-                    hasNextPage={hasNextPage}
-                    data={notify}
-                    loading={loading}
-                    onGetMore={getMore}
-                    onItemClick={readDetail}
-                    {...listProps}
-                />
+            <div className='-mx-4' ref={parent}>
+                <List hasNextPage={hasNextPage} data={notify} loading={loading} onGetMore={getMore} {...listProps} />
             </div>
         </Transaction>
     )

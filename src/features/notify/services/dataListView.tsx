@@ -10,7 +10,7 @@ export const renderList: (data: any, index: number) => React.ReactNode = (data, 
     <div
         className={clsx(
             'flex flex-col w-full px-2 py-2 hover:bg-slate-200 dark:hover:bg-slate-600 cursor-pointer',
-            !data.read ? 'bg-gray-100 dark:bg-slate-700' : 'dark:bg-slate-800 bg-gray-200'
+            !data.read ? 'bg-gray-200 dark:bg-slate-700' : 'dark:bg-slate-800 bg-gray-100'
         )}
         title='Nhấn để xem chi tiết'
     >
@@ -38,11 +38,13 @@ export const renderList: (data: any, index: number) => React.ReactNode = (data, 
             {data.notify.description ?? TEMPLATE.EMPTY_DESCRIPTION}
         </Prose>
         <div className='mt-2 flex justify-between items-center'>
-            {data.read && (
-                <p className='text-xs text-gray-600 dark:text-orange-400'>
-                    Đã xem: <b>{moment(data._updatedAt).format(DATE_FORMAT.TIME_DATE)}</b>
-                </p>
-            )}
+            <div>
+                {data.read && (
+                    <p className='text-xs text-gray-600 dark:text-orange-400'>
+                        Đã xem: <b>{moment(data._updatedAt).format(DATE_FORMAT.TIME_DATE)}</b>
+                    </p>
+                )}
+            </div>
             <p className='italic text-xs text-gray-600 dark:text-slate-100'>{getSpacingTime(data.notify._createdAt)}</p>
         </div>
     </div>

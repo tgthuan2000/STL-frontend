@@ -82,8 +82,11 @@ export const GET_NOTIFY_SUBSCRIPTION = groq`
 
 export const GET_NOTIFY_BY_USER = groq`
     *[_type == "assignNotify" && notify._ref == $notifyId && user._ref == $userId][0] {
+        _id,
         _createdAt,
+        read,
         notify-> {
+            _id,
             title,
             content,
             "viewers": count(viewers)
