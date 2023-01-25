@@ -4,7 +4,7 @@ import { Transaction } from '~/components'
 
 const Dashboard = React.lazy(() => import('./pages/Dashboard'))
 const Create = React.lazy(() => import('./pages/Create'))
-const Detail = React.lazy(() => import('~/components/NotifyDetail'))
+const Detail = React.lazy(() => import('./pages/Detail'))
 
 const AnnounceConfig = () => {
     return (
@@ -28,8 +28,8 @@ const AnnounceConfig = () => {
             <Route
                 path=':id'
                 element={
-                    <Transaction title='Chi tiết thông báo'>
-                        <Detail isAdmin />
+                    <Transaction title='Thông báo'>
+                        <Detail />
                     </Transaction>
                 }
             />

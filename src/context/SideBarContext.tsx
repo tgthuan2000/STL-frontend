@@ -6,24 +6,15 @@ const SideBarContext = createContext<ISideBarContext>({
         set: () => {},
         open: false,
     },
-    mobile: {
-        set: () => {},
-        open: false,
-    },
 })
 
 const SideBarProvider = ({ children }: { children: React.ReactNode }) => {
-    const [openSideBarMobile, setOpenSideBarMobile] = useState(false)
     const [openSideBarDesktop, setOpenSideBarDesktop] = useState(false)
 
     const value: ISideBarContext = {
         desktop: {
             open: openSideBarDesktop,
             set: setOpenSideBarDesktop,
-        },
-        mobile: {
-            open: openSideBarMobile,
-            set: setOpenSideBarMobile,
         },
     }
 

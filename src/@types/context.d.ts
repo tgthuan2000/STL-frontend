@@ -112,10 +112,6 @@ export interface ISideBarContext {
         open: boolean
         set: React.Dispatch<React.SetStateAction<boolean>>
     }
-    mobile: {
-        open: boolean
-        set: React.Dispatch<React.SetStateAction<boolean>>
-    }
 }
 
 export interface INotifyContext {
