@@ -5,7 +5,7 @@ import { NotifyDetailFormData } from '~/@types/components'
 import { NotifyDetailQueryData, NotifyItem } from '~/@types/notify'
 import { TAGS } from '~/constant'
 import { TEMPLATE } from '~/constant/template'
-import { useLoading } from '~/context'
+import { useLoading, useNotify } from '~/context'
 import { useQuery } from '~/hook'
 import { GET_NOTIFY_ADMIN, GET_NOTIFY_BY_USER } from '~/schema/query/notify'
 import useAuth from '~/store/auth'
@@ -19,6 +19,7 @@ const NotifyDetail: React.FC<NotifyDetailProps> = ({ isAdmin = false }) => {
     const { id } = useParams()
     const { userProfile } = useAuth()
     const { setSubmitLoading } = useLoading()
+    const { readDetail } = useNotify()
 
     const [{ notify }, fetchData] = useQuery<NotifyDetailQueryData>(
         { notify: isAdmin ? GET_NOTIFY_ADMIN : GET_NOTIFY_BY_USER },
@@ -32,6 +33,17 @@ const NotifyDetail: React.FC<NotifyDetailProps> = ({ isAdmin = false }) => {
             setSubmitLoading(false)
         })
     }, [id])
+
+    useEffect(() => {
+        return () => {
+            const readDetailNotify = async () => {
+                if (notify.data) {
+                    return await readDetail(notify.data)
+                }
+            }
+            readDetailNotify()
+        }
+    }, [notify.data, readDetail])
 
     const data: NotifyDetailFormData = {
         notify: notify.data as SanityDocument<NotifyItem>,

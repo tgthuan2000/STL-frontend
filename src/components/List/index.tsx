@@ -21,7 +21,7 @@ const List: React.FC<ListProps> = ({ loading, data, EmptyList, groupBy, ...props
             }
             return acc
         }, {})
-    }, [data, groupBy])
+    }, [JSON.stringify(data)])
 
     return (
         <div className='inline-block w-full py-2 align-middle' ref={parentRef}>

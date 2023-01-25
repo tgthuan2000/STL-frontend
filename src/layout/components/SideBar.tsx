@@ -4,7 +4,7 @@ import { SideBarProps } from '~/@types/layout'
 import { ScrollToTopProvider, SideBarProvider, useSideBar } from '~/context'
 import { useWindowSize } from '~/hook'
 import { DesktopSideBar, DesktopTopBar } from './Desktop'
-import { MobileSideBar, MobileTopBar } from './Mobile'
+import { MobileTopBar } from './Mobile'
 
 const Sidebar: React.FC<SideBarProps> = ({ children }) => {
     const { desktop } = useSideBar()
@@ -17,7 +17,6 @@ const Sidebar: React.FC<SideBarProps> = ({ children }) => {
                 <>
                     {/* Mobile */}
                     <MobileTopBar />
-                    <MobileSideBar />
                 </>
             ) : (
                 <>

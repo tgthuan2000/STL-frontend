@@ -8,7 +8,7 @@ import { Waypoint } from 'react-waypoint'
 import { ItemReadEvent, NotificationProps, ReadDetailEvent } from '~/@types/components'
 import BellIcon from '~/assets/notification.gif'
 import { TEMPLATE } from '~/constant/template'
-import { useLoading, useNotify } from '~/context'
+import { useNotify } from '~/context'
 import { useWindowSize } from '~/hook'
 import EmptyNotify from './Empty'
 import NotificationItem from './Item'
@@ -20,14 +20,10 @@ const Notification: React.FC<NotificationProps> = () => {
     const [readAllRef] = useAutoAnimate<HTMLButtonElement>()
     const [notifyRef] = useAutoAnimate<HTMLDivElement>()
     const navigate = useNavigate()
-    const { setSubmitLoading } = useLoading()
     const { notify, loadNewNotify, total, hasNextPage, loading, getMore, readDetail } = useNotify()
 
     const handleReadDetail: ReadDetailEvent = async (data) => {
-        setSubmitLoading(true)
-        const url = await readDetail(data)
-        setSubmitLoading(false)
-        navigate(url)
+        navigate(`/notify/${data.notify._id}`)
     }
 
     const handleItemRead: ItemReadEvent = async (e, data) => {
@@ -48,9 +44,7 @@ const Notification: React.FC<NotificationProps> = () => {
                     {loadNewNotify && (
                         <span
                             className={clsx(
-                                'absolute bg-radical-red-500 dark:bg-prussian-blue-400 text-white rounded-lg text-xs font-medium inline-flex justify-center items-center whitespace-nowrap p-2',
-                                { '-bottom-1/2 left-10': width >= 768 },
-                                { 'top-1/2 right-10': width < 768 }
+                                'absolute top-1/2 right-10 bg-radical-red-500 dark:bg-prussian-blue-400 text-white rounded-lg text-xs font-medium inline-flex justify-center items-center whitespace-nowrap p-2'
                             )}
                         >
                             {TEMPLATE.NEW_NOTIFY}
