@@ -72,19 +72,22 @@ const assignLoading = <T extends { [x: string]: string }>(prev: Data<T>) => {
     return Object.assign({}, ...arr)
 }
 
-export type ParamsTypeUseQuery = { [y: string]: string | number | string[] }
+export type ParamsTypeUseQuery = { [y: string]: string | number | null | string[] }
 export type QueryTypeUseQuery<T> = { [Property in keyof T]: string }
 export type TagsTypeUseQuery<T> = { [Property in keyof T]: TAGS }
+export type RefactorUseQuery<T> = (data: T) => T
 
 const useQuery = <T extends { [x: string]: any }>(
     query: QueryTypeUseQuery<T>,
     params: ParamsTypeUseQuery = {},
-    tags: TagsTypeUseQuery<T>
+    tags: TagsTypeUseQuery<T>,
+    refactor?: RefactorUseQuery<T>
 ): useQueryType<T> => {
-    const { fetchApi, deleteCache, checkInCache } = useCache()
+    const { fetchApi, deleteCache, checkInCache, saveCache } = useCache()
     const queryRef = useRef(query)
     const paramsRef = useRef(params)
     const tagsRef = useRef(tags)
+    const refactorRef = useRef(refactor)
     const [refetch, setRefetch] = useState<{ reload: boolean; keys: Array<keyof T> }>({
         reload: false,
         keys: [],
@@ -102,6 +105,10 @@ const useQuery = <T extends { [x: string]: any }>(
     useEffect(() => {
         tagsRef.current = tags
     }, [tags])
+
+    useEffect(() => {
+        refactorRef.current = refactor
+    }, [])
 
     const [data, setData] = useState<Data<T>>(() =>
         filterQueryParams(queryRef.current, paramsRef.current, tagsRef.current)
@@ -121,17 +128,28 @@ const useQuery = <T extends { [x: string]: any }>(
         // fetch data not in cache and cache it
         if (!isEqual(callApi, {})) {
             try {
-                const data = await fetchApi<T>(callApi, paramsRef.current, tagsRef.current)
+                let data = await fetchApi<T>(callApi, paramsRef.current)
+                data = refactorRef.current?.(data) || data
+                data = saveCache(data, callApi, tagsRef.current)
+
                 // setData fetched
-                setData((prev) =>
-                    formatTransform<T>(prev, data, queryRef.current, paramsRef.current, tagsRef.current, refetch.keys)
-                )
+                setData((prev) => {
+                    const formatted = formatTransform<T>(
+                        prev,
+                        data,
+                        queryRef.current,
+                        paramsRef.current,
+                        tagsRef.current,
+                        refetch.keys
+                    )
+                    return formatted
+                })
             } catch (error) {
                 console.log(error)
                 setError(true)
             }
         }
-    }, [queryRef, paramsRef, checkInCache, refetch])
+    }, [queryRef, paramsRef, refactorRef, checkInCache, refetch])
 
     const deletedCaches = useCallback(
         (...keys: Array<keyof T>) => {

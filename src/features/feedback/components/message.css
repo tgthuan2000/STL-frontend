@@ -4,7 +4,8 @@
 .bottom-left-image,
 .bottom-bottom-left-image,
 .see-more-vertical,
-.see-more-horizontal {
+.see-more-horizontal,
+.see-more-vertical-left-image {
     @apply absolute bg-gray-300 dark:bg-slate-700;
 }
 
@@ -34,4 +35,8 @@
 
 .see-more-horizontal {
     @apply h-1 w-4 sm:w-3 bottom-2 translate-y-1/2 sm:left-5 left-4 rounded-tr-full rounded-br-full rounded-bl-full;
+}
+
+.see-more-vertical-left-image {
+    @apply w-1 bottom-0 h-full sm:-left-6 -left-7 translate-x-1/2;
 }

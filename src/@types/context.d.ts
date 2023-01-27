@@ -41,8 +41,7 @@ export interface ISlideOverContext {
 }
 export type FetchApi = <T extends { [x: string]: any }>(
     callApi: { [x: string]: { query: string; key: number } },
-    params: { [y: string]: string | number | string[] },
-    tags: { [x: string]: TAGS }
+    params: { [y: string]: string | number | string[] | null }
 ) => Promise<T>
 
 export type CheckInCache = <T extends { [x: string]: any }>(
@@ -68,10 +67,28 @@ export type DeleteCache = <T extends { [x: string]: any }>(
     }>
 ) => string
 
+export type SaveCache = <
+    T extends {
+        [x: string]: any
+    }
+>(
+    res: T,
+    callApi: {
+        [x: string]: {
+            query: string
+            key: number
+        }
+    },
+    tags: {
+        [x: string]: TAGS
+    }
+) => T
+
 export interface ICacheContext {
     fetchApi: FetchApi
     checkInCache: CheckInCache
     deleteCache: DeleteCache
+    saveCache: SaveCache
 }
 
 export type DataCache<T> = Array<{ key: number; data: { data: T; hasNextPage: boolean } | T }>
@@ -80,7 +97,7 @@ export interface ICacheData<T> {
     [Property in TAGS]?: DataCache<T>
 }
 
-export type QueryParams = { [key: string]: string | number | undefined | string[] }
+export type QueryParams = { [key: string]: string | number | undefined | string[] | null }
 
 export interface IPermissions {
     _id: PERMISSION
