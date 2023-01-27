@@ -1,5 +1,5 @@
 import { get, isEmpty } from 'lodash'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FeedbackQueryData, IFeedback } from '~/@types/feedback'
 import { Transaction } from '~/components'
 import { TAGS } from '~/constant'
@@ -54,7 +54,14 @@ const Dashboard = () => {
         },
     })
 
-    const [{ feedback }, fetchData, , reload] = useQuery<FeedbackQueryData>(query, params, tags, refactor, true)
+    const isRevert = useRef(true)
+    const [{ feedback }, fetchData, , reload] = useQuery<FeedbackQueryData>(
+        query,
+        params,
+        tags,
+        refactor,
+        isRevert.current
+    )
 
     useEffect(() => {
         const sub = client
@@ -72,6 +79,7 @@ const Dashboard = () => {
                                     break
                                 }
                                 case 'appear': {
+                                    isRevert.current = true
                                     setQuery((prev) => ({
                                         ...prev,
                                         query: {
@@ -104,6 +112,7 @@ const Dashboard = () => {
 
     const handleSeeMoreClick = (parentId: string) => {
         const count = feedback.data?.data.filter((d) => d.parentId === parentId).length || 0
+        isRevert.current = false
         setQuery((prev) => ({
             ...prev,
             query: {
