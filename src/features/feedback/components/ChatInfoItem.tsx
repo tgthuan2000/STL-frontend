@@ -44,7 +44,7 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
                 <div className='flex-shrink-0'>
                     <Image className='sm:!h-10 sm:!w-10 !h-8 !w-8' src={data.user.image} />
                 </div>
-                <div className='flex-1'>
+                <div className='flex-1 relative'>
                     <div className='relative inline-flex flex-col sm:max-w-[60vw] max-w-[70vw] dark:bg-slate-700 bg-gray-100 p-2 rounded'>
                         <h3 className='font-normal select-none'>{data.user.userName}</h3>
                         <p className='whitespace-pre-line'>{data.message.trim()}</p>
@@ -52,11 +52,6 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
                             <span className='text-gray-500 dark:text-slate-500 italic text-xs text-right mt-1'>
                                 Đã chỉnh sửa
                             </span>
-                        )}
-                        {bottomImageLine && (
-                            <>
-                                <span className='bottom-image' />
-                            </>
                         )}
                     </div>
                     <div className='mt-2 flex items-center gap-2'>
@@ -110,6 +105,11 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
                             </>
                         )}
                     </div>
+                    {bottomImageLine && (
+                        <>
+                            <span className='bottom-image' />
+                        </>
+                    )}
                     {showInput.show && (
                         <div className='mt-2 inline-flex items-center gap-2'>
                             <InputForm onSubmit={handleSubmitForm} defaultMessage={showInput.message} />

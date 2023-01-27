@@ -18,7 +18,7 @@ const Messages: React.FC<MessagesProps> = ({ data, onSeeMoreClick, onReply, onEd
                 .map((d, index, origin) => {
                     const replyNum =
                         d.childNum - (d.children?.filter((data) => get(data, 'status') !== 'new').length || 0)
-                    const lastEl = !!d.parentId && (index !== origin.length - 1 || parentChildNum !== origin.length)
+                    const lastEl = !!d.parentId && (index !== origin.length - 1 || parentChildNum > origin.length)
 
                     return (
                         <div key={d._id} className='flex flex-col items-start'>
