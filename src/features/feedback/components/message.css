@@ -12,9 +12,9 @@
 }
 
 .left-image {
-    @apply absolute w-4 dark:border-slate-700 border-l-4 border-b-4 rounded-bl-lg h-16 top-0 sm:-left-[1.375rem] -left-[1.625rem];
+    @apply absolute w-4 dark:border-slate-700 border-l-4 border-b-4 rounded-bl-lg h-16 top-0 sm:-left-[1.375rem] -left-[1.5625rem];
 }
 
 .left-see-more {
-    @apply absolute w-4 dark:border-slate-700 border-l-4 border-b-4 rounded-bl-lg h-[3.25rem] top-0 sm:-left-[1.375rem] -left-[1.625rem];
+    @apply absolute w-4 dark:border-slate-700 border-l-4 border-b-4 rounded-bl-lg h-[3.25rem] top-0 sm:-left-[1.375rem] -left-[1.5625rem];
 }
