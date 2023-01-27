@@ -1,4 +1,4 @@
-import { get, isEmpty } from 'lodash'
+import { filter, get, isEmpty } from 'lodash'
 import React, { useMemo } from 'react'
 import { List } from '~/@types'
 import { Feedback, MessagesProps } from '~/@types/feedback'
@@ -12,13 +12,13 @@ const Messages: React.FC<MessagesProps> = ({ data, onSeeMoreClick, onReply, onEd
         if (!data) return null
         const _d = listToTree<Feedback>(data)
 
-        const callBack = (data: Array<List<Feedback>>, parentChildNum: number) => {
+        const callBack = (data: Array<List<Feedback>>, parentReplyNum: number) => {
             return data
                 .filter((d) => !d.deleted)
                 .map((d, index, origin) => {
                     const replyNum =
                         d.childNum - (d.children?.filter((data) => get(data, 'status') !== 'new').length || 0)
-                    const lastEl = !!d.parentId && (index !== origin.length - 1 || parentChildNum > origin.length)
+                    const lastEl = !!d.parentId && (index !== origin.length - 1 || parentReplyNum > 0)
 
                     return (
                         <div key={d._id} className='flex flex-col items-start'>
@@ -28,11 +28,11 @@ const Messages: React.FC<MessagesProps> = ({ data, onSeeMoreClick, onReply, onEd
                                 onReply={onReply}
                                 onEdit={onEdit}
                                 onDelete={onDelete}
-                                bottomImageLine={!isEmpty(d.children) || replyNum > 0}
+                                bottomImageLine={!isEmpty(filter(d.children, { deleted: false })) || replyNum > 0}
                             >
                                 {d.children && !isEmpty(d.children) && (
                                     <div className='pl-10'>
-                                        <>{callBack(d.children, d.childNum)}</>
+                                        <>{callBack(d.children, replyNum)}</>
                                     </div>
                                 )}
                                 {replyNum > 0 && (
