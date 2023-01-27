@@ -21,6 +21,7 @@ const CacheContext = createContext<ICacheContext>({
     fetchApi: <T,>() => Promise.resolve({} as T),
     deleteCache: () => '',
     checkInCache: <T,>() => ({ data: {} as T, callApi: {} }),
+    saveCache: <T,>() => ({} as T),
 })
 
 const DeleteObjKeys = ['__from', '__to', '__start', '__end']
@@ -106,16 +107,25 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
     */
     const fetchApi = async <T extends { [x: string]: any }>(
         callApi: { [x: string]: { query: string; key: number } },
-        params: { [y: string]: string | number | string[] },
-        tags: { [x: string]: TAGS }
+        params: { [y: string]: string | number | string[] | null }
     ) => {
-        const data = {} as T
         /* keys: key of query (EX: recent, methodSpending, v.v) */
         const keys = Object.keys(callApi)
         /* q: Query string */
         const q = '{' + keys.map((key) => `"${key}": ${callApi[key].query}`).join(', ') + '}'
         /* Call API */
         const res: T = await client.fetch(q, params)
+        return res
+    }
+
+    const saveCache = <T extends { [x: string]: any }>(
+        res: T,
+        callApi: { [x: string]: { query: string; key: number } },
+        tags: { [x: string]: TAGS }
+    ) => {
+        const keys = Object.keys(callApi)
+        const data = {} as T
+
         Object.assign(data, res)
 
         const groups: any = {
@@ -188,6 +198,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
         fetchApi,
         deleteCache,
         checkInCache,
+        saveCache,
     }
 
     return <CacheContext.Provider value={value}>{children}</CacheContext.Provider>

@@ -19,6 +19,7 @@ const AnnounceConfigFeature = React.lazy(() => import('./features/announce-confi
 const AccountFeature = React.lazy(() => import('./features/account'))
 const NotifyFeature = React.lazy(() => import('./features/notify'))
 const SettingFeature = React.lazy(() => import('./features/setting'))
+const FeedbackFeature = React.lazy(() => import('./features/feedback'))
 
 function App() {
     return (
@@ -118,6 +119,14 @@ function App() {
                                             element={
                                                 <PermissionCheck permissions={[PERMISSION.PROFILE_READ]}>
                                                     <SettingFeature />
+                                                </PermissionCheck>
+                                            }
+                                        />
+                                        <Route
+                                            path='feedback/*'
+                                            element={
+                                                <PermissionCheck permissions={[PERMISSION.PROFILE_READ]}>
+                                                    <FeedbackFeature />
                                                 </PermissionCheck>
                                             }
                                         />
