@@ -142,7 +142,6 @@ const Dashboard = () => {
         __.create({
             _type: 'feedback',
             message,
-            parentId: null,
             user: {
                 _type: 'reference',
                 _ref: userProfile?._id as string,

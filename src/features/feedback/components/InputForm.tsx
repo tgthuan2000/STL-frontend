@@ -32,6 +32,7 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit }) => {
                         type='text'
                         autoFocus
                         placeholder='Nhập tin nhắn...'
+                        autoComplete='off'
                         className='w-full flex-1 sm:text-base text-sm border-none outline-none bg-transparent focus:ring-transparent'
                         {...field}
                     />
