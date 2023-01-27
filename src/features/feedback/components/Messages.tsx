@@ -51,6 +51,7 @@ const Messages: React.FC<MessagesProps> = ({ data, onSeeMoreClick, onReply }) =>
         }
         return callBack(_d)
     }, [data])
+
     return <div className='text-gray-900 dark:text-slate-200'>{memo}</div>
 }
 

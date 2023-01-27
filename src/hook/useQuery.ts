@@ -39,7 +39,8 @@ const formatTransform = <T extends { [x: string]: any }>(
     query: QueryTypeUseQuery<T>,
     params: ParamsTypeUseQuery,
     tags: TagsTypeUseQuery<T>,
-    keys: Array<keyof T> = []
+    keys: Array<keyof T> = [],
+    isRevert: boolean = false
 ) => {
     const filters = filterQueryParams(query, params, tags)
     const arr = Object.keys(data).map((key) => {
@@ -51,7 +52,11 @@ const formatTransform = <T extends { [x: string]: any }>(
                 data: keys.includes(key)
                     ? {
                           hasNextPage: _d.hasNextPage,
-                          data: prev[key].data ? prev[key].data?.data.concat(_d.data) : _d.data,
+                          data: prev[key].data
+                              ? isRevert
+                                  ? _d.data.concat(prev[key].data?.data)
+                                  : prev[key].data?.data.concat(_d.data)
+                              : _d.data,
                       }
                     : _d,
                 query: query[key],
@@ -81,13 +86,15 @@ const useQuery = <T extends { [x: string]: any }>(
     query: QueryTypeUseQuery<T>,
     params: ParamsTypeUseQuery = {},
     tags: TagsTypeUseQuery<T>,
-    refactor?: RefactorUseQuery<T>
+    refactor?: RefactorUseQuery<T>,
+    isRevert?: boolean
 ): useQueryType<T> => {
     const { fetchApi, deleteCache, checkInCache, saveCache } = useCache()
     const queryRef = useRef(query)
     const paramsRef = useRef(params)
     const tagsRef = useRef(tags)
     const refactorRef = useRef(refactor)
+    const isRevertRef = useRef(isRevert)
     const [refetch, setRefetch] = useState<{ reload: boolean; keys: Array<keyof T> }>({
         reload: false,
         keys: [],
@@ -108,7 +115,11 @@ const useQuery = <T extends { [x: string]: any }>(
 
     useEffect(() => {
         refactorRef.current = refactor
-    }, [])
+    }, [refactor])
+
+    useEffect(() => {
+        isRevertRef.current = isRevert
+    }, [isRevert])
 
     const [data, setData] = useState<Data<T>>(() =>
         filterQueryParams(queryRef.current, paramsRef.current, tagsRef.current)
@@ -140,7 +151,8 @@ const useQuery = <T extends { [x: string]: any }>(
                         queryRef.current,
                         paramsRef.current,
                         tagsRef.current,
-                        refetch.keys
+                        refetch.keys,
+                        isRevertRef.current
                     )
                     return formatted
                 })
