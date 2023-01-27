@@ -22,7 +22,7 @@
 
 .left-image,
 .left-see-more {
-    @apply w-4 dark:border-slate-700 border-l-4 border-b-4 rounded-bl-lg sm:-left-[1.375rem] -left-[1.6125rem] top-0;
+    @apply w-4 dark:border-slate-700 border-l-[0.25rem] border-b-[0.25rem] rounded-bl-lg sm:-left-[1.375rem] -left-[1.625rem] top-0;
 }
 
 .left-image {
