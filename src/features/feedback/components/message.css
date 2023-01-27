@@ -10,11 +10,11 @@
 }
 
 .bottom-image {
-    @apply w-1 sm:top-[88px] sm:left-4 sm:h-[calc(100%-88px)] h-[calc(100%-76px)] top-[76px] left-3 rounded-tl-full rounded-tr-full translate-x-1/2;
+    @apply w-1 sm:top-[88px] sm:left-4 sm:h-[calc(100%-88px)] h-[calc(100%-76px)] top-[80px] left-3 rounded-tl-full rounded-tr-full translate-x-1/2;
 }
 
 .left-image {
-    @apply h-1 sm:w-3 w-[18px] sm:top-14 top-[52px] translate-y-1/2 right-[calc(100%+8px)] rounded-tr-full rounded-br-full rounded-bl-full;
+    @apply h-1 w-[16px] sm:w-[14px] sm:top-14 top-[52px] translate-y-1/2 right-[calc(100%+8px)] rounded-tr-full rounded-br-full rounded-bl-full;
 }
 
 .bottom-message {
@@ -34,7 +34,7 @@
 }
 
 .see-more-horizontal {
-    @apply h-1 w-4 sm:w-3 bottom-2 translate-y-1/2 sm:left-5 left-4 rounded-tr-full rounded-br-full rounded-bl-full;
+    @apply h-1 w-4 bottom-2 translate-y-1/2 sm:left-5 left-[16px] rounded-tr-full rounded-br-full rounded-bl-full;
 }
 
 .see-more-vertical-left-image {
