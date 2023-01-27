@@ -1,41 +1,20 @@
 .bottom-image,
-.bottom-message,
-.bottom-left-image,
-.bottom-bottom-left-image,
-.see-more-vertical,
-.see-more-horizontal,
-.see-more-vertical-left-image {
+.bottom-left-image {
     @apply absolute bg-gray-300 dark:bg-slate-700;
 }
 
 .bottom-image {
-    @apply w-1 sm:top-[88px] sm:left-4 sm:h-[calc(100%-88px)] h-[calc(100%-76px)] top-[80px] left-3 rounded-tl-full rounded-tr-full translate-x-1/2;
-}
-
-.left-image {
-    @apply absolute w-4 dark:border-slate-700 border-l-4 border-b-4 rounded-bl-lg  h-16 top-0 sm:-left-[22px] -left-[26px];
-}
-
-.bottom-message {
-    @apply w-1 top-0 sm:bottom-[calc(100%-62px)] bottom-[calc(100%-54px)] sm:-left-6 -left-7 translate-x-1/2;
+    @apply w-1 sm:top-12 top-10 h-full z-10 sm:-left-8 -left-7 translate-x-1/2;
 }
 
 .bottom-left-image {
-    @apply w-1 sm:-left-6 -left-7 translate-x-1/2 top-[58px] bottom-0;
+    @apply w-1 top-[58px] bottom-0 sm:-left-6 -left-7 translate-x-1/2;
 }
 
-.bottom-bottom-left-image {
-    @apply w-1 sm:-left-6 -left-7 translate-x-1/2 top-0 bottom-0;
+.left-image {
+    @apply absolute w-4 dark:border-slate-700 border-l-4 border-b-4 rounded-bl-lg h-16 top-0 sm:-left-[22px] -left-[26px];
 }
 
-.see-more-vertical {
-    @apply w-1 bottom-[6px] h-full rounded-bl-full sm:left-4 left-3 translate-x-1/2;
-}
-
-.see-more-horizontal {
-    @apply h-1 w-4 bottom-2 translate-y-1/2 sm:left-5 left-[16px] rounded-tr-full rounded-br-full rounded-bl-full;
-}
-
-.see-more-vertical-left-image {
-    @apply w-1 bottom-0 h-full sm:-left-6 -left-7 translate-x-1/2;
+.left-see-more {
+    @apply absolute w-4 dark:border-slate-700 border-l-4 border-b-4 rounded-bl-lg h-[52px] top-0 sm:-left-[22px] -left-[26px];
 }

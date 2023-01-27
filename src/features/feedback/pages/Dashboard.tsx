@@ -123,7 +123,7 @@ const Dashboard = () => {
             sub.unsubscribe()
         }
     }, [])
-
+    console.log(feedback.data?.data)
     const handleSeeMoreClick = (parentId: string) => {
         const count = feedback.data?.data.filter((d) => d.parentId === parentId && d.deleted === false).length || 0
         isRevert.current = false

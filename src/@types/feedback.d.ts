@@ -16,6 +16,7 @@ export interface ChatInfoItemProps {
     onReply: (message: string, parentId: string) => any
     onEdit: (message: string, id: string) => any
     onDelete: (id: string) => any
+    children: React.ReactNode
 }
 
 export interface Feedback {
