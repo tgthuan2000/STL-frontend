@@ -1,4 +1,3 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { get, isEmpty } from 'lodash'
 import React, { useMemo } from 'react'
 import { List } from '~/@types'
@@ -9,7 +8,6 @@ import './message.css'
 import SeeMoreButton from './SeeMoreButton'
 
 const Messages: React.FC<MessagesProps> = ({ data, onSeeMoreClick, onReply }) => {
-    const [parent] = useAutoAnimate<HTMLDivElement>()
     const memo = useMemo(() => {
         if (!data) return null
         const _d = listToTree<Feedback>(data)
@@ -53,11 +51,7 @@ const Messages: React.FC<MessagesProps> = ({ data, onSeeMoreClick, onReply }) =>
         }
         return callBack(_d)
     }, [data])
-    return (
-        <div className='text-gray-900 dark:text-slate-200' ref={parent}>
-            {memo}
-        </div>
-    )
+    return <div className='text-gray-900 dark:text-slate-200'>{memo}</div>
 }
 
 export default Messages
