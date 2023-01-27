@@ -2,7 +2,7 @@ import groq from 'groq'
 
 export const GET_PARENT_FEED_BACK = groq`
     {
-        "data": *[_type == "feedback" && feedbackForUser._ref == $userId && parentId == $parentId] | order(_createdAt asc)[$__fromFeedback...$__toFeedback]
+        "data": *[_type == "feedback" && feedbackForUser._ref == $userId && parentId == $parentId] | order(_createdAt desc)[$__fromFeedback...$__toFeedback]
         {
             _id,
             _createdAt,

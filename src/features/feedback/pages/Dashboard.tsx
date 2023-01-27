@@ -54,7 +54,7 @@ const Dashboard = () => {
         },
     })
 
-    const [{ feedback }, fetchData, , reload] = useQuery<FeedbackQueryData>(query, params, tags, refactor)
+    const [{ feedback }, fetchData, , reload] = useQuery<FeedbackQueryData>(query, params, tags, refactor, true)
 
     useEffect(() => {
         const sub = client
