@@ -1,5 +1,5 @@
 import { cloneDeep, get, isEmpty } from 'lodash'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { FeedbackQueryData, IFeedback } from '~/@types/feedback'
 import { Transaction } from '~/components'
 import { TAGS } from '~/constant'
@@ -82,7 +82,8 @@ const Dashboard = () => {
                                         if (index !== undefined && index !== -1 && temp?.[index]) {
                                             temp[index] = {
                                                 ...temp?.[index],
-                                                edit: get(__, 'edit'),
+                                                edited: get(__, 'edited'),
+                                                deleted: get(__, 'deleted'),
                                                 message: get(__, 'message'),
                                             }
                                             return { ...prev, feedback: { ...prev.feedback, data: { data: temp } } }
@@ -115,29 +116,6 @@ const Dashboard = () => {
                         } finally {
                         }
                     }, 1000)
-                } else {
-                    setTimeout(async () => {
-                        try {
-                            switch (update.transition) {
-                                case 'disappear': {
-                                    updateData((prev) => {
-                                        const temp = cloneDeep(prev.feedback.data?.data)
-                                        const index = temp?.findIndex((d) => d._id === update.documentId)
-                                        if (index !== undefined && index !== -1) {
-                                            temp?.splice(index, 1)
-                                            if (temp) {
-                                                return { ...prev, feedback: { ...prev.feedback, data: { data: temp } } }
-                                            }
-                                        }
-                                        return prev
-                                    })
-                                    break
-                                }
-                            }
-                        } catch (error) {
-                            console.log(error)
-                        }
-                    }, 1000)
                 }
             })
 
@@ -147,7 +125,7 @@ const Dashboard = () => {
     }, [])
 
     const handleSeeMoreClick = (parentId: string) => {
-        const count = feedback.data?.data.filter((d) => d.parentId === parentId).length || 0
+        const count = feedback.data?.data.filter((d) => d.parentId === parentId && d.deleted === false).length || 0
         isRevert.current = false
         setQuery((prev) => ({
             ...prev,
@@ -183,7 +161,8 @@ const Dashboard = () => {
                 _type: 'reference',
                 _ref: userProfile?._id as string,
             },
-            edit: false,
+            edited: false,
+            deleted: false,
             feedbackForUser: {
                 _type: 'reference',
                 _ref: userProfile?._id as string,
@@ -201,7 +180,8 @@ const Dashboard = () => {
             _type: 'feedback',
             message,
             parentId,
-            edit: false,
+            edited: false,
+            deleted: false,
             user: {
                 _type: 'reference',
                 _ref: userProfile?._id as string,
@@ -223,7 +203,7 @@ const Dashboard = () => {
         __.patch(_id, {
             set: {
                 message,
-                edit: true,
+                edited: true,
             },
         })
 
@@ -234,7 +214,11 @@ const Dashboard = () => {
         if (!_id) return
 
         const __ = client.transaction()
-        __.delete(_id)
+        __.patch(_id, {
+            set: {
+                deleted: true,
+            },
+        })
         await __.commit()
     }
 
