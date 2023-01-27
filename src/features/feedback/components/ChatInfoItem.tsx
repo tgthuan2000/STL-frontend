@@ -3,15 +3,25 @@ import React, { useState } from 'react'
 import { ChatInfoItemProps } from '~/@types/feedback'
 import { Image } from '~/components'
 import { getSpacingTime } from '~/services'
+import useAuth from '~/store/auth'
 import InputForm from './InputForm'
 
-const ChatInfoItem: React.FC<ChatInfoItemProps> = ({ data, lastEl, onReply, bottomImageLine }) => {
-    const [showInput, setShowInput] = useState(false)
+const ChatInfoItem: React.FC<ChatInfoItemProps> = ({ data, lastEl, onReply, onEdit, onDelete, bottomImageLine }) => {
+    const { userProfile } = useAuth()
+    const [showInput, setShowInput] = useState({
+        show: false,
+        isEdit: false,
+        message: '',
+    })
     const handleSubmitForm = (message: string) => {
         message = message.trim()
         if (data._id && message) {
-            onReply(message, data._id)
-            setShowInput(false)
+            ;(showInput.isEdit ? onEdit : onReply)(message, data._id)
+            setShowInput({
+                show: false,
+                isEdit: false,
+                message: '',
+            })
         }
     }
 
@@ -24,26 +34,75 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({ data, lastEl, onReply, bott
                 <div className='relative inline-flex flex-col sm:max-w-[60vw] max-w-[70vw] dark:bg-slate-700 bg-gray-100 p-2 rounded'>
                     <h3 className='font-normal select-none'>{data.user.userName}</h3>
                     <p className='whitespace-pre-line'>{data.message.trim()}</p>
+                    {data.edit && (
+                        <span className='text-gray-500 dark:text-slate-500 italic text-xs text-right mt-1'>
+                            Đã chỉnh sửa
+                        </span>
+                    )}
                 </div>
                 <div className='mt-2 flex items-center gap-2'>
-                    <span className='text-xs whitespace-nowrap text-gray-400 dark:text-slate-400 select-none'>
+                    <span className='text-xs whitespace-nowrap text-gray-500 dark:text-slate-400 select-none'>
                         {getSpacingTime(data._createdAt)}
                     </span>
                     <button
                         type='button'
-                        className='dark:text-orange-400 text-gray-500 hover:opacity-70 cursor-pointer whitespace-nowrap'
-                        onClick={() => setShowInput(true)}
+                        disabled={showInput.show && showInput.isEdit}
+                        className='text-orange-500 dark:text-orange-400 transition-all dark:disabled:text-slate-600 disabled:text-slate-600 disabled:cursor-not-allowed hover:opacity-70 cursor-pointer font-normal whitespace-nowrap'
+                        onClick={() =>
+                            setShowInput({
+                                show: true,
+                                isEdit: false,
+                                message: '',
+                            })
+                        }
                     >
                         Phản hòi
                     </button>
+                    {userProfile?._id === data.user._id && (
+                        <>
+                            <button
+                                type='button'
+                                disabled={showInput.show && !showInput.isEdit}
+                                className='text-cyan-600 dark:text-cyan-500 transition-all dark:disabled:text-slate-600 disabled:text-slate-600 disabled:cursor-not-allowed hover:opacity-70 cursor-pointer font-normal whitespace-nowrap'
+                                onClick={() =>
+                                    setShowInput({
+                                        show: true,
+                                        isEdit: true,
+                                        message: data.message,
+                                    })
+                                }
+                            >
+                                Chỉnh sửa
+                            </button>
+                            {/* Disappear if distant time over 500s */}
+                            {Date.now() - new Date(data._createdAt).getTime() < 500000 && (
+                                <button
+                                    type='button'
+                                    className='text-red-500 hover:opacity-70 cursor-pointer font-normal whitespace-nowrap'
+                                    onClick={() => {
+                                        if (!window.confirm('Bạn có chắc chắn muốn xóa?')) return
+                                        data._id && onDelete(data._id)
+                                    }}
+                                >
+                                    Xóa
+                                </button>
+                            )}
+                        </>
+                    )}
                 </div>
-                {showInput && (
+                {showInput.show && (
                     <div className='mt-2 inline-flex items-center gap-2'>
-                        <InputForm onSubmit={handleSubmitForm} />
+                        <InputForm onSubmit={handleSubmitForm} defaultMessage={showInput.message} />
                         <button
                             type='button'
                             className='font-normal text-radical-red-500 hover:opacity-70'
-                            onClick={() => setShowInput(false)}
+                            onClick={() =>
+                                setShowInput({
+                                    show: false,
+                                    isEdit: false,
+                                    message: '',
+                                })
+                            }
                         >
                             Hủy
                         </button>

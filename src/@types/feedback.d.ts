@@ -6,12 +6,16 @@ export interface MessagesProps {
     data: Feedback[] | undefined
     onSeeMoreClick: (parentId: string) => any
     onReply: (message: string, parentId: string) => any
+    onEdit: (message: string, id: string) => any
+    onDelete: (id: string) => any
 }
 export interface ChatInfoItemProps {
     data: List<Feedback>
     lastEl: boolean
     bottomImageLine: boolean
     onReply: (message: string, parentId: string) => any
+    onEdit: (message: string, id: string) => any
+    onDelete: (id: string) => any
 }
 
 export interface Feedback {
@@ -19,6 +23,7 @@ export interface Feedback {
     _createdAt: string
     message: string
     user: Omit<IUserProfile, 'isHasPassword' | 'google' | 'allowSendMail' | 'email'>
+    edit: boolean
     parentId: string | null
     childNum: number
 }
@@ -33,6 +38,7 @@ export interface FeedbackQueryData {
 
 export interface InputFormProps {
     onSubmit: (message: string) => any
+    defaultMessage?: string
 }
 
 export interface SeeMoreButtonProps {

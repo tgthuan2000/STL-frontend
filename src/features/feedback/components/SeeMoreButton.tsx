@@ -11,7 +11,7 @@ const SeeMoreButton: React.FC<SeeMoreButtonProps> = ({ replyNum, onClick }) => {
             onClick()
             setTimeout(() => {
                 setLoading(false)
-            }, 1000)
+            }, 1500)
         }
     }
     return (

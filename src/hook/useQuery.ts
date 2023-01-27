@@ -1,4 +1,4 @@
-import { get, isEmpty, isEqual } from 'lodash'
+import { cloneDeep, get, isEmpty, isEqual } from 'lodash'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Data, useQueryType } from '~/@types/hook'
 import { TAGS } from '~/constant'
@@ -196,7 +196,7 @@ const useQuery = <T extends { [x: string]: any }>(
         }
     }, [refetch.reload, fetchData])
 
-    return [data, fetchData, deletedCaches, reloadData, error]
+    return [data, fetchData, deletedCaches, reloadData, error, setData]
 }
 
 export default useQuery

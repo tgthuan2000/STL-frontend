@@ -4,11 +4,11 @@ import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { InputFormProps } from '~/@types/feedback'
 
-const InputForm: React.FC<InputFormProps> = ({ onSubmit }) => {
+const InputForm: React.FC<InputFormProps> = ({ onSubmit, defaultMessage = '' }) => {
     const [submitRef] = useAutoAnimate<HTMLDivElement>()
     const form = useForm({
         defaultValues: {
-            message: '',
+            message: defaultMessage,
         },
     })
 
