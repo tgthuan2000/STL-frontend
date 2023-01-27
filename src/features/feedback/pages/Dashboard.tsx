@@ -64,19 +64,11 @@ const Dashboard = () => {
                 if (update.result) {
                     const __ = update.result as { _id: string; parentId: string | null }
                     if (get(__, 'feedbackForUser._ref') !== userProfile?._id) return
-                    // if(__.parentId === null || !feedback.data?.data.some(d => d.parentId === __.parentId)) return
+                    console.log(__)
                     setTimeout(async () => {
                         try {
                             switch (update.transition) {
                                 case 'update': {
-                                    // setNotify((prev) => {
-                                    //     const index = prev.findIndex((item) => item._id === data._id)
-                                    //     if (index > -1) {
-                                    //         prev[index] = data
-                                    //     }
-                                    //     return prev
-                                    // })
-                                    // setTotal((prev) => (data.read ? prev - 1 : prev + 1))
                                     break
                                 }
                                 case 'appear': {
@@ -89,7 +81,7 @@ const Dashboard = () => {
                                             ...prev.params,
                                             __fromFeedback: 0,
                                             __toFeedback: 1,
-                                            parentId: __.parentId,
+                                            parentId: __.parentId ?? null,
                                             status: 'new',
                                         },
                                     }))
