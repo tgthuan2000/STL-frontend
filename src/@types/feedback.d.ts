@@ -23,7 +23,8 @@ export interface Feedback {
     _createdAt: string
     message: string
     user: Omit<IUserProfile, 'isHasPassword' | 'google' | 'allowSendMail' | 'email'>
-    edit: boolean
+    edited: boolean
+    deleted: boolean
     parentId: string | null
     childNum: number
 }

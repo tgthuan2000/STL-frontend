@@ -34,7 +34,7 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({ data, lastEl, onReply, onEd
                 <div className='relative inline-flex flex-col sm:max-w-[60vw] max-w-[70vw] dark:bg-slate-700 bg-gray-100 p-2 rounded'>
                     <h3 className='font-normal select-none'>{data.user.userName}</h3>
                     <p className='whitespace-pre-line'>{data.message.trim()}</p>
-                    {data.edit && (
+                    {data.edited && (
                         <span className='text-gray-500 dark:text-slate-500 italic text-xs text-right mt-1'>
                             Đã chỉnh sửa
                         </span>
