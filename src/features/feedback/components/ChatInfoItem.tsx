@@ -119,7 +119,6 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({ data, lastEl, onReply, onEd
             {!!data.parentId && (
                 <>
                     <span className='left-image' />
-                    <span className={clsx('bottom-message', !lastEl && 'rounded-bl-full')} />
                 </>
             )}
             {lastEl && (

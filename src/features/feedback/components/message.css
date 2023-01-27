@@ -1,5 +1,4 @@
 .bottom-image,
-.left-image,
 .bottom-message,
 .bottom-left-image,
 .bottom-bottom-left-image,
@@ -14,7 +13,7 @@
 }
 
 .left-image {
-    @apply h-1 w-[16px] sm:w-[12px] sm:top-14 top-[50px] translate-y-1/2 right-[calc(100%+8px)] rounded-tr-full rounded-br-full rounded-bl-full;
+    @apply absolute w-4 dark:border-slate-700 border-l-4 border-b-4 rounded-bl-lg  h-16 top-0 sm:-left-[22px] -left-[26px];
 }
 
 .bottom-message {
@@ -22,7 +21,7 @@
 }
 
 .bottom-left-image {
-    @apply w-1 sm:-left-6 -left-7 translate-x-1/2 sm:top-[60px] top-[58px] bottom-0;
+    @apply w-1 sm:-left-6 -left-7 translate-x-1/2 top-[58px] bottom-0;
 }
 
 .bottom-bottom-left-image {
