@@ -14,11 +14,11 @@
 }
 
 .left-image {
-    @apply h-1 w-[16px] sm:w-[14px] sm:top-14 top-[52px] translate-y-1/2 right-[calc(100%+8px)] rounded-tr-full rounded-br-full rounded-bl-full;
+    @apply h-1 w-[16px] sm:w-[12px] sm:top-14 top-[50px] translate-y-1/2 right-[calc(100%+8px)] rounded-tr-full rounded-br-full rounded-bl-full;
 }
 
 .bottom-message {
-    @apply w-1 top-0 sm:bottom-[calc(100%-62px)] bottom-[calc(100%-58px)] sm:-left-6 -left-7 translate-x-1/2;
+    @apply w-1 top-0 sm:bottom-[calc(100%-62px)] bottom-[calc(100%-54px)] sm:-left-6 -left-7 translate-x-1/2;
 }
 
 .bottom-left-image {
