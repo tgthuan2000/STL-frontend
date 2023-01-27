@@ -29,6 +29,8 @@ export const GET_PARENT_FEED_BACK = groq`
                         email,
                         image
                     },
+                    edited,
+                    deleted,
                     "childNum": count(*[_type == "feedback" && parentId == ^._id && deleted == false])
                 }
         }
