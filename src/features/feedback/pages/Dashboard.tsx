@@ -1,4 +1,4 @@
-import { get, isEmpty } from 'lodash'
+import { cloneDeep, get, isEmpty } from 'lodash'
 import { useEffect, useRef, useState } from 'react'
 import { FeedbackQueryData, IFeedback } from '~/@types/feedback'
 import { Transaction } from '~/components'
@@ -55,7 +55,7 @@ const Dashboard = () => {
     })
 
     const isRevert = useRef(true)
-    const [{ feedback }, fetchData, , reload] = useQuery<FeedbackQueryData>(
+    const [{ feedback }, fetchData, , reload, , updateData] = useQuery<FeedbackQueryData>(
         query,
         params,
         tags,
@@ -71,11 +71,24 @@ const Dashboard = () => {
                 if (update.result) {
                     const __ = update.result as { _id: string; parentId: string | null }
                     if (get(__, 'feedbackForUser._ref') !== userProfile?._id) return
-                    console.log(__)
+
                     setTimeout(async () => {
                         try {
                             switch (update.transition) {
                                 case 'update': {
+                                    updateData((prev) => {
+                                        const temp = cloneDeep(prev.feedback.data?.data)
+                                        const index = temp?.findIndex((d) => d._id === __._id)
+                                        if (index !== undefined && index !== -1 && temp?.[index]) {
+                                            temp[index] = {
+                                                ...temp?.[index],
+                                                edit: get(__, 'edit'),
+                                                message: get(__, 'message'),
+                                            }
+                                            return { ...prev, feedback: { ...prev.feedback, data: { data: temp } } }
+                                        }
+                                        return prev
+                                    })
                                     break
                                 }
                                 case 'appear': {
@@ -100,6 +113,29 @@ const Dashboard = () => {
                         } catch (error) {
                             console.log(error)
                         } finally {
+                        }
+                    }, 1000)
+                } else {
+                    setTimeout(async () => {
+                        try {
+                            switch (update.transition) {
+                                case 'disappear': {
+                                    updateData((prev) => {
+                                        const temp = cloneDeep(prev.feedback.data?.data)
+                                        const index = temp?.findIndex((d) => d._id === update.documentId)
+                                        if (index !== undefined && index !== -1) {
+                                            temp?.splice(index, 1)
+                                            if (temp) {
+                                                return { ...prev, feedback: { ...prev.feedback, data: { data: temp } } }
+                                            }
+                                        }
+                                        return prev
+                                    })
+                                    break
+                                }
+                            }
+                        } catch (error) {
+                            console.log(error)
                         }
                     }, 1000)
                 }
@@ -147,6 +183,7 @@ const Dashboard = () => {
                 _type: 'reference',
                 _ref: userProfile?._id as string,
             },
+            edit: false,
             feedbackForUser: {
                 _type: 'reference',
                 _ref: userProfile?._id as string,
@@ -164,6 +201,7 @@ const Dashboard = () => {
             _type: 'feedback',
             message,
             parentId,
+            edit: false,
             user: {
                 _type: 'reference',
                 _ref: userProfile?._id as string,
@@ -177,17 +215,42 @@ const Dashboard = () => {
         await __.commit()
     }
 
+    const handleEditMessage = async (message: string, _id: string) => {
+        if (!_id || !message) return
+
+        const __ = client.transaction()
+
+        __.patch(_id, {
+            set: {
+                message,
+                edit: true,
+            },
+        })
+
+        await __.commit()
+    }
+
+    const handleDeleteMessage = async (_id: string) => {
+        if (!_id) return
+
+        const __ = client.transaction()
+        __.delete(_id)
+        await __.commit()
+    }
+
     return (
         <Transaction hasBack={false} title='Phản hồi'>
             <div className='mt-5 bg-gray-200 dark:bg-slate-800 sm:rounded-lg -mx-4 sm:-mx-0 h-[80vh] flex flex-col'>
                 <div className='flex-1 sm:px-5 pb-10 px-3 overflow-auto'>
                     {loading.submit && (
-                        <p className='text-gray-700 dark:text-slate-300 text-center mt-2'>Đang tải nội dung...</p>
+                        <p className='text-gray-700 dark:text-slate-300 text-center mt-5'>Đang tải nội dung...</p>
                     )}
                     <Messages
                         data={feedback.data?.data}
                         onSeeMoreClick={handleSeeMoreClick}
                         onReply={handleReplyMessage}
+                        onEdit={handleEditMessage}
+                        onDelete={handleDeleteMessage}
                     />
                 </div>
                 <div className='flex-shrink-0 border-t dark:border-slate-700 sm:p-5 p-3'>

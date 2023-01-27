@@ -7,7 +7,7 @@ import ChatInfoItem from './ChatInfoItem'
 import './message.css'
 import SeeMoreButton from './SeeMoreButton'
 
-const Messages: React.FC<MessagesProps> = ({ data, onSeeMoreClick, onReply }) => {
+const Messages: React.FC<MessagesProps> = ({ data, onSeeMoreClick, onReply, onEdit, onDelete }) => {
     const memo = useMemo(() => {
         if (!data) return null
         const _d = listToTree<Feedback>(data)
@@ -23,6 +23,8 @@ const Messages: React.FC<MessagesProps> = ({ data, onSeeMoreClick, onReply }) =>
                             data={d}
                             lastEl={lastEl}
                             onReply={onReply}
+                            onEdit={onEdit}
+                            onDelete={onDelete}
                             bottomImageLine={!isEmpty(d.children) || replyNum > 0}
                         />
                         <div className='relative pl-10'>
