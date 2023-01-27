@@ -74,8 +74,9 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({ data, lastEl, onReply, onEd
                             >
                                 Chỉnh sửa
                             </button>
-                            {/* Disappear if distant time over 500s */}
-                            {Date.now() - new Date(data._createdAt).getTime() < 500000 && (
+                            {/* Disappear if distant time over 5 minutes */}
+                            {}
+                            {Date.now() - new Date(data._createdAt).getTime() < 5 * 60 * 1000 && (
                                 <button
                                     type='button'
                                     className='text-red-500 hover:opacity-70 cursor-pointer font-normal whitespace-nowrap'
