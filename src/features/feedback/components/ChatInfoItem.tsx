@@ -70,7 +70,7 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
                                 })
                             }
                         >
-                            Phản hòi
+                            Phản hồi
                         </button>
                         {userProfile?._id === data.user._id && (
                             <>
