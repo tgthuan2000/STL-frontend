@@ -12,3 +12,9 @@ export interface ListGroupResult {
     id: DATA_LIST_GROUP
     name: string
 }
+
+export interface _List {
+    _id: string
+    parentId: string | null
+}
+export type List<T> = T & { children?: Array<T> }

@@ -1,0 +1,34 @@
+.bottom-image,
+.bottom-left-image,
+.left-image,
+.left-see-more {
+    @apply absolute;
+}
+/* ----------------------- */
+.bottom-image,
+.bottom-left-image {
+    @apply bg-gray-300 dark:bg-slate-700 w-1 translate-x-1/2 -left-7;
+}
+
+.bottom-image {
+    @apply sm:top-12 top-10 h-[70%] sm:-left-8;
+}
+
+.bottom-left-image {
+    @apply top-[2.5rem] bottom-0 sm:-left-6;
+}
+
+/* ----------------------- */
+
+.left-image,
+.left-see-more {
+    @apply w-4 dark:border-slate-700 border-gray-300 border-l-[0.25rem] border-b-[0.25rem] rounded-bl-md sm:-left-[1.375rem] -left-[1.625rem] top-0;
+}
+
+.left-image {
+    @apply h-16;
+}
+
+.left-see-more {
+    @apply h-[3.25rem];
+}

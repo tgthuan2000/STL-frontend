@@ -1,4 +1,5 @@
 import { EmailJSResponseStatus } from '@emailjs/browser'
+import React from 'react'
 import { TAGS } from '~/constant'
 
 export type Data<T> = {
@@ -16,7 +17,8 @@ export type useQueryType<T> = [
     () => Promise<void>,
     (...keys: Array<keyof T>) => string | null,
     (...keys: Array<keyof T>) => void,
-    Boolean
+    Boolean,
+    React.Dispatch<React.SetStateAction<Data<T>>>
 ]
 
 export type IUseMail = (

@@ -1,4 +1,4 @@
-import { get, isEmpty, isEqual } from 'lodash'
+import { cloneDeep, get, isEmpty, isEqual } from 'lodash'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Data, useQueryType } from '~/@types/hook'
 import { TAGS } from '~/constant'
@@ -39,7 +39,8 @@ const formatTransform = <T extends { [x: string]: any }>(
     query: QueryTypeUseQuery<T>,
     params: ParamsTypeUseQuery,
     tags: TagsTypeUseQuery<T>,
-    keys: Array<keyof T> = []
+    keys: Array<keyof T> = [],
+    isRevert: boolean = false
 ) => {
     const filters = filterQueryParams(query, params, tags)
     const arr = Object.keys(data).map((key) => {
@@ -51,7 +52,11 @@ const formatTransform = <T extends { [x: string]: any }>(
                 data: keys.includes(key)
                     ? {
                           hasNextPage: _d.hasNextPage,
-                          data: prev[key].data ? prev[key].data?.data.concat(_d.data) : _d.data,
+                          data: prev[key].data
+                              ? isRevert
+                                  ? _d.data.concat(prev[key].data?.data)
+                                  : prev[key].data?.data.concat(_d.data)
+                              : _d.data,
                       }
                     : _d,
                 query: query[key],
@@ -72,19 +77,24 @@ const assignLoading = <T extends { [x: string]: string }>(prev: Data<T>) => {
     return Object.assign({}, ...arr)
 }
 
-export type ParamsTypeUseQuery = { [y: string]: string | number | string[] }
+export type ParamsTypeUseQuery = { [y: string]: string | number | null | string[] }
 export type QueryTypeUseQuery<T> = { [Property in keyof T]: string }
 export type TagsTypeUseQuery<T> = { [Property in keyof T]: TAGS }
+export type RefactorUseQuery<T> = (data: T) => T
 
 const useQuery = <T extends { [x: string]: any }>(
     query: QueryTypeUseQuery<T>,
     params: ParamsTypeUseQuery = {},
-    tags: TagsTypeUseQuery<T>
+    tags: TagsTypeUseQuery<T>,
+    refactor?: RefactorUseQuery<T>,
+    isRevert?: boolean
 ): useQueryType<T> => {
-    const { fetchApi, deleteCache, checkInCache } = useCache()
+    const { fetchApi, deleteCache, checkInCache, saveCache } = useCache()
     const queryRef = useRef(query)
     const paramsRef = useRef(params)
     const tagsRef = useRef(tags)
+    const refactorRef = useRef(refactor)
+    const isRevertRef = useRef(isRevert)
     const [refetch, setRefetch] = useState<{ reload: boolean; keys: Array<keyof T> }>({
         reload: false,
         keys: [],
@@ -102,6 +112,14 @@ const useQuery = <T extends { [x: string]: any }>(
     useEffect(() => {
         tagsRef.current = tags
     }, [tags])
+
+    useEffect(() => {
+        refactorRef.current = refactor
+    }, [refactor])
+
+    useEffect(() => {
+        isRevertRef.current = isRevert
+    }, [isRevert])
 
     const [data, setData] = useState<Data<T>>(() =>
         filterQueryParams(queryRef.current, paramsRef.current, tagsRef.current)
@@ -121,17 +139,29 @@ const useQuery = <T extends { [x: string]: any }>(
         // fetch data not in cache and cache it
         if (!isEqual(callApi, {})) {
             try {
-                const data = await fetchApi<T>(callApi, paramsRef.current, tagsRef.current)
+                let data = await fetchApi<T>(callApi, paramsRef.current)
+                data = refactorRef.current?.(data) || data
+                data = saveCache(data, callApi, tagsRef.current)
+
                 // setData fetched
-                setData((prev) =>
-                    formatTransform<T>(prev, data, queryRef.current, paramsRef.current, tagsRef.current, refetch.keys)
-                )
+                setData((prev) => {
+                    const formatted = formatTransform<T>(
+                        prev,
+                        data,
+                        queryRef.current,
+                        paramsRef.current,
+                        tagsRef.current,
+                        refetch.keys,
+                        isRevertRef.current
+                    )
+                    return formatted
+                })
             } catch (error) {
                 console.log(error)
                 setError(true)
             }
         }
-    }, [queryRef, paramsRef, checkInCache, refetch])
+    }, [queryRef, paramsRef, refactorRef, checkInCache, refetch])
 
     const deletedCaches = useCallback(
         (...keys: Array<keyof T>) => {
@@ -166,7 +196,7 @@ const useQuery = <T extends { [x: string]: any }>(
         }
     }, [refetch.reload, fetchData])
 
-    return [data, fetchData, deletedCaches, reloadData, error]
+    return [data, fetchData, deletedCaches, reloadData, error, setData]
 }
 
 export default useQuery
