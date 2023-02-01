@@ -15,10 +15,14 @@ import { googleLogout } from '@react-oauth/google'
 import { IMenuBtn } from '~/@types/components'
 import { CreateMember, MakeGetLoan } from '~/features/loan/components'
 import { AddCategory, AddMethod, MakeBudget, MakeCost, MakeIncome, MakeTransfer } from '~/features/spending/components'
+import i18n from '~/i18n'
+import LANGUAGE from '~/i18n/language/key'
+
+const { t } = i18n
 
 export const menuMobile: IMenuBtn[] = [
     {
-        title: 'Thêm thu nhập',
+        title: t(LANGUAGE.MAKE_INCOME),
         color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
         icon: PlusCircleIcon,
         children: () => <MakeIncome />,
@@ -28,7 +32,7 @@ export const menuMobile: IMenuBtn[] = [
         },
     },
     {
-        title: 'Thêm chi phí',
+        title: t(LANGUAGE.MAKE_COST),
         color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
         icon: MinusCircleIcon,
         children: () => <MakeCost />,
@@ -38,7 +42,7 @@ export const menuMobile: IMenuBtn[] = [
         },
     },
     {
-        title: 'Chuyển khoản',
+        title: t(LANGUAGE.MAKE_TRANSFER),
         color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
         icon: SwitchHorizontalIcon,
         children: () => <MakeTransfer />,
@@ -48,7 +52,7 @@ export const menuMobile: IMenuBtn[] = [
         },
     },
     {
-        title: 'Giao dịch',
+        title: t(LANGUAGE.TRANSACTION),
         color: 'text-orange-700 bg-orange-200 hover:bg-orange-300 dark:text-orange-500',
         icon: ClipboardListIcon,
         to: 'transaction',
@@ -57,7 +61,7 @@ export const menuMobile: IMenuBtn[] = [
 
 export const menuLoanMobile: IMenuBtn[] = [
     {
-        title: 'Vay tiền',
+        title: t(LANGUAGE.MAKE_GET_LOAN),
         color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
         icon: TrendingUpIcon,
         children: () => <MakeGetLoan />,
@@ -67,7 +71,7 @@ export const menuLoanMobile: IMenuBtn[] = [
         },
     },
     // {
-    //     title: 'Cho vay tiền',
+    //     title: t(LANGUAGE_MAKE_LOAN),
     //     color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
     //     icon: TrendingDownIcon,
     //     children: () => <MakeLoan />,
@@ -77,7 +81,7 @@ export const menuLoanMobile: IMenuBtn[] = [
     //     },
     // },
     {
-        title: 'Tạo thành viên',
+        title: t(LANGUAGE.CREATE_MEMBER),
         color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
         icon: UserAddIcon,
         children: () => <CreateMember />,
@@ -90,7 +94,7 @@ export const menuLoanMobile: IMenuBtn[] = [
 
 export const menuSpendingPC: IMenuBtn[] = [
     {
-        title: 'Thêm thu nhập',
+        title: t(LANGUAGE.MAKE_INCOME),
         color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
         icon: PlusCircleIcon,
         children: () => <MakeIncome />,
@@ -100,7 +104,7 @@ export const menuSpendingPC: IMenuBtn[] = [
         },
     },
     {
-        title: 'Thêm chi phí',
+        title: t(LANGUAGE.MAKE_COST),
         color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
         icon: MinusCircleIcon,
         children: () => <MakeCost />,
@@ -110,7 +114,7 @@ export const menuSpendingPC: IMenuBtn[] = [
         },
     },
     {
-        title: 'Chuyển khoản',
+        title: t(LANGUAGE.MAKE_TRANSFER),
         color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
         icon: SwitchHorizontalIcon,
         children: () => <MakeTransfer />,
@@ -120,7 +124,7 @@ export const menuSpendingPC: IMenuBtn[] = [
         },
     },
     {
-        title: 'Ngân sách',
+        title: t(LANGUAGE.MAKE_BUDGET),
         color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
         icon: PuzzleIcon,
         children: () => <MakeBudget />,
@@ -131,7 +135,7 @@ export const menuSpendingPC: IMenuBtn[] = [
     },
 
     {
-        title: 'Đăng xuất',
+        title: t(LANGUAGE.LOGOUT),
         color: 'text-gray-700 bg-gray-200 hover:bg-gray-300 dark:text-gray-500',
         icon: LogoutIcon,
         to: '/',
@@ -142,25 +146,25 @@ export const menuSpendingPC: IMenuBtn[] = [
         divider: true,
     },
     {
-        title: 'Trang chủ',
+        title: t(LANGUAGE.HOME),
         color: 'text-red-700 bg-red-200 hover:bg-red-300 dark:text-red-500',
         icon: HomeIcon,
         to: '/spending',
     },
     {
-        title: 'Giao dịch',
+        title: t(LANGUAGE.TRANSACTION),
         color: 'text-orange-700 bg-orange-200 hover:bg-orange-300 dark:text-orange-500',
         icon: ClipboardListIcon,
         to: 'transaction',
     },
     {
-        title: 'Phương thức thanh toán',
+        title: t(LANGUAGE.METHOD_SPENDING),
         color: 'text-purple-700 bg-purple-200 hover:bg-purple-300 dark:text-purple-500',
         icon: QrcodeIcon,
         to: 'method',
     },
     {
-        title: 'Tạo mới phương thức thanh toán',
+        title: t(LANGUAGE.CREATE_METHOD),
         color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
         icon: QrcodeIcon,
         children: () => <AddMethod />,
@@ -171,7 +175,7 @@ export const menuSpendingPC: IMenuBtn[] = [
         divider: true,
     },
     {
-        title: 'Tạo mới thể loại',
+        title: t(LANGUAGE.CREATE_CATEGORY),
         color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
         icon: TemplateIcon,
         children: () => <AddCategory />,
@@ -184,7 +188,7 @@ export const menuSpendingPC: IMenuBtn[] = [
 
 export const menuLoanPC: IMenuBtn[] = [
     {
-        title: 'Vay tiền',
+        title: t(LANGUAGE.MAKE_GET_LOAN),
         color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
         icon: TrendingUpIcon,
         children: () => <MakeGetLoan />,
@@ -194,7 +198,7 @@ export const menuLoanPC: IMenuBtn[] = [
         },
     },
     // {
-    //     title: 'Cho vay tiền',
+    //     title: t(LANGUAGE_MAKE_LOAN),
     //     color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
     //     icon: TrendingDownIcon,
     //     children: () => <MakeLoan />,
@@ -204,7 +208,7 @@ export const menuLoanPC: IMenuBtn[] = [
     //     },
     // },
     {
-        title: 'Tạo thành viên',
+        title: t(LANGUAGE.CREATE_MEMBER),
         color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
         icon: UserAddIcon,
         children: () => <CreateMember />,
@@ -214,7 +218,7 @@ export const menuLoanPC: IMenuBtn[] = [
         },
     },
     {
-        title: 'Đăng xuất',
+        title: t(LANGUAGE.LOGOUT),
         color: 'text-gray-700 bg-gray-200 hover:bg-gray-300 dark:text-gray-500',
         icon: LogoutIcon,
         to: '/',
@@ -225,19 +229,19 @@ export const menuLoanPC: IMenuBtn[] = [
         divider: true,
     },
     {
-        title: 'Trang chủ',
+        title: t(LANGUAGE.HOME),
         color: 'text-red-700 bg-red-200 hover:bg-red-300 dark:text-red-500',
         icon: HomeIcon,
         to: '/loan',
     },
     {
-        title: 'Giao dịch',
+        title: t(LANGUAGE.TRANSACTION),
         color: 'text-orange-700 bg-orange-200 hover:bg-orange-300 dark:text-orange-500',
         icon: ClipboardListIcon,
         to: 'transaction',
     },
     // {
-    //     title: 'Phương thức thanh toán',
+    //     title: t(LANGUAGE.METHOD_SPENDING),
     //     color: 'text-purple-700 bg-purple-200 hover:bg-purple-300 dark:text-purple-500',
     //     icon: QrcodeIcon,
     //     to: 'method',
@@ -246,13 +250,13 @@ export const menuLoanPC: IMenuBtn[] = [
 
 export const menuSpendingPages: IMenuBtn[] = [
     {
-        title: 'Trang chủ',
+        title: t(LANGUAGE.HOME),
         color: 'text-red-700 dark:text-red-500',
         icon: HomeIcon,
         to: '/spending',
     },
     {
-        title: 'Giao dịch',
+        title: t(LANGUAGE.TRANSACTION),
         color: 'text-orange-700 dark:text-orange-500',
         icon: ClipboardListIcon,
         to: 'transaction',
@@ -264,7 +268,7 @@ export const menuSpendingPages: IMenuBtn[] = [
         to: 'method',
     },
     {
-        title: 'Ngân sách',
+        title: t(LANGUAGE.MAKE_BUDGET),
         color: 'text-yellow-700 dark:text-yellow-500',
         icon: PuzzleIcon,
         children: () => <MakeBudget />,
@@ -275,7 +279,7 @@ export const menuSpendingPages: IMenuBtn[] = [
         divider: true,
     },
     {
-        title: 'Tạo mới phương thức thanh toán',
+        title: t(LANGUAGE.CREATE_METHOD),
         color: 'text-cyan-700 dark:text-cyan-500',
         icon: QrcodeIcon,
         children: () => <AddMethod />,
@@ -285,7 +289,7 @@ export const menuSpendingPages: IMenuBtn[] = [
         },
     },
     {
-        title: 'Tạo mới thể loại',
+        title: t(LANGUAGE.CREATE_CATEGORY),
         color: 'text-cyan-700 dark:text-cyan-500',
         icon: TemplateIcon,
         children: () => <AddCategory />,
@@ -297,13 +301,13 @@ export const menuSpendingPages: IMenuBtn[] = [
 ]
 export const menuLoanPages: IMenuBtn[] = [
     {
-        title: 'Trang chủ',
+        title: t(LANGUAGE.HOME),
         color: 'text-red-700 dark:text-red-500',
         icon: HomeIcon,
         to: '/loan',
     },
     {
-        title: 'Giao dịch',
+        title: t(LANGUAGE.TRANSACTION),
         color: 'text-orange-700 dark:text-orange-500',
         icon: ClipboardListIcon,
         to: 'transaction',

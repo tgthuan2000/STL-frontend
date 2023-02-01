@@ -2,9 +2,11 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { PlusCircleIcon, RefreshIcon, TrashIcon } from '@heroicons/react/outline'
 import React from 'react'
 import { useFieldArray } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { IMethodSpending, MakeBudgetProps } from '~/@types/spending'
 import { Button } from '~/components'
 import { AutoComplete, Input } from '~/components/_base'
+import LANGUAGE from '~/i18n/language/key'
 
 const Method: React.FC<MakeBudgetProps & { optionData: IMethodSpending[] | undefined; optionLoading: boolean }> = ({
     form,
@@ -14,6 +16,7 @@ const Method: React.FC<MakeBudgetProps & { optionData: IMethodSpending[] | undef
     loading,
     optionLoading,
 }) => {
+    const { t } = useTranslation()
     const [wrapRef] = useAutoAnimate<HTMLDivElement>()
     const [loadingRef] = useAutoAnimate<HTMLButtonElement>()
 
@@ -49,7 +52,7 @@ const Method: React.FC<MakeBudgetProps & { optionData: IMethodSpending[] | undef
                 ) : (
                     <>
                         <PlusCircleIcon className='h-6 w-6' />
-                        Thêm phương thức
+                        {t(LANGUAGE.CREATE_METHOD)}
                     </>
                 )}
             </Button>
@@ -73,7 +76,7 @@ const Method: React.FC<MakeBudgetProps & { optionData: IMethodSpending[] | undef
                                     name={`MethodSpending.${index}.methodSpending`}
                                     form={form}
                                     data={optionData}
-                                    label='Phương thức'
+                                    label={t(LANGUAGE.METHOD)}
                                     loading={optionLoading}
                                 />
                             </div>
@@ -82,7 +85,7 @@ const Method: React.FC<MakeBudgetProps & { optionData: IMethodSpending[] | undef
                                     name={`MethodSpending.${index}.amount`}
                                     form={form}
                                     type='number'
-                                    label='Hạn mức'
+                                    label={t(LANGUAGE.LIMIT_AMOUNT)}
                                 />
                             </div>
                         </div>

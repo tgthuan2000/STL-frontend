@@ -2,6 +2,7 @@ import { isEmpty, isUndefined } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IAddIncomeForm, MakeIncomeQueryData } from '~/@types/spending'
@@ -10,11 +11,13 @@ import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 
 const MakeIncome = () => {
+    const { t } = useTranslation()
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { userProfile } = useAuth()
@@ -129,7 +132,7 @@ const MakeIncome = () => {
                     keepDefaultValues: true,
                 }
             )
-            toast.success<string>('Tạo thu nhập thành công!')
+            toast.success<string>(t(LANGUAGE.NOTIFY_RECEIVE_SUCCESS))
             needCheckWhenLeave()
             // setIsOpen(false)
             // navigate(-1)
@@ -203,24 +206,24 @@ const MakeIncome = () => {
                                 name='amount'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu nhập thu nhập!',
+                                    required: t(LANGUAGE.REQUIRED_RECEIVE) as any,
                                     min: {
                                         value: 0,
-                                        message: 'Thu nhập phải lớn hơn 0!',
+                                        message: t(LANGUAGE.RECEIVE_MIN_ZERO),
                                     },
                                 }}
                                 type='number'
-                                label='Thu nhập'
+                                label={t(LANGUAGE.RECEIVE)}
                             />
 
                             <AutoComplete
                                 name='categorySpending'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn thể loại!',
+                                    required: t(LANGUAGE.REQUIRED_CATEGORY) as any,
                                 }}
                                 data={categorySpending.data}
-                                label='Thể loại'
+                                label={t(LANGUAGE.CATEGORY)}
                                 loading={categorySpending.loading}
                                 addMore={handleAddMoreCategorySpending}
                                 onReload={
@@ -234,10 +237,10 @@ const MakeIncome = () => {
                                 name='methodSpending'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn phương thức thanh toán!',
+                                    required: t(LANGUAGE.REQUIRED_METHOD) as any,
                                 }}
                                 data={methodSpending.data}
-                                label='Phương thức thanh toán'
+                                label={t(LANGUAGE.METHOD_SPENDING)}
                                 loading={methodSpending.loading}
                                 addMore={handleAddMoreMethodSpending}
                                 onReload={
@@ -249,19 +252,19 @@ const MakeIncome = () => {
                                 name='date'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn ngày!',
+                                    required: t(LANGUAGE.REQUIRED_DATE) as any,
                                 }}
-                                label='Ngày'
+                                label={t(LANGUAGE.DATE)}
                             />
 
-                            <TextArea name='description' form={form} label='Ghi chú' />
+                            <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
                         </div>
                     </div>
                 </div>
             </div>
             <SubmitWrap>
                 <Button color='green' type='submit' disabled={loading.submit}>
-                    Lưu
+                    {t(LANGUAGE.SAVE)}
                 </Button>
                 <Button
                     color='outline'
@@ -271,7 +274,7 @@ const MakeIncome = () => {
                         navigate(-1)
                     }}
                 >
-                    Hủy bỏ
+                    {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
         </form>

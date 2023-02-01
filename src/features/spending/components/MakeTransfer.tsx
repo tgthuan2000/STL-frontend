@@ -2,6 +2,7 @@ import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IMakeTransferForm, MakeTransferQueryData } from '~/@types/spending'
@@ -10,11 +11,13 @@ import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 
 const MakeTransfer = () => {
+    const { t } = useTranslation()
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { userProfile } = useAuth()
@@ -127,7 +130,7 @@ const MakeTransfer = () => {
             }, 0)
 
             form.reset({ amount: '', methodSpendingFrom, methodSpendingTo }, { keepDefaultValues: true })
-            toast.success<string>('Thực hiện chuyển khoản thành công!')
+            toast.success<string>(t(LANGUAGE.NOTIFY_TRANSFER_SUCCESS))
             needCheckWhenLeave()
         } catch (error) {
             console.log(error)
@@ -174,24 +177,24 @@ const MakeTransfer = () => {
                                 name='amount'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu nhập số tiền!',
+                                    required: t(LANGUAGE.REQUIRED_TRANSFER_AMOUNT) as string,
                                     min: {
                                         value: 0,
-                                        message: 'Số tiền phải lớn hơn 0!',
+                                        message: t(LANGUAGE.TRANSFER_MIN_ZERO),
                                     },
                                 }}
                                 type='number'
-                                label='Số tiền'
+                                label={t(LANGUAGE.COST)}
                             />
 
                             <AutoComplete
                                 name='methodSpendingFrom'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn phương thức thanh toán!',
+                                    required: t(LANGUAGE.REQUIRED_METHOD) as any,
                                 }}
                                 data={methodSpending.data}
-                                label='Từ phương thức thanh toán'
+                                label={t(LANGUAGE.FROM_TRANSFER_METHOD)}
                                 loading={methodSpending.loading}
                                 addMore={handleAddMoreMethodSpending}
                                 onReload={
@@ -203,10 +206,10 @@ const MakeTransfer = () => {
                                 name='methodSpendingTo'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn phương thức thanh toán!',
+                                    required: t(LANGUAGE.REQUIRED_METHOD) as any,
                                 }}
                                 data={methodSpending.data}
-                                label='Đến phương thức thanh toán'
+                                label={t(LANGUAGE.TO_TRANSFER_METHOD)}
                                 loading={methodSpending.loading}
                                 addMore={handleAddMoreMethodSpending}
                                 onReload={
@@ -218,19 +221,19 @@ const MakeTransfer = () => {
                                 name='date'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn ngày!',
+                                    required: t(LANGUAGE.REQUIRED_DATE) as any,
                                 }}
-                                label='Ngày'
+                                label={t(LANGUAGE.DATE)}
                             />
 
-                            <TextArea name='description' form={form} label='Ghi chú' />
+                            <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
                         </div>
                     </div>
                 </div>
             </div>
             <SubmitWrap>
                 <Button color='blue' type='submit' disabled={loading.submit}>
-                    Chuyển khoản
+                    {t(LANGUAGE.TRANSFER)}
                 </Button>
                 <Button
                     color='outline'
@@ -240,7 +243,7 @@ const MakeTransfer = () => {
                         navigate(-1)
                     }}
                 >
-                    Hủy bỏ
+                    {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
         </form>

@@ -3,6 +3,7 @@ import { cloneDeep, isEmpty } from 'lodash'
 import moment from 'moment'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { IMakeBudgetForm, MakeBudgetQueryData, StateRef, StateRefKey } from '~/@types/spending'
 import { Button, Chip, SubmitWrap, Tabs } from '~/components'
@@ -10,6 +11,7 @@ import { DatePicker } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_BUDGET_BY_MONTH, GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
 import { getBudgetId, getDateOfMonth } from '~/services'
@@ -32,6 +34,7 @@ const defaultStateRef = {
 }
 
 const MakeBudget = () => {
+    const { t } = useTranslation()
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const firstRef = useRef(false)
@@ -230,18 +233,18 @@ const MakeBudget = () => {
         return [
             {
                 id: '1',
-                label: 'Phương thức',
+                label: t(LANGUAGE.METHOD),
                 content: <Method optionData={methodSpending.data} optionLoading={methodSpending.loading} {...props} />,
             },
             {
                 id: '2',
-                label: 'Thể loại',
+                label: t(LANGUAGE.CATEGORY),
                 content: (
                     <Category optionData={categorySpending.data} optionLoading={categorySpending.loading} {...props} />
                 ),
             },
         ]
-    }, [budgetSpending.loading, methodSpending.loading, categorySpending.loading, loading])
+    }, [budgetSpending.loading, methodSpending.loading, categorySpending.loading, loading, t])
 
     return (
         <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
@@ -257,13 +260,13 @@ const MakeBudget = () => {
                                         showMonthYearPicker
                                         showTimeInput={false}
                                         format='MONTH'
-                                        label='Tháng'
+                                        label={t(LANGUAGE.MONTH)}
                                         disabledClear
                                         onChange={handleChangeDate}
                                     />
                                 </div>
                                 <Chip onClick={handlePreviousMonth} disabled={loading.submit}>
-                                    Chọn theo tháng trước
+                                    {t(LANGUAGE.CHOOSE_PREVIOUS_MONTH)}
                                 </Chip>
                             </div>
                             <Tabs options={tabOptions} />
@@ -273,7 +276,7 @@ const MakeBudget = () => {
             </div>
             <SubmitWrap>
                 <Button color='yellow' type='submit' disabled={loading.submit}>
-                    Lưu
+                    {t(LANGUAGE.SAVE)}
                 </Button>
                 <Button
                     color='outline'
@@ -283,7 +286,7 @@ const MakeBudget = () => {
                         navigate(-1)
                     }}
                 >
-                    Hủy bỏ
+                    {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
         </form>

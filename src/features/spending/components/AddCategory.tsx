@@ -3,6 +3,7 @@ import { BadgeCheckIcon, ExclamationCircleIcon } from '@heroicons/react/outline'
 import { isEmpty } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { AddCategoryQueryData, IAddCategoryForm } from '~/@types/spending'
@@ -12,6 +13,7 @@ import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
 import useQuery, { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
+import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING } from '~/schema/query/spending'
 import { getCategorySpending } from '~/services/query'
@@ -19,6 +21,7 @@ import useAuth from '~/store/auth'
 import { searchName } from '../services'
 
 const AddCategory = () => {
+    const { t } = useTranslation()
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { kindSpending, getKindSpendingId } = useConfig()
@@ -97,7 +100,7 @@ const AddCategory = () => {
                 getCategorySpending({ userProfile, kindSpending: kindSpending?._id as string }),
             ])
             console.log(result)
-            toast.success<string>('Tạo mới thể loại thành công!')
+            toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_CATEGORY_SUCCESS))
             form.reset({ name: '', kindSpending }, { keepDefaultValues: true })
         } catch (error) {
             console.log(error)
@@ -122,10 +125,10 @@ const AddCategory = () => {
                                 name='kindSpending'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn thể loại!',
+                                    required: t(LANGUAGE.REQUIRED_KIND) as string,
                                 }}
-                                label='Thể loại'
-                                placeholder='--- Chọn thể loại ---'
+                                label={t(LANGUAGE.CATEGORY)}
+                                placeholder={t(LANGUAGE.PLACEHOLDER_CHOOSE_KIND)}
                                 data={kinds}
                                 idKey='_id'
                                 valueKey='name'
@@ -135,14 +138,14 @@ const AddCategory = () => {
                                 name='name'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu nhập tên thể loại!',
+                                    required: t(LANGUAGE.REQUIRED_CATEGORY_NAME) as any,
                                     maxLength: {
                                         value: 50,
-                                        message: 'Tên thể loại không được vượt quá 50 ký tự!',
+                                        message: t(LANGUAGE.CATEGORY_NAME_MAX_50),
                                     },
                                 }}
                                 type='text'
-                                label='Tên thể loại'
+                                label={t(LANGUAGE.CATEGORY_NAME)}
                             />
 
                             <div ref={alertRef}>
@@ -152,7 +155,7 @@ const AddCategory = () => {
                                             <>
                                                 <span className='text-yellow-500 flex items-center gap-1'>
                                                     <ExclamationCircleIcon className='h-6 w-6' />
-                                                    Một số thể loại gần giống tên
+                                                    {t(LANGUAGE.SOME_CATEGORY_SIMILAR_NAME)}
                                                 </span>
 
                                                 <ul className='mt-1 list-disc pl-5'>
@@ -179,7 +182,7 @@ const AddCategory = () => {
                                         ) : (
                                             <span className='text-green-500 flex items-center gap-1'>
                                                 <BadgeCheckIcon className='h-6 w-6' />
-                                                Không có thể loại nào gần giống tên!
+                                                {t(LANGUAGE.NOT_CATEGORY_SIMILAR_NAME)}
                                             </span>
                                         )}
                                     </>
@@ -191,7 +194,7 @@ const AddCategory = () => {
             </div>
             <SubmitWrap>
                 <Button color='cyan' type='submit' disabled={loading.submit}>
-                    Tạo
+                    {t(LANGUAGE.CREATE)}
                 </Button>
                 <Button
                     color='outline'
@@ -201,7 +204,7 @@ const AddCategory = () => {
                         navigate(-1)
                     }}
                 >
-                    Hủy bỏ
+                    {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
         </form>

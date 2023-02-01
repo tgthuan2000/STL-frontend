@@ -6,8 +6,11 @@ import { filter, find, get, isNil } from 'lodash'
 import numeral from 'numeral'
 import { forwardRef, useEffect, useMemo, useState } from 'react'
 import { Controller } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { AutoCompleteProps } from '~/@types/components'
+import i18n from '~/i18n'
+import LANGUAGE from '~/i18n/language/key'
 import { urlFor } from '~/sanityConfig'
 import Image from '../Image'
 import LoadingButton from '../Loading/LoadingButton'
@@ -30,12 +33,13 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
             onChange,
             showImage,
             disabledClear,
-            surplusName = 'Số dư',
+            surplusName = i18n.t(LANGUAGE.SURPLUS),
             disabledShowSurplus,
             multiple,
         },
         ref
     ) => {
+        const { t } = useTranslation()
         const value = useMemo(() => {
             return form.getValues(name)
         }, [JSON.stringify(form.getValues(name))])
@@ -133,7 +137,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                             : 'bg-white text-gray-900 dark:bg-slate-700 dark:border-slate-800 dark:text-slate-200'
                                     )}
                                     displayValue={(item: any) =>
-                                        loadingAddMore ? 'Đang thực hiện tạo mới...' : item?.[valueKey]
+                                        loadingAddMore ? t(LANGUAGE.CREATING) : item?.[valueKey]
                                     }
                                     onChange={(event) => setQuery(event.target.value)}
                                     spellCheck={false}

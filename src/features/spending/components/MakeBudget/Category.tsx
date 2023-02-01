@@ -2,9 +2,11 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { PlusCircleIcon, RefreshIcon, TrashIcon } from '@heroicons/react/outline'
 import React from 'react'
 import { useFieldArray } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { ICategorySpending, MakeBudgetProps } from '~/@types/spending'
 import { Button } from '~/components'
 import { AutoComplete, Input } from '~/components/_base'
+import LANGUAGE from '~/i18n/language/key'
 
 const Category: React.FC<MakeBudgetProps & { optionData: ICategorySpending[] | undefined; optionLoading: boolean }> = ({
     form,
@@ -14,6 +16,7 @@ const Category: React.FC<MakeBudgetProps & { optionData: ICategorySpending[] | u
     loading,
     optionLoading,
 }) => {
+    const { t } = useTranslation()
     const [wrapRef] = useAutoAnimate<HTMLDivElement>()
     const [loadingRef] = useAutoAnimate<HTMLButtonElement>()
 
@@ -49,7 +52,7 @@ const Category: React.FC<MakeBudgetProps & { optionData: ICategorySpending[] | u
                 ) : (
                     <>
                         <PlusCircleIcon className='h-6 w-6' />
-                        Thêm thể loại
+                        {t(LANGUAGE.CREATE_CATEGORY)}
                     </>
                 )}
             </Button>
@@ -73,7 +76,7 @@ const Category: React.FC<MakeBudgetProps & { optionData: ICategorySpending[] | u
                                     name={`CategorySpending.${index}.categorySpending`}
                                     form={form}
                                     data={optionData}
-                                    label='Thể loại'
+                                    label={t(LANGUAGE.CATEGORY)}
                                     loading={optionLoading}
                                 />
                             </div>
@@ -82,7 +85,7 @@ const Category: React.FC<MakeBudgetProps & { optionData: ICategorySpending[] | u
                                     name={`CategorySpending.${index}.amount`}
                                     form={form}
                                     type='number'
-                                    label='Hạn mức'
+                                    label={t(LANGUAGE.LIMIT_AMOUNT)}
                                 />
                             </div>
                         </div>

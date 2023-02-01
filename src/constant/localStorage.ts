@@ -3,4 +3,5 @@ export enum LOCAL_STORAGE_KEY {
     STL_DRAFT_NOTIFY = 'STL-draft-notify',
     STL_DATALIST_VIEW = 'STL-datalist-view',
     STL_THEME = 'STL-theme',
+    STL_LANGUAGE = 'STL-language',
 }

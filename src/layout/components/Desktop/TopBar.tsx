@@ -1,6 +1,6 @@
 import { ChevronDoubleRightIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
-import { Notification } from '~/components'
+import { LanguageSelection, Notification } from '~/components'
 import { useSideBar } from '~/context'
 import Logo from '../Logo'
 
@@ -30,7 +30,10 @@ const TopBar = () => {
                         </span>
                     </div>
                     <div className='flex-1 px-3 flex justify-end'>
-                        <Notification />
+                        <div className='inline-flex items-center gap-2'>
+                            <LanguageSelection />
+                            <Notification />
+                        </div>
                     </div>
                 </div>
             </div>
