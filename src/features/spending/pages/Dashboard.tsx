@@ -1,6 +1,7 @@
 import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { DashboardQueryData } from '~/@types/spending'
 import { Box, ButtonMenu, Divider, Transaction } from '~/components'
 import { DATE_FORMAT, TAGS } from '~/constant'
@@ -22,6 +23,7 @@ const Dashboard = () => {
     const { userProfile } = useAuth()
     const { kindSpending, budgetSpending, getKindSpendingId, getKindSpendingIds } = useConfig()
     const budgetId = budgetSpending?._id
+    const { t } = useTranslation()
 
     const [{ method, recent, budget, statistic }, fetchData, deleteCache, reload] = useQuery<DashboardQueryData>(
         {
@@ -76,13 +78,13 @@ const Dashboard = () => {
                     _id: getKindSpendingId('RECEIVE') as string,
                     value: _.receive + _['get-loan'],
                     getLoan: _['get-loan'],
-                    name: 'Thu nhập',
+                    name: t('receive'),
                     color: 'text-green-500',
                 },
                 {
                     _id: getKindSpendingId('COST') as string,
                     value: _.cost + _.loan,
-                    name: 'Chi phí',
+                    name: t('cost'),
                     color: 'text-red-500',
                 },
                 {
