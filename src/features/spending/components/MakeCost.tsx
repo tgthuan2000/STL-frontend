@@ -2,6 +2,7 @@ import { isEmpty, isUndefined } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IAddCostForm, MakeCostQueryData } from '~/@types/spending'
@@ -10,11 +11,13 @@ import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 
 const MakeCost = () => {
+    const { t } = useTranslation()
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { userProfile } = useAuth()
@@ -131,7 +134,7 @@ const MakeCost = () => {
                     keepDefaultValues: true,
                 }
             )
-            toast.success<string>('Tạo chi phí thành công!')
+            toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_COST_SUCCESS))
             needCheckWhenLeave()
             // setIsOpen(false)
             // navigate(-1)
@@ -205,24 +208,24 @@ const MakeCost = () => {
                                 name='amount'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu nhập chi phí!',
+                                    required: t(LANGUAGE.REQUIRED_COST) as any,
                                     min: {
                                         value: 0,
-                                        message: 'Chi phí phải lớn hơn 0!',
+                                        message: t(LANGUAGE.COST_MIN_ZERO),
                                     },
                                 }}
                                 type='number'
-                                label='Chi phí'
+                                label={t(LANGUAGE.COST)}
                             />
 
                             <AutoComplete
                                 name='categorySpending'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn thể loại!',
+                                    required: t(LANGUAGE.REQUIRED_CATEGORY) as any,
                                 }}
                                 data={categorySpending.data}
-                                label='Thể loại'
+                                label={t(LANGUAGE.CATEGORY)}
                                 loading={categorySpending.loading}
                                 addMore={handleAddMoreCategorySpending}
                                 onReload={
@@ -235,10 +238,10 @@ const MakeCost = () => {
                                 name='methodSpending'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn phương thức thanh toán!',
+                                    required: t(LANGUAGE.REQUIRED_METHOD) as any,
                                 }}
                                 data={methodSpending.data}
-                                label='Phương thức thanh toán'
+                                label={t(LANGUAGE.METHOD_SPENDING)}
                                 loading={methodSpending.loading}
                                 addMore={handleAddMoreMethodSpending}
                                 onReload={
@@ -249,19 +252,19 @@ const MakeCost = () => {
                                 name='date'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn ngày!',
+                                    required: t(LANGUAGE.REQUIRED_DATE) as any,
                                 }}
-                                label='Ngày'
+                                label={t(LANGUAGE.DATE)}
                             />
 
-                            <TextArea name='description' form={form} label='Ghi chú' />
+                            <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
                         </div>
                     </div>
                 </div>
             </div>
             <SubmitWrap>
                 <Button color='radicalRed' type='submit' disabled={loading.submit}>
-                    Lưu
+                    {t(LANGUAGE.SAVE)}
                 </Button>
                 <Button
                     color='outline'
@@ -271,7 +274,7 @@ const MakeCost = () => {
                         navigate(-1)
                     }}
                 >
-                    Hủy bỏ
+                    {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
         </form>

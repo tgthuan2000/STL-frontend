@@ -58,7 +58,7 @@ export const reactQuillOptions = {
 export const acceptImageType = ['image/jpeg', 'image/png', 'image/jpg']
 
 export const notifySound = new Howl({
-    src: ['notify-sound-2.wav'],
+    src: ['notify-sound.wav'],
 })
 
 export const getSizeAvatarUser = {

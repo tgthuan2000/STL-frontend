@@ -1,4 +1,5 @@
 import { SanityDocument } from '@sanity/client'
+import { DefaultTFuncReturn } from 'i18next'
 import React from 'react'
 import { NavigateFunction } from 'react-router-dom'
 import { Navigation } from '~/constant/layout'
@@ -31,6 +32,7 @@ export type OptionFuncData =
           userProfile: SanityDocument<IUserProfile> | null | undefined
           theme: UseLocalStorageResult<string>
       }) => React.ReactNode)
+    | DefaultTFuncReturn
 
 export interface OptionMenu {
     id: number

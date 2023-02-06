@@ -1,13 +1,16 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Combobox } from '@headlessui/react'
-import { CheckIcon, SelectorIcon, XIcon } from '@heroicons/react/outline'
+import { CheckIcon, ChevronUpDownIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { filter, find, get, isNil } from 'lodash'
 import numeral from 'numeral'
 import { forwardRef, useEffect, useMemo, useState } from 'react'
 import { Controller } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { AutoCompleteProps } from '~/@types/components'
+import i18n from '~/i18n'
+import LANGUAGE from '~/i18n/language/key'
 import { urlFor } from '~/sanityConfig'
 import Image from '../Image'
 import LoadingButton from '../Loading/LoadingButton'
@@ -30,12 +33,13 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
             onChange,
             showImage,
             disabledClear,
-            surplusName = 'Số dư',
+            surplusName = i18n.t(LANGUAGE.SURPLUS),
             disabledShowSurplus,
-            multiple,
+            multiple = false,
         },
         ref
     ) => {
+        const { t } = useTranslation()
         const value = useMemo(() => {
             return form.getValues(name)
         }, [JSON.stringify(form.getValues(name))])
@@ -116,7 +120,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                             value={selectedItem}
                             onChange={(value) => handleChange(value, field.onChange)}
                             disabled={disabled || loading}
-                            multiple={multiple}
+                            multiple={multiple as any}
                         >
                             <div className='flex justify-between items-center'>
                                 <Combobox.Label className='inline-block text-sm font-medium text-gray-700 dark:text-slate-100'>
@@ -133,7 +137,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                             : 'bg-white text-gray-900 dark:bg-slate-700 dark:border-slate-800 dark:text-slate-200'
                                     )}
                                     displayValue={(item: any) =>
-                                        loadingAddMore ? 'Đang thực hiện tạo mới...' : item?.[valueKey]
+                                        loadingAddMore ? t(LANGUAGE.CREATING) : item?.[valueKey]
                                     }
                                     onChange={(event) => setQuery(event.target.value)}
                                     spellCheck={false}
@@ -146,7 +150,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                         className='absolute inset-y-0 right-6 flex items-center rounded-r-md px-2 focus:outline-none'
                                     >
                                         {selectedItem && (
-                                            <XIcon
+                                            <XMarkIcon
                                                 onClick={(e) => {
                                                     e.stopPropagation()
                                                     setSelectedItem(null)
@@ -163,7 +167,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                 )}
 
                                 <Combobox.Button className='absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none'>
-                                    <SelectorIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
+                                    <ChevronUpDownIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
                                 </Combobox.Button>
 
                                 {filterData.length > 0 ? (

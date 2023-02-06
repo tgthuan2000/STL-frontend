@@ -1,4 +1,4 @@
-import { BellIcon } from '@heroicons/react/outline'
+import { BellIcon } from '@heroicons/react/24/outline'
 import React from 'react'
 import { MobileNavLink } from '~/@types/layout'
 import { useNotify } from '~/context'

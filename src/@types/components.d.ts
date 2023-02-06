@@ -1,4 +1,5 @@
 import { SanityDocument, SanityImageAssetDocument } from '@sanity/client'
+import { DefaultTFuncReturn } from 'i18next'
 import React, { HTMLInputTypeAttribute, ReactNode } from 'react'
 import { FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
 import { ReactQuillProps } from 'react-quill'
@@ -8,6 +9,7 @@ import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
 import { PERMISSION } from '~/constant/permission'
 import { IFILTER_DATE } from '~/constant/template'
 import { UseLocalStorageResult } from '~/hook/useLocalStorage'
+import { HeroIcon } from '.'
 import { IUserLoan } from './loan'
 import { NotifyItem } from './notify'
 import { ISpendingData } from './spending'
@@ -19,7 +21,7 @@ export interface SlideParams {
 export interface AutoCompleteProps {
     name: string
     className?: string
-    label?: string
+    label?: string | DefaultTFuncReturn
     data?: any[]
     idKey?: string
     valueKey?: string
@@ -33,18 +35,18 @@ export interface AutoCompleteProps {
     showImage?: boolean
     disabledClear?: boolean
     disabledShowSurplus?: boolean
-    surplusName?: string
+    surplusName?: string | DefaultTFuncReturn
     multiple?: boolean
 }
 
 export interface SelectionProps {
     name: string
     className?: string
-    label?: string
+    label?: string | DefaultTFuncReturn
     data?: any[]
     idKey?: string
     valueKey?: string
-    placeholder?: string
+    placeholder?: string | DefaultTFuncReturn
     form: UseFormReturn<any, object>
     rules?: Rules
     disabled?: boolean
@@ -53,14 +55,16 @@ export interface SelectionProps {
 export interface DropdownProps {
     name: string
     className?: string
-    label?: ReactNode
+    label?: ReactNode | DefaultTFuncReturn
     data?: Array<Array<any>>
     idKey?: string
     valueKey?: string
-    placeholder?: string
+    placeholder?: string | DefaultTFuncReturn
     form: UseFormReturn<any, object>
     rules?: Rules
     disabled?: boolean
+    showValueOnLabel?: boolean
+    customButtonClassName?: string
 }
 
 export interface SlideOverProps {
@@ -69,7 +73,7 @@ export interface SlideOverProps {
 
 export interface InputProps {
     className?: string
-    label?: string
+    label?: string | DefaultTFuncReturn
     name: string
     type?: HTMLInputTypeAttribute
     disabled?: boolean
@@ -80,17 +84,17 @@ export interface InputProps {
 
 interface RichTextProps extends ReactQuillProps {
     className?: string
-    label?: string
+    label?: string | DefaultTFuncReturn
     name: string
     disabled?: boolean
     form: UseFormReturn<any, object>
     rules?: Rules
-    placeholder?: string
+    placeholder?: string | DefaultTFuncReturn
 }
 
 export interface UploadImageProps {
     className?: string
-    label?: string
+    label?: string | DefaultTFuncReturn
     name: string
     disabled?: boolean
     form: UseFormReturn<any, object>
@@ -99,7 +103,7 @@ export interface UploadImageProps {
 
 export interface DateProps {
     className?: string
-    label?: string
+    label?: string | DefaultTFuncReturn
     name: string
     error?: FieldError
     form: UseFormReturn<any, object>
@@ -109,7 +113,7 @@ export interface DateProps {
     onChange?: (value: any) => void
     format?: keyof typeof DATE_FORMAT
     showTimeInput?: boolean
-    placeholderText?: string
+    placeholderText?: string | DefaultTFuncReturn
     showMonthYearPicker?: boolean
     showYearPicker?: boolean
     selectsRange?: boolean
@@ -122,7 +126,7 @@ export interface DateProps {
 
 export interface DatePickerInputProps {
     error?: FieldError
-    label?: string
+    label?: string | DefaultTFuncReturn
     className?: string
     disabledClear?: boolean
     disabled?: boolean
@@ -132,7 +136,7 @@ export interface DatePickerInputProps {
 
 export interface TextAreaProps {
     className?: string
-    label?: string
+    label?: string | DefaultTFuncReturn
     name: string
     error?: FieldError
     form: UseFormReturn<any, object>
@@ -164,7 +168,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 export interface ContentBoxProps {
-    title?: string
+    title?: string | DefaultTFuncReturn
     seeMore?: boolean
     children: React.ReactNode
     to?: string
@@ -190,7 +194,7 @@ export interface MenuButtonProps {
 
 export interface IMenuBtn {
     title: string
-    icon: (props: SVGProps<SVGSVGElement>) => JSX.Element
+    icon: HeroIcon
     color: string
     to: To
     children?: () => React.ReactNode
@@ -224,7 +228,7 @@ export interface AvatarUserProps {
 export interface Box2Props {
     children?: (data: { data: any[] | undefined; loading: boolean }) => React.ReactNode
     data: any[] | undefined
-    label?: string
+    label?: string | DefaultTFuncReturn
     loading?: boolean
     onReload: () => void
 }
@@ -287,7 +291,7 @@ export interface SettingIconProps {
 }
 
 export interface BoxTitleProps {
-    title?: string
+    title?: string | DefaultTFuncReturn
     onReload?: () => void
     loading?: boolean
     customEvent?: React.ReactNode
@@ -409,7 +413,7 @@ export type TimeFilterPayload = {
 }
 
 export interface TransactionProps {
-    title?: string
+    title?: string | DefaultTFuncReturn
     children?: React.ReactNode
     hasBack?: boolean
 }
@@ -447,4 +451,13 @@ export interface SubmitWrapProps {
 
 export interface AsideProps {
     children: React.ReactNode
+}
+
+export interface ButtonGroupProps {
+    form: UseFormReturn<any, object>
+    name: string
+    idKey?: string
+    valueKey?: string
+    data?: any[]
+    onChange?: (data: any) => void
 }

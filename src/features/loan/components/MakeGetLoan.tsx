@@ -2,6 +2,7 @@ import { isEmpty, isUndefined } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IMakeGetLoanForm, QueryDataMakeGetLoan } from '~/@types/loan'
@@ -10,6 +11,7 @@ import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_USER_LOAN } from '~/schema/query/loan'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
@@ -17,6 +19,7 @@ import useAuth from '~/store/auth'
 import StatusLoan from './common/StatusLoan'
 
 const MakeGetLoan = () => {
+    const { t } = useTranslation()
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { userProfile } = useAuth()
@@ -131,7 +134,7 @@ const MakeGetLoan = () => {
             }, 0)
 
             form.reset({ amount: '', methodReference, userLoan }, { keepDefaultValues: true })
-            toast.success<string>('Thực hiện tạo vay thành công!')
+            toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_GET_LOAN_SUCCESS))
             deleteCache([GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN])
             needCheckWhenLeave()
         } catch (error) {
@@ -157,21 +160,21 @@ const MakeGetLoan = () => {
                                 name='amount'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu nhập số tiền!',
+                                    required: t(LANGUAGE.REQUIRED_AMOUNT) as any,
                                     min: {
                                         value: 0,
-                                        message: 'Số tiền phải lớn hơn 0!',
+                                        message: t(LANGUAGE.AMOUNT_MIN_ZERO),
                                     },
                                 }}
                                 type='number'
-                                label='Số tiền'
+                                label={t(LANGUAGE.AMOUNT)}
                             />
 
                             <AutoComplete
                                 name='methodReference'
                                 form={form}
                                 data={methodSpending.data}
-                                label='Phương thức nhận tiền'
+                                label={t(LANGUAGE.METHOD_RECEIVE)}
                                 loading={methodSpending.loading}
                                 onReload={
                                     isEmpty(methodSpending.data) ? undefined : () => handleReloadData('methodSpending')
@@ -180,31 +183,31 @@ const MakeGetLoan = () => {
 
                             <StatusLoan form={form} name='methodReference' />
 
-                            <DatePicker name='estimatePaidDate' form={form} label='Ngày trả' />
+                            <DatePicker name='estimatePaidDate' form={form} label={t(LANGUAGE.ESTIMATE_PAID_DATE)} />
 
                             <AutoComplete
                                 name='userLoan'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn đối tượng vay!',
+                                    required: t(LANGUAGE.REQUIRED_USER_GET_LOAN) as any,
                                 }}
                                 data={userLoan.data}
-                                label='Đối tượng vay'
+                                label={t(LANGUAGE.USER_GET_LOAN)}
                                 valueKey='userName'
                                 loading={userLoan.loading}
                                 onReload={isEmpty(userLoan.data) ? undefined : () => handleReloadData('userLoan')}
                                 showImage
-                                surplusName='Tài sản'
+                                surplusName={t(LANGUAGE.ASSET)}
                             />
 
-                            <TextArea name='description' form={form} label='Ghi chú' />
+                            <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
                         </div>
                     </div>
                 </div>
             </div>
             <SubmitWrap>
                 <Button color='radicalRed' type='submit' disabled={loading.submit}>
-                    Lưu
+                    {t(LANGUAGE.SAVE)}
                 </Button>
                 <Button
                     color='outline'
@@ -214,7 +217,7 @@ const MakeGetLoan = () => {
                         navigate(-1)
                     }}
                 >
-                    Hủy bỏ
+                    {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
         </form>

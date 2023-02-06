@@ -1,4 +1,4 @@
-import { ArrowSmLeftIcon } from '@heroicons/react/outline'
+import { ArrowSmallLeftIcon } from '@heroicons/react/24/outline'
 import React from 'react'
 import { BackButtonProps } from '~/@types/components'
 
@@ -9,7 +9,7 @@ const BackButton: React.FC<BackButtonProps> = ({ onClick, disabled }) => {
             onClick={onClick}
             disabled={disabled}
         >
-            <ArrowSmLeftIcon className='h-6 text-gray-700 group-hover:text-white dark:text-slate-200 dark:group-hover:text-slate-700 transition-colors' />
+            <ArrowSmallLeftIcon className='h-6 text-gray-700 group-hover:text-white dark:text-slate-200 dark:group-hover:text-slate-700 transition-colors' />
         </button>
     )
 }

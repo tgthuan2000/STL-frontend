@@ -1,4 +1,4 @@
-import { RefreshIcon, TableIcon, ViewListIcon } from '@heroicons/react/outline'
+import { ArrowPathIcon, ListBulletIcon, TableCellsIcon } from '@heroicons/react/24/outline'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { Services } from '~/@types/announce-config'
@@ -124,10 +124,10 @@ export const services: Services = {
     },
     getDropdownOptions: ({ onReloadClick }) => [
         [
-            { id: DATA_LIST_MODE.TABLE, name: 'Bảng', icon: TableIcon },
-            { id: DATA_LIST_MODE.LIST, name: 'Danh sách', icon: ViewListIcon },
+            { id: DATA_LIST_MODE.TABLE, name: 'Bảng', icon: TableCellsIcon },
+            { id: DATA_LIST_MODE.LIST, name: 'Danh sách', icon: ListBulletIcon },
         ],
-        [{ id: 0, name: 'Làm mới', icon: RefreshIcon, onClick: onReloadClick }],
+        [{ id: 0, name: 'Làm mới', icon: ArrowPathIcon, onClick: onReloadClick }],
     ],
     getListGroupOptions: () => [listGroupOptions],
 }

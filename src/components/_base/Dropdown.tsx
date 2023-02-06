@@ -16,6 +16,8 @@ const Dropdown: React.FC<DropdownProps> = ({
     rules,
     name,
     disabled,
+    showValueOnLabel,
+    customButtonClassName,
 }) => {
     const value = useMemo(() => form.getValues(name), [JSON.stringify(form.getValues(name))])
     const [parent] = useAutoAnimate<HTMLDivElement>()
@@ -53,9 +55,12 @@ const Dropdown: React.FC<DropdownProps> = ({
                     <Menu as='div' className='mr-3 relative inline-block z-[2]'>
                         <Menu.Button
                             disabled={disabled}
-                            className='inline-flex w-full justify-center rounded-md bg-black dark:bg-slate-700 disabled:bg-slate-500 dark:text-teal-500 bg-opacity-20 lg:px-4 px-2 lg:py-2 py-1 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
+                            className={
+                                customButtonClassName ||
+                                'inline-flex w-full justify-center rounded-md bg-black dark:bg-slate-700 disabled:bg-slate-500 dark:text-teal-500 bg-opacity-20 lg:px-4 px-2 lg:py-2 py-1 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
+                            }
                         >
-                            {label}
+                            {(showValueOnLabel && field.value[valueKey]) || label}
                         </Menu.Button>
 
                         <Menu.Items className='absolute right-0 mt-2 select-none whitespace-nowrap origin-top-right divide-y divide-gray-100 dark:divide-slate-600 rounded-md bg-white dark:bg-slate-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>

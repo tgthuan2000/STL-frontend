@@ -1,5 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { PaperAirplaneIcon } from '@heroicons/react/outline'
+import { PaperAirplaneIcon } from '@heroicons/react/24/outline'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { InputFormProps } from '~/@types/feedback'

@@ -1,4 +1,4 @@
-import { MailIcon } from '@heroicons/react/outline'
+import { EnvelopeIcon } from '@heroicons/react/24/outline'
 import { useForm } from 'react-hook-form'
 import { CreateStep4Props } from '~/@types/announce-config'
 import { DraftNotify } from '~/@types/notify'
@@ -42,7 +42,7 @@ const Step4: React.FC<CreateStep4Props> = ({ id, onSubmit }) => {
                                     </div>
                                     {user.allowSendMail && user.sendMail && (
                                         <span title='Gửi mail' className='text-cyan-400'>
-                                            <MailIcon className='h-5' />
+                                            <EnvelopeIcon className='h-5' />
                                         </span>
                                     )}
                                 </div>

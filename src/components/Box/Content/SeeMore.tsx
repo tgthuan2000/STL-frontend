@@ -1,4 +1,4 @@
-import { ArrowSmRightIcon } from '@heroicons/react/outline'
+import { ArrowSmallLeftIcon } from '@heroicons/react/24/outline'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
@@ -11,7 +11,7 @@ const SeeMore: React.FC<{ seeMore?: boolean; to?: string }> = ({ seeMore, to = '
                 className='cursor-pointer inline-flex items-center gap-x-1 text-blue-500 dark:text-blue-600 hover:opacity-70'
             >
                 Xem thêm
-                <ArrowSmRightIcon className='h-6 w-6' />
+                <ArrowSmallLeftIcon className='h-6 w-6' />
             </Link>
         </div>
     )

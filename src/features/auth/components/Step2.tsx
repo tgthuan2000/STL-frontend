@@ -1,5 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { CheckCircleIcon, ExclamationIcon } from '@heroicons/react/outline'
+import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { SanityDocument } from '@sanity/client'
 import { isEmpty } from 'lodash'
@@ -84,7 +84,7 @@ const Step2: React.FC<Step2Props> = ({ previewData, onSubmit }) => {
                     </form>
                 ) : (
                     <div className='flex items-center gap-2 text-white bg-yellow-500 p-3 rounded-md select-none'>
-                        <ExclamationIcon className='h-6' />
+                        <ExclamationTriangleIcon className='h-6' />
                         <p className='font-normal'>Tài khoản này chưa cài đặt mật khẩu!</p>
                     </div>
                 )}

@@ -1,4 +1,4 @@
-import { ExclamationIcon } from '@heroicons/react/outline'
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { yupResolver } from '@hookform/resolvers/yup'
 import bcrypt from 'bcryptjs'
 import { get } from 'lodash'
@@ -73,7 +73,7 @@ const ChangePassword = () => {
                         <div className='flex h-full flex-col'>
                             {userProfile && !isHasPassword && (
                                 <div className='flex items-center gap-2 text-white bg-yellow-500 p-3 rounded-md select-none mx-2'>
-                                    <ExclamationIcon className='h-6' />
+                                    <ExclamationTriangleIcon className='h-6' />
                                     <p className='font-normal'>Tài khoản này chưa đặt mật khẩu!</p>
                                 </div>
                             )}

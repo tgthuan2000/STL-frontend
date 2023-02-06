@@ -1,12 +1,14 @@
 import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { DashboardQueryData } from '~/@types/spending'
 import { Box, ButtonMenu, Divider, Transaction } from '~/components'
 import { DATE_FORMAT, TAGS } from '~/constant'
 import { menuMobile } from '~/constant/components'
 import { useCheck, useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import {
     GET_BUDGET_BY_MONTH,
     GET_METHOD_SPENDING_DESC_SURPLUS,
@@ -22,6 +24,7 @@ const Dashboard = () => {
     const { userProfile } = useAuth()
     const { kindSpending, budgetSpending, getKindSpendingId, getKindSpendingIds } = useConfig()
     const budgetId = budgetSpending?._id
+    const { t } = useTranslation()
 
     const [{ method, recent, budget, statistic }, fetchData, deleteCache, reload] = useQuery<DashboardQueryData>(
         {
@@ -76,24 +79,24 @@ const Dashboard = () => {
                     _id: getKindSpendingId('RECEIVE') as string,
                     value: _.receive + _['get-loan'],
                     getLoan: _['get-loan'],
-                    name: 'Thu nhập',
+                    name: t(LANGUAGE.RECEIVE),
                     color: 'text-green-500',
                 },
                 {
                     _id: getKindSpendingId('COST') as string,
                     value: _.cost + _.loan,
-                    name: 'Chi phí',
+                    name: t(LANGUAGE.COST),
                     color: 'text-red-500',
                 },
                 {
                     _id: 'Surplus' as string,
                     value: surplus,
-                    name: 'Số dư',
+                    name: t(LANGUAGE.SURPLUS),
                     color: surplus >= 0 ? 'text-green-500' : 'text-red-500',
                 },
             ],
         }
-    }, [statistic.data])
+    }, [statistic.data, t])
 
     const handleReload = () => {
         const res = deleteCache('statistic', 'recent', 'method', 'budget')
@@ -102,7 +105,7 @@ const Dashboard = () => {
     }
 
     return (
-        <Transaction hasBack={false} title='Quản lý chi tiêu'>
+        <Transaction hasBack={false} title={t(LANGUAGE.SPENDING)}>
             {width < 1280 && (
                 <div className='xl:hidden block'>
                     <ButtonMenu data={menuMobile} />
@@ -126,7 +129,7 @@ const Dashboard = () => {
 
                 <div className='xl:row-start-2 xl:col-start-1 col-span-1 flex flex-col xl:gap-6 gap-4'>
                     <Box.Content
-                        title='Ngân sách theo loại'
+                        title={t(LANGUAGE.BUDGET_BY_CATEGORY)}
                         onReload={handleReload}
                         loading={budget?.loading}
                         fullWidth
@@ -136,7 +139,7 @@ const Dashboard = () => {
                     </Box.Content>
 
                     <Box.Content
-                        title='Ngân sách theo phương thức'
+                        title={t(LANGUAGE.BUDGET_BY_METHOD)}
                         onReload={handleReload}
                         loading={budget?.loading}
                         fullWidth
@@ -148,7 +151,7 @@ const Dashboard = () => {
 
                 <div className='xl:row-start-2 xl:col-start-2 col-span-1 flex flex-col xl:gap-6 gap-4'>
                     <Box.Content
-                        title='Giao dịch gần đây'
+                        title={t(LANGUAGE.TRANSACTION_RECENT)}
                         to='transaction'
                         onReload={handleReload}
                         loading={recent.loading}
@@ -158,7 +161,7 @@ const Dashboard = () => {
                     </Box.Content>
 
                     <Box.Content
-                        title='Phương thức thanh toán'
+                        title={t(LANGUAGE.METHOD_SPENDING)}
                         to='method'
                         onReload={handleReload}
                         loading={method.loading}

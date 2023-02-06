@@ -1,4 +1,4 @@
-import { MoonIcon, SunIcon } from '@heroicons/react/outline'
+import { MoonIcon, SunIcon } from '@heroicons/react/24/outline'
 import React from 'react'
 import { ThemeIconProps } from '~/@types/components'
 import { checkDarkTheme } from '~/utils'

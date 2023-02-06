@@ -1,5 +1,5 @@
 import { Combobox } from '@headlessui/react'
-import { RefreshIcon, SearchIcon } from '@heroicons/react/outline'
+import { ArrowPathIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import React, { useEffect, useRef } from 'react'
@@ -110,13 +110,13 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
                                 {loading ? (
                                     <button
                                         type='button'
-                                        className='cursor-pointer group disabled:cursor-wait disabled:animate-spin -scale-100'
+                                        className='cursor-pointer group disabled:cursor-wait disabled:animate-spin'
                                         disabled={true}
                                     >
-                                        <RefreshIcon className='h-5 w-5 text-gray-500 group-hover:text-gray-400 group-disabled:text-gray-300' />
+                                        <ArrowPathIcon className='h-5 w-5 text-gray-500 group-hover:text-gray-400 group-disabled:text-gray-300' />
                                     </button>
                                 ) : (
-                                    <SearchIcon
+                                    <MagnifyingGlassIcon
                                         className='h-5 w-5 text-gray-500 dark:text-slate-400'
                                         aria-hidden='true'
                                     />

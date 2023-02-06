@@ -187,8 +187,8 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit, excludes = [] }) => {
         if (!isDateRangeFilter) return {}
         return {
             selectsRange: true,
-            startDate: get(dateRange, '[0]', null),
-            endDate: get(dateRange, '[1]', null),
+            startDate: get(dateRange, '[0]', undefined),
+            endDate: get(dateRange, '[1]', undefined),
             onChange: (dateRange: DateRange) => {
                 return isValidDateRange(dateRange) && form.handleSubmit(onsubmit)()
             },

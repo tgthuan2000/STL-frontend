@@ -1,4 +1,4 @@
-import { ArrowSmLeftIcon } from '@heroicons/react/outline'
+import { ArrowSmallLeftIcon } from '@heroicons/react/24/outline'
 import React, { Fragment } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { TransactionProps } from '~/@types/components'
@@ -20,7 +20,7 @@ export default Transaction
 const BackButton = () => {
     const navigate = useNavigate()
     return (
-        <ArrowSmLeftIcon
+        <ArrowSmallLeftIcon
             className='h-7 w-7 hover:opacity-50 cursor-pointer'
             onClick={() => {
                 navigate(-1)
