@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { XIcon } from '@heroicons/react/outline'
+import { XMarkIcon } from '@heroicons/react/24/outline'
 import React, { Fragment } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SlideOverProps } from '~/@types/components'
@@ -63,7 +63,7 @@ const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
                                                         }}
                                                     >
                                                         <span className='sr-only'>Close panel</span>
-                                                        <XIcon className='h-6 w-6' aria-hidden='true' />
+                                                        <XMarkIcon className='h-6 w-6' aria-hidden='true' />
                                                     </button>
                                                 </div>
                                             </div>

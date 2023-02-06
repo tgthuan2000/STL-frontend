@@ -1,18 +1,32 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { CalendarIcon, XIcon } from '@heroicons/react/outline'
+import { CalendarIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import moment from 'moment'
 import { forwardRef, useId } from 'react'
 import DP, { ReactDatePicker } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { Controller, ControllerRenderProps, FieldError } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 import { DatePickerInputProps, DateProps } from '~/@types/components'
 import { DATE_FORMAT } from '~/constant'
 import { useWindowSize } from '~/hook'
 import './index.css'
 
 const DatePicker = forwardRef<ReactDatePicker<never, undefined>, DateProps>(
-    ({ name, form, rules, label, disabledClear, format = 'DATE_TIME', onChange, InputProps, ...props }, ref) => {
+    (
+        {
+            name,
+            form,
+            rules,
+            label,
+            disabledClear,
+            format = 'DATE_TIME',
+            onChange,
+            InputProps,
+            placeholderText,
+            ...props
+        },
+        ref
+    ) => {
         const { width } = useWindowSize()
 
         const inputProps = {
@@ -52,6 +66,7 @@ const DatePicker = forwardRef<ReactDatePicker<never, undefined>, DateProps>(
                             field.onChange(date)
                             onChange?.(date)
                         }}
+                        placeholderText={placeholderText as string}
                         {...props}
                     />
                 )}
@@ -96,7 +111,7 @@ const Input = forwardRef<HTMLInputElement, DatePickerInputProps>(
                             className='absolute inset-y-0 right-6 flex items-center rounded-r-md px-2 focus:outline-none'
                         >
                             {field.value && (
-                                <XIcon
+                                <XMarkIcon
                                     onClick={(e) => {
                                         e.stopPropagation()
                                         field.onChange(null)

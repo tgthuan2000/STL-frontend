@@ -12,7 +12,16 @@ Quill.register('modules/imageResize', ImageResize)
 Quill.register(Quill.import('attributors/style/direction'), true)
 Quill.register(Quill.import('attributors/style/align'), true)
 
-const RichText: React.FC<RichTextProps> = ({ name, form, label, className, rules, disabled, ...props }) => {
+const RichText: React.FC<RichTextProps> = ({
+    name,
+    form,
+    label,
+    className,
+    rules,
+    disabled,
+    placeholder,
+    ...props
+}) => {
     const id = useId()
     const [parent] = useAutoAnimate<HTMLDivElement>()
     return (
@@ -33,6 +42,7 @@ const RichText: React.FC<RichTextProps> = ({ name, form, label, className, rules
                             theme='snow'
                             className={disabled ? 'bg-gray-100 cursor-not-allowed select-none' : 'bg-white'}
                             readOnly={disabled}
+                            placeholder={placeholder as string}
                             {...reactQuillOptions}
                             {...field}
                             {...props}

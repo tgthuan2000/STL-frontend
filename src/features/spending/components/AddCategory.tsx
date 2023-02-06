@@ -1,5 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { BadgeCheckIcon, ExclamationCircleIcon } from '@heroicons/react/outline'
+import { CheckBadgeIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline'
 import { isEmpty } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -181,7 +181,7 @@ const AddCategory = () => {
                                             </>
                                         ) : (
                                             <span className='text-green-500 flex items-center gap-1'>
-                                                <BadgeCheckIcon className='h-6 w-6' />
+                                                <CheckBadgeIcon className='h-6 w-6' />
                                                 {t(LANGUAGE.NOT_CATEGORY_SIMILAR_NAME)}
                                             </span>
                                         )}

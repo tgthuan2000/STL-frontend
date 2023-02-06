@@ -1,4 +1,4 @@
-import { UserIcon } from '@heroicons/react/outline'
+import { UserIcon } from '@heroicons/react/24/outline'
 import moment from 'moment'
 import React from 'react'
 import { NotifyDetailFormProps } from '~/@types/components'

@@ -1,4 +1,4 @@
-import { UserIcon } from '@heroicons/react/outline'
+import { UserIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import moment from 'moment'
 import { Prose } from '~/components'

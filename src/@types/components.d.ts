@@ -9,6 +9,7 @@ import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
 import { PERMISSION } from '~/constant/permission'
 import { IFILTER_DATE } from '~/constant/template'
 import { UseLocalStorageResult } from '~/hook/useLocalStorage'
+import { HeroIcon } from '.'
 import { IUserLoan } from './loan'
 import { NotifyItem } from './notify'
 import { ISpendingData } from './spending'
@@ -34,7 +35,7 @@ export interface AutoCompleteProps {
     showImage?: boolean
     disabledClear?: boolean
     disabledShowSurplus?: boolean
-    surplusName?: string
+    surplusName?: string | DefaultTFuncReturn
     multiple?: boolean
 }
 
@@ -193,7 +194,7 @@ export interface MenuButtonProps {
 
 export interface IMenuBtn {
     title: string
-    icon: (props: SVGProps<SVGSVGElement>) => JSX.Element
+    icon: HeroIcon
     color: string
     to: To
     children?: () => React.ReactNode
@@ -450,4 +451,13 @@ export interface SubmitWrapProps {
 
 export interface AsideProps {
     children: React.ReactNode
+}
+
+export interface ButtonGroupProps {
+    form: UseFormReturn<any, object>
+    name: string
+    idKey?: string
+    valueKey?: string
+    data?: any[]
+    onChange?: (data: any) => void
 }

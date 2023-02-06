@@ -6,17 +6,15 @@ export interface Language {
     name: string
 }
 
-const languages: Array<Array<Language>> = [
-    [
-        {
-            code: 'en',
-            name: 'English',
-        },
-        {
-            code: 'vi',
-            name: 'Tiếng Việt',
-        },
-    ],
+const languages: Array<Language> = [
+    {
+        code: 'en',
+        name: 'English',
+    },
+    {
+        code: 'vi',
+        name: 'Tiếng Việt',
+    },
 ]
 
 export default languages

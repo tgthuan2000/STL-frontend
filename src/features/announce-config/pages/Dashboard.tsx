@@ -1,5 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { BellIcon, FireIcon, ViewListIcon } from '@heroicons/react/outline'
+import { BellIcon, FireIcon, ListBulletIcon } from '@heroicons/react/24/outline'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useSearchParams } from 'react-router-dom'
@@ -114,7 +114,7 @@ const Dashboard = () => {
                                     data={listGroupOptions}
                                     idKey='id'
                                     valueKey='name'
-                                    label={<ViewListIcon className='h-6' />}
+                                    label={<ListBulletIcon className='h-6' />}
                                     disabled={notify.loading}
                                 />
                             )}

@@ -1,16 +1,15 @@
 import {
-    ClipboardListIcon,
+    ArrowRightOnRectangleIcon,
+    ArrowsRightLeftIcon,
+    ArrowTrendingUpIcon,
+    ClipboardDocumentListIcon,
     HomeIcon,
-    LogoutIcon,
     MinusCircleIcon,
     PlusCircleIcon,
-    PuzzleIcon,
-    QrcodeIcon,
-    SwitchHorizontalIcon,
-    TemplateIcon,
-    TrendingUpIcon,
-    UserAddIcon,
-} from '@heroicons/react/outline'
+    PuzzlePieceIcon,
+    QrCodeIcon,
+    UserPlusIcon,
+} from '@heroicons/react/24/outline'
 import { googleLogout } from '@react-oauth/google'
 import { IMenuBtn } from '~/@types/components'
 import { CreateMember, MakeGetLoan } from '~/features/loan/components'
@@ -44,7 +43,7 @@ export const menuMobile: IMenuBtn[] = [
     {
         title: t(LANGUAGE.MAKE_TRANSFER),
         color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
-        icon: SwitchHorizontalIcon,
+        icon: ArrowsRightLeftIcon,
         children: () => <MakeTransfer />,
         to: '?slide=transfer',
         query: {
@@ -54,7 +53,7 @@ export const menuMobile: IMenuBtn[] = [
     {
         title: t(LANGUAGE.TRANSACTION),
         color: 'text-orange-700 bg-orange-200 hover:bg-orange-300 dark:text-orange-500',
-        icon: ClipboardListIcon,
+        icon: ClipboardDocumentListIcon,
         to: 'transaction',
     },
 ]
@@ -63,7 +62,7 @@ export const menuLoanMobile: IMenuBtn[] = [
     {
         title: t(LANGUAGE.MAKE_GET_LOAN),
         color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
-        icon: TrendingUpIcon,
+        icon: ArrowTrendingUpIcon,
         children: () => <MakeGetLoan />,
         to: '?slide=get-loan',
         query: {
@@ -83,7 +82,7 @@ export const menuLoanMobile: IMenuBtn[] = [
     {
         title: t(LANGUAGE.CREATE_MEMBER),
         color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
-        icon: UserAddIcon,
+        icon: UserPlusIcon,
         children: () => <CreateMember />,
         to: '?slide=create-member',
         query: {
@@ -116,7 +115,7 @@ export const menuSpendingPC: IMenuBtn[] = [
     {
         title: t(LANGUAGE.MAKE_TRANSFER),
         color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
-        icon: SwitchHorizontalIcon,
+        icon: ArrowsRightLeftIcon,
         children: () => <MakeTransfer />,
         to: '?slide=transfer',
         query: {
@@ -126,7 +125,7 @@ export const menuSpendingPC: IMenuBtn[] = [
     {
         title: t(LANGUAGE.MAKE_BUDGET),
         color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
-        icon: PuzzleIcon,
+        icon: PuzzlePieceIcon,
         children: () => <MakeBudget />,
         to: '?slide=budget',
         query: {
@@ -137,7 +136,7 @@ export const menuSpendingPC: IMenuBtn[] = [
     {
         title: t(LANGUAGE.LOGOUT),
         color: 'text-gray-700 bg-gray-200 hover:bg-gray-300 dark:text-gray-500',
-        icon: LogoutIcon,
+        icon: ArrowRightOnRectangleIcon,
         to: '/',
         action: (removeUserProfile) => {
             googleLogout()
@@ -154,19 +153,19 @@ export const menuSpendingPC: IMenuBtn[] = [
     {
         title: t(LANGUAGE.TRANSACTION),
         color: 'text-orange-700 bg-orange-200 hover:bg-orange-300 dark:text-orange-500',
-        icon: ClipboardListIcon,
+        icon: ClipboardDocumentListIcon,
         to: 'transaction',
     },
     {
         title: t(LANGUAGE.METHOD_SPENDING),
         color: 'text-purple-700 bg-purple-200 hover:bg-purple-300 dark:text-purple-500',
-        icon: QrcodeIcon,
+        icon: QrCodeIcon,
         to: 'method',
     },
     {
         title: t(LANGUAGE.CREATE_METHOD),
         color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
-        icon: QrcodeIcon,
+        icon: QrCodeIcon,
         children: () => <AddMethod />,
         to: '?slide=add-method',
         query: {
@@ -177,7 +176,7 @@ export const menuSpendingPC: IMenuBtn[] = [
     {
         title: t(LANGUAGE.CREATE_CATEGORY),
         color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
-        icon: TemplateIcon,
+        icon: ClipboardDocumentListIcon,
         children: () => <AddCategory />,
         to: '?slide=add-category',
         query: {
@@ -190,7 +189,7 @@ export const menuLoanPC: IMenuBtn[] = [
     {
         title: t(LANGUAGE.MAKE_GET_LOAN),
         color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
-        icon: TrendingUpIcon,
+        icon: ArrowTrendingUpIcon,
         children: () => <MakeGetLoan />,
         to: '?slide=get-loan',
         query: {
@@ -210,7 +209,7 @@ export const menuLoanPC: IMenuBtn[] = [
     {
         title: t(LANGUAGE.CREATE_MEMBER),
         color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
-        icon: UserAddIcon,
+        icon: UserPlusIcon,
         children: () => <CreateMember />,
         to: '?slide=create-member',
         query: {
@@ -220,7 +219,7 @@ export const menuLoanPC: IMenuBtn[] = [
     {
         title: t(LANGUAGE.LOGOUT),
         color: 'text-gray-700 bg-gray-200 hover:bg-gray-300 dark:text-gray-500',
-        icon: LogoutIcon,
+        icon: ArrowRightOnRectangleIcon,
         to: '/',
         action: (removeUserProfile) => {
             googleLogout()
@@ -237,13 +236,13 @@ export const menuLoanPC: IMenuBtn[] = [
     {
         title: t(LANGUAGE.TRANSACTION),
         color: 'text-orange-700 bg-orange-200 hover:bg-orange-300 dark:text-orange-500',
-        icon: ClipboardListIcon,
+        icon: ClipboardDocumentListIcon,
         to: 'transaction',
     },
     // {
     //     title: t(LANGUAGE.METHOD_SPENDING),
     //     color: 'text-purple-700 bg-purple-200 hover:bg-purple-300 dark:text-purple-500',
-    //     icon: QrcodeIcon,
+    //     icon: QrCodeIcon,
     //     to: 'method',
     // },
 ]
@@ -258,19 +257,19 @@ export const menuSpendingPages: IMenuBtn[] = [
     {
         title: t(LANGUAGE.TRANSACTION),
         color: 'text-orange-700 dark:text-orange-500',
-        icon: ClipboardListIcon,
+        icon: ClipboardDocumentListIcon,
         to: 'transaction',
     },
     {
-        title: 'PTTT',
+        title: t(LANGUAGE.METHOD_SPENDING),
         color: 'text-purple-700 dark:text-purple-500',
-        icon: QrcodeIcon,
+        icon: QrCodeIcon,
         to: 'method',
     },
     {
         title: t(LANGUAGE.MAKE_BUDGET),
         color: 'text-yellow-700 dark:text-yellow-500',
-        icon: PuzzleIcon,
+        icon: PuzzlePieceIcon,
         children: () => <MakeBudget />,
         to: '?slide=budget',
         query: {
@@ -281,7 +280,7 @@ export const menuSpendingPages: IMenuBtn[] = [
     {
         title: t(LANGUAGE.CREATE_METHOD),
         color: 'text-cyan-700 dark:text-cyan-500',
-        icon: QrcodeIcon,
+        icon: QrCodeIcon,
         children: () => <AddMethod />,
         to: '?slide=add-method',
         query: {
@@ -291,7 +290,7 @@ export const menuSpendingPages: IMenuBtn[] = [
     {
         title: t(LANGUAGE.CREATE_CATEGORY),
         color: 'text-cyan-700 dark:text-cyan-500',
-        icon: TemplateIcon,
+        icon: ClipboardDocumentListIcon,
         children: () => <AddCategory />,
         to: '?slide=add-category',
         query: {
@@ -309,13 +308,13 @@ export const menuLoanPages: IMenuBtn[] = [
     {
         title: t(LANGUAGE.TRANSACTION),
         color: 'text-orange-700 dark:text-orange-500',
-        icon: ClipboardListIcon,
+        icon: ClipboardDocumentListIcon,
         to: 'transaction',
     },
     // {
-    //     title: 'PTTT',
+    //     title: t(LANGUAGE.METHOD_SPENDING),
     //     color: 'text-purple-700 dark:text-purple-500',
-    //     icon: QrcodeIcon,
+    //     icon: QrCodeIcon,
     //     to: 'method',
     // },
 ]

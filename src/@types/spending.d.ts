@@ -1,6 +1,5 @@
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
-import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
 import { KIND_SPENDING } from '~/constant/spending'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
 import { DropdownResult, ListGroupResult } from '.'

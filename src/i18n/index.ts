@@ -15,13 +15,10 @@ if (languageStorage) {
     }
 }
 
-i18n.use(initReactI18next).init({
-    resources,
+i18n.use(initReactI18next).init<string>({
+    resources: resources as any,
     lng,
     fallbackLng: 'vi',
-    interpolation: {
-        escapeValue: false,
-    },
 })
 
 export default i18n

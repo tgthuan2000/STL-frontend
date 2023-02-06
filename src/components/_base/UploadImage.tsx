@@ -1,5 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { RefreshIcon, UploadIcon, XIcon } from '@heroicons/react/outline'
+import { ArrowPathIcon, ArrowUpOnSquareIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { ChangeEvent, forwardRef, useId, useState } from 'react'
 import { Controller } from 'react-hook-form'
@@ -78,17 +78,17 @@ const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
                                     >
                                         {loading ? (
                                             <>
-                                                <RefreshIcon className='h-5 w-5 -ml-5 mr-2 -scale-100 animate-spin' />
+                                                <ArrowPathIcon className='h-5 w-5 -ml-5 mr-2 animate-spin' />
                                                 Đang tải hình ảnh
                                             </>
                                         ) : (
                                             <>
-                                                <UploadIcon className='h-5 w-5 -ml-5 mr-2' />
+                                                <ArrowUpOnSquareIcon className='h-5 w-5 -ml-5 mr-2' />
                                                 Tải hình ảnh mới
                                             </>
                                         )}
                                     </label>
-                                    <XIcon
+                                    <XMarkIcon
                                         className={clsx(
                                             'h-6 w-6 text-gray-500 hover:text-gray-700 dark:text-slate-500 dark:hover:text-slate-400 absolute top-2 right-2',
                                             loading ? 'cursor-wait' : 'cursor-pointer'
@@ -107,12 +107,12 @@ const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
                                     >
                                         {loading ? (
                                             <>
-                                                <RefreshIcon className='h-10 w-10 -scale-100 animate-spin' />
+                                                <ArrowPathIcon className='h-10 w-10 animate-spin' />
                                                 <span>Đang tải ảnh lên</span>
                                             </>
                                         ) : (
                                             <>
-                                                <UploadIcon className='h-10 w-10' />
+                                                <ArrowUpOnSquareIcon className='h-10 w-10' />
                                                 <span>Nhấn để tải lên hình ảnh</span>
                                                 <span className='text-xs'>(JPG, JPEG, PNG - tối đa 20MB)</span>
                                             </>

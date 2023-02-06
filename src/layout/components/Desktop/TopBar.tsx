@@ -1,4 +1,4 @@
-import { ChevronDoubleRightIcon } from '@heroicons/react/outline'
+import { ChevronDoubleRightIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { LanguageSelection, Notification } from '~/components'
 import { useSideBar } from '~/context'

@@ -1,5 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { PencilAltIcon } from '@heroicons/react/outline'
+import { PencilSquareIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
@@ -112,7 +112,7 @@ const Dashboard = () => {
                             color='primary'
                             className='rounded-lg bg-gray-200 dark:bg-slate-700 dark:border-slate-700 dark:text-slate-200 dark:hover:opacity-50 min-w-0 inline-flex shadow border justify-center items-center hover:bg-gray-700 transition-all text-gray-700 hover:text-white'
                         >
-                            <PencilAltIcon className='h-4 w-4' />{' '}
+                            <PencilSquareIcon className='h-4 w-4' />{' '}
                             <span className='hidden sm:inline-block'>Cập nhật</span>
                         </Button>
                     </div>

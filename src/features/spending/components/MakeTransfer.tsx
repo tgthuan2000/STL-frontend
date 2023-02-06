@@ -130,7 +130,7 @@ const MakeTransfer = () => {
             }, 0)
 
             form.reset({ amount: '', methodSpendingFrom, methodSpendingTo }, { keepDefaultValues: true })
-            toast.success<string>(t(LANGUAGE.NOTIFY_TRANSFER_SUCCESS))
+            toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_TRANSFER_SUCCESS))
             needCheckWhenLeave()
         } catch (error) {
             console.log(error)

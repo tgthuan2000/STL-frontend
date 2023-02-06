@@ -49,7 +49,7 @@ const User: React.FC<UserProps> = ({ userProfile, onLogout, onCloseSideBar, open
                                             {Icon && <Icon className='mr-2 h-5 w-5' aria-hidden='true' theme={theme} />}
                                             {typeof option.label === 'string'
                                                 ? option.label
-                                                : option.label({
+                                                : option.label?.({
                                                       userProfile,
                                                       theme,
                                                   })}

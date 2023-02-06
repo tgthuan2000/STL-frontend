@@ -1,15 +1,18 @@
 import moment from 'moment'
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { DashboardQueryData } from '~/@types/loan'
 import { Box2, ButtonMenuLoan, Divider, Transaction } from '~/components'
 import { TAGS } from '~/constant'
 import { menuLoanMobile } from '~/constant/components'
 import { useCheck, useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
 import useAuth from '~/store/auth'
 
 const Dashboard = () => {
+    const { t } = useTranslation()
     const { width } = useWindowSize()
     const { userProfile } = useAuth()
     const { getKindSpendingId } = useConfig()
@@ -48,7 +51,7 @@ const Dashboard = () => {
     }
 
     return (
-        <Transaction hasBack={false} title='Quản lý vay/cho vay'>
+        <Transaction hasBack={false} title={t(LANGUAGE.LOAN_MANAGEMENT)}>
             {width < 1280 && (
                 <div className='xl:hidden block'>
                     <ButtonMenuLoan data={menuLoanMobile} />
@@ -59,15 +62,30 @@ const Dashboard = () => {
 
             {/* Show user */}
             <div className='space-y-6'>
-                <Box2 label='Trạng thái' data={statistic.data} loading={statistic.loading} onReload={handleReload}>
+                <Box2
+                    label={t(LANGUAGE.STATUS)}
+                    data={statistic.data}
+                    loading={statistic.loading}
+                    onReload={handleReload}
+                >
                     {(data) => <Box2.Content1 {...data} />}
                 </Box2>
 
-                <Box2 label='Sắp đến hạn trả' data={paydue.data} loading={paydue.loading} onReload={handleReload}>
+                <Box2
+                    label={t(LANGUAGE.NEAR_DEADLINE)}
+                    data={paydue.data}
+                    loading={paydue.loading}
+                    onReload={handleReload}
+                >
                     {(data) => <Box2.ContentLoan {...data} />}
                 </Box2>
 
-                <Box2 label='Giao dịch gần đây' data={recent.data} loading={recent.loading} onReload={handleReload}>
+                <Box2
+                    label={t(LANGUAGE.TRANSACTION_RECENT)}
+                    data={recent.data}
+                    loading={recent.loading}
+                    onReload={handleReload}
+                >
                     {(data) => <Box2.ContentLoan {...data} />}
                 </Box2>
 

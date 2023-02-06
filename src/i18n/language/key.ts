@@ -19,8 +19,13 @@ enum LANGUAGE {
     SURPLUS = 'surplus',
     MONTH = 'month',
     LIMIT_AMOUNT = 'limit-amount',
+    STATUS = 'status',
+    AMOUNT = 'amount',
 
     /* VALIDATE MESSAGE */
+    REQUIRED_FIELD = 'required-field',
+    REQUIRED_TYPE_NUMBER = 'required-type-number',
+    REQUIRED_AMOUNT = 'required-amount',
     REQUIRED_RECEIVE = 'required-receive',
     REQUIRED_COST = 'required-cost',
     REQUIRED_TRANSFER_AMOUNT = 'required-transfer-amount',
@@ -29,8 +34,11 @@ enum LANGUAGE {
     REQUIRED_CATEGORY_NAME = 'required-category-name',
     REQUIRED_METHOD = 'required-method',
     REQUIRED_DATE = 'required-date',
+    REQUIRED_USER_GET_LOAN = 'required-user-get-loan',
+    AMOUNT_MIN_ZERO = 'amount-min-zero',
     RECEIVE_MIN_ZERO = 'receive-min-zero',
     TRANSFER_MIN_ZERO = 'transfer-min-zero',
+    SURPLUS_MIN_ZERO = 'surplus-min-zero',
     COST_MIN_ZERO = 'cost-min-zero',
     CATEGORY_NAME_MAX_50 = 'category-name-max-50',
 
@@ -42,6 +50,7 @@ enum LANGUAGE {
     NOTIFY_CREATE_TRANSFER_SUCCESS = 'notify-create-transfer-success',
     NOTIFY_CREATE_COST_SUCCESS = 'notify-create-cost-success',
     NOTIFY_CREATE_CATEGORY_SUCCESS = 'notify-create-category-success',
+    NOTIFY_CREATE_GET_LOAN_SUCCESS = 'notify-create-get-loan-success',
 
     /* SPENDING */
     SPENDING = 'spending',
@@ -64,14 +73,29 @@ enum LANGUAGE {
     MAKE_LOAN = 'make-loan',
     MAKE_LOAN_GET_LOAN = 'make-loan-get-loan',
     CREATE_MEMBER = 'create-member',
+    NEAR_DEADLINE = 'near-deadline',
+    METHOD_RECEIVE = 'method-receive',
+    USER_GET_LOAN = 'user-get-loan',
+    ESTIMATE_PAID_DATE = 'estimate-paid-date',
+    ASSET = 'asset',
 
     /* OTHERS */
     SOME_CATEGORY_SIMILAR_NAME = 'some-category-similar-name',
     NOT_CATEGORY_SIMILAR_NAME = 'not-category-similar-name',
+
+    /* LAYOUT */
+    SPENDING_MANAGEMENT = 'spending-management',
+    LOAN_MANAGEMENT = 'loan-management',
+    TIME_KEEPING_MANAGEMENT = 'time-keeping-management',
+    ACCOUNT_MANAGEMENT = 'account-management',
+    NOTIFY_MANAGEMENT = 'notify-management',
+    SETTING_MANAGEMENT = 'setting-management',
+    PROFILE_MANAGEMENT = 'profile-management',
+    DARK_MODE = 'dark-mode',
+    LIGHT_MODE = 'light-mode',
+    SET_PASSWORD = 'set-password',
+    CHANGE_PASSWORD = 'change-password',
+    FEEDBACK = 'feedback',
 }
 
 export default LANGUAGE
-
-export interface LANGUAGE_TRANSLATION {
-    translation: { [key in LANGUAGE]: string }
-}

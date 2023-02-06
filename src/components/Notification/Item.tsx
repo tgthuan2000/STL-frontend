@@ -1,5 +1,5 @@
 import { Menu } from '@headlessui/react'
-import { CheckIcon, UserIcon } from '@heroicons/react/outline'
+import { CheckIcon, UserIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import moment from 'moment'
 import React, { useState } from 'react'

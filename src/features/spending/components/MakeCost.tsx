@@ -134,7 +134,7 @@ const MakeCost = () => {
                     keepDefaultValues: true,
                 }
             )
-            toast.success<string>(t(LANGUAGE.NOTIFY_COST_SUCCESS))
+            toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_COST_SUCCESS))
             needCheckWhenLeave()
             // setIsOpen(false)
             // navigate(-1)

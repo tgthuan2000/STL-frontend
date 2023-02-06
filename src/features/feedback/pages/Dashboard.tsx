@@ -1,5 +1,5 @@
 import { cloneDeep, get, isEmpty } from 'lodash'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FeedbackQueryData, IFeedback } from '~/@types/feedback'
 import { Transaction } from '~/components'
 import { TAGS } from '~/constant'
@@ -82,9 +82,9 @@ const Dashboard = () => {
                                         if (index !== undefined && index !== -1 && temp?.[index]) {
                                             temp[index] = {
                                                 ...temp?.[index],
-                                                edited: get(__, 'edited'),
-                                                deleted: get(__, 'deleted'),
-                                                message: get(__, 'message'),
+                                                edited: get(__, 'edited') as any,
+                                                deleted: get(__, 'deleted') as any,
+                                                message: get(__, 'message') as any,
                                             }
                                             return { ...prev, feedback: { ...prev.feedback, data: { data: temp } } }
                                         }

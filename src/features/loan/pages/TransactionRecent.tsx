@@ -1,5 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { FireIcon, ViewListIcon } from '@heroicons/react/outline'
+import { FireIcon, ListBulletIcon } from '@heroicons/react/24/outline'
 import { get } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -130,7 +130,7 @@ const TransactionRecent = () => {
                                     data={listGroupOptions}
                                     idKey='id'
                                     valueKey='name'
-                                    label={<ViewListIcon className='h-6' />}
+                                    label={<ListBulletIcon className='h-6' />}
                                     disabled={recent.loading}
                                 />
                             )}

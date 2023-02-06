@@ -1,6 +1,6 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Combobox } from '@headlessui/react'
-import { CheckIcon, SelectorIcon, XIcon } from '@heroicons/react/outline'
+import { CheckIcon, ChevronUpDownIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { filter, find, get, isNil } from 'lodash'
 import numeral from 'numeral'
@@ -35,7 +35,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
             disabledClear,
             surplusName = i18n.t(LANGUAGE.SURPLUS),
             disabledShowSurplus,
-            multiple,
+            multiple = false,
         },
         ref
     ) => {
@@ -120,7 +120,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                             value={selectedItem}
                             onChange={(value) => handleChange(value, field.onChange)}
                             disabled={disabled || loading}
-                            multiple={multiple}
+                            multiple={multiple as any}
                         >
                             <div className='flex justify-between items-center'>
                                 <Combobox.Label className='inline-block text-sm font-medium text-gray-700 dark:text-slate-100'>
@@ -150,7 +150,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                         className='absolute inset-y-0 right-6 flex items-center rounded-r-md px-2 focus:outline-none'
                                     >
                                         {selectedItem && (
-                                            <XIcon
+                                            <XMarkIcon
                                                 onClick={(e) => {
                                                     e.stopPropagation()
                                                     setSelectedItem(null)
@@ -167,7 +167,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                 )}
 
                                 <Combobox.Button className='absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none'>
-                                    <SelectorIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
+                                    <ChevronUpDownIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
                                 </Combobox.Button>
 
                                 {filterData.length > 0 ? (

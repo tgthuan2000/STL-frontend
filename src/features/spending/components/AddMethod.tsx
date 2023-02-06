@@ -1,5 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { BadgeCheckIcon, ExclamationCircleIcon } from '@heroicons/react/outline'
+import { CheckBadgeIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline'
 import { isEmpty } from 'lodash'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -135,7 +135,7 @@ const AddMethod = () => {
                                             </>
                                         ) : (
                                             <span className='text-green-500 flex items-center gap-1'>
-                                                <BadgeCheckIcon className='h-6 w-6' />
+                                                <CheckBadgeIcon className='h-6 w-6' />
                                                 Không có phương thức nào gần giống tên!
                                             </span>
                                         )}

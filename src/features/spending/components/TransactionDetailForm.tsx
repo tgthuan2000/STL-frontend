@@ -1,4 +1,4 @@
-import { ArrowSmLeftIcon, TrashIcon } from '@heroicons/react/outline'
+import { ArrowSmallLeftIcon, TrashIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
@@ -44,7 +44,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
         <div>
             <div className='flex justify-between items-center mb-4'>
                 <div className='flex items-center text-gray-900 dark:text-slate-200 space-x-2 select-none'>
-                    <ArrowSmLeftIcon
+                    <ArrowSmallLeftIcon
                         className='h-7 w-7 hover:opacity-50 cursor-pointer'
                         onClick={() => {
                             navigate(-1)

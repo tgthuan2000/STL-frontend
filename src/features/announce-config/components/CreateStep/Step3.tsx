@@ -1,5 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { MailIcon, TrashIcon } from '@heroicons/react/outline'
+import { EnvelopeIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { yupResolver } from '@hookform/resolvers/yup'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
@@ -197,7 +197,7 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                                                 form.setValue(`users.${index}.sendMail`, !user.sendMail)
                                             }}
                                         >
-                                            <MailIcon className='h-5' />
+                                            <EnvelopeIcon className='h-5' />
                                         </button>
                                     )}
                                     <button

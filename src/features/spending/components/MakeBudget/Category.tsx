@@ -1,5 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { PlusCircleIcon, RefreshIcon, TrashIcon } from '@heroicons/react/outline'
+import { ArrowPathIcon, PlusCircleIcon, TrashIcon } from '@heroicons/react/24/outline'
 import React from 'react'
 import { useFieldArray } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -48,7 +48,7 @@ const Category: React.FC<MakeBudgetProps & { optionData: ICategorySpending[] | u
                 ref={loadingRef}
             >
                 {budgetLoading ? (
-                    <RefreshIcon className='h-6 w-6 animate-spin -scale-100' />
+                    <ArrowPathIcon className='h-6 w-6 animate-spin' />
                 ) : (
                     <>
                         <PlusCircleIcon className='h-6 w-6' />

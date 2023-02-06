@@ -132,7 +132,7 @@ const MakeIncome = () => {
                     keepDefaultValues: true,
                 }
             )
-            toast.success<string>(t(LANGUAGE.NOTIFY_RECEIVE_SUCCESS))
+            toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_RECEIVE_SUCCESS))
             needCheckWhenLeave()
             // setIsOpen(false)
             // navigate(-1)
