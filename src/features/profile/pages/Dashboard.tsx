@@ -4,6 +4,7 @@ import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { TimeFilterPayload } from '~/@types/components'
 import { ProfileQueryData } from '~/@types/profile'
@@ -13,6 +14,7 @@ import { E_FILTER_DATE, TEMPLATE } from '~/constant/template'
 import { useConfig, useLoading } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
+import LANGUAGE from '~/i18n/language/key'
 import useAuth from '~/store/auth'
 import { AllowSendMail, ProfileInfo, ProfileInfoGroup, ProfileInfoSkeleton } from '../components'
 import { services } from '../services'
@@ -21,6 +23,7 @@ import * as profileServices from '../services/profile'
 const excludeOptions = [E_FILTER_DATE.DATE]
 
 const Dashboard = () => {
+    const { t } = useTranslation()
     const { userProfile } = useAuth()
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const [searchParams] = useSearchParams()
@@ -93,7 +96,7 @@ const Dashboard = () => {
     }
 
     return (
-        <Transaction title='Thông tin cá nhân' hasBack={width > 768}>
+        <Transaction title={t(LANGUAGE.PROFILE_MANAGEMENT)} hasBack={width > 768}>
             <div className='relative mt-20 max-w-7xl mx-auto w-full'>
                 {/* IMAGE */}
                 <div className='absolute z-[1] bottom-full left-1/2 -translate-x-1/2 -mb-12 sm:-mb-14 select-none'>
@@ -113,7 +116,7 @@ const Dashboard = () => {
                             className='rounded-lg bg-gray-200 dark:bg-slate-700 dark:border-slate-700 dark:text-slate-200 dark:hover:opacity-50 min-w-0 inline-flex shadow border justify-center items-center hover:bg-gray-700 transition-all text-gray-700 hover:text-white'
                         >
                             <PencilSquareIcon className='h-4 w-4' />{' '}
-                            <span className='hidden sm:inline-block'>Cập nhật</span>
+                            <span className='hidden sm:inline-block'>{t(LANGUAGE.UPDATE)}</span>
                         </Button>
                     </div>
                     {/* USER INFO */}
@@ -123,7 +126,8 @@ const Dashboard = () => {
                         </h2>
                         <p className='text-xs sm:text-sm text-gray-500 dark:text-slate-300'>{userProfile?.email}</p>
                         <span className='text-xs text-gray-500 dark:text-slate-300'>
-                            Ngày tham gia: <b>{moment(userProfile?._createdAt).format(DATE_FORMAT.TIME_DATE)}</b>
+                            {t(LANGUAGE.JOIN_DATE)}:{' '}
+                            <b>{moment(userProfile?._createdAt).format(DATE_FORMAT.TIME_DATE)}</b>
                         </span>
                         <AllowSendMail />
                     </div>

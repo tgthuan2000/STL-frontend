@@ -5,11 +5,14 @@ import { find, get, isEmpty } from 'lodash'
 import moment from 'moment'
 import React, { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import * as yup from 'yup'
 import { DateRange, FilterDateType, IFilterDate, TimeFilterPayload, TimeFilterProps } from '~/@types/components'
 import { AutoComplete, DatePicker } from '~/components/_base'
 import { E_FILTER_DATE, TABS_FILTER_DATE } from '~/constant/template'
+import i18n from '~/i18n'
+import LANGUAGE from '~/i18n/language/key'
 import Chip from './Chip'
 
 const schema = yup.object().shape({
@@ -65,12 +68,14 @@ enum E_DATE_RANGE_SUGGESTION {
     LAST_WEEK = 2,
 }
 
+const { t } = i18n
 const dateRangeSuggestions = [
-    { id: E_DATE_RANGE_SUGGESTION.THIS_WEEK, label: 'Tuần này' },
-    { id: E_DATE_RANGE_SUGGESTION.LAST_WEEK, label: 'Tuần trước' },
+    { id: E_DATE_RANGE_SUGGESTION.THIS_WEEK, label: t(LANGUAGE.THIS_WEEK) },
+    { id: E_DATE_RANGE_SUGGESTION.LAST_WEEK, label: t(LANGUAGE.LAST_WEEK) },
 ]
 
 const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit, excludes = [] }) => {
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
     const [parent] = useAutoAnimate<HTMLDivElement>()
@@ -205,7 +210,7 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit, excludes = [] }) => {
                 name='filter'
                 form={form}
                 data={dataOptions}
-                label='Bộ lọc'
+                label={t(LANGUAGE.FILTER)}
                 onChange={form.handleSubmit(onsubmit)}
             />
             <div ref={parent}>
@@ -218,8 +223,8 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit, excludes = [] }) => {
                             onChange={form.handleSubmit(onsubmit)}
                             showMonthYearPicker={isMonthFilter}
                             showYearPicker={isYearFilter}
-                            label={get(filterTab, 'dateName', 'Bộ lọc')}
-                            placeholderText='Chọn thời gian'
+                            label={get(filterTab, 'dateName', t(LANGUAGE.FILTER))}
+                            placeholderText={t(LANGUAGE.PLACEHOLDER_CHOOSE_TIME)}
                             format={get(filterTab, 'formatDate', 'DATE')}
                             disabledClear={!isDateRangeFilter}
                             {...props}

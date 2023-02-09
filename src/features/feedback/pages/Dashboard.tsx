@@ -1,17 +1,20 @@
 import { cloneDeep, get, isEmpty } from 'lodash'
 import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FeedbackQueryData, IFeedback } from '~/@types/feedback'
 import { Transaction } from '~/components'
 import { TAGS } from '~/constant'
 import { useLoading } from '~/context'
 import { useQuery } from '~/hook'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, RefactorUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
+import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_FEED_BACK_BY_PARENT_ID, GET_PARENT_FEED_BACK, SUBSCRIPTION_FEED_BACK } from '~/schema/query/feedback'
 import useAuth from '~/store/auth'
 import { InputForm, Messages } from '../components'
 
 const Dashboard = () => {
+    const { t } = useTranslation()
     const { userProfile } = useAuth()
     const { loading, setSubmitLoading } = useLoading()
     const [{ query, params, tags, refactor }, setQuery] = useState<{
@@ -223,11 +226,11 @@ const Dashboard = () => {
     }
 
     return (
-        <Transaction hasBack={false} title='Phản hồi'>
+        <Transaction hasBack={false} title={t(LANGUAGE.FEEDBACK)}>
             <div className='mt-5 bg-gray-200 dark:bg-slate-800 sm:rounded-lg -mx-4 sm:-mx-0 h-[80vh] flex flex-col'>
                 <div className='flex-1 sm:px-5 pb-10 px-3 overflow-auto'>
                     {loading.submit && (
-                        <p className='text-gray-700 dark:text-slate-300 text-center mt-5'>Đang tải nội dung...</p>
+                        <p className='text-gray-700 dark:text-slate-300 text-center mt-5'>{t(LANGUAGE.LOADING)}</p>
                     )}
                     <Messages
                         data={feedback.data?.data}

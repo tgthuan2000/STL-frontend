@@ -1,3 +1,5 @@
+import i18n from '~/i18n'
+import LANGUAGE from '~/i18n/language/key'
 import { DATE_FORMAT } from '.'
 
 export const TEMPLATE = {
@@ -26,19 +28,38 @@ export interface IFILTER_DATE {
     id: E_FILTER_DATE
     name: string
     labelName: string
-    dateName: string | undefined
+    dateName: string | undefined | null
     formatDate: keyof typeof DATE_FORMAT
 }
 
+const { t } = i18n
 export const TABS_FILTER_DATE: IFILTER_DATE[] = [
     {
         id: E_FILTER_DATE.DATE_RANGE,
         name: 'dateRange',
-        labelName: 'Nâng cao',
-        dateName: 'Khoảng ngày',
+        labelName: t(LANGUAGE.ADVANCE),
+        dateName: t(LANGUAGE.DATE_RANGE),
         formatDate: 'DATE',
     },
-    { id: E_FILTER_DATE.DATE, name: 'date', labelName: 'Theo ngày', dateName: 'Ngày', formatDate: 'DATE' },
-    { id: E_FILTER_DATE.MONTH, name: 'month', labelName: 'Theo tháng', dateName: 'Tháng', formatDate: 'MONTH' },
-    { id: E_FILTER_DATE.YEAR, name: 'year', labelName: 'Theo năm', dateName: 'Năm', formatDate: 'YEAR' },
+    {
+        id: E_FILTER_DATE.DATE,
+        name: 'date',
+        labelName: t(LANGUAGE.BY_DAY),
+        dateName: t(LANGUAGE.DAY),
+        formatDate: 'DATE',
+    },
+    {
+        id: E_FILTER_DATE.MONTH,
+        name: 'month',
+        labelName: t(LANGUAGE.BY_MONTH),
+        dateName: t(LANGUAGE.MONTH),
+        formatDate: 'MONTH',
+    },
+    {
+        id: E_FILTER_DATE.YEAR,
+        name: 'year',
+        labelName: t(LANGUAGE.BY_YEAR),
+        dateName: t(LANGUAGE.YEAR),
+        formatDate: 'YEAR',
+    },
 ]

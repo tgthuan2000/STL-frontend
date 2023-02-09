@@ -1,9 +1,12 @@
 import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { SettingComponentProps } from '~/@types/setting'
+import LANGUAGE from '~/i18n/language/key'
 
 const Feedback: React.FC<SettingComponentProps> = (props) => {
+    const { t } = useTranslation()
     const navigate = useNavigate()
     return (
         <button
@@ -14,7 +17,7 @@ const Feedback: React.FC<SettingComponentProps> = (props) => {
             }}
         >
             <ChatBubbleLeftRightIcon className='w-6 h-6 flex-shrink-0' />
-            <p>Phản hồi</p>
+            <p>{t(LANGUAGE.FEEDBACK)}</p>
         </button>
     )
 }

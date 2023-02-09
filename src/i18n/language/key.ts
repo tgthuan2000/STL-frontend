@@ -8,6 +8,10 @@ enum LANGUAGE {
     CATEGORY = 'category',
     CATEGORY_NAME = 'category-name',
     DATE = 'date',
+    DAY = 'day',
+    L_DAYS = 'l-days',
+    L_MAXIMUM = 'l-maximum',
+    YEAR = 'year',
     NOTE = 'note',
     SAVE = 'save',
     CREATE = 'create',
@@ -21,6 +25,26 @@ enum LANGUAGE {
     LIMIT_AMOUNT = 'limit-amount',
     STATUS = 'status',
     AMOUNT = 'amount',
+    UPDATE = 'update',
+    FILTER = 'filter',
+    ADVANCE = 'advance',
+    DATE_RANGE = 'date-range',
+    BY_DAY = 'by-day',
+    BY_MONTH = 'by-month',
+    BY_YEAR = 'by-year',
+    THIS_WEEK = 'this-week',
+    LAST_WEEK = 'last-week',
+    BUDGET = 'budget',
+    EMPTY_DATA = 'empty-data',
+    REMAINING = 'remaining',
+    TODAY = 'today',
+    OUT_OF_DATE = 'out-of-date',
+    UNLIMITED_TIME = 'unlimited-time',
+    FULL_NAME = 'full-name',
+    LOADING = 'loading',
+    LOADING_IMAGE = 'loading-image',
+    UPLOAD_IMAGE = 'upload-image',
+    SEE_MORE = 'see-more',
 
     /* VALIDATE MESSAGE */
     REQUIRED_FIELD = 'required-field',
@@ -35,22 +59,33 @@ enum LANGUAGE {
     REQUIRED_METHOD = 'required-method',
     REQUIRED_DATE = 'required-date',
     REQUIRED_USER_GET_LOAN = 'required-user-get-loan',
+    REQUIRED_OLD_PASSWORD = 'required-old-password',
+    REQUIRED_NEW_PASSWORD = 'required-new-password',
+    REQUIRED_RE_PASSWORD = 'required-re-password',
+    REQUIRED_FULL_NAME = 'required-full-name',
     AMOUNT_MIN_ZERO = 'amount-min-zero',
     RECEIVE_MIN_ZERO = 'receive-min-zero',
     TRANSFER_MIN_ZERO = 'transfer-min-zero',
     SURPLUS_MIN_ZERO = 'surplus-min-zero',
     COST_MIN_ZERO = 'cost-min-zero',
     CATEGORY_NAME_MAX_50 = 'category-name-max-50',
+    NEW_PASSWORD_MIN_1 = 'new-password-min-1',
+    PASSWORD_NOT_MATCH = 'password-not-match',
 
     /* PLACEHOLDER */
     PLACEHOLDER_CHOOSE_KIND = 'placeholder-choose-kind',
+    PLACEHOLDER_CHOOSE_TIME = 'placeholder-choose-time',
 
     /* NOTIFY/TOAST */
+    NOTIFY_UPDATE_SUCCESS = 'notify-update-success',
+    NOTIFY_UPDATE_FAILED = 'notify-update-failed',
     NOTIFY_CREATE_RECEIVE_SUCCESS = 'notify-create-receive-success',
     NOTIFY_CREATE_TRANSFER_SUCCESS = 'notify-create-transfer-success',
     NOTIFY_CREATE_COST_SUCCESS = 'notify-create-cost-success',
     NOTIFY_CREATE_CATEGORY_SUCCESS = 'notify-create-category-success',
     NOTIFY_CREATE_GET_LOAN_SUCCESS = 'notify-create-get-loan-success',
+    NOTIFY_UPDATE_PASSWORD_SUCCESS = 'notify-update-password-success',
+    NOTIFY_CREATE_MEMBER_SUCCESS = 'notify-create-member-success',
 
     /* SPENDING */
     SPENDING = 'spending',
@@ -69,6 +104,7 @@ enum LANGUAGE {
     CHOOSE_PREVIOUS_MONTH = 'choose-previous-month',
 
     /* LOAN */
+    LOAN = 'loan',
     MAKE_GET_LOAN = 'make-get-loan',
     MAKE_LOAN = 'make-loan',
     MAKE_LOAN_GET_LOAN = 'make-loan-get-loan',
@@ -78,10 +114,35 @@ enum LANGUAGE {
     USER_GET_LOAN = 'user-get-loan',
     ESTIMATE_PAID_DATE = 'estimate-paid-date',
     ASSET = 'asset',
+    ADD_ORIGIN_AMOUNT = 'add-origin-amount',
+    TEMP_LOAN = 'temp-loan',
+    IMAGE_OPTION = 'image-option',
+    PRESS_TO_UPLOAD_IMAGE = 'press-to-upload-image',
+
+    /* PROFILE */
+    JOIN_DATE = 'join-date',
+    ALLOW_RECEIVE_NOTIFY_BY_MAIL = 'allow-receive-notify-by-mail',
+    MOST_USED = 'most-used',
+    MOST_USED_RECEIVE = 'most-used-receive',
+    MOST_USED_COST = 'most-used-cost',
+    MOST_RECEIVE = 'most-receive',
+    MOST_COST = 'most-cost',
+    MOST_RECEIVE_TOTAL = 'most-receive-total',
+    MOST_COST_TOTAL = 'most-cost-total',
+    MOST_METHOD_AMOUNT = 'most-method-amount',
+    MOST_CATEGORY_AMOUNT = 'most-category-amount',
+
+    /* SETTING */
+    OLD_PASSWORD_INCORRECT = 'old-password-incorrect',
+    OLD_PASSWORD = 'old-password',
+    NEW_PASSWORD = 'new-password',
+    RE_PASSWORD = 're-password',
 
     /* OTHERS */
     SOME_CATEGORY_SIMILAR_NAME = 'some-category-similar-name',
     NOT_CATEGORY_SIMILAR_NAME = 'not-category-similar-name',
+    INVALID_FORMAT_IMAGE = 'invalid-format-image',
+    INVALID_FORMAT_IMAGE_SIZE = 'invalid-format-image-size',
 
     /* LAYOUT */
     SPENDING_MANAGEMENT = 'spending-management',

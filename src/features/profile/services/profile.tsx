@@ -4,6 +4,10 @@ import numeral from 'numeral'
 import { BudgetProfile, CategoryProfile, CategoryRespond, profileOptionFn, ProfileService } from '~/@types/profile'
 import { DATE_FORMAT } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
+import i18n from '~/i18n'
+import LANGUAGE from '~/i18n/language/key'
+
+const { t } = i18n
 
 const __: ProfileService = {
     method: (method) => {
@@ -123,14 +127,14 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
         {
             id: 1,
             hidden: !get(_method, 'maxUsed._id') && !get(_method, 'maxReceive._id') && !get(_method, 'maxCost._id'),
-            title: 'Phương thức thanh toán',
+            title: t(LANGUAGE.METHOD_SPENDING),
             wrapClassName: 'xl:row-start-2 xl:col-start-2 xl:col-span-3 xl:row-span-1',
             className: 'xl:flex-row xl:flex-wrap flex-col',
             values: [
                 {
                     id: 1,
                     hidden: !get(_method, 'maxUsed._id'),
-                    title: 'Sử dụng nhiều nhất',
+                    title: t(LANGUAGE.MOST_USED),
                     data: (
                         <div className='flex items-end justify-between font-normal'>
                             <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
@@ -143,7 +147,7 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                 {
                     id: 2,
                     hidden: !get(_method, 'maxReceive._id'),
-                    title: 'Thu nhập nhiều nhất',
+                    title: t(LANGUAGE.MOST_RECEIVE),
                     data: (
                         <div className='flex items-end justify-between font-normal'>
                             <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
@@ -158,7 +162,7 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                 {
                     id: 3,
                     hidden: !get(_method, 'maxCost._id'),
-                    title: 'Chi phí nhiều nhất',
+                    title: t(LANGUAGE.MOST_COST),
                     data: (
                         <div className='flex items-end justify-between font-normal'>
                             <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
@@ -179,14 +183,14 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                 !get(_category, 'maxReceiveUsed._id') &&
                 !get(_category, 'maxCost._id') &&
                 !get(_category, 'maxReceive._id'),
-            title: 'Thể loại',
+            title: t(LANGUAGE.CATEGORY),
             wrapClassName: 'xl:row-start-1 xl:col-start-1 xl:col-span-1 xl:row-span-3',
             className: 'flex-col',
             values: [
                 {
                     id: 1,
                     hidden: !get(_category, 'maxCostUsed._id'),
-                    title: 'Chi phí sử dụng nhiều nhất',
+                    title: t(LANGUAGE.MOST_USED_COST),
                     data: (
                         <div className='flex items-end justify-between font-normal'>
                             <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
@@ -201,7 +205,7 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                 {
                     id: 2,
                     hidden: !get(_category, 'maxReceiveUsed._id'),
-                    title: 'Thu nhập sử dụng nhiều nhất',
+                    title: t(LANGUAGE.MOST_USED_RECEIVE),
                     data: (
                         <div className='flex items-end justify-between font-normal'>
                             <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
@@ -216,7 +220,7 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                 {
                     id: 3,
                     hidden: !get(_category, 'maxCost._id'),
-                    title: 'Tổng chi phí nhiều nhất',
+                    title: t(LANGUAGE.MOST_COST_TOTAL),
                     data: (
                         <div className='flex items-end justify-between font-normal'>
                             <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
@@ -231,7 +235,7 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                 {
                     id: 4,
                     hidden: !get(_category, 'maxReceive._id'),
-                    title: 'Tổng thu nhập nhiều nhất',
+                    title: t(LANGUAGE.MOST_RECEIVE_TOTAL),
                     data: (
                         <div className='flex items-end justify-between font-normal'>
                             <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
@@ -248,14 +252,14 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
         {
             id: 3,
             hidden: !get(_budget, 'maxTotalMethod._id') && !get(_budget, 'maxTotalCategory._id'),
-            title: 'Ngân sách',
+            title: t(LANGUAGE.BUDGET),
             wrapClassName: 'xl:row-start-1 xl:col-start-2 xl:col-span-1 xl:row-span-1',
             className: 'flex-col',
             values: [
                 {
                     id: 1,
                     hidden: !get(_budget, 'maxTotalMethod._id'),
-                    title: 'Số tiền cao nhất theo phương thức',
+                    title: t(LANGUAGE.MOST_METHOD_AMOUNT),
                     data: (
                         <div className='flex items-end justify-between font-normal'>
                             <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
@@ -270,7 +274,7 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                 {
                     id: 2,
                     hidden: !get(_budget, 'maxTotalCategory._id'),
-                    title: 'Số tiền cao nhất theo loại',
+                    title: t(LANGUAGE.MOST_CATEGORY_AMOUNT),
                     data: (
                         <div className='flex items-end justify-between font-normal'>
                             <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>

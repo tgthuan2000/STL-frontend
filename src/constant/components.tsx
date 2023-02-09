@@ -3,6 +3,7 @@ import {
     ArrowsRightLeftIcon,
     ArrowTrendingUpIcon,
     ClipboardDocumentListIcon,
+    DocumentIcon,
     HomeIcon,
     MinusCircleIcon,
     PlusCircleIcon,
@@ -176,7 +177,7 @@ export const menuSpendingPC: IMenuBtn[] = [
     {
         title: t(LANGUAGE.CREATE_CATEGORY),
         color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
-        icon: ClipboardDocumentListIcon,
+        icon: DocumentIcon,
         children: () => <AddCategory />,
         to: '?slide=add-category',
         query: {
@@ -290,7 +291,7 @@ export const menuSpendingPages: IMenuBtn[] = [
     {
         title: t(LANGUAGE.CREATE_CATEGORY),
         color: 'text-cyan-700 dark:text-cyan-500',
-        icon: ClipboardDocumentListIcon,
+        icon: DocumentIcon,
         children: () => <AddCategory />,
         to: '?slide=add-category',
         query: {

@@ -1,13 +1,16 @@
 import { EnvelopeIcon } from '@heroicons/react/24/outline'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { CreateStep4Props } from '~/@types/announce-config'
 import { DraftNotify } from '~/@types/notify'
 import { Image, Prose } from '~/components'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { TEMPLATE } from '~/constant/template'
 import { useLocalStorage } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 
 const Step4: React.FC<CreateStep4Props> = ({ id, onSubmit }) => {
+    const { t } = useTranslation()
     const [draftNotify] = useLocalStorage<DraftNotify>(LOCAL_STORAGE_KEY.STL_DRAFT_NOTIFY)
     const form = useForm()
     const handleSubmit = async () => {
@@ -64,7 +67,7 @@ const Step4: React.FC<CreateStep4Props> = ({ id, onSubmit }) => {
                 <div>
                     <p className='inline-block font-medium'>Nội dung</p>
                     <div className='border dark:border-slate-600 sm:p-5 p-3 m-2 rounded-lg'>
-                        <Prose>{draftNotify?.content ?? TEMPLATE.EMPTY_DATA}</Prose>
+                        <Prose>{draftNotify?.content ?? t(LANGUAGE.EMPTY_DATA)}</Prose>
                     </div>
                 </div>
             </form>

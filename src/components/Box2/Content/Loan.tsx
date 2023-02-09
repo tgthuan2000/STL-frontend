@@ -3,17 +3,20 @@ import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { ContentLoanBox2Props } from '~/@types/components'
 import AvatarUser from '~/components/AvatarUser'
 import { DATE_FORMAT } from '~/constant'
+import LANGUAGE from '~/i18n/language/key'
 
 const Content: React.FC<ContentLoanBox2Props> = ({ data, loading }) => {
+    const { t } = useTranslation()
     if (loading) return <Skeleton />
     if (isEmpty(data) || !Array.isArray(data))
         return (
             <div className='text-center text-gray-500 py-4 px-8 rounded-xl bg-white dark:bg-slate-700 dark:text-white'>
-                Không có dữ liệu
+                {t(LANGUAGE.EMPTY_DATA)}
             </div>
         )
     return (
@@ -25,26 +28,26 @@ const Content: React.FC<ContentLoanBox2Props> = ({ data, loading }) => {
                     numberDay = moment(item.estimatePaidDate).diff(moment(), 'days')
                 }
                 date = {
-                    message: `Còn lại ${numberDay} ngày`,
+                    message: `${t(LANGUAGE.REMAINING)} ${numberDay} ${t(LANGUAGE.L_DAYS)}`,
                     color: 'text-yellow-500',
                 }
 
                 if (!isNil(numberDay)) {
                     if (numberDay === 0) {
                         date = {
-                            message: 'Hôm nay',
+                            message: t(LANGUAGE.TODAY),
                             color: 'text-indigo-500',
                         }
                     }
                     if (numberDay < 0) {
                         date = {
-                            message: 'Quá hạn',
+                            message: t(LANGUAGE.OUT_OF_DATE),
                             color: 'text-radical-red-500',
                         }
                     }
                 } else {
                     date = {
-                        message: 'Không có hạn trả',
+                        message: t(LANGUAGE.UNLIMITED_TIME),
                         color: 'text-gray-500',
                     }
                 }
@@ -60,7 +63,7 @@ const Content: React.FC<ContentLoanBox2Props> = ({ data, loading }) => {
                         <span className='truncate flex-1 max-w-[150px] text-gray-900 dark:text-slate-200'>
                             {item.userLoan?.userName}
                         </span>
-                        <span title='Hạn trả' className={clsx('font-normal truncate', date?.color)}>
+                        <span className={clsx('font-normal truncate', date?.color)}>
                             {isHaveEstimatePayDate &&
                                 moment(item.estimatePaidDate).format(DATE_FORMAT.D_DATE_TIME) + ' - '}{' '}
                             {date?.message}

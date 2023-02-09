@@ -12,6 +12,10 @@ const translation: {
     [LANGUAGE.CATEGORY]: 'Category',
     [LANGUAGE.CATEGORY_NAME]: 'Category name',
     [LANGUAGE.DATE]: 'Date',
+    [LANGUAGE.DAY]: 'Day',
+    [LANGUAGE.L_DAYS]: 'day(s)',
+    [LANGUAGE.L_MAXIMUM]: 'maximum',
+    [LANGUAGE.YEAR]: 'Year',
     [LANGUAGE.NOTE]: 'Note',
     [LANGUAGE.SAVE]: 'Save',
     [LANGUAGE.CREATE]: 'Create',
@@ -25,6 +29,26 @@ const translation: {
     [LANGUAGE.LIMIT_AMOUNT]: 'Limit amount',
     [LANGUAGE.STATUS]: 'Status',
     [LANGUAGE.AMOUNT]: 'Amount',
+    [LANGUAGE.UPDATE]: 'Update',
+    [LANGUAGE.FILTER]: 'Filter',
+    [LANGUAGE.ADVANCE]: 'Advance',
+    [LANGUAGE.DATE_RANGE]: 'Date range',
+    [LANGUAGE.BY_DAY]: 'By day',
+    [LANGUAGE.BY_MONTH]: 'By month',
+    [LANGUAGE.BY_YEAR]: 'By year',
+    [LANGUAGE.THIS_WEEK]: 'This week',
+    [LANGUAGE.LAST_WEEK]: 'Last week',
+    [LANGUAGE.BUDGET]: 'Budget',
+    [LANGUAGE.EMPTY_DATA]: 'Empty data',
+    [LANGUAGE.REMAINING]: 'Remaining',
+    [LANGUAGE.TODAY]: 'Today',
+    [LANGUAGE.OUT_OF_DATE]: 'Out of date',
+    [LANGUAGE.UNLIMITED_TIME]: 'Unlimited time',
+    [LANGUAGE.FULL_NAME]: 'Full name',
+    [LANGUAGE.LOADING]: 'Loading...',
+    [LANGUAGE.LOADING_IMAGE]: 'Loading image...',
+    [LANGUAGE.UPLOAD_IMAGE]: 'Upload image',
+    [LANGUAGE.SEE_MORE]: 'See more',
 
     /* VALIDATE MESSAGE */
     [LANGUAGE.REQUIRED_FIELD]: 'Required field',
@@ -39,22 +63,33 @@ const translation: {
     [LANGUAGE.REQUIRED_METHOD]: 'Required method',
     [LANGUAGE.REQUIRED_DATE]: 'Required date',
     [LANGUAGE.REQUIRED_USER_GET_LOAN]: 'Required user get loan',
+    [LANGUAGE.REQUIRED_OLD_PASSWORD]: 'Required old password',
+    [LANGUAGE.REQUIRED_NEW_PASSWORD]: 'Required new password',
+    [LANGUAGE.REQUIRED_RE_PASSWORD]: 'Required re-password',
+    [LANGUAGE.REQUIRED_FULL_NAME]: 'Required full name',
     [LANGUAGE.AMOUNT_MIN_ZERO]: 'Amount must be greater than zero',
     [LANGUAGE.RECEIVE_MIN_ZERO]: 'Receive must be greater than zero',
     [LANGUAGE.TRANSFER_MIN_ZERO]: 'Transfer must be greater than zero',
     [LANGUAGE.SURPLUS_MIN_ZERO]: 'Surplus must be greater than zero',
     [LANGUAGE.COST_MIN_ZERO]: 'Cost must be greater than zero',
     [LANGUAGE.CATEGORY_NAME_MAX_50]: 'Category name must be less than 50 characters',
+    [LANGUAGE.NEW_PASSWORD_MIN_1]: 'New password must be greater than 1 characters',
+    [LANGUAGE.PASSWORD_NOT_MATCH]: 'Password not match',
 
     /* PLACEHOLDER */
     [LANGUAGE.PLACEHOLDER_CHOOSE_KIND]: 'Choose kind',
+    [LANGUAGE.PLACEHOLDER_CHOOSE_TIME]: 'Choose time',
 
     /* NOTIFY/TOAST */
+    [LANGUAGE.NOTIFY_UPDATE_SUCCESS]: 'Update success',
+    [LANGUAGE.NOTIFY_UPDATE_FAILED]: 'Update failed',
     [LANGUAGE.NOTIFY_CREATE_RECEIVE_SUCCESS]: 'Receive success',
     [LANGUAGE.NOTIFY_CREATE_TRANSFER_SUCCESS]: 'Transfer success',
     [LANGUAGE.NOTIFY_CREATE_COST_SUCCESS]: 'Cost success',
     [LANGUAGE.NOTIFY_CREATE_CATEGORY_SUCCESS]: 'Create category success',
     [LANGUAGE.NOTIFY_CREATE_GET_LOAN_SUCCESS]: 'Create get loan success',
+    [LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS]: 'Update password success',
+    [LANGUAGE.NOTIFY_CREATE_MEMBER_SUCCESS]: 'Create member success',
 
     /* SPENDING */
     [LANGUAGE.SPENDING]: 'Spending management',
@@ -73,6 +108,7 @@ const translation: {
     [LANGUAGE.CHOOSE_PREVIOUS_MONTH]: 'Choose by previous month',
 
     /* LOAN */
+    [LANGUAGE.LOAN]: 'Loan',
     [LANGUAGE.MAKE_GET_LOAN]: 'Make get loan',
     [LANGUAGE.MAKE_LOAN]: 'Make loan',
     [LANGUAGE.MAKE_LOAN_GET_LOAN]: 'Make loan/get loan',
@@ -82,10 +118,35 @@ const translation: {
     [LANGUAGE.USER_GET_LOAN]: 'User get loan',
     [LANGUAGE.ESTIMATE_PAID_DATE]: 'Estimate paid date',
     [LANGUAGE.ASSET]: 'Asset',
+    [LANGUAGE.ADD_ORIGIN_AMOUNT]: 'Add origin',
+    [LANGUAGE.TEMP_LOAN]: 'Advance',
+    [LANGUAGE.IMAGE_OPTION]: 'Image (optional)',
+    [LANGUAGE.PRESS_TO_UPLOAD_IMAGE]: 'Press to upload image',
+
+    /* PROFILE */
+    [LANGUAGE.JOIN_DATE]: 'Join date',
+    [LANGUAGE.ALLOW_RECEIVE_NOTIFY_BY_MAIL]: 'Allow receive notify by mail',
+    [LANGUAGE.MOST_USED]: 'Most used',
+    [LANGUAGE.MOST_USED_RECEIVE]: 'Receive used most',
+    [LANGUAGE.MOST_USED_COST]: 'Cost used most',
+    [LANGUAGE.MOST_RECEIVE]: 'Receive most',
+    [LANGUAGE.MOST_COST]: 'Cost most',
+    [LANGUAGE.MOST_RECEIVE_TOTAL]: 'Total receive most',
+    [LANGUAGE.MOST_COST_TOTAL]: 'Total cost most',
+    [LANGUAGE.MOST_METHOD_AMOUNT]: 'Method amount most',
+    [LANGUAGE.MOST_CATEGORY_AMOUNT]: 'Category amount most',
+
+    /* SETTING */
+    [LANGUAGE.OLD_PASSWORD_INCORRECT]: 'Old password incorrect',
+    [LANGUAGE.OLD_PASSWORD]: 'Old password',
+    [LANGUAGE.NEW_PASSWORD]: 'New password',
+    [LANGUAGE.RE_PASSWORD]: 'Re-password',
 
     /* OTHERS */
     [LANGUAGE.SOME_CATEGORY_SIMILAR_NAME]: 'Some category have similar name',
     [LANGUAGE.NOT_CATEGORY_SIMILAR_NAME]: 'Not category have similar name',
+    [LANGUAGE.INVALID_FORMAT_IMAGE]: 'Invalid format image',
+    [LANGUAGE.INVALID_FORMAT_IMAGE_SIZE]: 'Invalid format image size',
 
     /* LAYOUT */
     [LANGUAGE.SPENDING_MANAGEMENT]: 'Spending management',

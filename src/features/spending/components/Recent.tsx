@@ -3,14 +3,17 @@ import { isEmpty } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { RecentProps } from '~/@types/spending'
 import { DATE_FORMAT } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { TEMPLATE } from '~/constant/template'
+import LANGUAGE from '~/i18n/language/key'
 import { getLinkSpending } from '~/utils'
 
 const Recent: React.FC<RecentProps> = ({ data, loading }) => {
+    const { t } = useTranslation()
     if (loading) return <RecentSkeleton />
 
     if (!isEmpty(data)) {
@@ -90,7 +93,7 @@ const Recent: React.FC<RecentProps> = ({ data, loading }) => {
             </ul>
         )
     }
-    return <div className='py-2 text-center text-gray-700 dark:text-slate-200'>{TEMPLATE.EMPTY_DATA}</div>
+    return <div className='py-2 text-center text-gray-700 dark:text-slate-200'>{t(LANGUAGE.EMPTY_DATA)}</div>
 }
 
 export default Recent

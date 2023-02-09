@@ -12,6 +12,10 @@ const translation: {
     [LANGUAGE.CATEGORY]: 'Thể loại',
     [LANGUAGE.CATEGORY_NAME]: 'Tên thể loại',
     [LANGUAGE.DATE]: 'Ngày',
+    [LANGUAGE.DAY]: 'Ngày',
+    [LANGUAGE.L_DAYS]: 'ngày',
+    [LANGUAGE.L_MAXIMUM]: 'tối đa',
+    [LANGUAGE.YEAR]: 'Năm',
     [LANGUAGE.NOTE]: 'Ghi chú',
     [LANGUAGE.SAVE]: 'Lưu',
     [LANGUAGE.CREATE]: 'Tạo',
@@ -25,6 +29,26 @@ const translation: {
     [LANGUAGE.LIMIT_AMOUNT]: 'Hạn mức',
     [LANGUAGE.STATUS]: 'Trạng thái',
     [LANGUAGE.AMOUNT]: 'Số tiền',
+    [LANGUAGE.UPDATE]: 'Cập nhật',
+    [LANGUAGE.FILTER]: 'Bộ lọc',
+    [LANGUAGE.ADVANCE]: 'Nâng cao',
+    [LANGUAGE.DATE_RANGE]: 'Khoảng ngày',
+    [LANGUAGE.BY_DAY]: 'Theo ngày',
+    [LANGUAGE.BY_MONTH]: 'Theo tháng',
+    [LANGUAGE.BY_YEAR]: 'Theo năm',
+    [LANGUAGE.THIS_WEEK]: 'Tuần này',
+    [LANGUAGE.LAST_WEEK]: 'Tuần trước',
+    [LANGUAGE.BUDGET]: 'Ngân sách',
+    [LANGUAGE.EMPTY_DATA]: 'Không có dữ liệu',
+    [LANGUAGE.REMAINING]: 'Còn lại',
+    [LANGUAGE.TODAY]: 'Hôm nay',
+    [LANGUAGE.OUT_OF_DATE]: 'Quá hạn',
+    [LANGUAGE.UNLIMITED_TIME]: 'Vô thời hạn',
+    [LANGUAGE.FULL_NAME]: 'Họ và tên',
+    [LANGUAGE.LOADING]: 'Đang tải...',
+    [LANGUAGE.LOADING_IMAGE]: 'Đang tải ảnh...',
+    [LANGUAGE.UPLOAD_IMAGE]: 'Tải ảnh lên',
+    [LANGUAGE.SEE_MORE]: 'Xem thêm',
 
     /* VALIDATE MESSAGE */
     [LANGUAGE.REQUIRED_FIELD]: 'Yêu cầu nhập!',
@@ -39,22 +63,33 @@ const translation: {
     [LANGUAGE.REQUIRED_METHOD]: 'Yêu cầu chọn phương thức!',
     [LANGUAGE.REQUIRED_USER_GET_LOAN]: 'Yêu cầu chọn đối tượng vay!',
     [LANGUAGE.REQUIRED_DATE]: 'Yêu cầu chọn ngày!',
+    [LANGUAGE.REQUIRED_OLD_PASSWORD]: 'Yêu cầu nhập mật khẩu cũ!',
+    [LANGUAGE.REQUIRED_NEW_PASSWORD]: 'Yêu cầu nhập mật khẩu mới!',
+    [LANGUAGE.REQUIRED_RE_PASSWORD]: 'Yêu cầu nhập lại mật khẩu mới!',
+    [LANGUAGE.REQUIRED_FULL_NAME]: 'Yêu cầu nhập họ và tên!',
     [LANGUAGE.AMOUNT_MIN_ZERO]: 'Số tiền phải lớn hơn 0!',
     [LANGUAGE.RECEIVE_MIN_ZERO]: 'Thu nhập phải lớn hơn 0!',
     [LANGUAGE.TRANSFER_MIN_ZERO]: 'Số tiền chuyển khoản phải lớn hơn 0!',
     [LANGUAGE.SURPLUS_MIN_ZERO]: 'Hạn mức phải lớn hơn 0!',
     [LANGUAGE.COST_MIN_ZERO]: 'Chi phí phải lớn hơn 0!',
     [LANGUAGE.CATEGORY_NAME_MAX_50]: 'Tên thể loại không được quá 50 ký tự!',
+    [LANGUAGE.NEW_PASSWORD_MIN_1]: 'Mật khẩu mới phải lớn hơn 1 ký tự!',
+    [LANGUAGE.PASSWORD_NOT_MATCH]: 'Mật khẩu không khớp!',
 
     /* PLACEHOLDER */
     [LANGUAGE.PLACEHOLDER_CHOOSE_KIND]: '--- Chọn loại ---',
+    [LANGUAGE.PLACEHOLDER_CHOOSE_TIME]: 'Chọn thời gian',
 
     /* NOTIFY/TOAST */
+    [LANGUAGE.NOTIFY_UPDATE_SUCCESS]: 'Cập nhật thành công!',
+    [LANGUAGE.NOTIFY_UPDATE_FAILED]: 'Cập nhật thất bại!',
     [LANGUAGE.NOTIFY_CREATE_RECEIVE_SUCCESS]: 'Thêm thu nhập thành công!',
     [LANGUAGE.NOTIFY_CREATE_TRANSFER_SUCCESS]: 'Chuyển khoản thành công!',
     [LANGUAGE.NOTIFY_CREATE_COST_SUCCESS]: 'Thêm chi phí thành công!',
     [LANGUAGE.NOTIFY_CREATE_CATEGORY_SUCCESS]: 'Thêm thể loại thành công!',
     [LANGUAGE.NOTIFY_CREATE_GET_LOAN_SUCCESS]: 'Thêm khoản vay thành công!',
+    [LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS]: 'Đổi mật khẩu thành công!',
+    [LANGUAGE.NOTIFY_CREATE_MEMBER_SUCCESS]: 'Thêm thành viên thành công!',
 
     /* SPENDING */
     [LANGUAGE.SPENDING]: 'Quản lý chi tiêu',
@@ -73,6 +108,7 @@ const translation: {
     [LANGUAGE.CHOOSE_PREVIOUS_MONTH]: 'Chọn theo tháng trước',
 
     /* LOAN */
+    [LANGUAGE.LOAN]: 'Vay',
     [LANGUAGE.MAKE_LOAN]: 'Vay',
     [LANGUAGE.MAKE_GET_LOAN]: 'Cho vay',
     [LANGUAGE.MAKE_LOAN_GET_LOAN]: 'Vay/Cho vay',
@@ -82,10 +118,35 @@ const translation: {
     [LANGUAGE.USER_GET_LOAN]: 'Đối tượng vay',
     [LANGUAGE.ESTIMATE_PAID_DATE]: 'Ngày dự kiến trả',
     [LANGUAGE.ASSET]: 'Tài sản',
+    [LANGUAGE.ADD_ORIGIN_AMOUNT]: 'Cộng gốc',
+    [LANGUAGE.TEMP_LOAN]: 'Tạm ứng',
+    [LANGUAGE.IMAGE_OPTION]: 'Hình ảnh (tùy chọn)',
+    [LANGUAGE.PRESS_TO_UPLOAD_IMAGE]: 'Nhấn để tải hình ảnh',
+
+    /* PROFILE */
+    [LANGUAGE.JOIN_DATE]: 'Ngày tham gia',
+    [LANGUAGE.ALLOW_RECEIVE_NOTIFY_BY_MAIL]: 'Cho phép nhận thông báo qua mail',
+    [LANGUAGE.MOST_USED]: 'Sử dụng nhiều nhất',
+    [LANGUAGE.MOST_USED_RECEIVE]: 'Thu nhập nhiều nhất',
+    [LANGUAGE.MOST_USED_COST]: 'Chi phí nhiều nhất',
+    [LANGUAGE.MOST_RECEIVE]: 'Thu nhập nhiều nhất',
+    [LANGUAGE.MOST_COST]: 'Chi phí nhiều nhất',
+    [LANGUAGE.MOST_RECEIVE_TOTAL]: 'Tổng thu nhập nhiều nhất',
+    [LANGUAGE.MOST_COST_TOTAL]: 'Tổng chi phí nhiều nhất',
+    [LANGUAGE.MOST_METHOD_AMOUNT]: 'Số tiền nhiều nhất theo phương thức',
+    [LANGUAGE.MOST_CATEGORY_AMOUNT]: 'Số tiền nhiều nhất thể loại',
 
     /* OTHERS */
     [LANGUAGE.SOME_CATEGORY_SIMILAR_NAME]: 'Một số thể loại gần giống tên',
     [LANGUAGE.NOT_CATEGORY_SIMILAR_NAME]: 'Không có thể loại gần giống tên',
+    [LANGUAGE.INVALID_FORMAT_IMAGE]: 'Sai định dạng hình ảnh cho phép',
+    [LANGUAGE.INVALID_FORMAT_IMAGE_SIZE]: 'Kích thước hình ảnh quá lớn',
+
+    /* SETTING */
+    [LANGUAGE.OLD_PASSWORD_INCORRECT]: 'Mật khẩu cũ không đúng',
+    [LANGUAGE.OLD_PASSWORD]: 'Mật khẩu cũ',
+    [LANGUAGE.NEW_PASSWORD]: 'Mật khẩu mới',
+    [LANGUAGE.RE_PASSWORD]: 'Xác nhận mật khẩu',
 
     /* LAYOUT */
     [LANGUAGE.SPENDING_MANAGEMENT]: 'Quản lý chi tiêu',

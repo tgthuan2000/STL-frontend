@@ -41,7 +41,7 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit, defaultMessage = '' }) 
             <div className='flex-shrink-0 inline-flex items-center' ref={submitRef}>
                 {form.watch('message').trim() && (
                     <button type='submit' className='text-indigo-500 hover:opacity-50 font-bold'>
-                        <PaperAirplaneIcon className='h-6 rotate-90' />
+                        <PaperAirplaneIcon className='h-6' />
                     </button>
                 )}
             </div>

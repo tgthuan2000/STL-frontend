@@ -3,12 +3,15 @@ import { ArrowPathIcon, ArrowUpOnSquareIcon, XMarkIcon } from '@heroicons/react/
 import clsx from 'clsx'
 import { ChangeEvent, forwardRef, useId, useState } from 'react'
 import { Controller } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { UploadImageProps } from '~/@types/components'
 import { acceptImageType } from '~/constant/component'
+import LANGUAGE from '~/i18n/language/key'
 import { client, urlFor } from '~/sanityConfig'
 
 const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
     ({ className, label, name, form, rules, disabled, ...props }, ref) => {
+        const { t } = useTranslation()
         const id = useId()
         const [parent] = useAutoAnimate<HTMLDivElement>()
         const [loading, setLoading] = useState(false)
@@ -19,14 +22,14 @@ const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
                 try {
                     setLoading(true)
                     if (!acceptImageType.includes(file.type)) {
-                        form.setError(name, { message: 'Sai định dạng hình ảnh cho phép (JPG, JPEG, PNG)' })
+                        form.setError(name, { message: `${t(LANGUAGE.INVALID_FORMAT_IMAGE)} (JPG, JPEG, PNG)` })
                         return
                     } else {
                         form.clearErrors(name)
                     }
 
                     if (file.size > 20 * 1024 ** 2) {
-                        form.setError(name, { message: 'Bạn đã chọn quá kích thước cho phép là 20MB!' })
+                        form.setError(name, { message: `${t(LANGUAGE.INVALID_FORMAT_IMAGE_SIZE)} (20MB)` })
                         return
                     } else {
                         form.clearErrors(name)
@@ -79,12 +82,12 @@ const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
                                         {loading ? (
                                             <>
                                                 <ArrowPathIcon className='h-5 w-5 -ml-5 mr-2 animate-spin' />
-                                                Đang tải hình ảnh
+                                                {t(LANGUAGE.LOADING_IMAGE)}
                                             </>
                                         ) : (
                                             <>
                                                 <ArrowUpOnSquareIcon className='h-5 w-5 -ml-5 mr-2' />
-                                                Tải hình ảnh mới
+                                                {t(LANGUAGE.UPLOAD_IMAGE)}
                                             </>
                                         )}
                                     </label>
@@ -108,13 +111,15 @@ const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
                                         {loading ? (
                                             <>
                                                 <ArrowPathIcon className='h-10 w-10 animate-spin' />
-                                                <span>Đang tải ảnh lên</span>
+                                                <span>{t(LANGUAGE.LOADING_IMAGE)}</span>
                                             </>
                                         ) : (
                                             <>
                                                 <ArrowUpOnSquareIcon className='h-10 w-10' />
-                                                <span>Nhấn để tải lên hình ảnh</span>
-                                                <span className='text-xs'>(JPG, JPEG, PNG - tối đa 20MB)</span>
+                                                <span>{t(LANGUAGE.PRESS_TO_UPLOAD_IMAGE)}</span>
+                                                <span className='text-xs'>
+                                                    (JPG, JPEG, PNG - {t(LANGUAGE.L_MAXIMUM)} 20MB)
+                                                </span>
                                             </>
                                         )}
                                     </label>

@@ -1,9 +1,12 @@
 import clsx from 'clsx'
 import numeral from 'numeral'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { StatisticProps } from '~/@types/spending'
+import LANGUAGE from '~/i18n/language/key'
 
 const Statistic: React.FC<StatisticProps> = ({ data, loading }) => {
+    const { t } = useTranslation()
     if (loading) return <StatisticSkeleton />
     return (
         <div className='grid grid-cols-3 xl:gap-x-4 py-6'>
@@ -17,7 +20,7 @@ const Statistic: React.FC<StatisticProps> = ({ data, loading }) => {
                         {Boolean(getLoan) && (
                             <span className='xl:text-sm text-xs font-medium block w-full text-yellow-500'>
                                 <span className='truncate block w-full text-center'>
-                                    [Vay {numeral(getLoan || 0).format()}]
+                                    [{t(LANGUAGE.LOAN)} {numeral(getLoan || 0).format()}]
                                 </span>
                             </span>
                         )}
