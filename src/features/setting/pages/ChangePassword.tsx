@@ -3,17 +3,20 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import bcrypt from 'bcryptjs'
 import { get } from 'lodash'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Button, SubmitWrap, Transaction } from '~/components'
 import { Input } from '~/components/_base'
 import { useLoading } from '~/context'
+import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_PASSWORD_BY_ID } from '~/schema/query/login'
 import useAuth from '~/store/auth'
 import { changePasswordSchema } from '../services/schema'
 
 const ChangePassword = () => {
+    const { t } = useTranslation()
     const { loading, setSubmitLoading } = useLoading()
     const { userProfile, removeUserProfile } = useAuth()
     const navigate = useNavigate()
@@ -47,7 +50,7 @@ const ChangePassword = () => {
                 })
                 const isCorrectPassword = bcrypt.compareSync(oldPassword, d.password)
                 if (!isCorrectPassword) {
-                    toast.error('Mật khẩu cũ không đúng!')
+                    toast.error(t(LANGUAGE.OLD_PASSWORD_INCORRECT))
                     return
                 }
             }
@@ -56,7 +59,7 @@ const ChangePassword = () => {
 
             await __.commit()
 
-            toast.success('Cập nhật mật khẩu thành công!')
+            toast.success(t(LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS))
             removeUserProfile()
         } catch (error) {
             console.log(error)
@@ -66,7 +69,7 @@ const ChangePassword = () => {
     }
 
     return (
-        <Transaction title='Đổi mật khẩu'>
+        <Transaction title={t(LANGUAGE.CHANGE_PASSWORD)}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <div className='bg-white dark:bg-slate-800 rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>
                     <div className='max-w-lg w-full mx-auto'>
@@ -86,7 +89,7 @@ const ChangePassword = () => {
                                                     name='old-password'
                                                     form={form}
                                                     type='password'
-                                                    label='Mật khẩu cũ'
+                                                    label={t(LANGUAGE.OLD_PASSWORD)}
                                                     disabled={loading.submit}
                                                 />
                                             )}
@@ -94,14 +97,14 @@ const ChangePassword = () => {
                                                 name='new-password'
                                                 form={form}
                                                 type='password'
-                                                label='Mật khẩu mới'
+                                                label={t(LANGUAGE.NEW_PASSWORD)}
                                                 disabled={loading.submit}
                                             />
                                             <Input
                                                 name='re-password'
                                                 form={form}
                                                 type='password'
-                                                label='Nhập lại mật khẩu'
+                                                label={t(LANGUAGE.RE_PASSWORD)}
                                                 disabled={loading.submit}
                                             />
                                         </div>
@@ -110,7 +113,7 @@ const ChangePassword = () => {
                             </div>
                             <SubmitWrap>
                                 <Button color='blue' type='submit' disabled={loading.submit}>
-                                    Cập nhật
+                                    {t(LANGUAGE.UPDATE)}
                                 </Button>
                                 <Button
                                     color='outline'
@@ -119,7 +122,7 @@ const ChangePassword = () => {
                                         navigate(-1)
                                     }}
                                 >
-                                    Hủy bỏ
+                                    {t(LANGUAGE.CANCEL)}
                                 </Button>
                             </SubmitWrap>
                         </div>

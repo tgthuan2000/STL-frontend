@@ -2,6 +2,7 @@ import { head, isEmpty } from 'lodash'
 import moment from 'moment'
 import { useEffect } from 'react'
 import { SubmitHandler } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IMakeGetLoanForm, TransactionEditFormData, TransactionEditQueryData } from '~/@types/loan'
@@ -11,6 +12,7 @@ import { KIND_SPENDING } from '~/constant/spending'
 import { TEMPLATE } from '~/constant/template'
 import { useCache, useLoading } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_TRANSACTION_DETAIL, GET_USER_LOAN } from '~/schema/query/loan'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
@@ -18,6 +20,7 @@ import useAuth from '~/store/auth'
 import { TransactionEditForm } from '../components'
 
 const TransactionEdit = () => {
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const { userProfile } = useAuth()
     const { setSubmitLoading } = useLoading()
@@ -246,9 +249,10 @@ const TransactionEdit = () => {
     }
 
     if (transaction.loading || methodSpending.loading || userLoan.loading)
-        return <div className='text-gray-900 dark:text-slate-200'>{TEMPLATE.LOADING}</div>
+        return <div className='text-gray-900 dark:text-slate-200'>{t(LANGUAGE.LOADING)}</div>
 
-    if (isEmpty(transaction.data)) return <div className='text-gray-900 dark:text-slate-200'>{TEMPLATE.EMPTY_DATA}</div>
+    if (isEmpty(transaction.data))
+        return <div className='text-gray-900 dark:text-slate-200'>{t(LANGUAGE.EMPTY_DATA)}</div>
 
     if (trans?.paid) return <div>{TEMPLATE.ALREADY_PAID}</div>
 

@@ -2,11 +2,14 @@ import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import numeral from 'numeral'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { MethodProps } from '~/@types/spending'
 import { TEMPLATE } from '~/constant/template'
+import LANGUAGE from '~/i18n/language/key'
 
 const Method: React.FC<MethodProps> = ({ data, loading }) => {
+    const { t } = useTranslation()
     if (loading) return <MethodSkeleton />
 
     if (!isEmpty(data)) {
@@ -41,7 +44,7 @@ const Method: React.FC<MethodProps> = ({ data, loading }) => {
             </ul>
         )
     }
-    return <div className='py-2 text-center text-gray-700 dark:text-slate-200'>{TEMPLATE.EMPTY_DATA}</div>
+    return <div className='py-2 text-center text-gray-700 dark:text-slate-200'>{t(LANGUAGE.EMPTY_DATA)}</div>
 }
 
 export default Method

@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
 import { CreateStep3Props, QueryDataStep3 } from '~/@types/announce-config'
 import { DraftNotify, NotifyAssignForm } from '~/@types/notify'
@@ -12,9 +13,9 @@ import { Image } from '~/components'
 import { LazySearchSelect, Toggle } from '~/components/_base'
 import { COUNT_PAGINATE, TAGS } from '~/constant'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
-import { TEMPLATE } from '~/constant/template'
 import { useLocalStorage } from '~/hook'
 import useQuery, { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
+import LANGUAGE from '~/i18n/language/key'
 import { SEARCH_USER_PAGINATE } from '~/schema/query/user'
 
 const schema = yup.object().shape({
@@ -30,6 +31,7 @@ const schema = yup.object().shape({
 })
 
 const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
+    const { t } = useTranslation()
     const [draftNotify] = useLocalStorage<DraftNotify>(LOCAL_STORAGE_KEY.STL_DRAFT_NOTIFY)
     const [userRef] = useAutoAnimate<HTMLDivElement>()
 
@@ -159,7 +161,7 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                     <div className='mt-1 select-none border dark:border-slate-700 rounded-lg' ref={userRef}>
                         {isEmpty(__users) ? (
                             <p className='px-4 py-2 text-center text-gray-900 dark:text-slate-200'>
-                                {TEMPLATE.EMPTY_DATA}
+                                {t(LANGUAGE.EMPTY_DATA)}
                             </p>
                         ) : (
                             __users.map((user, index) => (

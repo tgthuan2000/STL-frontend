@@ -4,9 +4,11 @@ import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import React, { useEffect, useRef } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { Waypoint } from 'react-waypoint'
 import { LazySearchSelectProps } from '~/@types/components'
 import { TEMPLATE } from '~/constant/template'
+import LANGUAGE from '~/i18n/language/key'
 
 const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
     className,
@@ -23,6 +25,7 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
     getOptionLabel,
     autoFocus,
 }) => {
+    const { t } = useTranslation()
     const form = useForm({
         defaultValues: {
             search: '',
@@ -127,14 +130,14 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
                                 {loading ? (
                                     <Combobox.Option value={null} disabled>
                                         <p className='p-2 text-center text-xs text-gray-500 dark:text-slate-200'>
-                                            Loading...
+                                            {t(LANGUAGE.LOADING)}
                                         </p>
                                     </Combobox.Option>
                                 ) : (
                                     <>
                                         {isEmpty(options) ? (
                                             <p className='p-2 text-center text-xs text-gray-500 dark:text-slate-200'>
-                                                {TEMPLATE.EMPTY_DATA}
+                                                {t(LANGUAGE.EMPTY_DATA)}
                                             </p>
                                         ) : (
                                             <>
