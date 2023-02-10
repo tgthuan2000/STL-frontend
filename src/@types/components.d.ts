@@ -1,7 +1,7 @@
 import { SanityDocument, SanityImageAssetDocument } from '@sanity/client'
 import { DefaultTFuncReturn } from 'i18next'
 import React, { HTMLInputTypeAttribute, ReactNode } from 'react'
-import { FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
+import { ControllerRenderProps, FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
 import { ReactQuillProps } from 'react-quill'
 import { NavigateFunction } from 'react-router-dom'
 import { DATE_FORMAT } from '~/constant'
@@ -37,6 +37,50 @@ export interface AutoCompleteProps {
     disabledShowSurplus?: boolean
     surplusName?: string | DefaultTFuncReturn
     multiple?: boolean
+}
+
+export interface AutocompleteLabelProps {
+    label?: string | DefaultTFuncReturn
+    onReload?: () => Promise<void>
+    loading?: boolean
+}
+
+export interface AutocompleteButtonProps {
+    disabledClear?: boolean
+    disabled?: boolean
+    loading?: boolean
+    selectedItem: any
+    setSelectedItem: React.Dispatch<any>
+    field: ControllerRenderProps<any, string>
+    onChange?: (value: any) => void
+}
+
+export interface AutocompleteInputProps {
+    loading?: boolean
+    disabled?: boolean
+    onChange?: (value: any) => void
+    loadingAddMore?: boolean
+    valueKey: string
+}
+
+export interface AutocompleteOptionProps {
+    filterData: any[]
+    idKey: string
+    valueKey: string
+    showImage?: boolean
+    query: string
+    addMore?: (value: any) => Promise<any>
+}
+
+export interface AutocompleteSurplusProps {
+    surplus?: number
+    disabledShowSurplus?: boolean
+    surplusName?: string | DefaultTFuncReturn
+    children?: ReactNode
+}
+
+export interface AutocompleteErrorProps {
+    error?: FieldError
 }
 
 export interface SelectionProps {
