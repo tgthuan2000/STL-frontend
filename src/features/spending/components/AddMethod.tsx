@@ -3,6 +3,7 @@ import { CheckBadgeIcon, ExclamationCircleIcon } from '@heroicons/react/24/outli
 import { isEmpty } from 'lodash'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { AddMethodQueryData, IAddMethodForm } from '~/@types/spending'
@@ -11,12 +12,14 @@ import { Input } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 import { searchName } from '../services'
 
 const AddMethod = () => {
+    const { t } = useTranslation()
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { userProfile } = useAuth()
@@ -64,7 +67,7 @@ const AddMethod = () => {
             // navigate to dashboard
             const result = deleteCache([METHOD_SPENDING_DESC_SURPLUS, METHOD_SPENDING])
             console.log(result)
-            toast.success<string>('Tạo mới phương thức thanh toán thành công!')
+            toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_METHOD_SUCCESS))
             needCheckWhenLeave()
             // setIsOpen(false)
             // navigate(-1)
@@ -93,14 +96,14 @@ const AddMethod = () => {
                                 name='name'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu nhập tên phương thức thanh toán!',
+                                    required: t(LANGUAGE.REQUIRED_METHOD_NAME) as string,
                                     maxLength: {
                                         value: 50,
-                                        message: 'Tên phương thức thanh toán không được vượt quá 50 ký tự!',
+                                        message: t(LANGUAGE.METHOD_NAME_MAX_50) as string,
                                     },
                                 }}
                                 type='text'
-                                label='Tên phương thức thanh toán'
+                                label={t(LANGUAGE.METHOD_NAME)}
                             />
 
                             <div ref={alertRef}>
@@ -111,7 +114,7 @@ const AddMethod = () => {
                                                 <h4></h4>
                                                 <span className='text-yellow-500 flex items-center gap-1'>
                                                     <ExclamationCircleIcon className='h-6 w-6' />
-                                                    Một số phương thức gần giống tên
+                                                    <span>{t(LANGUAGE.SOME_METHOD_SIMILAR_NAME)}</span>
                                                 </span>
 
                                                 <ul className='mt-1 list-disc pl-5'>
@@ -136,7 +139,7 @@ const AddMethod = () => {
                                         ) : (
                                             <span className='text-green-500 flex items-center gap-1'>
                                                 <CheckBadgeIcon className='h-6 w-6' />
-                                                Không có phương thức nào gần giống tên!
+                                                {t(LANGUAGE.NOT_METHOD_SIMILAR_NAME)}
                                             </span>
                                         )}
                                     </>
@@ -148,7 +151,7 @@ const AddMethod = () => {
             </div>
             <SubmitWrap>
                 <Button color='cyan' type='submit' disabled={loading.submit}>
-                    Tạo
+                    {t(LANGUAGE.CREATE)}
                 </Button>
                 <Button
                     color='outline'
@@ -158,7 +161,7 @@ const AddMethod = () => {
                         navigate(-1)
                     }}
                 >
-                    Hủy bỏ
+                    {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
         </form>
