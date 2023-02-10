@@ -1,18 +1,9 @@
 import clsx from 'clsx'
-import { useMemo } from 'react'
-import { navigation } from '~/constant/layout'
-import { useConfig, useSideBar } from '~/context'
-import useAuth from '~/store/auth'
-import NavLinkItem from '../NavLinkItem'
-import User from '../User'
+import { useSideBar } from '~/context'
+import NavLinkMenu from '../NavLinkMenu'
+import UserInfo from '../UserInfo'
 
 const SideBar = () => {
-    const { hasPermissions } = useConfig()
-    const { removeUserProfile, userProfile } = useAuth()
-    const _navigation = useMemo(
-        () => navigation.filter((nav) => hasPermissions(nav.permissions)),
-        [navigation, hasPermissions]
-    )
     const { desktop } = useSideBar()
 
     return (
@@ -26,12 +17,10 @@ const SideBar = () => {
             <div className='flex-1 flex flex-col min-h-0 bg-gray-800'>
                 <div className='flex-1 flex flex-col pt-5 pb-4 overflow-y-auto overflow-x-hidden'>
                     <nav className='mt-5 flex-1 px-2 space-y-1'>
-                        {_navigation.map((item) => (
-                            <NavLinkItem key={item.href} data={item} open={desktop.open} />
-                        ))}
+                        <NavLinkMenu />
                     </nav>
                 </div>
-                <User onLogout={removeUserProfile} userProfile={userProfile} open={desktop.open} />
+                <UserInfo />
             </div>
         </div>
     )

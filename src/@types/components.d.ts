@@ -8,7 +8,7 @@ import { DATE_FORMAT } from '~/constant'
 import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
 import { PERMISSION } from '~/constant/permission'
 import { IFILTER_DATE } from '~/constant/template'
-import { UseLocalStorageResult } from '~/hook/useLocalStorage'
+import { localStorageValue } from '~/hook/useLocalStorage'
 import { HeroIcon } from '.'
 import { IUserLoan } from './loan'
 import { NotifyItem } from './notify'
@@ -435,7 +435,7 @@ export interface ChipProps {
 }
 
 export interface ThemeIconProps {
-    theme: UseLocalStorageResult<string>
+    theme: localStorageValue<string>
     className?: string
 }
 

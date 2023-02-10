@@ -1,15 +1,6 @@
-import {
-    ArrowRightOnRectangleIcon,
-    ArrowsUpDownIcon,
-    BanknotesIcon,
-    BellIcon,
-    ChatBubbleLeftRightIcon,
-    LockClosedIcon,
-    UserIcon,
-} from '@heroicons/react/24/outline'
+import { ArrowsUpDownIcon, BanknotesIcon, BellIcon, UserIcon } from '@heroicons/react/24/outline'
 import React from 'react'
 import { NavigationMobile, NavLinkIconProps, OptionMenu } from '~/@types/layout'
-import { ThemeIcon } from '~/components'
 import { localStorageValue } from '~/hook/useLocalStorage'
 import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
@@ -23,6 +14,13 @@ const NotifyNavLink = React.lazy(() => import('~/components/NavLink/NotifyNavLin
 const ProfileNavLink = React.lazy(() => import('~/components/NavLink/ProfileNavLink'))
 const SettingNavLink = React.lazy(() => import('~/components/NavLink/SettingNavLink'))
 const SpendingNavLink = React.lazy(() => import('~/components/NavLink/SpendingNavLink'))
+
+const SettingMenuItem = React.lazy(() => import('~/components/MenuItem/SettingMenuItem'))
+const ProfileMenuItem = React.lazy(() => import('~/components/MenuItem/ProfileMenuItem'))
+const ChangePasswordMenuItem = React.lazy(() => import('~/components/MenuItem/ChangePasswordMenuItem'))
+const ModeMenuItem = React.lazy(() => import('~/components/MenuItem/ModeMenuItem'))
+const FeedbackMenuItem = React.lazy(() => import('~/components/MenuItem/FeedbackMenuItem'))
+const LogoutMenuItem = React.lazy(() => import('~/components/MenuItem/LogoutMenuItem'))
 
 const { t } = i18n
 
@@ -121,60 +119,43 @@ export const navigationMobile: Array<NavigationMobile> = [
 export const userOptionData: Array<Array<OptionMenu>> = [
     [
         {
-            id: 1,
-            label: t(LANGUAGE.PROFILE_MANAGEMENT),
-            onClick: ({ navigate, closeSidebar }) => {
-                navigate('/profile')
-                closeSidebar?.()
-            },
-            icon: UserIcon,
-        },
-        {
-            id: 2,
-            label: ({ userProfile }) =>
-                userProfile?.isHasPassword ? t(LANGUAGE.CHANGE_PASSWORD) : t(LANGUAGE.SET_PASSWORD),
-            onClick: ({ navigate, closeSidebar }) => {
-                navigate('/setting/change-password')
-                closeSidebar?.()
-            },
-            icon: LockClosedIcon,
+            id: 'setting',
+            component: SettingMenuItem,
+            permissions: [PERMISSION.PROFILE_READ, PERMISSION.PROFILE_WRITE],
         },
     ],
     [
         {
-            id: 3,
-            label: ({ theme: [value] }) => (checkDarkTheme(value) ? t(LANGUAGE.LIGHT_MODE) : t(LANGUAGE.DARK_MODE)),
-            onClick: ({ theme: [value, set] }) => {
-                if (checkDarkTheme(value)) {
-                    document.documentElement.classList.remove('dark')
-                    set('light')
-                } else {
-                    document.documentElement.classList.add('dark')
-                    set('dark')
-                }
-            },
-            icon: ThemeIcon,
+            id: 'profile',
+            component: ProfileMenuItem,
+            permissions: [PERMISSION.PROFILE_READ],
         },
         {
-            id: 4,
-            label: t(LANGUAGE.FEEDBACK),
-            onClick: ({ navigate }) => {
-                navigate('/feedback')
-            },
-            icon: ChatBubbleLeftRightIcon,
+            id: 'change-password',
+            component: ChangePasswordMenuItem,
+            permissions: [PERMISSION.PROFILE_READ],
+        },
+    ],
+    [
+        {
+            id: 'mode',
+            component: ModeMenuItem,
+            permissions: [PERMISSION.PROFILE_READ],
         },
         {
-            id: 5,
-            label: t(LANGUAGE.LOGOUT),
-            onClick: ({ logout }) => {
-                logout()
-            },
-            icon: ArrowRightOnRectangleIcon,
+            id: 'feedback',
+            component: FeedbackMenuItem,
+            permissions: [PERMISSION.PROFILE_READ],
+        },
+        {
+            id: 'logout',
+            component: LogoutMenuItem,
+            permissions: [PERMISSION.PROFILE_READ],
         },
     ],
 ]
 
-const checkDarkTheme = (value: localStorageValue<string>) => {
+export const checkDarkTheme = (value: localStorageValue<string>) => {
     return (
         LOCAL_STORAGE_KEY.STL_THEME in localStorage &&
         value === 'dark' &&
