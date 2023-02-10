@@ -1,12 +1,12 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
 import { forwardRef, useId } from 'react'
 import { Controller } from 'react-hook-form'
 import { TextAreaProps } from '~/@types/components'
+import ErrorMessage from '~/components/ErrorMessage'
+import Label from '~/components/Label'
 
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(({ className, form, rules, label, name }, ref) => {
     const id = useId()
-    const [parent] = useAutoAnimate<HTMLDivElement>()
 
     return (
         <Controller
@@ -15,11 +15,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(({ className, fo
             rules={rules}
             render={({ field, fieldState: { error } }) => (
                 <div className={clsx(className)}>
-                    {label && (
-                        <label htmlFor={id} className='inline-block font-medium text-gray-900 dark:text-slate-100'>
-                            {label}
-                        </label>
-                    )}
+                    <Label id={id} label={label} />
                     <div className='mt-1'>
                         <textarea
                             id={id}
@@ -30,9 +26,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(({ className, fo
                             {...field}
                         />
                     </div>
-                    <div ref={parent}>
-                        {error && <div className='mt-1 text-radical-red-700 text-sm'>{error.message}</div>}
-                    </div>
+                    <ErrorMessage error={error} />
                 </div>
             )}
         />

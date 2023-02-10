@@ -1,12 +1,11 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Switch } from '@headlessui/react'
 import clsx from 'clsx'
 import { forwardRef } from 'react'
 import { Controller } from 'react-hook-form'
 import { ToggleProps } from '~/@types/components'
+import ErrorMessage from '../ErrorMessage'
 
 const Toggle = forwardRef<HTMLElement, ToggleProps>(({ label, form, name, rules, disabled }, ref) => {
-    const [parent] = useAutoAnimate<HTMLDivElement>()
     return (
         <div>
             <Controller
@@ -34,9 +33,7 @@ const Toggle = forwardRef<HTMLElement, ToggleProps>(({ label, form, name, rules,
                             </Switch>
                             <span className='text-gray-900 dark:text-slate-200'>{label}</span>
                         </div>
-                        <div ref={parent}>
-                            {error && <div className='mt-1 text-radical-red-700 text-sm'>{error.message}</div>}
-                        </div>
+                        <ErrorMessage error={error} />
                     </>
                 )}
             />

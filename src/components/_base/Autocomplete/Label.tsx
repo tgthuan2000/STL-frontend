@@ -1,7 +1,7 @@
 import { Combobox } from '@headlessui/react'
 import React from 'react'
 import { AutocompleteLabelProps } from '~/@types/components'
-import LoadingButton from '../Loading/LoadingButton'
+import LoadingButton from '../../Loading/LoadingButton'
 
 const Label: React.FC<AutocompleteLabelProps> = ({ label, onReload, loading }) => {
     return (

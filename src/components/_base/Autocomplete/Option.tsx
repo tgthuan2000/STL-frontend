@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import React from 'react'
 import { AutocompleteOptionProps } from '~/@types/components'
 import { urlFor } from '~/sanityConfig'
-import Image from '../Image'
+import Image from '../../Image'
 
 const Option: React.FC<AutocompleteOptionProps> = ({ filterData, idKey, valueKey, showImage, query, addMore }) => {
     return (

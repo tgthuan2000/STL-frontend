@@ -186,6 +186,13 @@ export interface UploadImageProps {
     rules?: Rules
 }
 
+export interface UploadImageCoreProps {
+    form: UseFormReturn<any, object>
+    name: string
+    loading: boolean
+    id: string
+}
+
 export interface DateProps {
     className?: string
     label?: string | DefaultTFuncReturn

@@ -3,7 +3,7 @@ import { find, flatMapDeep, get, isNil } from 'lodash'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Controller } from 'react-hook-form'
 import { DropdownProps } from '~/@types/components'
-import ErrorMessage from '../ErrorMessage'
+import ErrorMessage from '../../ErrorMessage'
 import Button from './Button'
 import Items from './Items'
 
