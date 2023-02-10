@@ -25,7 +25,7 @@ const Mode: React.FC<SettingComponentProps> = (props) => {
                 }
             }}
         >
-            <ThemeIcon theme={theme} className='w-6 h-6 flex-shrink-0' />
+            <ThemeIcon theme={value} className='w-6 h-6 flex-shrink-0' />
             <p>{checkDarkTheme(value) ? t(LANGUAGE.LIGHT_MODE) : t(LANGUAGE.DARK_MODE)}</p>
         </button>
     )

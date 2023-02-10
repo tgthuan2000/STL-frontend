@@ -4,7 +4,10 @@ import numeral from 'numeral'
 import { TableColumn } from '~/@types/components'
 import { DATE_FORMAT } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
-import { TEMPLATE } from '~/constant/template'
+import i18n from '~/i18n'
+import LANGUAGE from '~/i18n/language/key'
+
+const { t } = i18n
 
 const getDate = (date: string, width: number) => {
     return width <= 900 ? (
@@ -21,22 +24,22 @@ const getDate = (date: string, width: number) => {
 export const columns: (width: number) => Array<TableColumn> = (width) => [
     {
         key: 'date',
-        title: 'Ngày',
+        title: t(LANGUAGE.DATE),
         label: 'string',
         renderRow: ({ date, methodSpending }) => (
             <td className='whitespace-nowrap pt-3 pl-2 pr-3 sm:pl-3 sm:text-sm text-xs'>
                 {moment(date).format(DATE_FORMAT.D_DATE_TIME) !== 'Invalid date' ? (
                     getDate(date, width)
                 ) : (
-                    <span>{TEMPLATE.EMPTY_DATE}</span>
+                    <span>{t(LANGUAGE.UNLIMITED_TIME)}</span>
                 )}
-                <h3 className='mt-1 font-medium'>{methodSpending?.name || TEMPLATE.EMPTY_METHOD_SPENDING_SHORT}</h3>
+                <h3 className='mt-1 font-medium'>{methodSpending?.name || t(LANGUAGE.EMPTY_METHOD)}</h3>
             </td>
         ),
     },
     {
         key: 'kind',
-        title: 'Thể loại',
+        title: t(LANGUAGE.CATEGORY),
         label: 'string',
         renderRow: ({ categorySpending, kindSpending }) => (
             <td className='px-1'>
@@ -50,7 +53,7 @@ export const columns: (width: number) => Array<TableColumn> = (width) => [
     },
     {
         key: 'receive',
-        title: <p className='text-green-500'>Thu nhập</p>,
+        title: <p className='text-green-500'>{t(LANGUAGE.RECEIVE)}</p>,
         label: 'string',
         renderRow: ({ kindSpending, amount }) => (
             <td className='whitespace-nowrap px-1 text-sm text-center'>
@@ -62,7 +65,7 @@ export const columns: (width: number) => Array<TableColumn> = (width) => [
     },
     {
         key: 'cost',
-        title: <p className='text-red-500'>Chi phí</p>,
+        title: <p className='text-red-500'>{t(LANGUAGE.COST)}</p>,
         label: 'string',
         renderRow: ({ kindSpending, amount }) => (
             <td className='whitespace-nowrap px-1 text-sm text-center'>

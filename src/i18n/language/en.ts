@@ -49,6 +49,23 @@ const translation: {
     [LANGUAGE.LOADING_IMAGE]: 'Loading image...',
     [LANGUAGE.UPLOAD_IMAGE]: 'Upload image',
     [LANGUAGE.SEE_MORE]: 'See more',
+    [LANGUAGE.CREATE_DATE]: 'Create date',
+    [LANGUAGE.EMPTY_METHOD]: 'Empty method',
+    [LANGUAGE.NOT_ROLE]: 'Not role',
+    [LANGUAGE.BACK_TO_HOME]: 'Back to home',
+    [LANGUAGE.CONTENT]: 'Content',
+    [LANGUAGE.VIEWERS]: 'Viewers',
+    [LANGUAGE.CLICK_TO_READ_DETAIL]: 'Click to read detail',
+    [LANGUAGE.READ]: 'Read',
+    [LANGUAGE.TITLE]: 'Title',
+    [LANGUAGE.SHORT_DESCRIPTION]: 'Short description',
+    [LANGUAGE.NEW_NOTIFY]: 'New notify',
+    [LANGUAGE.ERROR]: 'Something went wrong',
+    [LANGUAGE.COMING_SOON]: 'Coming soon',
+
+    /* EMPTY DATA */
+    [LANGUAGE.EMPTY_NOTIFY]: 'Empty notify',
+    [LANGUAGE.EMPTY_DESCRIPTION]: 'Empty description',
 
     /* VALIDATE MESSAGE */
     [LANGUAGE.REQUIRED_FIELD]: 'Required field',
@@ -91,6 +108,9 @@ const translation: {
     [LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS]: 'Update password success',
     [LANGUAGE.NOTIFY_CREATE_MEMBER_SUCCESS]: 'Create member success',
 
+    /* CONFIRM */
+    [LANGUAGE.CONFIRM_NOTIFY]: 'Do you want to notify?',
+
     /* SPENDING */
     [LANGUAGE.SPENDING]: 'Spending management',
     [LANGUAGE.BUDGET_BY_CATEGORY]: 'Budget by category',
@@ -122,6 +142,7 @@ const translation: {
     [LANGUAGE.TEMP_LOAN]: 'Advance',
     [LANGUAGE.IMAGE_OPTION]: 'Image (optional)',
     [LANGUAGE.PRESS_TO_UPLOAD_IMAGE]: 'Press to upload image',
+    [LANGUAGE.ALREADY_PAID]: 'Transaction done, no further editing!',
 
     /* PROFILE */
     [LANGUAGE.JOIN_DATE]: 'Join date',
@@ -141,6 +162,11 @@ const translation: {
     [LANGUAGE.OLD_PASSWORD]: 'Old password',
     [LANGUAGE.NEW_PASSWORD]: 'New password',
     [LANGUAGE.RE_PASSWORD]: 'Re-password',
+
+    /* NOTIFICATION */
+    [LANGUAGE.LIST_RECEIVE_NOTIFY_MEMBER]: 'List receive notify member',
+    [LANGUAGE.SEND_ALL_MEMBER]: 'Send all member',
+    [LANGUAGE.SEND_MAIL]: 'Send mail',
 
     /* OTHERS */
     [LANGUAGE.SOME_CATEGORY_SIMILAR_NAME]: 'Some category have similar name',

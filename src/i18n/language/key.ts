@@ -45,6 +45,16 @@ enum LANGUAGE {
     LOADING_IMAGE = 'loading-image',
     UPLOAD_IMAGE = 'upload-image',
     SEE_MORE = 'see-more',
+    CREATE_DATE = 'create-date',
+    NOT_ROLE = 'not-role',
+    BACK_TO_HOME = 'back-to-home',
+    EMPTY_NOTIFY = 'empty-notify',
+    READ = 'read',
+    TITLE = 'title',
+    SHORT_DESCRIPTION = 'short-description',
+    NEW_NOTIFY = 'new-notify',
+    ERROR = 'error',
+    COMING_SOON = 'coming-soon',
 
     /* VALIDATE MESSAGE */
     REQUIRED_FIELD = 'required-field',
@@ -71,6 +81,13 @@ enum LANGUAGE {
     CATEGORY_NAME_MAX_50 = 'category-name-max-50',
     NEW_PASSWORD_MIN_1 = 'new-password-min-1',
     PASSWORD_NOT_MATCH = 'password-not-match',
+    CONTENT = 'content',
+    VIEWERS = 'viewers',
+    CLICK_TO_READ_DETAIL = 'click-to-read-detail',
+
+    /* EMPTY DATA */
+    EMPTY_METHOD = 'empty-method',
+    EMPTY_DESCRIPTION = 'empty-description',
 
     /* PLACEHOLDER */
     PLACEHOLDER_CHOOSE_KIND = 'placeholder-choose-kind',
@@ -86,6 +103,9 @@ enum LANGUAGE {
     NOTIFY_CREATE_GET_LOAN_SUCCESS = 'notify-create-get-loan-success',
     NOTIFY_UPDATE_PASSWORD_SUCCESS = 'notify-update-password-success',
     NOTIFY_CREATE_MEMBER_SUCCESS = 'notify-create-member-success',
+
+    /* CONFIRM */
+    CONFIRM_NOTIFY = 'confirm-notify',
 
     /* SPENDING */
     SPENDING = 'spending',
@@ -118,6 +138,7 @@ enum LANGUAGE {
     TEMP_LOAN = 'temp-loan',
     IMAGE_OPTION = 'image-option',
     PRESS_TO_UPLOAD_IMAGE = 'press-to-upload-image',
+    ALREADY_PAID = 'already-paid',
 
     /* PROFILE */
     JOIN_DATE = 'join-date',
@@ -137,6 +158,11 @@ enum LANGUAGE {
     OLD_PASSWORD = 'old-password',
     NEW_PASSWORD = 'new-password',
     RE_PASSWORD = 're-password',
+
+    /* NOTIFICATION */
+    LIST_RECEIVE_NOTIFY_MEMBER = 'list-receive-notify-member',
+    SEND_ALL_MEMBER = 'send-all-member',
+    SEND_MAIL = 'send-mail',
 
     /* OTHERS */
     SOME_CATEGORY_SIMILAR_NAME = 'some-category-similar-name',

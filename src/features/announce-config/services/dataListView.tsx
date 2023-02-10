@@ -4,7 +4,10 @@ import numeral from 'numeral'
 import { TableColumn } from '~/@types/components'
 import { Prose } from '~/components'
 import { DATE_FORMAT } from '~/constant'
-import { TEMPLATE } from '~/constant/template'
+import i18n from '~/i18n'
+import LANGUAGE from '~/i18n/language/key'
+
+const { t } = i18n
 
 const getDate = (date: string, width: number) => {
     return width <= 900 ? (
@@ -21,7 +24,7 @@ const getDate = (date: string, width: number) => {
 export const columns: (width: number) => Array<TableColumn> = (width) => [
     {
         key: 'title',
-        title: 'Nội dung',
+        title: t(LANGUAGE.CONTENT),
         label: 'string',
         colSpan: 2,
         renderRow: ({ title, description }: { title: string; description: string }) => (
@@ -37,14 +40,14 @@ export const columns: (width: number) => Array<TableColumn> = (width) => [
                         {description}
                     </Prose>
                 ) : (
-                    <p className='text-gray-400 italic font-normal text-xs mt-1'>{TEMPLATE.EMPTY_DESCRIPTION}</p>
+                    <p className='text-gray-400 italic font-normal text-xs mt-1'>{t(LANGUAGE.EMPTY_DESCRIPTION)}</p>
                 )}
             </td>
         ),
     },
     {
         key: 'viewers',
-        title: 'Lượt xem',
+        title: t(LANGUAGE.VIEWERS),
         label: 'string',
         renderRow: ({ viewers }) => (
             <td className='whitespace-nowrap px-1 text-center'>
@@ -54,7 +57,7 @@ export const columns: (width: number) => Array<TableColumn> = (width) => [
     },
     {
         key: 'created_at',
-        title: 'Ngày tạo',
+        title: t(LANGUAGE.CREATE_DATE),
         label: 'string',
         renderRow: ({ _createdAt }) => (
             <td className='px-1 text-center'>
@@ -64,7 +67,7 @@ export const columns: (width: number) => Array<TableColumn> = (width) => [
     },
     {
         key: 'updated_at',
-        title: 'Cập nhật',
+        title: t(LANGUAGE.UPDATE),
         label: 'string',
         renderRow: ({ _updatedAt }) => (
             <td className='px-1 text-center'>
@@ -88,7 +91,7 @@ export const renderList: (data: any, index: number) => React.ReactNode = (
             <div className='flex justify-between items-center'>
                 <p className='text-sm font-medium truncate'>{title}</p>
                 <p className='sm:text-sm text-xs'>
-                    Lượt xem: <b>{numeral(viewers).format()}</b>
+                    {t(LANGUAGE.VIEWERS)}: <b>{numeral(viewers).format()}</b>
                 </p>
             </div>
             <div className='flex justify-between'>
@@ -96,15 +99,15 @@ export const renderList: (data: any, index: number) => React.ReactNode = (
                     <Prose className='text-xs mt-1 text-gray-500 line-clamp-3'>{description}</Prose>
                 ) : (
                     <p className='text-gray-400 dark:text-slate-400 italic font-normal text-xs mt-1'>
-                        {TEMPLATE.EMPTY_DESCRIPTION}
+                        {t(LANGUAGE.EMPTY_DESCRIPTION)}
                     </p>
                 )}
                 <div className='text-right'>
                     <p className='sm:text-sm text-xs'>
-                        Ngày tạo: <b>{moment(_createdAt).format(DATE_FORMAT.D_DATE_TIME)}</b>
+                        {t(LANGUAGE.CREATE_DATE)}: <b>{moment(_createdAt).format(DATE_FORMAT.D_DATE_TIME)}</b>
                     </p>
                     <p className='sm:text-sm text-xs'>
-                        Cập nhật: <b>{moment(_updatedAt).format(DATE_FORMAT.D_DATE_TIME)}</b>
+                        {t(LANGUAGE.UPDATE)}: <b>{moment(_updatedAt).format(DATE_FORMAT.D_DATE_TIME)}</b>
                     </p>
                 </div>
             </div>

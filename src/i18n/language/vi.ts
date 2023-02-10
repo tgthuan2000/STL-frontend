@@ -49,6 +49,23 @@ const translation: {
     [LANGUAGE.LOADING_IMAGE]: 'Đang tải ảnh...',
     [LANGUAGE.UPLOAD_IMAGE]: 'Tải ảnh lên',
     [LANGUAGE.SEE_MORE]: 'Xem thêm',
+    [LANGUAGE.CREATE_DATE]: 'Ngày tạo',
+    [LANGUAGE.EMPTY_METHOD]: 'Chưa có phương thức',
+    [LANGUAGE.NOT_ROLE]: 'Không có quyền truy cập',
+    [LANGUAGE.BACK_TO_HOME]: 'Quay lại trang chủ',
+    [LANGUAGE.CONTENT]: 'Nội dung',
+    [LANGUAGE.VIEWERS]: 'Lượt xem',
+    [LANGUAGE.CLICK_TO_READ_DETAIL]: 'Nhấn để xem chi tiết',
+    [LANGUAGE.READ]: 'Đã xem',
+    [LANGUAGE.TITLE]: 'Tiêu đề',
+    [LANGUAGE.SHORT_DESCRIPTION]: 'Mô tả ngắn',
+    [LANGUAGE.NEW_NOTIFY]: 'Thông báo mới',
+    [LANGUAGE.ERROR]: 'Đã có lỗi xảy ra!',
+    [LANGUAGE.COMING_SOON]: 'Sắp ra mắt',
+
+    /* EMPTY DATA */
+    [LANGUAGE.EMPTY_NOTIFY]: 'Không có thông báo',
+    [LANGUAGE.EMPTY_DESCRIPTION]: 'Không có mô tả',
 
     /* VALIDATE MESSAGE */
     [LANGUAGE.REQUIRED_FIELD]: 'Yêu cầu nhập!',
@@ -91,6 +108,9 @@ const translation: {
     [LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS]: 'Đổi mật khẩu thành công!',
     [LANGUAGE.NOTIFY_CREATE_MEMBER_SUCCESS]: 'Thêm thành viên thành công!',
 
+    /* CONFIRM */
+    [LANGUAGE.CONFIRM_NOTIFY]: 'Bạn có chắc chắn muốn gửi thông báo này?',
+
     /* SPENDING */
     [LANGUAGE.SPENDING]: 'Quản lý chi tiêu',
     [LANGUAGE.BUDGET_BY_CATEGORY]: 'Ngân sách theo loại',
@@ -116,12 +136,13 @@ const translation: {
     [LANGUAGE.NEAR_DEADLINE]: 'Gần hạn',
     [LANGUAGE.METHOD_RECEIVE]: 'Phương thức nhận',
     [LANGUAGE.USER_GET_LOAN]: 'Đối tượng vay',
-    [LANGUAGE.ESTIMATE_PAID_DATE]: 'Ngày dự kiến trả',
+    [LANGUAGE.ESTIMATE_PAID_DATE]: 'Hạn trả',
     [LANGUAGE.ASSET]: 'Tài sản',
     [LANGUAGE.ADD_ORIGIN_AMOUNT]: 'Cộng gốc',
     [LANGUAGE.TEMP_LOAN]: 'Tạm ứng',
     [LANGUAGE.IMAGE_OPTION]: 'Hình ảnh (tùy chọn)',
     [LANGUAGE.PRESS_TO_UPLOAD_IMAGE]: 'Nhấn để tải hình ảnh',
+    [LANGUAGE.ALREADY_PAID]: 'Giao dịch đã thực hiện hoàn tất, không được chỉnh sửa thêm!',
 
     /* PROFILE */
     [LANGUAGE.JOIN_DATE]: 'Ngày tham gia',
@@ -147,6 +168,11 @@ const translation: {
     [LANGUAGE.OLD_PASSWORD]: 'Mật khẩu cũ',
     [LANGUAGE.NEW_PASSWORD]: 'Mật khẩu mới',
     [LANGUAGE.RE_PASSWORD]: 'Xác nhận mật khẩu',
+
+    /* NOTIFICATION */
+    [LANGUAGE.LIST_RECEIVE_NOTIFY_MEMBER]: 'Danh sách thành viên nhận thông báo',
+    [LANGUAGE.SEND_ALL_MEMBER]: 'Gửi tất cả thành viên',
+    [LANGUAGE.SEND_MAIL]: 'Gửi mail',
 
     /* LAYOUT */
     [LANGUAGE.SPENDING_MANAGEMENT]: 'Quản lý chi tiêu',

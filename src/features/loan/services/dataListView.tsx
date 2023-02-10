@@ -5,7 +5,10 @@ import numeral from 'numeral'
 import { TableColumn } from '~/@types/components'
 import { DATE_FORMAT } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
-import { TEMPLATE } from '~/constant/template'
+import i18n from '~/i18n'
+import LANGUAGE from '~/i18n/language/key'
+
+const { t } = i18n
 
 const getDate = (date: string, title: string, width: number) => {
     return width <= 900 ? (
@@ -24,21 +27,25 @@ const getDate = (date: string, title: string, width: number) => {
 export const columns: (width: number) => Array<TableColumn> = (width) => [
     {
         key: 'date',
-        title: 'Ngày',
+        title: t(LANGUAGE.DATE),
         label: 'string',
         renderRow: ({ date, methodSpending, estimatePaidDate }) => (
             <td className='whitespace-nowrap pt-3 pl-2 pr-3 sm:pl-3 sm:text-sm text-xs'>
                 {moment(date).format(DATE_FORMAT.TIME_DATE) !== 'Invalid date' && (
-                    <span className='block mt-1'>{getDate(date as string, 'Ngày tạo', width)}</span>
+                    <span className='block mt-1'>{getDate(date as string, t(LANGUAGE.CREATE_DATE), width)}</span>
                 )}
-                {estimatePaidDate ? getDate(estimatePaidDate, 'Hạn trả', width) : <span>{TEMPLATE.EMPTY_DATE}</span>}
-                <h3 className='mt-1 font-medium'>{methodSpending?.name || TEMPLATE.EMPTY_METHOD_SPENDING_SHORT}</h3>
+                {estimatePaidDate ? (
+                    getDate(estimatePaidDate, t(LANGUAGE.ESTIMATE_PAID_DATE), width)
+                ) : (
+                    <span>{t(LANGUAGE.UNLIMITED_TIME)}</span>
+                )}
+                <h3 className='mt-1 font-medium'>{methodSpending?.name || t(LANGUAGE.EMPTY_METHOD)}</h3>
             </td>
         ),
     },
     {
         key: 'kind',
-        title: 'Thể loại',
+        title: t(LANGUAGE.CATEGORY),
         label: 'string',
         renderRow: ({ categorySpending, kindSpending, paid }) => (
             <td className='px-1'>
@@ -56,7 +63,7 @@ export const columns: (width: number) => Array<TableColumn> = (width) => [
     },
     {
         key: 'receive',
-        title: <p className='text-green-500'>Thu nhập</p>,
+        title: <p className='text-green-500'>{t(LANGUAGE.RECEIVE)}</p>,
         label: 'string',
         renderRow: ({ kindSpending, amount, realPaid }) => {
             const isGetLoan = KIND_SPENDING.GET_LOAN === kindSpending.key
@@ -70,7 +77,7 @@ export const columns: (width: number) => Array<TableColumn> = (width) => [
     },
     {
         key: 'cost',
-        title: <p className='text-red-500'>Chi phí</p>,
+        title: <p className='text-red-500'>{t(LANGUAGE.COST)}</p>,
         label: 'string',
         renderRow: ({ kindSpending, amount, realPaid }) => {
             const isGetLoan = KIND_SPENDING.GET_LOAN === kindSpending.key
@@ -150,17 +157,19 @@ export const renderList: (data: any, index: number) => React.ReactNode = (
             <div className='flex justify-between items-start'>
                 <div className='sm:text-sm text-xs mt-1'>
                     {moment(date).format(DATE_FORMAT.TIME_DATE) !== 'Invalid date' && (
-                        <span className='block'>Ngày tạo: {moment(date).format(DATE_FORMAT.TIME_DATE)}</span>
+                        <span className='block'>
+                            {t(LANGUAGE.CREATE_DATE)}: {moment(date).format(DATE_FORMAT.TIME_DATE)}
+                        </span>
                     )}
                     <span>
                         Hạn trả:{' '}
                         {estimatePaidDate
                             ? moment(estimatePaidDate).format(DATE_FORMAT.TIME_DATE)
-                            : TEMPLATE.EMPTY_DATE}
+                            : t(LANGUAGE.UNLIMITED_TIME)}
                     </span>
                 </div>
                 <h3 className='truncate font-normal sm:text-sm text-xs'>
-                    {methodSpending?.name || TEMPLATE.EMPTY_METHOD_SPENDING_SHORT}
+                    {methodSpending?.name || t(LANGUAGE.EMPTY_METHOD)}
                 </h3>
             </div>
             <p className='whitespace-pre-wrap text-xs lg:text-sm mt-1'>{description}</p>

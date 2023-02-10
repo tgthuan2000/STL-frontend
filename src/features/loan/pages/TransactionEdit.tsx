@@ -9,7 +9,6 @@ import { IMakeGetLoanForm, TransactionEditFormData, TransactionEditQueryData } f
 import { ISpendingData } from '~/@types/spending'
 import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
-import { TEMPLATE } from '~/constant/template'
 import { useCache, useLoading } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
@@ -143,7 +142,7 @@ const TransactionEdit = () => {
                 reloadData()
             }, 0)
 
-            toast.success<string>('Cập nhật giao dịch thành công!')
+            toast.success<string>(t(LANGUAGE.NOTIFY_UPDATE_SUCCESS))
         } catch (error) {
             console.log(error)
         } finally {
@@ -254,7 +253,7 @@ const TransactionEdit = () => {
     if (isEmpty(transaction.data))
         return <div className='text-gray-900 dark:text-slate-200'>{t(LANGUAGE.EMPTY_DATA)}</div>
 
-    if (trans?.paid) return <div>{TEMPLATE.ALREADY_PAID}</div>
+    if (trans?.paid) return <div>{t(LANGUAGE.ALREADY_PAID)}</div>
 
     return <TransactionEditForm data={data} />
 }

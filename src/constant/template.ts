@@ -2,21 +2,6 @@ import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
 import { DATE_FORMAT } from '.'
 
-export const TEMPLATE = {
-    EMPTY_DATE: 'Vô thời hạn',
-    EMPTY_METHOD_SPENDING_SHORT: 'Chưa có PTTT',
-    EMPTY_METHOD_SPENDING: 'Chưa có phương thức thanh toán',
-    EMPTY_DATA: 'Không có dữ liệu',
-    LOADING: 'Đang tải dữ liệu',
-    ERROR: 'Đã có lỗi xảy ra!',
-    ALREADY_PAID: 'Giao dịch đã thực hiện hoàn tất, không được chỉnh sửa thêm!',
-    EMPTY_NOTIFY: 'Hiện tại chưa có thông báo',
-    EMPTY_DESCRIPTION: 'Không có mô tả',
-    NEW_NOTIFY: 'Bạn nhận được 1 thông báo mới',
-    COMING_SOON: 'Chức năng đang được phát triển!',
-    NOT_ROLE: 'Bạn không thể truy cập trang này do tài khoản không có quyền!',
-}
-
 export enum E_FILTER_DATE {
     ALL = 0,
     DATE_RANGE = 1,

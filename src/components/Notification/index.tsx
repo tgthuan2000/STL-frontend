@@ -3,18 +3,20 @@ import { Menu } from '@headlessui/react'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { Waypoint } from 'react-waypoint'
 import { ItemReadEvent, NotificationProps, ReadDetailEvent } from '~/@types/components'
 import BellIcon from '~/assets/notification.gif'
-import { TEMPLATE } from '~/constant/template'
 import { useNotify } from '~/context'
 import { useWindowSize } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import EmptyNotify from './Empty'
 import NotificationItem from './Item'
 import SkeletonNotify from './Skeleton'
 
 const Notification: React.FC<NotificationProps> = () => {
+    const { t } = useTranslation()
     const { width } = useWindowSize()
     const [parentRef] = useAutoAnimate<HTMLDivElement>()
     const [readAllRef] = useAutoAnimate<HTMLButtonElement>()
@@ -47,7 +49,7 @@ const Notification: React.FC<NotificationProps> = () => {
                                 'absolute top-1/2 right-10 bg-radical-red-500 dark:bg-prussian-blue-400 text-white rounded-lg text-xs font-medium inline-flex justify-center items-center whitespace-nowrap p-2'
                             )}
                         >
-                            {TEMPLATE.NEW_NOTIFY}
+                            {t(LANGUAGE.NEW_NOTIFY)}
                         </span>
                     )}
                 </div>
@@ -63,7 +65,9 @@ const Notification: React.FC<NotificationProps> = () => {
                 ) : (
                     <>
                         <div className='flex justify-between'>
-                            <h1 className='p-2 font-medium text-base text-gray-900 dark:text-white'>Thông báo</h1>
+                            <h1 className='p-2 font-medium text-base text-gray-900 dark:text-white'>
+                                {t(LANGUAGE.NOTIFY_MANAGEMENT)}
+                            </h1>
                             {/* <button
                                 className='group p-2 text-sm text-cyan-500 font-medium hover:underline disabled:hover:no-underline flex items-center gap-1'
                                 disabled={isClickReadAll}

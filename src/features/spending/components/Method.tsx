@@ -5,7 +5,6 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { MethodProps } from '~/@types/spending'
-import { TEMPLATE } from '~/constant/template'
 import LANGUAGE from '~/i18n/language/key'
 
 const Method: React.FC<MethodProps> = ({ data, loading }) => {
