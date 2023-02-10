@@ -5,9 +5,12 @@ const translation: {
 } = {
     /* COMMON */
     [LANGUAGE.LOGOUT]: 'Đăng xuất',
+    [LANGUAGE.BACK]: 'Quay lại',
     [LANGUAGE.LOGIN]: 'Đăng nhập',
     [LANGUAGE.HOME]: 'Trang chủ',
     [LANGUAGE.TRANSACTION]: 'Giao dịch',
+    [LANGUAGE.TRANSACTION_DETAIL]: 'Chi tiết giao dịch',
+    [LANGUAGE.TRANSACTION_KIND]: 'Loại giao dịch',
     [LANGUAGE.METHOD]: 'Phương thức',
     [LANGUAGE.CATEGORY]: 'Thể loại',
     [LANGUAGE.CATEGORY_NAME]: 'Tên thể loại',
@@ -18,9 +21,11 @@ const translation: {
     [LANGUAGE.YEAR]: 'Năm',
     [LANGUAGE.NOTE]: 'Ghi chú',
     [LANGUAGE.SAVE]: 'Lưu',
+    [LANGUAGE.NEXT]: 'Tiếp theo',
     [LANGUAGE.CREATE]: 'Tạo',
     [LANGUAGE.CANCEL]: 'Hủy bỏ',
     [LANGUAGE.CREATING]: 'Đang tạo...',
+    [LANGUAGE.CREATION_TIME]: 'Thời gian tạo',
     [LANGUAGE.RECEIVE]: 'Thu nhập',
     [LANGUAGE.COST]: 'Chi phí',
     [LANGUAGE.TRANSFER]: 'Chuyển khoản',
@@ -49,9 +54,45 @@ const translation: {
     [LANGUAGE.LOADING_IMAGE]: 'Đang tải ảnh...',
     [LANGUAGE.UPLOAD_IMAGE]: 'Tải ảnh lên',
     [LANGUAGE.SEE_MORE]: 'Xem thêm',
+    [LANGUAGE.CREATE_DATE]: 'Ngày tạo',
+    [LANGUAGE.EMPTY_METHOD]: 'Chưa có phương thức',
+    [LANGUAGE.NOT_ROLE]: 'Không có quyền truy cập',
+    [LANGUAGE.BACK_TO_HOME]: 'Quay lại trang chủ',
+    [LANGUAGE.CONTENT]: 'Nội dung',
+    [LANGUAGE.VIEWERS]: 'Lượt xem',
+    [LANGUAGE.READ]: 'Đã xem',
+    [LANGUAGE.TITLE]: 'Tiêu đề',
+    [LANGUAGE.SHORT_DESCRIPTION]: 'Mô tả ngắn',
+    [LANGUAGE.NEW_NOTIFY]: 'Thông báo mới',
+    [LANGUAGE.ERROR]: 'Đã có lỗi xảy ra!',
+    [LANGUAGE.COMING_SOON]: 'Sắp ra mắt',
+    [LANGUAGE.SURPLUS_AT_TIME]: 'Số dư tại thời điểm',
+    [LANGUAGE.TABLE]: 'Bảng',
+    [LANGUAGE.LIST]: 'Danh sách',
+    [LANGUAGE.REFRESH]: 'Làm mới',
+    [LANGUAGE.L_DAYS_AGO]: 'ngày trước',
+    [LANGUAGE.L_HOURS_AGO]: 'giờ trước',
+    [LANGUAGE.L_MINUTES_AGO]: 'phút trước',
+    [LANGUAGE.RECENT]: 'Vừa xong',
+    [LANGUAGE.EDIT]: 'Chỉnh sửa',
+    [LANGUAGE.EDITED]: 'Đã chỉnh sửa',
+    [LANGUAGE.DELETE]: 'Xóa',
+    [LANGUAGE.REPLY]: 'Phản hồi',
+    [LANGUAGE.CLICK_TO_READ_DETAIL]: 'Click để xem chi tiết',
+    [LANGUAGE.CLICK_TO_CHOOSE_METHOD]: 'Click để chọn phương thức',
+    [LANGUAGE.OBJECT]: 'Đối tượng',
+    [LANGUAGE.RECENT_UPDATE]: 'Cập nhật gần nhất',
+    [LANGUAGE.PAID_TIME]: 'Thời gian thanh toán',
+    [LANGUAGE.TYPE_YOUR_MESSAGE]: 'Nhập tin nhắn...',
+    [LANGUAGE.PASSWORD]: 'Mật khẩu',
+
+    /* EMPTY DATA */
+    [LANGUAGE.EMPTY_NOTIFY]: 'Không có thông báo',
+    [LANGUAGE.EMPTY_DESCRIPTION]: 'Không có mô tả',
 
     /* VALIDATE MESSAGE */
     [LANGUAGE.REQUIRED_FIELD]: 'Yêu cầu nhập!',
+    [LANGUAGE.REQUIRED_METHOD_SPENDING]: 'Yêu cầu chọn phương thức thanh toán!',
     [LANGUAGE.REQUIRED_TYPE_NUMBER]: 'Yêu cầu nhập số!',
     [LANGUAGE.REQUIRED_AMOUNT]: 'Yêu cầu nhập số tiền!',
     [LANGUAGE.REQUIRED_RECEIVE]: 'Yêu cầu nhập thu nhập!',
@@ -75,6 +116,8 @@ const translation: {
     [LANGUAGE.CATEGORY_NAME_MAX_50]: 'Tên thể loại không được quá 50 ký tự!',
     [LANGUAGE.NEW_PASSWORD_MIN_1]: 'Mật khẩu mới phải lớn hơn 1 ký tự!',
     [LANGUAGE.PASSWORD_NOT_MATCH]: 'Mật khẩu không khớp!',
+    [LANGUAGE.REAL_MONEY_MUST_BE_LESS_THAN_AMOUNT]: 'Số tiền thực phải nhỏ hơn số tiền giao dịch!',
+    [LANGUAGE.INVALID_FORMAT]: 'Định dạng không hợp lệ!',
 
     /* PLACEHOLDER */
     [LANGUAGE.PLACEHOLDER_CHOOSE_KIND]: '--- Chọn loại ---',
@@ -90,6 +133,13 @@ const translation: {
     [LANGUAGE.NOTIFY_CREATE_GET_LOAN_SUCCESS]: 'Thêm khoản vay thành công!',
     [LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS]: 'Đổi mật khẩu thành công!',
     [LANGUAGE.NOTIFY_CREATE_MEMBER_SUCCESS]: 'Thêm thành viên thành công!',
+    [LANGUAGE.NOTIFY_NOT_EXIST_ACCOUNT]: 'Tài khoản không tồn tại!',
+    [LANGUAGE.NOTIFY_ERROR]: 'Đã có lỗi xảy ra!',
+
+    /* CONFIRM */
+    [LANGUAGE.CONFIRM_NOTIFY]: 'Bạn có chắc chắn muốn gửi thông báo này?',
+    [LANGUAGE.CONFIRM_DELETE_TRANSACTION]: 'Bạn có chắc muốn xóa giao dịch này ?',
+    [LANGUAGE.CONFIRM_DELETE_MESSAGE]: 'Bạn có chắc muốn xóa tin nhắn này ?',
 
     /* SPENDING */
     [LANGUAGE.SPENDING]: 'Quản lý chi tiêu',
@@ -97,6 +147,8 @@ const translation: {
     [LANGUAGE.BUDGET_BY_METHOD]: 'Ngân sách theo phương thức',
     [LANGUAGE.TRANSACTION_RECENT]: 'Giao dịch gần đây',
     [LANGUAGE.METHOD_SPENDING]: 'Phương thức thanh toán',
+    [LANGUAGE.FROM_METHOD_SPENDING]: 'Từ phương thức thanh toán',
+    [LANGUAGE.TO_METHOD_SPENDING]: 'Đến phương thức thanh toán',
     [LANGUAGE.MAKE_INCOME]: 'Thêm thu nhập',
     [LANGUAGE.MAKE_COST]: 'Thêm chi phí',
     [LANGUAGE.MAKE_TRANSFER]: 'Chuyển khoản',
@@ -116,12 +168,18 @@ const translation: {
     [LANGUAGE.NEAR_DEADLINE]: 'Gần hạn',
     [LANGUAGE.METHOD_RECEIVE]: 'Phương thức nhận',
     [LANGUAGE.USER_GET_LOAN]: 'Đối tượng vay',
-    [LANGUAGE.ESTIMATE_PAID_DATE]: 'Ngày dự kiến trả',
+    [LANGUAGE.ESTIMATE_PAID_DATE]: 'Hạn trả',
     [LANGUAGE.ASSET]: 'Tài sản',
     [LANGUAGE.ADD_ORIGIN_AMOUNT]: 'Cộng gốc',
     [LANGUAGE.TEMP_LOAN]: 'Tạm ứng',
     [LANGUAGE.IMAGE_OPTION]: 'Hình ảnh (tùy chọn)',
     [LANGUAGE.PRESS_TO_UPLOAD_IMAGE]: 'Nhấn để tải hình ảnh',
+    [LANGUAGE.ALREADY_PAID]: 'Giao dịch đã thực hiện hoàn tất, không được chỉnh sửa thêm!',
+    [LANGUAGE.PAID_ACTION]: 'Trả',
+    [LANGUAGE.PAID]: 'Đã trả',
+    [LANGUAGE.UNPAID]: 'Chưa trả',
+    [LANGUAGE.REAL_AMOUNT]: 'Số tiền thực trả',
+    [LANGUAGE.AMOUNT_RECEIVE_METHOD]: 'Phương thức nhận tiền',
 
     /* PROFILE */
     [LANGUAGE.JOIN_DATE]: 'Ngày tham gia',
@@ -136,6 +194,13 @@ const translation: {
     [LANGUAGE.MOST_METHOD_AMOUNT]: 'Số tiền nhiều nhất theo phương thức',
     [LANGUAGE.MOST_CATEGORY_AMOUNT]: 'Số tiền nhiều nhất thể loại',
 
+    /* AUTH */
+    [LANGUAGE.OR]: 'Hoặc',
+    [LANGUAGE.LOGIN_WITH_EMAIL_PASSWORD]: 'Đăng nhập bằng email và mật khẩu',
+    [LANGUAGE.UNKNOWN_STEP]: 'Lỗi truy cập',
+    [LANGUAGE.ACCOUNT_OPTION_EMAIL]: 'Tài khoản (email)',
+    [LANGUAGE.ACCOUNT_NOT_HAVE_PASSWORD]: 'Tài khoản này chưa có mật khẩu',
+
     /* OTHERS */
     [LANGUAGE.SOME_CATEGORY_SIMILAR_NAME]: 'Một số thể loại gần giống tên',
     [LANGUAGE.NOT_CATEGORY_SIMILAR_NAME]: 'Không có thể loại gần giống tên',
@@ -147,6 +212,12 @@ const translation: {
     [LANGUAGE.OLD_PASSWORD]: 'Mật khẩu cũ',
     [LANGUAGE.NEW_PASSWORD]: 'Mật khẩu mới',
     [LANGUAGE.RE_PASSWORD]: 'Xác nhận mật khẩu',
+
+    /* NOTIFICATION */
+    [LANGUAGE.LIST_RECEIVE_NOTIFY_MEMBER]: 'Danh sách thành viên nhận thông báo',
+    [LANGUAGE.SEND_ALL_MEMBER]: 'Gửi tất cả thành viên',
+    [LANGUAGE.SEND_MAIL]: 'Gửi mail',
+    [LANGUAGE.CREATE_NOTIFY]: 'Tạo thông báo',
 
     /* LAYOUT */
     [LANGUAGE.SPENDING_MANAGEMENT]: 'Quản lý chi tiêu',

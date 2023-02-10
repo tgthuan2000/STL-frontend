@@ -5,16 +5,19 @@ import moment from 'moment'
 import numeral from 'numeral'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { PaidForm, TransactionDetailFormProps } from '~/@types/loan'
 import { AvatarUser, Button, Divider, SubmitWrap } from '~/components'
 import { AutoComplete, Input, Toggle } from '~/components/_base'
 import { DATE_FORMAT } from '~/constant'
 import { useLoading } from '~/context'
+import LANGUAGE from '~/i18n/language/key'
 import IconButton from './common/IconButton'
 import Group from './Group'
 
 const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) => {
+    const { t } = useTranslation()
     const { onsubmit, handleDeleteTransaction, methodSpending, transaction } = data
     const navigate = useNavigate()
     const { loading } = useLoading()
@@ -37,7 +40,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                             navigate(-1)
                         }}
                     />
-                    <h4 className='xl:text-2xl text-xl font-semibold'>Chi tiết giao dịch</h4>
+                    <h4 className='xl:text-2xl text-xl font-semibold'>{t(LANGUAGE.TRANSACTION_DETAIL)}</h4>
                 </div>
 
                 {!transaction.paid && (
@@ -47,7 +50,8 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                         </IconButton>
                         <IconButton
                             onClick={() =>
-                                window.confirm('Bạn có chắc muốn xóa giao dịch này ?') && handleDeleteTransaction()
+                                window.confirm(t(LANGUAGE.CONFIRM_DELETE_TRANSACTION) as string) &&
+                                handleDeleteTransaction()
                             }
                         >
                             <TrashIcon />
@@ -65,12 +69,12 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                             <div className='flex flex-1 flex-col justify-between'>
                                 <div className='divide-y divide-gray-200 dark:divide-slate-500 px-4 sm:px-6'>
                                     <div className='space-y-4 pt-6 pb-5'>
-                                        <Group label='Trạng thái' className='flex-col'>
+                                        <Group label={t(LANGUAGE.STATUS)} className='flex-col'>
                                             <Toggle
                                                 form={form}
-                                                rules={{ required: 'Nhấn để chọn phương thức thanh toán' }}
+                                                rules={{ required: t(LANGUAGE.CLICK_TO_CHOOSE_METHOD) as string }}
                                                 name='paid'
-                                                label={transaction.paid ? 'Đã trả' : 'Chưa trả'}
+                                                label={transaction.paid ? t(LANGUAGE.PAID) : t(LANGUAGE.UNPAID)}
                                                 disabled={transaction.paid}
                                             />
                                             <div ref={parent}>
@@ -80,10 +84,12 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                                             name='methodSpending'
                                                             form={form}
                                                             data={methodSpending.data}
-                                                            label='Phương thức thanh toán'
+                                                            label={t(LANGUAGE.METHOD_SPENDING)}
                                                             loading={methodSpending.loading}
                                                             rules={{
-                                                                required: 'Yêu cầu chọn phương thức thanh toán!',
+                                                                required: t(
+                                                                    LANGUAGE.REQUIRED_METHOD_SPENDING
+                                                                ) as string,
                                                             }}
                                                             disabled={transaction.paid}
                                                         />
@@ -91,15 +97,16 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                                             name='amount'
                                                             form={form}
                                                             rules={{
-                                                                required: 'Yêu cầu nhập số tiền thực trả!',
+                                                                required: t(LANGUAGE.REQUIRED_AMOUNT) as string,
                                                                 max: {
                                                                     value: transaction.amount,
-                                                                    message:
-                                                                        'Số tiền thực trả không được lớn hơn số tiền cần trả!',
+                                                                    message: t(
+                                                                        LANGUAGE.REAL_MONEY_MUST_BE_LESS_THAN_AMOUNT
+                                                                    ) as string,
                                                                 },
                                                             }}
                                                             type='number'
-                                                            label='Số tiền thực trả'
+                                                            label={t(LANGUAGE.REAL_AMOUNT)}
                                                             disabled={transaction.paid}
                                                         />
                                                     </div>
@@ -107,7 +114,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                             </div>
                                         </Group>
                                         <Divider />
-                                        <Group label='Đối tượng' className='flex-col'>
+                                        <Group label={t(LANGUAGE.OBJECT)} className='flex-col'>
                                             <div className='flex gap-2'>
                                                 <AvatarUser image={transaction.userLoan?.image} />
 
@@ -140,38 +147,38 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                                 </div>
                                             </div>
                                         </Group>
-                                        <Group label='Loại giao dịch' className='justify-between'>
+                                        <Group label={t(LANGUAGE.TRANSACTION_KIND)} className='justify-between'>
                                             {transaction.kindSpending.name}
                                         </Group>
-                                        <Group label='Số tiền' className='justify-between'>
+                                        <Group label={t(LANGUAGE.AMOUNT)} className='justify-between'>
                                             {numeral(transaction.amount).format()}
                                         </Group>
-                                        <Group label='Phương thức nhận tiền' className='justify-between'>
-                                            {transaction.methodReference?.name || 'Không có'}
+                                        <Group label={t(LANGUAGE.AMOUNT_RECEIVE_METHOD)} className='justify-between'>
+                                            {transaction.methodReference?.name || '---'}
                                         </Group>
                                         {transaction._createdAt && (
-                                            <Group label='Thời điểm tạo' className='justify-between'>
+                                            <Group label={t(LANGUAGE.CREATION_TIME)} className='justify-between'>
                                                 {moment(transaction._createdAt).format(DATE_FORMAT.D_DATE_TIME)}
                                             </Group>
                                         )}
                                         {transaction._updatedAt && (
-                                            <Group label='Cập nhật gần nhất' className='justify-between'>
+                                            <Group label={t(LANGUAGE.RECENT_UPDATE)} className='justify-between'>
                                                 {moment(transaction._updatedAt).format(DATE_FORMAT.D_DATE_TIME)}
                                             </Group>
                                         )}
                                         {transaction.estimatePaidDate && (
-                                            <Group label='Hạn trả' className='justify-between'>
+                                            <Group label={t(LANGUAGE.ESTIMATE_PAID_DATE)} className='justify-between'>
                                                 {moment(transaction.estimatePaidDate).format(DATE_FORMAT.D_DATE_TIME)}
                                             </Group>
                                         )}
                                         {transaction.paidDate && (
-                                            <Group label='Thời điểm trả' className='justify-between'>
+                                            <Group label={t(LANGUAGE.PAID_TIME)} className='justify-between'>
                                                 {moment(transaction.paidDate).format(DATE_FORMAT.D_DATE_TIME)}
                                             </Group>
                                         )}
 
                                         {transaction.description && (
-                                            <Group label='Ghi chú' className='flex-col'>
+                                            <Group label={t(LANGUAGE.NOTE)} className='flex-col'>
                                                 <ul className='list-disc ml-3'>
                                                     {transaction.description.split('\n').map((value) => (
                                                         <li key={value}>{value}</li>
@@ -186,7 +193,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                         <SubmitWrap>
                             {!transaction.paid && (
                                 <Button color='radicalRed' type='submit' disabled={loading.submit}>
-                                    Trả
+                                    {t(LANGUAGE.PAID)}
                                 </Button>
                             )}
                             <Button
@@ -196,7 +203,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                     navigate(-1)
                                 }}
                             >
-                                Quay lại
+                                {t(LANGUAGE.BACK)}
                             </Button>
                         </SubmitWrap>
                     </form>

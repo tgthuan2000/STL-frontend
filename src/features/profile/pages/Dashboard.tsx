@@ -10,7 +10,7 @@ import { TimeFilterPayload } from '~/@types/components'
 import { ProfileQueryData } from '~/@types/profile'
 import { Button, Image, TimeFilter, Transaction } from '~/components'
 import { DATE_FORMAT } from '~/constant'
-import { E_FILTER_DATE, TEMPLATE } from '~/constant/template'
+import { E_FILTER_DATE } from '~/constant/template'
 import { useConfig, useLoading } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
@@ -141,7 +141,7 @@ const Dashboard = () => {
                             <div className='grid xl:grid-cols-4 grid-cols-1 backdrop-blur-lg' ref={parent}>
                                 {loading.config ? (
                                     <p className='animate-pulse my-5 sm:my-3 sm:text-lg text-sm text-gray-700 sm:text-white font-normal text-center'>
-                                        {TEMPLATE.LOADING}
+                                        {t(LANGUAGE.LOADING)}
                                     </p>
                                 ) : isEmpty(profileOptions) ? (
                                     <ProfileInfoSkeleton />

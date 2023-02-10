@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom'
 import { RecentProps } from '~/@types/spending'
 import { DATE_FORMAT } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
-import { TEMPLATE } from '~/constant/template'
 import LANGUAGE from '~/i18n/language/key'
 import { getLinkSpending } from '~/utils'
 
@@ -34,10 +33,10 @@ const Recent: React.FC<RecentProps> = ({ data, loading }) => {
                                     <span>
                                         {item.date
                                             ? moment(item.date).format(DATE_FORMAT.D_DATE_TIME)
-                                            : TEMPLATE.EMPTY_DATE}
+                                            : t(LANGUAGE.UNLIMITED_TIME)}
                                     </span>
                                     <h3 className='font-medium truncate'>
-                                        {item.methodSpending?.name || TEMPLATE.EMPTY_METHOD_SPENDING_SHORT}
+                                        {item.methodSpending?.name || t(LANGUAGE.EMPTY_METHOD)}
                                     </h3>
                                 </div>
                                 <div className='xl:w-1/3 w-1/2 overflow-hidden text-right'>

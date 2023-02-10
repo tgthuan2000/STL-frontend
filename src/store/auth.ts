@@ -1,4 +1,4 @@
-import create from 'zustand'
+import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { AuthStore } from '~/@types/auth'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'

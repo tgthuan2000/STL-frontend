@@ -2,6 +2,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { BellIcon, FireIcon, ListBulletIcon } from '@heroicons/react/24/outline'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { Link, useSearchParams } from 'react-router-dom'
 import { DefaultValueResult } from '~/@types/announce-config'
 import { DataListViewList, DataListViewTable, IDataListView, TimeFilterPayload } from '~/@types/components'
@@ -11,14 +12,15 @@ import { Dropdown } from '~/components/_base'
 import { COUNT_PAGINATE } from '~/constant'
 import { DATA_LIST_GROUP, DATA_LIST_MODE, __groupBy } from '~/constant/component'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
-import { TEMPLATE } from '~/constant/template'
 import { useLocalStorage, useQuery, useWindowSize } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import { getDefaultMode } from '~/utils'
 import { EmptyTableNotify, SkeletonTableNotify } from '../components'
 import { services } from '../services'
 import * as __services from '../services/dataListView'
 
 const Dashboard = () => {
+    const { t } = useTranslation()
     const [searchParams] = useSearchParams()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
     const defaultValues = useMemo(() => services.getDefaultValue({ searchParams }), [])
@@ -130,13 +132,13 @@ const Dashboard = () => {
                             <Link to='create' className='mr-2 sm:mr-0'>
                                 <Button type='button' color='green'>
                                     <BellIcon className='h-6' />
-                                    Tạo mới
+                                    {t(LANGUAGE.CREATE)}
                                 </Button>
                             </Link>
                         </div>
                     </div>
                     {error ? (
-                        <p className='m-5 text-radical-red-500 font-medium'>{TEMPLATE.ERROR}</p>
+                        <p className='m-5 text-radical-red-500 font-medium'>{t(LANGUAGE.ERROR)}</p>
                     ) : (
                         <div ref={parentRef}>
                             <DataListView

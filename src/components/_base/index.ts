@@ -1,4 +1,4 @@
-export { default as AutoComplete } from './AutoComplete'
+export { default as AutoComplete } from './Autocomplete'
 export { default as DatePicker } from './DatePicker'
 export { default as Dropdown } from './Dropdown'
 export { default as Input } from './Input'

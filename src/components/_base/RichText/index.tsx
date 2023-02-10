@@ -1,10 +1,11 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import ImageResize from 'quill-image-resize-module-react'
 import React, { useId } from 'react'
 import { Controller } from 'react-hook-form'
 import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { RichTextProps } from '~/@types/components'
+import ErrorMessage from '~/components/ErrorMessage'
+import Label from '~/components/Label'
 import { reactQuillOptions } from '~/constant/component'
 import './index.css'
 
@@ -23,7 +24,6 @@ const RichText: React.FC<RichTextProps> = ({
     ...props
 }) => {
     const id = useId()
-    const [parent] = useAutoAnimate<HTMLDivElement>()
     return (
         <Controller
             name={name}
@@ -31,11 +31,7 @@ const RichText: React.FC<RichTextProps> = ({
             rules={rules}
             render={({ field, fieldState: { error } }) => (
                 <div className={className}>
-                    {label && (
-                        <label htmlFor={id} className='inline-block font-medium text-gray-900 dark:text-slate-100'>
-                            {label}
-                        </label>
-                    )}
+                    <Label id={id} label={label} />
                     <div className='mt-1'>
                         <ReactQuill
                             id={id}
@@ -48,9 +44,7 @@ const RichText: React.FC<RichTextProps> = ({
                             {...props}
                         />
                     </div>
-                    <div ref={parent}>
-                        {error && <div className='mt-1 text-radical-red-700 text-sm'>{error.message}</div>}
-                    </div>
+                    <ErrorMessage error={error} />
                 </div>
             )}
         />

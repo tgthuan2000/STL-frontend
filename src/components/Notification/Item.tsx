@@ -3,13 +3,15 @@ import { CheckIcon, UserIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import moment from 'moment'
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { NotificationItemProps } from '~/@types/components'
 import { DATE_FORMAT } from '~/constant'
-import { TEMPLATE } from '~/constant/template'
+import LANGUAGE from '~/i18n/language/key'
 import { getSpacingTime } from '~/services'
 import Prose from '../Prose'
 
 const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, onReadDetail }) => {
+    const { t } = useTranslation()
     const [isClickRead, setIsClickRead] = useState(false)
 
     return (
@@ -21,7 +23,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, o
                         !data.read ? 'bg-gray-100 dark:bg-slate-700' : 'bg-transparent'
                     )}
                     onClick={() => onReadDetail(data)}
-                    title='Nhấn để xem chi tiết'
+                    title={t(LANGUAGE.CLICK_TO_READ_DETAIL) as string}
                 >
                     <div className='flex justify-between gap-3'>
                         <h4 className='flex-1 font-normal text-sm lg:text-base truncate text-gray-900 dark:text-slate-100'>
@@ -29,7 +31,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, o
                         </h4>
                         <span
                             className='flex items-center gap-0.5 flex-shrink-0 text-cyan-400 lg:text-sm text-xs'
-                            title='Số người đã xem'
+                            title={t(LANGUAGE.VIEWERS) as string}
                         >
                             <span>{data.notify.viewers ?? 0}</span>
                             <UserIcon className='h-4 w-4' />
@@ -44,7 +46,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, o
                             }
                         )}
                     >
-                        {data.notify.description ?? TEMPLATE.EMPTY_DESCRIPTION}
+                        {data.notify.description ?? t(LANGUAGE.EMPTY_DESCRIPTION)}
                     </Prose>
                     <div className='mt-2 flex justify-between items-center'>
                         <div>
@@ -52,7 +54,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, o
                                 isClickRead ? (
                                     <p className='text-cyan-500 font-normal flex items-center gap-0.5'>
                                         <CheckIcon className='h-4 w-4' />
-                                        Đã xem
+                                        {t(LANGUAGE.READ)}
                                     </p>
                                 ) : (
                                     <button
@@ -62,12 +64,12 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, o
                                             onItemRead(e, data)
                                         }}
                                     >
-                                        Đã xem
+                                        {t(LANGUAGE.READ)}
                                     </button>
                                 )
                             ) : (
                                 <p className='text-xs text-gray-400 dark:text-slate-100'>
-                                    Đã xem: <b>{moment(data._updatedAt).format(DATE_FORMAT.TIME_DATE)}</b>
+                                    {t(LANGUAGE.READ)}: <b>{moment(data._updatedAt).format(DATE_FORMAT.TIME_DATE)}</b>
                                 </p>
                             )}
                         </div>

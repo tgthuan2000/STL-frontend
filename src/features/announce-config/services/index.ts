@@ -6,7 +6,7 @@ import { COUNT_PAGINATE, TAGS } from '~/constant'
 import { DATA_LIST_MODE } from '~/constant/component'
 import { E_FILTER_DATE } from '~/constant/template'
 import { GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE, GET_NOTIFY_CONFIG_PAGINATE } from '~/schema/query/notify'
-import { getDate, getDate as _getDate, listGroupOptions } from '~/services'
+import { dataListOptions, getDate, getDate as _getDate, listGroupOptions } from '~/services'
 
 export const services: Services = {
     getAll: {
@@ -122,12 +122,6 @@ export const services: Services = {
                 })
         }
     },
-    getDropdownOptions: ({ onReloadClick }) => [
-        [
-            { id: DATA_LIST_MODE.TABLE, name: 'Bảng', icon: TableCellsIcon },
-            { id: DATA_LIST_MODE.LIST, name: 'Danh sách', icon: ListBulletIcon },
-        ],
-        [{ id: 0, name: 'Làm mới', icon: ArrowPathIcon, onClick: onReloadClick }],
-    ],
+    getDropdownOptions: dataListOptions,
     getListGroupOptions: () => [listGroupOptions],
 }

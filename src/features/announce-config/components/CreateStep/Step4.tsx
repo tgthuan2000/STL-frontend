@@ -5,7 +5,6 @@ import { CreateStep4Props } from '~/@types/announce-config'
 import { DraftNotify } from '~/@types/notify'
 import { Image, Prose } from '~/components'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
-import { TEMPLATE } from '~/constant/template'
 import { useLocalStorage } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 
@@ -14,7 +13,7 @@ const Step4: React.FC<CreateStep4Props> = ({ id, onSubmit }) => {
     const [draftNotify] = useLocalStorage<DraftNotify>(LOCAL_STORAGE_KEY.STL_DRAFT_NOTIFY)
     const form = useForm()
     const handleSubmit = async () => {
-        if (window.confirm('Bạn có chắc chắn muốn gửi thông báo này?')) {
+        if (window.confirm(t(LANGUAGE.CONFIRM_NOTIFY) as string)) {
             await onSubmit(draftNotify)
         }
     }
@@ -26,11 +25,11 @@ const Step4: React.FC<CreateStep4Props> = ({ id, onSubmit }) => {
                 className='flex h-full flex-col sm:gap-3 gap-2 mb-4'
             >
                 <div>
-                    <p className='inline-block font-medium'>Danh sách người nhận</p>
+                    <p className='inline-block font-medium'>{t(LANGUAGE.LIST_RECEIVE_NOTIFY_MEMBER)}</p>
                     {draftNotify?.sendAll ? (
                         <div className='p-2'>
                             <p className='font-medium text-sm text-radical-red-500 bg-radical-red-50 dark:bg-slate-900 p-2 rounded-md select-none'>
-                                Gửi cho tất cả mọi người
+                                {t(LANGUAGE.SEND_ALL_MEMBER)}
                             </p>
                         </div>
                     ) : (
@@ -44,7 +43,7 @@ const Step4: React.FC<CreateStep4Props> = ({ id, onSubmit }) => {
                                         <small className='font-normal text-gray-500 truncate block'>{user.email}</small>
                                     </div>
                                     {user.allowSendMail && user.sendMail && (
-                                        <span title='Gửi mail' className='text-cyan-400'>
+                                        <span title={t(LANGUAGE.SEND_MAIL) as string} className='text-cyan-400'>
                                             <EnvelopeIcon className='h-5' />
                                         </span>
                                     )}
@@ -54,18 +53,18 @@ const Step4: React.FC<CreateStep4Props> = ({ id, onSubmit }) => {
                     )}
                 </div>
                 <div>
-                    <p className='inline-block font-medium'>Tiêu đề</p>
+                    <p className='inline-block font-medium'>{t(LANGUAGE.TITLE)}</p>
                     <div className='p-2 sm:text-lg text-base'>{draftNotify?.title}</div>
                 </div>
                 <div>
-                    <p className='inline-block font-medium'>Mô tả ngắn</p>
+                    <p className='inline-block font-medium'>{t(LANGUAGE.SHORT_DESCRIPTION)}</p>
                     <div className='border dark:border-slate-600 sm:p-5 p-3 m-2 rounded-lg'>
-                        <Prose>{draftNotify?.description ?? TEMPLATE.EMPTY_DESCRIPTION}</Prose>
+                        <Prose>{draftNotify?.description ?? t(LANGUAGE.EMPTY_DESCRIPTION)}</Prose>
                     </div>
                 </div>
 
                 <div>
-                    <p className='inline-block font-medium'>Nội dung</p>
+                    <p className='inline-block font-medium'>{t(LANGUAGE.CONTENT)}</p>
                     <div className='border dark:border-slate-600 sm:p-5 p-3 m-2 rounded-lg'>
                         <Prose>{draftNotify?.content ?? t(LANGUAGE.EMPTY_DATA)}</Prose>
                     </div>

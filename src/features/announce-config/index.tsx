@@ -1,18 +1,21 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { Transaction } from '~/components'
+import LANGUAGE from '~/i18n/language/key'
 
 const Dashboard = React.lazy(() => import('./pages/Dashboard'))
 const Create = React.lazy(() => import('./pages/Create'))
 const Detail = React.lazy(() => import('./pages/Detail'))
 
 const AnnounceConfig = () => {
+    const { t } = useTranslation()
     return (
         <Routes>
             <Route
                 index
                 element={
-                    <Transaction title='Quản lý thông báo' hasBack={false}>
+                    <Transaction title={t(LANGUAGE.NOTIFY_MANAGEMENT)} hasBack={false}>
                         <Dashboard />
                     </Transaction>
                 }
@@ -20,7 +23,7 @@ const AnnounceConfig = () => {
             <Route
                 path='create'
                 element={
-                    <Transaction title='Tạo thông báo'>
+                    <Transaction title={t(LANGUAGE.CREATE_NOTIFY)}>
                         <Create />
                     </Transaction>
                 }
@@ -28,7 +31,7 @@ const AnnounceConfig = () => {
             <Route
                 path=':id'
                 element={
-                    <Transaction title='Thông báo'>
+                    <Transaction title={t(LANGUAGE.NOTIFY_MANAGEMENT)}>
                         <Detail />
                     </Transaction>
                 }

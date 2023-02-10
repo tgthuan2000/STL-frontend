@@ -1,14 +1,14 @@
 import { SanityDocument, SanityImageAssetDocument } from '@sanity/client'
 import { DefaultTFuncReturn } from 'i18next'
 import React, { HTMLInputTypeAttribute, ReactNode } from 'react'
-import { FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
+import { ControllerRenderProps, FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
 import { ReactQuillProps } from 'react-quill'
 import { NavigateFunction } from 'react-router-dom'
 import { DATE_FORMAT } from '~/constant'
 import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
 import { PERMISSION } from '~/constant/permission'
 import { IFILTER_DATE } from '~/constant/template'
-import { UseLocalStorageResult } from '~/hook/useLocalStorage'
+import { localStorageValue } from '~/hook/useLocalStorage'
 import { HeroIcon } from '.'
 import { IUserLoan } from './loan'
 import { NotifyItem } from './notify'
@@ -39,6 +39,50 @@ export interface AutoCompleteProps {
     multiple?: boolean
 }
 
+export interface AutocompleteLabelProps {
+    label?: string | DefaultTFuncReturn
+    onReload?: () => Promise<void>
+    loading?: boolean
+}
+
+export interface AutocompleteButtonProps {
+    disabledClear?: boolean
+    disabled?: boolean
+    loading?: boolean
+    selectedItem: any
+    setSelectedItem: React.Dispatch<any>
+    field: ControllerRenderProps<any, string>
+    onChange?: (value: any) => void
+}
+
+export interface AutocompleteInputProps {
+    loading?: boolean
+    disabled?: boolean
+    onChange?: (value: any) => void
+    loadingAddMore?: boolean
+    valueKey: string
+}
+
+export interface AutocompleteOptionProps {
+    filterData: any[]
+    idKey: string
+    valueKey: string
+    showImage?: boolean
+    query: string
+    addMore?: (value: any) => Promise<any>
+}
+
+export interface AutocompleteSurplusProps {
+    surplus?: number
+    disabledShowSurplus?: boolean
+    surplusName?: string | DefaultTFuncReturn
+    children?: ReactNode
+}
+
+export interface ErrorMessageProps {
+    error?: FieldError
+}
+
 export interface SelectionProps {
     name: string
     className?: string
@@ -51,7 +95,20 @@ export interface SelectionProps {
     rules?: Rules
     disabled?: boolean
 }
-
+export interface SelectionLabelProps {
+    label?: DefaultTFuncReturn
+}
+export interface SelectionButtonProps {
+    field: ControllerRenderProps<any, string>
+    valueKey: string
+    placeholder: DefaultTFuncReturn
+    disabled?: boolean
+}
+export interface SelectionOptionsProps {
+    data: any[]
+    idKey: string
+    valueKey: string
+}
 export interface DropdownProps {
     name: string
     className?: string
@@ -67,11 +124,30 @@ export interface DropdownProps {
     customButtonClassName?: string
 }
 
+export interface DropdownButtonProps {
+    field: ControllerRenderProps<any, string>
+    disabled?: boolean
+    customButtonClassName?: string
+    showValueOnLabel?: boolean
+    valueKey: string
+    label: ReactNode | DefaultTFuncReturn
+}
+
+export interface DropdownItemsProps {
+    data: Array<Array<any>>
+    idKey: string
+    valueKey: string
+    selected: any
+    handleChange?: (value: any, onChange: (value: any) => void) => void
+    field: ControllerRenderProps<any, string>
+}
+
 export interface SlideOverProps {
     children?: () => React.ReactNode
 }
 
-export interface InputProps {
+export interface InputProps
+    extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     className?: string
     label?: string | DefaultTFuncReturn
     name: string
@@ -80,6 +156,15 @@ export interface InputProps {
     form: UseFormReturn<any, object>
     rules?: Rules
     autoFocus?: boolean
+}
+
+export interface LabelProps {
+    id?: string
+    label?: DefaultTFuncReturn
+}
+
+export interface InputNumberHintProps {
+    field: ControllerRenderProps<any, string>
 }
 
 interface RichTextProps extends ReactQuillProps {
@@ -99,6 +184,13 @@ export interface UploadImageProps {
     disabled?: boolean
     form: UseFormReturn<any, object>
     rules?: Rules
+}
+
+export interface UploadImageCoreProps {
+    form: UseFormReturn<any, object>
+    name: string
+    loading: boolean
+    id: string
 }
 
 export interface DateProps {
@@ -371,7 +463,29 @@ export interface LazySearchSelectProps {
     getOptionLabel?: (option: any, active: boolean) => React.ReactNode
     autoFocus?: boolean
 }
+export interface LazySearchSelectLabelProps {
+    label?: string
+}
 
+export interface LazySearchSelectInputProp {
+    field: ControllerRenderProps<{ search: string }, 'search'>
+    autoFocus?: boolean
+    loading?: boolean
+    disabled?: boolean
+    handleSearch?: (value: string, onChange: (...event: any[]) => void) => void
+}
+export interface LazySearchSelectIconProps {
+    loading?: boolean
+}
+export interface LazySearchSelectOptionsProps {
+    loading?: boolean
+    options?: any[]
+    valueKey: string
+    labelKey: string
+    getOptionLabel?: (option: any, active: boolean) => React.ReactNode
+    handleGetMoreData: () => void
+    hasNextPage
+}
 export interface PermissionCheckProps {
     permissions: PERMISSION[]
     children: React.ReactNode
@@ -435,7 +549,7 @@ export interface ChipProps {
 }
 
 export interface ThemeIconProps {
-    theme: UseLocalStorageResult<string>
+    theme: localStorageValue<string>
     className?: string
 }
 

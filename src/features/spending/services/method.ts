@@ -5,11 +5,15 @@ import { MethodDetailServices } from '~/@types/spending'
 import { COUNT_PAGINATE, TAGS } from '~/constant'
 import { DATA_LIST_MODE } from '~/constant/component'
 import { E_FILTER_DATE } from '~/constant/template'
+import i18n from '~/i18n'
+import LANGUAGE from '~/i18n/language/key'
 import {
     GET_RECENT_SPENDING_BY_METHOD_PAGINATE,
     GET_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD_PAGINATE,
 } from '~/schema/query/spending'
-import { getDate, listGroupOptions } from '~/services'
+import { dataListOptions, getDate, listGroupOptions } from '~/services'
+
+const { t } = i18n
 
 export const services: MethodDetailServices = {
     getAll: ({ methodSpendingIds, kindSpendingIds, userId }) => ({
@@ -124,12 +128,6 @@ export const services: MethodDetailServices = {
                 })
         }
     },
-    getDropdownOptions: ({ onReloadClick }) => [
-        [
-            { id: DATA_LIST_MODE.TABLE, name: 'Bảng', icon: TableCellsIcon },
-            { id: DATA_LIST_MODE.LIST, name: 'Danh sách', icon: ListBulletIcon },
-        ],
-        [{ id: 0, name: 'Làm mới', icon: ArrowPathIcon, onClick: onReloadClick }],
-    ],
+    getDropdownOptions: dataListOptions,
     getListGroupOptions: () => [listGroupOptions],
 }

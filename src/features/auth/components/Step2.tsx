@@ -5,18 +5,23 @@ import { SanityDocument } from '@sanity/client'
 import { isEmpty } from 'lodash'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
 import { IUserProfile, Step2Props } from '~/@types/auth'
 import { Button } from '~/components'
 import { Input } from '~/components/_base'
 import { UserSvg } from '~/components/_constant'
 import { useLoading } from '~/context'
+import i18n from '~/i18n'
+import LANGUAGE from '~/i18n/language/key'
 
+const { t } = i18n
 const schema = yup.object().shape({
-    password: yup.string().required('Yêu cầu nhập!'),
+    password: yup.string().required(t(LANGUAGE.REQUIRED_FIELD) as string),
 })
 
 const Step2: React.FC<Step2Props> = ({ previewData, onSubmit }) => {
+    const { t } = useTranslation()
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const [chose, setChose] = useState<SanityDocument<IUserProfile> | null | undefined>(previewData?.[0])
     const { loading } = useLoading()
@@ -73,19 +78,19 @@ const Step2: React.FC<Step2Props> = ({ previewData, onSubmit }) => {
                         <Input
                             name='password'
                             form={form}
-                            label='Mật khẩu'
+                            label={t(LANGUAGE.PASSWORD)}
                             type='password'
                             disabled={loading.config}
                             autoFocus
                         />
                         <Button className='!text-xs' color='cyan' type='submit' disabled={loading.config}>
-                            Đăng nhập
+                            {t(LANGUAGE.LOGIN)}
                         </Button>
                     </form>
                 ) : (
                     <div className='flex items-center gap-2 text-white bg-yellow-500 p-3 rounded-md select-none'>
                         <ExclamationTriangleIcon className='h-6' />
-                        <p className='font-normal'>Tài khoản này chưa cài đặt mật khẩu!</p>
+                        <p className='font-normal'>{t(LANGUAGE.ACCOUNT_NOT_HAVE_PASSWORD)}</p>
                     </div>
                 )}
             </div>

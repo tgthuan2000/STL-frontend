@@ -3,8 +3,11 @@ import clsx from 'clsx'
 import moment from 'moment'
 import { Prose } from '~/components'
 import { DATE_FORMAT } from '~/constant'
-import { TEMPLATE } from '~/constant/template'
+import i18n from '~/i18n'
+import LANGUAGE from '~/i18n/language/key'
 import { getSpacingTime } from '~/services'
+
+const { t } = i18n
 
 export const renderList: (data: any, index: number) => React.ReactNode = (data, index) => (
     <div
@@ -12,7 +15,7 @@ export const renderList: (data: any, index: number) => React.ReactNode = (data, 
             'flex flex-col w-full px-2 py-2 hover:bg-slate-200 dark:hover:bg-slate-600 cursor-pointer',
             !data.read ? 'bg-gray-200 dark:bg-slate-700' : 'dark:bg-slate-800 bg-gray-100'
         )}
-        title='Nhấn để xem chi tiết'
+        title={t(LANGUAGE.CLICK_TO_READ_DETAIL) as string}
     >
         <div className='flex justify-between gap-3'>
             <h4 className='flex-1 font-normal text-sm lg:text-base truncate text-gray-900 dark:text-slate-100'>
@@ -20,7 +23,7 @@ export const renderList: (data: any, index: number) => React.ReactNode = (data, 
             </h4>
             <span
                 className='flex items-center gap-0.5 flex-shrink-0 text-cyan-400 lg:text-sm text-xs'
-                title='Số người đã xem'
+                title={t(LANGUAGE.VIEWERS) as string}
             >
                 <span>{data.notify.viewers ?? 0}</span>
                 <UserIcon className='h-4 w-4' />
@@ -35,13 +38,13 @@ export const renderList: (data: any, index: number) => React.ReactNode = (data, 
                 }
             )}
         >
-            {data.notify.description ?? TEMPLATE.EMPTY_DESCRIPTION}
+            {data.notify.description ?? t(LANGUAGE.EMPTY_DESCRIPTION)}
         </Prose>
         <div className='mt-2 flex justify-between items-center'>
             <div>
                 {data.read && (
                     <p className='text-xs text-gray-600 dark:text-orange-400'>
-                        Đã xem: <b>{moment(data._updatedAt).format(DATE_FORMAT.TIME_DATE)}</b>
+                        {t(LANGUAGE.READ)}: <b>{moment(data._updatedAt).format(DATE_FORMAT.TIME_DATE)}</b>
                     </p>
                 )}
             </div>

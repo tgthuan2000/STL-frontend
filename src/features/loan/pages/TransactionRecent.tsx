@@ -3,6 +3,7 @@ import { FireIcon, ListBulletIcon } from '@heroicons/react/24/outline'
 import { get } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { DataListViewList, DataListViewTable, IDataListView, TimeFilterPayload } from '~/@types/components'
 import { RecentQueryData } from '~/@types/spending'
@@ -11,16 +12,17 @@ import { Dropdown } from '~/components/_base'
 import { COUNT_PAGINATE } from '~/constant'
 import { DATA_LIST_GROUP, DATA_LIST_MODE, __groupBy } from '~/constant/component'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
-import { TEMPLATE } from '~/constant/template'
 import { useCheck, useConfig } from '~/context'
 import { useLocalStorage, useQuery, useWindowSize } from '~/hook'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
+import LANGUAGE from '~/i18n/language/key'
 import useAuth from '~/store/auth'
 import { getDefaultMode, getLinkSpending } from '~/utils'
 import { services } from '../services'
 import * as __services from '../services/dataListView'
 
 const TransactionRecent = () => {
+    const { t } = useTranslation()
     const { userProfile } = useAuth()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
     const { width } = useWindowSize()
@@ -146,7 +148,7 @@ const TransactionRecent = () => {
                         </div>
                     </div>
                     {error ? (
-                        <p className='m-5 text-radical-red-500 font-medium'>{TEMPLATE.ERROR}</p>
+                        <p className='m-5 text-radical-red-500 font-medium'>{t(LANGUAGE.ERROR)}</p>
                     ) : (
                         <div ref={parentRef}>
                             <DataListView

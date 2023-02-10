@@ -2,9 +2,12 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { PaperAirplaneIcon } from '@heroicons/react/24/outline'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { InputFormProps } from '~/@types/feedback'
+import LANGUAGE from '~/i18n/language/key'
 
 const InputForm: React.FC<InputFormProps> = ({ onSubmit, defaultMessage = '' }) => {
+    const { t } = useTranslation()
     const [submitRef] = useAutoAnimate<HTMLDivElement>()
     const form = useForm({
         defaultValues: {
@@ -31,7 +34,7 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit, defaultMessage = '' }) 
                     <input
                         type='text'
                         autoFocus
-                        placeholder='Nhập tin nhắn...'
+                        placeholder={t(LANGUAGE.TYPE_YOUR_MESSAGE) as string}
                         autoComplete='off'
                         className='w-full flex-1 sm:text-base text-sm border-none outline-none bg-transparent focus:ring-transparent'
                         {...field}
