@@ -224,6 +224,10 @@ const translation: {
     [LANGUAGE.SEND_ALL_MEMBER]: 'Gửi tất cả thành viên',
     [LANGUAGE.SEND_MAIL]: 'Gửi mail',
     [LANGUAGE.CREATE_NOTIFY]: 'Tạo thông báo',
+    [LANGUAGE.PROGRESS_CONTENT]: 'Nội dung',
+    [LANGUAGE.PROGRESS_TITLE_DESC]: 'Tiêu đề và mô tả',
+    [LANGUAGE.PROGRESS_CHOOSE_MEMBER]: 'Chọn người nhận',
+    [LANGUAGE.PROGRESS_PREVIEW_AND_SEND]: 'Xem trước và gửi',
 
     /* LAYOUT */
     [LANGUAGE.SPENDING_MANAGEMENT]: 'Quản lý chi tiêu',

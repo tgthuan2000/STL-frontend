@@ -205,6 +205,10 @@ enum LANGUAGE {
     SEND_ALL_MEMBER = 'send-all-member',
     SEND_MAIL = 'send-mail',
     CREATE_NOTIFY = 'create-notify',
+    PROGRESS_CONTENT = 'progress-content',
+    PROGRESS_TITLE_DESC = 'progress-title-desc',
+    PROGRESS_CHOOSE_MEMBER = 'progress-choose-member',
+    PROGRESS_PREVIEW_AND_SEND = 'progress-preview-and-send',
 
     /* AUTH */
     OR = 'or',

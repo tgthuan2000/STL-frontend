@@ -209,6 +209,10 @@ const translation: {
     [LANGUAGE.SEND_ALL_MEMBER]: 'Send all member',
     [LANGUAGE.SEND_MAIL]: 'Send mail',
     [LANGUAGE.CREATE_NOTIFY]: 'Create notify',
+    [LANGUAGE.PROGRESS_CONTENT]: 'Content',
+    [LANGUAGE.PROGRESS_TITLE_DESC]: 'Title and description',
+    [LANGUAGE.PROGRESS_CHOOSE_MEMBER]: 'Choose member',
+    [LANGUAGE.PROGRESS_PREVIEW_AND_SEND]: 'Preview and send',
 
     /* AUTH */
     [LANGUAGE.OR]: 'Or',
