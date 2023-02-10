@@ -2,7 +2,9 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Tab } from '@headlessui/react'
 import clsx from 'clsx'
 import React, { memo, Suspense } from 'react'
+import { useTranslation } from 'react-i18next'
 import { TabsProps } from '~/@types/spending'
+import LANGUAGE from '~/i18n/language/key'
 
 const Tabs: React.FC<TabsProps> = ({
     options,
@@ -13,6 +15,7 @@ const Tabs: React.FC<TabsProps> = ({
     getOptionContent,
     className,
 }) => {
+    const { t } = useTranslation()
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const [panelRef] = useAutoAnimate<HTMLDivElement>()
 
@@ -40,7 +43,11 @@ const Tabs: React.FC<TabsProps> = ({
                 <Tab.Panels ref={panelRef}>
                     {options.map((option, index) => (
                         <Tab.Panel key={option[idKey] ?? index}>
-                            <Suspense fallback={<div>Loading...</div>}>
+                            <Suspense
+                                fallback={
+                                    <div className='text-gray-900 dark:text-slate-200'>{t(LANGUAGE.LOADING)}</div>
+                                }
+                            >
                                 {getOptionContent?.(option) ?? option[tabContentKey]}
                             </Suspense>
                         </Tab.Panel>

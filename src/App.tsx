@@ -1,6 +1,7 @@
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import React, { Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
+import { useTranslation } from 'react-i18next'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -9,6 +10,7 @@ import { ErrorFallback, Loading, PermissionCheck } from './components'
 import { PERMISSION } from './constant/permission'
 import { CheckingProvider, ConfigProvider, LoadingProvider, NotifyProvider } from './context'
 import { CacheProvider } from './context/CacheContext'
+import LANGUAGE from './i18n/language/key'
 
 const AuthFeature = React.lazy(() => import('./features/auth'))
 const SpendingFeature = React.lazy(() => import('./features/spending'))
@@ -22,6 +24,7 @@ const SettingFeature = React.lazy(() => import('./features/setting'))
 const FeedbackFeature = React.lazy(() => import('./features/feedback'))
 
 function App() {
+    const { t } = useTranslation()
     return (
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
             <BrowserRouter>
@@ -41,7 +44,11 @@ function App() {
                     <LoadingProvider>
                         <CheckingProvider>
                             <Loading />
-                            <Suspense fallback={<div className='text-gray-900 dark:text-slate-200'>Loading...</div>}>
+                            <Suspense
+                                fallback={
+                                    <div className='text-gray-900 dark:text-slate-200'>{t(LANGUAGE.LOADING)}</div>
+                                }
+                            >
                                 <Routes>
                                     <Route
                                         path='/'
