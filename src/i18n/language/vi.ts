@@ -79,6 +79,7 @@ const translation: {
     [LANGUAGE.EDITED]: 'Đã chỉnh sửa',
     [LANGUAGE.DELETE]: 'Xóa',
     [LANGUAGE.REPLY]: 'Phản hồi',
+    [LANGUAGE.L_REPLIES]: 'phản hồi',
     [LANGUAGE.CLICK_TO_READ_DETAIL]: 'Click để xem chi tiết',
     [LANGUAGE.CLICK_TO_CHOOSE_METHOD]: 'Click để chọn phương thức',
     [LANGUAGE.OBJECT]: 'Đối tượng',
@@ -139,6 +140,8 @@ const translation: {
     [LANGUAGE.NOTIFY_CREATE_MEMBER_SUCCESS]: 'Thêm thành viên thành công!',
     [LANGUAGE.NOTIFY_NOT_EXIST_ACCOUNT]: 'Tài khoản không tồn tại!',
     [LANGUAGE.NOTIFY_ERROR]: 'Đã có lỗi xảy ra!',
+    [LANGUAGE.NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD]: 'Tài khoản chưa cài đặt đăng nhập bằng email và mật khẩu!',
+    [LANGUAGE.NOTIFY_INVALID_PASSWORD]: 'Mật khẩu không đúng!',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Bạn có chắc chắn muốn gửi thông báo này?',

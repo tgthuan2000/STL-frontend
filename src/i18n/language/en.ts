@@ -79,6 +79,7 @@ const translation: {
     [LANGUAGE.EDITED]: 'Edited',
     [LANGUAGE.DELETE]: 'Delete',
     [LANGUAGE.REPLY]: 'Reply',
+    [LANGUAGE.L_REPLIES]: 'replies',
     [LANGUAGE.CLICK_TO_READ_DETAIL]: 'Click to read detail',
     [LANGUAGE.CLICK_TO_CHOOSE_METHOD]: 'Click to choose method',
     [LANGUAGE.OBJECT]: 'Object',
@@ -139,6 +140,8 @@ const translation: {
     [LANGUAGE.NOTIFY_CREATE_MEMBER_SUCCESS]: 'Create member success',
     [LANGUAGE.NOTIFY_NOT_EXIST_ACCOUNT]: 'Not exist account',
     [LANGUAGE.NOTIFY_ERROR]: 'Something went wrong',
+    [LANGUAGE.NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD]: 'Account can not login by email and password',
+    [LANGUAGE.NOTIFY_INVALID_PASSWORD]: 'Invalid password',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Do you want to notify?',

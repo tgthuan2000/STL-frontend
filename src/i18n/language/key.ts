@@ -75,6 +75,7 @@ enum LANGUAGE {
     EDITED = 'edited',
     DELETE = 'delete',
     REPLY = 'reply',
+    L_REPLIES = 'l-replies',
     CLICK_TO_READ_DETAIL = 'click-to-read-detail',
     CLICK_TO_CHOOSE_METHOD = 'click-to-choose-method',
     OBJECT = 'object',
@@ -135,6 +136,8 @@ enum LANGUAGE {
     NOTIFY_CREATE_MEMBER_SUCCESS = 'notify-create-member-success',
     NOTIFY_NOT_EXIST_ACCOUNT = 'notify-not-exist-account',
     NOTIFY_ERROR = 'notify-error',
+    NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD = 'notify-account-cant-login-by-email-password',
+    NOTIFY_INVALID_PASSWORD = 'notify-invalid-password',
 
     /* CONFIRM */
     CONFIRM_NOTIFY = 'confirm-notify',
