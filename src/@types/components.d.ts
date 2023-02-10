@@ -95,7 +95,20 @@ export interface SelectionProps {
     rules?: Rules
     disabled?: boolean
 }
-
+export interface SelectionLabelProps {
+    label?: DefaultTFuncReturn
+}
+export interface SelectionButtonProps {
+    field: ControllerRenderProps<any, string>
+    valueKey: string
+    placeholder: DefaultTFuncReturn
+    disabled?: boolean
+}
+export interface SelectionOptionsProps {
+    data: any[]
+    idKey: string
+    valueKey: string
+}
 export interface DropdownProps {
     name: string
     className?: string
