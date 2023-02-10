@@ -186,7 +186,6 @@ export interface MethodQueryData {
 /* OTHERS */
 export interface TransactionDetailFormData {
     onsubmit: SubmitHandler<IDetailSpendingForm>
-    title: string
     handleReloadData: (keys: keyof TransactionDetailQueryData) => Promise<void>
     handleReloadDataCategory: (keys: keyof DataCategory) => Promise<void>
     handleAddMoreMethodSpending: (name: string) => Promise<{ _id: string; name: string } | undefined>

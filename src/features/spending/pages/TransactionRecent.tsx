@@ -28,8 +28,11 @@ const TransactionRecent = () => {
     const [searchParams] = useSearchParams()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
     const [dataListView, setDataListView] = useLocalStorage<IDataListView>(LOCAL_STORAGE_KEY.STL_DATALIST_VIEW)
-    const dropdownOptions = useMemo(() => services.getDropdownOptions({ onReloadClick: () => handleClickReload() }), [])
-    const listGroupOptions = useMemo(() => services.getListGroupOptions(), [])
+    const dropdownOptions = useMemo(
+        () => services.getDropdownOptions({ onReloadClick: () => handleClickReload() }),
+        [t]
+    )
+    const listGroupOptions = useMemo(() => services.getListGroupOptions(), [t])
     const getAll = useMemo(
         () =>
             services.getAll({

@@ -5,9 +5,12 @@ const translation: {
 } = {
     /* COMMON */
     [LANGUAGE.LOGOUT]: 'Logout',
+    [LANGUAGE.BACK]: 'Back',
     [LANGUAGE.LOGIN]: 'Login',
     [LANGUAGE.HOME]: 'Home',
     [LANGUAGE.TRANSACTION]: 'Transaction',
+    [LANGUAGE.TRANSACTION_DETAIL]: 'Transaction detail',
+    [LANGUAGE.TRANSACTION_KIND]: 'Transaction kind',
     [LANGUAGE.METHOD]: 'Method',
     [LANGUAGE.CATEGORY]: 'Category',
     [LANGUAGE.CATEGORY_NAME]: 'Category name',
@@ -18,9 +21,11 @@ const translation: {
     [LANGUAGE.YEAR]: 'Year',
     [LANGUAGE.NOTE]: 'Note',
     [LANGUAGE.SAVE]: 'Save',
+    [LANGUAGE.NEXT]: 'Next',
     [LANGUAGE.CREATE]: 'Create',
     [LANGUAGE.CANCEL]: 'Cancel',
     [LANGUAGE.CREATING]: 'Creating',
+    [LANGUAGE.CREATION_TIME]: 'Creation time',
     [LANGUAGE.RECEIVE]: 'Receive',
     [LANGUAGE.COST]: 'Cost',
     [LANGUAGE.TRANSFER]: 'Transfer',
@@ -55,13 +60,31 @@ const translation: {
     [LANGUAGE.BACK_TO_HOME]: 'Back to home',
     [LANGUAGE.CONTENT]: 'Content',
     [LANGUAGE.VIEWERS]: 'Viewers',
-    [LANGUAGE.CLICK_TO_READ_DETAIL]: 'Click to read detail',
     [LANGUAGE.READ]: 'Read',
     [LANGUAGE.TITLE]: 'Title',
     [LANGUAGE.SHORT_DESCRIPTION]: 'Short description',
     [LANGUAGE.NEW_NOTIFY]: 'New notify',
     [LANGUAGE.ERROR]: 'Something went wrong',
     [LANGUAGE.COMING_SOON]: 'Coming soon',
+    [LANGUAGE.SURPLUS_AT_TIME]: 'Surplus at time',
+    [LANGUAGE.TABLE]: 'Table',
+    [LANGUAGE.LIST]: 'List',
+    [LANGUAGE.REFRESH]: 'Refresh',
+    [LANGUAGE.L_DAYS_AGO]: 'days ago',
+    [LANGUAGE.L_HOURS_AGO]: 'hours ago',
+    [LANGUAGE.L_MINUTES_AGO]: 'minutes ago',
+    [LANGUAGE.RECENT]: 'Recent',
+    [LANGUAGE.EDIT]: 'Edit',
+    [LANGUAGE.EDITED]: 'Edited',
+    [LANGUAGE.DELETE]: 'Delete',
+    [LANGUAGE.REPLY]: 'Reply',
+    [LANGUAGE.CLICK_TO_READ_DETAIL]: 'Click to read detail',
+    [LANGUAGE.CLICK_TO_CHOOSE_METHOD]: 'Click to choose method',
+    [LANGUAGE.OBJECT]: 'Object',
+    [LANGUAGE.RECENT_UPDATE]: 'Recent update',
+    [LANGUAGE.PAID_TIME]: 'Paid time',
+    [LANGUAGE.TYPE_YOUR_MESSAGE]: 'Type your message',
+    [LANGUAGE.PASSWORD]: 'Password',
 
     /* EMPTY DATA */
     [LANGUAGE.EMPTY_NOTIFY]: 'Empty notify',
@@ -69,6 +92,7 @@ const translation: {
 
     /* VALIDATE MESSAGE */
     [LANGUAGE.REQUIRED_FIELD]: 'Required field',
+    [LANGUAGE.REQUIRED_METHOD_SPENDING]: 'Required method',
     [LANGUAGE.REQUIRED_TYPE_NUMBER]: 'Required type number',
     [LANGUAGE.REQUIRED_AMOUNT]: 'Required amount',
     [LANGUAGE.REQUIRED_RECEIVE]: 'Required receive',
@@ -92,6 +116,8 @@ const translation: {
     [LANGUAGE.CATEGORY_NAME_MAX_50]: 'Category name must be less than 50 characters',
     [LANGUAGE.NEW_PASSWORD_MIN_1]: 'New password must be greater than 1 characters',
     [LANGUAGE.PASSWORD_NOT_MATCH]: 'Password not match',
+    [LANGUAGE.REAL_MONEY_MUST_BE_LESS_THAN_AMOUNT]: 'Real money must be less than amount',
+    [LANGUAGE.INVALID_FORMAT]: 'Invalid format',
 
     /* PLACEHOLDER */
     [LANGUAGE.PLACEHOLDER_CHOOSE_KIND]: 'Choose kind',
@@ -107,9 +133,13 @@ const translation: {
     [LANGUAGE.NOTIFY_CREATE_GET_LOAN_SUCCESS]: 'Create get loan success',
     [LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS]: 'Update password success',
     [LANGUAGE.NOTIFY_CREATE_MEMBER_SUCCESS]: 'Create member success',
+    [LANGUAGE.NOTIFY_NOT_EXIST_ACCOUNT]: 'Not exist account',
+    [LANGUAGE.NOTIFY_ERROR]: 'Something went wrong',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Do you want to notify?',
+    [LANGUAGE.CONFIRM_DELETE_TRANSACTION]: 'Do you want to delete transaction?',
+    [LANGUAGE.CONFIRM_DELETE_MESSAGE]: 'Do you want to delete message?',
 
     /* SPENDING */
     [LANGUAGE.SPENDING]: 'Spending management',
@@ -117,6 +147,8 @@ const translation: {
     [LANGUAGE.BUDGET_BY_METHOD]: 'Budget by method',
     [LANGUAGE.TRANSACTION_RECENT]: 'Recent transaction',
     [LANGUAGE.METHOD_SPENDING]: 'Spending method',
+    [LANGUAGE.FROM_METHOD_SPENDING]: 'From method',
+    [LANGUAGE.TO_METHOD_SPENDING]: 'To method',
     [LANGUAGE.MAKE_INCOME]: 'Make income',
     [LANGUAGE.MAKE_COST]: 'Make cost',
     [LANGUAGE.MAKE_TRANSFER]: 'Make transfer',
@@ -143,6 +175,11 @@ const translation: {
     [LANGUAGE.IMAGE_OPTION]: 'Image (optional)',
     [LANGUAGE.PRESS_TO_UPLOAD_IMAGE]: 'Press to upload image',
     [LANGUAGE.ALREADY_PAID]: 'Transaction done, no further editing!',
+    [LANGUAGE.PAID_ACTION]: 'Paid',
+    [LANGUAGE.PAID]: 'Paid',
+    [LANGUAGE.UNPAID]: 'Unpaid',
+    [LANGUAGE.REAL_AMOUNT]: 'Real amount',
+    [LANGUAGE.AMOUNT_RECEIVE_METHOD]: 'Amount receive method',
 
     /* PROFILE */
     [LANGUAGE.JOIN_DATE]: 'Join date',
@@ -167,6 +204,14 @@ const translation: {
     [LANGUAGE.LIST_RECEIVE_NOTIFY_MEMBER]: 'List receive notify member',
     [LANGUAGE.SEND_ALL_MEMBER]: 'Send all member',
     [LANGUAGE.SEND_MAIL]: 'Send mail',
+    [LANGUAGE.CREATE_NOTIFY]: 'Create notify',
+
+    /* AUTH */
+    [LANGUAGE.OR]: 'Or',
+    [LANGUAGE.LOGIN_WITH_EMAIL_PASSWORD]: 'Login with email and password',
+    [LANGUAGE.UNKNOWN_STEP]: 'Unknown step',
+    [LANGUAGE.ACCOUNT_OPTION_EMAIL]: 'Email',
+    [LANGUAGE.ACCOUNT_NOT_HAVE_PASSWORD]: 'Account not have password',
 
     /* OTHERS */
     [LANGUAGE.SOME_CATEGORY_SIMILAR_NAME]: 'Some category have similar name',

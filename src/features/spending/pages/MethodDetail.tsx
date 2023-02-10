@@ -29,8 +29,11 @@ const MethodDetail = () => {
     const { getKindSpendingIds } = useConfig()
     const [searchParams] = useSearchParams()
     const { id } = useParams()
-    const dropdownOptions = useMemo(() => services.getDropdownOptions({ onReloadClick: () => handleClickReload() }), [])
-    const listGroupOptions = useMemo(() => services.getListGroupOptions(), [])
+    const dropdownOptions = useMemo(
+        () => services.getDropdownOptions({ onReloadClick: () => handleClickReload() }),
+        [t]
+    )
+    const listGroupOptions = useMemo(() => services.getListGroupOptions(), [t])
     const getAll = useMemo(
         () =>
             services.getAll({

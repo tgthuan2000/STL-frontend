@@ -320,7 +320,6 @@ const TransactionDetail = () => {
     }
 
     const data: TransactionDetailFormData = {
-        title: kindSpending?.name as string,
         onsubmit,
         handleReloadData,
         handleReloadDataCategory,

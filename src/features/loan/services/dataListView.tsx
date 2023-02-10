@@ -162,7 +162,7 @@ export const renderList: (data: any, index: number) => React.ReactNode = (
                         </span>
                     )}
                     <span>
-                        Hạn trả:{' '}
+                        {t(LANGUAGE.ESTIMATE_PAID_DATE)}:{' '}
                         {estimatePaidDate
                             ? moment(estimatePaidDate).format(DATE_FORMAT.TIME_DATE)
                             : t(LANGUAGE.UNLIMITED_TIME)}

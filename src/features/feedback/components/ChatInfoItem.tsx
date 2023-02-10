@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ChatInfoItemProps } from '~/@types/feedback'
 import { Image } from '~/components'
+import LANGUAGE from '~/i18n/language/key'
 import { getSpacingTime } from '~/services'
 import useAuth from '~/store/auth'
 import InputForm from './InputForm'
@@ -14,6 +16,7 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
     bottomImageLine,
     children,
 }) => {
+    const { t } = useTranslation()
     const { userProfile } = useAuth()
     const [showInput, setShowInput] = useState({
         show: false,
@@ -50,7 +53,7 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
                         <p className='whitespace-pre-line'>{data.message.trim()}</p>
                         {data.edited && (
                             <span className='text-gray-500 dark:text-slate-500 italic text-xs text-right mt-1'>
-                                Đã chỉnh sửa
+                                {t(LANGUAGE.EDITED)}
                             </span>
                         )}
                     </div>
@@ -70,7 +73,7 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
                                 })
                             }
                         >
-                            Phản hồi
+                            {t(LANGUAGE.REPLY)}
                         </button>
                         {userProfile?._id === data.user._id && (
                             <>
@@ -86,7 +89,7 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
                                         })
                                     }
                                 >
-                                    Chỉnh sửa
+                                    {t(LANGUAGE.EDIT)}
                                 </button>
                                 {/* Disappear if distant time over 5 minutes */}
                                 {}
@@ -95,11 +98,11 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
                                         type='button'
                                         className='text-red-500 hover:opacity-70 cursor-pointer font-normal whitespace-nowrap'
                                         onClick={() => {
-                                            if (!window.confirm('Bạn có chắc chắn muốn xóa?')) return
+                                            if (!window.confirm(t(LANGUAGE.CONFIRM_DELETE_MESSAGE) as string)) return
                                             data._id && onDelete(data._id)
                                         }}
                                     >
-                                        Xóa
+                                        {t(LANGUAGE.DELETE)}
                                     </button>
                                 )}
                             </>
@@ -124,7 +127,7 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
                                     })
                                 }
                             >
-                                Hủy
+                                {t(LANGUAGE.CANCEL)}
                             </button>
                         </div>
                     )}
