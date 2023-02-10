@@ -133,7 +133,8 @@ export interface SlideOverProps {
     children?: () => React.ReactNode
 }
 
-export interface InputProps {
+export interface InputProps
+    extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     className?: string
     label?: string | DefaultTFuncReturn
     name: string
@@ -142,6 +143,15 @@ export interface InputProps {
     form: UseFormReturn<any, object>
     rules?: Rules
     autoFocus?: boolean
+}
+
+export interface LabelProps {
+    id?: string
+    label?: DefaultTFuncReturn
+}
+
+export interface InputNumberHintProps {
+    field: ControllerRenderProps<any, string>
 }
 
 interface RichTextProps extends ReactQuillProps {
@@ -433,7 +443,29 @@ export interface LazySearchSelectProps {
     getOptionLabel?: (option: any, active: boolean) => React.ReactNode
     autoFocus?: boolean
 }
+export interface LazySearchSelectLabelProps {
+    label?: string
+}
 
+export interface LazySearchSelectInputProp {
+    field: ControllerRenderProps<{ search: string }, 'search'>
+    autoFocus?: boolean
+    loading?: boolean
+    disabled?: boolean
+    handleSearch?: (value: string, onChange: (...event: any[]) => void) => void
+}
+export interface LazySearchSelectIconProps {
+    loading?: boolean
+}
+export interface LazySearchSelectOptionsProps {
+    loading?: boolean
+    options?: any[]
+    valueKey: string
+    labelKey: string
+    getOptionLabel?: (option: any, active: boolean) => React.ReactNode
+    handleGetMoreData: () => void
+    hasNextPage
+}
 export interface PermissionCheckProps {
     permissions: PERMISSION[]
     children: React.ReactNode

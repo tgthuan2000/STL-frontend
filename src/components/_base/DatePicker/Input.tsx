@@ -3,12 +3,12 @@ import { CalendarIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { forwardRef, useId } from 'react'
 import { DatePickerInputProps } from '~/@types/components'
+import ErrorMessage from '~/components/ErrorMessage'
 
 const Input = forwardRef<HTMLInputElement, DatePickerInputProps>(
     ({ label, error, className, disabledClear, disabled, field, readOnlyInput, ...props }, ref) => {
         const id = useId()
         const [closeRef] = useAutoAnimate<HTMLSpanElement>()
-        const [parent] = useAutoAnimate<HTMLDivElement>()
 
         return (
             <div>
@@ -56,9 +56,7 @@ const Input = forwardRef<HTMLInputElement, DatePickerInputProps>(
                     </span>
                 </div>
 
-                <div ref={parent}>
-                    {error && <div className='mt-1 text-radical-red-700 text-sm'>{error.message}</div>}
-                </div>
+                <ErrorMessage error={error} />
             </div>
         )
     }
