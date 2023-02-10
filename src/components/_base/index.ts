@@ -1,6 +1,6 @@
 export { default as AutoComplete } from '../Autocomplete'
 export { default as DatePicker } from './DatePicker'
-export { default as Dropdown } from './Dropdown'
+export { default as Dropdown } from '../Dropdown'
 export { default as Input } from './Input'
 export { default as RichText } from './RichText'
 export { default as Selection } from './Selection'

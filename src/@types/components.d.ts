@@ -79,7 +79,7 @@ export interface AutocompleteSurplusProps {
     children?: ReactNode
 }
 
-export interface AutocompleteErrorProps {
+export interface ErrorMessageProps {
     error?: FieldError
 }
 
@@ -109,6 +109,24 @@ export interface DropdownProps {
     disabled?: boolean
     showValueOnLabel?: boolean
     customButtonClassName?: string
+}
+
+export interface DropdownButtonProps {
+    field: ControllerRenderProps<any, string>
+    disabled?: boolean
+    customButtonClassName?: string
+    showValueOnLabel?: boolean
+    valueKey: string
+    label: ReactNode | DefaultTFuncReturn
+}
+
+export interface DropdownItemsProps {
+    data: Array<Array<any>>
+    idKey: string
+    valueKey: string
+    selected: any
+    handleChange?: (value: any, onChange: (value: any) => void) => void
+    field: ControllerRenderProps<any, string>
 }
 
 export interface SlideOverProps {

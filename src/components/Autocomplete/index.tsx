@@ -8,7 +8,7 @@ import { AutoCompleteProps } from '~/@types/components'
 import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
 import Button from './Button'
-import Error from './Error'
+import ErrorMessage from '../ErrorMessage'
 import Input from './Input'
 import Label from './Label'
 import Option from './Option'
@@ -149,7 +149,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                             </div>
                         </Combobox>
                         <Surplus disabledShowSurplus={disabledShowSurplus} surplus={surplus} surplusName={surplusName}>
-                            <Error error={error} />
+                            <ErrorMessage error={error} />
                         </Surplus>
                     </div>
                 )}
