@@ -5,6 +5,8 @@ import { isNil } from 'lodash'
 import { toast } from 'react-toastify'
 import { GoogleData, IFetchGoogleResponse, ILoginByEmailPassword, IUserProfile } from '~/@types/auth'
 import { ROLE } from '~/constant/role'
+import i18n from '~/i18n'
+import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_DATA_BY_EMAIL, GET_DATA_USER_BY_ID, GET_PASSWORD_BY_ID } from '~/schema/query/login'
 
@@ -41,6 +43,8 @@ export const fetchGoogleResponse: IFetchGoogleResponse = async (res, addUser, se
     }
 }
 
+const { t } = i18n
+
 export const loginByEmailPassword: ILoginByEmailPassword = async ({ data, password }, addUser, setLoading) => {
     try {
         setLoading(true)
@@ -50,19 +54,19 @@ export const loginByEmailPassword: ILoginByEmailPassword = async ({ data, passwo
         const d = await client.fetch<{ password: string }>(GET_PASSWORD_BY_ID, document)
 
         if (isNil(d.password)) {
-            toast.warn('Tài khoản chưa được cài đặt để đăng nhập bằng email & mật khẩu')
+            toast.warn(t(LANGUAGE.NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD))
             return
         }
 
         const isMatch = bcrypt.compareSync(password, d.password)
         if (!isMatch) {
-            toast.error('Mật khẩu không đúng')
+            toast.error(t(LANGUAGE.NOTIFY_INVALID_PASSWORD))
             return
         }
         addUser(data)
     } catch (error) {
         console.error(error)
-        toast.error('Đã có lỗi xảy ra')
+        toast.error(t(LANGUAGE.ERROR))
     } finally {
         setLoading(false)
     }

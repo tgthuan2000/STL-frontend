@@ -75,6 +75,7 @@ enum LANGUAGE {
     EDITED = 'edited',
     DELETE = 'delete',
     REPLY = 'reply',
+    L_REPLIES = 'l-replies',
     CLICK_TO_READ_DETAIL = 'click-to-read-detail',
     CLICK_TO_CHOOSE_METHOD = 'click-to-choose-method',
     OBJECT = 'object',
@@ -135,6 +136,8 @@ enum LANGUAGE {
     NOTIFY_CREATE_MEMBER_SUCCESS = 'notify-create-member-success',
     NOTIFY_NOT_EXIST_ACCOUNT = 'notify-not-exist-account',
     NOTIFY_ERROR = 'notify-error',
+    NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD = 'notify-account-cant-login-by-email-password',
+    NOTIFY_INVALID_PASSWORD = 'notify-invalid-password',
 
     /* CONFIRM */
     CONFIRM_NOTIFY = 'confirm-notify',
@@ -205,6 +208,10 @@ enum LANGUAGE {
     SEND_ALL_MEMBER = 'send-all-member',
     SEND_MAIL = 'send-mail',
     CREATE_NOTIFY = 'create-notify',
+    PROGRESS_CONTENT = 'progress-content',
+    PROGRESS_TITLE_DESC = 'progress-title-desc',
+    PROGRESS_CHOOSE_MEMBER = 'progress-choose-member',
+    PROGRESS_PREVIEW_AND_SEND = 'progress-preview-and-send',
 
     /* AUTH */
     OR = 'or',
