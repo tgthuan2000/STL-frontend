@@ -15,6 +15,7 @@ const DatePicker = forwardRef<ReactDatePicker<never, undefined>, DateProps>(
             name,
             form,
             rules,
+            tracking,
             label,
             disabledClear,
             format = 'DATE_TIME',
@@ -63,6 +64,7 @@ const DatePicker = forwardRef<ReactDatePicker<never, undefined>, DateProps>(
                         onChange={(date) => {
                             field.onChange(date)
                             onChange?.(date)
+                            tracking?.(name)
                         }}
                         placeholderText={placeholderText as string}
                         {...props}

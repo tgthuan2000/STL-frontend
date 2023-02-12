@@ -86,6 +86,7 @@ enum LANGUAGE {
 
     /* VALIDATE MESSAGE */
     REQUIRED_FIELD = 'required-field',
+    REQUIRED_NUMBER = 'required-number',
     REQUIRED_METHOD_SPENDING = 'required-method-spending',
     REQUIRED_TYPE_NUMBER = 'required-type-number',
     REQUIRED_AMOUNT = 'required-amount',

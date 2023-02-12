@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { AutocompleteInputProps } from '~/@types/components'
 import LANGUAGE from '~/i18n/language/key'
 
-const Input: React.FC<AutocompleteInputProps> = ({ loading, disabled, onChange, loadingAddMore, valueKey }) => {
+const Input: React.FC<AutocompleteInputProps> = ({ loading, disabled, onChange, onBlur, loadingAddMore, valueKey }) => {
     const { t } = useTranslation()
     return (
         <Combobox.Input
@@ -19,6 +19,7 @@ const Input: React.FC<AutocompleteInputProps> = ({ loading, disabled, onChange, 
             onChange={(event) => onChange?.(event.target.value)}
             spellCheck={false}
             autoComplete='off'
+            onBlur={onBlur}
         />
     )
 }

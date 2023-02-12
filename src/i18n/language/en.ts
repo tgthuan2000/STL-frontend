@@ -94,6 +94,7 @@ const translation: {
 
     /* VALIDATE MESSAGE */
     [LANGUAGE.REQUIRED_FIELD]: 'Required field',
+    [LANGUAGE.REQUIRED_NUMBER]: 'Required number',
     [LANGUAGE.REQUIRED_METHOD_SPENDING]: 'Required method',
     [LANGUAGE.REQUIRED_TYPE_NUMBER]: 'Required type number',
     [LANGUAGE.REQUIRED_AMOUNT]: 'Required amount',

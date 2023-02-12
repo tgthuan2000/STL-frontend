@@ -25,6 +25,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
             name,
             form,
             rules,
+            tracking,
             onReload,
             addMore,
             loading,
@@ -50,9 +51,9 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
         useEffect(() => {
             setSelectedItem((prev: any) => {
                 if (isNil(prev)) {
-                    return
+                    return null
                 }
-                return find(data, [idKey, get(selectedItem, idKey)])
+                return find(data, [idKey, get(selectedItem, idKey)]) ?? null
             })
         }, [data])
 
@@ -107,14 +108,17 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                         <Combobox
                             as='div'
                             ref={ref}
+                            value={selectedItem}
+                            onChange={(value) => {
+                                handleChange(value, field.onChange)
+                                tracking?.(name)
+                            }}
                             onBlur={() => {
                                 field.onBlur()
                                 setTimeout(() => {
                                     setQuery('')
                                 }, 300)
                             }}
-                            value={selectedItem}
-                            onChange={(value) => handleChange(value, field.onChange)}
                             disabled={disabled || loading}
                             multiple={multiple as any}
                         >
@@ -127,7 +131,6 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
                                     loadingAddMore={loadingAddMore}
                                     onChange={setQuery}
                                 />
-
                                 <Button
                                     disabled={disabled}
                                     disabledClear={disabledClear}

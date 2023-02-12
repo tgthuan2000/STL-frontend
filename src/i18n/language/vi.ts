@@ -94,6 +94,7 @@ const translation: {
 
     /* VALIDATE MESSAGE */
     [LANGUAGE.REQUIRED_FIELD]: 'Yêu cầu nhập!',
+    [LANGUAGE.REQUIRED_NUMBER]: 'Yêu cầu nhập số!',
     [LANGUAGE.REQUIRED_METHOD_SPENDING]: 'Yêu cầu chọn phương thức thanh toán!',
     [LANGUAGE.REQUIRED_TYPE_NUMBER]: 'Yêu cầu nhập số!',
     [LANGUAGE.REQUIRED_AMOUNT]: 'Yêu cầu nhập số tiền!',

@@ -7,7 +7,7 @@ import Label from '~/components/Label'
 import NumberHint from './NumberHint'
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-    ({ className, label, name, form, rules, type, ...props }, ref) => {
+    ({ className, label, name, form, tracking, rules, type, ...props }, ref) => {
         const id = useId()
         return (
             <Controller
@@ -25,6 +25,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                                 autoComplete='off'
                                 className='block p-2 w-full rounded-md border border-gray-300 shadow-sm font-light disabled:bg-gray-100 disabled:text-gray-400 bg-white dark:bg-slate-700 dark:border-slate-800 dark:text-slate-200 dark:disabled:bg-slate-800 dark:disabled:text-slate-400'
                                 {...field}
+                                onBlur={() => {
+                                    field.onBlur()
+                                    tracking?.(name)
+                                }}
                                 {...props}
                             />
                         </div>
