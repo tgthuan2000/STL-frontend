@@ -3,13 +3,14 @@ import {
     ArrowsRightLeftIcon,
     ArrowTrendingUpIcon,
     ClipboardDocumentListIcon,
-    DocumentIcon,
+    RectangleGroupIcon,
     HomeIcon,
     MinusCircleIcon,
     PlusCircleIcon,
     PuzzlePieceIcon,
     QrCodeIcon,
     UserPlusIcon,
+    EllipsisHorizontalCircleIcon,
 } from '@heroicons/react/24/outline'
 import { googleLogout } from '@react-oauth/google'
 import { IMenuBtn } from '~/@types/components'
@@ -52,10 +53,42 @@ export const menuMobile: IMenuBtn[] = [
         },
     },
     {
-        title: t(LANGUAGE.TRANSACTION),
-        color: 'text-orange-700 bg-orange-200 hover:bg-orange-300 dark:text-orange-500',
-        icon: ClipboardDocumentListIcon,
-        to: 'transaction',
+        title: t(LANGUAGE.MAKE_BUDGET),
+        color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
+        icon: PuzzlePieceIcon,
+        children: () => <MakeBudget />,
+        to: '?slide=budget',
+        query: {
+            slide: 'budget',
+        },
+    },
+    // {
+    //     title: t(LANGUAGE.TRANSACTION),
+    //     color: 'text-orange-700 bg-orange-200 hover:bg-orange-300 dark:text-orange-500',
+    //     icon: ClipboardDocumentListIcon,
+    //     to: 'transaction',
+    // },
+]
+export const menuMobileOthers: IMenuBtn[] = [
+    {
+        title: t(LANGUAGE.CREATE_METHOD),
+        color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
+        icon: QrCodeIcon,
+        children: () => <AddMethod />,
+        to: '?slide=add-method',
+        query: {
+            slide: 'add-method',
+        },
+    },
+    {
+        title: t(LANGUAGE.CREATE_CATEGORY),
+        color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
+        icon: RectangleGroupIcon,
+        children: () => <AddCategory />,
+        to: '?slide=category',
+        query: {
+            slide: 'category',
+        },
     },
 ]
 
@@ -164,6 +197,12 @@ export const menuSpendingPC: IMenuBtn[] = [
         to: 'method',
     },
     {
+        title: t(LANGUAGE.OTHERS),
+        color: 'text-pink-700 bg-pink-200 hover:bg-pink-300 dark:text-pink-500',
+        icon: EllipsisHorizontalCircleIcon,
+        to: 'others',
+    },
+    {
         title: t(LANGUAGE.CREATE_METHOD),
         color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
         icon: QrCodeIcon,
@@ -177,7 +216,7 @@ export const menuSpendingPC: IMenuBtn[] = [
     {
         title: t(LANGUAGE.CREATE_CATEGORY),
         color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
-        icon: DocumentIcon,
+        icon: RectangleGroupIcon,
         children: () => <AddCategory />,
         to: '?slide=add-category',
         query: {
@@ -268,36 +307,41 @@ export const menuSpendingPages: IMenuBtn[] = [
         to: 'method',
     },
     {
-        title: t(LANGUAGE.MAKE_BUDGET),
-        color: 'text-yellow-700 dark:text-yellow-500',
-        icon: PuzzlePieceIcon,
-        children: () => <MakeBudget />,
-        to: '?slide=budget',
-        query: {
-            slide: 'budget',
-        },
-        divider: true,
+        title: t(LANGUAGE.OTHERS),
+        color: 'text-pink-700 dark:text-pink-500',
+        icon: EllipsisHorizontalCircleIcon,
+        to: 'others',
     },
-    {
-        title: t(LANGUAGE.CREATE_METHOD),
-        color: 'text-cyan-700 dark:text-cyan-500',
-        icon: QrCodeIcon,
-        children: () => <AddMethod />,
-        to: '?slide=add-method',
-        query: {
-            slide: 'add-method',
-        },
-    },
-    {
-        title: t(LANGUAGE.CREATE_CATEGORY),
-        color: 'text-cyan-700 dark:text-cyan-500',
-        icon: DocumentIcon,
-        children: () => <AddCategory />,
-        to: '?slide=add-category',
-        query: {
-            slide: 'add-category',
-        },
-    },
+    // {
+    //     title: t(LANGUAGE.MAKE_BUDGET),
+    //     color: 'text-yellow-700 dark:text-yellow-500',
+    //     icon: PuzzlePieceIcon,
+    //     children: () => <MakeBudget />,
+    //     to: '?slide=budget',
+    //     query: {
+    //         slide: 'budget',
+    //     },
+    // },
+    // {
+    //     title: t(LANGUAGE.CREATE_METHOD),
+    //     color: 'text-cyan-700 dark:text-cyan-500',
+    //     icon: QrCodeIcon,
+    //     children: () => <AddMethod />,
+    //     to: '?slide=add-method',
+    //     query: {
+    //         slide: 'add-method',
+    //     },
+    // },
+    // {
+    //     title: t(LANGUAGE.CREATE_CATEGORY),
+    //     color: 'text-cyan-700 dark:text-cyan-500',
+    //     icon: RectangleGroupIcon,
+    //     children: () => <AddCategory />,
+    //     to: '?slide=add-category',
+    //     query: {
+    //         slide: 'add-category',
+    //     },
+    // },
 ]
 export const menuLoanPages: IMenuBtn[] = [
     {

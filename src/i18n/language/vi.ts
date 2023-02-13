@@ -87,6 +87,9 @@ const translation: {
     [LANGUAGE.PAID_TIME]: 'Thời gian thanh toán',
     [LANGUAGE.TYPE_YOUR_MESSAGE]: 'Nhập tin nhắn...',
     [LANGUAGE.PASSWORD]: 'Mật khẩu',
+    [LANGUAGE.OTHERS]: 'Khác',
+    [LANGUAGE.HIDDEN]: 'Ẩn',
+    [LANGUAGE.NAME]: 'Tên',
 
     /* EMPTY DATA */
     [LANGUAGE.EMPTY_NOTIFY]: 'Không có thông báo',
@@ -143,6 +146,7 @@ const translation: {
     [LANGUAGE.NOTIFY_ERROR]: 'Đã có lỗi xảy ra!',
     [LANGUAGE.NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD]: 'Tài khoản chưa cài đặt đăng nhập bằng email và mật khẩu!',
     [LANGUAGE.NOTIFY_INVALID_PASSWORD]: 'Mật khẩu không đúng!',
+    [LANGUAGE.NOTIFY_NO_CHANGE]: 'Không thay đổi',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Bạn có chắc chắn muốn gửi thông báo này?',

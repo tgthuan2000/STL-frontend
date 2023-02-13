@@ -87,6 +87,9 @@ const translation: {
     [LANGUAGE.PAID_TIME]: 'Paid time',
     [LANGUAGE.TYPE_YOUR_MESSAGE]: 'Type your message',
     [LANGUAGE.PASSWORD]: 'Password',
+    [LANGUAGE.OTHERS]: 'Others',
+    [LANGUAGE.HIDDEN]: 'Hidden',
+    [LANGUAGE.NAME]: 'Name',
 
     /* EMPTY DATA */
     [LANGUAGE.EMPTY_NOTIFY]: 'Empty notify',
@@ -143,6 +146,7 @@ const translation: {
     [LANGUAGE.NOTIFY_ERROR]: 'Something went wrong',
     [LANGUAGE.NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD]: 'Account can not login by email and password',
     [LANGUAGE.NOTIFY_INVALID_PASSWORD]: 'Invalid password',
+    [LANGUAGE.NOTIFY_NO_CHANGE]: 'No change',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Do you want to notify?',

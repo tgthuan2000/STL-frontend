@@ -1,0 +1,71 @@
+import { isEmpty } from 'lodash'
+import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import { OthersQueryData } from '~/@types/spending'
+import { Box, ButtonMenuLoan, Divider, Transaction } from '~/components'
+import { TAGS } from '~/constant'
+import { menuMobileOthers } from '~/constant/components'
+import { useConfig } from '~/context'
+import { useQuery, useWindowSize } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
+import { GET_CATEGORY, GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
+import useAuth from '~/store/auth'
+import { ListOption } from '../components'
+
+const Others = () => {
+    const { t } = useTranslation()
+    const { width } = useWindowSize()
+    const { userProfile } = useAuth()
+
+    const [{ category, method }, fetchData, deleteCache, reload] = useQuery<OthersQueryData>(
+        {
+            method: GET_METHOD_SPENDING,
+            category: GET_CATEGORY,
+        },
+        {
+            userId: userProfile?._id as string,
+        },
+        {
+            category: TAGS.ENUM,
+            method: TAGS.ENUM,
+        }
+    )
+
+    useEffect(() => {
+        fetchData()
+    }, [])
+
+    return (
+        <Transaction hasBack={false} title={t(LANGUAGE.OTHERS)}>
+            {width < 1280 && (
+                <div className='xl:hidden block'>
+                    <ButtonMenuLoan data={menuMobileOthers} />
+                </div>
+            )}
+
+            <Divider className='xl:hidden py-6' dashed />
+
+            <Box>
+                <Box.Content
+                    className='xl:row-start-1 xl:col-start-1 xl:col-span-1 col-span-1'
+                    title={t(LANGUAGE.CATEGORY)}
+                    loading={category.loading}
+                    seeMore={false}
+                    fullWidth
+                >
+                    <ListOption data={category?.data} loading={category.loading} />
+                </Box.Content>
+                <Box.Content
+                    className='xl:row-start-1 xl:col-start-2 xl:col-span-1 col-span-1'
+                    title={t(LANGUAGE.METHOD)}
+                    loading={method.loading}
+                    seeMore={false}
+                    fullWidth
+                >
+                    <ListOption data={method?.data} loading={method.loading} />
+                </Box.Content>
+            </Box>
+        </Transaction>
+    )
+}
+export default Others

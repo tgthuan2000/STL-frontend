@@ -553,6 +553,7 @@ export interface ChipProps {
     onClick?: (data: any) => void
     disabled?: boolean
     hidden?: boolean
+    className?: string
 }
 
 export interface ThemeIconProps {

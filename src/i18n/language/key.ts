@@ -83,6 +83,9 @@ enum LANGUAGE {
     PAID_TIME = 'paid-time',
     TYPE_YOUR_MESSAGE = 'type-your-message',
     PASSWORD = 'password',
+    OTHERS = 'others',
+    HIDDEN = 'hidden',
+    NAME = 'name',
 
     /* VALIDATE MESSAGE */
     REQUIRED_FIELD = 'required-field',
@@ -139,6 +142,7 @@ enum LANGUAGE {
     NOTIFY_ERROR = 'notify-error',
     NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD = 'notify-account-cant-login-by-email-password',
     NOTIFY_INVALID_PASSWORD = 'notify-invalid-password',
+    NOTIFY_NO_CHANGE = 'no-change',
 
     /* CONFIRM */
     CONFIRM_NOTIFY = 'confirm-notify',

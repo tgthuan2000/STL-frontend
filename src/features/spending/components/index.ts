@@ -1,6 +1,7 @@
 export { default as AddCategory } from './AddCategory'
 export { default as AddMethod } from './AddMethod'
 export * from './Budget'
+export { default as ListOption } from './ListOption'
 export { default as MakeBudget } from './MakeBudget'
 export { default as MakeCost } from './MakeCost'
 export { default as MakeIncome } from './MakeIncome'

@@ -48,7 +48,7 @@ const Method: React.FC<MethodProps> = ({ data, loading }) => {
 
 export default Method
 
-const MethodSkeleton = () => (
+export const MethodSkeleton = () => (
     <ul role='list' className='select-none pointer-events-none'>
         {Array.from(Array(5)).map((value, index) => (
             <li key={index}>
