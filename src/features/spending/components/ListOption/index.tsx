@@ -51,7 +51,14 @@ const ListOption: React.FC<ListOptionProps> = ({ data: _data, loading }) => {
         return (
             <ul role='list' className='text-gray-900 dark:text-slate-200'>
                 {data?.map((item) => {
-                    return <Item key={item._id} data={item} onEdit={async (data) => await handleEdit(data, item._id)} />
+                    return (
+                        <Item
+                            key={item._id}
+                            data={item}
+                            origin={data}
+                            onEdit={async (data) => await handleEdit(data, item._id)}
+                        />
+                    )
                 })}
             </ul>
         )

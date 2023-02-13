@@ -226,10 +226,8 @@ enum LANGUAGE {
     ACCOUNT_NOT_HAVE_PASSWORD = 'account-not-have-password',
 
     /* OTHERS */
-    SOME_CATEGORY_SIMILAR_NAME = 'some-category-similar-name',
-    NOT_CATEGORY_SIMILAR_NAME = 'not-category-similar-name',
-    SOME_METHOD_SIMILAR_NAME = 'some-method-similar-name',
-    NOT_METHOD_SIMILAR_NAME = 'not-method-similar-name',
+    SOME_SIMILAR_NAME = 'some-similar-name',
+    NOT_SIMILAR_NAME = 'not-similar-name',
     INVALID_FORMAT_IMAGE = 'invalid-format-image',
     INVALID_FORMAT_IMAGE_SIZE = 'invalid-format-image-size',
 

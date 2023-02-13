@@ -214,10 +214,8 @@ const translation: {
     [LANGUAGE.ACCOUNT_NOT_HAVE_PASSWORD]: 'Tài khoản này chưa có mật khẩu',
 
     /* OTHERS */
-    [LANGUAGE.SOME_CATEGORY_SIMILAR_NAME]: 'Một số thể loại gần giống tên',
-    [LANGUAGE.NOT_CATEGORY_SIMILAR_NAME]: 'Không có thể loại gần giống tên',
-    [LANGUAGE.SOME_METHOD_SIMILAR_NAME]: 'Một số phương thức gần giống tên',
-    [LANGUAGE.NOT_METHOD_SIMILAR_NAME]: 'Không có phương thức gần giống tên',
+    [LANGUAGE.SOME_SIMILAR_NAME]: 'Một số loại gần giống tên',
+    [LANGUAGE.NOT_SIMILAR_NAME]: 'Không có loại gần giống tên',
     [LANGUAGE.INVALID_FORMAT_IMAGE]: 'Sai định dạng hình ảnh cho phép',
     [LANGUAGE.INVALID_FORMAT_IMAGE_SIZE]: 'Kích thước hình ảnh quá lớn',
 

@@ -7,10 +7,11 @@ import EditForm from './EditForm'
 
 interface ItemOptionProps {
     data: any
+    origin: any[]
     onEdit: (data: any) => Promise<void>
 }
 
-const Item: React.FC<ItemOptionProps> = ({ data, onEdit }) => {
+const Item: React.FC<ItemOptionProps> = ({ data, origin, onEdit }) => {
     const { t } = useTranslation()
     const [parent] = useAutoAnimate<HTMLLIElement>()
     const [edit, setEdit] = useState(false)
@@ -38,7 +39,7 @@ const Item: React.FC<ItemOptionProps> = ({ data, onEdit }) => {
                     </Chip>
                 </div>
             </div>
-            {edit && <EditForm name={data?.name} onCancel={closeEdit} onSubmit={onEdit} />}
+            {edit && <EditForm name={data?.name} origin={origin} onCancel={closeEdit} onSubmit={onEdit} />}
         </li>
     )
 }

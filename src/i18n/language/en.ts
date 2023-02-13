@@ -230,10 +230,8 @@ const translation: {
     [LANGUAGE.ACCOUNT_NOT_HAVE_PASSWORD]: 'Account not have password',
 
     /* OTHERS */
-    [LANGUAGE.SOME_CATEGORY_SIMILAR_NAME]: 'Some category have similar name',
-    [LANGUAGE.NOT_CATEGORY_SIMILAR_NAME]: 'Not category have similar name',
-    [LANGUAGE.SOME_METHOD_SIMILAR_NAME]: 'Some method have similar name',
-    [LANGUAGE.NOT_METHOD_SIMILAR_NAME]: 'Not method have similar name',
+    [LANGUAGE.SOME_SIMILAR_NAME]: 'Some similar name',
+    [LANGUAGE.NOT_SIMILAR_NAME]: 'Not similar name',
     [LANGUAGE.INVALID_FORMAT_IMAGE]: 'Invalid format image',
     [LANGUAGE.INVALID_FORMAT_IMAGE_SIZE]: 'Invalid format image size',
 
