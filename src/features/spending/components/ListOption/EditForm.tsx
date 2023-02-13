@@ -63,7 +63,7 @@ const EditForm: React.FC<EditFormProps> = ({ name, origin, onCancel, onSubmit })
                 <div className='flex gap-2' ref={parent}>
                     {loading ? (
                         <span className='animate-pulse text-gray-900 dark:text-slate-200 font-normal'>
-                            {t(LANGUAGE.LOADING)}
+                            {t(LANGUAGE.SAVING)}
                         </span>
                     ) : (
                         <>

@@ -90,6 +90,7 @@ const translation: {
     [LANGUAGE.OTHERS]: 'Khác',
     [LANGUAGE.HIDDEN]: 'Ẩn',
     [LANGUAGE.NAME]: 'Tên',
+    [LANGUAGE.SAVING]: 'Đang lưu...',
 
     /* EMPTY DATA */
     [LANGUAGE.EMPTY_NOTIFY]: 'Không có thông báo',

@@ -86,6 +86,7 @@ enum LANGUAGE {
     OTHERS = 'others',
     HIDDEN = 'hidden',
     NAME = 'name',
+    SAVING = 'saving',
 
     /* VALIDATE MESSAGE */
     REQUIRED_FIELD = 'required-field',

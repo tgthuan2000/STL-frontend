@@ -90,6 +90,7 @@ const translation: {
     [LANGUAGE.OTHERS]: 'Others',
     [LANGUAGE.HIDDEN]: 'Hidden',
     [LANGUAGE.NAME]: 'Name',
+    [LANGUAGE.SAVING]: 'Saving',
 
     /* EMPTY DATA */
     [LANGUAGE.EMPTY_NOTIFY]: 'Empty notify',
