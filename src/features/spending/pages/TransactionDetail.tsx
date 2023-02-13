@@ -1,4 +1,4 @@
-import { head } from 'lodash'
+import { get, head } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler } from 'react-hook-form'
@@ -145,7 +145,7 @@ const TransactionDetail = () => {
     }
 
     const onsubmit: SubmitHandler<IDetailSpendingForm> = async (data) => {
-        let { amount, description, categorySpending, methodSpending, date, surplus } = data
+        let { amount, description, categorySpending, methodSpending, date, surplus, image } = data
         description = description.trim()
         amount = Number(amount)
         try {
@@ -216,6 +216,12 @@ const TransactionDetail = () => {
                 }
             }
 
+            let imageId = null
+            if (image && !get(image, '_id')) {
+                const fileImage = await client.assets.upload('image', image as File)
+                imageId = fileImage._id
+            }
+
             const document = {
                 amount,
                 date: moment(date).format(),
@@ -229,6 +235,7 @@ const TransactionDetail = () => {
                     _type: 'reference',
                     _ref: methodSpending._id,
                 },
+                ...(imageId && { _type: 'image', asset: { _type: 'reference', _ref: imageId } }),
             }
 
             const patch = client.patch(id as string).set(document)

@@ -42,6 +42,7 @@ interface IMakeGetLoanForm {
     estimatePaidDate: Date | null
     description: string
     userLoan: IUserLoan | null
+    image?: File | null
 }
 
 /* PROPS */

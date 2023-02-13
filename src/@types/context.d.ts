@@ -145,3 +145,10 @@ export interface INotifyContext {
 export interface IScrollToTopContext {
     scrollToTop: () => void
 }
+
+export interface IFilePreview {
+    file: any
+    type: any
+    onPreview: (file: any) => void
+    clear: () => void
+}

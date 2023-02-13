@@ -251,7 +251,8 @@ export const GET_TRANSACTION_DETAIL = groq`
         surplus,
         description,
         amount,
-        date
+        date,
+        image
     }
 `
 

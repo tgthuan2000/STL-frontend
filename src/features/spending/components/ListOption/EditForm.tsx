@@ -51,7 +51,7 @@ const EditForm: React.FC<EditFormProps> = ({ name, origin, onCancel, onSubmit })
 
     const sameList = useMemo(() => {
         return origin?.filter((item) => {
-            return item.name.toLowerCase().includes(watchName.toLowerCase())
+            return item.name.toLowerCase().includes(watchName.toLowerCase()) && item.name !== name
         })
     }, [watchName])
 
