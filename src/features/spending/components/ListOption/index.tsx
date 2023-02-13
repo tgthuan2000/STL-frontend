@@ -8,7 +8,7 @@ import { client } from '~/sanityConfig'
 import { MethodSkeleton } from '../Method'
 import Item from './Item'
 
-const ListOption: React.FC<ListOptionProps> = ({ data: _data, loading }) => {
+const ListOption: React.FC<ListOptionProps> = ({ data: _data, loading, cleanCache }) => {
     const { t } = useTranslation()
     const [data, setData] = useState(_data)
 
@@ -39,6 +39,7 @@ const ListOption: React.FC<ListOptionProps> = ({ data: _data, loading }) => {
                     }
                     return temp
                 })
+                cleanCache()
             } catch (error: any) {
                 toast.error(error.message)
             }
