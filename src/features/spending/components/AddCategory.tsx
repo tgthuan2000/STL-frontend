@@ -1,24 +1,20 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { CheckBadgeIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline'
-import { isEmpty } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { AddCategoryQueryData, IAddCategoryForm } from '~/@types/spending'
-import { Button, SubmitWrap } from '~/components'
+import { Button, CheckName, SubmitWrap } from '~/components'
 import { Input, Selection } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
-import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
+import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import useQuery, { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING } from '~/schema/query/spending'
 import { getCategorySpending } from '~/services/query'
 import useAuth from '~/store/auth'
-import { searchName } from '../services'
 
 const AddCategory = () => {
     const { t } = useTranslation()
@@ -28,7 +24,7 @@ const AddCategory = () => {
     const { userProfile } = useAuth()
     const { loading, setSubmitLoading } = useLoading()
     const { deleteCache } = useCache()
-    const [alertRef] = useAutoAnimate<HTMLDivElement>()
+    const { needCheckWhenLeave } = useCheck()
 
     const kinds = useMemo(
         () => kindSpending.filter((kind) => [KIND_SPENDING.COST, KIND_SPENDING.RECEIVE].includes(kind.key)),
@@ -102,6 +98,7 @@ const AddCategory = () => {
             console.log(result)
             toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_CATEGORY_SUCCESS))
             form.reset({ name: '', kindSpending }, { keepDefaultValues: true })
+            needCheckWhenLeave()
         } catch (error) {
             console.log(error)
         } finally {
@@ -148,46 +145,13 @@ const AddCategory = () => {
                                 label={t(LANGUAGE.CATEGORY_NAME)}
                             />
 
-                            <div ref={alertRef}>
-                                {!categorySpending.loading && form.watch('kindSpending') && watchName.length >= 2 && (
-                                    <>
-                                        {!isEmpty(sameCategoryList) ? (
-                                            <>
-                                                <span className='text-yellow-500 flex items-center gap-1'>
-                                                    <ExclamationCircleIcon className='h-6 w-6' />
-                                                    {t(LANGUAGE.SOME_CATEGORY_SIMILAR_NAME)}
-                                                </span>
-
-                                                <ul className='mt-1 list-disc pl-5'>
-                                                    <ul className='mt-1 list-disc pl-5'>
-                                                        {sameCategoryList?.map((item) => {
-                                                            const component = searchName(item.name, watchName)
-                                                            if (typeof component === 'string') {
-                                                                return <li key={item._id}>{component}</li>
-                                                            }
-                                                            const [start, middle, end] = component
-                                                            return (
-                                                                <li key={item._id}>
-                                                                    {start}
-                                                                    <span className='font-medium text-yellow-600'>
-                                                                        {middle}
-                                                                    </span>
-                                                                    {end}
-                                                                </li>
-                                                            )
-                                                        })}
-                                                    </ul>
-                                                </ul>
-                                            </>
-                                        ) : (
-                                            <span className='text-green-500 flex items-center gap-1'>
-                                                <CheckBadgeIcon className='h-6 w-6' />
-                                                {t(LANGUAGE.NOT_CATEGORY_SIMILAR_NAME)}
-                                            </span>
-                                        )}
-                                    </>
+                            <CheckName
+                                show={Boolean(
+                                    !categorySpending.loading && form.watch('kindSpending') && watchName.length >= 2
                                 )}
-                            </div>
+                                list={sameCategoryList}
+                                watchValue={watchName}
+                            />
                         </div>
                     </div>
                 </div>

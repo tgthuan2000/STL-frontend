@@ -83,9 +83,14 @@ enum LANGUAGE {
     PAID_TIME = 'paid-time',
     TYPE_YOUR_MESSAGE = 'type-your-message',
     PASSWORD = 'password',
+    OTHERS = 'others',
+    HIDDEN = 'hidden',
+    NAME = 'name',
+    SAVING = 'saving',
 
     /* VALIDATE MESSAGE */
     REQUIRED_FIELD = 'required-field',
+    REQUIRED_NUMBER = 'required-number',
     REQUIRED_METHOD_SPENDING = 'required-method-spending',
     REQUIRED_TYPE_NUMBER = 'required-type-number',
     REQUIRED_AMOUNT = 'required-amount',
@@ -138,6 +143,7 @@ enum LANGUAGE {
     NOTIFY_ERROR = 'notify-error',
     NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD = 'notify-account-cant-login-by-email-password',
     NOTIFY_INVALID_PASSWORD = 'notify-invalid-password',
+    NOTIFY_NO_CHANGE = 'no-change',
 
     /* CONFIRM */
     CONFIRM_NOTIFY = 'confirm-notify',
@@ -221,10 +227,8 @@ enum LANGUAGE {
     ACCOUNT_NOT_HAVE_PASSWORD = 'account-not-have-password',
 
     /* OTHERS */
-    SOME_CATEGORY_SIMILAR_NAME = 'some-category-similar-name',
-    NOT_CATEGORY_SIMILAR_NAME = 'not-category-similar-name',
-    SOME_METHOD_SIMILAR_NAME = 'some-method-similar-name',
-    NOT_METHOD_SIMILAR_NAME = 'not-method-similar-name',
+    SOME_SIMILAR_NAME = 'some-similar-name',
+    NOT_SIMILAR_NAME = 'not-similar-name',
     INVALID_FORMAT_IMAGE = 'invalid-format-image',
     INVALID_FORMAT_IMAGE_SIZE = 'invalid-format-image-size',
 

@@ -127,6 +127,10 @@ export interface MethodProps {
     data: IMethodSpending[] | undefined
     loading: boolean
 }
+export interface ListOptionProps {
+    data: any[] | undefined
+    loading: boolean
+}
 
 export interface TransactionDetailFormProps {
     data: TransactionDetailFormData
@@ -182,6 +186,11 @@ export interface MethodQueryData {
         data: ISpendingData[]
         hasNextPage: boolean
     }
+}
+
+export interface OthersQueryData {
+    method: IMethodSpending[]
+    category: ICategorySpending[]
 }
 /* OTHERS */
 export interface TransactionDetailFormData {

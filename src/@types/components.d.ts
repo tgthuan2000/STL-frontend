@@ -1,5 +1,6 @@
 import { SanityDocument, SanityImageAssetDocument } from '@sanity/client'
 import { DefaultTFuncReturn } from 'i18next'
+import { DebouncedFunc } from 'lodash'
 import React, { HTMLInputTypeAttribute, ReactNode } from 'react'
 import { ControllerRenderProps, FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
 import { ReactQuillProps } from 'react-quill'
@@ -14,6 +15,7 @@ import { IUserLoan } from './loan'
 import { NotifyItem } from './notify'
 import { ISpendingData } from './spending'
 
+type TrackingFunc = (name: Path<any>) => Promise<void>
 type Rules = Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
 export interface SlideParams {
     slide?: string
@@ -30,6 +32,7 @@ export interface AutoCompleteProps {
     loading?: boolean
     form: UseFormReturn<any, object>
     rules?: Rules
+    tracking?: TrackingFunc
     disabled?: boolean
     onChange?: (value: any) => void
     showImage?: boolean
@@ -59,6 +62,7 @@ export interface AutocompleteInputProps {
     loading?: boolean
     disabled?: boolean
     onChange?: (value: any) => void
+    onBlur?: () => void
     loadingAddMore?: boolean
     valueKey: string
 }
@@ -156,6 +160,7 @@ export interface InputProps
     form: UseFormReturn<any, object>
     rules?: Rules
     autoFocus?: boolean
+    tracking?: TrackingFunc
 }
 
 export interface LabelProps {
@@ -200,6 +205,7 @@ export interface DateProps {
     error?: FieldError
     form: UseFormReturn<any, object>
     rules?: Rules
+    tracking?: TrackingFunc
     disabledClear?: boolean
     disabled?: boolean
     onChange?: (value: any) => void
@@ -233,6 +239,7 @@ export interface TextAreaProps {
     error?: FieldError
     form: UseFormReturn<any, object>
     rules?: Rules
+    tracking?: TrackingFunc
 }
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string
@@ -546,6 +553,7 @@ export interface ChipProps {
     onClick?: (data: any) => void
     disabled?: boolean
     hidden?: boolean
+    className?: string
 }
 
 export interface ThemeIconProps {

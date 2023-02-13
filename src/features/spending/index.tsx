@@ -10,6 +10,7 @@ const MethodDetail = React.lazy(() => import('./pages/MethodDetail'))
 const Transaction = React.lazy(() => import('../../components/Transaction'))
 const TransactionDetail = React.lazy(() => import('./pages/TransactionDetail'))
 const TransactionRecent = React.lazy(() => import('./pages/TransactionRecent'))
+const OthersFeature = React.lazy(() => import('./pages/Others'))
 
 const Spending = () => {
     const { t } = useTranslation()
@@ -25,6 +26,7 @@ const Spending = () => {
                     <Route index element={<Method />} />
                     <Route path=':id' element={<MethodDetail />} />
                 </Route>
+                <Route path='others' element={<OthersFeature />} />
             </Route>
             <Route path='*' element={<Navigate to='/' />} />
         </Routes>

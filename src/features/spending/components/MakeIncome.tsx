@@ -10,11 +10,34 @@ import { Button, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
-import { useQuery, useServiceQuery } from '~/hook'
+import { useQuery, useServiceQuery, useTracking } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import i18n from '~/i18n'
+import { TRACKING_INCOME } from '~/schema/query/tracking'
+
+const { t } = i18n
+const schema = yup.object().shape({
+    amount: yup
+        .number()
+        .required(t(LANGUAGE.REQUIRED_RECEIVE) as string)
+        .min(1, t(LANGUAGE.RECEIVE_MIN_ZERO) as string)
+        .typeError(t(LANGUAGE.REQUIRED_NUMBER) as string),
+    categorySpending: yup
+        .object()
+        .nullable()
+        .required(t(LANGUAGE.REQUIRED_CATEGORY) as string),
+    methodSpending: yup
+        .object()
+        .nullable()
+        .required(t(LANGUAGE.REQUIRED_METHOD) as string),
+    date: yup.date().required(t(LANGUAGE.REQUIRED_DATE) as string),
+    description: yup.string(),
+})
 
 const MakeIncome = () => {
     const { t } = useTranslation()
@@ -62,7 +85,10 @@ const MakeIncome = () => {
             date: new Date(),
             description: '',
         },
+        resolver: yupResolver(schema),
     })
+
+    const { tracking, value } = useTracking<IAddIncomeForm>(form, TRACKING_INCOME)
 
     const onsubmit: SubmitHandler<IAddIncomeForm> = async (data) => {
         setSubmitLoading(true)
@@ -205,13 +231,7 @@ const MakeIncome = () => {
                             <Input
                                 name='amount'
                                 form={form}
-                                rules={{
-                                    required: t(LANGUAGE.REQUIRED_RECEIVE) as any,
-                                    min: {
-                                        value: 0,
-                                        message: t(LANGUAGE.RECEIVE_MIN_ZERO),
-                                    },
-                                }}
+                                tracking={tracking}
                                 type='number'
                                 label={t(LANGUAGE.RECEIVE)}
                             />
@@ -219,9 +239,7 @@ const MakeIncome = () => {
                             <AutoComplete
                                 name='categorySpending'
                                 form={form}
-                                rules={{
-                                    required: t(LANGUAGE.REQUIRED_CATEGORY) as any,
-                                }}
+                                tracking={tracking}
                                 data={categorySpending.data}
                                 label={t(LANGUAGE.CATEGORY)}
                                 loading={categorySpending.loading}
@@ -235,10 +253,8 @@ const MakeIncome = () => {
 
                             <AutoComplete
                                 name='methodSpending'
+                                tracking={tracking}
                                 form={form}
-                                rules={{
-                                    required: t(LANGUAGE.REQUIRED_METHOD) as any,
-                                }}
                                 data={methodSpending.data}
                                 label={t(LANGUAGE.METHOD_SPENDING)}
                                 loading={methodSpending.loading}
@@ -248,16 +264,9 @@ const MakeIncome = () => {
                                 }
                             />
 
-                            <DatePicker
-                                name='date'
-                                form={form}
-                                rules={{
-                                    required: t(LANGUAGE.REQUIRED_DATE) as any,
-                                }}
-                                label={t(LANGUAGE.DATE)}
-                            />
+                            <DatePicker name='date' form={form} tracking={tracking} label={t(LANGUAGE.DATE)} />
 
-                            <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
+                            <TextArea name='description' form={form} tracking={tracking} label={t(LANGUAGE.NOTE)} />
                         </div>
                     </div>
                 </div>

@@ -87,6 +87,10 @@ const translation: {
     [LANGUAGE.PAID_TIME]: 'Thời gian thanh toán',
     [LANGUAGE.TYPE_YOUR_MESSAGE]: 'Nhập tin nhắn...',
     [LANGUAGE.PASSWORD]: 'Mật khẩu',
+    [LANGUAGE.OTHERS]: 'Khác',
+    [LANGUAGE.HIDDEN]: 'Ẩn',
+    [LANGUAGE.NAME]: 'Tên',
+    [LANGUAGE.SAVING]: 'Đang lưu...',
 
     /* EMPTY DATA */
     [LANGUAGE.EMPTY_NOTIFY]: 'Không có thông báo',
@@ -94,6 +98,7 @@ const translation: {
 
     /* VALIDATE MESSAGE */
     [LANGUAGE.REQUIRED_FIELD]: 'Yêu cầu nhập!',
+    [LANGUAGE.REQUIRED_NUMBER]: 'Yêu cầu nhập số!',
     [LANGUAGE.REQUIRED_METHOD_SPENDING]: 'Yêu cầu chọn phương thức thanh toán!',
     [LANGUAGE.REQUIRED_TYPE_NUMBER]: 'Yêu cầu nhập số!',
     [LANGUAGE.REQUIRED_AMOUNT]: 'Yêu cầu nhập số tiền!',
@@ -142,6 +147,7 @@ const translation: {
     [LANGUAGE.NOTIFY_ERROR]: 'Đã có lỗi xảy ra!',
     [LANGUAGE.NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD]: 'Tài khoản chưa cài đặt đăng nhập bằng email và mật khẩu!',
     [LANGUAGE.NOTIFY_INVALID_PASSWORD]: 'Mật khẩu không đúng!',
+    [LANGUAGE.NOTIFY_NO_CHANGE]: 'Không thay đổi',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Bạn có chắc chắn muốn gửi thông báo này?',
@@ -209,10 +215,8 @@ const translation: {
     [LANGUAGE.ACCOUNT_NOT_HAVE_PASSWORD]: 'Tài khoản này chưa có mật khẩu',
 
     /* OTHERS */
-    [LANGUAGE.SOME_CATEGORY_SIMILAR_NAME]: 'Một số thể loại gần giống tên',
-    [LANGUAGE.NOT_CATEGORY_SIMILAR_NAME]: 'Không có thể loại gần giống tên',
-    [LANGUAGE.SOME_METHOD_SIMILAR_NAME]: 'Một số phương thức gần giống tên',
-    [LANGUAGE.NOT_METHOD_SIMILAR_NAME]: 'Không có phương thức gần giống tên',
+    [LANGUAGE.SOME_SIMILAR_NAME]: 'Một số loại gần giống tên',
+    [LANGUAGE.NOT_SIMILAR_NAME]: 'Không có loại gần giống tên',
     [LANGUAGE.INVALID_FORMAT_IMAGE]: 'Sai định dạng hình ảnh cho phép',
     [LANGUAGE.INVALID_FORMAT_IMAGE_SIZE]: 'Kích thước hình ảnh quá lớn',
 

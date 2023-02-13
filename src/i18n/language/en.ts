@@ -87,6 +87,10 @@ const translation: {
     [LANGUAGE.PAID_TIME]: 'Paid time',
     [LANGUAGE.TYPE_YOUR_MESSAGE]: 'Type your message',
     [LANGUAGE.PASSWORD]: 'Password',
+    [LANGUAGE.OTHERS]: 'Others',
+    [LANGUAGE.HIDDEN]: 'Hidden',
+    [LANGUAGE.NAME]: 'Name',
+    [LANGUAGE.SAVING]: 'Saving',
 
     /* EMPTY DATA */
     [LANGUAGE.EMPTY_NOTIFY]: 'Empty notify',
@@ -94,6 +98,7 @@ const translation: {
 
     /* VALIDATE MESSAGE */
     [LANGUAGE.REQUIRED_FIELD]: 'Required field',
+    [LANGUAGE.REQUIRED_NUMBER]: 'Required number',
     [LANGUAGE.REQUIRED_METHOD_SPENDING]: 'Required method',
     [LANGUAGE.REQUIRED_TYPE_NUMBER]: 'Required type number',
     [LANGUAGE.REQUIRED_AMOUNT]: 'Required amount',
@@ -142,6 +147,7 @@ const translation: {
     [LANGUAGE.NOTIFY_ERROR]: 'Something went wrong',
     [LANGUAGE.NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD]: 'Account can not login by email and password',
     [LANGUAGE.NOTIFY_INVALID_PASSWORD]: 'Invalid password',
+    [LANGUAGE.NOTIFY_NO_CHANGE]: 'No change',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Do you want to notify?',
@@ -225,10 +231,8 @@ const translation: {
     [LANGUAGE.ACCOUNT_NOT_HAVE_PASSWORD]: 'Account not have password',
 
     /* OTHERS */
-    [LANGUAGE.SOME_CATEGORY_SIMILAR_NAME]: 'Some category have similar name',
-    [LANGUAGE.NOT_CATEGORY_SIMILAR_NAME]: 'Not category have similar name',
-    [LANGUAGE.SOME_METHOD_SIMILAR_NAME]: 'Some method have similar name',
-    [LANGUAGE.NOT_METHOD_SIMILAR_NAME]: 'Not method have similar name',
+    [LANGUAGE.SOME_SIMILAR_NAME]: 'Some similar name',
+    [LANGUAGE.NOT_SIMILAR_NAME]: 'Not similar name',
     [LANGUAGE.INVALID_FORMAT_IMAGE]: 'Invalid format image',
     [LANGUAGE.INVALID_FORMAT_IMAGE_SIZE]: 'Invalid format image size',
 
