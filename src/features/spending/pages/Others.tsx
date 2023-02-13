@@ -1,14 +1,13 @@
-import { isEmpty } from 'lodash'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { OthersQueryData } from '~/@types/spending'
 import { Box, ButtonMenuLoan, Divider, Transaction } from '~/components'
 import { TAGS } from '~/constant'
 import { menuMobileOthers } from '~/constant/components'
-import { useConfig } from '~/context'
+import { useCheck } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
-import { GET_CATEGORY, GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
+import { GET_CATEGORY, GET_METHOD_SPENDING } from '~/schema/query/spending'
 import useAuth from '~/store/auth'
 import { ListOption } from '../components'
 
@@ -34,6 +33,8 @@ const Others = () => {
     useEffect(() => {
         fetchData()
     }, [])
+
+    useCheck(reload)
 
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.OTHERS)}>

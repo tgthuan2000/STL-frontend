@@ -68,6 +68,7 @@ const AddMethod = () => {
             const result = deleteCache([METHOD_SPENDING_DESC_SURPLUS, METHOD_SPENDING])
             console.log(result)
             toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_METHOD_SUCCESS))
+            form.reset({ name: '' }, { keepDefaultValues: true })
             needCheckWhenLeave()
             // setIsOpen(false)
             // navigate(-1)

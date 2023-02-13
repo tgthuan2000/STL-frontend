@@ -11,7 +11,7 @@ import { Button, SubmitWrap } from '~/components'
 import { Input, Selection } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
-import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
+import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import useQuery, { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
@@ -29,6 +29,7 @@ const AddCategory = () => {
     const { loading, setSubmitLoading } = useLoading()
     const { deleteCache } = useCache()
     const [alertRef] = useAutoAnimate<HTMLDivElement>()
+    const { needCheckWhenLeave } = useCheck()
 
     const kinds = useMemo(
         () => kindSpending.filter((kind) => [KIND_SPENDING.COST, KIND_SPENDING.RECEIVE].includes(kind.key)),
@@ -102,6 +103,7 @@ const AddCategory = () => {
             console.log(result)
             toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_CATEGORY_SUCCESS))
             form.reset({ name: '', kindSpending }, { keepDefaultValues: true })
+            needCheckWhenLeave()
         } catch (error) {
             console.log(error)
         } finally {
