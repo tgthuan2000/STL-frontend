@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { ChangeEvent, forwardRef, useId, useState } from 'react'
+import { ChangeEvent, forwardRef, useCallback, useEffect, useId, useState } from 'react'
 import { Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { UploadImageProps } from '~/@types/components'
@@ -7,7 +7,7 @@ import ErrorMessage from '~/components/ErrorMessage'
 import Label from '~/components/Label'
 import { acceptImageType } from '~/constant/component'
 import LANGUAGE from '~/i18n/language/key'
-import { client } from '~/sanityConfig'
+import { urlFor } from '~/sanityConfig'
 import Core from './Core'
 
 const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
@@ -15,6 +15,18 @@ const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
         const { t } = useTranslation()
         const id = useId()
         const [loading, setLoading] = useState(false)
+
+        const [image, setImage] = useState<string | null | undefined>(() => {
+            const image = form.getValues(name)
+            if (!image) return null
+            return urlFor(image)
+        })
+
+        useEffect(() => {
+            if (!form.getValues(name) && image) {
+                setImage(null)
+            }
+        }, [JSON.stringify(form.getValues(name))])
 
         const handleUploadFile = async (e: ChangeEvent<HTMLInputElement>) => {
             const file = e.target.files?.[0]
@@ -35,8 +47,8 @@ const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
                         form.clearErrors(name)
                     }
 
-                    const data = await client.assets.upload('image', file)
-                    form.setValue(name, data)
+                    setImage(URL.createObjectURL(file))
+                    form.setValue(name, file)
                 } catch (error) {
                     console.log(error)
                 } finally {
@@ -54,7 +66,7 @@ const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
                     <div className={clsx(className)}>
                         <Label id={id} label={label} />
                         <div className='mt-1'>
-                            <Core form={form} id={id} loading={loading} name={name} />
+                            <Core image={image} clearImage={() => setImage(null)} id={id} loading={loading} />
                         </div>
                         <ErrorMessage error={error} />
                         <input

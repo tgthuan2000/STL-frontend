@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IAddIncomeForm, MakeIncomeQueryData } from '~/@types/spending'
 import { Button, SubmitWrap } from '~/components'
-import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
+import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery, useTracking } from '~/hook'
@@ -37,6 +37,7 @@ const schema = yup.object().shape({
         .required(t(LANGUAGE.REQUIRED_METHOD) as string),
     date: yup.date().required(t(LANGUAGE.REQUIRED_DATE) as string),
     description: yup.string(),
+    image: yup.mixed(),
 })
 
 const MakeIncome = () => {
@@ -84,6 +85,7 @@ const MakeIncome = () => {
             methodSpending: null,
             date: new Date(),
             description: '',
+            image: null,
         },
         resolver: yupResolver(schema),
     })
@@ -92,35 +94,43 @@ const MakeIncome = () => {
 
     const onsubmit: SubmitHandler<IAddIncomeForm> = async (data) => {
         setSubmitLoading(true)
-        let { amount, methodSpending, categorySpending, description, date } = data
+        let { amount, methodSpending, categorySpending, description, date, image } = data
+        let imageId = null
         amount = Number(amount)
         description = description.trim()
 
-        // add to database
-        const document = {
-            _type: 'spending',
-            amount,
-            description,
-            date: moment(date).format(),
-            surplus: methodSpending?.surplus,
-            kindSpending: {
-                _type: 'reference',
-                _ref: kindSpendingId,
-            },
-            methodSpending: {
-                _type: 'reference',
-                _ref: methodSpending?._id,
-            },
-            categorySpending: {
-                _type: 'reference',
-                _ref: categorySpending?._id,
-            },
-            user: {
-                _type: 'reference',
-                _ref: userProfile?._id,
-            },
-        }
         try {
+            if (image) {
+                const response = await client.assets.upload('image', image)
+                imageId = response._id
+            }
+
+            // add to database
+            const document = {
+                _type: 'spending',
+                amount,
+                description,
+                date: moment(date).format(),
+                surplus: methodSpending?.surplus,
+                kindSpending: {
+                    _type: 'reference',
+                    _ref: kindSpendingId,
+                },
+                methodSpending: {
+                    _type: 'reference',
+                    _ref: methodSpending?._id,
+                },
+                categorySpending: {
+                    _type: 'reference',
+                    _ref: categorySpending?._id,
+                },
+                user: {
+                    _type: 'reference',
+                    _ref: userProfile?._id,
+                },
+                ...(imageId && { _type: 'image', asset: { _type: 'reference', _ref: imageId } }),
+            }
+
             const patchMethod = client
                 .patch(methodSpending?._id as string)
                 .setIfMissing({ surplus: 0, countUsed: 0 })
@@ -153,6 +163,7 @@ const MakeIncome = () => {
                     amount: '',
                     categorySpending,
                     methodSpending,
+                    image: null,
                 },
                 {
                     keepDefaultValues: true,
@@ -267,6 +278,8 @@ const MakeIncome = () => {
                             <DatePicker name='date' form={form} tracking={tracking} label={t(LANGUAGE.DATE)} />
 
                             <TextArea name='description' form={form} tracking={tracking} label={t(LANGUAGE.NOTE)} />
+
+                            <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
                         </div>
                     </div>
                 </div>

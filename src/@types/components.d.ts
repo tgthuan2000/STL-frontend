@@ -192,10 +192,10 @@ export interface UploadImageProps {
 }
 
 export interface UploadImageCoreProps {
-    form: UseFormReturn<any, object>
-    name: string
     loading: boolean
     id: string
+    image: string | null | undefined
+    clearImage: () => void
 }
 
 export interface DateProps {

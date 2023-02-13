@@ -82,6 +82,7 @@ export interface IAddCostForm {
     methodSpending: IMethodSpending | null
     description: string
     date: Date
+    image?: File | null
 }
 
 export interface IAddIncomeForm {
@@ -90,6 +91,7 @@ export interface IAddIncomeForm {
     methodSpending: IMethodSpending | null
     date: Date
     description: string
+    image?: File | null
 }
 
 export interface IMakeTransferForm {
@@ -98,6 +100,7 @@ export interface IMakeTransferForm {
     methodSpendingTo: IMethodSpending | null
     date: Date
     description: string
+    image?: File | null
 }
 
 /* PROPS */

@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IAddCostForm, MakeCostQueryData } from '~/@types/spending'
 import { Button, SubmitWrap } from '~/components'
-import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
+import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
@@ -60,42 +60,50 @@ const MakeCost = () => {
             methodSpending: null,
             description: '',
             date: new Date(),
+            image: null,
         },
     })
 
     const onsubmit: SubmitHandler<IAddCostForm> = async (data) => {
         setSubmitLoading(true)
-        let { amount, methodSpending, categorySpending, description, date } = data
+        let { amount, methodSpending, categorySpending, description, date, image } = data
+        let imageId = null
         // transfer amount to number
         amount = Number(amount)
         description = description.trim()
 
-        // add to database
-        const document = {
-            _type: 'spending',
-            amount,
-            description,
-            date: moment(date).format(),
-            surplus: methodSpending?.surplus,
-            kindSpending: {
-                _type: 'reference',
-                _ref: kindSpendingId,
-            },
-            categorySpending: {
-                _type: 'reference',
-                _ref: categorySpending?._id,
-            },
-            methodSpending: {
-                _type: 'reference',
-                _ref: methodSpending?._id,
-            },
-            user: {
-                _type: 'reference',
-                _ref: userProfile?._id,
-            },
-        }
-
         try {
+            if (image) {
+                const response = await client.assets.upload('image', image)
+                imageId = response._id
+            }
+
+            // add to database
+            const document = {
+                _type: 'spending',
+                amount,
+                description,
+                date: moment(date).format(),
+                surplus: methodSpending?.surplus,
+                kindSpending: {
+                    _type: 'reference',
+                    _ref: kindSpendingId,
+                },
+                categorySpending: {
+                    _type: 'reference',
+                    _ref: categorySpending?._id,
+                },
+                methodSpending: {
+                    _type: 'reference',
+                    _ref: methodSpending?._id,
+                },
+                user: {
+                    _type: 'reference',
+                    _ref: userProfile?._id,
+                },
+                ...(imageId && { _type: 'image', asset: { _type: 'reference', _ref: imageId } }),
+            }
+
             const patchMethod = client
                 .patch(methodSpending?._id as string)
                 .setIfMissing({ surplus: 0, countUsed: 0 })
@@ -129,6 +137,7 @@ const MakeCost = () => {
                     amount: '',
                     categorySpending,
                     methodSpending,
+                    image: null,
                 },
                 {
                     keepDefaultValues: true,
@@ -258,6 +267,8 @@ const MakeCost = () => {
                             />
 
                             <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
+
+                            <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
                         </div>
                     </div>
                 </div>

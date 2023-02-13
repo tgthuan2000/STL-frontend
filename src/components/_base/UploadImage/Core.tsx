@@ -4,23 +4,18 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { UploadImageCoreProps } from '~/@types/components'
 import LANGUAGE from '~/i18n/language/key'
-import { urlFor } from '~/sanityConfig'
 
-const Core: React.FC<UploadImageCoreProps> = ({ form, name, loading, id }) => {
+const Core: React.FC<UploadImageCoreProps> = ({ image, clearImage, loading, id }) => {
     const { t } = useTranslation()
     return (
         <>
-            {form.getValues(name) ? (
+            {image ? (
                 <div
                     className={clsx('relative flex items-end gap-4 border dark:border-slate-700 rounded-md p-4', {
                         'animate-pulse cursor-wait': loading,
                     })}
                 >
-                    <img
-                        className='w-32 h-32 border bg-white rounded-md object-cover'
-                        src={urlFor(form.getValues(name))}
-                        alt='#image'
-                    />
+                    <img className='w-32 h-32 border bg-white rounded-md object-cover' src={image} alt='#image' />
                     <label
                         htmlFor={id}
                         className={clsx(
@@ -45,7 +40,7 @@ const Core: React.FC<UploadImageCoreProps> = ({ form, name, loading, id }) => {
                             'h-6 w-6 text-gray-500 hover:text-gray-700 dark:text-slate-500 dark:hover:text-slate-400 absolute top-2 right-2',
                             loading ? 'cursor-wait' : 'cursor-pointer'
                         )}
-                        onClick={() => !loading && form.setValue(name, null)}
+                        onClick={() => !loading && clearImage()}
                     />
                 </div>
             ) : (

@@ -18,11 +18,11 @@ const Spending = () => {
         <Routes>
             <Route path='/' element={<SpendingFeature />}>
                 <Route index element={<Dashboard />} />
-                <Route path='transaction' element={<Transaction title={t(LANGUAGE.TRANSACTION)} />}>
+                <Route path='transaction' element={<Transaction title={t(LANGUAGE.TRANSACTION)} hasBack={false} />}>
                     <Route index element={<TransactionRecent />} />
                 </Route>
                 <Route path='transaction/:id' element={<TransactionDetail />} />
-                <Route path='method' element={<Transaction title={t(LANGUAGE.METHOD_SPENDING)} />}>
+                <Route path='method' element={<Transaction title={t(LANGUAGE.METHOD_SPENDING)} hasBack={false} />}>
                     <Route index element={<Method />} />
                     <Route path=':id' element={<MethodDetail />} />
                 </Route>

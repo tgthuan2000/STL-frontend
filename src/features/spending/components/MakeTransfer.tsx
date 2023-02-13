@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IMakeTransferForm, MakeTransferQueryData } from '~/@types/spending'
 import { Button, SubmitWrap } from '~/components'
-import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
+import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
@@ -44,64 +44,72 @@ const MakeTransfer = () => {
             methodSpendingTo: null,
             date: new Date(),
             description: '',
+            image: null,
         },
     })
 
     const onsubmit: SubmitHandler<IMakeTransferForm> = async (data) => {
         setSubmitLoading(true)
-        let { amount, methodSpendingFrom, methodSpendingTo, description, date } = data
+        let { amount, methodSpendingFrom, methodSpendingTo, description, date, image } = data
+        let imageId = null
         amount = Number(amount)
         description = description.trim()
-        // add to database
-        const document1 = {
-            _type: 'spending',
-            amount,
-            description: `Đến ${methodSpendingTo?.name}${description ? `\n${description}` : ''}`,
-            date: moment(date).format(),
-            surplus: methodSpendingFrom?.surplus,
-            kindSpending: {
-                _type: 'reference',
-                _ref: getKindSpendingId('TRANSFER_FROM'),
-            },
-            methodSpending: {
-                _type: 'reference',
-                _ref: methodSpendingFrom?._id,
-            },
-            methodReference: {
-                _type: 'reference',
-                _ref: methodSpendingTo?._id,
-            },
-            user: {
-                _type: 'reference',
-                _ref: userProfile?._id,
-            },
-        }
-
-        const document2 = {
-            _type: 'spending',
-            amount,
-            description: `Từ ${methodSpendingFrom?.name}${description ? `\n${description}` : ''}`,
-            date: moment(date).format(),
-            surplus: methodSpendingTo?.surplus,
-            kindSpending: {
-                _type: 'reference',
-                _ref: getKindSpendingId('TRANSFER_TO'),
-            },
-            methodSpending: {
-                _type: 'reference',
-                _ref: methodSpendingTo?._id,
-            },
-            methodReference: {
-                _type: 'reference',
-                _ref: methodSpendingFrom?._id,
-            },
-            user: {
-                _type: 'reference',
-                _ref: userProfile?._id,
-            },
-        }
 
         try {
+            if (image) {
+                const imageFile = await client.assets.upload('image', image)
+                imageId = imageFile._id
+            }
+            // add to database
+            const document1 = {
+                _type: 'spending',
+                amount,
+                description: `Đến ${methodSpendingTo?.name}${description ? `\n${description}` : ''}`,
+                date: moment(date).format(),
+                surplus: methodSpendingFrom?.surplus,
+                kindSpending: {
+                    _type: 'reference',
+                    _ref: getKindSpendingId('TRANSFER_FROM'),
+                },
+                methodSpending: {
+                    _type: 'reference',
+                    _ref: methodSpendingFrom?._id,
+                },
+                methodReference: {
+                    _type: 'reference',
+                    _ref: methodSpendingTo?._id,
+                },
+                user: {
+                    _type: 'reference',
+                    _ref: userProfile?._id,
+                },
+                ...(imageId && { _type: 'image', asset: { _type: 'reference', _ref: imageId } }),
+            }
+
+            const document2 = {
+                _type: 'spending',
+                amount,
+                description: `Từ ${methodSpendingFrom?.name}${description ? `\n${description}` : ''}`,
+                date: moment(date).format(),
+                surplus: methodSpendingTo?.surplus,
+                kindSpending: {
+                    _type: 'reference',
+                    _ref: getKindSpendingId('TRANSFER_TO'),
+                },
+                methodSpending: {
+                    _type: 'reference',
+                    _ref: methodSpendingTo?._id,
+                },
+                methodReference: {
+                    _type: 'reference',
+                    _ref: methodSpendingFrom?._id,
+                },
+                user: {
+                    _type: 'reference',
+                    _ref: userProfile?._id,
+                },
+                ...(imageId && { _type: 'image', asset: { _type: 'reference', _ref: imageId } }),
+            }
             const patch1 = client
                 .patch(methodSpendingFrom?._id as string)
                 .setIfMissing({ surplus: 0, countUsed: 0 })
@@ -129,7 +137,7 @@ const MakeTransfer = () => {
                 reloadData()
             }, 0)
 
-            form.reset({ amount: '', methodSpendingFrom, methodSpendingTo }, { keepDefaultValues: true })
+            form.reset({ amount: '', methodSpendingFrom, methodSpendingTo, image: null }, { keepDefaultValues: true })
             toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_TRANSFER_SUCCESS))
             needCheckWhenLeave()
         } catch (error) {
@@ -227,6 +235,8 @@ const MakeTransfer = () => {
                             />
 
                             <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
+
+                            <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
                         </div>
                     </div>
                 </div>
