@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IMakeGetLoanForm, QueryDataMakeGetLoan } from '~/@types/loan'
 import { Button, SubmitWrap } from '~/components'
-import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
+import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
@@ -52,44 +52,51 @@ const MakeGetLoan = () => {
             estimatePaidDate: null,
             userLoan: null,
             description: '',
+            image: null,
         },
     })
 
     const onsubmit: SubmitHandler<IMakeGetLoanForm> = async (data) => {
         setSubmitLoading(true)
-        let { amount, methodReference, description, estimatePaidDate, userLoan } = data
+        let { amount, methodReference, description, estimatePaidDate, userLoan, image } = data
+        let imageId = null
         amount = Number(amount)
         description = description.trim()
 
-        const documentSpending = {
-            _type: 'spending',
-            amount,
-            description: `${methodReference ? 'Cộng gốc' : 'Tạm vay'}${description ? `\n${description}` : ''}`,
-            kindSpending: {
-                _type: 'reference',
-                _ref: kindLoanId,
-            },
-            date: moment().format(), // for statistic
-            estimatePaidDate: estimatePaidDate ? moment(estimatePaidDate).format() : undefined,
-            paid: false,
-            ...(methodReference && {
-                surplus: methodReference.surplus,
-                methodReference: {
-                    _type: 'reference',
-                    _ref: methodReference._id,
-                },
-            }),
-            userLoan: {
-                _type: 'reference',
-                _ref: userLoan?._id,
-            },
-            user: {
-                _type: 'reference',
-                _ref: userProfile?._id,
-            },
-        }
-
         try {
+            if (image) {
+                const response = await client.assets.upload('image', image)
+                imageId = response._id
+            }
+
+            const documentSpending = {
+                _type: 'spending',
+                amount,
+                description: `${methodReference ? 'Cộng gốc' : 'Tạm vay'}${description ? `\n${description}` : ''}`,
+                kindSpending: {
+                    _type: 'reference',
+                    _ref: kindLoanId,
+                },
+                date: moment().format(), // for statistic
+                estimatePaidDate: estimatePaidDate ? moment(estimatePaidDate).format() : undefined,
+                paid: false,
+                ...(methodReference && {
+                    surplus: methodReference.surplus,
+                    methodReference: {
+                        _type: 'reference',
+                        _ref: methodReference._id,
+                    },
+                }),
+                userLoan: {
+                    _type: 'reference',
+                    _ref: userLoan?._id,
+                },
+                user: {
+                    _type: 'reference',
+                    _ref: userProfile?._id,
+                },
+                ...(imageId && { _type: 'image', asset: { _type: 'reference', _ref: imageId } }),
+            }
             const __ = client.transaction()
             __.create(documentSpending)
 
@@ -133,7 +140,7 @@ const MakeGetLoan = () => {
                 reloadData()
             }, 0)
 
-            form.reset({ amount: '', methodReference, userLoan }, { keepDefaultValues: true })
+            form.reset({ amount: '', methodReference, userLoan, image: null }, { keepDefaultValues: true })
             toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_GET_LOAN_SUCCESS))
             deleteCache([GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN])
             needCheckWhenLeave()
@@ -201,6 +208,8 @@ const MakeGetLoan = () => {
                             />
 
                             <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
+
+                            <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
                         </div>
                     </div>
                 </div>

@@ -3,10 +3,19 @@ import clsx from 'clsx'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { UploadImageCoreProps } from '~/@types/components'
+import { useFilePreview } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 
 const Core: React.FC<UploadImageCoreProps> = ({ image, clearImage, loading, id }) => {
     const { t } = useTranslation()
+    const preview = useFilePreview()
+    const handleClickImage = () => {
+        preview({
+            type: 'image',
+            file: image,
+        })
+    }
+
     return (
         <>
             {image ? (
@@ -15,7 +24,12 @@ const Core: React.FC<UploadImageCoreProps> = ({ image, clearImage, loading, id }
                         'animate-pulse cursor-wait': loading,
                     })}
                 >
-                    <img className='w-32 h-32 border bg-white rounded-md object-cover' src={image} alt='#image' />
+                    <img
+                        className='w-32 h-32 border bg-white rounded-md object-cover cursor-pointer hover:opacity-70 transition-opacity'
+                        src={image}
+                        alt='#image'
+                        onClick={handleClickImage}
+                    />
                     <label
                         htmlFor={id}
                         className={clsx(

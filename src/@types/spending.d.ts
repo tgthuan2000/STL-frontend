@@ -1,3 +1,4 @@
+import { SanityImageAssetDocument } from '@sanity/client'
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { KIND_SPENDING } from '~/constant/spending'
@@ -58,6 +59,7 @@ export interface ISpendingData {
     paid?: boolean
     realPaid?: number
     userLoan?: IUserLoan
+    image?: SanityImageAssetDocument
 }
 
 export interface IStatisticData {
@@ -217,6 +219,7 @@ export interface IDetailSpendingForm {
     date: Date
     description: string
     surplus: number
+    image?: File | SanityImageAssetDocument
 }
 export interface DataCategory {
     categorySpending: ICategorySpending[]

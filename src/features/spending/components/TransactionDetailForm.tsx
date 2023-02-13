@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { IDetailSpendingForm, TransactionDetailFormProps } from '~/@types/spending'
 import { Button, SubmitWrap } from '~/components'
-import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
+import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
@@ -39,6 +39,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
             date: moment(transaction.date).toDate(),
             description: transaction.description,
             surplus: transaction.surplus ?? 0,
+            image: transaction.image,
         },
     })
 
@@ -220,6 +221,8 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                         />
 
                                         <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
+
+                                        <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
                                     </div>
                                 </div>
                             </div>
