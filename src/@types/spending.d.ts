@@ -130,6 +130,7 @@ export interface MethodProps {
 export interface ListOptionProps {
     data: any[] | undefined
     loading: boolean
+    cleanCache: () => void
 }
 
 export interface TransactionDetailFormProps {

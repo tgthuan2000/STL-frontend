@@ -54,7 +54,11 @@ const Others = () => {
                     seeMore={false}
                     fullWidth
                 >
-                    <ListOption data={category?.data} loading={category.loading} />
+                    <ListOption
+                        data={category?.data}
+                        loading={category.loading}
+                        cleanCache={() => deleteCache('category')}
+                    />
                 </Box.Content>
                 <Box.Content
                     className='xl:row-start-1 xl:col-start-2 xl:col-span-1 col-span-1'
@@ -63,7 +67,7 @@ const Others = () => {
                     seeMore={false}
                     fullWidth
                 >
-                    <ListOption data={method?.data} loading={method.loading} />
+                    <ListOption data={method?.data} loading={method.loading} cleanCache={() => deleteCache('method')} />
                 </Box.Content>
             </Box>
         </Transaction>
