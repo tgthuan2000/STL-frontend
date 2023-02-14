@@ -10,23 +10,31 @@ const Statistic: React.FC<StatisticProps> = ({ data, loading }) => {
     if (loading) return <StatisticSkeleton />
     return (
         <div className='grid grid-cols-3 xl:gap-x-4 py-6'>
-            {data?.map(({ _id, name, color, value, getLoan }) => {
-                return (
-                    <div key={_id} className='flex flex-col justify-start items-center gap-y-2 overflow-hidden w-full'>
-                        <h4 className={clsx('xl:text-lg text-base font-medium', color)}>{name}</h4>
-                        <span className={clsx('xl:text-base text-sm font-medium text-gray-500 block w-full', color)}>
-                            <span className='truncate block w-full text-center'>{numeral(value || 0).format()}</span>
-                        </span>
-                        {Boolean(getLoan) && (
-                            <span className='xl:text-sm text-xs font-medium block w-full text-yellow-500'>
+            {Array.isArray(data) &&
+                data?.map(({ _id, name, color, value, getLoan }) => {
+                    return (
+                        <div
+                            key={_id}
+                            className='flex flex-col justify-start items-center gap-y-2 overflow-hidden w-full'
+                        >
+                            <h4 className={clsx('xl:text-lg text-base font-medium', color)}>{name}</h4>
+                            <span
+                                className={clsx('xl:text-base text-sm font-medium text-gray-500 block w-full', color)}
+                            >
                                 <span className='truncate block w-full text-center'>
-                                    [{t(LANGUAGE.LOAN)} {numeral(getLoan || 0).format()}]
+                                    {numeral(value || 0).format()}
                                 </span>
                             </span>
-                        )}
-                    </div>
-                )
-            })}
+                            {Boolean(getLoan) && (
+                                <span className='xl:text-sm text-xs font-medium block w-full text-yellow-500'>
+                                    <span className='truncate block w-full text-center'>
+                                        [{t(LANGUAGE.LOAN)} {numeral(getLoan || 0).format()}]
+                                    </span>
+                                </span>
+                            )}
+                        </div>
+                    )
+                })}
         </div>
     )
 }

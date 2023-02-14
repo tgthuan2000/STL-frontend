@@ -180,11 +180,16 @@ export interface DashboardQueryData {
     budget?: IBudgetSpending
     statistic: IStatisticData[]
 }
+export interface ITotalSpending {
+    key: KIND_SPENDING
+    data: number[]
+}
 export interface RecentQueryData {
     recent: {
         data: ISpendingData[]
         hasNextPage: boolean
     }
+    total: ITotalSpending[]
 }
 
 export interface MethodQueryData {
@@ -192,6 +197,7 @@ export interface MethodQueryData {
         data: ISpendingData[]
         hasNextPage: boolean
     }
+    total: ITotalSpending[]
 }
 
 export interface OthersQueryData {

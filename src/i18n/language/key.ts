@@ -170,6 +170,7 @@ enum LANGUAGE {
 
     /* LOAN */
     LOAN = 'loan',
+    GET_LOAN = 'get-loan',
     MAKE_GET_LOAN = 'make-get-loan',
     MAKE_LOAN = 'make-loan',
     MAKE_LOAN_GET_LOAN = 'make-loan-get-loan',

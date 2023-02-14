@@ -12,6 +12,19 @@ const { t } = i18n
 const __: ProfileService = {
     method: (method) => {
         // sum costs and receives
+        if (!Array.isArray(method)) {
+            return {
+                maxCost: {
+                    costs: 0,
+                },
+                maxReceive: {
+                    receives: 0,
+                },
+                maxUsed: {
+                    countUsed: 0,
+                },
+            }
+        }
         const map = method?.map((m) => ({ ...m, costs: sum(m.costs), receives: sum(m.receives) }))
 
         // get max costs, receives, used

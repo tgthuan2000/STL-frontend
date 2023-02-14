@@ -586,10 +586,19 @@ export interface ButtonGroupProps {
 
 export interface ListViewFilterProps {
     loading?: boolean
+    totalLoading?: boolean
     timeFilter?: boolean
     viewListMode?: boolean
     viewTotal?: boolean
     onSubmitTimeFilter: (data: TimeFilterPayload) => void
     children?: React.ReactNode
     _: ListViewResult
+    totalData?: {
+        cost: number
+        receive: number
+        count: number
+    }
+    receiveTitle?: DefaultTFuncReturn
+    costTitle?: DefaultTFuncReturn
+    countTitle?: DefaultTFuncReturn
 }

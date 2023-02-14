@@ -174,6 +174,7 @@ const translation: {
 
     /* LOAN */
     [LANGUAGE.LOAN]: 'Vay',
+    [LANGUAGE.GET_LOAN]: 'Cho vay',
     [LANGUAGE.MAKE_LOAN]: 'Vay',
     [LANGUAGE.MAKE_GET_LOAN]: 'Cho vay',
     [LANGUAGE.MAKE_LOAN_GET_LOAN]: 'Vay/Cho vay',
