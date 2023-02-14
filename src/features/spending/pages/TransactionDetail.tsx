@@ -235,7 +235,7 @@ const TransactionDetail = () => {
                     _type: 'reference',
                     _ref: methodSpending._id,
                 },
-                ...(imageId && { _type: 'image', asset: { _type: 'reference', _ref: imageId } }),
+                ...(imageId && { image: { _type: 'image', asset: { _type: 'reference', _ref: imageId } } }),
             }
 
             const patch = client.patch(id as string).set(document)
