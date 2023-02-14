@@ -216,10 +216,14 @@ const TransactionDetail = () => {
                 }
             }
 
-            let imageId = null
-            if (image && !get(image, '_id')) {
-                const fileImage = await client.assets.upload('image', image as File)
-                imageId = fileImage._id
+            let imageId = undefined
+            if (image) {
+                if (!get(image, 'asset._ref')) {
+                    const fileImage = await client.assets.upload('image', image as File)
+                    imageId = fileImage._id
+                }
+            } else {
+                imageId = null
             }
 
             const document = {
@@ -236,6 +240,7 @@ const TransactionDetail = () => {
                     _ref: methodSpending._id,
                 },
                 ...(imageId && { image: { _type: 'image', asset: { _type: 'reference', _ref: imageId } } }),
+                ...(imageId === null && { image: null }),
             }
 
             const patch = client.patch(id as string).set(document)
