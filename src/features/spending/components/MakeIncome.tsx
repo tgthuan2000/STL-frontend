@@ -128,9 +128,9 @@ const MakeIncome = () => {
                     _type: 'reference',
                     _ref: userProfile?._id,
                 },
-                ...(imageId && { _type: 'image', asset: { _type: 'reference', _ref: imageId } }),
+                ...(imageId && { image: { _type: 'image', asset: { _type: 'reference', _ref: imageId } } }),
             }
-
+            console.log({ document })
             const patchMethod = client
                 .patch(methodSpending?._id as string)
                 .setIfMissing({ surplus: 0, countUsed: 0 })

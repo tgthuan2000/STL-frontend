@@ -83,7 +83,7 @@ const MakeTransfer = () => {
                     _type: 'reference',
                     _ref: userProfile?._id,
                 },
-                ...(imageId && { _type: 'image', asset: { _type: 'reference', _ref: imageId } }),
+                ...(imageId && { image: { _type: 'image', asset: { _type: 'reference', _ref: imageId } } }),
             }
 
             const document2 = {
@@ -108,7 +108,7 @@ const MakeTransfer = () => {
                     _type: 'reference',
                     _ref: userProfile?._id,
                 },
-                ...(imageId && { _type: 'image', asset: { _type: 'reference', _ref: imageId } }),
+                ...(imageId && { image: { _type: 'image', asset: { _type: 'reference', _ref: imageId } } }),
             }
             const patch1 = client
                 .patch(methodSpendingFrom?._id as string)

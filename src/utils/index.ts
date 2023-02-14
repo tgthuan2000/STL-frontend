@@ -1,4 +1,5 @@
 import { find, flatMapDeep } from 'lodash'
+import { OptionMode } from '~/@types/utils'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { KIND_SPENDING } from '~/constant/spending'
 import { localStorageValue } from '~/hook/useLocalStorage'
@@ -11,11 +12,6 @@ export const getLinkSpending = (key: KIND_SPENDING, id: string) => {
         default:
             return `/spending/transaction/${id}`
     }
-}
-
-interface OptionMode<T> {
-    id: T
-    name: string
 }
 
 export const getDefaultMode = <T extends number>(array: OptionMode<T>[][], mode: number | undefined) => {

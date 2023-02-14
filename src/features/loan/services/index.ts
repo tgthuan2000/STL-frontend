@@ -1,16 +1,10 @@
-import { ArrowPathIcon, ListBulletIcon, TableCellsIcon } from '@heroicons/react/24/outline'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { Services } from '~/@types/loan'
 import { COUNT_PAGINATE, TAGS } from '~/constant'
-import { DATA_LIST_MODE } from '~/constant/component'
 import { E_FILTER_DATE } from '~/constant/template'
-import i18n from '~/i18n'
-import LANGUAGE from '~/i18n/language/key'
 import { GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE, GET_RECENT_SPENDING_PAGINATE } from '~/schema/query/spending'
-import { dataListOptions, getDate, listGroupOptions } from '~/services'
-
-const { t } = i18n
+import { getDate } from '~/services'
 
 export const services: Services = {
     getAll: ({ kindSpendingIds, userId }) => ({
@@ -127,6 +121,4 @@ export const services: Services = {
                 })
         }
     },
-    getDropdownOptions: dataListOptions,
-    getListGroupOptions: () => [listGroupOptions],
 }

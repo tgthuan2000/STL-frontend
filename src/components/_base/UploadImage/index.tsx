@@ -57,6 +57,11 @@ const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
             }
         }
 
+        const handleClearFile = () => {
+            setImage(null)
+            form.setValue(name, null)
+        }
+
         return (
             <Controller
                 name={name}
@@ -66,7 +71,7 @@ const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
                     <div className={clsx(className)}>
                         <Label id={id} label={label} />
                         <div className='mt-1'>
-                            <Core image={image} clearImage={() => setImage(null)} id={id} loading={loading} />
+                            <Core image={image} clearImage={handleClearFile} id={id} loading={loading} />
                         </div>
                         <ErrorMessage error={error} />
                         <input

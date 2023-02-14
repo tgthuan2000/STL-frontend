@@ -1,7 +1,7 @@
 import { ArrowPathIcon, ListBulletIcon, TableCellsIcon } from '@heroicons/react/24/outline'
-import { cloneDeep, get, isEmpty } from 'lodash'
+import { cloneDeep, isEmpty } from 'lodash'
 import moment from 'moment'
-import { List, _List } from '~/@types'
+import { DataListOptions, List, _List } from '~/@types'
 import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
 import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
@@ -101,7 +101,7 @@ export const listToTree = <T extends _List>(_list: T[]) => {
     return roots
 }
 
-export const dataListOptions = ({ onReloadClick }: any) => [
+export const dataListOptions: DataListOptions = ({ onReloadClick }: any) => [
     [
         { id: DATA_LIST_MODE.TABLE, name: t(LANGUAGE.TABLE), icon: TableCellsIcon },
         { id: DATA_LIST_MODE.LIST, name: t(LANGUAGE.LIST), icon: ListBulletIcon },

@@ -1,8 +1,7 @@
 import { SanityAssetDocument, SanityImageAssetDocument } from '@sanity/client'
 import React from 'react'
 import { SubmitHandler, UseFormReturn } from 'react-hook-form'
-import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
-import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
+import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/@types/hook'
 import { DropdownResult, ListGroupResult } from '.'
 import { Query } from './hook'
 import { ICategorySpending, IMethodSpending, ISpendingData, RecentQueryData } from './spending'
@@ -137,8 +136,6 @@ export interface Services {
     getAll: GetAll
     getDefaultValue: GetDefaultValue
     filterSubmit: FilterSubmit
-    getDropdownOptions: GetDropdownOptions
-    getListGroupOptions: GetLisGroupOptions
 }
 type GetAll = (options: GetAllOptions) => DefaultValueResult
 type GetLisGroupOptions = () => Array<Array<ListGroupResult>>

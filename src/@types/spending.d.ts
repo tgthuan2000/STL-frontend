@@ -1,8 +1,8 @@
 import { SanityImageAssetDocument } from '@sanity/client'
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
+import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/@types/hook'
 import { KIND_SPENDING } from '~/constant/spending'
-import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
 import { DropdownResult, ListGroupResult } from '.'
 import { IUserProfile } from './auth'
 import { IKindSpending } from './context'
@@ -272,8 +272,6 @@ export interface TransactionServices {
     getAll: TransactionGetAll
     getDefaultValue: TransactionGetDefaultValue
     filterSubmit: TransactionFilterSubmit
-    getDropdownOptions: GetDropdownOptions
-    getListGroupOptions: GetLisGroupOptions
 }
 
 type TransactionGetAll = (options: TransactionGetAllOptions) => TransactionDefaultValueResult
@@ -312,8 +310,6 @@ export interface MethodDetailServices {
     getAll: MethodDetailGetAll
     getDefaultValue: MethodGetDefaultValue
     filterSubmit: MethodFilterSubmit
-    getDropdownOptions: GetDropdownOptions
-    getListGroupOptions: GetLisGroupOptions
 }
 
 type MethodDetailGetAll = (options: MethodDetailGetAllOptions) => MethodDetailDefaultValueResult

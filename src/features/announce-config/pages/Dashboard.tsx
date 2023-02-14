@@ -1,20 +1,16 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { BellIcon, FireIcon, ListBulletIcon } from '@heroicons/react/24/outline'
+import { BellIcon } from '@heroicons/react/24/outline'
 import { useEffect, useMemo, useState } from 'react'
-import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useSearchParams } from 'react-router-dom'
 import { DefaultValueResult } from '~/@types/announce-config'
-import { DataListViewList, DataListViewTable, IDataListView, TimeFilterPayload } from '~/@types/components'
+import { DataListViewList, DataListViewTable, TimeFilterPayload } from '~/@types/components'
 import { NotifyQueryData } from '~/@types/notify'
-import { Button, DataListView, TimeFilter } from '~/components'
-import { Dropdown } from '~/components/_base'
+import { Button, DataListView, ListViewFilter } from '~/components'
 import { COUNT_PAGINATE } from '~/constant'
-import { DATA_LIST_GROUP, DATA_LIST_MODE, __groupBy } from '~/constant/component'
-import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
-import { useLocalStorage, useQuery, useWindowSize } from '~/hook'
+import { __groupBy } from '~/constant/component'
+import { useListViewFilter, useQuery, useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
-import { getDefaultMode } from '~/utils'
 import { EmptyTableNotify, SkeletonTableNotify } from '../components'
 import { services } from '../services'
 import * as __services from '../services/dataListView'
@@ -24,9 +20,6 @@ const Dashboard = () => {
     const [searchParams] = useSearchParams()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
     const defaultValues = useMemo(() => services.getDefaultValue({ searchParams }), [])
-    const dropdownOptions = useMemo(() => services.getDropdownOptions({ onReloadClick: () => handleClickReload() }), [])
-    const listGroupOptions = useMemo(() => services.getListGroupOptions(), [])
-    const [dataListView, setDataListView] = useLocalStorage<IDataListView>(LOCAL_STORAGE_KEY.STL_DATALIST_VIEW)
     const [{ query, params, tags }, setQuery] = useState<DefaultValueResult>(defaultValues)
     const [{ notify }, fetchData, deleteCacheData, reload, error] = useQuery<NotifyQueryData>(query, params, tags)
     const { width } = useWindowSize()
@@ -67,22 +60,7 @@ const Dashboard = () => {
         onReload()
     }
 
-    const form = useForm({
-        defaultValues: {
-            viewMode: getDefaultMode<DATA_LIST_MODE>(dropdownOptions, dataListView?.viewMode),
-            listGroup: getDefaultMode<DATA_LIST_GROUP>(listGroupOptions, dataListView?.listGroup),
-        },
-    })
-
-    useEffect(() => {
-        const viewMode = form.watch('viewMode')
-        setDataListView((prev) => ({ ...prev, viewMode: viewMode.id }))
-    }, [JSON.stringify(form.watch('viewMode'))])
-
-    useEffect(() => {
-        const listGroup = form.watch('listGroup')
-        setDataListView((prev) => ({ ...prev, listGroup: listGroup.id }))
-    }, [JSON.stringify(form.watch('listGroup'))])
+    const [{ listGroup, viewMode }, _] = useListViewFilter(handleClickReload)
 
     const tableProps: DataListViewTable = useMemo(
         () => ({
@@ -93,56 +71,32 @@ const Dashboard = () => {
 
     const listProps: DataListViewList = useMemo(
         () => ({
-            groupBy: __services.groupBy(__groupBy[form.watch('listGroup').id]),
+            groupBy: __services.groupBy(__groupBy[listGroup.id]),
             renderList: __services.renderList,
             renderTitle: __services.renderTitle,
         }),
-        [JSON.stringify(form.watch('listGroup'))]
+        [JSON.stringify(listGroup)]
     )
 
     return (
         <div className='sm:px-6 lg:px-8'>
             <div className='mt-4 flex flex-col'>
                 <div className='-my-2 -mx-4 sm:-mx-6 lg:-mx-8'>
-                    <div className='flex justify-between items-center flex-col sm:flex-row'>
-                        <div className='self-start sm:self-auto'>
-                            <TimeFilter onSubmit={handleFilterSubmit} />
-                        </div>
-                        <div className='flex items-center self-end sm:self-auto'>
-                            {form.watch('viewMode') && form.watch('viewMode').id === DATA_LIST_MODE.LIST && (
-                                <Dropdown
-                                    form={form}
-                                    name='listGroup'
-                                    data={listGroupOptions}
-                                    idKey='id'
-                                    valueKey='name'
-                                    label={<ListBulletIcon className='h-6' />}
-                                    disabled={notify.loading}
-                                />
-                            )}
-                            <Dropdown
-                                form={form}
-                                name='viewMode'
-                                data={dropdownOptions}
-                                idKey='id'
-                                valueKey='name'
-                                label={<FireIcon className='h-6' />}
-                                disabled={notify.loading}
-                            />
-                            <Link to='create' className='mr-2 sm:mr-0'>
-                                <Button type='button' color='green'>
-                                    <BellIcon className='h-6' />
-                                    {t(LANGUAGE.CREATE)}
-                                </Button>
-                            </Link>
-                        </div>
-                    </div>
+                    <ListViewFilter _={_} loading={notify.loading} onSubmitTimeFilter={handleFilterSubmit}>
+                        <Link to='create'>
+                            <Button type='button' color='green'>
+                                <BellIcon className='h-6' />
+                                {t(LANGUAGE.CREATE)}
+                            </Button>
+                        </Link>
+                    </ListViewFilter>
+
                     {error ? (
                         <p className='m-5 text-radical-red-500 font-medium'>{t(LANGUAGE.ERROR)}</p>
                     ) : (
                         <div ref={parentRef}>
                             <DataListView
-                                mode={form.watch('viewMode')?.id}
+                                mode={viewMode?.id}
                                 loading={notify.loading}
                                 onGetMore={handleScrollGetMore}
                                 data={notify.data?.data}

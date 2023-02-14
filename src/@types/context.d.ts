@@ -1,9 +1,9 @@
 import { SanityDocument } from '@sanity/client'
 import React from 'react'
+import { TagsTypeUseQuery } from '~/@types/hook'
 import { TAGS } from '~/constant'
 import { PERMISSION } from '~/constant/permission'
 import { KIND_SPENDING } from '~/constant/spending'
-import { TagsTypeUseQuery } from '~/hook/useQuery'
 import { NotifyItem } from './notify'
 
 type LoadingItems = {
