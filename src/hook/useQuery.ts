@@ -1,6 +1,13 @@
-import { cloneDeep, get, isEmpty, isEqual } from 'lodash'
+import { get, isEmpty, isEqual } from 'lodash'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Data, useQueryType } from '~/@types/hook'
+import {
+    Data,
+    ParamsTypeUseQuery,
+    QueryTypeUseQuery,
+    RefactorUseQuery,
+    TagsTypeUseQuery,
+    useQueryType,
+} from '~/@types/hook'
 import { TAGS } from '~/constant'
 import { useCache } from '~/context'
 
@@ -76,11 +83,6 @@ const assignLoading = <T extends { [x: string]: string }>(prev: Data<T>) => {
     })
     return Object.assign({}, ...arr)
 }
-
-export type ParamsTypeUseQuery = { [y: string]: string | number | null | string[] }
-export type QueryTypeUseQuery<T> = { [Property in keyof T]: string }
-export type TagsTypeUseQuery<T> = { [Property in keyof T]: TAGS }
-export type RefactorUseQuery<T> = (data: T) => T
 
 const useQuery = <T extends { [x: string]: any }>(
     query: QueryTypeUseQuery<T>,
