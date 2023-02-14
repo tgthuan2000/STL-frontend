@@ -56,3 +56,11 @@ export interface ListViewResult {
 }
 
 export type UseListViewFilter = (onReload?: () => void) => ListViewResult
+
+export type localStorageValue<T> = T | undefined
+export type valueSet<T> = T | ((value: localStorageValue<T>) => T)
+export type UseLocalStorageResult<T> = [
+    value: localStorageValue<T>,
+    set: (value: valueSet<T>) => void,
+    remove: () => void
+]
