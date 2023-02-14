@@ -118,7 +118,7 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
                             <InputForm onSubmit={handleSubmitForm} defaultMessage={showInput.message} />
                             <button
                                 type='button'
-                                className='font-normal text-radical-red-500 hover:opacity-70'
+                                className='font-normal text-radical-red-500 hover:opacity-70 whitespace-nowrap'
                                 onClick={() =>
                                     setShowInput({
                                         show: false,
