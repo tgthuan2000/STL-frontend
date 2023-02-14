@@ -38,8 +38,8 @@ const ListViewFilter: React.FC<ListViewFilterProps> = ({
                         {totalLoading ? (
                             Array.from(Array(3)).map((v, i) => (
                                 <span key={i} className='animate-pulse flex flex-col gap-1'>
-                                    <span className='inline-block h-3.5 w-10 bg-gray-500 dark:bg-slate-700 rounded-full' />{' '}
-                                    <span className='inline-block h-3.5 w-14 bg-gray-500 dark:bg-slate-700 rounded-full' />
+                                    <span className='inline-block h-3.5 w-10 bg-gray-300 dark:bg-slate-700 rounded-full' />{' '}
+                                    <span className='inline-block h-3.5 w-14 bg-gray-300 dark:bg-slate-700 rounded-full' />
                                 </span>
                             ))
                         ) : (
