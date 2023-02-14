@@ -60,7 +60,8 @@ const Dashboard = () => {
         onReload()
     }
 
-    const [{ listGroup, viewMode }, _] = useListViewFilter(handleClickReload)
+    const _ = useListViewFilter(handleClickReload)
+    const { listGroup, viewMode } = _
 
     const tableProps: DataListViewTable = useMemo(
         () => ({

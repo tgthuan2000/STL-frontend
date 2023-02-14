@@ -55,4 +55,4 @@ export interface ListViewResult {
     listGroupOptions: ListGroupOption
 }
 
-export type UseListViewFilter = (onReload?: () => void) => [ListViewResult, ListViewResult]
+export type UseListViewFilter = (onReload?: () => void) => ListViewResult

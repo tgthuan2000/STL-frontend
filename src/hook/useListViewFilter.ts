@@ -37,8 +37,7 @@ const useListViewFilter: UseListViewFilter = (onReload?: () => void) => {
         setDataListView((prev) => ({ ...prev, listGroup: listGroup.id }))
     }, [JSON.stringify(listGroup)])
 
-    const ref = { viewMode, listGroup, form, dropdownOptions, listGroupOptions }
-    return [ref, ref]
+    return { viewMode, listGroup, form, dropdownOptions, listGroupOptions }
 }
 
 export default useListViewFilter
