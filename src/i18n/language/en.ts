@@ -174,6 +174,7 @@ const translation: {
 
     /* LOAN */
     [LANGUAGE.LOAN]: 'Loan',
+    [LANGUAGE.GET_LOAN]: 'Get loan',
     [LANGUAGE.MAKE_GET_LOAN]: 'Make get loan',
     [LANGUAGE.MAKE_LOAN]: 'Make loan',
     [LANGUAGE.MAKE_LOAN_GET_LOAN]: 'Make loan/get loan',

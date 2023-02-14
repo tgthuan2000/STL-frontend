@@ -61,7 +61,7 @@ const Dashboard = () => {
 
     const dataStatistic = useMemo(() => {
         const data = statistic.data
-        if (!data || isNil(data) || isEmpty(data)) return
+        if (!Array.isArray(data) || isNil(data) || isEmpty(data)) return
         const _ = data.reduce(
             (result, value) => {
                 return {

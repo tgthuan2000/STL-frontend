@@ -60,7 +60,8 @@ const Dashboard = () => {
         onReload()
     }
 
-    const [{ listGroup, viewMode }, _] = useListViewFilter(handleClickReload)
+    const _ = useListViewFilter(handleClickReload)
+    const { listGroup, viewMode } = _
 
     const tableProps: DataListViewTable = useMemo(
         () => ({
@@ -82,7 +83,12 @@ const Dashboard = () => {
         <div className='sm:px-6 lg:px-8'>
             <div className='mt-4 flex flex-col'>
                 <div className='-my-2 -mx-4 sm:-mx-6 lg:-mx-8'>
-                    <ListViewFilter _={_} loading={notify.loading} onSubmitTimeFilter={handleFilterSubmit}>
+                    <ListViewFilter
+                        _={_}
+                        loading={notify.loading}
+                        viewTotal={false}
+                        onSubmitTimeFilter={handleFilterSubmit}
+                    >
                         <Link to='create'>
                             <Button type='button' color='green'>
                                 <BellIcon className='h-6' />

@@ -1,13 +1,6 @@
 import { useState } from 'react'
+import { localStorageValue, UseLocalStorageResult, valueSet } from '~/@types/hook'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
-
-export type localStorageValue<T> = T | undefined
-type valueSet<T> = T | ((value: localStorageValue<T>) => T)
-export type UseLocalStorageResult<T> = [
-    value: localStorageValue<T>,
-    set: (value: valueSet<T>) => void,
-    remove: () => void
-]
 
 const useLocalStorage = <T>(key: LOCAL_STORAGE_KEY): UseLocalStorageResult<T> => {
     const [value, setValue] = useState<localStorageValue<T>>(() => {

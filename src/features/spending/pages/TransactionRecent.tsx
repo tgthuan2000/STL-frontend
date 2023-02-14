@@ -1,5 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { get } from 'lodash'
+import { get, isEmpty, isNil, sum } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
@@ -40,7 +40,40 @@ const TransactionRecent = () => {
         tags: TagsTypeUseQuery<RecentQueryData>
     }>(defaultValues)
 
-    const [{ recent }, fetchData, deleteCacheData, reload, error] = useQuery<RecentQueryData>(query, params, tags)
+    const [{ recent, total }, fetchData, deleteCacheData, reload, error] = useQuery<RecentQueryData>(
+        query,
+        params,
+        tags
+    )
+
+    const dataTotal = useMemo(() => {
+        const data = total.data
+        if (!Array.isArray(data) || isNil(data) || isEmpty(data)) return
+        const defaultValue = { total: 0, count: 0 }
+        const {
+            receive,
+            cost,
+            'transfer-from': transferFrom,
+            'transfer-to': transferTo,
+        } = data.reduce(
+            (result, value) => {
+                return {
+                    ...result,
+                    [value.key]: {
+                        total: sum(value.data),
+                        count: value.data.length,
+                    },
+                }
+            },
+            { cost: defaultValue, receive: defaultValue, 'transfer-from': defaultValue, 'transfer-to': defaultValue }
+        )
+
+        return {
+            cost: cost.total,
+            receive: receive.total,
+            count: [cost, receive, transferFrom, transferTo].reduce((result, value) => result + value.count, 0),
+        }
+    }, [total.data, t])
 
     useCheck(reload)
 
@@ -49,7 +82,7 @@ const TransactionRecent = () => {
     }, [])
 
     const onReload = () => {
-        const res = deleteCacheData('recent')
+        const res = deleteCacheData('recent', 'total')
         console.log(res)
         reload()
     }
@@ -81,7 +114,8 @@ const TransactionRecent = () => {
     }
 
     const { width } = useWindowSize()
-    const [{ listGroup, viewMode }, _] = useListViewFilter(handleClickReload)
+    const _ = useListViewFilter(handleClickReload)
+    const { listGroup, viewMode } = _
 
     const tableProps: DataListViewTable = useMemo(
         () => ({
@@ -104,7 +138,13 @@ const TransactionRecent = () => {
         <div className='sm:px-6 lg:px-8'>
             <div className='mt-4 flex flex-col'>
                 <div className='-my-2 -mx-4 sm:-mx-6 lg:-mx-8'>
-                    <ListViewFilter _={_} loading={recent.loading} onSubmitTimeFilter={handleFilterSubmit} />
+                    <ListViewFilter
+                        _={_}
+                        totalData={dataTotal}
+                        totalLoading={total.loading}
+                        loading={recent.loading}
+                        onSubmitTimeFilter={handleFilterSubmit}
+                    />
                     {error ? (
                         <p className='m-5 text-radical-red-500 font-medium'>{t(LANGUAGE.ERROR)}</p>
                     ) : (

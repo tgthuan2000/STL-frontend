@@ -8,7 +8,7 @@ import { DATE_FORMAT } from '~/constant'
 import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
 import { PERMISSION } from '~/constant/permission'
 import { IFILTER_DATE } from '~/constant/template'
-import { ListViewResult } from '~/hook/useListViewFilter'
+import { ListViewResult } from '~/hook'
 import { localStorageValue } from '~/hook/useLocalStorage'
 import { HeroIcon } from '.'
 import { IUserLoan } from './loan'
@@ -586,10 +586,19 @@ export interface ButtonGroupProps {
 
 export interface ListViewFilterProps {
     loading?: boolean
+    totalLoading?: boolean
     timeFilter?: boolean
     viewListMode?: boolean
     viewTotal?: boolean
     onSubmitTimeFilter: (data: TimeFilterPayload) => void
     children?: React.ReactNode
     _: ListViewResult
+    totalData?: {
+        cost: number
+        receive: number
+        count: number
+    }
+    receiveTitle?: DefaultTFuncReturn
+    costTitle?: DefaultTFuncReturn
+    countTitle?: DefaultTFuncReturn
 }

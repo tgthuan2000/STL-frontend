@@ -3,28 +3,39 @@ import moment from 'moment'
 import { Services } from '~/@types/loan'
 import { COUNT_PAGINATE, TAGS } from '~/constant'
 import { E_FILTER_DATE } from '~/constant/template'
-import { GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE, GET_RECENT_SPENDING_PAGINATE } from '~/schema/query/spending'
+import {
+    GET_RECENT_SPENDING_BY_METHOD_FILTER_DATE_RANGE_TOTAL,
+    GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE,
+    GET_RECENT_SPENDING_PAGINATE,
+    GET_RECENT_SPENDING_TOTAL,
+} from '~/schema/query/spending'
 import { getDate } from '~/services'
 
 export const services: Services = {
     getAll: ({ kindSpendingIds, userId }) => ({
-        query: { recent: GET_RECENT_SPENDING_PAGINATE },
+        query: { recent: GET_RECENT_SPENDING_PAGINATE, total: GET_RECENT_SPENDING_TOTAL },
         params: {
             userId,
             kindSpendingIds,
             __fromRecent: 0,
             __toRecent: COUNT_PAGINATE,
         },
-        tags: { recent: TAGS.ALTERNATE },
+        tags: { recent: TAGS.ALTERNATE, total: TAGS.ALTERNATE },
     }),
     getDefaultValue({ searchParams, getAll }) {
         try {
-            let query = GET_RECENT_SPENDING_PAGINATE,
+            let query = {
+                    recent: GET_RECENT_SPENDING_PAGINATE,
+                    total: GET_RECENT_SPENDING_TOTAL,
+                },
                 params = {}
 
             const d = Object.fromEntries([...searchParams])
             if (!isEmpty(d)) {
-                query = GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE
+                query = {
+                    recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE,
+                    total: GET_RECENT_SPENDING_BY_METHOD_FILTER_DATE_RANGE_TOTAL,
+                }
                 let { type, data } = d
                 data = JSON.parse(data)
 
@@ -62,7 +73,7 @@ export const services: Services = {
             }
             return {
                 ...getAll,
-                query: { recent: query },
+                query,
                 params: { ...getAll.params, ...params },
             }
         } catch (error) {
@@ -71,6 +82,10 @@ export const services: Services = {
         }
     },
     filterSubmit(data, { defaultValues, getAll }) {
+        const query = {
+            recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE,
+            total: GET_RECENT_SPENDING_BY_METHOD_FILTER_DATE_RANGE_TOTAL,
+        }
         switch (data.id) {
             case E_FILTER_DATE.ALL:
                 return getAll
@@ -79,7 +94,7 @@ export const services: Services = {
                 const date = data.data as Date
                 return (prev) => ({
                     ...prev,
-                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
+                    query,
                     params: {
                         ...defaultValues.params,
                         __startDate: getDate(date, 'start'),
@@ -90,7 +105,7 @@ export const services: Services = {
                 const [startDate, endDate] = data.data as Date[]
                 return (prev) => ({
                     ...prev,
-                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
+                    query,
                     params: {
                         ...defaultValues.params,
                         __startDate: getDate(startDate, 'start'),
@@ -101,7 +116,7 @@ export const services: Services = {
                 const month = data.data as Date
                 return (prev) => ({
                     ...prev,
-                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
+                    query,
                     params: {
                         ...defaultValues.params,
                         __startDate: getDate(month, 'start', 'month'),
@@ -112,7 +127,7 @@ export const services: Services = {
                 const year = data.data as Date
                 return (prev) => ({
                     ...prev,
-                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
+                    query,
                     params: {
                         ...defaultValues.params,
                         __startDate: getDate(year, 'start', 'year'),

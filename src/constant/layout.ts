@@ -1,7 +1,7 @@
 import { ArrowsUpDownIcon, BanknotesIcon, BellIcon, UserIcon } from '@heroicons/react/24/outline'
 import React from 'react'
+import { localStorageValue } from '~/@types/hook'
 import { NavigationMobile, NavLinkIconProps, OptionMenu } from '~/@types/layout'
-import { localStorageValue } from '~/hook/useLocalStorage'
 import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
 import { LOCAL_STORAGE_KEY } from './localStorage'
