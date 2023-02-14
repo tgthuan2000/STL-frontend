@@ -272,8 +272,6 @@ export interface TransactionServices {
     getAll: TransactionGetAll
     getDefaultValue: TransactionGetDefaultValue
     filterSubmit: TransactionFilterSubmit
-    getDropdownOptions: GetDropdownOptions
-    getListGroupOptions: GetLisGroupOptions
 }
 
 type TransactionGetAll = (options: TransactionGetAllOptions) => TransactionDefaultValueResult
@@ -312,8 +310,6 @@ export interface MethodDetailServices {
     getAll: MethodDetailGetAll
     getDefaultValue: MethodGetDefaultValue
     filterSubmit: MethodFilterSubmit
-    getDropdownOptions: GetDropdownOptions
-    getListGroupOptions: GetLisGroupOptions
 }
 
 type MethodDetailGetAll = (options: MethodDetailGetAllOptions) => MethodDetailDefaultValueResult

@@ -137,8 +137,6 @@ export interface Services {
     getAll: GetAll
     getDefaultValue: GetDefaultValue
     filterSubmit: FilterSubmit
-    getDropdownOptions: GetDropdownOptions
-    getListGroupOptions: GetLisGroupOptions
 }
 type GetAll = (options: GetAllOptions) => DefaultValueResult
 type GetLisGroupOptions = () => Array<Array<ListGroupResult>>

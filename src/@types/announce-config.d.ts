@@ -38,8 +38,6 @@ export interface Services {
     getAll: DefaultValueResult
     getDefaultValue: GetDefaultValue
     filterSubmit: FilterSubmit
-    getDropdownOptions: GetDropdownOptions
-    getListGroupOptions: GetLisGroupOptions
 }
 
 type GetLisGroupOptions = () => Array<Array<ListGroupResult>>

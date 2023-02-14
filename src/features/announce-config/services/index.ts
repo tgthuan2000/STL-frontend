@@ -1,12 +1,10 @@
-import { ArrowPathIcon, ListBulletIcon, TableCellsIcon } from '@heroicons/react/24/outline'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { Services } from '~/@types/announce-config'
 import { COUNT_PAGINATE, TAGS } from '~/constant'
-import { DATA_LIST_MODE } from '~/constant/component'
 import { E_FILTER_DATE } from '~/constant/template'
 import { GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE, GET_NOTIFY_CONFIG_PAGINATE } from '~/schema/query/notify'
-import { dataListOptions, getDate, getDate as _getDate, listGroupOptions } from '~/services'
+import { getDate, getDate as _getDate } from '~/services'
 
 export const services: Services = {
     getAll: {
@@ -122,6 +120,4 @@ export const services: Services = {
                 })
         }
     },
-    getDropdownOptions: dataListOptions,
-    getListGroupOptions: () => [listGroupOptions],
 }

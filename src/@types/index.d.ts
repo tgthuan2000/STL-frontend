@@ -25,3 +25,16 @@ export interface _List {
     parentId: string | null
 }
 export type List<T> = T & { children?: Array<T> }
+
+export interface DataListOptionsParam {
+    onReloadClick: () => void
+}
+export interface DataOption {
+    id: number
+    name: string
+    icon: HeroIcon
+    onClick?: () => void
+}
+export type DataListOptionsResult = Array<Array<DataOption>>
+
+export type DataListOptions = (params: DataListOptionsParam) => DataListOptionsResult

@@ -1,6 +1,5 @@
 import { SanityDocument, SanityImageAssetDocument } from '@sanity/client'
 import { DefaultTFuncReturn } from 'i18next'
-import { DebouncedFunc } from 'lodash'
 import React, { HTMLInputTypeAttribute, ReactNode } from 'react'
 import { ControllerRenderProps, FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
 import { ReactQuillProps } from 'react-quill'
@@ -9,6 +8,7 @@ import { DATE_FORMAT } from '~/constant'
 import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
 import { PERMISSION } from '~/constant/permission'
 import { IFILTER_DATE } from '~/constant/template'
+import { ListViewResult } from '~/hook/useListViewFilter'
 import { localStorageValue } from '~/hook/useLocalStorage'
 import { HeroIcon } from '.'
 import { IUserLoan } from './loan'
@@ -582,4 +582,14 @@ export interface ButtonGroupProps {
     valueKey?: string
     data?: any[]
     onChange?: (data: any) => void
+}
+
+export interface ListViewFilterProps {
+    loading?: boolean
+    timeFilter?: boolean
+    viewListMode?: boolean
+    viewTotal?: boolean
+    onSubmitTimeFilter: (data: TimeFilterPayload) => void
+    children?: React.ReactNode
+    _: ListViewResult
 }
