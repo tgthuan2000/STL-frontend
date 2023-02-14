@@ -53,8 +53,8 @@ export const getColorPrize = (variable: any) => {
 
 export const getBudgetId = (userId: string, month?: moment.MomentInput) => moment(month).format('YYYY-MM-') + userId
 
-export const getSpacingTime = (time: string) => {
-    const now = new Date()
+export const getSpacingTime = (time: string, now?: Date) => {
+    now = now || new Date()
     const date = new Date(time)
     const diff = Math.abs(now.getTime() - date.getTime())
     const diffDays = Math.ceil(diff / (1000 * 3600 * 24))
@@ -71,12 +71,6 @@ export const getSpacingTime = (time: string) => {
     }
     return t(LANGUAGE.RECENT)
 }
-
-export const listGroupOptions = [
-    { id: DATA_LIST_GROUP.DATE, name: t(LANGUAGE.DAY) },
-    { id: DATA_LIST_GROUP.MONTH, name: t(LANGUAGE.MONTH) },
-    { id: DATA_LIST_GROUP.YEAR, name: t(LANGUAGE.YEAR) },
-]
 
 export const listToTree = <T extends _List>(_list: T[]) => {
     let list: Array<List<T>> = cloneDeep(_list),
@@ -100,6 +94,12 @@ export const listToTree = <T extends _List>(_list: T[]) => {
     }
     return roots
 }
+
+export const listGroupOptions = [
+    { id: DATA_LIST_GROUP.DATE, name: t(LANGUAGE.DAY) },
+    { id: DATA_LIST_GROUP.MONTH, name: t(LANGUAGE.MONTH) },
+    { id: DATA_LIST_GROUP.YEAR, name: t(LANGUAGE.YEAR) },
+]
 
 export const dataListOptions: DataListOptions = ({ onReloadClick }: any) => [
     [
