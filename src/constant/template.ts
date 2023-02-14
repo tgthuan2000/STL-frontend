@@ -9,6 +9,11 @@ export enum E_FILTER_DATE {
     MONTH = 4,
     YEAR = 5,
 }
+
+export enum E_DATE_RANGE_SUGGESTION {
+    THIS_WEEK = 1,
+    LAST_WEEK = 2,
+}
 export interface IFILTER_DATE {
     id: E_FILTER_DATE
     name: string
@@ -47,4 +52,9 @@ export const TABS_FILTER_DATE: IFILTER_DATE[] = [
         dateName: t(LANGUAGE.YEAR),
         formatDate: 'YEAR',
     },
+]
+
+export const dateRangeSuggestions = [
+    { id: E_DATE_RANGE_SUGGESTION.THIS_WEEK, label: t(LANGUAGE.THIS_WEEK) },
+    { id: E_DATE_RANGE_SUGGESTION.LAST_WEEK, label: t(LANGUAGE.LAST_WEEK) },
 ]
