@@ -17,7 +17,6 @@ const Tabs: React.FC<TabsProps> = ({
 }) => {
     const { t } = useTranslation()
     const [parent] = useAutoAnimate<HTMLDivElement>()
-    const [panelRef] = useAutoAnimate<HTMLDivElement>()
 
     return (
         <div className={className} ref={parent}>
@@ -40,7 +39,7 @@ const Tabs: React.FC<TabsProps> = ({
                         </Tab>
                     ))}
                 </Tab.List>
-                <Tab.Panels ref={panelRef}>
+                <Tab.Panels>
                     {options.map((option, index) => (
                         <Tab.Panel key={option[idKey] ?? index}>
                             <Suspense
