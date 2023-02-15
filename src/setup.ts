@@ -1,11 +1,16 @@
-import { client } from './sanityConfig'
-
-const setupNotifications = async () => {
+export const setupNotifications = async () => {
     if (!('Notification' in window)) {
+        console.warn('Notifications are not supported in this browser')
         return
     }
 
     if (Notification.permission === 'denied') {
+        console.warn('Notifications are denied by the user')
+        return
+    }
+
+    if (!('PushManager' in window)) {
+        console.warn('Push messaging is not supported')
         return
     }
 
@@ -21,13 +26,4 @@ const setupNotifications = async () => {
             resolve('granted')
         }
     })
-
-    // const subscriber = async () => {
-    //     // const sub = client.listen(`count(*[ _type == 'madLib' ])`).subscribe(() => {})
-    //     // sub.unsubscribe()
-    // }
-
-    // subscriber()
 }
-
-export default setupNotifications

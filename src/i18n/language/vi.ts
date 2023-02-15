@@ -92,6 +92,12 @@ const translation: {
     [LANGUAGE.NAME]: 'Tên',
     [LANGUAGE.SAVING]: 'Đang lưu...',
 
+    /* PWA */
+    [LANGUAGE.APP_READY_WORK_OFFLINE]: 'Ứng dụng đã sẵn sàng để làm việc ngoại tuyến',
+    [LANGUAGE.RELOAD_TEXT]: 'Ứng dụng đã được cập nhật. Vui lòng nhấn nút tải lại để xem thay đổi.',
+    [LANGUAGE.RELOAD]: 'Tải lại',
+    [LANGUAGE.CLOSE]: 'Đóng',
+
     /* EMPTY DATA */
     [LANGUAGE.EMPTY_NOTIFY]: 'Không có thông báo',
     [LANGUAGE.EMPTY_DESCRIPTION]: 'Không có mô tả',

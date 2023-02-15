@@ -92,6 +92,12 @@ const translation: {
     [LANGUAGE.NAME]: 'Name',
     [LANGUAGE.SAVING]: 'Saving',
 
+    /* PWA */
+    [LANGUAGE.APP_READY_WORK_OFFLINE]: 'App ready to work offline',
+    [LANGUAGE.RELOAD_TEXT]: 'New content available, click on reload button to update.',
+    [LANGUAGE.RELOAD]: 'Reload',
+    [LANGUAGE.CLOSE]: 'Close',
+
     /* EMPTY DATA */
     [LANGUAGE.EMPTY_NOTIFY]: 'Empty notify',
     [LANGUAGE.EMPTY_DESCRIPTION]: 'Empty description',
