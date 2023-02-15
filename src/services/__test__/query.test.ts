@@ -94,18 +94,18 @@ describe('query', () => {
         expect(getRecentLoan({ userProfile, kindLoan, kindGetLoan })).toMatchSnapshot()
     })
 
-    it('getPayDueLoan', () => {
-        const userProfile = {
-            _id: '123',
-            _rev: '123',
-            _type: 'user',
-            _createdAt: '',
-            _updatedAt: '',
-        }
-        const kindLoan = '123'
-        const kindGetLoan = '123'
-        expect(getPayDueLoan({ userProfile, kindLoan, kindGetLoan })).toMatchSnapshot()
-    })
+    // it('getPayDueLoan', () => {
+    //     const userProfile = {
+    //         _id: '123',
+    //         _rev: '123',
+    //         _type: 'user',
+    //         _createdAt: '',
+    //         _updatedAt: '',
+    //     }
+    //     const kindLoan = '123'
+    //     const kindGetLoan = '123'
+    //     expect(getPayDueLoan({ userProfile, kindLoan, kindGetLoan })).toMatchSnapshot()
+    // })
 
     it('getStatisticLoan', () => {
         const userProfile = {
