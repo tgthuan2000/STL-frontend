@@ -15,7 +15,49 @@ export default defineConfig({
             registerType: 'prompt',
             injectRegister: 'auto',
             workbox: {
-                globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+                globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+                globDirectory: 'dist',
+                swDest: 'dist/sw.js',
+                skipWaiting: true,
+                clientsClaim: true,
+                runtimeCaching: [
+                    {
+                        urlPattern: /^https:\/\/fonts\.googleapis\.com/,
+                        handler: 'CacheFirst',
+                        options: {
+                            cacheName: 'google-fonts-stylesheets',
+                            // Only cache 10 stylesheets.
+                            expiration: {
+                                maxEntries: 10,
+                                maxAgeSeconds: 60 * 60 * 24 * 365,
+                                // Automatically cleanup if quota is exceeded.
+                                purgeOnQuotaError: true,
+                            },
+                        },
+                    },
+                    {
+                        urlPattern: /^https:\/\/fonts\.gstatic\.com/,
+                        handler: 'CacheFirst',
+                        options: {
+                            cacheName: 'google-fonts-webfonts',
+                            expiration: {
+                                maxAgeSeconds: 60 * 60 * 24 * 365,
+                                purgeOnQuotaError: true,
+                            },
+                        },
+                    },
+                    {
+                        urlPattern: /^https:\/\/cdn\.jsdelivr\.net/,
+                        handler: 'CacheFirst',
+                        options: {
+                            cacheName: 'jsdelivr',
+                            expiration: {
+                                maxAgeSeconds: 60 * 60 * 24 * 365,
+                                purgeOnQuotaError: true,
+                            },
+                        },
+                    },
+                ],
             },
             includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
             manifest: {
@@ -42,7 +84,6 @@ export default defineConfig({
                     },
                 ],
             },
-
             devOptions: {
                 enabled: true,
             },
