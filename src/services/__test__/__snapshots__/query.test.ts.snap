@@ -54,7 +54,7 @@ exports[`query > getMethodSpendingDescSurplus 1`] = `
 exports[`query > getPayDueLoan 1`] = `
 {
   "params": {
-    "dueDate": "2023-02-22T09:22:29.581Z",
+    "dueDate": "2023-02-22T10:01:54.050Z",
     "from": 0,
     "kindGetLoan": "123",
     "kindLoan": "123",

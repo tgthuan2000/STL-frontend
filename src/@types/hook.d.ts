@@ -25,7 +25,7 @@ export type useQueryType<T> = [
     React.Dispatch<React.SetStateAction<Data<T>>>
 ]
 
-export type ParamsTypeUseQuery = { [y: string]: string | number | null | string[] }
+export type ParamsTypeUseQuery = { [y: string]: string | number | null | string[] | undefined }
 export type QueryTypeUseQuery<T> = { [Property in keyof T]: string }
 export type TagsTypeUseQuery<T> = { [Property in keyof T]: TAGS }
 export type RefactorUseQuery<T> = (data: T) => T
