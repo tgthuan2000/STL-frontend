@@ -107,7 +107,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
     */
     const fetchApi = async <T extends { [x: string]: any }>(
         callApi: { [x: string]: { query: string; key: number } },
-        params: { [y: string]: string | number | string[] | null }
+        params: { [y: string]: string | number | string[] | null | undefined }
     ) => {
         /* keys: key of query (EX: recent, methodSpending, v.v) */
         const keys = Object.keys(callApi)

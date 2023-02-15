@@ -22,12 +22,12 @@ const setupNotifications = async () => {
         }
     })
 
-    const subscriber = async () => {
-        const sub = client.listen(`count(*[ _type == 'madLib' ])`).subscribe(() => {})
-        // sub.unsubscribe()
-    }
+    // const subscriber = async () => {
+    //     // const sub = client.listen(`count(*[ _type == 'madLib' ])`).subscribe(() => {})
+    //     // sub.unsubscribe()
+    // }
 
-    subscriber()
+    // subscriber()
 }
 
 export default setupNotifications

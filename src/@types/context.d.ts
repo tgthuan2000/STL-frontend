@@ -41,7 +41,7 @@ export interface ISlideOverContext {
 }
 export type FetchApi = <T extends { [x: string]: any }>(
     callApi: { [x: string]: { query: string; key: number } },
-    params: { [y: string]: string | number | string[] | null }
+    params: { [y: string]: string | number | string[] | null | undefined }
 ) => Promise<T>
 
 export type CheckInCache = <T extends { [x: string]: any }>(

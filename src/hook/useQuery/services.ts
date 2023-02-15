@@ -15,7 +15,7 @@ export const filterQueryParams = <T>(
     const data = Object.keys(query).map((key) => {
         let p: ParamsTypeUseQuery = {}
         const item = get(query, key, '') as string
-        const tag = get(tags, key, '') as string
+        const tag = get(tags, key, undefined)
 
         if (!isEmpty(keys)) {
             p = Object.assign({}, ...keys.filter((x) => item.includes(x)).map((v) => ({ [v]: params[v] })))
