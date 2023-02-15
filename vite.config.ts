@@ -15,7 +15,7 @@ export default defineConfig({
             registerType: 'prompt',
             injectRegister: 'auto',
             workbox: {
-                globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+                globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,wav}'],
                 globDirectory: 'dist',
                 swDest: 'dist/sw.js',
                 skipWaiting: true,
@@ -40,17 +40,6 @@ export default defineConfig({
                         handler: 'CacheFirst',
                         options: {
                             cacheName: 'google-fonts-webfonts',
-                            expiration: {
-                                maxAgeSeconds: 60 * 60 * 24 * 365,
-                                purgeOnQuotaError: true,
-                            },
-                        },
-                    },
-                    {
-                        urlPattern: /^https:\/\/cdn\.jsdelivr\.net/,
-                        handler: 'CacheFirst',
-                        options: {
-                            cacheName: 'jsdelivr',
                             expiration: {
                                 maxAgeSeconds: 60 * 60 * 24 * 365,
                                 purgeOnQuotaError: true,

@@ -6,7 +6,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { DefaultLayout } from '~/layout'
-import { ErrorFallback, Loading, PermissionCheck, FilePreview } from './components'
+import { ErrorFallback, FilePreview, Loading, PermissionCheck, ReloadPrompt } from './components'
 import { PERMISSION } from './constant/permission'
 import {
     CacheProvider,
@@ -35,6 +35,7 @@ function App() {
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
             <BrowserRouter>
                 <ErrorBoundary FallbackComponent={ErrorFallback}>
+                    <ReloadPrompt />
                     <ToastContainer
                         position='bottom-left'
                         autoClose={5000}

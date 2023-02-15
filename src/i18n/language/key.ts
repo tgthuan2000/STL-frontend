@@ -88,6 +88,12 @@ enum LANGUAGE {
     NAME = 'name',
     SAVING = 'saving',
 
+    /* PWA */
+    APP_READY_WORK_OFFLINE = 'app-ready-work-offline',
+    RELOAD_TEXT = 'reload-text',
+    RELOAD = 'reload',
+    CLOSE = 'close',
+
     /* VALIDATE MESSAGE */
     REQUIRED_FIELD = 'required-field',
     REQUIRED_NUMBER = 'required-number',
