@@ -15,10 +15,9 @@ export const fetchGoogleResponse: IFetchGoogleResponse = async (res, addUser, se
         setLoading(true)
         const credential = res.credential
         if (credential) {
-            const { data: d } = await axios.post<{ code: string; token: string; data: any }>(
-                '/auth/google/sign-in',
-                credential
-            )
+            const { data: d } = await axios.post<{ code: string; token: string; data: any }>('/auth/google/sign-in', {
+                credential,
+            })
             switch (d.code) {
                 case CODE.SUCCESS:
                     addUser(d.data)

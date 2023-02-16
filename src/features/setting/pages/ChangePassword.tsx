@@ -11,8 +11,6 @@ import { Input } from '~/components/_base'
 import { CODE } from '~/constant/code'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
-import { client } from '~/sanityConfig'
-import { GET_PASSWORD_BY_ID } from '~/schema/query/login'
 import useAuth from '~/store/auth'
 import { changePasswordSchema } from '../services/schema'
 
@@ -42,40 +40,23 @@ const ChangePassword = () => {
     }> = async (data) => {
         try {
             setSubmitLoading(true)
-            const __ = client.transaction()
             const { 'new-password': newPassword, 'old-password': oldPassword } = data
 
             if (isHasPassword) {
                 const { data } = await axios.post<{ code: string }>('/auth/change-password', {
                     oldPassword,
                     newPassword,
-                    _id: userProfile?._id,
                 })
                 switch (data.code) {
                     case CODE.SUCCESS:
                         toast.success(t(LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS))
                         removeUserProfile()
                         break
+                    default:
+                        toast.error(t(LANGUAGE.ERROR))
+                        break
                 }
             }
-
-            // if (isHasPassword) {
-            //     const d = await client.fetch<{ password: string }>(GET_PASSWORD_BY_ID, {
-            //         _id: userProfile?._id,
-            //     })
-            //     const isCorrectPassword = bcrypt.compareSync(oldPassword, d.password)
-            //     if (!isCorrectPassword) {
-            //         toast.error(t(LANGUAGE.OLD_PASSWORD_INCORRECT))
-            //         return
-            //     }
-            // }
-
-            // __.patch(userProfile?._id as string, { set: { password: bcrypt.hashSync(newPassword) } })
-
-            // await __.commit()
-
-            // toast.success(t(LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS))
-            // removeUserProfile()
         } catch (error) {
             console.log(error)
         } finally {
