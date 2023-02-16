@@ -3,6 +3,7 @@ import jwtDecode from 'jwt-decode'
 import { toast } from 'react-toastify'
 import { GoogleData, IFetchGoogleResponse, ILoginByEmailPassword, IUserProfile } from '~/@types/auth'
 import axios from '~/axiosConfig'
+import { CODE } from '~/constant/code'
 import { ROLE } from '~/constant/role'
 import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
@@ -51,12 +52,20 @@ export const loginByEmailPassword: ILoginByEmailPassword = async ({ data, passwo
             _id: data._id,
             password,
         }
-        const d = await axios.post('/auth/sign-in', document)
-        if (d.status === 200) {
-            addUser(data)
+        const d = (await axios.post('/auth/sign-in', document)) as any
+        switch (d.code) {
+            case CODE.SUCCESS:
+                addUser(data)
+                break
+            case CODE.INVALID_PASSWORD:
+                toast.error(t(LANGUAGE.PASSWORD_NOT_MATCH))
+                break
+            default:
+                toast.error(t(LANGUAGE.ERROR))
+                break
         }
     } catch (error) {
-        console.error(error)
+        console.error({ error })
         toast.error(t(LANGUAGE.ERROR))
     } finally {
         setLoading(false)

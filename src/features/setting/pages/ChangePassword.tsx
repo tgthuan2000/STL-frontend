@@ -1,6 +1,5 @@
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { yupResolver } from '@hookform/resolvers/yup'
-import bcrypt from 'bcryptjs'
 import { get } from 'lodash'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -44,23 +43,23 @@ const ChangePassword = () => {
             const __ = client.transaction()
             const { 'new-password': newPassword, 'old-password': oldPassword } = data
 
-            if (isHasPassword) {
-                const d = await client.fetch<{ password: string }>(GET_PASSWORD_BY_ID, {
-                    _id: userProfile?._id,
-                })
-                const isCorrectPassword = bcrypt.compareSync(oldPassword, d.password)
-                if (!isCorrectPassword) {
-                    toast.error(t(LANGUAGE.OLD_PASSWORD_INCORRECT))
-                    return
-                }
-            }
+            // if (isHasPassword) {
+            //     const d = await client.fetch<{ password: string }>(GET_PASSWORD_BY_ID, {
+            //         _id: userProfile?._id,
+            //     })
+            //     const isCorrectPassword = bcrypt.compareSync(oldPassword, d.password)
+            //     if (!isCorrectPassword) {
+            //         toast.error(t(LANGUAGE.OLD_PASSWORD_INCORRECT))
+            //         return
+            //     }
+            // }
 
-            __.patch(userProfile?._id as string, { set: { password: bcrypt.hashSync(newPassword) } })
+            // __.patch(userProfile?._id as string, { set: { password: bcrypt.hashSync(newPassword) } })
 
-            await __.commit()
+            // await __.commit()
 
-            toast.success(t(LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS))
-            removeUserProfile()
+            // toast.success(t(LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS))
+            // removeUserProfile()
         } catch (error) {
             console.log(error)
         } finally {
