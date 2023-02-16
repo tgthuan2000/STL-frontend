@@ -1,49 +1,41 @@
 import { SanityDocument } from '@sanity/client'
-import jwtDecode from 'jwt-decode'
 import { toast } from 'react-toastify'
-import { GoogleData, IFetchGoogleResponse, ILoginByEmailPassword, IUserProfile } from '~/@types/auth'
+import { IFetchGoogleResponse, ILoginByEmailPassword, IUserProfile } from '~/@types/auth'
 import axios from '~/axiosConfig'
 import { CODE } from '~/constant/code'
-import { ROLE } from '~/constant/role'
 import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
-import { GET_DATA_BY_EMAIL, GET_DATA_USER_BY_ID } from '~/schema/query/login'
+import { GET_DATA_BY_EMAIL } from '~/schema/query/login'
+
+const { t } = i18n
 
 export const fetchGoogleResponse: IFetchGoogleResponse = async (res, addUser, setLoading) => {
     try {
         setLoading(true)
         const credential = res.credential
         if (credential) {
-            const data: GoogleData = jwtDecode(credential)
-            if (data) {
-                const { sub, picture, name, email } = data
-                const document = {
-                    _type: 'user',
-                    _id: sub,
-                    image: picture,
-                    userName: name,
-                    email,
-                    google: JSON.stringify(data),
-                    allowSendMail: true,
-                    role: {
-                        _type: 'reference',
-                        _ref: ROLE.CLIENT,
-                    },
-                }
-                const d = await client.createIfNotExists(document)
-                const _data = await client.fetch(GET_DATA_USER_BY_ID, { _id: d._id })
-                addUser(_data)
+            const { data: d } = await axios.post<{ code: string; token: string; data: any }>(
+                '/auth/google/sign-in',
+                credential
+            )
+            switch (d.code) {
+                case CODE.SUCCESS:
+                    addUser(d.data)
+                    axios.defaults.headers.common['Authorization'] = `Bearer ${d.token}`
+                    break
+                default:
+                    toast.error(t(LANGUAGE.ERROR))
+                    break
             }
         }
     } catch (error) {
         console.error(error)
+        toast.error(t(LANGUAGE.ERROR))
     } finally {
         setLoading(false)
     }
 }
-
-const { t } = i18n
 
 export const loginByEmailPassword: ILoginByEmailPassword = async ({ data, password }, addUser, setLoading) => {
     try {
@@ -52,10 +44,11 @@ export const loginByEmailPassword: ILoginByEmailPassword = async ({ data, passwo
             _id: data._id,
             password,
         }
-        const d = (await axios.post('/auth/sign-in', document)) as any
+        const { data: d } = await axios.post<{ code: string; token: string }>('/auth/sign-in', document)
         switch (d.code) {
             case CODE.SUCCESS:
                 addUser(data)
+                axios.defaults.headers.common['Authorization'] = `Bearer ${d.token}`
                 break
             case CODE.INVALID_PASSWORD:
                 toast.error(t(LANGUAGE.PASSWORD_NOT_MATCH))

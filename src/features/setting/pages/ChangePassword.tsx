@@ -5,8 +5,10 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import axios from '~/axiosConfig'
 import { Button, SubmitWrap, Transaction } from '~/components'
 import { Input } from '~/components/_base'
+import { CODE } from '~/constant/code'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
@@ -42,6 +44,20 @@ const ChangePassword = () => {
             setSubmitLoading(true)
             const __ = client.transaction()
             const { 'new-password': newPassword, 'old-password': oldPassword } = data
+
+            if (isHasPassword) {
+                const { data } = await axios.post<{ code: string }>('/auth/change-password', {
+                    oldPassword,
+                    newPassword,
+                    _id: userProfile?._id,
+                })
+                switch (data.code) {
+                    case CODE.SUCCESS:
+                        toast.success(t(LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS))
+                        removeUserProfile()
+                        break
+                }
+            }
 
             // if (isHasPassword) {
             //     const d = await client.fetch<{ password: string }>(GET_PASSWORD_BY_ID, {
