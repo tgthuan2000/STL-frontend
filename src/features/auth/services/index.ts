@@ -1,14 +1,13 @@
 import { SanityDocument } from '@sanity/client'
-import bcrypt from 'bcryptjs'
 import jwtDecode from 'jwt-decode'
-import { isNil } from 'lodash'
 import { toast } from 'react-toastify'
 import { GoogleData, IFetchGoogleResponse, ILoginByEmailPassword, IUserProfile } from '~/@types/auth'
+import axios from '~/axiosConfig'
 import { ROLE } from '~/constant/role'
 import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
-import { GET_DATA_BY_EMAIL, GET_DATA_USER_BY_ID, GET_PASSWORD_BY_ID } from '~/schema/query/login'
+import { GET_DATA_BY_EMAIL, GET_DATA_USER_BY_ID } from '~/schema/query/login'
 
 export const fetchGoogleResponse: IFetchGoogleResponse = async (res, addUser, setLoading) => {
     try {
@@ -50,20 +49,12 @@ export const loginByEmailPassword: ILoginByEmailPassword = async ({ data, passwo
         setLoading(true)
         const document = {
             _id: data._id,
+            password,
         }
-        const d = await client.fetch<{ password: string }>(GET_PASSWORD_BY_ID, document)
-
-        if (isNil(d.password)) {
-            toast.warn(t(LANGUAGE.NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD))
-            return
+        const d = await axios.post('/auth/sign-in', document)
+        if (d.status === 200) {
+            addUser(data)
         }
-
-        const isMatch = bcrypt.compareSync(password, d.password)
-        if (!isMatch) {
-            toast.error(t(LANGUAGE.NOTIFY_INVALID_PASSWORD))
-            return
-        }
-        addUser(data)
     } catch (error) {
         console.error(error)
         toast.error(t(LANGUAGE.ERROR))
