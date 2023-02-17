@@ -1,7 +1,6 @@
 export { default as useEventListener } from './useEventListener'
 export { default as useListViewFilter } from './useListViewFilter'
 export { default as useLocalStorage } from './useLocalStorage'
-export { default as useMail } from './useMail'
 export { default as useMounted } from './useMounted'
 export { default as useQuery } from './useQuery'
 export { default as useServiceQuery } from './useServiceQuery'
