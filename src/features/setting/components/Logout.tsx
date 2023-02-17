@@ -3,15 +3,19 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { SettingComponentProps } from '~/@types/setting'
 import LANGUAGE from '~/i18n/language/key'
-import useAuth from '~/store/auth'
+import useAuth, { useAccessToken } from '~/store/auth'
+import { googleLogout } from '@react-oauth/google'
 
 const Logout: React.FC<SettingComponentProps> = (props) => {
     const { t } = useTranslation()
     const { removeUserProfile } = useAuth()
+    const { removeAccessToken } = useAccessToken()
     return (
         <button
             type='button'
             onClick={() => {
+                googleLogout()
+                removeAccessToken()
                 removeUserProfile()
             }}
             {...props}

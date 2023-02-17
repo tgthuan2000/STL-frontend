@@ -1,4 +1,5 @@
 import _axios from 'axios'
+import { handleDataStatus } from './services/axios'
 
 const axios = _axios.create({
     baseURL: `${import.meta.env.VITE_SERVER}/api`,
@@ -20,7 +21,12 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
     (response) => {
-        return response
+        const isSuccess = handleDataStatus(response.data.code)
+
+        if (typeof isSuccess === 'boolean' && isSuccess === true) {
+            return response.data
+        }
+        return Promise.reject(response.data.code)
     },
     (error) => {
         return Promise.reject(error)

@@ -13,13 +13,16 @@ export interface IUserProfile {
     allowSendMail: boolean
 }
 
-interface SetUserProfile {
-    userProfile: SanityDocument<IUserProfile> | null
+type AddAccessToken = (accessToken: string) => void
+
+export type AuthStore = (set: (user: { accessToken: string | null }) => void) => {
+    accessToken: string | null
+    addAccessToken: (accessToken: string) => void
+    removeAccessToken: () => void
 }
 
 type AddUserProfile = (userProfile: SanityDocument<IUserProfile>) => void
-
-export type AuthStore = (set: (user: SetUserProfile) => void) => {
+interface UserProfileStore {
     userProfile: SanityDocument<IUserProfile> | null
     addUserProfile: AddUserProfile
     removeUserProfile: () => void
@@ -27,7 +30,8 @@ export type AuthStore = (set: (user: SetUserProfile) => void) => {
 
 export type IFetchGoogleResponse = (
     res: CredentialResponse,
-    addUser: AddUserProfile,
+    addAccessToken: AddAccessToken,
+    addUserProfile: AddUserProfile,
     setLoading: (value: boolean) => void
 ) => Promise<void>
 
@@ -44,7 +48,8 @@ export interface LoginForm {
 }
 export type ILoginByEmailPassword = (
     data: LoginForm,
-    addUser: AddUserProfile,
+    addAccessToken: AddAccessToken,
+    addUserProfile: AddUserProfile,
     setLoading: (value: boolean) => void
 ) => Promise<void>
 

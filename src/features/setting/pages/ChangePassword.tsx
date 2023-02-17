@@ -8,7 +8,6 @@ import { toast } from 'react-toastify'
 import axios from '~/axiosConfig'
 import { Button, SubmitWrap, Transaction } from '~/components'
 import { Input } from '~/components/_base'
-import { CODE } from '~/constant/code'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import useAuth from '~/store/auth'
@@ -43,19 +42,12 @@ const ChangePassword = () => {
             const { 'new-password': newPassword, 'old-password': oldPassword } = data
 
             if (isHasPassword) {
-                const { data } = await axios.post<{ code: string }>('/auth/change-password', {
+                await axios.post('/auth/change-password', {
                     oldPassword,
                     newPassword,
                 })
-                switch (data.code) {
-                    case CODE.SUCCESS:
-                        toast.success(t(LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS))
-                        removeUserProfile()
-                        break
-                    default:
-                        toast.error(t(LANGUAGE.ERROR))
-                        break
-                }
+                toast.success(t(LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS))
+                removeUserProfile()
             }
         } catch (error) {
             console.log(error)

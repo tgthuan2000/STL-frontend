@@ -1,9 +1,7 @@
 export enum CODE {
     /* COMMON */
     SUCCESS = 'SUCCESS',
-    ERROR = 'ERROR',
-    WARNING = 'WARNING',
-    INFO = 'INFO',
+    FORBIDDEN = 'FORBIDDEN',
 
     /* REQUIRED */
     REQUIRED_EMAIL = 'REQUIRED_EMAIL',
@@ -12,4 +10,5 @@ export enum CODE {
 
     /* INVALID */
     INVALID_PASSWORD = 'INVALID_PASSWORD',
+    INVALID_OLD_PASSWORD = 'INVALID_OLD_PASSWORD',
 }

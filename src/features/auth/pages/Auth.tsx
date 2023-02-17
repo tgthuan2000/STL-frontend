@@ -7,28 +7,31 @@ import { Navigate, useLocation } from 'react-router-dom'
 import { Button } from '~/components'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
-import useAuth from '~/store/auth'
+import useAuth, { useAccessToken } from '~/store/auth'
 import { fetchGoogleResponse, loginByEmailPassword } from '../services'
 
 const LoginByEmailPasswordForm = React.lazy(() => import('../components/LoginByEmailPasswordForm'))
 
 const Auth = () => {
     const { t } = useTranslation()
-    const { addUserProfile, userProfile } = useAuth()
+    const { addUserProfile } = useAuth()
+    const { accessToken, addAccessToken } = useAccessToken()
     const { setConfigLoading } = useLoading()
     const { state } = useLocation()
 
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const [showFormLogin, setShowFormLogin] = useState(false)
 
-    if (userProfile) return <Navigate to={get(state, 'url', '/')} />
+    if (accessToken) return <Navigate to={get(state, 'url', '/')} />
 
     return (
         <div className='h-screen flex flex-col gap-2 items-center justify-center overflow-hidden' ref={parent}>
             {!showFormLogin ? (
                 <>
                     <GoogleLogin
-                        onSuccess={async (res) => await fetchGoogleResponse(res, addUserProfile, setConfigLoading)}
+                        onSuccess={async (res) =>
+                            await fetchGoogleResponse(res, addAccessToken, addUserProfile, setConfigLoading)
+                        }
                         onError={() => {}}
                     />
                     <span className='text-xs text-gray-900 dark:text-white'>{t(LANGUAGE.OR)}</span>
@@ -43,7 +46,9 @@ const Auth = () => {
                 </>
             ) : (
                 <LoginByEmailPasswordForm
-                    onSubmit={async (data) => loginByEmailPassword(data, addUserProfile, setConfigLoading)}
+                    onSubmit={async (data) =>
+                        loginByEmailPassword(data, addAccessToken, addUserProfile, setConfigLoading)
+                    }
                     onBack={() => setShowFormLogin(false)}
                 />
             )}

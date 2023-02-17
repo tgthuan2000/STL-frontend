@@ -299,7 +299,7 @@ export interface IMenuBtn {
     children?: () => React.ReactNode
     query?: SlideParams
     divider?: boolean
-    action?: (cb: () => void) => void
+    action?: (...cb: Array<() => void>) => void
 }
 export interface AnimateWrapProps {
     children: React.ReactNode
