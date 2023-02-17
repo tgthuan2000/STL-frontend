@@ -11,16 +11,21 @@ const ButtonItem: React.FC<MenuButtonProps> = ({ data }) => {
     const { setIsOpen, setTitle } = useSlideOver()
     const navigate = useNavigate()
     const { removeUserProfile } = useProfile()
-    const { removeAccessToken } = useAuth()
+    const { removeToken } = useAuth()
 
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         if (query || action) {
-            action?.(removeAccessToken, removeUserProfile)
+            action?.(logout)
             e.preventDefault()
             navigate(to)
             setIsOpen(true)
             setTitle(title)
         }
+    }
+
+    const logout = () => {
+        removeToken()
+        removeUserProfile()
     }
 
     return (

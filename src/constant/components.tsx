@@ -172,10 +172,9 @@ export const menuSpendingPC: IMenuBtn[] = [
         color: 'text-gray-700 bg-gray-200 hover:bg-gray-300 dark:text-gray-500',
         icon: ArrowRightOnRectangleIcon,
         to: '/',
-        action: (removeAccessToken, removeUserProfile) => {
+        action: (logout) => {
             googleLogout()
-            removeAccessToken()
-            removeUserProfile()
+            logout()
         },
         divider: true,
     },
@@ -262,10 +261,9 @@ export const menuLoanPC: IMenuBtn[] = [
         color: 'text-gray-700 bg-gray-200 hover:bg-gray-300 dark:text-gray-500',
         icon: ArrowRightOnRectangleIcon,
         to: '/',
-        action: (removeAccessToken, removeUserProfile) => {
+        action: (logout) => {
             googleLogout()
-            removeAccessToken()
-            removeUserProfile()
+            logout()
         },
         divider: true,
     },
