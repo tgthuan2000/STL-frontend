@@ -3,7 +3,7 @@ import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DashboardQueryData } from '~/@types/spending'
-import { Box, ButtonMenu, Divider, Transaction } from '~/components'
+import { Box, ButtonMenuDesktop, Divider, Transaction } from '~/components'
 import { DATE_FORMAT, TAGS } from '~/constant'
 import { menuMobile } from '~/constant/components'
 import { useCheck, useConfig } from '~/context'
@@ -108,7 +108,7 @@ const Dashboard = () => {
         <Transaction hasBack={false} title={t(LANGUAGE.SPENDING)}>
             {width < 1280 && (
                 <div className='xl:hidden block'>
-                    <ButtonMenu data={menuMobile} />
+                    <ButtonMenuDesktop data={menuMobile} />
                 </div>
             )}
 

@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet } from 'react-router-dom'
-import { AsideButtonDesktopWrap, AsideButtonMobileWrap, ButtonMenu, ButtonMenuMobile } from '~/components'
+import { AsideButtonDesktopWrap, AsideButtonMobileWrap, ButtonMenuDesktop, ButtonMenuMobile } from '~/components'
 import { menuLoanPages, menuLoanPC } from '~/constant/components'
 import { useLoading } from '~/context'
 import { useWindowSize } from '~/hook'
@@ -23,7 +23,7 @@ const Loan = () => {
             </main>
             {width >= 1280 ? (
                 <AsideButtonDesktopWrap>
-                    <ButtonMenu data={menuLoanPC} />
+                    <ButtonMenuDesktop data={menuLoanPC} />
                 </AsideButtonDesktopWrap>
             ) : (
                 <AsideButtonMobileWrap>

@@ -47,7 +47,11 @@ export interface AutocompleteLabelProps {
     onReload?: () => Promise<void>
     loading?: boolean
 }
-
+export interface ButtonMenuProps {
+    className?: string
+    data: IMenuBtn[]
+    small?: boolean
+}
 export interface AutocompleteButtonProps {
     disabledClear?: boolean
     disabled?: boolean
@@ -286,6 +290,11 @@ export interface ContentLoanBox2Props {
 export interface ContentUserLoanBox2Props {
     data?: IUserLoan[]
     loading?: boolean
+}
+
+export interface ButtonMenuProviderProps {
+    data: IMenuBtn[]
+    children: (data: IMenuBtn) => React.ReactNode
 }
 export interface MenuButtonProps {
     data: IMenuBtn

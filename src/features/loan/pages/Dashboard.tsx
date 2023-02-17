@@ -2,7 +2,7 @@ import moment from 'moment'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DashboardQueryData } from '~/@types/loan'
-import { Box2, ButtonMenuLoan, Divider, Transaction } from '~/components'
+import { Box2, ButtonMenuDesktop, Divider, Transaction } from '~/components'
 import { TAGS } from '~/constant'
 import { menuLoanMobile } from '~/constant/components'
 import { useCheck, useConfig } from '~/context'
@@ -54,7 +54,7 @@ const Dashboard = () => {
         <Transaction hasBack={false} title={t(LANGUAGE.LOAN_MANAGEMENT)}>
             {width < 1280 && (
                 <div className='xl:hidden block'>
-                    <ButtonMenuLoan data={menuLoanMobile} />
+                    <ButtonMenuDesktop small data={menuLoanMobile} />
                 </div>
             )}
 

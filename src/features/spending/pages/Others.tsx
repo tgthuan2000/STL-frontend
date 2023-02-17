@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { OthersQueryData } from '~/@types/spending'
-import { Box, ButtonMenuLoan, Divider, Transaction } from '~/components'
+import { Box, ButtonMenuDesktop, Divider, Transaction } from '~/components'
 import { TAGS } from '~/constant'
 import { menuMobileOthers } from '~/constant/components'
 import { useCheck } from '~/context'
@@ -40,7 +40,7 @@ const Others = () => {
         <Transaction hasBack={false} title={t(LANGUAGE.OTHERS)}>
             {width < 1280 && (
                 <div className='xl:hidden block'>
-                    <ButtonMenuLoan data={menuMobileOthers} />
+                    <ButtonMenuDesktop small data={menuMobileOthers} />
                 </div>
             )}
 
