@@ -1,11 +1,16 @@
 import { SanityDocument } from '@sanity/client'
+import { get } from 'lodash'
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Navigate, useLocation } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { IUserProfile } from '~/@types/auth'
 import { IConfig, IConfigContext, IRoleControl } from '~/@types/context'
 import axios from '~/axiosConfig'
+import { CODE } from '~/constant/code'
 import { PERMISSION } from '~/constant/permission'
 import { KIND_SPENDING } from '~/constant/spending'
+import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_CONFIG } from '~/schema/query/config'
 import { getBudgetId } from '~/services'
@@ -27,9 +32,10 @@ const ConfigContext = createContext<IConfigContext>({
 
 const configHOC = (Component: React.FC<IConfigProps>) => {
     return ({ children }: IConfigProps) => {
-        const { accessToken } = useAuth()
+        const { accessToken, refreshToken, setToken, removeToken } = useAuth()
         const { userProfile, addUserProfile } = useProfile()
         const { pathname } = useLocation()
+        const { t } = useTranslation()
 
         useEffect(() => {
             if (userProfile !== null || accessToken === null) return
@@ -40,12 +46,29 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
                     if (data) {
                         addUserProfile(data)
                     }
-                } catch (error) {
-                    console.log(error)
+                } catch (error: any) {
+                    if (get(error, 'response.data.code') === CODE.ACCESS_TOKEN_EXPIRED) {
+                        axios.defaults.headers.common['Authorization'] = null
+
+                        try {
+                            const data = (await axios.post('/auth/access-token', {
+                                refreshToken,
+                            })) as { accessToken: string }
+
+                            if (data) {
+                                setToken({ accessToken: data.accessToken })
+                            }
+                        } catch (error: any) {
+                            if (get(error, 'response.data.code') === CODE.REFRESH_TOKEN_EXPIRED) {
+                                removeToken()
+                                toast.warn(t(LANGUAGE.NOTIFY_EXPIRED_TOKEN))
+                            }
+                        }
+                    }
                 }
             }
             getUserProfile()
-        }, [accessToken, userProfile])
+        }, [accessToken, userProfile, accessToken])
 
         if (!accessToken) return <Navigate to='/auth' replace={true} state={{ url: pathname }} />
 

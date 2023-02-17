@@ -16,8 +16,11 @@ export const fetchGoogleResponse: IFetchGoogleResponse = async (res, addUserToke
         if (credential) {
             const d = (await axios.post('/auth/google/sign-in', {
                 credential,
-            })) as { accessToken: string; data: any }
-            addUserToken(d.accessToken)
+            })) as { accessToken: string; refreshToken: string; data: any }
+            addUserToken({
+                accessToken: d.accessToken,
+                refreshToken: d.refreshToken,
+            })
             addUserProfile(d.data)
         }
     } catch (error) {
@@ -40,8 +43,12 @@ export const loginByEmailPassword: ILoginByEmailPassword = async (
             _id: data._id,
             password,
         }
-        const d = (await axios.post('/auth/sign-in', document)) as { accessToken: string }
-        addUserToken(d.accessToken)
+        const d = (await axios.post('/auth/sign-in', document)) as { accessToken: string; refreshToken: string }
+
+        addUserToken({
+            accessToken: d.accessToken,
+            refreshToken: d.refreshToken,
+        })
         addUserProfile(data)
     } catch (error) {
         console.error({ error })

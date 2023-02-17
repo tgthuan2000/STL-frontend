@@ -159,6 +159,8 @@ const translation: {
     [LANGUAGE.NOTIFY_REQUIRED_ID]: 'Không tìm thấy id!',
     [LANGUAGE.NOTIFY_REQUIRED_PASSWORD]: 'Không tìm thấy mật khẩu!',
     [LANGUAGE.NOTIFY_FORBIDDEN]: 'Không có quyền truy cập!',
+    [LANGUAGE.NOTIFY_REQUIRED_REFRESH_TOKEN]: 'Không tìm thấy refresh token!',
+    [LANGUAGE.NOTIFY_EXPIRED_TOKEN]: 'Phiên của bạn đã hết hạn, vui lòng đăng nhập lại!',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Bạn có chắc chắn muốn gửi thông báo này?',

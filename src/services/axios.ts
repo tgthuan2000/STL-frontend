@@ -6,7 +6,7 @@ import LANGUAGE from '~/i18n/language/key'
 const { t } = i18n
 
 export const handleDataStatus = (code: CODE) => {
-    const codes: { [key in CODE]: () => boolean | Id } = {
+    const codes: { [key in CODE]: () => boolean | Id | void } = {
         /* COMMON */
         [CODE.SUCCESS]: () => true,
         [CODE.FORBIDDEN]: () => {
@@ -17,10 +17,15 @@ export const handleDataStatus = (code: CODE) => {
         [CODE.REQUIRED_EMAIL]: () => toast.error(t(LANGUAGE.NOTIFY_REQUIRED_EMAIL)),
         [CODE.REQUIRED_ID]: () => toast.error(t(LANGUAGE.NOTIFY_REQUIRED_ID)),
         [CODE.REQUIRED_PASSWORD]: () => toast.error(t(LANGUAGE.NOTIFY_REQUIRED_PASSWORD)),
+        [CODE.REQUIRED_REFRESH_TOKEN]: () => toast.error(t(LANGUAGE.NOTIFY_REQUIRED_REFRESH_TOKEN)),
 
         /* INVALID */
         [CODE.INVALID_OLD_PASSWORD]: () => toast.error(t(LANGUAGE.NOTIFY_INVALID_OLD_PASSWORD)),
         [CODE.INVALID_PASSWORD]: () => toast.error(t(LANGUAGE.NOTIFY_INVALID_PASSWORD)),
+
+        /* TOKEN */
+        [CODE.ACCESS_TOKEN_EXPIRED]: () => {},
+        [CODE.REFRESH_TOKEN_EXPIRED]: () => {},
     }
 
     return codes[code]?.()

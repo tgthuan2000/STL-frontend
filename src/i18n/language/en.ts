@@ -159,6 +159,8 @@ const translation: {
     [LANGUAGE.NOTIFY_REQUIRED_ID]: 'Required id',
     [LANGUAGE.NOTIFY_REQUIRED_PASSWORD]: 'Required password',
     [LANGUAGE.NOTIFY_FORBIDDEN]: 'Forbidden',
+    [LANGUAGE.NOTIFY_REQUIRED_REFRESH_TOKEN]: 'Required refresh token',
+    [LANGUAGE.NOTIFY_EXPIRED_TOKEN]: 'Expired token',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Do you want to notify?',

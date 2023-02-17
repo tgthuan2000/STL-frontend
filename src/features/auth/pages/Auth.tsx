@@ -15,7 +15,7 @@ const LoginByEmailPasswordForm = React.lazy(() => import('../components/LoginByE
 const Auth = () => {
     const { t } = useTranslation()
     const { addUserProfile } = useProfile()
-    const { accessToken, addAccessToken } = useAuth()
+    const { accessToken, setToken } = useAuth()
     const { setConfigLoading } = useLoading()
     const { state } = useLocation()
 
@@ -30,7 +30,7 @@ const Auth = () => {
                 <>
                     <GoogleLogin
                         onSuccess={async (res) =>
-                            await fetchGoogleResponse(res, addAccessToken, addUserProfile, setConfigLoading)
+                            await fetchGoogleResponse(res, setToken, addUserProfile, setConfigLoading)
                         }
                         onError={() => {}}
                     />
@@ -46,9 +46,7 @@ const Auth = () => {
                 </>
             ) : (
                 <LoginByEmailPasswordForm
-                    onSubmit={async (data) =>
-                        loginByEmailPassword(data, addAccessToken, addUserProfile, setConfigLoading)
-                    }
+                    onSubmit={async (data) => loginByEmailPassword(data, setToken, addUserProfile, setConfigLoading)}
                     onBack={() => setShowFormLogin(false)}
                 />
             )}

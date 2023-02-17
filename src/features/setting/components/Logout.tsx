@@ -9,13 +9,13 @@ import { useAuth, useProfile } from '~/store/auth'
 const Logout: React.FC<SettingComponentProps> = (props) => {
     const { t } = useTranslation()
     const { removeUserProfile } = useProfile()
-    const { removeAccessToken } = useAuth()
+    const { removeToken } = useAuth()
     return (
         <button
             type='button'
             onClick={() => {
                 googleLogout()
-                removeAccessToken()
+                removeToken()
                 removeUserProfile()
             }}
             {...props}
