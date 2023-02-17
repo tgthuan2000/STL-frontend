@@ -10,12 +10,12 @@ import { useCheck, useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { GET_METHOD_SPENDING_DESC_SURPLUS } from '~/schema/query/spending'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 
 const Method = () => {
     const { t } = useTranslation()
     const { kindSpending } = useConfig()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const { width } = useWindowSize()
 

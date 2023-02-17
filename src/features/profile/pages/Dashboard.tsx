@@ -15,7 +15,7 @@ import { E_FILTER_DATE } from '~/constant/template'
 import { useConfig, useLoading } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 import { AllowSendMail, ProfileInfo, ProfileInfoGroup, ProfileInfoSkeleton } from '../components'
 import { services } from '../services'
 import * as profileServices from '../services/profile'
@@ -24,7 +24,7 @@ const excludeOptions = [E_FILTER_DATE.DATE]
 
 const Dashboard = () => {
     const { t } = useTranslation()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const [searchParams] = useSearchParams()
     const { getKindSpendingIds } = useConfig()

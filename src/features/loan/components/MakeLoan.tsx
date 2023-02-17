@@ -13,12 +13,12 @@ import { useQuery, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_USER_LOAN } from '~/schema/query/loan'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 
 const MakeLoan = () => {
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { getKindSpendingId, kindSpending } = useConfig()
     const { loading, setSubmitLoading } = useLoading()
     const { needCheckWhenLeave } = useCheck()

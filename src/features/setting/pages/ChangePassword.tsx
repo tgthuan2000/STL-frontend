@@ -10,13 +10,13 @@ import { Button, SubmitWrap, Transaction } from '~/components'
 import { Input } from '~/components/_base'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 import { changePasswordSchema } from '../services/schema'
 
 const ChangePassword = () => {
     const { t } = useTranslation()
     const { loading, setSubmitLoading } = useLoading()
-    const { userProfile, removeUserProfile } = useAuth()
+    const { userProfile, removeUserProfile } = useProfile()
     const navigate = useNavigate()
 
     const isHasPassword = get(userProfile, 'isHasPassword', false)

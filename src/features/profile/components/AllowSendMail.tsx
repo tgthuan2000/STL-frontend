@@ -6,11 +6,11 @@ import { toast } from 'react-toastify'
 import { Toggle } from '~/components/_base'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 
 const AllowSendMail = () => {
     const { t } = useTranslation()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const firstRef = useRef(false)
     const form = useForm({
         defaultValues: {

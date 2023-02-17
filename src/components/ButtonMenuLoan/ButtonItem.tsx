@@ -4,14 +4,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import { MenuButtonProps } from '~/@types/components'
 import { Divider, SlideOver } from '~/components'
 import { useSlideOver } from '~/context'
-import useAuth, { useAccessToken } from '~/store/auth'
+import { useAuth, useProfile } from '~/store/auth'
 
 const ButtonItem: React.FC<MenuButtonProps> = ({ data }) => {
     const { title, color, icon: Icon, children, to, query, divider, action } = data
     const { setIsOpen, setTitle } = useSlideOver()
     const navigate = useNavigate()
-    const { removeUserProfile } = useAuth()
-    const { removeAccessToken } = useAccessToken()
+    const { removeUserProfile } = useProfile()
+    const { removeAccessToken } = useAuth()
 
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         if (query || action) {

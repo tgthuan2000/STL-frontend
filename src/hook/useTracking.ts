@@ -2,13 +2,13 @@ import { get } from 'lodash'
 import { useCallback, useMemo, useState } from 'react'
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form'
 import { ITrackingQuery } from '~/@types/tracking'
-import useAuth from '~/store/auth'
+import {useProfile} from '~/store/auth'
 import trackingService from '~/tracking'
 
 const useTracking = <T extends FieldValues>(form: UseFormReturn<T, any>, query: ITrackingQuery) => {
     const [value, setValue] = useState<any>()
     const [loading, setLoading] = useState<boolean>(false)
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const trans = useMemo(
         () =>
             trackingService

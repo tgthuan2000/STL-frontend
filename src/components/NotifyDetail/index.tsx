@@ -9,7 +9,7 @@ import { useLoading, useNotify } from '~/context'
 import { useQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { GET_NOTIFY_ADMIN, GET_NOTIFY_BY_USER } from '~/schema/query/notify'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 import NotifyDetailForm from './Form'
 
 interface NotifyDetailProps {
@@ -19,7 +19,7 @@ interface NotifyDetailProps {
 const NotifyDetail: React.FC<NotifyDetailProps> = ({ isAdmin = false }) => {
     const { t } = useTranslation()
     const { id } = useParams()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { setSubmitLoading } = useLoading()
     const { readDetail } = useNotify()
 

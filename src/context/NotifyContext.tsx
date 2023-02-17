@@ -6,7 +6,7 @@ import { NotifyItem, NotifyPaginate } from '~/@types/notify'
 import { notifySound } from '~/constant/component'
 import { client } from '~/sanityConfig'
 import { GET_NOTIFY_PAGINATE, GET_NOTIFY_SUBSCRIPTION, SUBSCRIPTION_NOTIFY } from '~/schema/query/notify'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 
 const NotifyContext = createContext<INotifyContext>({
     notify: [],
@@ -20,7 +20,7 @@ const NotifyContext = createContext<INotifyContext>({
 })
 
 const NotifyProvider = ({ children }: { children: React.ReactNode }) => {
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const [notify, setNotify] = useState<SanityDocument<NotifyItem>[]>([])
     const [total, setTotal] = useState(0)
     const [loadNewNotify, setLoadNewNotify] = useState(false)

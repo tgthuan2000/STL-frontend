@@ -16,12 +16,12 @@ import {
     GET_STATISTIC_SPENDING,
 } from '~/schema/query/spending'
 import { getDateOfMonth, sum } from '~/services'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 import { BudgetCategory, BudgetMethod, Method, Recent, Statistic } from '../components'
 
 const Dashboard = () => {
     const { width } = useWindowSize()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { kindSpending, budgetSpending, getKindSpendingId, getKindSpendingIds } = useConfig()
     const budgetId = budgetSpending?._id
     const { t } = useTranslation()

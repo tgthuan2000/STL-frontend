@@ -13,14 +13,14 @@ const authStore: AuthStore = (set) => ({
     },
 })
 
-export const useAccessToken = create(
+export const useAuth = create(
     persist(authStore, {
         name: LOCAL_STORAGE_KEY.STL_AUTH,
         version: 1,
     })
 )
 
-const useAuth = create<UserProfileStore>((set) => ({
+export const useProfile = create<UserProfileStore>((set) => ({
     userProfile: null,
     addUserProfile: (userProfile) => {
         set({ userProfile })
@@ -29,5 +29,3 @@ const useAuth = create<UserProfileStore>((set) => ({
         set({ userProfile: null })
     },
 }))
-
-export default useAuth

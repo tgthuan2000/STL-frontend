@@ -5,7 +5,7 @@ import React from 'react'
 
 export interface IUserProfile {
     _id: string
-    image: SanityAssetDocument | string
+    image: string | undefined
     email: string
     userName: string
     google: string

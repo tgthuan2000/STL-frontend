@@ -10,12 +10,12 @@ import { useQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_FEED_BACK_BY_PARENT_ID, GET_PARENT_FEED_BACK, SUBSCRIPTION_FEED_BACK } from '~/schema/query/feedback'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 import { InputForm, Messages } from '../components'
 
 const Dashboard = () => {
     const { t } = useTranslation()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { loading, setSubmitLoading } = useLoading()
     const [{ query, params, tags, refactor }, setQuery] = useState<{
         query: QueryTypeUseQuery<FeedbackQueryData>

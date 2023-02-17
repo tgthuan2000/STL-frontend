@@ -4,12 +4,12 @@ import { useMemo } from 'react'
 import { Image } from '~/components'
 import { userOptionData } from '~/constant/layout'
 import { useConfig, useSideBar } from '~/context'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 import MenuItem from './MenuItem'
 
 const UserInfo = () => {
     const { desktop } = useSideBar()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { hasPermissions } = useConfig()
     const _userOptionData = useMemo(
         () => userOptionData.map((options) => options.filter((option) => hasPermissions(option.permissions))),
@@ -21,7 +21,7 @@ const UserInfo = () => {
             <Menu.Button className='block max-w-full'>
                 <div className='flex items-center justify-center gap-x-3'>
                     <div className='flex-shrink-0'>
-                        <Image size='large' src={userProfile?.image} />
+                        <Image size='large' src={userProfile?.image as string} />
                     </div>
                     <div
                         className={clsx(

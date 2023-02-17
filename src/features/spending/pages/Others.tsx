@@ -8,13 +8,13 @@ import { useCheck } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { GET_CATEGORY, GET_METHOD_SPENDING } from '~/schema/query/spending'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 import { ListOption } from '../components'
 
 const Others = () => {
     const { t } = useTranslation()
     const { width } = useWindowSize()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
 
     const [{ category, method }, fetchData, deleteCache, reload] = useQuery<OthersQueryData>(
         {

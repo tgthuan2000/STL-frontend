@@ -13,13 +13,13 @@ import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_TRANSACTION_DETAIL } from '~/schema/query/loan'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 import { TransactionDetailForm } from '../components'
 
 const TransactionDetail = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { setSubmitLoading } = useLoading()
     const { id } = useParams()
     const {

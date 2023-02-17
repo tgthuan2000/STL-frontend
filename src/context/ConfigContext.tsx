@@ -9,7 +9,7 @@ import { KIND_SPENDING } from '~/constant/spending'
 import { client } from '~/sanityConfig'
 import { GET_CONFIG } from '~/schema/query/config'
 import { getBudgetId } from '~/services'
-import useAuth, { useAccessToken } from '~/store/auth'
+import { useAuth, useProfile } from '~/store/auth'
 import { useLoading } from './LoadingContext'
 
 interface IConfigProps {
@@ -27,8 +27,8 @@ const ConfigContext = createContext<IConfigContext>({
 
 const configHOC = (Component: React.FC<IConfigProps>) => {
     return ({ children }: IConfigProps) => {
-        const { accessToken } = useAccessToken()
-        const { userProfile, addUserProfile } = useAuth()
+        const { accessToken } = useAuth()
+        const { userProfile, addUserProfile } = useProfile()
         const { pathname } = useLocation()
 
         useEffect(() => {
@@ -56,7 +56,7 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
 }
 
 const ConfigProvider = configHOC(({ children }) => {
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const [config, setConfig] = useState<Omit<IConfig, 'role'> & { role: IRoleControl | null }>({
         kindSpending: [],
         budgetSpending: { _id: null },

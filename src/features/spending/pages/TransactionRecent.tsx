@@ -12,14 +12,14 @@ import { __groupBy } from '~/constant/component'
 import { useCheck, useConfig } from '~/context'
 import { useListViewFilter, useQuery, useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 import { getLinkSpending } from '~/utils'
 import * as __services from '../services/dataListView'
 import { services } from '../services/transaction'
 
 const TransactionRecent = () => {
     const { t } = useTranslation()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { getKindSpendingIds } = useConfig()
     const [searchParams] = useSearchParams()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()

@@ -15,7 +15,7 @@ import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_BUDGET_BY_MONTH, GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
 import { getBudgetId, getDateOfMonth } from '~/services'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 import * as servicesBudget from '../../services/budget'
 import { budgetSchema } from '../../services/schema'
 
@@ -39,7 +39,7 @@ const MakeBudget = () => {
     const navigate = useNavigate()
     const firstRef = useRef(false)
     const isPrevMonthClick = useRef(false)
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { getKindSpendingId } = useConfig()
     const { loading, setSubmitLoading } = useLoading()
     const { needCheckWhenLeave } = useCheck()

@@ -7,15 +7,15 @@ import { Navigate, useLocation } from 'react-router-dom'
 import { Button } from '~/components'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
-import useAuth, { useAccessToken } from '~/store/auth'
+import { useAuth, useProfile } from '~/store/auth'
 import { fetchGoogleResponse, loginByEmailPassword } from '../services'
 
 const LoginByEmailPasswordForm = React.lazy(() => import('../components/LoginByEmailPasswordForm'))
 
 const Auth = () => {
     const { t } = useTranslation()
-    const { addUserProfile } = useAuth()
-    const { accessToken, addAccessToken } = useAccessToken()
+    const { addUserProfile } = useProfile()
+    const { accessToken, addAccessToken } = useAuth()
     const { setConfigLoading } = useLoading()
     const { state } = useLocation()
 

@@ -9,12 +9,12 @@ import { useCheck, useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 
 const Dashboard = () => {
     const { t } = useTranslation()
     const { width } = useWindowSize()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { getKindSpendingId } = useConfig()
 
     const [{ recent, paydue, statistic }, fetchData, deleteCache, reload] = useQuery<DashboardQueryData>(

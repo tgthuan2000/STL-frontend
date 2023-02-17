@@ -4,7 +4,7 @@ import { ChatInfoItemProps } from '~/@types/feedback'
 import { Image } from '~/components'
 import LANGUAGE from '~/i18n/language/key'
 import { getSpacingTime } from '~/services'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 import InputForm from './InputForm'
 
 const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
@@ -17,7 +17,7 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
     children,
 }) => {
     const { t } = useTranslation()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const [showInput, setShowInput] = useState({
         show: false,
         isEdit: false,
