@@ -157,6 +157,9 @@ enum LANGUAGE {
     NOTIFY_FORBIDDEN = 'notify-forbidden',
     NOTIFY_REQUIRED_REFRESH_TOKEN = 'notify-required-refresh-token',
     NOTIFY_EXPIRED_TOKEN = 'notify-expired-token',
+    NOTIFY_REQUIRED_CREDENTIAL = 'notify-required-credential',
+    NOTIFY_REQUIRED_DATA = 'notify-required-data',
+    NOTIFY_REQUIRED_URL = 'notify-required-url',
 
     /* CONFIRM */
     CONFIRM_NOTIFY = 'confirm-notify',

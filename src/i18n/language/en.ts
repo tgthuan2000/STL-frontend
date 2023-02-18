@@ -161,6 +161,9 @@ const translation: {
     [LANGUAGE.NOTIFY_FORBIDDEN]: 'Forbidden',
     [LANGUAGE.NOTIFY_REQUIRED_REFRESH_TOKEN]: 'Required refresh token',
     [LANGUAGE.NOTIFY_EXPIRED_TOKEN]: 'Expired token',
+    [LANGUAGE.NOTIFY_REQUIRED_CREDENTIAL]: 'Required credential',
+    [LANGUAGE.NOTIFY_REQUIRED_DATA]: 'Required data',
+    [LANGUAGE.NOTIFY_REQUIRED_URL]: 'Required url',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Do you want to notify?',

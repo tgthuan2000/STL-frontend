@@ -61,7 +61,7 @@ const Create = () => {
             setSubmitLoading(true)
 
             if (data) {
-                await axios.post('/notification/assign', { data })
+                await axios.post('/notification/assign', { data, url: import.meta.env.VITE_APP_URL })
                 removeDraft()
                 navigate('/announce-config', { replace: true })
                 toast.success('Tạo thông báo thành công')
