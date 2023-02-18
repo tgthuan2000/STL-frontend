@@ -59,11 +59,11 @@ const ChangePassword = () => {
     return (
         <Transaction title={t(LANGUAGE.CHANGE_PASSWORD)}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-                <div className='bg-white dark:bg-slate-800 rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>
-                    <div className='max-w-lg w-full mx-auto'>
+                <div className='rounded-xl bg-white py-2 shadow-lg dark:bg-slate-800 sm:py-6 lg:py-8'>
+                    <div className='mx-auto w-full max-w-lg'>
                         <div className='flex h-full flex-col'>
                             {userProfile && !isHasPassword && (
-                                <div className='flex items-center gap-2 text-white bg-yellow-500 p-3 rounded-md select-none mx-2'>
+                                <div className='mx-2 flex select-none items-center gap-2 rounded-md bg-yellow-500 p-3 text-white'>
                                     <ExclamationTriangleIcon className='h-6' />
                                     <p className='font-normal'>Tài khoản này chưa đặt mật khẩu!</p>
                                 </div>

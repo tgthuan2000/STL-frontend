@@ -20,7 +20,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
     return (
         <div
             className={clsx(
-                'w-full h-fit mx-auto bg-white border dark:bg-slate-800 dark:border-slate-700 border-gray-300 overflow-hidden rounded-md select-none',
+                'mx-auto h-fit w-full select-none overflow-hidden rounded-md border border-gray-300 bg-white dark:border-slate-700 dark:bg-slate-800',
                 { 'max-w-lg': !fullWidth },
                 className
             )}

@@ -19,8 +19,8 @@ const Loading = () => {
                 leaveFrom='opacity-100'
                 leaveTo='opacity-0'
             >
-                <div className='fixed select-none z-50 inset-0'>
-                    <div className='w-full h-full pointer-events-none flex items-center justify-center bg-gray-600 bg-opacity-75 transition-opacity'>
+                <div className='fixed inset-0 z-50 select-none'>
+                    <div className='pointer-events-none flex h-full w-full items-center justify-center bg-gray-600 bg-opacity-75 transition-opacity'>
                         <LoadingIcon />
                     </div>
                 </div>

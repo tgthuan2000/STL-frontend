@@ -20,12 +20,12 @@ const Core: React.FC<UploadImageCoreProps> = ({ image, clearImage, loading, id }
         <>
             {image ? (
                 <div
-                    className={clsx('relative flex items-end gap-4 border dark:border-slate-700 rounded-md p-4', {
+                    className={clsx('relative flex items-end gap-4 rounded-md border p-4 dark:border-slate-700', {
                         'animate-pulse cursor-wait': loading,
                     })}
                 >
                     <img
-                        className='w-32 h-32 border bg-white rounded-md object-cover cursor-pointer hover:opacity-70 transition-opacity'
+                        className='h-32 w-32 cursor-pointer rounded-md border bg-white object-cover transition-opacity hover:opacity-70'
                         src={image}
                         alt='#image'
                         onClick={handleClickImage}
@@ -33,25 +33,25 @@ const Core: React.FC<UploadImageCoreProps> = ({ image, clearImage, loading, id }
                     <label
                         htmlFor={id}
                         className={clsx(
-                            'py-3 px-10 truncate flex justify-center items-center rounded-md bg-radical-red-500 text-white font-medium hover:bg-radical-red-700 transition-colors',
+                            'flex items-center justify-center truncate rounded-md bg-radical-red-500 py-3 px-10 font-medium text-white transition-colors hover:bg-radical-red-700',
                             loading ? 'cursor-wait' : 'cursor-pointer'
                         )}
                     >
                         {loading ? (
                             <>
-                                <ArrowPathIcon className='h-5 w-5 -ml-5 mr-2 animate-spin' />
+                                <ArrowPathIcon className='-ml-5 mr-2 h-5 w-5 animate-spin' />
                                 {t(LANGUAGE.LOADING_IMAGE)}
                             </>
                         ) : (
                             <>
-                                <ArrowUpOnSquareIcon className='h-5 w-5 -ml-5 mr-2' />
+                                <ArrowUpOnSquareIcon className='-ml-5 mr-2 h-5 w-5' />
                                 {t(LANGUAGE.UPLOAD_IMAGE)}
                             </>
                         )}
                     </label>
                     <XMarkIcon
                         className={clsx(
-                            'h-6 w-6 text-gray-500 hover:text-gray-700 dark:text-slate-500 dark:hover:text-slate-400 absolute top-2 right-2',
+                            'absolute top-2 right-2 h-6 w-6 text-gray-500 hover:text-gray-700 dark:text-slate-500 dark:hover:text-slate-400',
                             loading ? 'cursor-wait' : 'cursor-pointer'
                         )}
                         onClick={() => !loading && clearImage()}
@@ -62,7 +62,7 @@ const Core: React.FC<UploadImageCoreProps> = ({ image, clearImage, loading, id }
                     <label
                         htmlFor={id}
                         className={clsx(
-                            'text-gray-400 hover:text-gray-700 transition-colors hover:border-gray-700 dark:hover:text-slate-300 dark:hover:border-slate-300 cursor-pointer flex flex-col items-center justify-center gap-2 p-2 h-40 w-full rounded-md border border-dashed border-gray-300 shadow-sm font-light disabled:bg-gray-100 disabled:text-gray-400',
+                            'flex h-40 w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-md border border-dashed border-gray-300 p-2 font-light text-gray-400 shadow-sm transition-colors hover:border-gray-700 hover:text-gray-700 disabled:bg-gray-100 disabled:text-gray-400 dark:hover:border-slate-300 dark:hover:text-slate-300',
                             { 'animate-pulse': loading }
                         )}
                     >

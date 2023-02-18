@@ -32,15 +32,15 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
 
     return (
         <div>
-            <div className='flex justify-between items-center mb-4'>
-                <div className='flex items-center text-gray-900 dark:text-slate-200 space-x-2 select-none'>
+            <div className='mb-4 flex items-center justify-between'>
+                <div className='flex select-none items-center space-x-2 text-gray-900 dark:text-slate-200'>
                     <ArrowSmallLeftIcon
-                        className='h-7 w-7 hover:opacity-50 cursor-pointer'
+                        className='h-7 w-7 cursor-pointer hover:opacity-50'
                         onClick={() => {
                             navigate(-1)
                         }}
                     />
-                    <h4 className='xl:text-2xl text-xl font-semibold'>{t(LANGUAGE.TRANSACTION_DETAIL)}</h4>
+                    <h4 className='text-xl font-semibold xl:text-2xl'>{t(LANGUAGE.TRANSACTION_DETAIL)}</h4>
                 </div>
 
                 {!transaction.paid && (
@@ -59,15 +59,15 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                     </div>
                 )}
             </div>
-            <div className='bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-200 rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>
-                <div className='max-w-lg w-full mx-auto'>
+            <div className='rounded-xl bg-white py-2 text-gray-900 shadow-lg dark:bg-slate-800 dark:text-slate-200 sm:py-6 lg:py-8'>
+                <div className='mx-auto w-full max-w-lg'>
                     <form
                         onSubmit={transaction.paid ? undefined : form.handleSubmit(onsubmit)}
                         className='flex h-full flex-col'
                     >
                         <div className='h-0 flex-1'>
                             <div className='flex flex-1 flex-col justify-between'>
-                                <div className='divide-y divide-gray-200 dark:divide-slate-500 px-4 sm:px-6'>
+                                <div className='divide-y divide-gray-200 px-4 dark:divide-slate-500 sm:px-6'>
                                     <div className='space-y-4 pt-6 pb-5'>
                                         <Group label={t(LANGUAGE.STATUS)} className='flex-col'>
                                             <Toggle
@@ -119,7 +119,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                                 <AvatarUser image={transaction.userLoan?.image} />
 
                                                 <div className='flex flex-col'>
-                                                    <span className='truncate max-w-[150px]'>
+                                                    <span className='max-w-[150px] truncate'>
                                                         {transaction.userLoan?.userName}
                                                     </span>
                                                     <span
@@ -179,7 +179,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
 
                                         {transaction.description && (
                                             <Group label={t(LANGUAGE.NOTE)} className='flex-col'>
-                                                <ul className='list-disc ml-3'>
+                                                <ul className='ml-3 list-disc'>
                                                     {transaction.description.split('\n').map((value) => (
                                                         <li key={value}>{value}</li>
                                                     ))}

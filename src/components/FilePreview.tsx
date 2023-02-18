@@ -38,12 +38,12 @@ const FilePreview = () => {
                     leaveFrom='opacity-100'
                     leaveTo='opacity-0'
                 >
-                    <div className='fixed inset-0 bg-gray-900 bg-opacity-75 dark:bg-slate-900 dark:bg-opacity-80 transition-opacity' />
+                    <div className='fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity dark:bg-slate-900 dark:bg-opacity-80' />
                 </Transition.Child>
 
                 <div className='fixed inset-0 overflow-hidden'>
                     <div className='absolute inset-0 overflow-hidden'>
-                        <div className='pointer-events-none fixed flex max-w-full inset-y-0 right-1/2 translate-x-1/2'>
+                        <div className='pointer-events-none fixed inset-y-0 right-1/2 flex max-w-full translate-x-1/2'>
                             <Transition.Child
                                 as={Fragment}
                                 enter='transform transition ease-in-out duration-500'
@@ -53,8 +53,8 @@ const FilePreview = () => {
                                 leaveFrom='translate-y-0'
                                 leaveTo='translate-y-full opacity-0'
                             >
-                                <Dialog.Panel className='pointer-events-auto w-screen sm:max-w-6xl max-w-full'>
-                                    <div className='flex h-full flex-col justify-center items-center overflow-y-auto bg-gray-900 dark:bg-slate-800 shadow-xl'>
+                                <Dialog.Panel className='pointer-events-auto w-screen max-w-full sm:max-w-6xl'>
+                                    <div className='flex h-full flex-col items-center justify-center overflow-y-auto bg-gray-900 shadow-xl dark:bg-slate-800'>
                                         <div className='fixed right-5 top-5'>
                                             <button
                                                 type='button'
@@ -64,7 +64,7 @@ const FilePreview = () => {
                                                 }}
                                             >
                                                 <span className='sr-only'>Close panel</span>
-                                                <XMarkIcon className='sm:h-8 sm:w-8 h-6 w-6' aria-hidden='true' />
+                                                <XMarkIcon className='h-6 w-6 sm:h-8 sm:w-8' aria-hidden='true' />
                                             </button>
                                         </div>
                                         {getFile}

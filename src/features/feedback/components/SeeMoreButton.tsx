@@ -20,7 +20,7 @@ const SeeMoreButton: React.FC<SeeMoreButtonProps> = ({ replyNum, onClick }) => {
     return (
         <button
             type='button'
-            className={clsx('pt-10 dark:text-cyan-400 text-cyan-500 hover:opacity-70', loading && 'animate-pulse')}
+            className={clsx('pt-10 text-cyan-500 hover:opacity-70 dark:text-cyan-400', loading && 'animate-pulse')}
             onClick={handleClick}
         >
             {loading

@@ -23,7 +23,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                                 type={type}
                                 spellCheck={false}
                                 autoComplete='off'
-                                className='block p-2 w-full rounded-md border border-gray-300 shadow-sm font-light disabled:bg-gray-100 disabled:text-gray-400 bg-white dark:bg-slate-700 dark:border-slate-800 dark:text-slate-200 dark:disabled:bg-slate-800 dark:disabled:text-slate-400'
+                                className='block w-full rounded-md border border-gray-300 bg-white p-2 font-light shadow-sm disabled:bg-gray-100 disabled:text-gray-400 dark:border-slate-800 dark:bg-slate-700 dark:text-slate-200 dark:disabled:bg-slate-800 dark:disabled:text-slate-400'
                                 {...field}
                                 onBlur={() => {
                                     field.onBlur()

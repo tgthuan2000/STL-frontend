@@ -12,7 +12,7 @@ const AvatarUser: React.FC<AvatarUserProps> = ({ image, size = 'medium' }) => {
                 backgroundImage: `url(${urlFor(image)})`,
             }}
             className={clsx(
-                'flex-shrink-0 rounded-full bg-no-repeat bg-center bg-cover bg-gray-200',
+                'flex-shrink-0 rounded-full bg-gray-200 bg-cover bg-center bg-no-repeat',
                 getSizeAvatarUser[size]
             )}
         />

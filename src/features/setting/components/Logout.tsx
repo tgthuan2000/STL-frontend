@@ -20,7 +20,7 @@ const Logout: React.FC<SettingComponentProps> = (props) => {
             }}
             {...props}
         >
-            <ArrowLeftOnRectangleIcon className='w-6 h-6 flex-shrink-0' />
+            <ArrowLeftOnRectangleIcon className='h-6 w-6 flex-shrink-0' />
             <p>{t(LANGUAGE.LOGOUT)}</p>
         </button>
     )

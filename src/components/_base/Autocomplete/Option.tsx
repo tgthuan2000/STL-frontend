@@ -10,7 +10,7 @@ const Option: React.FC<AutocompleteOptionProps> = ({ filterData, idKey, valueKey
     return (
         <>
             {filterData.length > 0 ? (
-                <Combobox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-slate-600 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
+                <Combobox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-slate-600 sm:text-sm'>
                     {filterData.map((item) => {
                         return (
                             <Combobox.Option
@@ -55,11 +55,11 @@ const Option: React.FC<AutocompleteOptionProps> = ({ filterData, idKey, valueKey
             ) : (
                 query.trim() !== '' &&
                 addMore && (
-                    <Combobox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-slate-600 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
+                    <Combobox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-slate-600 sm:text-sm'>
                         <Combobox.Option
                             value={query.trim()}
                             className={({ active }) =>
-                                clsx('relative bg-indigo-600 text-white cursor-default select-none py-2 pl-8 pr-4')
+                                clsx('relative cursor-default select-none bg-indigo-600 py-2 pl-8 pr-4 text-white')
                             }
                         >
                             <span className='block truncate'>

@@ -39,16 +39,16 @@ const Others = () => {
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.OTHERS)}>
             {width < 1280 && (
-                <div className='xl:hidden block'>
+                <div className='block xl:hidden'>
                     <ButtonMenuDesktop small data={menuMobileOthers} />
                 </div>
             )}
 
-            <Divider className='xl:hidden py-6' dashed />
+            <Divider className='py-6 xl:hidden' dashed />
 
             <Box>
                 <Box.Content
-                    className='xl:row-start-1 xl:col-start-1 xl:col-span-1 col-span-1'
+                    className='col-span-1 xl:col-span-1 xl:col-start-1 xl:row-start-1'
                     title={t(LANGUAGE.CATEGORY)}
                     loading={category.loading}
                     seeMore={false}
@@ -61,7 +61,7 @@ const Others = () => {
                     />
                 </Box.Content>
                 <Box.Content
-                    className='xl:row-start-1 xl:col-start-2 xl:col-span-1 col-span-1'
+                    className='col-span-1 xl:col-span-1 xl:col-start-2 xl:row-start-1'
                     title={t(LANGUAGE.METHOD)}
                     loading={method.loading}
                     seeMore={false}

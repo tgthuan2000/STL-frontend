@@ -53,7 +53,7 @@ const NotifyDetail: React.FC<NotifyDetailProps> = ({ isAdmin = false }) => {
 
     if (notify.loading) return <div className='text-gray-900 dark:text-slate-200'>{t(LANGUAGE.LOADING)}</div>
 
-    if (!notify.data) return <div className='text-radical-red-500 font-normal'>{t(LANGUAGE.ERROR)}</div>
+    if (!notify.data) return <div className='font-normal text-radical-red-500'>{t(LANGUAGE.ERROR)}</div>
 
     return <NotifyDetailForm data={data} />
 }

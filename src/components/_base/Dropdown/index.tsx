@@ -52,7 +52,7 @@ const Dropdown: React.FC<DropdownProps> = ({
             rules={rules}
             render={({ field, fieldState: { error } }) => (
                 <div className={className}>
-                    <Menu as='div' className='relative inline-block z-[2]'>
+                    <Menu as='div' className='relative z-[2] inline-block'>
                         <Button
                             customButtonClassName={customButtonClassName}
                             disabled={disabled}

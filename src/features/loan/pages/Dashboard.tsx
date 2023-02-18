@@ -53,12 +53,12 @@ const Dashboard = () => {
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.LOAN_MANAGEMENT)}>
             {width < 1280 && (
-                <div className='xl:hidden block'>
+                <div className='block xl:hidden'>
                     <ButtonMenuDesktop small data={menuLoanMobile} />
                 </div>
             )}
 
-            <Divider className='xl:hidden py-6' dashed />
+            <Divider className='py-6 xl:hidden' dashed />
 
             {/* Show user */}
             <div className='space-y-6'>

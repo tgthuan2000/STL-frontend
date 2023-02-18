@@ -18,7 +18,7 @@ const Method: React.FC<BudgetProps> = ({ data, loading }) => {
         return (
             <ul
                 role='list'
-                className='divide-y divide-gray-300 text-gray-900 dark:text-slate-200 dark:divide-slate-700'
+                className='divide-y divide-gray-300 text-gray-900 dark:divide-slate-700 dark:text-slate-200'
                 ref={ref}
             >
                 {data?.MethodSpending?.map((item, index) => {

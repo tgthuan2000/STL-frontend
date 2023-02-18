@@ -36,17 +36,17 @@ const Notification: React.FC<NotificationProps> = () => {
     }
 
     return (
-        <Menu as='div' className='mr-3 relative inline-block'>
-            <Menu.Button className='px-2 pt-1 group'>
+        <Menu as='div' className='relative mr-3 inline-block'>
+            <Menu.Button className='group px-2 pt-1'>
                 <div className='relative' ref={notifyRef}>
                     <img src={BellIcon} className='h-8 w-8 rounded' />
-                    <span className='absolute -top-3 -right-3 bg-radical-red-500 dark:bg-prussian-blue-400 text-white rounded-full h-[22px] w-[22px] text-xs inline-flex justify-center items-center'>
+                    <span className='absolute -top-3 -right-3 inline-flex h-[22px] w-[22px] items-center justify-center rounded-full bg-radical-red-500 text-xs text-white dark:bg-prussian-blue-400'>
                         {total > 99 ? '99+' : total}
                     </span>
                     {loadNewNotify && (
                         <span
                             className={clsx(
-                                'absolute top-1/2 right-10 bg-radical-red-500 dark:bg-prussian-blue-400 text-white rounded-lg text-xs font-medium inline-flex justify-center items-center whitespace-nowrap p-2'
+                                'absolute top-1/2 right-10 inline-flex items-center justify-center whitespace-nowrap rounded-lg bg-radical-red-500 p-2 text-xs font-medium text-white dark:bg-prussian-blue-400'
                             )}
                         >
                             {t(LANGUAGE.NEW_NOTIFY)}
@@ -57,7 +57,7 @@ const Notification: React.FC<NotificationProps> = () => {
 
             <Menu.Items
                 className={clsx(
-                    'absolute right-0 sm:w-[500px] w-[320px] mt-2 select-none whitespace-nowrap origin-top-left divide-y divide-gray-100 rounded-md bg-white dark:bg-slate-800 dark:divide-slate-600 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none'
+                    'absolute right-0 mt-2 w-[320px] origin-top-left select-none divide-y divide-gray-100 whitespace-nowrap rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none dark:divide-slate-600 dark:bg-slate-800 sm:w-[500px]'
                 )}
             >
                 {isEmpty(notify) ? (
@@ -65,7 +65,7 @@ const Notification: React.FC<NotificationProps> = () => {
                 ) : (
                     <>
                         <div className='flex justify-between'>
-                            <h1 className='p-2 font-medium text-base text-gray-900 dark:text-white'>
+                            <h1 className='p-2 text-base font-medium text-gray-900 dark:text-white'>
                                 {t(LANGUAGE.NOTIFY_MANAGEMENT)}
                             </h1>
                             {/* <button

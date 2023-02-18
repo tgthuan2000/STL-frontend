@@ -139,7 +139,7 @@ const TransactionRecent = () => {
                     />
 
                     {error ? (
-                        <p className='m-5 text-radical-red-500 font-medium'>{t(LANGUAGE.ERROR)}</p>
+                        <p className='m-5 font-medium text-radical-red-500'>{t(LANGUAGE.ERROR)}</p>
                     ) : (
                         <div ref={parentRef}>
                             <DataListView

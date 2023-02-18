@@ -25,7 +25,7 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit, defaultMessage = '' }) 
     return (
         <form
             onSubmit={form.handleSubmit(handleSubmit)}
-            className='relative flex gap-2 dark:bg-slate-700 bg-white items-center border border-gray-400 dark:border-slate-700 dark:text-white pl-2 pr-3 h-10 w-full rounded-full'
+            className='relative flex h-10 w-full items-center gap-2 rounded-full border border-gray-400 bg-white pl-2 pr-3 dark:border-slate-700 dark:bg-slate-700 dark:text-white'
         >
             <Controller
                 name='message'
@@ -36,14 +36,14 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit, defaultMessage = '' }) 
                         autoFocus
                         placeholder={t(LANGUAGE.TYPE_YOUR_MESSAGE) as string}
                         autoComplete='off'
-                        className='w-full flex-1 sm:text-base text-sm border-none outline-none bg-transparent focus:ring-transparent'
+                        className='w-full flex-1 border-none bg-transparent text-sm outline-none focus:ring-transparent sm:text-base'
                         {...field}
                     />
                 )}
             />
-            <div className='flex-shrink-0 inline-flex items-center' ref={submitRef}>
+            <div className='inline-flex flex-shrink-0 items-center' ref={submitRef}>
                 {form.watch('message').trim() && (
-                    <button type='submit' className='text-indigo-500 hover:opacity-50 font-bold'>
+                    <button type='submit' className='font-bold text-indigo-500 hover:opacity-50'>
                         <PaperAirplaneIcon className='h-6' />
                     </button>
                 )}

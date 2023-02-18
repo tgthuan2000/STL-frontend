@@ -25,7 +25,7 @@ const Auth = () => {
     if (accessToken) return <Navigate to={get(state, 'url', '/')} />
 
     return (
-        <div className='h-screen flex flex-col gap-2 items-center justify-center overflow-hidden' ref={parent}>
+        <div className='flex h-screen flex-col items-center justify-center gap-2 overflow-hidden' ref={parent}>
             {!showFormLogin ? (
                 <>
                     <GoogleLogin
@@ -36,7 +36,7 @@ const Auth = () => {
                     />
                     <span className='text-xs text-gray-900 dark:text-white'>{t(LANGUAGE.OR)}</span>
                     <Button
-                        className='sm:!text-sm border-transparent !text-xs sm:!py-3 sm:!px-6 !w-auto bg-gradient-to-r from-[#12c2e9] via-[#c471ed] to-[#f64f59] animate-bg-animate bg-400% text-white'
+                        className='!w-auto animate-bg-animate border-transparent bg-gradient-to-r from-[#12c2e9] via-[#c471ed] to-[#f64f59] bg-400% !text-xs text-white sm:!py-3 sm:!px-6 sm:!text-sm'
                         type='button'
                         color='custom'
                         onClick={() => setShowFormLogin(true)}

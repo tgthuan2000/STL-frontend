@@ -4,7 +4,7 @@ import LANGUAGE from '~/i18n/language/key'
 const EmptyList = () => {
     const { t } = useTranslation()
     return (
-        <span className='block truncate w-full text-center text-md text-gray-700 bg-gray-200 dark:bg-slate-700 dark:text-white p-3 sm:rounded-lg font-base'>
+        <span className='text-md font-base block w-full truncate bg-gray-200 p-3 text-center text-gray-700 dark:bg-slate-700 dark:text-white sm:rounded-lg'>
             {t(LANGUAGE.EMPTY_DATA)}
         </span>
     )

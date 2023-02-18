@@ -8,10 +8,10 @@ const SeeMore: React.FC<{ seeMore?: boolean; to?: string }> = ({ seeMore, to = '
     const { t } = useTranslation()
     if (!seeMore) return null
     return (
-        <div className='text-right border-t border-gray-200 bg-gray-50 dark:bg-slate-700 dark:border-slate-700 px-6 py-2 text-sm font-medium'>
+        <div className='border-t border-gray-200 bg-gray-50 px-6 py-2 text-right text-sm font-medium dark:border-slate-700 dark:bg-slate-700'>
             <Link
                 to={to}
-                className='cursor-pointer inline-flex items-center gap-x-1 text-blue-500 dark:text-blue-600 hover:opacity-70'
+                className='inline-flex cursor-pointer items-center gap-x-1 text-blue-500 hover:opacity-70 dark:text-blue-600'
             >
                 {t(LANGUAGE.SEE_MORE)}
                 <ArrowSmallRightIcon className='h-6 w-6' />

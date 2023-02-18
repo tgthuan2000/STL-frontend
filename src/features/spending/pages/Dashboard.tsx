@@ -107,17 +107,17 @@ const Dashboard = () => {
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.SPENDING)}>
             {width < 1280 && (
-                <div className='xl:hidden block'>
+                <div className='block xl:hidden'>
                     <ButtonMenuDesktop data={menuMobile} />
                 </div>
             )}
 
-            <Divider className='xl:hidden py-6' dashed />
+            <Divider className='py-6 xl:hidden' dashed />
 
             {/* Show analytics */}
             <Box>
                 <Box.Content
-                    className='xl:row-start-1 xl:col-start-1 xl:col-span-2 col-span-1'
+                    className='col-span-1 xl:col-span-2 xl:col-start-1 xl:row-start-1'
                     title={dataStatistic?.dateRange.join(' - ') || ' '}
                     onReload={handleReload}
                     loading={statistic.loading}
@@ -127,7 +127,7 @@ const Dashboard = () => {
                     <Statistic data={dataStatistic?.data} loading={statistic.loading} />
                 </Box.Content>
 
-                <div className='xl:row-start-2 xl:col-start-1 col-span-1 flex flex-col xl:gap-6 gap-4'>
+                <div className='col-span-1 flex flex-col gap-4 xl:col-start-1 xl:row-start-2 xl:gap-6'>
                     <Box.Content
                         title={t(LANGUAGE.BUDGET_BY_CATEGORY)}
                         onReload={handleReload}
@@ -149,7 +149,7 @@ const Dashboard = () => {
                     </Box.Content>
                 </div>
 
-                <div className='xl:row-start-2 xl:col-start-2 col-span-1 flex flex-col xl:gap-6 gap-4'>
+                <div className='col-span-1 flex flex-col gap-4 xl:col-start-2 xl:row-start-2 xl:gap-6'>
                     <Box.Content
                         title={t(LANGUAGE.TRANSACTION_RECENT)}
                         to='transaction'

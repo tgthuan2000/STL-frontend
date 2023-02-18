@@ -17,7 +17,7 @@ const Input = forwardRef<HTMLInputElement, DatePickerInputProps>(
                         {label}
                     </label>
                 )}
-                <div className='mt-1 relative'>
+                <div className='relative mt-1'>
                     <input
                         ref={ref}
                         id={id}
@@ -25,7 +25,7 @@ const Input = forwardRef<HTMLInputElement, DatePickerInputProps>(
                         spellCheck={false}
                         autoComplete='off'
                         className={clsx(
-                            'block h-10 p-2 w-full rounded-md border border-gray-300 shadow-sm font-light bg-white dark:bg-slate-700 dark:border-slate-800 dark:text-slate-200',
+                            'block h-10 w-full rounded-md border border-gray-300 bg-white p-2 font-light shadow-sm dark:border-slate-800 dark:bg-slate-700 dark:text-slate-200',
                             className
                         )}
                         disabled={disabled}
@@ -44,7 +44,7 @@ const Input = forwardRef<HTMLInputElement, DatePickerInputProps>(
                                         field.onChange(null)
                                     }}
                                     className={
-                                        'cursor-pointer h-5 w-5 text-gray-400 transition-colors hover:text-gray-500'
+                                        'h-5 w-5 cursor-pointer text-gray-400 transition-colors hover:text-gray-500'
                                     }
                                     aria-hidden='true'
                                 />
@@ -52,7 +52,7 @@ const Input = forwardRef<HTMLInputElement, DatePickerInputProps>(
                         </span>
                     )}
                     <span className='absolute inset-y-0 right-0 flex items-center rounded-r-md px-2'>
-                        <CalendarIcon className='cursor-default h-5 w-5 text-gray-400' aria-hidden='true' />
+                        <CalendarIcon className='h-5 w-5 cursor-default text-gray-400' aria-hidden='true' />
                     </span>
                 </div>
 

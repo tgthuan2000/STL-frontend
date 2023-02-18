@@ -143,7 +143,7 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit, excludes = [] }) => {
     const dataOptions = useMemo(() => TABS_FILTER_DATE.filter((tab) => !excludes.includes(tab.id)), [excludes])
 
     return (
-        <div className='mb-2 flex flex-wrap gap-2 mx-3'>
+        <div className='mx-3 mb-2 flex flex-wrap gap-2'>
             <AutoComplete
                 idKey='id'
                 valueKey='labelName'

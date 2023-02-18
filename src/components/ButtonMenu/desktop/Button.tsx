@@ -13,13 +13,13 @@ const Button: React.FC<MobileButtonProps> = ({ data, onClick }) => {
                 to={to}
                 onClick={onClick}
                 className={clsx(
-                    'group dark:bg-slate-800 min-w-[50px] inline-flex items-center justify-center flex-col py-2 px-2 space-y-2 border border-transparent font-medium rounded-md focus:outline-none xl:hover:w-[150px] xl:hover:my-2 xl:hover:scale-125 xl:origin-bottom-right xl:hover:-translate-x-1/4 xl:hover:right-full xl:relative xl:transition-all xl:hover:shadow-lg',
+                    'group inline-flex min-w-[50px] flex-col items-center justify-center space-y-2 rounded-md border border-transparent py-2 px-2 font-medium focus:outline-none dark:bg-slate-800 xl:relative xl:origin-bottom-right xl:transition-all xl:hover:right-full xl:hover:my-2 xl:hover:w-[150px] xl:hover:-translate-x-1/4 xl:hover:scale-125 xl:hover:shadow-lg',
                     color
                 )}
                 title={title}
             >
-                <Icon className='w-10 h-10 xl:w-8 xl:h-8' />
-                <span className='text-center truncate w-full block xl:hidden xl:group-hover:block'>{title}</span>
+                <Icon className='h-10 w-10 xl:h-8 xl:w-8' />
+                <span className='block w-full truncate text-center xl:hidden xl:group-hover:block'>{title}</span>
             </Link>
         </>
     )

@@ -101,13 +101,13 @@ const Create = () => {
     const stepId = useMemo(() => getStepId(step), [step])
 
     return (
-        <div className='sm:mt-10 mt-5'>
-            <div className='bg-white dark:bg-slate-800 min-h-[80vh] rounded-xl shadow-lg py-6 px-4 sm:py-8'>
-                <Progress step={step} options={createProgressOptions} className='max-w-xl w-full mx-auto' />
+        <div className='mt-5 sm:mt-10'>
+            <div className='min-h-[80vh] rounded-xl bg-white py-6 px-4 shadow-lg dark:bg-slate-800 sm:py-8'>
+                <Progress step={step} options={createProgressOptions} className='mx-auto w-full max-w-xl' />
                 <div ref={stepParent}>
                     {step > 1 && (
                         <div
-                            className={clsx('w-full mx-auto', {
+                            className={clsx('mx-auto w-full', {
                                 'max-w-xl': ![4].includes(step),
                             })}
                         >

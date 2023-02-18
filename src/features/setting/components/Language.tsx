@@ -25,7 +25,7 @@ const Language: React.FC<SettingComponentProps> = (props) => {
 
     return (
         <button type='button' {...props} onClick={handleChangeLanguageClick}>
-            <LanguageIcon className='w-6 h-6 flex-shrink-0' />
+            <LanguageIcon className='h-6 w-6 flex-shrink-0' />
             <p>{label?.name}</p>
         </button>
     )
