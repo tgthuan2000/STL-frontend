@@ -1,0 +1,198 @@
+// Vitest Snapshot v1
+
+exports[`query > getCategorySpending 1`] = `
+{
+  "params": {
+    "kindSpending": "123",
+    "userId": "123",
+  },
+  "query": "
+    *[_type == \\"categorySpending\\" && user._ref == $userId && kindSpending._ref == $kindSpending] | order(countUsed desc)
+    {
+        _id,
+        name
+    }
+",
+  "tags": "enum",
+}
+`;
+
+exports[`query > getMethodSpending 1`] = `
+{
+  "params": {
+    "userId": "123",
+  },
+  "query": "
+    *[_type == \\"methodSpending\\" && user._ref == $userId] | order(countUsed desc)
+    {
+        _id,
+        surplus,
+        name
+    }
+",
+  "tags": "enum",
+}
+`;
+
+exports[`query > getMethodSpendingDescSurplus 1`] = `
+{
+  "params": {
+    "userId": "123",
+  },
+  "query": "
+    *[_type == \\"methodSpending\\" && user._ref == $userId] | order(surplus desc)
+    {
+        _id,
+        surplus,
+        name
+    }
+",
+  "tags": "alternate",
+}
+`;
+
+exports[`query > getRecentLoan 1`] = `
+{
+  "params": {
+    "from": 0,
+    "kindGetLoan": "123",
+    "kindLoan": "123",
+    "to": 10,
+    "userId": "123",
+  },
+  "query": "
+    *[_type == \\"spending\\" && user._ref == $userId && !paid && kindSpending._ref in [$kindLoan, $kindGetLoan]] | order(_updatedAt desc) [$from...$to]
+    {
+        _id,
+        amount,
+        kindSpending-> {
+            _id,
+            name,
+            key
+        },
+        estimatePaidDate,
+        userLoan-> {
+            _id,
+            userName,
+            image
+        }
+    }
+",
+  "tags": "alternate",
+}
+`;
+
+exports[`query > getRecentSpending 1`] = `
+{
+  "params": {
+    "from": 0,
+    "kindSpendingIds": [
+      "cost",
+      "receive",
+      "transfer-from",
+      "transfer-to",
+    ],
+    "to": 5,
+    "userId": "123",
+  },
+  "query": "
+    *[_type == \\"spending\\" && user._ref == $userId && kindSpending._ref in $kindSpendingIds] | order(_updatedAt desc)[$from...$to]
+    {
+        _id,
+        categorySpending-> {
+            name
+        },
+        methodSpending-> {
+            name
+        },
+        kindSpending-> {
+            name,
+            key
+        },
+        description,
+        amount,
+        paid,
+        date
+    }
+",
+  "tags": "alternate",
+}
+`;
+
+exports[`query > getRecentSpendingFilterDateRangePaginate 1`] = `
+{
+  "params": {
+    "kindSpendingIds": [
+      "cost",
+      "receive",
+      "transfer-from",
+      "transfer-to",
+    ],
+    "userId": "123",
+  },
+  "query": "
+    {
+        \\"data\\": *[_type == \\"spending\\" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && $__startDate <= date && date <= $__endDate] | order(_updatedAt desc)[$__fromRecent...$__toRecent]
+            {
+                _id,
+                categorySpending-> {
+                    name
+                },
+                methodSpending-> {
+                    name
+                },
+                kindSpending-> {
+                    name,
+                    key
+                },
+                description,
+                amount,
+                realPaid,
+                paid,
+                date,
+                estimatePaidDate
+            },
+        \\"hasNextPage\\": count(*[_type == \\"spending\\" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && $__startDate <= date && date <= $__endDate]) > $__toRecent
+    }
+",
+  "tags": "alternate",
+}
+`;
+
+exports[`query > getStatisticLoan 1`] = `
+{
+  "params": {
+    "from": 0,
+    "to": 10,
+    "userId": "123",
+  },
+  "query": "
+    *[_type == \\"userLoan\\" && user._ref == $userId] | order(surplus desc) [$from...$to]
+    {
+        _id,
+        userName,
+        surplus,
+        image
+    }
+",
+  "tags": "alternate",
+}
+`;
+
+exports[`query > getStatisticSpending 1`] = `
+{
+  "params": {
+    "endDate": "2023-02-28T23:59:59.999Z",
+    "startDate": "2023-02-01T00:00:00.000Z",
+    "userId": "123",
+  },
+  "query": "
+    *[_type == \\"kindSpending\\"]
+    {
+        key,
+        \\"data\\": *[_type == \\"spending\\" && user._ref == $userId  && kindSpending._ref == ^._id && $startDate <= date && date <= $endDate].amount,
+    }
+",
+  "tags": "alternate",
+}
+`;

@@ -8,11 +8,11 @@ const SubmitWrap: React.FC<SubmitWrapProps> = ({ children, className }) => {
     return (
         <div
             className={clsx(
-                'flex-shrink-0 border-t border-gray-200 dark:border-slate-600 px-4 py-5 sm:px-6 w-full mx-auto',
+                'mx-auto w-full flex-shrink-0 border-t border-gray-200 px-4 py-5 dark:border-slate-600 sm:px-6',
                 className
             )}
         >
-            <div className='flex sm:justify-start justify-end space-x-3' ref={parent}>
+            <div className='flex justify-end space-x-3 sm:justify-start' ref={parent}>
                 {children}
             </div>
         </div>

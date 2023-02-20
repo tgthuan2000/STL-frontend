@@ -1,15 +1,16 @@
 import { SanityDocument } from '@sanity/client'
 import React from 'react'
+import { TagsTypeUseQuery } from '~/@types/hook'
 import { TAGS } from '~/constant'
 import { PERMISSION } from '~/constant/permission'
 import { KIND_SPENDING } from '~/constant/spending'
-import { TagsTypeUseQuery } from '~/hook/useQuery'
 import { NotifyItem } from './notify'
 
 type LoadingItems = {
     config: boolean
     submit: boolean
 }
+
 export interface ILoadingContext {
     loading: LoadingItems
     setConfigLoading: (config: boolean) => void
@@ -30,7 +31,6 @@ export interface IConfigContext {
     getKindSpendingId: GetKindSpendingId
     getKindSpendingIds: GetKindSpendingIds
     hasPermissions: (keys: Array<PERMISSION>) => boolean
-    ok: boolean
 }
 
 export interface ISlideOverContext {
@@ -41,7 +41,7 @@ export interface ISlideOverContext {
 }
 export type FetchApi = <T extends { [x: string]: any }>(
     callApi: { [x: string]: { query: string; key: number } },
-    params: { [y: string]: string | number | string[] | null }
+    params: { [y: string]: string | number | string[] | null | undefined }
 ) => Promise<T>
 
 export type CheckInCache = <T extends { [x: string]: any }>(
@@ -144,4 +144,11 @@ export interface INotifyContext {
 
 export interface IScrollToTopContext {
     scrollToTop: () => void
+}
+
+export interface IFilePreview {
+    file: any
+    type: any
+    onPreview: (file: any) => void
+    clear: () => void
 }

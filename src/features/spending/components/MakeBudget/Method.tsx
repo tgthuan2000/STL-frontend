@@ -1,10 +1,12 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { PlusCircleIcon, RefreshIcon, TrashIcon } from '@heroicons/react/outline'
+import { ArrowPathIcon, PlusCircleIcon, TrashIcon } from '@heroicons/react/24/outline'
 import React from 'react'
 import { useFieldArray } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { IMethodSpending, MakeBudgetProps } from '~/@types/spending'
 import { Button } from '~/components'
 import { AutoComplete, Input } from '~/components/_base'
+import LANGUAGE from '~/i18n/language/key'
 
 const Method: React.FC<MakeBudgetProps & { optionData: IMethodSpending[] | undefined; optionLoading: boolean }> = ({
     form,
@@ -14,6 +16,7 @@ const Method: React.FC<MakeBudgetProps & { optionData: IMethodSpending[] | undef
     loading,
     optionLoading,
 }) => {
+    const { t } = useTranslation()
     const [wrapRef] = useAutoAnimate<HTMLDivElement>()
     const [loadingRef] = useAutoAnimate<HTMLButtonElement>()
 
@@ -39,17 +42,17 @@ const Method: React.FC<MakeBudgetProps & { optionData: IMethodSpending[] | undef
             <Button
                 type='button'
                 color='outline-cyan'
-                className='items-center gap-1 truncate mb-2'
+                className='mb-2 items-center gap-1 truncate'
                 onClick={handleAddItem}
                 disabled={loading}
                 ref={loadingRef}
             >
                 {budgetLoading ? (
-                    <RefreshIcon className='h-6 w-6 animate-spin -scale-100' />
+                    <ArrowPathIcon className='h-6 w-6 animate-spin' />
                 ) : (
                     <>
                         <PlusCircleIcon className='h-6 w-6' />
-                        Thêm phương thức
+                        {t(LANGUAGE.CREATE_METHOD)}
                     </>
                 )}
             </Button>
@@ -59,7 +62,7 @@ const Method: React.FC<MakeBudgetProps & { optionData: IMethodSpending[] | undef
                         <div className='flex justify-start'>
                             <button
                                 type='button'
-                                className='text-radical-red-500 disabled:text-gray-300 cursor-pointer hover:opacity-50 disabled:hover:opacity-100 disabled:cursor-not-allowed transition-all'
+                                className='cursor-pointer text-radical-red-500 transition-all hover:opacity-50 disabled:cursor-not-allowed disabled:text-gray-300 disabled:hover:opacity-100'
                                 onClick={() => {
                                     handleDeleteItem(form.getValues(`MethodSpending.${index}._id`), index)
                                 }}
@@ -73,7 +76,7 @@ const Method: React.FC<MakeBudgetProps & { optionData: IMethodSpending[] | undef
                                     name={`MethodSpending.${index}.methodSpending`}
                                     form={form}
                                     data={optionData}
-                                    label='Phương thức'
+                                    label={t(LANGUAGE.METHOD)}
                                     loading={optionLoading}
                                 />
                             </div>
@@ -82,7 +85,7 @@ const Method: React.FC<MakeBudgetProps & { optionData: IMethodSpending[] | undef
                                     name={`MethodSpending.${index}.amount`}
                                     form={form}
                                     type='number'
-                                    label='Hạn mức'
+                                    label={t(LANGUAGE.LIMIT_AMOUNT)}
                                 />
                             </div>
                         </div>

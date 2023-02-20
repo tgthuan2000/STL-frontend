@@ -1,31 +1,31 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { BadgeCheckIcon, ExclamationCircleIcon } from '@heroicons/react/outline'
-import { isEmpty } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/@types/hook'
 import { AddCategoryQueryData, IAddCategoryForm } from '~/@types/spending'
-import { Button, SubmitWrap } from '~/components'
+import { Button, CheckName, SubmitWrap } from '~/components'
 import { Input, Selection } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
-import { SlideOverHOC, useCache, useConfig, useLoading, useSlideOver } from '~/context'
-import useQuery, { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
+import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
+import { useQuery } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING } from '~/schema/query/spending'
 import { getCategorySpending } from '~/services/query'
-import useAuth from '~/store/auth'
-import { searchName } from '../services'
+import { useProfile } from '~/store/auth'
 
 const AddCategory = () => {
+    const { t } = useTranslation()
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { kindSpending, getKindSpendingId } = useConfig()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { loading, setSubmitLoading } = useLoading()
     const { deleteCache } = useCache()
-    const [alertRef] = useAutoAnimate<HTMLDivElement>()
+    const { needCheckWhenLeave } = useCheck()
 
     const kinds = useMemo(
         () => kindSpending.filter((kind) => [KIND_SPENDING.COST, KIND_SPENDING.RECEIVE].includes(kind.key)),
@@ -97,8 +97,9 @@ const AddCategory = () => {
                 getCategorySpending({ userProfile, kindSpending: kindSpending?._id as string }),
             ])
             console.log(result)
-            toast.success<string>('Tạo mới thể loại thành công!')
+            toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_CATEGORY_SUCCESS))
             form.reset({ name: '', kindSpending }, { keepDefaultValues: true })
+            needCheckWhenLeave()
         } catch (error) {
             console.log(error)
         } finally {
@@ -122,10 +123,10 @@ const AddCategory = () => {
                                 name='kindSpending'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn thể loại!',
+                                    required: t(LANGUAGE.REQUIRED_KIND) as string,
                                 }}
-                                label='Thể loại'
-                                placeholder='--- Chọn thể loại ---'
+                                label={t(LANGUAGE.CATEGORY)}
+                                placeholder={t(LANGUAGE.PLACEHOLDER_CHOOSE_KIND)}
                                 data={kinds}
                                 idKey='_id'
                                 valueKey='name'
@@ -135,63 +136,30 @@ const AddCategory = () => {
                                 name='name'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu nhập tên thể loại!',
+                                    required: t(LANGUAGE.REQUIRED_CATEGORY_NAME) as any,
                                     maxLength: {
                                         value: 50,
-                                        message: 'Tên thể loại không được vượt quá 50 ký tự!',
+                                        message: t(LANGUAGE.CATEGORY_NAME_MAX_50),
                                     },
                                 }}
                                 type='text'
-                                label='Tên thể loại'
+                                label={t(LANGUAGE.CATEGORY_NAME)}
                             />
 
-                            <div ref={alertRef}>
-                                {!categorySpending.loading && form.watch('kindSpending') && watchName.length >= 2 && (
-                                    <>
-                                        {!isEmpty(sameCategoryList) ? (
-                                            <>
-                                                <span className='text-yellow-500 flex items-center gap-1'>
-                                                    <ExclamationCircleIcon className='h-6 w-6' />
-                                                    Một số thể loại gần giống tên
-                                                </span>
-
-                                                <ul className='mt-1 list-disc pl-5'>
-                                                    <ul className='mt-1 list-disc pl-5'>
-                                                        {sameCategoryList?.map((item) => {
-                                                            const component = searchName(item.name, watchName)
-                                                            if (typeof component === 'string') {
-                                                                return <li key={item._id}>{component}</li>
-                                                            }
-                                                            const [start, middle, end] = component
-                                                            return (
-                                                                <li key={item._id}>
-                                                                    {start}
-                                                                    <span className='font-medium text-yellow-600'>
-                                                                        {middle}
-                                                                    </span>
-                                                                    {end}
-                                                                </li>
-                                                            )
-                                                        })}
-                                                    </ul>
-                                                </ul>
-                                            </>
-                                        ) : (
-                                            <span className='text-green-500 flex items-center gap-1'>
-                                                <BadgeCheckIcon className='h-6 w-6' />
-                                                Không có thể loại nào gần giống tên!
-                                            </span>
-                                        )}
-                                    </>
+                            <CheckName
+                                show={Boolean(
+                                    !categorySpending.loading && form.watch('kindSpending') && watchName.length >= 2
                                 )}
-                            </div>
+                                list={sameCategoryList}
+                                watchValue={watchName}
+                            />
                         </div>
                     </div>
                 </div>
             </div>
             <SubmitWrap>
                 <Button color='cyan' type='submit' disabled={loading.submit}>
-                    Tạo
+                    {t(LANGUAGE.CREATE)}
                 </Button>
                 <Button
                     color='outline'
@@ -201,7 +169,7 @@ const AddCategory = () => {
                         navigate(-1)
                     }}
                 >
-                    Hủy bỏ
+                    {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
         </form>

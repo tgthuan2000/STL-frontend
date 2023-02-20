@@ -1,20 +1,21 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { MailIcon, TrashIcon } from '@heroicons/react/outline'
+import { EnvelopeIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { yupResolver } from '@hookform/resolvers/yup'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
 import { CreateStep3Props, QueryDataStep3 } from '~/@types/announce-config'
+import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/@types/hook'
 import { DraftNotify, NotifyAssignForm } from '~/@types/notify'
 import { Image } from '~/components'
 import { LazySearchSelect, Toggle } from '~/components/_base'
 import { COUNT_PAGINATE, TAGS } from '~/constant'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
-import { TEMPLATE } from '~/constant/template'
-import { useLocalStorage } from '~/hook'
-import useQuery, { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
+import { useLocalStorage, useQuery } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import { SEARCH_USER_PAGINATE } from '~/schema/query/user'
 
 const schema = yup.object().shape({
@@ -30,6 +31,7 @@ const schema = yup.object().shape({
 })
 
 const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
+    const { t } = useTranslation()
     const [draftNotify] = useLocalStorage<DraftNotify>(LOCAL_STORAGE_KEY.STL_DRAFT_NOTIFY)
     const [userRef] = useAutoAnimate<HTMLDivElement>()
 
@@ -101,9 +103,9 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
         <form
             id={id}
             onSubmit={form.handleSubmit(handleSubmit)}
-            className='flex h-full flex-col max-w-xl w-full mx-auto'
+            className='mx-auto flex h-full w-full max-w-xl flex-col'
         >
-            <div className='space-y-5 mb-5'>
+            <div className='mb-5 space-y-5'>
                 <div className='mt-3'>
                     <Toggle
                         form={form}
@@ -132,7 +134,7 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                                 <div className='flex-1'>
                                     <p
                                         className={clsx(
-                                            'font-medium truncate',
+                                            'truncate font-medium',
                                             active ? 'text-white' : 'text-gray-900 dark:text-slate-200'
                                         )}
                                     >
@@ -140,7 +142,7 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                                     </p>
                                     <small
                                         className={clsx(
-                                            'font-normal truncate block',
+                                            'block truncate font-normal',
                                             active ? 'text-white' : 'text-gray-500 dark:text-slate-400'
                                         )}
                                     >
@@ -156,20 +158,20 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                     <p className='inline-block text-sm font-medium text-gray-700 dark:text-slate-100'>
                         Danh sách người nhận thông báo
                     </p>
-                    <div className='mt-1 select-none border dark:border-slate-700 rounded-lg' ref={userRef}>
+                    <div className='mt-1 select-none rounded-lg border dark:border-slate-700' ref={userRef}>
                         {isEmpty(__users) ? (
                             <p className='px-4 py-2 text-center text-gray-900 dark:text-slate-200'>
-                                {TEMPLATE.EMPTY_DATA}
+                                {t(LANGUAGE.EMPTY_DATA)}
                             </p>
                         ) : (
                             __users.map((user, index) => (
-                                <div key={user._id} className='px-4 py-2 flex gap-2 items-center'>
+                                <div key={user._id} className='flex items-center gap-2 px-4 py-2'>
                                     <Image src={user.image} alt={user.userName} size='small' />
                                     <div className='flex-1'>
-                                        <p className='font-medium text-gray-900 dark:text-slate-200 truncate'>
+                                        <p className='truncate font-medium text-gray-900 dark:text-slate-200'>
                                             {user.userName}
                                         </p>
-                                        <small className='font-normal text-gray-500 dark:text-slate-400 truncate block'>
+                                        <small className='block truncate font-normal text-gray-500 dark:text-slate-400'>
                                             {user.email}
                                         </small>
                                     </div>
@@ -180,28 +182,28 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                                             disabled={form.watch('sendAll')}
                                             className={clsx(
                                                 `
-                                                    p-2 
-                                                    transition-all 
+                                                    cursor-pointer 
                                                     rounded-lg 
-                                                    cursor-pointer
+                                                    p-2 
+                                                    transition-all
                                                     hover:bg-cyan-500
+                                                    disabled:cursor-not-allowed
                                                     disabled:bg-slate-700
                                                     disabled:text-gray-500
-                                                    disabled:cursor-not-allowed
                                                 `,
                                                 user.sendMail
                                                     ? 'bg-cyan-400 text-gray-100'
-                                                    : 'bg-slate-100 dark:bg-slate-700 text-gray-400'
+                                                    : 'bg-slate-100 text-gray-400 dark:bg-slate-700'
                                             )}
                                             onClick={() => {
                                                 form.setValue(`users.${index}.sendMail`, !user.sendMail)
                                             }}
                                         >
-                                            <MailIcon className='h-5' />
+                                            <EnvelopeIcon className='h-5' />
                                         </button>
                                     )}
                                     <button
-                                        className='p-2 bg-slate-100 hover:bg-slate-200 disabled:hover:bg-slate-100 disabled:cursor-not-allowed text-radical-red-500 disabled:text-gray-500 dark:bg-slate-700 transition-all rounded-lg cursor-pointer'
+                                        className='cursor-pointer rounded-lg bg-slate-100 p-2 text-radical-red-500 transition-all hover:bg-slate-200 disabled:cursor-not-allowed disabled:text-gray-500 disabled:hover:bg-slate-100 dark:bg-slate-700'
                                         onClick={() => {
                                             form.setValue(
                                                 'users',

@@ -1,6 +1,6 @@
 import React from 'react'
+import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/@types/hook'
 import { KIND_SPENDING } from '~/constant/spending'
-import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
 
 export interface ProfileInfoGroupProps {
     title: string

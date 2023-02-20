@@ -1,23 +1,50 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { isEmpty, isUndefined } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import * as yup from 'yup'
 import { IAddIncomeForm, MakeIncomeQueryData } from '~/@types/spending'
 import { Button, SubmitWrap } from '~/components'
-import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
+import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
-import { useQuery, useServiceQuery } from '~/hook'
+import { useQuery, useServiceQuery, useTracking } from '~/hook'
+import i18n from '~/i18n'
+import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
-import useAuth from '~/store/auth'
+import { TRACKING_INCOME } from '~/schema/query/tracking'
+import { useProfile } from '~/store/auth'
+
+const { t } = i18n
+const schema = yup.object().shape({
+    amount: yup
+        .number()
+        .required(t(LANGUAGE.REQUIRED_RECEIVE) as string)
+        .min(1, t(LANGUAGE.RECEIVE_MIN_ZERO) as string)
+        .typeError(t(LANGUAGE.REQUIRED_NUMBER) as string),
+    categorySpending: yup
+        .object()
+        .nullable()
+        .required(t(LANGUAGE.REQUIRED_CATEGORY) as string),
+    methodSpending: yup
+        .object()
+        .nullable()
+        .required(t(LANGUAGE.REQUIRED_METHOD) as string),
+    date: yup.date().required(t(LANGUAGE.REQUIRED_DATE) as string),
+    description: yup.string(),
+    image: yup.mixed(),
+})
 
 const MakeIncome = () => {
+    const { t } = useTranslation()
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { deleteCache } = useCache()
     const { getKindSpendingId } = useConfig()
     const { needCheckWhenLeave } = useCheck()
@@ -58,40 +85,52 @@ const MakeIncome = () => {
             methodSpending: null,
             date: new Date(),
             description: '',
+            image: null,
         },
+        resolver: yupResolver(schema),
     })
+
+    const { tracking, value } = useTracking<IAddIncomeForm>(form, TRACKING_INCOME)
 
     const onsubmit: SubmitHandler<IAddIncomeForm> = async (data) => {
         setSubmitLoading(true)
-        let { amount, methodSpending, categorySpending, description, date } = data
+        let { amount, methodSpending, categorySpending, description, date, image } = data
+        let imageId = null
         amount = Number(amount)
         description = description.trim()
 
-        // add to database
-        const document = {
-            _type: 'spending',
-            amount,
-            description,
-            date: moment(date).format(),
-            surplus: methodSpending?.surplus,
-            kindSpending: {
-                _type: 'reference',
-                _ref: kindSpendingId,
-            },
-            methodSpending: {
-                _type: 'reference',
-                _ref: methodSpending?._id,
-            },
-            categorySpending: {
-                _type: 'reference',
-                _ref: categorySpending?._id,
-            },
-            user: {
-                _type: 'reference',
-                _ref: userProfile?._id,
-            },
-        }
         try {
+            if (image) {
+                const response = await client.assets.upload('image', image)
+                imageId = response._id
+            }
+
+            // add to database
+            const document = {
+                _type: 'spending',
+                amount,
+                description,
+                date: moment(date).format(),
+                surplus: methodSpending?.surplus,
+                kindSpending: {
+                    _type: 'reference',
+                    _ref: kindSpendingId,
+                },
+                methodSpending: {
+                    _type: 'reference',
+                    _ref: methodSpending?._id,
+                },
+                categorySpending: {
+                    _type: 'reference',
+                    _ref: categorySpending?._id,
+                },
+                user: {
+                    _type: 'reference',
+                    _ref: userProfile?._id,
+                },
+                ...(imageId && { image: { _type: 'image', asset: { _type: 'reference', _ref: imageId } } }),
+            }
+            console.log({ document })
             const patchMethod = client
                 .patch(methodSpending?._id as string)
                 .setIfMissing({ surplus: 0, countUsed: 0 })
@@ -124,12 +163,13 @@ const MakeIncome = () => {
                     amount: '',
                     categorySpending,
                     methodSpending,
+                    image: null,
                 },
                 {
                     keepDefaultValues: true,
                 }
             )
-            toast.success<string>('Tạo thu nhập thành công!')
+            toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_RECEIVE_SUCCESS))
             needCheckWhenLeave()
             // setIsOpen(false)
             // navigate(-1)
@@ -202,25 +242,17 @@ const MakeIncome = () => {
                             <Input
                                 name='amount'
                                 form={form}
-                                rules={{
-                                    required: 'Yêu cầu nhập thu nhập!',
-                                    min: {
-                                        value: 0,
-                                        message: 'Thu nhập phải lớn hơn 0!',
-                                    },
-                                }}
+                                tracking={tracking}
                                 type='number'
-                                label='Thu nhập'
+                                label={t(LANGUAGE.RECEIVE)}
                             />
 
                             <AutoComplete
                                 name='categorySpending'
                                 form={form}
-                                rules={{
-                                    required: 'Yêu cầu chọn thể loại!',
-                                }}
+                                tracking={tracking}
                                 data={categorySpending.data}
-                                label='Thể loại'
+                                label={t(LANGUAGE.CATEGORY)}
                                 loading={categorySpending.loading}
                                 addMore={handleAddMoreCategorySpending}
                                 onReload={
@@ -232,12 +264,10 @@ const MakeIncome = () => {
 
                             <AutoComplete
                                 name='methodSpending'
+                                tracking={tracking}
                                 form={form}
-                                rules={{
-                                    required: 'Yêu cầu chọn phương thức thanh toán!',
-                                }}
                                 data={methodSpending.data}
-                                label='Phương thức thanh toán'
+                                label={t(LANGUAGE.METHOD_SPENDING)}
                                 loading={methodSpending.loading}
                                 addMore={handleAddMoreMethodSpending}
                                 onReload={
@@ -245,23 +275,18 @@ const MakeIncome = () => {
                                 }
                             />
 
-                            <DatePicker
-                                name='date'
-                                form={form}
-                                rules={{
-                                    required: 'Yêu cầu chọn ngày!',
-                                }}
-                                label='Ngày'
-                            />
+                            <DatePicker name='date' form={form} tracking={tracking} label={t(LANGUAGE.DATE)} />
 
-                            <TextArea name='description' form={form} label='Ghi chú' />
+                            <TextArea name='description' form={form} tracking={tracking} label={t(LANGUAGE.NOTE)} />
+
+                            <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
                         </div>
                     </div>
                 </div>
             </div>
             <SubmitWrap>
                 <Button color='green' type='submit' disabled={loading.submit}>
-                    Lưu
+                    {t(LANGUAGE.SAVE)}
                 </Button>
                 <Button
                     color='outline'
@@ -271,7 +296,7 @@ const MakeIncome = () => {
                         navigate(-1)
                     }}
                 >
-                    Hủy bỏ
+                    {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
         </form>

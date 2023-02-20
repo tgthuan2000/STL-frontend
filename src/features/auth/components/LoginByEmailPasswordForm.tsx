@@ -2,15 +2,18 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { SanityDocument } from '@sanity/client'
 import { isEmpty } from 'lodash'
 import React, { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { IUserProfile, LoginByEmailPasswordFormProps, SubmitPassword } from '~/@types/auth'
 import { BackButton } from '~/components'
 import { useLoading } from '~/context'
+import LANGUAGE from '~/i18n/language/key'
 import { getDataByEmail } from '../services'
 import Step1 from './Step1'
 import Step2 from './Step2'
 
 const LoginByEmailPasswordForm: React.FC<LoginByEmailPasswordFormProps> = ({ onSubmit, onBack }) => {
+    const { t } = useTranslation()
     const [stepParent] = useAutoAnimate<HTMLDivElement>()
     const [step, setStep] = useState(1)
     const { loading, setSubmitLoading } = useLoading()
@@ -24,10 +27,10 @@ const LoginByEmailPasswordForm: React.FC<LoginByEmailPasswordFormProps> = ({ onS
                 setPreviewData(data)
                 setStep(2)
             } else {
-                toast.error('Tài khoản không tồn tại')
+                toast.error(t(LANGUAGE.NOTIFY_NOT_EXIST_ACCOUNT))
             }
         } catch (error) {
-            toast.error('Đã có lỗi xảy ra')
+            toast.error(t(LANGUAGE.NOTIFY_ERROR))
         } finally {
             setSubmitLoading(false)
         }
@@ -51,7 +54,7 @@ const LoginByEmailPasswordForm: React.FC<LoginByEmailPasswordFormProps> = ({ onS
             2: <Step2 previewData={previewData} onSubmit={onSubmitPassword} />,
         }
 
-        return steps[step] ?? 'Unknown step'
+        return steps[step] ?? t(LANGUAGE.UNKNOWN_STEP)
     }, [step])
 
     return (

@@ -1,22 +1,23 @@
-import { ArrowSmLeftIcon, TrashIcon } from '@heroicons/react/outline'
+import { ArrowSmallLeftIcon, TrashIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { IDetailSpendingForm, TransactionDetailFormProps } from '~/@types/spending'
 import { Button, SubmitWrap } from '~/components'
-import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
+import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useLoading } from '~/context'
+import LANGUAGE from '~/i18n/language/key'
 import { getColorPrize } from '~/services'
 
 const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) => {
     const {
         onsubmit,
-        title,
         categorySpending,
         handleAddMoreMethodSpending,
         handleAddMoreCategorySpending,
@@ -26,6 +27,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
         methodSpending,
         transaction,
     } = data
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const { loading } = useLoading()
     const form = useForm<IDetailSpendingForm>({
@@ -37,20 +39,21 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
             date: moment(transaction.date).toDate(),
             description: transaction.description,
             surplus: transaction.surplus ?? 0,
+            image: transaction.image,
         },
     })
 
     return (
         <div>
-            <div className='flex justify-between items-center mb-4'>
-                <div className='flex items-center text-gray-900 dark:text-slate-200 space-x-2 select-none'>
-                    <ArrowSmLeftIcon
-                        className='h-7 w-7 hover:opacity-50 cursor-pointer'
+            <div className='mb-4 flex items-center justify-between'>
+                <div className='flex select-none items-center space-x-2 text-gray-900 dark:text-slate-200'>
+                    <ArrowSmallLeftIcon
+                        className='h-7 w-7 cursor-pointer hover:opacity-50'
                         onClick={() => {
                             navigate(-1)
                         }}
                     />
-                    <h4 className='xl:text-2xl text-xl font-semibold'>Chi tiết giao dịch</h4>
+                    <h4 className='text-xl font-semibold xl:text-2xl'>{t(LANGUAGE.TRANSACTION_DETAIL)}</h4>
                 </div>
                 {[
                     KIND_SPENDING.COST,
@@ -59,17 +62,18 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                     KIND_SPENDING.TRANSFER_TO,
                 ].includes(transaction.kindSpending.key) && (
                     <span
-                        className='h-8 lg:h-9 w-8 lg:w-9 hover:opacity-50 transition-opacity text-gray-600 cursor-pointer bg-slate-200 dark:bg-slate-700 dark:text-slate-300 p-1.5 rounded-lg'
+                        className='h-8 w-8 cursor-pointer rounded-lg bg-slate-200 p-1.5 text-gray-600 transition-opacity hover:opacity-50 dark:bg-slate-700 dark:text-slate-300 lg:h-9 lg:w-9'
                         onClick={() =>
-                            window.confirm('Bạn có chắc muốn xóa giao dịch này ?') && handleDeleteTransaction()
+                            window.confirm(t(LANGUAGE.CONFIRM_DELETE_TRANSACTION) as string) &&
+                            handleDeleteTransaction()
                         }
                     >
                         <TrashIcon />
                     </span>
                 )}
             </div>
-            <div className='bg-white dark:bg-slate-800 rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>
-                <div className='max-w-lg w-full mx-auto'>
+            <div className='rounded-xl bg-white py-2 shadow-lg dark:bg-slate-800 sm:py-6 lg:py-8'>
+                <div className='mx-auto w-full max-w-lg'>
                     <form
                         onSubmit={!isEmpty(categorySpending.data) ? form.handleSubmit(onsubmit) : undefined}
                         className='flex h-full flex-col'
@@ -94,13 +98,13 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                                 return (
                                                     <div className='flex justify-between'>
                                                         <h4 className='inline-block font-medium text-gray-900 dark:text-slate-200'>
-                                                            Số dư tại thời điểm
+                                                            {t(LANGUAGE.SURPLUS_AT_TIME)}
                                                         </h4>
                                                         <div className='flex items-center space-x-2 font-normal'>
                                                             <span className={clsx(...getColorPrize(calc))}>
                                                                 {numeral(calc).format()}
                                                             </span>
-                                                            <span className='inline-block w-px h-full border border-gray-400 dark:border-slate-700' />
+                                                            <span className='inline-block h-full w-px border border-gray-400 dark:border-slate-700' />
                                                             <span className={clsx(...getColorPrize(surplus))}>
                                                                 {numeral(surplus).format()}
                                                             </span>
@@ -113,12 +117,12 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                             name='amount'
                                             form={form}
                                             type='number'
-                                            label={title}
+                                            label={t(LANGUAGE.AMOUNT)}
                                             rules={{
-                                                required: 'Yêu cầu nhập chi phí!',
+                                                required: t(LANGUAGE.REQUIRED_COST) as string,
                                                 min: {
                                                     value: 0,
-                                                    message: 'Chi phí phải lớn hơn 0!',
+                                                    message: t(LANGUAGE.COST_MIN_ZERO),
                                                 },
                                             }}
                                         />
@@ -128,11 +132,11 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                                 name='categorySpending'
                                                 form={form}
                                                 data={categorySpending.data}
-                                                label='Thể loại'
+                                                label={t(LANGUAGE.CATEGORY)}
                                                 loading={categorySpending.loading}
                                                 addMore={handleAddMoreCategorySpending}
                                                 rules={{
-                                                    required: 'Yêu cầu chọn thể loại!',
+                                                    required: t(LANGUAGE.REQUIRED_CATEGORY) as string,
                                                 }}
                                                 onReload={
                                                     isEmpty(categorySpending.data)
@@ -157,16 +161,16 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                                     data={methodSpending.data}
                                                     label={
                                                         transaction.methodReference
-                                                            ? (transaction.kindSpending.key ===
+                                                            ? transaction.kindSpending.key ===
                                                               KIND_SPENDING.TRANSFER_FROM
-                                                                  ? 'Từ'
-                                                                  : 'Đến') + ' phương thức thanh toán'
-                                                            : 'Phương thức thanh toán'
+                                                                ? t(LANGUAGE.FROM_METHOD_SPENDING)
+                                                                : t(LANGUAGE.TO_METHOD_SPENDING)
+                                                            : t(LANGUAGE.METHOD_SPENDING)
                                                     }
                                                     loading={methodSpending.loading}
                                                     addMore={handleAddMoreMethodSpending}
                                                     rules={{
-                                                        required: 'Yêu cầu chọn phương thức thanh toán!',
+                                                        required: t(LANGUAGE.REQUIRED_METHOD_SPENDING) as string,
                                                     }}
                                                     onReload={
                                                         isEmpty(methodSpending.data)
@@ -188,15 +192,14 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                                         form={form}
                                                         data={methodSpending.data}
                                                         label={
-                                                            (transaction.kindSpending.key ===
-                                                            KIND_SPENDING.TRANSFER_FROM
-                                                                ? 'Đến'
-                                                                : 'Từ') + ' phương thức thanh toán'
+                                                            transaction.kindSpending.key === KIND_SPENDING.TRANSFER_FROM
+                                                                ? t(LANGUAGE.TO_METHOD_SPENDING)
+                                                                : t(LANGUAGE.FROM_METHOD_SPENDING)
                                                         }
                                                         loading={methodSpending.loading}
                                                         addMore={handleAddMoreMethodSpending}
                                                         rules={{
-                                                            required: 'Yêu cầu chọn phương thức thanh toán!',
+                                                            required: t(LANGUAGE.REQUIRED_METHOD_SPENDING) as string,
                                                         }}
                                                         onReload={
                                                             isEmpty(methodSpending.data)
@@ -211,13 +214,15 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                         <DatePicker
                                             name='date'
                                             form={form}
-                                            label='Ngày'
+                                            label={t(LANGUAGE.DATE)}
                                             rules={{
-                                                required: 'Yêu cầu chọn ngày!',
+                                                required: t(LANGUAGE.REQUIRED_DATE) as string,
                                             }}
                                         />
 
-                                        <TextArea name='description' form={form} label='Ghi chú' />
+                                        <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
+
+                                        <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
                                     </div>
                                 </div>
                             </div>
@@ -225,7 +230,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                         {!isEmpty(categorySpending.data) && (
                             <SubmitWrap>
                                 <Button color='blue' type='submit' disabled={loading.submit}>
-                                    Cập nhật
+                                    {t(LANGUAGE.UPDATE)}
                                 </Button>
                                 <Button
                                     color='outline'
@@ -234,7 +239,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                         navigate(-1)
                                     }}
                                 >
-                                    Hủy bỏ
+                                    {t(LANGUAGE.CANCEL)}
                                 </Button>
                             </SubmitWrap>
                         )}

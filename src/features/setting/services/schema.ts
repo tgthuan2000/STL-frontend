@@ -1,4 +1,8 @@
 import * as yup from 'yup'
+import i18n from '~/i18n'
+import LANGUAGE from '~/i18n/language/key'
+
+const { t } = i18n
 
 export const changePasswordSchema = yup.object().shape({
     'old-password': yup
@@ -6,14 +10,14 @@ export const changePasswordSchema = yup.object().shape({
         .nullable()
         .when('__isHasPassword', {
             is: true,
-            then: yup.string().required('Mật khẩu cũ không được để trống!'),
+            then: yup.string().required(t(LANGUAGE.REQUIRED_OLD_PASSWORD) as string),
         }),
     'new-password': yup
         .string()
-        .required('Mật khẩu mới không được để trống!')
-        .min(1, 'Mật khẩu mới phải có ít nhất 1 ký tự!'),
+        .required(t(LANGUAGE.REQUIRED_NEW_PASSWORD) as string)
+        .min(1, t(LANGUAGE.NEW_PASSWORD_MIN_1) as string),
     're-password': yup
         .string()
-        .required('Nhập lại mật khẩu không được để trống!')
-        .oneOf([yup.ref('new-password')], 'Mật khẩu không khớp!'),
+        .required(t(LANGUAGE.REQUIRED_RE_PASSWORD) as string)
+        .oneOf([yup.ref('new-password')], t(LANGUAGE.PASSWORD_NOT_MATCH) as string),
 })

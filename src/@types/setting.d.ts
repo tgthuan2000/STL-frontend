@@ -1,5 +1,5 @@
 export interface SettingOptions {
-    id: number
+    id: string
     className: string
     component: React.FC<SettingComponentProps>
 }

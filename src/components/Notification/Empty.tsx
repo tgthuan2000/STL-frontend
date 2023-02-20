@@ -1,11 +1,13 @@
+import { useTranslation } from 'react-i18next'
 import EmptyNotifyGif from '~/assets/loading.gif'
-import { TEMPLATE } from '~/constant/template'
+import LANGUAGE from '~/i18n/language/key'
 
 const EmptyNotify = () => {
+    const { t } = useTranslation()
     return (
-        <div className='py-10 font-medium text-lg flex flex-col gap-2 items-center justify-center'>
+        <div className='flex flex-col items-center justify-center gap-2 py-10 text-lg font-medium'>
             <img src={EmptyNotifyGif} className='h-28' />
-            {TEMPLATE.EMPTY_NOTIFY}
+            {t(LANGUAGE.EMPTY_NOTIFY)}
         </div>
     )
 }

@@ -1,22 +1,27 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { CheckCircleIcon, ExclamationIcon } from '@heroicons/react/outline'
+import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { SanityDocument } from '@sanity/client'
 import { isEmpty } from 'lodash'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
 import { IUserProfile, Step2Props } from '~/@types/auth'
 import { Button } from '~/components'
 import { Input } from '~/components/_base'
 import { UserSvg } from '~/components/_constant'
 import { useLoading } from '~/context'
+import i18n from '~/i18n'
+import LANGUAGE from '~/i18n/language/key'
 
+const { t } = i18n
 const schema = yup.object().shape({
-    password: yup.string().required('Yêu cầu nhập!'),
+    password: yup.string().required(t(LANGUAGE.REQUIRED_FIELD) as string),
 })
 
 const Step2: React.FC<Step2Props> = ({ previewData, onSubmit }) => {
+    const { t } = useTranslation()
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const [chose, setChose] = useState<SanityDocument<IUserProfile> | null | undefined>(previewData?.[0])
     const { loading } = useLoading()
@@ -35,31 +40,31 @@ const Step2: React.FC<Step2Props> = ({ previewData, onSubmit }) => {
     return (
         <div className='space-y-3'>
             {!isEmpty(previewData) && (
-                <div className='bg-white dark:bg-slate-800 shadow-md rounded-lg select-none overflow-hidden'>
+                <div className='select-none overflow-hidden rounded-lg bg-white shadow-md dark:bg-slate-800'>
                     {previewData?.map((data) => {
                         const checked = data._id === chose?._id
                         return (
                             <div
                                 key={data._id}
-                                className='px-4 py-2 flex gap-2 items-center cursor-pointer'
+                                className='flex cursor-pointer items-center gap-2 px-4 py-2'
                                 onClick={() => !checked && setChose(data)}
                             >
                                 {data.image ? (
                                     <img
                                         src={data.image}
                                         alt={data.userName}
-                                        className='h-8 w-8 rounded-full flex-shrink-0 object-cover'
+                                        className='h-8 w-8 flex-shrink-0 rounded-full object-cover'
                                     />
                                 ) : (
-                                    <div className='h-8 w-8 rounded-full overflow-hidden flex-shrink-0 bg-gray-400'>
+                                    <div className='h-8 w-8 flex-shrink-0 overflow-hidden rounded-full bg-gray-400'>
                                         <UserSvg />
                                     </div>
                                 )}
-                                <div className='flex-1 max-w-[250px]'>
-                                    <p className='font-medium text-gray-900 dark:text-slate-200 truncate'>
+                                <div className='max-w-[250px] flex-1'>
+                                    <p className='truncate font-medium text-gray-900 dark:text-slate-200'>
                                         {data.userName}
                                     </p>
-                                    <small className='font-normal text-gray-500 truncate block'>{data.email}</small>
+                                    <small className='block truncate font-normal text-gray-500'>{data.email}</small>
                                 </div>
                                 {checked && <CheckCircleIcon className='h-6 text-cyan-500' />}
                             </div>
@@ -73,19 +78,19 @@ const Step2: React.FC<Step2Props> = ({ previewData, onSubmit }) => {
                         <Input
                             name='password'
                             form={form}
-                            label='Mật khẩu'
+                            label={t(LANGUAGE.PASSWORD)}
                             type='password'
                             disabled={loading.config}
                             autoFocus
                         />
                         <Button className='!text-xs' color='cyan' type='submit' disabled={loading.config}>
-                            Đăng nhập
+                            {t(LANGUAGE.LOGIN)}
                         </Button>
                     </form>
                 ) : (
-                    <div className='flex items-center gap-2 text-white bg-yellow-500 p-3 rounded-md select-none'>
-                        <ExclamationIcon className='h-6' />
-                        <p className='font-normal'>Tài khoản này chưa cài đặt mật khẩu!</p>
+                    <div className='flex select-none items-center gap-2 rounded-md bg-yellow-500 p-3 text-white'>
+                        <ExclamationTriangleIcon className='h-6' />
+                        <p className='font-normal'>{t(LANGUAGE.ACCOUNT_NOT_HAVE_PASSWORD)}</p>
                     </div>
                 )}
             </div>

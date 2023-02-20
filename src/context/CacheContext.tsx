@@ -51,7 +51,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
                             ...cache[tags][indexCached],
                             data: {
                                 hasNextPage: get(d.data, 'hasNextPage', false),
-                                data: [...get(data, 'data', []), ...get(d.data, 'data', [])],
+                                data: [...(get(data, 'data', []) as any[]), ...(get(d.data, 'data', []) as any[])],
                             } as any,
                         }
                         return
@@ -107,7 +107,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
     */
     const fetchApi = async <T extends { [x: string]: any }>(
         callApi: { [x: string]: { query: string; key: number } },
-        params: { [y: string]: string | number | string[] | null }
+        params: { [y: string]: string | number | string[] | null | undefined }
     ) => {
         /* keys: key of query (EX: recent, methodSpending, v.v) */
         const keys = Object.keys(callApi)

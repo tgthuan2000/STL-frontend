@@ -1,32 +1,41 @@
-import { RefreshIcon, TableIcon, ViewListIcon } from '@heroicons/react/outline'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { TransactionServices } from '~/@types/spending'
 import { COUNT_PAGINATE, TAGS } from '~/constant'
-import { DATA_LIST_MODE } from '~/constant/component'
 import { E_FILTER_DATE } from '~/constant/template'
-import { GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE, GET_RECENT_SPENDING_PAGINATE } from '~/schema/query/spending'
-import { getDate, listGroupOptions } from '~/services'
+import {
+    GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE,
+    GET_RECENT_SPENDING_FILTER_DATE_RANGE_TOTAL,
+    GET_RECENT_SPENDING_PAGINATE,
+    GET_RECENT_SPENDING_TOTAL,
+} from '~/schema/query/spending'
+import { getDate } from '~/services'
 
 export const services: TransactionServices = {
     getAll: ({ kindSpendingIds, userId }) => ({
-        query: { recent: GET_RECENT_SPENDING_PAGINATE },
+        query: { recent: GET_RECENT_SPENDING_PAGINATE, total: GET_RECENT_SPENDING_TOTAL },
         params: {
             userId,
             kindSpendingIds,
             __fromRecent: 0,
             __toRecent: COUNT_PAGINATE,
         },
-        tags: { recent: TAGS.ALTERNATE },
+        tags: { recent: TAGS.ALTERNATE, total: TAGS.ALTERNATE },
     }),
     getDefaultValue({ searchParams, getAll }) {
         try {
-            let query = GET_RECENT_SPENDING_PAGINATE,
+            let query = {
+                    recent: GET_RECENT_SPENDING_PAGINATE,
+                    total: GET_RECENT_SPENDING_TOTAL,
+                },
                 params = {}
 
             const d = Object.fromEntries([...searchParams])
             if (!isEmpty(d)) {
-                query = GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE
+                query = {
+                    recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE,
+                    total: GET_RECENT_SPENDING_FILTER_DATE_RANGE_TOTAL,
+                }
                 let { type, data } = d
                 data = JSON.parse(data)
 
@@ -64,7 +73,7 @@ export const services: TransactionServices = {
             }
             return {
                 ...getAll,
-                query: { recent: query },
+                query,
                 params: { ...getAll.params, ...params },
             }
         } catch (error) {
@@ -73,6 +82,10 @@ export const services: TransactionServices = {
         }
     },
     filterSubmit(data, { defaultValues, getAll }) {
+        const query = {
+            recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE,
+            total: GET_RECENT_SPENDING_FILTER_DATE_RANGE_TOTAL,
+        }
         switch (data.id) {
             case E_FILTER_DATE.ALL:
                 return getAll
@@ -81,7 +94,7 @@ export const services: TransactionServices = {
                 const date = data.data as Date
                 return (prev) => ({
                     ...prev,
-                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
+                    query,
                     params: {
                         ...defaultValues.params,
                         __startDate: getDate(date, 'start'),
@@ -93,7 +106,7 @@ export const services: TransactionServices = {
                 const [startDate, endDate] = data.data as Date[]
                 return (prev) => ({
                     ...prev,
-                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
+                    query,
                     params: {
                         ...defaultValues.params,
                         __startDate: getDate(startDate, 'start'),
@@ -105,7 +118,7 @@ export const services: TransactionServices = {
                 const month = data.data as Date
                 return (prev) => ({
                     ...prev,
-                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
+                    query,
                     params: {
                         ...defaultValues.params,
                         __startDate: getDate(month, 'start', 'month'),
@@ -117,7 +130,7 @@ export const services: TransactionServices = {
                 const year = data.data as Date
                 return (prev) => ({
                     ...prev,
-                    query: { recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE },
+                    query,
                     params: {
                         ...defaultValues.params,
                         __startDate: getDate(year, 'start', 'year'),
@@ -126,12 +139,4 @@ export const services: TransactionServices = {
                 })
         }
     },
-    getDropdownOptions: ({ onReloadClick }) => [
-        [
-            { id: DATA_LIST_MODE.TABLE, name: 'Bảng', icon: TableIcon },
-            { id: DATA_LIST_MODE.LIST, name: 'Danh sách', icon: ViewListIcon },
-        ],
-        [{ id: 0, name: 'Làm mới', icon: RefreshIcon, onClick: onReloadClick }],
-    ],
-    getListGroupOptions: () => [listGroupOptions],
 }

@@ -1,7 +1,8 @@
-import { head } from 'lodash'
+import { get, head } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
     DataCategory,
@@ -12,17 +13,18 @@ import {
 } from '~/@types/spending'
 import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
-import { TEMPLATE } from '~/constant/template'
 import { useCache, useLoading } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING, GET_TRANSACTION_DETAIL } from '~/schema/query/spending'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 import { TransactionDetailForm } from '../components'
 
 const TransactionDetail = () => {
+    const { t } = useTranslation()
     const navigate = useNavigate()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { setSubmitLoading } = useLoading()
     const { id } = useParams()
     const { deleteCache } = useCache()
@@ -143,7 +145,7 @@ const TransactionDetail = () => {
     }
 
     const onsubmit: SubmitHandler<IDetailSpendingForm> = async (data) => {
-        let { amount, description, categorySpending, methodSpending, date, surplus } = data
+        let { amount, description, categorySpending, methodSpending, date, surplus, image } = data
         description = description.trim()
         amount = Number(amount)
         try {
@@ -214,6 +216,16 @@ const TransactionDetail = () => {
                 }
             }
 
+            let imageId = undefined
+            if (image) {
+                if (!get(image, 'asset._ref')) {
+                    const fileImage = await client.assets.upload('image', image as File)
+                    imageId = fileImage._id
+                }
+            } else {
+                imageId = null
+            }
+
             const document = {
                 amount,
                 date: moment(date).format(),
@@ -227,6 +239,8 @@ const TransactionDetail = () => {
                     _type: 'reference',
                     _ref: methodSpending._id,
                 },
+                ...(imageId && { image: { _type: 'image', asset: { _type: 'reference', _ref: imageId } } }),
+                ...(imageId === null && { image: null }),
             }
 
             const patch = client.patch(id as string).set(document)
@@ -318,7 +332,6 @@ const TransactionDetail = () => {
     }
 
     const data: TransactionDetailFormData = {
-        title: kindSpending?.name as string,
         onsubmit,
         handleReloadData,
         handleReloadDataCategory,
@@ -330,7 +343,7 @@ const TransactionDetail = () => {
         transaction: transaction.data?.[0] as ISpendingData,
     }
 
-    if (transaction.loading) return <div className='text-gray-900 dark:text-slate-200'>{TEMPLATE.LOADING}</div>
+    if (transaction.loading) return <div className='text-gray-900 dark:text-slate-200'>{t(LANGUAGE.LOADING)}</div>
 
     return <TransactionDetailForm data={data} />
 }

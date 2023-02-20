@@ -12,7 +12,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 type={type}
                 disabled={disabled}
                 className={clsx(
-                    'whitespace-nowrap select-none border min-w-[100px] w-auto gap-0.5 inline-flex justify-center items-center rounded-md sm:py-2 py-3 px-4 text-sm font-medium shadow-sm focus:outline-none disabled:opacity-30',
+                    'inline-flex w-auto min-w-[100px] select-none items-center justify-center gap-0.5 whitespace-nowrap rounded-md border py-3 px-4 text-sm font-medium shadow-sm focus:outline-none disabled:opacity-30 sm:py-2',
                     { 'border-transparent bg-cyan-600 text-white hover:bg-cyan-700': color === 'cyan' },
                     { 'border-transparent bg-green-600 text-white hover:bg-green-700': color === 'green' },
                     { 'border-transparent bg-blue-600 text-white hover:bg-blue-700': color === 'blue' },
@@ -26,7 +26,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                     },
                     { 'border-transparent bg-yellow-600 text-white hover:bg-yellow-700': color === 'yellow' },
                     {
-                        'border-gray-400 bg-transparent text-gray-500 hover:bg-gray-50 dark:text-slate-200 dark:border-slate-500 dark:hover:bg-slate-600':
+                        'border-gray-400 bg-transparent text-gray-500 hover:bg-gray-50 dark:border-slate-500 dark:text-slate-200 dark:hover:bg-slate-600':
                             color === 'outline',
                     },
                     {

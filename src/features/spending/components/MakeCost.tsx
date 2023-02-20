@@ -2,22 +2,25 @@ import { isEmpty, isUndefined } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IAddCostForm, MakeCostQueryData } from '~/@types/spending'
 import { Button, SubmitWrap } from '~/components'
-import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
+import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 
 const MakeCost = () => {
+    const { t } = useTranslation()
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { deleteCache } = useCache()
     const { loading, setSubmitLoading } = useLoading()
     const { getKindSpendingId } = useConfig()
@@ -57,42 +60,50 @@ const MakeCost = () => {
             methodSpending: null,
             description: '',
             date: new Date(),
+            image: null,
         },
     })
 
     const onsubmit: SubmitHandler<IAddCostForm> = async (data) => {
         setSubmitLoading(true)
-        let { amount, methodSpending, categorySpending, description, date } = data
+        let { amount, methodSpending, categorySpending, description, date, image } = data
+        let imageId = null
         // transfer amount to number
         amount = Number(amount)
         description = description.trim()
 
-        // add to database
-        const document = {
-            _type: 'spending',
-            amount,
-            description,
-            date: moment(date).format(),
-            surplus: methodSpending?.surplus,
-            kindSpending: {
-                _type: 'reference',
-                _ref: kindSpendingId,
-            },
-            categorySpending: {
-                _type: 'reference',
-                _ref: categorySpending?._id,
-            },
-            methodSpending: {
-                _type: 'reference',
-                _ref: methodSpending?._id,
-            },
-            user: {
-                _type: 'reference',
-                _ref: userProfile?._id,
-            },
-        }
-
         try {
+            if (image) {
+                const response = await client.assets.upload('image', image)
+                imageId = response._id
+            }
+
+            // add to database
+            const document = {
+                _type: 'spending',
+                amount,
+                description,
+                date: moment(date).format(),
+                surplus: methodSpending?.surplus,
+                kindSpending: {
+                    _type: 'reference',
+                    _ref: kindSpendingId,
+                },
+                categorySpending: {
+                    _type: 'reference',
+                    _ref: categorySpending?._id,
+                },
+                methodSpending: {
+                    _type: 'reference',
+                    _ref: methodSpending?._id,
+                },
+                user: {
+                    _type: 'reference',
+                    _ref: userProfile?._id,
+                },
+                ...(imageId && { image: { _type: 'image', asset: { _type: 'reference', _ref: imageId } } }),
+            }
+
             const patchMethod = client
                 .patch(methodSpending?._id as string)
                 .setIfMissing({ surplus: 0, countUsed: 0 })
@@ -126,12 +137,13 @@ const MakeCost = () => {
                     amount: '',
                     categorySpending,
                     methodSpending,
+                    image: null,
                 },
                 {
                     keepDefaultValues: true,
                 }
             )
-            toast.success<string>('Tạo chi phí thành công!')
+            toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_COST_SUCCESS))
             needCheckWhenLeave()
             // setIsOpen(false)
             // navigate(-1)
@@ -205,24 +217,24 @@ const MakeCost = () => {
                                 name='amount'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu nhập chi phí!',
+                                    required: t(LANGUAGE.REQUIRED_COST) as any,
                                     min: {
                                         value: 0,
-                                        message: 'Chi phí phải lớn hơn 0!',
+                                        message: t(LANGUAGE.COST_MIN_ZERO),
                                     },
                                 }}
                                 type='number'
-                                label='Chi phí'
+                                label={t(LANGUAGE.COST)}
                             />
 
                             <AutoComplete
                                 name='categorySpending'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn thể loại!',
+                                    required: t(LANGUAGE.REQUIRED_CATEGORY) as any,
                                 }}
                                 data={categorySpending.data}
-                                label='Thể loại'
+                                label={t(LANGUAGE.CATEGORY)}
                                 loading={categorySpending.loading}
                                 addMore={handleAddMoreCategorySpending}
                                 onReload={
@@ -235,10 +247,10 @@ const MakeCost = () => {
                                 name='methodSpending'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn phương thức thanh toán!',
+                                    required: t(LANGUAGE.REQUIRED_METHOD) as any,
                                 }}
                                 data={methodSpending.data}
-                                label='Phương thức thanh toán'
+                                label={t(LANGUAGE.METHOD_SPENDING)}
                                 loading={methodSpending.loading}
                                 addMore={handleAddMoreMethodSpending}
                                 onReload={
@@ -249,19 +261,21 @@ const MakeCost = () => {
                                 name='date'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn ngày!',
+                                    required: t(LANGUAGE.REQUIRED_DATE) as any,
                                 }}
-                                label='Ngày'
+                                label={t(LANGUAGE.DATE)}
                             />
 
-                            <TextArea name='description' form={form} label='Ghi chú' />
+                            <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
+
+                            <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
                         </div>
                     </div>
                 </div>
             </div>
             <SubmitWrap>
                 <Button color='radicalRed' type='submit' disabled={loading.submit}>
-                    Lưu
+                    {t(LANGUAGE.SAVE)}
                 </Button>
                 <Button
                     color='outline'
@@ -271,7 +285,7 @@ const MakeCost = () => {
                         navigate(-1)
                     }}
                 >
-                    Hủy bỏ
+                    {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
         </form>

@@ -33,7 +33,7 @@ const BodyList: React.FC<BodyListProps> = ({
     }, [loading])
 
     return (
-        <div className='sm:rounded-lg overflow-hidden' ref={parentRef}>
+        <div className='overflow-hidden sm:rounded-lg' ref={parentRef}>
             <>
                 {(!loading || wpLoading.current) &&
                     Object.keys(data).map((key, index) => (

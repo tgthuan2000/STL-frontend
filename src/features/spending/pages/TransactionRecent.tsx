@@ -1,33 +1,28 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { FireIcon, ViewListIcon } from '@heroicons/react/outline'
-import { get } from 'lodash'
+import { get, isEmpty, isNil, sum } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
-import { DataListViewList, DataListViewTable, IDataListView, TimeFilterPayload } from '~/@types/components'
+import { DataListViewList, DataListViewTable, TimeFilterPayload } from '~/@types/components'
+import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/@types/hook'
 import { RecentQueryData } from '~/@types/spending'
-import { DataListView, TimeFilter } from '~/components'
-import { Dropdown } from '~/components/_base'
+import { DataListView, ListViewFilter } from '~/components'
 import { COUNT_PAGINATE } from '~/constant'
-import { DATA_LIST_GROUP, DATA_LIST_MODE, __groupBy } from '~/constant/component'
-import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
-import { TEMPLATE } from '~/constant/template'
+import { __groupBy } from '~/constant/component'
 import { useCheck, useConfig } from '~/context'
-import { useLocalStorage, useQuery, useWindowSize } from '~/hook'
-import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
-import useAuth from '~/store/auth'
-import { getDefaultMode, getLinkSpending } from '~/utils'
+import { useListViewFilter, useQuery, useWindowSize } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
+import { useProfile } from '~/store/auth'
+import { getLinkSpending } from '~/utils'
 import * as __services from '../services/dataListView'
 import { services } from '../services/transaction'
 
 const TransactionRecent = () => {
-    const { userProfile } = useAuth()
+    const { t } = useTranslation()
+    const { userProfile } = useProfile()
     const { getKindSpendingIds } = useConfig()
     const [searchParams] = useSearchParams()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
-    const [dataListView, setDataListView] = useLocalStorage<IDataListView>(LOCAL_STORAGE_KEY.STL_DATALIST_VIEW)
-    const dropdownOptions = useMemo(() => services.getDropdownOptions({ onReloadClick: () => handleClickReload() }), [])
-    const listGroupOptions = useMemo(() => services.getListGroupOptions(), [])
     const getAll = useMemo(
         () =>
             services.getAll({
@@ -45,7 +40,40 @@ const TransactionRecent = () => {
         tags: TagsTypeUseQuery<RecentQueryData>
     }>(defaultValues)
 
-    const [{ recent }, fetchData, deleteCacheData, reload, error] = useQuery<RecentQueryData>(query, params, tags)
+    const [{ recent, total }, fetchData, deleteCacheData, reload, error] = useQuery<RecentQueryData>(
+        query,
+        params,
+        tags
+    )
+
+    const dataTotal = useMemo(() => {
+        const data = total.data
+        if (!Array.isArray(data) || isNil(data) || isEmpty(data)) return
+        const defaultValue = { total: 0, count: 0 }
+        const {
+            receive,
+            cost,
+            'transfer-from': transferFrom,
+            'transfer-to': transferTo,
+        } = data.reduce(
+            (result, value) => {
+                return {
+                    ...result,
+                    [value.key]: {
+                        total: sum(value.data),
+                        count: value.data.length,
+                    },
+                }
+            },
+            { cost: defaultValue, receive: defaultValue, 'transfer-from': defaultValue, 'transfer-to': defaultValue }
+        )
+
+        return {
+            cost: cost.total,
+            receive: receive.total,
+            count: [cost, receive, transferFrom, transferTo].reduce((result, value) => result + value.count, 0),
+        }
+    }, [total.data, t])
 
     useCheck(reload)
 
@@ -54,7 +82,7 @@ const TransactionRecent = () => {
     }, [])
 
     const onReload = () => {
-        const res = deleteCacheData('recent')
+        const res = deleteCacheData('recent', 'total')
         console.log(res)
         reload()
     }
@@ -85,24 +113,9 @@ const TransactionRecent = () => {
         onReload()
     }
 
-    const form = useForm({
-        defaultValues: {
-            viewMode: getDefaultMode<DATA_LIST_MODE>(dropdownOptions, dataListView?.viewMode),
-            listGroup: getDefaultMode<DATA_LIST_GROUP>(listGroupOptions, dataListView?.listGroup),
-        },
-    })
-
-    useEffect(() => {
-        const viewMode = form.watch('viewMode')
-        setDataListView((prev) => ({ ...prev, viewMode: viewMode.id }))
-    }, [JSON.stringify(form.watch('viewMode'))])
-
-    useEffect(() => {
-        const listGroup = form.watch('listGroup')
-        setDataListView((prev) => ({ ...prev, listGroup: listGroup.id }))
-    }, [JSON.stringify(form.watch('listGroup'))])
-
     const { width } = useWindowSize()
+    const _ = useListViewFilter(handleClickReload)
+    const { listGroup, viewMode } = _
 
     const tableProps: DataListViewTable = useMemo(
         () => ({
@@ -114,50 +127,30 @@ const TransactionRecent = () => {
 
     const listProps: DataListViewList = useMemo(
         () => ({
-            groupBy: __services.groupBy(__groupBy[form.watch('listGroup')?.id]),
+            groupBy: __services.groupBy(__groupBy[listGroup?.id]),
             renderList: __services.renderList,
             renderTitle: __services.renderTitle,
         }),
-        [JSON.stringify(form.watch('listGroup'))]
+        [JSON.stringify(listGroup)]
     )
 
     return (
         <div className='sm:px-6 lg:px-8'>
             <div className='mt-4 flex flex-col'>
                 <div className='-my-2 -mx-4 sm:-mx-6 lg:-mx-8'>
-                    <div className='flex justify-between items-center flex-col sm:flex-row'>
-                        <div className='self-start sm:self-auto'>
-                            <TimeFilter onSubmit={handleFilterSubmit} />
-                        </div>
-                        <div className='flex items-center self-end sm:self-auto'>
-                            {form.watch('viewMode') && form.watch('viewMode').id === DATA_LIST_MODE.LIST && (
-                                <Dropdown
-                                    form={form}
-                                    name='listGroup'
-                                    data={listGroupOptions}
-                                    idKey='id'
-                                    valueKey='name'
-                                    label={<ViewListIcon className='h-6' />}
-                                    disabled={recent.loading}
-                                />
-                            )}
-                            <Dropdown
-                                form={form}
-                                name='viewMode'
-                                data={dropdownOptions}
-                                idKey='id'
-                                valueKey='name'
-                                label={<FireIcon className='h-6' />}
-                                disabled={recent.loading}
-                            />
-                        </div>
-                    </div>
+                    <ListViewFilter
+                        _={_}
+                        totalData={dataTotal}
+                        totalLoading={total.loading}
+                        loading={recent.loading}
+                        onSubmitTimeFilter={handleFilterSubmit}
+                    />
                     {error ? (
-                        <p className='m-5 text-radical-red-500 font-medium'>{TEMPLATE.ERROR}</p>
+                        <p className='m-5 font-medium text-radical-red-500'>{t(LANGUAGE.ERROR)}</p>
                     ) : (
                         <div ref={parentRef}>
                             <DataListView
-                                mode={form.watch('viewMode')?.id}
+                                mode={viewMode?.id}
                                 loading={recent.loading}
                                 onGetMore={handleScrollGetMore}
                                 data={recent.data?.data}

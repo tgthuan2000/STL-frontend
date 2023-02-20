@@ -1,17 +1,21 @@
 import { SanityDocument, SanityImageAssetDocument } from '@sanity/client'
+import { DefaultTFuncReturn } from 'i18next'
 import React, { HTMLInputTypeAttribute, ReactNode } from 'react'
-import { FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
+import { ControllerRenderProps, FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
 import { ReactQuillProps } from 'react-quill'
 import { NavigateFunction } from 'react-router-dom'
 import { DATE_FORMAT } from '~/constant'
 import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
 import { PERMISSION } from '~/constant/permission'
 import { IFILTER_DATE } from '~/constant/template'
-import { UseLocalStorageResult } from '~/hook/useLocalStorage'
+import { ListViewResult } from '~/hook'
+import { localStorageValue } from '~/hook/useLocalStorage'
+import { HeroIcon } from '.'
 import { IUserLoan } from './loan'
 import { NotifyItem } from './notify'
 import { ISpendingData } from './spending'
 
+type TrackingFunc = (name: Path<any>) => Promise<void>
 type Rules = Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
 export interface SlideParams {
     slide?: string
@@ -19,7 +23,7 @@ export interface SlideParams {
 export interface AutoCompleteProps {
     name: string
     className?: string
-    label?: string
+    label?: string | DefaultTFuncReturn
     data?: any[]
     idKey?: string
     valueKey?: string
@@ -28,88 +32,190 @@ export interface AutoCompleteProps {
     loading?: boolean
     form: UseFormReturn<any, object>
     rules?: Rules
+    tracking?: TrackingFunc
     disabled?: boolean
     onChange?: (value: any) => void
     showImage?: boolean
     disabledClear?: boolean
     disabledShowSurplus?: boolean
-    surplusName?: string
+    surplusName?: string | DefaultTFuncReturn
     multiple?: boolean
+}
+
+export interface AutocompleteLabelProps {
+    label?: string | DefaultTFuncReturn
+    onReload?: () => Promise<void>
+    loading?: boolean
+}
+export interface ButtonMenuProps {
+    className?: string
+    data: IMenuBtn[]
+    small?: boolean
+}
+export interface AutocompleteButtonProps {
+    disabledClear?: boolean
+    disabled?: boolean
+    loading?: boolean
+    selectedItem: any
+    setSelectedItem: React.Dispatch<any>
+    field: ControllerRenderProps<any, string>
+    onChange?: (value: any) => void
+}
+
+export interface AutocompleteInputProps {
+    loading?: boolean
+    disabled?: boolean
+    onChange?: (value: any) => void
+    onBlur?: () => void
+    loadingAddMore?: boolean
+    valueKey: string
+}
+
+export interface AutocompleteOptionProps {
+    filterData: any[]
+    idKey: string
+    valueKey: string
+    showImage?: boolean
+    query: string
+    addMore?: (value: any) => Promise<any>
+}
+
+export interface AutocompleteSurplusProps {
+    surplus?: number
+    disabledShowSurplus?: boolean
+    surplusName?: string | DefaultTFuncReturn
+    children?: ReactNode
+}
+
+export interface ErrorMessageProps {
+    error?: FieldError
 }
 
 export interface SelectionProps {
     name: string
     className?: string
-    label?: string
+    label?: string | DefaultTFuncReturn
     data?: any[]
     idKey?: string
     valueKey?: string
-    placeholder?: string
+    placeholder?: string | DefaultTFuncReturn
     form: UseFormReturn<any, object>
     rules?: Rules
     disabled?: boolean
 }
-
+export interface SelectionLabelProps {
+    label?: DefaultTFuncReturn
+}
+export interface SelectionButtonProps {
+    field: ControllerRenderProps<any, string>
+    valueKey: string
+    placeholder: DefaultTFuncReturn
+    disabled?: boolean
+}
+export interface SelectionOptionsProps {
+    data: any[]
+    idKey: string
+    valueKey: string
+}
 export interface DropdownProps {
     name: string
     className?: string
-    label?: ReactNode
+    label?: ReactNode | DefaultTFuncReturn
     data?: Array<Array<any>>
     idKey?: string
     valueKey?: string
-    placeholder?: string
+    placeholder?: string | DefaultTFuncReturn
     form: UseFormReturn<any, object>
     rules?: Rules
     disabled?: boolean
+    showValueOnLabel?: boolean
+    customButtonClassName?: string
+}
+
+export interface DropdownButtonProps {
+    field: ControllerRenderProps<any, string>
+    disabled?: boolean
+    customButtonClassName?: string
+    showValueOnLabel?: boolean
+    valueKey: string
+    label: ReactNode | DefaultTFuncReturn
+}
+
+export interface DropdownItemsProps {
+    data: Array<Array<any>>
+    idKey: string
+    valueKey: string
+    selected: any
+    handleChange?: (value: any, onChange: (value: any) => void) => void
+    field: ControllerRenderProps<any, string>
 }
 
 export interface SlideOverProps {
     children?: () => React.ReactNode
 }
 
-export interface InputProps {
+export interface InputProps
+    extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     className?: string
-    label?: string
+    label?: string | DefaultTFuncReturn
     name: string
     type?: HTMLInputTypeAttribute
     disabled?: boolean
     form: UseFormReturn<any, object>
     rules?: Rules
     autoFocus?: boolean
+    tracking?: TrackingFunc
+}
+
+export interface LabelProps {
+    id?: string
+    label?: DefaultTFuncReturn
+}
+
+export interface InputNumberHintProps {
+    field: ControllerRenderProps<any, string>
 }
 
 interface RichTextProps extends ReactQuillProps {
     className?: string
-    label?: string
+    label?: string | DefaultTFuncReturn
     name: string
     disabled?: boolean
     form: UseFormReturn<any, object>
     rules?: Rules
-    placeholder?: string
+    placeholder?: string | DefaultTFuncReturn
 }
 
 export interface UploadImageProps {
     className?: string
-    label?: string
+    label?: string | DefaultTFuncReturn
     name: string
     disabled?: boolean
     form: UseFormReturn<any, object>
     rules?: Rules
 }
 
+export interface UploadImageCoreProps {
+    loading: boolean
+    id: string
+    image: string | null | undefined
+    clearImage: () => void
+}
+
 export interface DateProps {
     className?: string
-    label?: string
+    label?: string | DefaultTFuncReturn
     name: string
     error?: FieldError
     form: UseFormReturn<any, object>
     rules?: Rules
+    tracking?: TrackingFunc
     disabledClear?: boolean
     disabled?: boolean
     onChange?: (value: any) => void
     format?: keyof typeof DATE_FORMAT
     showTimeInput?: boolean
-    placeholderText?: string
+    placeholderText?: string | DefaultTFuncReturn
     showMonthYearPicker?: boolean
     showYearPicker?: boolean
     selectsRange?: boolean
@@ -122,7 +228,7 @@ export interface DateProps {
 
 export interface DatePickerInputProps {
     error?: FieldError
-    label?: string
+    label?: string | DefaultTFuncReturn
     className?: string
     disabledClear?: boolean
     disabled?: boolean
@@ -132,11 +238,12 @@ export interface DatePickerInputProps {
 
 export interface TextAreaProps {
     className?: string
-    label?: string
+    label?: string | DefaultTFuncReturn
     name: string
     error?: FieldError
     form: UseFormReturn<any, object>
     rules?: Rules
+    tracking?: TrackingFunc
 }
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string
@@ -164,7 +271,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 export interface ContentBoxProps {
-    title?: string
+    title?: string | DefaultTFuncReturn
     seeMore?: boolean
     children: React.ReactNode
     to?: string
@@ -184,19 +291,24 @@ export interface ContentUserLoanBox2Props {
     data?: IUserLoan[]
     loading?: boolean
 }
+
+export interface ButtonMenuProviderProps {
+    data: IMenuBtn[]
+    children: (data: IMenuBtn) => React.ReactNode
+}
 export interface MenuButtonProps {
     data: IMenuBtn
 }
 
 export interface IMenuBtn {
     title: string
-    icon: (props: SVGProps<SVGSVGElement>) => JSX.Element
+    icon: HeroIcon
     color: string
     to: To
     children?: () => React.ReactNode
     query?: SlideParams
     divider?: boolean
-    action?: (cb: () => void) => void
+    action?: (...cb: Array<() => void>) => void
 }
 export interface AnimateWrapProps {
     children: React.ReactNode
@@ -224,7 +336,7 @@ export interface AvatarUserProps {
 export interface Box2Props {
     children?: (data: { data: any[] | undefined; loading: boolean }) => React.ReactNode
     data: any[] | undefined
-    label?: string
+    label?: string | DefaultTFuncReturn
     loading?: boolean
     onReload: () => void
 }
@@ -287,7 +399,7 @@ export interface SettingIconProps {
 }
 
 export interface BoxTitleProps {
-    title?: string
+    title?: string | DefaultTFuncReturn
     onReload?: () => void
     loading?: boolean
     customEvent?: React.ReactNode
@@ -367,7 +479,29 @@ export interface LazySearchSelectProps {
     getOptionLabel?: (option: any, active: boolean) => React.ReactNode
     autoFocus?: boolean
 }
+export interface LazySearchSelectLabelProps {
+    label?: string
+}
 
+export interface LazySearchSelectInputProp {
+    field: ControllerRenderProps<{ search: string }, 'search'>
+    autoFocus?: boolean
+    loading?: boolean
+    disabled?: boolean
+    handleSearch?: (value: string, onChange: (...event: any[]) => void) => void
+}
+export interface LazySearchSelectIconProps {
+    loading?: boolean
+}
+export interface LazySearchSelectOptionsProps {
+    loading?: boolean
+    options?: any[]
+    valueKey: string
+    labelKey: string
+    getOptionLabel?: (option: any, active: boolean) => React.ReactNode
+    handleGetMoreData: () => void
+    hasNextPage
+}
 export interface PermissionCheckProps {
     permissions: PERMISSION[]
     children: React.ReactNode
@@ -409,7 +543,7 @@ export type TimeFilterPayload = {
 }
 
 export interface TransactionProps {
-    title?: string
+    title?: string | DefaultTFuncReturn
     children?: React.ReactNode
     hasBack?: boolean
 }
@@ -428,10 +562,11 @@ export interface ChipProps {
     onClick?: (data: any) => void
     disabled?: boolean
     hidden?: boolean
+    className?: string
 }
 
 export interface ThemeIconProps {
-    theme: UseLocalStorageResult<string>
+    theme: localStorageValue<string>
     className?: string
 }
 
@@ -447,4 +582,32 @@ export interface SubmitWrapProps {
 
 export interface AsideProps {
     children: React.ReactNode
+}
+
+export interface ButtonGroupProps {
+    form: UseFormReturn<any, object>
+    name: string
+    idKey?: string
+    valueKey?: string
+    data?: any[]
+    onChange?: (data: any) => void
+}
+
+export interface ListViewFilterProps {
+    loading?: boolean
+    totalLoading?: boolean
+    timeFilter?: boolean
+    viewListMode?: boolean
+    viewTotal?: boolean
+    onSubmitTimeFilter: (data: TimeFilterPayload) => void
+    children?: React.ReactNode
+    _: ListViewResult
+    totalData?: {
+        cost: number
+        receive: number
+        count: number
+    }
+    receiveTitle?: DefaultTFuncReturn
+    costTitle?: DefaultTFuncReturn
+    countTitle?: DefaultTFuncReturn
 }

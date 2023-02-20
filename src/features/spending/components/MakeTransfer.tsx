@@ -2,22 +2,25 @@ import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IMakeTransferForm, MakeTransferQueryData } from '~/@types/spending'
 import { Button, SubmitWrap } from '~/components'
-import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
+import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 
 const MakeTransfer = () => {
+    const { t } = useTranslation()
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { deleteCache } = useCache()
     const { loading, setSubmitLoading } = useLoading()
     const { getKindSpendingId } = useConfig()
@@ -41,64 +44,72 @@ const MakeTransfer = () => {
             methodSpendingTo: null,
             date: new Date(),
             description: '',
+            image: null,
         },
     })
 
     const onsubmit: SubmitHandler<IMakeTransferForm> = async (data) => {
         setSubmitLoading(true)
-        let { amount, methodSpendingFrom, methodSpendingTo, description, date } = data
+        let { amount, methodSpendingFrom, methodSpendingTo, description, date, image } = data
+        let imageId = null
         amount = Number(amount)
         description = description.trim()
-        // add to database
-        const document1 = {
-            _type: 'spending',
-            amount,
-            description: `Đến ${methodSpendingTo?.name}${description ? `\n${description}` : ''}`,
-            date: moment(date).format(),
-            surplus: methodSpendingFrom?.surplus,
-            kindSpending: {
-                _type: 'reference',
-                _ref: getKindSpendingId('TRANSFER_FROM'),
-            },
-            methodSpending: {
-                _type: 'reference',
-                _ref: methodSpendingFrom?._id,
-            },
-            methodReference: {
-                _type: 'reference',
-                _ref: methodSpendingTo?._id,
-            },
-            user: {
-                _type: 'reference',
-                _ref: userProfile?._id,
-            },
-        }
-
-        const document2 = {
-            _type: 'spending',
-            amount,
-            description: `Từ ${methodSpendingFrom?.name}${description ? `\n${description}` : ''}`,
-            date: moment(date).format(),
-            surplus: methodSpendingTo?.surplus,
-            kindSpending: {
-                _type: 'reference',
-                _ref: getKindSpendingId('TRANSFER_TO'),
-            },
-            methodSpending: {
-                _type: 'reference',
-                _ref: methodSpendingTo?._id,
-            },
-            methodReference: {
-                _type: 'reference',
-                _ref: methodSpendingFrom?._id,
-            },
-            user: {
-                _type: 'reference',
-                _ref: userProfile?._id,
-            },
-        }
 
         try {
+            if (image) {
+                const imageFile = await client.assets.upload('image', image)
+                imageId = imageFile._id
+            }
+            // add to database
+            const document1 = {
+                _type: 'spending',
+                amount,
+                description: `Đến ${methodSpendingTo?.name}${description ? `\n${description}` : ''}`,
+                date: moment(date).format(),
+                surplus: methodSpendingFrom?.surplus,
+                kindSpending: {
+                    _type: 'reference',
+                    _ref: getKindSpendingId('TRANSFER_FROM'),
+                },
+                methodSpending: {
+                    _type: 'reference',
+                    _ref: methodSpendingFrom?._id,
+                },
+                methodReference: {
+                    _type: 'reference',
+                    _ref: methodSpendingTo?._id,
+                },
+                user: {
+                    _type: 'reference',
+                    _ref: userProfile?._id,
+                },
+                ...(imageId && { image: { _type: 'image', asset: { _type: 'reference', _ref: imageId } } }),
+            }
+
+            const document2 = {
+                _type: 'spending',
+                amount,
+                description: `Từ ${methodSpendingFrom?.name}${description ? `\n${description}` : ''}`,
+                date: moment(date).format(),
+                surplus: methodSpendingTo?.surplus,
+                kindSpending: {
+                    _type: 'reference',
+                    _ref: getKindSpendingId('TRANSFER_TO'),
+                },
+                methodSpending: {
+                    _type: 'reference',
+                    _ref: methodSpendingTo?._id,
+                },
+                methodReference: {
+                    _type: 'reference',
+                    _ref: methodSpendingFrom?._id,
+                },
+                user: {
+                    _type: 'reference',
+                    _ref: userProfile?._id,
+                },
+                ...(imageId && { image: { _type: 'image', asset: { _type: 'reference', _ref: imageId } } }),
+            }
             const patch1 = client
                 .patch(methodSpendingFrom?._id as string)
                 .setIfMissing({ surplus: 0, countUsed: 0 })
@@ -126,8 +137,8 @@ const MakeTransfer = () => {
                 reloadData()
             }, 0)
 
-            form.reset({ amount: '', methodSpendingFrom, methodSpendingTo }, { keepDefaultValues: true })
-            toast.success<string>('Thực hiện chuyển khoản thành công!')
+            form.reset({ amount: '', methodSpendingFrom, methodSpendingTo, image: null }, { keepDefaultValues: true })
+            toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_TRANSFER_SUCCESS))
             needCheckWhenLeave()
         } catch (error) {
             console.log(error)
@@ -174,24 +185,24 @@ const MakeTransfer = () => {
                                 name='amount'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu nhập số tiền!',
+                                    required: t(LANGUAGE.REQUIRED_TRANSFER_AMOUNT) as string,
                                     min: {
                                         value: 0,
-                                        message: 'Số tiền phải lớn hơn 0!',
+                                        message: t(LANGUAGE.TRANSFER_MIN_ZERO),
                                     },
                                 }}
                                 type='number'
-                                label='Số tiền'
+                                label={t(LANGUAGE.COST)}
                             />
 
                             <AutoComplete
                                 name='methodSpendingFrom'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn phương thức thanh toán!',
+                                    required: t(LANGUAGE.REQUIRED_METHOD) as any,
                                 }}
                                 data={methodSpending.data}
-                                label='Từ phương thức thanh toán'
+                                label={t(LANGUAGE.FROM_TRANSFER_METHOD)}
                                 loading={methodSpending.loading}
                                 addMore={handleAddMoreMethodSpending}
                                 onReload={
@@ -203,10 +214,10 @@ const MakeTransfer = () => {
                                 name='methodSpendingTo'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn phương thức thanh toán!',
+                                    required: t(LANGUAGE.REQUIRED_METHOD) as any,
                                 }}
                                 data={methodSpending.data}
-                                label='Đến phương thức thanh toán'
+                                label={t(LANGUAGE.TO_TRANSFER_METHOD)}
                                 loading={methodSpending.loading}
                                 addMore={handleAddMoreMethodSpending}
                                 onReload={
@@ -218,19 +229,21 @@ const MakeTransfer = () => {
                                 name='date'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn ngày!',
+                                    required: t(LANGUAGE.REQUIRED_DATE) as any,
                                 }}
-                                label='Ngày'
+                                label={t(LANGUAGE.DATE)}
                             />
 
-                            <TextArea name='description' form={form} label='Ghi chú' />
+                            <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
+
+                            <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
                         </div>
                     </div>
                 </div>
             </div>
             <SubmitWrap>
                 <Button color='blue' type='submit' disabled={loading.submit}>
-                    Chuyển khoản
+                    {t(LANGUAGE.TRANSFER)}
                 </Button>
                 <Button
                     color='outline'
@@ -240,7 +253,7 @@ const MakeTransfer = () => {
                         navigate(-1)
                     }}
                 >
-                    Hủy bỏ
+                    {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
         </form>

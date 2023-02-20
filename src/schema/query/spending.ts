@@ -75,6 +75,22 @@ export const GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE = groq`
     }
 `
 
+export const GET_RECENT_SPENDING_TOTAL = groq`
+    *[_type == "kindSpending" && _id in $kindSpendingIds]
+    {
+        key,
+        "data": *[_type == "spending" && user._ref == $userId  && kindSpending._ref == ^._id].amount,
+    }
+`
+
+export const GET_RECENT_SPENDING_FILTER_DATE_RANGE_TOTAL = groq`
+   *[_type == "kindSpending" && _id in $kindSpendingIds]
+    {
+        key,
+        "data": *[_type == "spending" && user._ref == $userId  && kindSpending._ref == ^._id && $__startDate <= date && date <= $__endDate].amount,
+    }
+`
+
 export const GETALL_RECENT_SPENDING_BY_METHOD = groq`
     *[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && methodSpending._ref in $methodSpendingIds] | order(_updatedAt desc)
     {
@@ -123,7 +139,20 @@ export const GET_RECENT_SPENDING_BY_METHOD_PAGINATE = groq`
         "hasNextPage": count(*[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && methodSpending._ref in $methodSpendingIds]) > $__toMethod
     }
 `
-
+export const GET_RECENT_SPENDING_BY_METHOD_TOTAL = groq`
+    *[_type == "kindSpending" && _id in $kindSpendingIds]
+    {
+        key,
+        "data": *[_type == "spending" && user._ref == $userId  && kindSpending._ref == ^._id && methodSpending._ref in $methodSpendingIds].amount,
+    }
+`
+export const GET_RECENT_SPENDING_BY_METHOD_FILTER_DATE_RANGE_TOTAL = groq`
+    *[_type == "kindSpending" && _id in $kindSpendingIds]
+    {
+        key,
+        "data": *[_type == "spending" && user._ref == $userId  && kindSpending._ref == ^._id && methodSpending._ref in $methodSpendingIds && $__startDate <= date && date <= $__endDate].amount,
+    }
+`
 export const GETALL_RECENT_SPENDING_FILTER_DATE_RANGE_BY_METHOD = groq`
     *[_type == "spending" && user._ref == $userId && kindSpending._ref in $kindSpendingIds && methodSpending._ref in $methodSpendingIds && $startDate <= date && date <= $endDate] | order(_updatedAt desc)
     {
@@ -201,6 +230,13 @@ export const GET_CATEGORY_SPENDING = groq`
         name
     }
 `
+export const GET_CATEGORY = groq`
+    *[_type == "categorySpending" && user._ref == $userId] | order(countUsed desc)
+    {
+        _id,
+        name
+    }
+`
 export const GET_METHOD_SPENDING_DESC_SURPLUS = groq`
     *[_type == "methodSpending" && user._ref == $userId] | order(surplus desc)
     {
@@ -244,7 +280,8 @@ export const GET_TRANSACTION_DETAIL = groq`
         surplus,
         description,
         amount,
-        date
+        date,
+        image
     }
 `
 

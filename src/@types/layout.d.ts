@@ -1,7 +1,8 @@
 import { SanityDocument } from '@sanity/client'
+import { DefaultTFuncReturn } from 'i18next'
 import React from 'react'
-import { NavigateFunction } from 'react-router-dom'
 import { Navigation } from '~/constant/layout'
+import { PERMISSION } from '~/constant/permission'
 import { UseLocalStorageResult } from '~/hook/useLocalStorage'
 import { IUserProfile } from './auth'
 
@@ -10,33 +11,22 @@ export interface SideBarProps {
     title?: string
 }
 
-export interface UserProps {
-    onLogout: () => void
-    onCloseSideBar?: () => void
-    userProfile: SanityDocument<IUserProfile> | undefined | null
-    open?: boolean
-}
-
-export interface OptionData {
-    logout: () => void
-    data: OptionMenu
-    navigate: NavigateFunction
-    closeSidebar?: () => void
-    theme: UseLocalStorageResult<string>
-}
-
 export type OptionFuncData =
     | string
     | ((data: {
           userProfile: SanityDocument<IUserProfile> | null | undefined
           theme: UseLocalStorageResult<string>
       }) => React.ReactNode)
+    | DefaultTFuncReturn
 
+export interface OptionMenuItemProps {
+    btnClassName?: string
+    iconClassName?: string
+}
 export interface OptionMenu {
-    id: number
-    label: OptionFuncData
-    onClick: (data: OptionData) => void
-    icon: React.FC<{ className?: string; theme: UseLocalStorageResult<string> }>
+    id: string
+    component: React.FC<OptionMenuItemProps>
+    permissions: Array<PERMISSION>
 }
 export type NavigationMobile = Omit<Navigation, 'icon'> & { component: React.FC<MobileNavLink> }
 export interface NavLinkItemProps {

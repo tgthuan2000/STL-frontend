@@ -3,17 +3,20 @@ import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { ContentLoanBox2Props } from '~/@types/components'
 import AvatarUser from '~/components/AvatarUser'
 import { DATE_FORMAT } from '~/constant'
+import LANGUAGE from '~/i18n/language/key'
 
 const Content: React.FC<ContentLoanBox2Props> = ({ data, loading }) => {
+    const { t } = useTranslation()
     if (loading) return <Skeleton />
     if (isEmpty(data) || !Array.isArray(data))
         return (
-            <div className='text-center text-gray-500 py-4 px-8 rounded-xl bg-white dark:bg-slate-700 dark:text-white'>
-                Không có dữ liệu
+            <div className='rounded-xl bg-white py-4 px-8 text-center text-gray-500 dark:bg-slate-700 dark:text-white'>
+                {t(LANGUAGE.EMPTY_DATA)}
             </div>
         )
     return (
@@ -25,26 +28,26 @@ const Content: React.FC<ContentLoanBox2Props> = ({ data, loading }) => {
                     numberDay = moment(item.estimatePaidDate).diff(moment(), 'days')
                 }
                 date = {
-                    message: `Còn lại ${numberDay} ngày`,
+                    message: `${t(LANGUAGE.REMAINING)} ${numberDay} ${t(LANGUAGE.L_DAYS)}`,
                     color: 'text-yellow-500',
                 }
 
                 if (!isNil(numberDay)) {
                     if (numberDay === 0) {
                         date = {
-                            message: 'Hôm nay',
+                            message: t(LANGUAGE.TODAY),
                             color: 'text-indigo-500',
                         }
                     }
                     if (numberDay < 0) {
                         date = {
-                            message: 'Quá hạn',
+                            message: t(LANGUAGE.OUT_OF_DATE),
                             color: 'text-radical-red-500',
                         }
                     }
                 } else {
                     date = {
-                        message: 'Không có hạn trả',
+                        message: t(LANGUAGE.UNLIMITED_TIME),
                         color: 'text-gray-500',
                     }
                 }
@@ -52,15 +55,15 @@ const Content: React.FC<ContentLoanBox2Props> = ({ data, loading }) => {
                 return (
                     <Link
                         to={`transaction/${item._id}/detail`}
-                        className='flex flex-col group bg-white dark:bg-slate-800 dark:border-slate-800 gap-x-3 gap-y-1 py-3 px-3 border rounded-md cursor-pointer shadow-md hover:shadow-lg hover:bg-gray-50 transition-all'
+                        className='group flex cursor-pointer flex-col gap-x-3 gap-y-1 rounded-md border bg-white py-3 px-3 shadow-md transition-all hover:bg-gray-50 hover:shadow-lg dark:border-slate-800 dark:bg-slate-800'
                         key={item._id}
                     >
                         <AvatarUser size='small' image={item.userLoan?.image} />
 
-                        <span className='truncate flex-1 max-w-[150px] text-gray-900 dark:text-slate-200'>
+                        <span className='max-w-[150px] flex-1 truncate text-gray-900 dark:text-slate-200'>
                             {item.userLoan?.userName}
                         </span>
-                        <span title='Hạn trả' className={clsx('font-normal truncate', date?.color)}>
+                        <span className={clsx('truncate font-normal', date?.color)}>
                             {isHaveEstimatePayDate &&
                                 moment(item.estimatePaidDate).format(DATE_FORMAT.D_DATE_TIME) + ' - '}{' '}
                             {date?.message}
@@ -84,16 +87,16 @@ const Skeleton = () => {
                 return (
                     <div
                         key={index}
-                        className='animate-pulse flex flex-col group bg-white dark:bg-slate-800 dark:border-slate-800 gap-x-3 gap-y-2 py-3 px-3 border rounded-md cursor-wait shadow-md'
+                        className='group flex animate-pulse cursor-wait flex-col gap-x-3 gap-y-2 rounded-md border bg-white py-3 px-3 shadow-md dark:border-slate-800 dark:bg-slate-800'
                     >
                         <div className='flex flex-shrink-0'>
-                            <div className='w-8 h-8 rounded-full bg-gray-200 dark:bg-slate-700' />
-                            <div className='w-8 h-8 rounded-full bg-gray-200 dark:bg-slate-700' />
-                            <div className='w-8 h-8 rounded-full bg-gray-200 dark:bg-slate-700' />
+                            <div className='h-8 w-8 rounded-full bg-gray-200 dark:bg-slate-700' />
+                            <div className='h-8 w-8 rounded-full bg-gray-200 dark:bg-slate-700' />
+                            <div className='h-8 w-8 rounded-full bg-gray-200 dark:bg-slate-700' />
                         </div>
-                        <span className='w-20 h-8 bg-gray-100 dark:bg-slate-600 rounded-full' />
-                        <span className='w-40 h-8 bg-gray-100 dark:bg-slate-600 rounded-full' />
-                        <span className='w-28 h-8 bg-gray-100 dark:bg-slate-600 rounded-full' />
+                        <span className='h-8 w-20 rounded-full bg-gray-100 dark:bg-slate-600' />
+                        <span className='h-8 w-40 rounded-full bg-gray-100 dark:bg-slate-600' />
+                        <span className='h-8 w-28 rounded-full bg-gray-100 dark:bg-slate-600' />
                     </div>
                 )
             })}

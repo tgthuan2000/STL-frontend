@@ -1,4 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { ICreateMemberForm } from '~/@types/loan'
@@ -6,8 +7,9 @@ import { Button, SubmitWrap } from '~/components'
 import { Input, UploadImage } from '~/components/_base'
 import { SlideOverHOC, useCache, useCheck, useLoading, useSlideOver } from '~/context'
 import { useServiceQuery } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 
 const defaultValues = {
     userName: '',
@@ -15,9 +17,10 @@ const defaultValues = {
 }
 
 const CreateMember = () => {
+    const { t } = useTranslation()
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { loading, setSubmitLoading } = useLoading()
     const { needCheckWhenLeave } = useCheck()
     const { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } = useServiceQuery()
@@ -61,7 +64,7 @@ const CreateMember = () => {
             form.reset(defaultValues, {
                 keepDefaultValues: true,
             })
-            toast.success<string>('Tạo thành viên thành công!')
+            toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_MEMBER_SUCCESS))
             deleteCache([GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN])
             needCheckWhenLeave()
             // setIsOpen(false)
@@ -83,19 +86,19 @@ const CreateMember = () => {
                                 name='userName'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu nhập tên thành viên!',
+                                    required: t(LANGUAGE.REQUIRED_FULL_NAME) as string,
                                 }}
                                 type='text'
-                                label='Họ và tên'
+                                label={t(LANGUAGE.FULL_NAME)}
                             />
-                            <UploadImage name='image' form={form} label='Hình ảnh (tùy chọn)' />
+                            <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
                         </div>
                     </div>
                 </div>
             </div>
             <SubmitWrap>
                 <Button color='green' type='submit' disabled={loading.submit}>
-                    Tạo thành viên
+                    {t(LANGUAGE.CREATE)}
                 </Button>
                 <Button
                     color='outline'
@@ -105,7 +108,7 @@ const CreateMember = () => {
                         navigate(-1)
                     }}
                 >
-                    Hủy bỏ
+                    {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
         </form>

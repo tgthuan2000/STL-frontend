@@ -1,7 +1,12 @@
-import { cloneDeep, get, isEmpty } from 'lodash'
+import { ArrowPathIcon, ListBulletIcon, TableCellsIcon } from '@heroicons/react/24/outline'
+import { cloneDeep, isEmpty } from 'lodash'
 import moment from 'moment'
-import { List, _List } from '~/@types'
-import { DATA_LIST_GROUP } from '~/constant/component'
+import { DataListOptions, List, _List } from '~/@types'
+import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
+import i18n from '~/i18n'
+import LANGUAGE from '~/i18n/language/key'
+
+const { t } = i18n
 
 export const getDateOfMonth = (type: 'start' | 'end' = 'start', date?: moment.MomentInput) => {
     if (type === 'start') {
@@ -48,30 +53,24 @@ export const getColorPrize = (variable: any) => {
 
 export const getBudgetId = (userId: string, month?: moment.MomentInput) => moment(month).format('YYYY-MM-') + userId
 
-export const getSpacingTime = (time: string) => {
-    const now = new Date()
+export const getSpacingTime = (time: string, now?: Date) => {
+    now = now || new Date()
     const date = new Date(time)
     const diff = Math.abs(now.getTime() - date.getTime())
     const diffDays = Math.ceil(diff / (1000 * 3600 * 24))
     const diffHours = Math.ceil(diff / (1000 * 3600))
     const diffMinutes = Math.ceil(diff / (1000 * 60))
     if (diffDays > 1) {
-        return `${diffDays} ngày trước`
+        return `${diffDays} ${t(LANGUAGE.L_DAYS_AGO)}`
     }
     if (diffHours > 1) {
-        return `${diffHours} giờ trước`
+        return `${diffHours} ${t(LANGUAGE.L_HOURS_AGO)}`
     }
     if (diffMinutes > 1) {
-        return `${diffMinutes} phút trước`
+        return `${diffMinutes} ${t(LANGUAGE.L_MINUTES_AGO)}`
     }
-    return 'Vừa xong'
+    return t(LANGUAGE.RECENT)
 }
-
-export const listGroupOptions = [
-    { id: DATA_LIST_GROUP.DATE, name: 'Ngày' },
-    { id: DATA_LIST_GROUP.MONTH, name: 'Tháng' },
-    { id: DATA_LIST_GROUP.YEAR, name: 'Năm' },
-]
 
 export const listToTree = <T extends _List>(_list: T[]) => {
     let list: Array<List<T>> = cloneDeep(_list),
@@ -95,3 +94,17 @@ export const listToTree = <T extends _List>(_list: T[]) => {
     }
     return roots
 }
+
+export const listGroupOptions = [
+    { id: DATA_LIST_GROUP.DATE, name: t(LANGUAGE.DAY) },
+    { id: DATA_LIST_GROUP.MONTH, name: t(LANGUAGE.MONTH) },
+    { id: DATA_LIST_GROUP.YEAR, name: t(LANGUAGE.YEAR) },
+]
+
+export const dataListOptions: DataListOptions = ({ onReloadClick }: any) => [
+    [
+        { id: DATA_LIST_MODE.TABLE, name: t(LANGUAGE.TABLE), icon: TableCellsIcon },
+        { id: DATA_LIST_MODE.LIST, name: t(LANGUAGE.LIST), icon: ListBulletIcon },
+    ],
+    [{ id: 0, name: t(LANGUAGE.REFRESH), icon: ArrowPathIcon, onClick: onReloadClick }],
+]

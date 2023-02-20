@@ -1,3 +1,4 @@
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import React, { Suspense } from 'react'
 import { NavLink } from 'react-router-dom'
@@ -18,7 +19,7 @@ const NavLinkIcon: React.FC<NavLinkIconProps> = ({ data }) => {
             {({ isActive }) => (
                 <>
                     <div className='relative'>
-                        <Suspense fallback={<div className='h-5 w-5 bg-gray-500 rounded-full animate-pulse' />}>
+                        <Suspense fallback={<CubeTransparentIcon className='h-5 w-5 animate-pulse' />}>
                             <data.component />
                         </Suspense>
                     </div>

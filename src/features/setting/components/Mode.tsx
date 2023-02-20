@@ -1,11 +1,14 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { SettingComponentProps } from '~/@types/setting'
 import { ThemeIcon } from '~/components'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { useLocalStorage } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import { checkDarkTheme } from '~/utils'
 
 const Mode: React.FC<SettingComponentProps> = (props) => {
+    const { t } = useTranslation()
     const theme = useLocalStorage<string>(LOCAL_STORAGE_KEY.STL_THEME)
     const [value, set] = theme
     return (
@@ -22,8 +25,8 @@ const Mode: React.FC<SettingComponentProps> = (props) => {
                 }
             }}
         >
-            <ThemeIcon theme={theme} className='w-6 h-6 flex-shrink-0' />
-            <p>{checkDarkTheme(value) ? 'Chế độ sáng' : 'Chế độ tối'}</p>
+            <ThemeIcon theme={value} className='h-6 w-6 flex-shrink-0' />
+            <p>{checkDarkTheme(value) ? t(LANGUAGE.LIGHT_MODE) : t(LANGUAGE.DARK_MODE)}</p>
         </button>
     )
 }

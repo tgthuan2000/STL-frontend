@@ -1,12 +1,10 @@
-import { RefreshIcon, TableIcon, ViewListIcon } from '@heroicons/react/outline'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { Services } from '~/@types/announce-config'
 import { COUNT_PAGINATE, TAGS } from '~/constant'
-import { DATA_LIST_MODE } from '~/constant/component'
 import { E_FILTER_DATE } from '~/constant/template'
 import { GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE, GET_NOTIFY_CONFIG_PAGINATE } from '~/schema/query/notify'
-import { getDate, getDate as _getDate, listGroupOptions } from '~/services'
+import { getDate, getDate as _getDate } from '~/services'
 
 export const services: Services = {
     getAll: {
@@ -122,12 +120,4 @@ export const services: Services = {
                 })
         }
     },
-    getDropdownOptions: ({ onReloadClick }) => [
-        [
-            { id: DATA_LIST_MODE.TABLE, name: 'Bảng', icon: TableIcon },
-            { id: DATA_LIST_MODE.LIST, name: 'Danh sách', icon: ViewListIcon },
-        ],
-        [{ id: 0, name: 'Làm mới', icon: RefreshIcon, onClick: onReloadClick }],
-    ],
-    getListGroupOptions: () => [listGroupOptions],
 }

@@ -28,9 +28,9 @@ const Step2: React.FC<CreateStep2Props> = ({ id, onSubmit }) => {
         <form
             id={id}
             onSubmit={form.handleSubmit(handleSubmit)}
-            className='flex h-full flex-col max-w-xl w-full mx-auto'
+            className='mx-auto flex h-full w-full max-w-xl flex-col'
         >
-            <div className='space-y-5 mb-5'>
+            <div className='mb-5 space-y-5'>
                 <Input label='Tiêu đề' form={form} name='title' autoFocus />
                 <RichText
                     label='Mô tả ngắn'

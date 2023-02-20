@@ -2,24 +2,27 @@ import { isEmpty, isUndefined } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IMakeGetLoanForm, QueryDataMakeGetLoan } from '~/@types/loan'
 import { Button, SubmitWrap } from '~/components'
-import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
+import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_USER_LOAN } from '~/schema/query/loan'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 import StatusLoan from './common/StatusLoan'
 
 const MakeGetLoan = () => {
+    const { t } = useTranslation()
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { getKindSpendingId, kindSpending } = useConfig()
     const { loading, setSubmitLoading } = useLoading()
     const { needCheckWhenLeave } = useCheck()
@@ -49,44 +52,51 @@ const MakeGetLoan = () => {
             estimatePaidDate: null,
             userLoan: null,
             description: '',
+            image: null,
         },
     })
 
     const onsubmit: SubmitHandler<IMakeGetLoanForm> = async (data) => {
         setSubmitLoading(true)
-        let { amount, methodReference, description, estimatePaidDate, userLoan } = data
+        let { amount, methodReference, description, estimatePaidDate, userLoan, image } = data
+        let imageId = null
         amount = Number(amount)
         description = description.trim()
 
-        const documentSpending = {
-            _type: 'spending',
-            amount,
-            description: `${methodReference ? 'Cộng gốc' : 'Tạm vay'}${description ? `\n${description}` : ''}`,
-            kindSpending: {
-                _type: 'reference',
-                _ref: kindLoanId,
-            },
-            date: moment().format(), // for statistic
-            estimatePaidDate: estimatePaidDate ? moment(estimatePaidDate).format() : undefined,
-            paid: false,
-            ...(methodReference && {
-                surplus: methodReference.surplus,
-                methodReference: {
-                    _type: 'reference',
-                    _ref: methodReference._id,
-                },
-            }),
-            userLoan: {
-                _type: 'reference',
-                _ref: userLoan?._id,
-            },
-            user: {
-                _type: 'reference',
-                _ref: userProfile?._id,
-            },
-        }
-
         try {
+            if (image) {
+                const response = await client.assets.upload('image', image)
+                imageId = response._id
+            }
+
+            const documentSpending = {
+                _type: 'spending',
+                amount,
+                description: `${methodReference ? 'Cộng gốc' : 'Tạm vay'}${description ? `\n${description}` : ''}`,
+                kindSpending: {
+                    _type: 'reference',
+                    _ref: kindLoanId,
+                },
+                date: moment().format(), // for statistic
+                estimatePaidDate: estimatePaidDate ? moment(estimatePaidDate).format() : undefined,
+                paid: false,
+                ...(methodReference && {
+                    surplus: methodReference.surplus,
+                    methodReference: {
+                        _type: 'reference',
+                        _ref: methodReference._id,
+                    },
+                }),
+                userLoan: {
+                    _type: 'reference',
+                    _ref: userLoan?._id,
+                },
+                user: {
+                    _type: 'reference',
+                    _ref: userProfile?._id,
+                },
+                ...(imageId && { image: { _type: 'image', asset: { _type: 'reference', _ref: imageId } } }),
+            }
             const __ = client.transaction()
             __.create(documentSpending)
 
@@ -130,8 +140,8 @@ const MakeGetLoan = () => {
                 reloadData()
             }, 0)
 
-            form.reset({ amount: '', methodReference, userLoan }, { keepDefaultValues: true })
-            toast.success<string>('Thực hiện tạo vay thành công!')
+            form.reset({ amount: '', methodReference, userLoan, image: null }, { keepDefaultValues: true })
+            toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_GET_LOAN_SUCCESS))
             deleteCache([GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN])
             needCheckWhenLeave()
         } catch (error) {
@@ -157,21 +167,21 @@ const MakeGetLoan = () => {
                                 name='amount'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu nhập số tiền!',
+                                    required: t(LANGUAGE.REQUIRED_AMOUNT) as any,
                                     min: {
                                         value: 0,
-                                        message: 'Số tiền phải lớn hơn 0!',
+                                        message: t(LANGUAGE.AMOUNT_MIN_ZERO),
                                     },
                                 }}
                                 type='number'
-                                label='Số tiền'
+                                label={t(LANGUAGE.AMOUNT)}
                             />
 
                             <AutoComplete
                                 name='methodReference'
                                 form={form}
                                 data={methodSpending.data}
-                                label='Phương thức nhận tiền'
+                                label={t(LANGUAGE.METHOD_RECEIVE)}
                                 loading={methodSpending.loading}
                                 onReload={
                                     isEmpty(methodSpending.data) ? undefined : () => handleReloadData('methodSpending')
@@ -180,31 +190,33 @@ const MakeGetLoan = () => {
 
                             <StatusLoan form={form} name='methodReference' />
 
-                            <DatePicker name='estimatePaidDate' form={form} label='Ngày trả' />
+                            <DatePicker name='estimatePaidDate' form={form} label={t(LANGUAGE.ESTIMATE_PAID_DATE)} />
 
                             <AutoComplete
                                 name='userLoan'
                                 form={form}
                                 rules={{
-                                    required: 'Yêu cầu chọn đối tượng vay!',
+                                    required: t(LANGUAGE.REQUIRED_USER_GET_LOAN) as any,
                                 }}
                                 data={userLoan.data}
-                                label='Đối tượng vay'
+                                label={t(LANGUAGE.USER_GET_LOAN)}
                                 valueKey='userName'
                                 loading={userLoan.loading}
                                 onReload={isEmpty(userLoan.data) ? undefined : () => handleReloadData('userLoan')}
                                 showImage
-                                surplusName='Tài sản'
+                                surplusName={t(LANGUAGE.ASSET)}
                             />
 
-                            <TextArea name='description' form={form} label='Ghi chú' />
+                            <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
+
+                            <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
                         </div>
                     </div>
                 </div>
             </div>
             <SubmitWrap>
                 <Button color='radicalRed' type='submit' disabled={loading.submit}>
-                    Lưu
+                    {t(LANGUAGE.SAVE)}
                 </Button>
                 <Button
                     color='outline'
@@ -214,7 +226,7 @@ const MakeGetLoan = () => {
                         navigate(-1)
                     }}
                 >
-                    Hủy bỏ
+                    {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
         </form>

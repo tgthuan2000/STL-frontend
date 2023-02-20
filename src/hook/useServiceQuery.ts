@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 import { useConfig } from '~/context'
 import * as services from '~/services/query'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 
 const useServiceQuery = () => {
-    let { userProfile } = useAuth()
+    let { userProfile } = useProfile()
     const { getKindSpendingId, getKindSpendingIds } = useConfig()
 
     const cost = useMemo(() => getKindSpendingId('COST') as string, [])

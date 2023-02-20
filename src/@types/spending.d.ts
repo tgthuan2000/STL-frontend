@@ -1,8 +1,8 @@
+import { SanityImageAssetDocument } from '@sanity/client'
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
-import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
+import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/@types/hook'
 import { KIND_SPENDING } from '~/constant/spending'
-import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/hook/useQuery'
 import { DropdownResult, ListGroupResult } from '.'
 import { IUserProfile } from './auth'
 import { IKindSpending } from './context'
@@ -59,6 +59,7 @@ export interface ISpendingData {
     paid?: boolean
     realPaid?: number
     userLoan?: IUserLoan
+    image?: SanityImageAssetDocument
 }
 
 export interface IStatisticData {
@@ -83,6 +84,7 @@ export interface IAddCostForm {
     methodSpending: IMethodSpending | null
     description: string
     date: Date
+    image?: File | null
 }
 
 export interface IAddIncomeForm {
@@ -91,6 +93,7 @@ export interface IAddIncomeForm {
     methodSpending: IMethodSpending | null
     date: Date
     description: string
+    image?: File | null
 }
 
 export interface IMakeTransferForm {
@@ -99,6 +102,7 @@ export interface IMakeTransferForm {
     methodSpendingTo: IMethodSpending | null
     date: Date
     description: string
+    image?: File | null
 }
 
 /* PROPS */
@@ -127,6 +131,11 @@ export interface StatisticProps {
 export interface MethodProps {
     data: IMethodSpending[] | undefined
     loading: boolean
+}
+export interface ListOptionProps {
+    data: any[] | undefined
+    loading: boolean
+    cleanCache: () => void
 }
 
 export interface TransactionDetailFormProps {
@@ -171,11 +180,16 @@ export interface DashboardQueryData {
     budget?: IBudgetSpending
     statistic: IStatisticData[]
 }
+export interface ITotalSpending {
+    key: KIND_SPENDING
+    data: number[]
+}
 export interface RecentQueryData {
     recent: {
         data: ISpendingData[]
         hasNextPage: boolean
     }
+    total: ITotalSpending[]
 }
 
 export interface MethodQueryData {
@@ -183,11 +197,16 @@ export interface MethodQueryData {
         data: ISpendingData[]
         hasNextPage: boolean
     }
+    total: ITotalSpending[]
+}
+
+export interface OthersQueryData {
+    method: IMethodSpending[]
+    category: ICategorySpending[]
 }
 /* OTHERS */
 export interface TransactionDetailFormData {
     onsubmit: SubmitHandler<IDetailSpendingForm>
-    title: string
     handleReloadData: (keys: keyof TransactionDetailQueryData) => Promise<void>
     handleReloadDataCategory: (keys: keyof DataCategory) => Promise<void>
     handleAddMoreMethodSpending: (name: string) => Promise<{ _id: string; name: string } | undefined>
@@ -206,6 +225,7 @@ export interface IDetailSpendingForm {
     date: Date
     description: string
     surplus: number
+    image?: File | SanityImageAssetDocument
 }
 export interface DataCategory {
     categorySpending: ICategorySpending[]
@@ -258,8 +278,6 @@ export interface TransactionServices {
     getAll: TransactionGetAll
     getDefaultValue: TransactionGetDefaultValue
     filterSubmit: TransactionFilterSubmit
-    getDropdownOptions: GetDropdownOptions
-    getListGroupOptions: GetLisGroupOptions
 }
 
 type TransactionGetAll = (options: TransactionGetAllOptions) => TransactionDefaultValueResult
@@ -298,8 +316,6 @@ export interface MethodDetailServices {
     getAll: MethodDetailGetAll
     getDefaultValue: MethodGetDefaultValue
     filterSubmit: MethodFilterSubmit
-    getDropdownOptions: GetDropdownOptions
-    getListGroupOptions: GetLisGroupOptions
 }
 
 type MethodDetailGetAll = (options: MethodDetailGetAllOptions) => MethodDetailDefaultValueResult
