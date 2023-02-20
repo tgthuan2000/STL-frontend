@@ -52,7 +52,7 @@ const Selection: React.FC<SelectionProps> = ({
                         disabled={disabled}
                     >
                         <Label label={label} />
-                        <div className='mt-1 relative'>
+                        <div className='relative mt-1'>
                             <Button disabled={disabled} field={field} placeholder={placeholder} valueKey={valueKey} />
 
                             <Options data={data} idKey={idKey} valueKey={valueKey} />

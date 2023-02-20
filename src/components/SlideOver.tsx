@@ -31,7 +31,7 @@ const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
                     leaveFrom='opacity-100'
                     leaveTo='opacity-0'
                 >
-                    <div className='fixed inset-0 bg-gray-500 bg-opacity-75 dark:bg-slate-900 dark:bg-opacity-80 transition-opacity' />
+                    <div className='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity dark:bg-slate-900 dark:bg-opacity-80' />
                 </Transition.Child>
 
                 <div className='fixed inset-0 overflow-hidden'>
@@ -46,9 +46,9 @@ const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
                                 leaveFrom='translate-x-0'
                                 leaveTo='translate-x-full opacity-0'
                             >
-                                <Dialog.Panel className='pointer-events-auto w-screen sm:max-w-md max-w-full'>
-                                    <div className='flex h-full flex-col overflow-y-auto bg-white dark:bg-slate-800 shadow-xl'>
-                                        <div className='px-4 sm:px-6 pt-6'>
+                                <Dialog.Panel className='pointer-events-auto w-screen max-w-full sm:max-w-md'>
+                                    <div className='flex h-full flex-col overflow-y-auto bg-white shadow-xl dark:bg-slate-800'>
+                                        <div className='px-4 pt-6 sm:px-6'>
                                             <div className='flex items-start justify-between'>
                                                 <Dialog.Title className='text-lg font-medium text-gray-900 dark:text-white'>
                                                     {title}
@@ -56,7 +56,7 @@ const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
                                                 <div className='ml-3 flex h-7 items-center'>
                                                     <button
                                                         type='button'
-                                                        className='rounded-md bg-white dark:bg-transparent dark:text-slate-100 dark:hover:text-slate-200 text-gray-400 hover:text-gray-500 focus:outline-none'
+                                                        className='rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none dark:bg-transparent dark:text-slate-100 dark:hover:text-slate-200'
                                                         onClick={() => {
                                                             setIsOpen(false)
                                                             navigate(-1)

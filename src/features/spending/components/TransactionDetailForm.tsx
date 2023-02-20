@@ -45,15 +45,15 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
 
     return (
         <div>
-            <div className='flex justify-between items-center mb-4'>
-                <div className='flex items-center text-gray-900 dark:text-slate-200 space-x-2 select-none'>
+            <div className='mb-4 flex items-center justify-between'>
+                <div className='flex select-none items-center space-x-2 text-gray-900 dark:text-slate-200'>
                     <ArrowSmallLeftIcon
-                        className='h-7 w-7 hover:opacity-50 cursor-pointer'
+                        className='h-7 w-7 cursor-pointer hover:opacity-50'
                         onClick={() => {
                             navigate(-1)
                         }}
                     />
-                    <h4 className='xl:text-2xl text-xl font-semibold'>{t(LANGUAGE.TRANSACTION_DETAIL)}</h4>
+                    <h4 className='text-xl font-semibold xl:text-2xl'>{t(LANGUAGE.TRANSACTION_DETAIL)}</h4>
                 </div>
                 {[
                     KIND_SPENDING.COST,
@@ -62,7 +62,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                     KIND_SPENDING.TRANSFER_TO,
                 ].includes(transaction.kindSpending.key) && (
                     <span
-                        className='h-8 lg:h-9 w-8 lg:w-9 hover:opacity-50 transition-opacity text-gray-600 cursor-pointer bg-slate-200 dark:bg-slate-700 dark:text-slate-300 p-1.5 rounded-lg'
+                        className='h-8 w-8 cursor-pointer rounded-lg bg-slate-200 p-1.5 text-gray-600 transition-opacity hover:opacity-50 dark:bg-slate-700 dark:text-slate-300 lg:h-9 lg:w-9'
                         onClick={() =>
                             window.confirm(t(LANGUAGE.CONFIRM_DELETE_TRANSACTION) as string) &&
                             handleDeleteTransaction()
@@ -72,8 +72,8 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                     </span>
                 )}
             </div>
-            <div className='bg-white dark:bg-slate-800 rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>
-                <div className='max-w-lg w-full mx-auto'>
+            <div className='rounded-xl bg-white py-2 shadow-lg dark:bg-slate-800 sm:py-6 lg:py-8'>
+                <div className='mx-auto w-full max-w-lg'>
                     <form
                         onSubmit={!isEmpty(categorySpending.data) ? form.handleSubmit(onsubmit) : undefined}
                         className='flex h-full flex-col'
@@ -104,7 +104,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                                             <span className={clsx(...getColorPrize(calc))}>
                                                                 {numeral(calc).format()}
                                                             </span>
-                                                            <span className='inline-block w-px h-full border border-gray-400 dark:border-slate-700' />
+                                                            <span className='inline-block h-full w-px border border-gray-400 dark:border-slate-700' />
                                                             <span className={clsx(...getColorPrize(surplus))}>
                                                                 {numeral(surplus).format()}
                                                             </span>

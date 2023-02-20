@@ -10,12 +10,12 @@ import { useCheck, useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { GET_METHOD_SPENDING_DESC_SURPLUS } from '~/schema/query/spending'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 
 const Method = () => {
     const { t } = useTranslation()
     const { kindSpending } = useConfig()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const { width } = useWindowSize()
 
@@ -126,7 +126,7 @@ const Method = () => {
     return (
         <div className='mt-5'>
             <div
-                className='border border-gray-300 bg-white dark:bg-slate-700 dark:border-slate-700 rounded-md xl:sticky xl:top-6 lg:py-2 lg:px-4'
+                className='rounded-md border border-gray-300 bg-white dark:border-slate-700 dark:bg-slate-700 lg:py-2 lg:px-4 xl:sticky xl:top-6'
                 style={{ height: dataFilter ? size(dataFilter) * 90 : 'auto' }}
                 ref={parent}
             >

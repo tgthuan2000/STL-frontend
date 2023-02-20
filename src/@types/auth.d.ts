@@ -5,7 +5,7 @@ import React from 'react'
 
 export interface IUserProfile {
     _id: string
-    image: SanityAssetDocument<string> | string
+    image: string | undefined
     email: string
     userName: string
     google: string
@@ -13,13 +13,18 @@ export interface IUserProfile {
     allowSendMail: boolean
 }
 
-interface SetUserProfile {
-    userProfile: SanityDocument<IUserProfile> | null
+type Token = { accessToken?: string | null; refreshToken?: string | null }
+type AddToken = (token: Token) => void
+
+export type AuthStore = {
+    accessToken: string | null
+    refreshToken: string | null
+    setToken: AddToken
+    removeToken: () => void
 }
 
 type AddUserProfile = (userProfile: SanityDocument<IUserProfile>) => void
-
-export type AuthStore = (set: (user: SetUserProfile) => void) => {
+interface UserProfileStore {
     userProfile: SanityDocument<IUserProfile> | null
     addUserProfile: AddUserProfile
     removeUserProfile: () => void
@@ -27,7 +32,8 @@ export type AuthStore = (set: (user: SetUserProfile) => void) => {
 
 export type IFetchGoogleResponse = (
     res: CredentialResponse,
-    addUser: AddUserProfile,
+    addToken: AddToken,
+    addUserProfile: AddUserProfile,
     setLoading: (value: boolean) => void
 ) => Promise<void>
 
@@ -44,7 +50,8 @@ export interface LoginForm {
 }
 export type ILoginByEmailPassword = (
     data: LoginForm,
-    addUser: AddUserProfile,
+    addToken: AddToken,
+    addUserProfile: AddUserProfile,
     setLoading: (value: boolean) => void
 ) => Promise<void>
 

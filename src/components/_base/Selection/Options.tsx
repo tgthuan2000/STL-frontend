@@ -6,14 +6,14 @@ import { SelectionOptionsProps } from '~/@types/components'
 
 const Options: React.FC<SelectionOptionsProps> = ({ data, idKey, valueKey }) => {
     return (
-        <Listbox.Options className='absolute z-10 mt-1 w-full bg-white dark:bg-slate-600 shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
+        <Listbox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-slate-600 sm:text-sm'>
             {data.map((item) => (
                 <Listbox.Option
                     key={item[idKey]}
                     className={({ active }) =>
                         clsx(
-                            active ? 'text-white bg-indigo-600 dark:bg-cyan-500' : 'text-gray-900 dark:text-slate-200',
-                            'cursor-default select-none relative py-2 pl-8 pr-4'
+                            active ? 'bg-indigo-600 text-white dark:bg-cyan-500' : 'text-gray-900 dark:text-slate-200',
+                            'relative cursor-default select-none py-2 pl-8 pr-4'
                         )
                     }
                     value={item}

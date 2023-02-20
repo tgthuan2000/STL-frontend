@@ -12,14 +12,14 @@ import { __groupBy } from '~/constant/component'
 import { useCheck, useConfig } from '~/context'
 import { useListViewFilter, useQuery, useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 import { getLinkSpending } from '~/utils'
 import { services } from '../services'
 import * as __services from '../services/dataListView'
 
 const TransactionRecent = () => {
     const { t } = useTranslation()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
     const { width } = useWindowSize()
     const { getKindSpendingIds } = useConfig()
@@ -139,7 +139,7 @@ const TransactionRecent = () => {
                     />
 
                     {error ? (
-                        <p className='m-5 text-radical-red-500 font-medium'>{t(LANGUAGE.ERROR)}</p>
+                        <p className='m-5 font-medium text-radical-red-500'>{t(LANGUAGE.ERROR)}</p>
                     ) : (
                         <div ref={parentRef}>
                             <DataListView

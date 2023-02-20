@@ -15,22 +15,22 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, o
     const [isClickRead, setIsClickRead] = useState(false)
 
     return (
-        <div className='px-2 py-1 space-y-0.5'>
+        <div className='space-y-0.5 px-2 py-1'>
             <Menu.Item>
                 <div
                     className={clsx(
-                        'flex flex-col w-full rounded-md px-2 py-2 hover:bg-slate-200 dark:hover:bg-slate-600 cursor-pointer',
+                        'flex w-full cursor-pointer flex-col rounded-md px-2 py-2 hover:bg-slate-200 dark:hover:bg-slate-600',
                         !data.read ? 'bg-gray-100 dark:bg-slate-700' : 'bg-transparent'
                     )}
                     onClick={() => onReadDetail(data)}
                     title={t(LANGUAGE.CLICK_TO_READ_DETAIL) as string}
                 >
                     <div className='flex justify-between gap-3'>
-                        <h4 className='flex-1 font-normal text-sm lg:text-base truncate text-gray-900 dark:text-slate-100'>
+                        <h4 className='flex-1 truncate text-sm font-normal text-gray-900 dark:text-slate-100 lg:text-base'>
                             {data.notify.title}
                         </h4>
                         <span
-                            className='flex items-center gap-0.5 flex-shrink-0 text-cyan-400 lg:text-sm text-xs'
+                            className='flex flex-shrink-0 items-center gap-0.5 text-xs text-cyan-400 lg:text-sm'
                             title={t(LANGUAGE.VIEWERS) as string}
                         >
                             <span>{data.notify.viewers ?? 0}</span>
@@ -39,7 +39,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, o
                     </div>
                     <Prose
                         className={clsx(
-                            'text-xs mt-1 sm:max-w-[calc(100%-80px)] max-w-[calc(100%-40px)] line-clamp-3 dark:text-slate-100',
+                            'mt-1 max-w-[calc(100%-40px)] text-xs line-clamp-3 dark:text-slate-100 sm:max-w-[calc(100%-80px)]',
                             {
                                 'italic text-gray-400': !data.notify.description,
                                 'text-gray-500': !!data.notify.description,
@@ -48,17 +48,17 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, o
                     >
                         {data.notify.description ?? t(LANGUAGE.EMPTY_DESCRIPTION)}
                     </Prose>
-                    <div className='mt-2 flex justify-between items-center'>
+                    <div className='mt-2 flex items-center justify-between'>
                         <div>
                             {!data.read ? (
                                 isClickRead ? (
-                                    <p className='text-cyan-500 font-normal flex items-center gap-0.5'>
+                                    <p className='flex items-center gap-0.5 font-normal text-cyan-500'>
                                         <CheckIcon className='h-4 w-4' />
                                         {t(LANGUAGE.READ)}
                                     </p>
                                 ) : (
                                     <button
-                                        className='text-cyan-500 text-xs lg:text-sm font-medium hover:underline'
+                                        className='text-xs font-medium text-cyan-500 hover:underline lg:text-sm'
                                         onClick={(e) => {
                                             setIsClickRead(true)
                                             onItemRead(e, data)
@@ -73,7 +73,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, o
                                 </p>
                             )}
                         </div>
-                        <p className='italic text-xs text-gray-400 dark:text-slate-100'>
+                        <p className='text-xs italic text-gray-400 dark:text-slate-100'>
                             {getSpacingTime(data._createdAt)}
                         </p>
                     </div>

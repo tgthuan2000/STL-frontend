@@ -12,14 +12,14 @@ import { __groupBy } from '~/constant/component'
 import { useConfig } from '~/context'
 import { useListViewFilter, useQuery, useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 import { getLinkSpending } from '~/utils'
 import * as __services from '../services/dataListView'
 import { services } from '../services/method'
 
 const MethodDetail = () => {
     const { t } = useTranslation()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
     const { width } = useWindowSize()
     const { getKindSpendingIds } = useConfig()

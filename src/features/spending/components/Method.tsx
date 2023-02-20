@@ -20,7 +20,7 @@ const Method: React.FC<MethodProps> = ({ data, loading }) => {
                             <li key={item._id}>
                                 <Link
                                     to={`/spending/method/${item._id}`}
-                                    className='px-3 py-3 flex hover:bg-gray-100 dark:hover:bg-slate-600 cursor-pointer'
+                                    className='flex cursor-pointer px-3 py-3 hover:bg-gray-100 dark:hover:bg-slate-600'
                                 >
                                     <div className='w-2/3 truncate'>
                                         <h4 className='font-medium'>{item.name}</h4>
@@ -50,15 +50,15 @@ const Method: React.FC<MethodProps> = ({ data, loading }) => {
 export default Method
 
 export const MethodSkeleton = () => (
-    <ul role='list' className='select-none pointer-events-none'>
+    <ul role='list' className='pointer-events-none select-none'>
         {Array.from(Array(5)).map((value, index) => (
             <li key={index}>
-                <div className='px-4 py-4 flex'>
+                <div className='flex px-4 py-4'>
                     <div className='w-2/3 space-y-1'>
-                        <div className='animate-pulse bg-gray-200 dark:bg-slate-700 rounded-full h-4 w-2/3' />
+                        <div className='h-4 w-2/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
                     </div>
-                    <div className='w-1/3 space-y-1 flex flex-col items-end'>
-                        <div className='animate-pulse bg-gray-200 dark:bg-slate-700 rounded-full h-4 w-2/3' />
+                    <div className='flex w-1/3 flex-col items-end space-y-1'>
+                        <div className='h-4 w-2/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
                     </div>
                 </div>
             </li>

@@ -153,7 +153,17 @@ const translation: {
     [LANGUAGE.NOTIFY_ERROR]: 'Đã có lỗi xảy ra!',
     [LANGUAGE.NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD]: 'Tài khoản chưa cài đặt đăng nhập bằng email và mật khẩu!',
     [LANGUAGE.NOTIFY_INVALID_PASSWORD]: 'Mật khẩu không đúng!',
+    [LANGUAGE.NOTIFY_INVALID_OLD_PASSWORD]: 'Mật khẩu cũ không đúng!',
     [LANGUAGE.NOTIFY_NO_CHANGE]: 'Không thay đổi',
+    [LANGUAGE.NOTIFY_REQUIRED_EMAIL]: 'Không tìm thấy email!',
+    [LANGUAGE.NOTIFY_REQUIRED_ID]: 'Không tìm thấy id!',
+    [LANGUAGE.NOTIFY_REQUIRED_PASSWORD]: 'Không tìm thấy mật khẩu!',
+    [LANGUAGE.NOTIFY_FORBIDDEN]: 'Không có quyền truy cập!',
+    [LANGUAGE.NOTIFY_REQUIRED_REFRESH_TOKEN]: 'Không tìm thấy refresh token!',
+    [LANGUAGE.NOTIFY_EXPIRED_TOKEN]: 'Phiên của bạn đã hết hạn, vui lòng đăng nhập lại!',
+    [LANGUAGE.NOTIFY_REQUIRED_CREDENTIAL]: 'Không tìm thấy thông tin đăng nhập!',
+    [LANGUAGE.NOTIFY_REQUIRED_DATA]: 'Không tìm thấy giá trị data!',
+    [LANGUAGE.NOTIFY_REQUIRED_URL]: 'Không tìm thấy giá trị url!',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Bạn có chắc chắn muốn gửi thông báo này?',

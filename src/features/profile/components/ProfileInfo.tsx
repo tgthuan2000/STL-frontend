@@ -5,14 +5,14 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ label, data, hidden }) => {
     if (hidden) return <></>
 
     return (
-        <button className='flex-1 w-full overflow-hidden flex flex-col items-start gap-1 sm:p-2 p-1.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 sm:rounded-md rounded cursor-pointer'>
+        <button className='flex w-full flex-1 cursor-pointer flex-col items-start gap-1 overflow-hidden rounded bg-slate-100 p-1.5 hover:bg-slate-200 dark:bg-slate-700 sm:rounded-md sm:p-2'>
             <label
-                className='flex-shrink-0 text-sm text-gray-700 dark:text-slate-200 block w-full text-left truncate'
+                className='block w-full flex-shrink-0 truncate text-left text-sm text-gray-700 dark:text-slate-200'
                 title={label}
             >
                 {label}
             </label>
-            <div className='flex-1 w-full'>{data}</div>
+            <div className='w-full flex-1'>{data}</div>
         </button>
     )
 }

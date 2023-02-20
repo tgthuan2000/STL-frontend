@@ -150,7 +150,7 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                     title: t(LANGUAGE.MOST_USED),
                     data: (
                         <div className='flex items-end justify-between font-normal'>
-                            <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
+                            <p className='text-left text-gray-700 line-clamp-2 dark:text-slate-200'>
                                 {get(_method, 'maxUsed.name')}
                             </p>
                             <span className='text-cyan-400'>{get(_method, 'maxUsed.countUsed')}</span>
@@ -163,7 +163,7 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                     title: t(LANGUAGE.MOST_RECEIVE),
                     data: (
                         <div className='flex items-end justify-between font-normal'>
-                            <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
+                            <p className='text-left text-gray-700 line-clamp-2 dark:text-slate-200'>
                                 {get(_method, 'maxReceive.name')}
                             </p>
                             <span className='text-green-400'>
@@ -178,7 +178,7 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                     title: t(LANGUAGE.MOST_COST),
                     data: (
                         <div className='flex items-end justify-between font-normal'>
-                            <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
+                            <p className='text-left text-gray-700 line-clamp-2 dark:text-slate-200'>
                                 {get(_method, 'maxCost.name')}
                             </p>
                             <span className='text-radical-red-400'>
@@ -206,7 +206,7 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                     title: t(LANGUAGE.MOST_USED_COST),
                     data: (
                         <div className='flex items-end justify-between font-normal'>
-                            <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
+                            <p className='text-left text-gray-700 line-clamp-2 dark:text-slate-200'>
                                 {get(_category, 'maxCostUsed.name')}
                             </p>
                             <span className='text-cyan-400'>
@@ -221,7 +221,7 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                     title: t(LANGUAGE.MOST_USED_RECEIVE),
                     data: (
                         <div className='flex items-end justify-between font-normal'>
-                            <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
+                            <p className='text-left text-gray-700 line-clamp-2 dark:text-slate-200'>
                                 {get(_category, 'maxReceiveUsed.name')}
                             </p>
                             <span className='text-cyan-400'>
@@ -236,7 +236,7 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                     title: t(LANGUAGE.MOST_COST_TOTAL),
                     data: (
                         <div className='flex items-end justify-between font-normal'>
-                            <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
+                            <p className='text-left text-gray-700 line-clamp-2 dark:text-slate-200'>
                                 {get(_category, 'maxCost.name')}
                             </p>
                             <span className='text-radical-red-400'>
@@ -251,7 +251,7 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                     title: t(LANGUAGE.MOST_RECEIVE_TOTAL),
                     data: (
                         <div className='flex items-end justify-between font-normal'>
-                            <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
+                            <p className='text-left text-gray-700 line-clamp-2 dark:text-slate-200'>
                                 {get(_category, 'maxReceive.name')}
                             </p>
                             <span className='text-green-400'>
@@ -275,7 +275,7 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                     title: t(LANGUAGE.MOST_METHOD_AMOUNT),
                     data: (
                         <div className='flex items-end justify-between font-normal'>
-                            <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
+                            <p className='text-left text-gray-700 line-clamp-2 dark:text-slate-200'>
                                 {moment(get(_budget, 'maxTotalMethod.date')).format(DATE_FORMAT.MONTH)}
                             </p>
                             <span className='text-yellow-400'>
@@ -290,7 +290,7 @@ export const getProfileOptions: profileOptionFn = ({ method, budget, category })
                     title: t(LANGUAGE.MOST_CATEGORY_AMOUNT),
                     data: (
                         <div className='flex items-end justify-between font-normal'>
-                            <p className='line-clamp-2 text-left text-gray-700 dark:text-slate-200'>
+                            <p className='text-left text-gray-700 line-clamp-2 dark:text-slate-200'>
                                 {moment(get(_budget, 'maxTotalCategory.date')).format(DATE_FORMAT.MONTH)}
                             </p>
                             <span className='text-yellow-400'>

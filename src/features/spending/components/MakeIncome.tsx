@@ -1,3 +1,4 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { isEmpty, isUndefined } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
@@ -5,20 +6,19 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import * as yup from 'yup'
 import { IAddIncomeForm, MakeIncomeQueryData } from '~/@types/spending'
 import { Button, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery, useTracking } from '~/hook'
+import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
-import useAuth from '~/store/auth'
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
-import i18n from '~/i18n'
 import { TRACKING_INCOME } from '~/schema/query/tracking'
+import { useProfile } from '~/store/auth'
 
 const { t } = i18n
 const schema = yup.object().shape({
@@ -44,7 +44,7 @@ const MakeIncome = () => {
     const { t } = useTranslation()
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { deleteCache } = useCache()
     const { getKindSpendingId } = useConfig()
     const { needCheckWhenLeave } = useCheck()

@@ -149,7 +149,17 @@ enum LANGUAGE {
     NOTIFY_ERROR = 'notify-error',
     NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD = 'notify-account-cant-login-by-email-password',
     NOTIFY_INVALID_PASSWORD = 'notify-invalid-password',
+    NOTIFY_INVALID_OLD_PASSWORD = 'notify-invalid-old-password',
     NOTIFY_NO_CHANGE = 'no-change',
+    NOTIFY_REQUIRED_EMAIL = 'notify-required-email',
+    NOTIFY_REQUIRED_ID = 'notify-required-id',
+    NOTIFY_REQUIRED_PASSWORD = 'notify-required-password',
+    NOTIFY_FORBIDDEN = 'notify-forbidden',
+    NOTIFY_REQUIRED_REFRESH_TOKEN = 'notify-required-refresh-token',
+    NOTIFY_EXPIRED_TOKEN = 'notify-expired-token',
+    NOTIFY_REQUIRED_CREDENTIAL = 'notify-required-credential',
+    NOTIFY_REQUIRED_DATA = 'notify-required-data',
+    NOTIFY_REQUIRED_URL = 'notify-required-url',
 
     /* CONFIRM */
     CONFIRM_NOTIFY = 'confirm-notify',

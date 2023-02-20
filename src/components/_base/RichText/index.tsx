@@ -36,7 +36,7 @@ const RichText: React.FC<RichTextProps> = ({
                         <ReactQuill
                             id={id}
                             theme='snow'
-                            className={disabled ? 'bg-gray-100 cursor-not-allowed select-none' : 'bg-white'}
+                            className={disabled ? 'cursor-not-allowed select-none bg-gray-100' : 'bg-white'}
                             readOnly={disabled}
                             placeholder={placeholder as string}
                             {...reactQuillOptions}

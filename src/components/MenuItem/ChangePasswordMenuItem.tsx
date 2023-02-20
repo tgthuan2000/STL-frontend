@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { OptionMenuItemProps } from '~/@types/layout'
 import LANGUAGE from '~/i18n/language/key'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 
 const ChangePasswordMenuItem: React.FC<OptionMenuItemProps> = ({ btnClassName, iconClassName }) => {
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { t } = useTranslation()
     return (
         <Link className={btnClassName} to='/setting/change-password'>

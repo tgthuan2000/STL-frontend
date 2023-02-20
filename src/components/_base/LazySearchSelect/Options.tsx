@@ -18,7 +18,7 @@ const Options: React.FC<LazySearchSelectOptionsProps> = ({
 }) => {
     const { t } = useTranslation()
     return (
-        <Combobox.Options className='absolute z-10 mt-1 w-full bg-white dark:bg-slate-600 shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
+        <Combobox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-slate-600 sm:text-sm'>
             {loading ? (
                 <Combobox.Option value={null} disabled>
                     <p className='p-2 text-center text-xs text-gray-500 dark:text-slate-200'>{t(LANGUAGE.LOADING)}</p>
@@ -37,9 +37,9 @@ const Options: React.FC<LazySearchSelectOptionsProps> = ({
                                     className={({ active }) =>
                                         clsx(
                                             active
-                                                ? 'text-white bg-indigo-600 dark:bg-cyan-500'
+                                                ? 'bg-indigo-600 text-white dark:bg-cyan-500'
                                                 : 'text-gray-900 dark:text-slate-200',
-                                            'cursor-default select-none relative py-2 pl-8 pr-4'
+                                            'relative cursor-default select-none py-2 pl-8 pr-4'
                                         )
                                     }
                                     value={item}

@@ -42,7 +42,7 @@ const Method: React.FC<MakeBudgetProps & { optionData: IMethodSpending[] | undef
             <Button
                 type='button'
                 color='outline-cyan'
-                className='items-center gap-1 truncate mb-2'
+                className='mb-2 items-center gap-1 truncate'
                 onClick={handleAddItem}
                 disabled={loading}
                 ref={loadingRef}
@@ -62,7 +62,7 @@ const Method: React.FC<MakeBudgetProps & { optionData: IMethodSpending[] | undef
                         <div className='flex justify-start'>
                             <button
                                 type='button'
-                                className='text-radical-red-500 disabled:text-gray-300 cursor-pointer hover:opacity-50 disabled:hover:opacity-100 disabled:cursor-not-allowed transition-all'
+                                className='cursor-pointer text-radical-red-500 transition-all hover:opacity-50 disabled:cursor-not-allowed disabled:text-gray-300 disabled:hover:opacity-100'
                                 onClick={() => {
                                     handleDeleteItem(form.getValues(`MethodSpending.${index}._id`), index)
                                 }}

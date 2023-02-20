@@ -19,7 +19,7 @@ const Recent: React.FC<RecentProps> = ({ data, loading }) => {
         return (
             <ul
                 role='list'
-                className='divide-y divide-gray-300 dark:divide-slate-700 text-gray-900 dark:text-slate-200'
+                className='divide-y divide-gray-300 text-gray-900 dark:divide-slate-700 dark:text-slate-200'
             >
                 {Array.isArray(data) &&
                     data?.map((item) => (
@@ -27,21 +27,21 @@ const Recent: React.FC<RecentProps> = ({ data, loading }) => {
                             <Link
                                 to={getLinkSpending(item.kindSpending.key, item._id)}
                                 state={{ status: item.kindSpending._id }}
-                                className='px-3 py-2 flex flex-col hover:bg-gray-100 dark:hover:bg-slate-600 cursor-pointer'
+                                className='flex cursor-pointer flex-col px-3 py-2 hover:bg-gray-100 dark:hover:bg-slate-600'
                             >
                                 <div className='flex'>
-                                    <div className='xl:w-2/3 w-1/2 overflow-hidden'>
+                                    <div className='w-1/2 overflow-hidden xl:w-2/3'>
                                         <span>
                                             {item.date
                                                 ? moment(item.date).format(DATE_FORMAT.D_DATE_TIME)
                                                 : t(LANGUAGE.UNLIMITED_TIME)}
                                         </span>
-                                        <h3 className='font-medium truncate'>
+                                        <h3 className='truncate font-medium'>
                                             {item.methodSpending?.name || t(LANGUAGE.EMPTY_METHOD)}
                                         </h3>
                                     </div>
-                                    <div className='xl:w-1/3 w-1/2 overflow-hidden text-right'>
-                                        <span className='flex justify-end items-center gap-x-2'>
+                                    <div className='w-1/2 overflow-hidden text-right xl:w-1/3'>
+                                        <span className='flex items-center justify-end gap-x-2'>
                                             {[KIND_SPENDING.GET_LOAN].includes(item.kindSpending.key) && (
                                                 <span
                                                     className={clsx(
@@ -50,7 +50,7 @@ const Recent: React.FC<RecentProps> = ({ data, loading }) => {
                                                     )}
                                                 />
                                             )}
-                                            <h4 className={clsx('font-medium truncate')}>
+                                            <h4 className={clsx('truncate font-medium')}>
                                                 {item.categorySpending?.name ?? item.kindSpending.name}
                                             </h4>
                                         </span>
@@ -81,7 +81,7 @@ const Recent: React.FC<RecentProps> = ({ data, loading }) => {
                                 {item.description && (
                                     <span title={item.description}>
                                         {item.description.split('\n').map((line, index) => (
-                                            <span key={index} className='block truncate w-full'>
+                                            <span key={index} className='block w-full truncate'>
                                                 {line}
                                             </span>
                                         ))}
@@ -99,18 +99,18 @@ const Recent: React.FC<RecentProps> = ({ data, loading }) => {
 export default Recent
 
 const RecentSkeleton = () => (
-    <ul role='list' className='divide-y divide-gray-300 dark:divide-slate-700 select-none pointer-events-none'>
+    <ul role='list' className='pointer-events-none select-none divide-y divide-gray-300 dark:divide-slate-700'>
         {Array.from(Array(5)).map((value, index) => (
             <li key={index}>
-                <div className='px-4 py-3 flex'>
+                <div className='flex px-4 py-3'>
                     <div className='w-2/3 space-y-1'>
-                        <div className='animate-pulse bg-gray-200 dark:bg-slate-700 rounded-full h-4 w-2/3' />
-                        <div className='animate-pulse bg-gray-200 dark:bg-slate-700 rounded-full h-4 w-1/2' />
-                        <div className='animate-pulse bg-gray-200 dark:bg-slate-700 rounded-full h-4 w-1/3' />
+                        <div className='h-4 w-2/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
+                        <div className='h-4 w-1/2 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
+                        <div className='h-4 w-1/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
                     </div>
-                    <div className='w-1/3 space-y-1 flex flex-col items-end'>
-                        <div className='animate-pulse bg-gray-200 dark:bg-slate-700 rounded-full h-4 w-1/2' />
-                        <div className='animate-pulse bg-gray-200 dark:bg-slate-700 rounded-full h-4 w-full' />
+                    <div className='flex w-1/3 flex-col items-end space-y-1'>
+                        <div className='h-4 w-1/2 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
+                        <div className='h-4 w-full animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
                     </div>
                 </div>
             </li>

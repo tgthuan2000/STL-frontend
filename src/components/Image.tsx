@@ -20,7 +20,7 @@ const Image: React.FC<ImageProps> = ({ size = 'medium', src, alt, errorComp = <U
     ) : (
         <div
             className={clsx(
-                'rounded-full overflow-hidden flex-shrink-0 bg-gray-400',
+                'flex-shrink-0 overflow-hidden rounded-full bg-gray-400',
                 getSizeAvatarUser[size],
                 className
             )}

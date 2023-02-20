@@ -5,7 +5,7 @@ import LoadingButton from '../../Loading/LoadingButton'
 
 const Label: React.FC<AutocompleteLabelProps> = ({ label, onReload, loading }) => {
     return (
-        <div className='flex justify-between items-center'>
+        <div className='flex items-center justify-between'>
             <Combobox.Label className='inline-block text-sm font-medium text-gray-700 dark:text-slate-100'>
                 {label}
             </Combobox.Label>

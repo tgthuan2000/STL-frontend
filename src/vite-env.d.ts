@@ -10,6 +10,7 @@ interface ImportMetaEnv {
     readonly VITE_EMAIL_SERVICE: string
     readonly VITE_APP_URL: string
     readonly VITE_SERVER_PUBLIC_KEY: string
+    readonly VITE_SERVER: string
 }
 interface ImportMeta {
     readonly env: ImportMetaEnv

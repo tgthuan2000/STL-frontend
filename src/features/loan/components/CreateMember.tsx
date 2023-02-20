@@ -9,7 +9,7 @@ import { SlideOverHOC, useCache, useCheck, useLoading, useSlideOver } from '~/co
 import { useServiceQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 
 const defaultValues = {
     userName: '',
@@ -20,7 +20,7 @@ const CreateMember = () => {
     const { t } = useTranslation()
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { loading, setSubmitLoading } = useLoading()
     const { needCheckWhenLeave } = useCheck()
     const { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } = useServiceQuery()

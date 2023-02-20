@@ -15,14 +15,14 @@ import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_USER_LOAN } from '~/schema/query/loan'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 import StatusLoan from './common/StatusLoan'
 
 const MakeGetLoan = () => {
     const { t } = useTranslation()
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { getKindSpendingId, kindSpending } = useConfig()
     const { loading, setSubmitLoading } = useLoading()
     const { needCheckWhenLeave } = useCheck()

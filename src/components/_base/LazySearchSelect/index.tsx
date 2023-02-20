@@ -88,7 +88,7 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
                         disabled={disabled}
                     >
                         <Label label={label} />
-                        <div className='mt-1 relative'>
+                        <div className='relative mt-1'>
                             <Input
                                 autoFocus={autoFocus}
                                 disabled={disabled}

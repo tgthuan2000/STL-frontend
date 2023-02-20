@@ -15,14 +15,14 @@ import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING } from '~/schema/query/spending'
 import { getCategorySpending } from '~/services/query'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 
 const AddCategory = () => {
     const { t } = useTranslation()
     const { setIsOpen } = useSlideOver()
     const navigate = useNavigate()
     const { kindSpending, getKindSpendingId } = useConfig()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { loading, setSubmitLoading } = useLoading()
     const { deleteCache } = useCache()
     const { needCheckWhenLeave } = useCheck()

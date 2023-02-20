@@ -4,7 +4,7 @@ import { ChatInfoItemProps } from '~/@types/feedback'
 import { Image } from '~/components'
 import LANGUAGE from '~/i18n/language/key'
 import { getSpacingTime } from '~/services'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 import InputForm from './InputForm'
 
 const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
@@ -17,7 +17,7 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
     children,
 }) => {
     const { t } = useTranslation()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const [showInput, setShowInput] = useState({
         show: false,
         isEdit: false,
@@ -43,28 +43,28 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
 
     return (
         <div className='relative'>
-            <div className='inline-flex gap-2 items-start pt-10'>
+            <div className='inline-flex items-start gap-2 pt-10'>
                 <div className='flex-shrink-0'>
-                    <Image className='sm:!h-10 sm:!w-10 !h-8 !w-8' src={data.user.image} />
+                    <Image className='!h-8 !w-8 sm:!h-10 sm:!w-10' src={data.user.image} />
                 </div>
-                <div className='flex-1 relative'>
-                    <div className='relative inline-flex flex-col sm:max-w-[60vw] max-w-[70vw] dark:bg-slate-700 bg-gray-100 p-2 rounded'>
-                        <h3 className='font-normal select-none'>{data.user.userName}</h3>
+                <div className='relative flex-1'>
+                    <div className='relative inline-flex max-w-[70vw] flex-col rounded bg-gray-100 p-2 dark:bg-slate-700 sm:max-w-[60vw]'>
+                        <h3 className='select-none font-normal'>{data.user.userName}</h3>
                         <p className='whitespace-pre-line'>{data.message.trim()}</p>
                         {data.edited && (
-                            <span className='text-gray-500 dark:text-slate-500 italic text-xs text-right mt-1'>
+                            <span className='mt-1 text-right text-xs italic text-gray-500 dark:text-slate-500'>
                                 {t(LANGUAGE.EDITED)}
                             </span>
                         )}
                     </div>
                     <div className='mt-2 flex items-center gap-2'>
-                        <span className='text-xs whitespace-nowrap text-gray-500 dark:text-slate-400 select-none'>
+                        <span className='select-none whitespace-nowrap text-xs text-gray-500 dark:text-slate-400'>
                             {getSpacingTime(data._createdAt)}
                         </span>
                         <button
                             type='button'
                             disabled={showInput.show && showInput.isEdit}
-                            className='text-orange-500 dark:text-orange-400 transition-all dark:disabled:text-slate-600 disabled:text-slate-600 disabled:cursor-not-allowed hover:opacity-70 cursor-pointer font-normal whitespace-nowrap'
+                            className='cursor-pointer whitespace-nowrap font-normal text-orange-500 transition-all hover:opacity-70 disabled:cursor-not-allowed disabled:text-slate-600 dark:text-orange-400 dark:disabled:text-slate-600'
                             onClick={() =>
                                 setShowInput({
                                     show: true,
@@ -80,7 +80,7 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
                                 <button
                                     type='button'
                                     disabled={showInput.show && !showInput.isEdit}
-                                    className='text-cyan-600 dark:text-cyan-500 transition-all dark:disabled:text-slate-600 disabled:text-slate-600 disabled:cursor-not-allowed hover:opacity-70 cursor-pointer font-normal whitespace-nowrap'
+                                    className='cursor-pointer whitespace-nowrap font-normal text-cyan-600 transition-all hover:opacity-70 disabled:cursor-not-allowed disabled:text-slate-600 dark:text-cyan-500 dark:disabled:text-slate-600'
                                     onClick={() =>
                                         setShowInput({
                                             show: true,
@@ -96,7 +96,7 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
                                 {Date.now() - new Date(data._createdAt).getTime() < 5 * 60 * 1000 && (
                                     <button
                                         type='button'
-                                        className='text-red-500 hover:opacity-70 cursor-pointer font-normal whitespace-nowrap'
+                                        className='cursor-pointer whitespace-nowrap font-normal text-red-500 hover:opacity-70'
                                         onClick={() => {
                                             if (!window.confirm(t(LANGUAGE.CONFIRM_DELETE_MESSAGE) as string)) return
                                             data._id && onDelete(data._id)
@@ -118,7 +118,7 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
                             <InputForm onSubmit={handleSubmitForm} defaultMessage={showInput.message} />
                             <button
                                 type='button'
-                                className='font-normal text-radical-red-500 hover:opacity-70 whitespace-nowrap'
+                                className='whitespace-nowrap font-normal text-radical-red-500 hover:opacity-70'
                                 onClick={() =>
                                     setShowInput({
                                         show: false,

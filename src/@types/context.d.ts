@@ -10,6 +10,7 @@ type LoadingItems = {
     config: boolean
     submit: boolean
 }
+
 export interface ILoadingContext {
     loading: LoadingItems
     setConfigLoading: (config: boolean) => void
@@ -30,7 +31,6 @@ export interface IConfigContext {
     getKindSpendingId: GetKindSpendingId
     getKindSpendingIds: GetKindSpendingIds
     hasPermissions: (keys: Array<PERMISSION>) => boolean
-    ok: boolean
 }
 
 export interface ISlideOverContext {

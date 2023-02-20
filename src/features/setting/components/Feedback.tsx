@@ -16,7 +16,7 @@ const Feedback: React.FC<SettingComponentProps> = (props) => {
                 navigate('/feedback')
             }}
         >
-            <ChatBubbleLeftRightIcon className='w-6 h-6 flex-shrink-0' />
+            <ChatBubbleLeftRightIcon className='h-6 w-6 flex-shrink-0' />
             <p>{t(LANGUAGE.FEEDBACK)}</p>
         </button>
     )

@@ -6,10 +6,10 @@ import { DropdownItemsProps } from '~/@types/components'
 
 const Items: React.FC<DropdownItemsProps> = ({ data, idKey, valueKey, selected, handleChange, field }) => {
     return (
-        <Menu.Items className='absolute right-0 mt-2 select-none whitespace-nowrap origin-top-right divide-y divide-gray-100 dark:divide-slate-600 rounded-md bg-white dark:bg-slate-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
+        <Menu.Items className='absolute right-0 mt-2 origin-top-right select-none divide-y divide-gray-100 whitespace-nowrap rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:divide-slate-600 dark:bg-slate-700'>
             {data.map((options, index) => {
                 return (
-                    <div className='px-1 py-1 space-y-0.5' key={index}>
+                    <div className='space-y-0.5 px-1 py-1' key={index}>
                         {options?.map((option) => {
                             const Icon = option.icon
                             return (
@@ -17,7 +17,7 @@ const Items: React.FC<DropdownItemsProps> = ({ data, idKey, valueKey, selected, 
                                     <button
                                         className={clsx(
                                             option[idKey] === get(selected, idKey, null)
-                                                ? 'text-indigo-500 dark:text-sky-500 font-normal'
+                                                ? 'font-normal text-indigo-500 dark:text-sky-500'
                                                 : 'text-gray-900 dark:text-slate-200',
                                             'group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-indigo-500 hover:text-white dark:hover:bg-sky-500 dark:hover:text-white'
                                         )}

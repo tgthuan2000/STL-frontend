@@ -11,23 +11,23 @@ const Progress: React.FC<ProgressProps> = ({ step, options, className, onStepCli
     }
     return (
         <div ref={parent} className={clsx('mb-10', className)}>
-            <div className='flex items-start select-none'>
+            <div className='flex select-none items-start'>
                 {options.map((option, index, data) => {
                     const isActive = option.step === step
                     const isFinished = option.step < step
                     return (
                         <Fragment key={option.step}>
                             <div
-                                className={clsx('relative flex-1 flex flex-col gap-2 items-center transition-all', {
-                                    'hover:opacity-80 cursor-pointer': !isActive,
+                                className={clsx('relative flex flex-1 flex-col items-center gap-2 transition-all', {
+                                    'cursor-pointer hover:opacity-80': !isActive,
                                 })}
                                 onClick={() => handleClickStepItem(option)}
                             >
                                 <span
                                     className={clsx(
-                                        'inline-flex h-6 w-6 sm:h-8 sm:w-8 rounded-full items-center justify-center transition-all',
+                                        'inline-flex h-6 w-6 items-center justify-center rounded-full transition-all sm:h-8 sm:w-8',
                                         {
-                                            'bg-slate-200 text-gray-700 dark:text-slate-200 dark:bg-slate-700':
+                                            'bg-slate-200 text-gray-700 dark:bg-slate-700 dark:text-slate-200':
                                                 !isActive && !isFinished,
                                         },
                                         { 'bg-slate-700 text-white': isActive },
@@ -40,10 +40,10 @@ const Progress: React.FC<ProgressProps> = ({ step, options, className, onStepCli
                                         <p className={clsx(isActive ? 'font-medium' : 'font-normal')}>{index + 1}</p>
                                     )}
                                 </span>
-                                <div className='absolute top-full mt-2 left-1 right-1'>
+                                <div className='absolute top-full left-1 right-1 mt-2'>
                                     <p
                                         className={clsx(
-                                            'block text-center transition-all w-full text-xs sm:text-sm text-gray-700 dark:text-slate-200 line-clamp-2',
+                                            'block w-full text-center text-xs text-gray-700 transition-all line-clamp-2 dark:text-slate-200 sm:text-sm',
                                             isActive ? 'font-bold' : 'font-normal'
                                         )}
                                     >
@@ -53,7 +53,7 @@ const Progress: React.FC<ProgressProps> = ({ step, options, className, onStepCli
                                 {index === data.length - 1 ? null : (
                                     <div
                                         className={clsx(
-                                            'absolute top-1/2 h-0.5 left-[calc(50%+20px)] right-0 rounded-tl-full rounded-bl-full transition-all',
+                                            'absolute top-1/2 left-[calc(50%+20px)] right-0 h-0.5 rounded-tl-full rounded-bl-full transition-all',
                                             isFinished ? 'bg-green-400' : 'bg-slate-200 dark:bg-slate-700'
                                         )}
                                     />
@@ -61,7 +61,7 @@ const Progress: React.FC<ProgressProps> = ({ step, options, className, onStepCli
                                 {index === 0 ? null : (
                                     <div
                                         className={clsx(
-                                            'absolute top-1/2 h-0.5 right-[calc(50%+20px)] left-0 rounded-tr-full rounded-br-full transition-all',
+                                            'absolute top-1/2 right-[calc(50%+20px)] left-0 h-0.5 rounded-tr-full rounded-br-full transition-all',
                                             isActive || isFinished ? 'bg-green-400' : 'bg-slate-200 dark:bg-slate-700'
                                         )}
                                     />

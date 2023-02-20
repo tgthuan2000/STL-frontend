@@ -8,24 +8,24 @@ const SkeletonTableNotify: React.FC<SkeletonProps> = ({ elNumber }) => {
                 <Fragment key={index}>
                     <tr className='animate-pulse'>
                         <td className='py-4 px-2' colSpan={2}>
-                            <span className='flex flex-col gap-2 w-full'>
-                                <span className='block bg-gray-200 h-4 w-1/2 rounded-full' />
-                                <span className='block bg-gray-200 h-4 w-3/4 rounded-full' />
+                            <span className='flex w-full flex-col gap-2'>
+                                <span className='block h-4 w-1/2 rounded-full bg-gray-200' />
+                                <span className='block h-4 w-3/4 rounded-full bg-gray-200' />
                             </span>
                         </td>
                         <td className='py-4 px-2'>
-                            <span className='flex flex-col gap-2 w-full'>
-                                <span className='block mx-auto bg-gray-200 h-4 w-1/2 sm:w-1/3 rounded-full' />
+                            <span className='flex w-full flex-col gap-2'>
+                                <span className='mx-auto block h-4 w-1/2 rounded-full bg-gray-200 sm:w-1/3' />
                             </span>
                         </td>
                         <td className='py-4 px-2'>
-                            <span className='flex flex-col gap-2 w-full'>
-                                <span className='block mx-auto bg-gray-200 h-4 w-1/2 rounded-full' />
+                            <span className='flex w-full flex-col gap-2'>
+                                <span className='mx-auto block h-4 w-1/2 rounded-full bg-gray-200' />
                             </span>
                         </td>
                         <td className='py-4 px-2'>
-                            <span className='flex flex-col gap-2 w-full'>
-                                <span className='block mx-auto bg-gray-200 h-4 w-1/2 rounded-full' />
+                            <span className='flex w-full flex-col gap-2'>
+                                <span className='mx-auto block h-4 w-1/2 rounded-full bg-gray-200' />
                             </span>
                         </td>
                     </tr>

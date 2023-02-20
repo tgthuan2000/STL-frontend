@@ -32,14 +32,14 @@ const ListViewFilter: React.FC<ListViewFilterProps> = ({
                     <TimeFilter onSubmit={onSubmitTimeFilter} />
                 </div>
             )}
-            <div className='flex justify-between mt-2 mx-2'>
+            <div className='mx-2 mt-2 flex justify-between'>
                 {viewTotal && (
-                    <div className='flex gap-3 text-gray-900 dark:text-slate-200 text-xs font-normal'>
+                    <div className='flex gap-3 text-xs font-normal text-gray-900 dark:text-slate-200'>
                         {totalLoading ? (
                             Array.from(Array(3)).map((v, i) => (
-                                <span key={i} className='animate-pulse flex flex-col gap-1'>
-                                    <span className='inline-block h-3.5 w-10 bg-gray-300 dark:bg-slate-700 rounded-full' />{' '}
-                                    <span className='inline-block h-3.5 w-14 bg-gray-300 dark:bg-slate-700 rounded-full' />
+                                <span key={i} className='flex animate-pulse flex-col gap-1'>
+                                    <span className='inline-block h-3.5 w-10 rounded-full bg-gray-300 dark:bg-slate-700' />{' '}
+                                    <span className='inline-block h-3.5 w-14 rounded-full bg-gray-300 dark:bg-slate-700' />
                                 </span>
                             ))
                         ) : (
@@ -47,19 +47,19 @@ const ListViewFilter: React.FC<ListViewFilterProps> = ({
                                 {!isNil(totalData?.receive) && (
                                     <span>
                                         {receiveTitle}{' '}
-                                        <p className='text-green-500 text-sm'>{numeral(totalData?.receive).format()}</p>
+                                        <p className='text-sm text-green-500'>{numeral(totalData?.receive).format()}</p>
                                     </span>
                                 )}
                                 {!isNil(totalData?.cost) && (
                                     <span>
                                         {costTitle}{' '}
-                                        <p className='text-red-500 text-sm'>{numeral(totalData?.cost).format()}</p>
+                                        <p className='text-sm text-red-500'>{numeral(totalData?.cost).format()}</p>
                                     </span>
                                 )}
                                 {!isNil(totalData?.count) && (
                                     <span>
                                         {countTitle}{' '}
-                                        <p className='text-indigo-500 text-sm'>{numeral(totalData?.count).format()}</p>
+                                        <p className='text-sm text-indigo-500'>{numeral(totalData?.count).format()}</p>
                                     </span>
                                 )}
                             </>

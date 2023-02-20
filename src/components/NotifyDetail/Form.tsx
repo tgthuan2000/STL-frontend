@@ -9,22 +9,22 @@ const NotifyDetailForm: React.FC<NotifyDetailFormProps> = ({ data }) => {
     const { notify } = data
     const createdAt = notify._createdAt || notify.notify._createdAt
     return (
-        <div className='bg-white dark:bg-slate-800 sm:shadow-xl sm:p-3 sm:rounded-lg p-2 -mx-4'>
+        <div className='-mx-4 bg-white p-2 dark:bg-slate-800 sm:rounded-lg sm:p-3 sm:shadow-xl'>
             <div className='flex flex-col gap-2'>
-                <div className='p-2 flex justify-between items-start'>
+                <div className='flex items-start justify-between p-2'>
                     <div className='flex flex-col'>
-                        <h1 className='text-xl text-gray-900 dark:text-slate-200 sm:text-2xl font-normal'>
+                        <h1 className='text-xl font-normal text-gray-900 dark:text-slate-200 sm:text-2xl'>
                             {notify.notify.title}
                         </h1>
                         {createdAt && (
-                            <span className='text-gray-500 font-medium text-xs'>
+                            <span className='text-xs font-medium text-gray-500'>
                                 {moment(createdAt).format(DATE_FORMAT.TIME_DATE)}
                             </span>
                         )}
                     </div>
                     <div>
                         <span
-                            className='flex items-center gap-0.5 flex-shrink-0 text-cyan-400 lg:text-sm text-xs'
+                            className='flex flex-shrink-0 items-center gap-0.5 text-xs text-cyan-400 lg:text-sm'
                             title='Số người đã xem'
                         >
                             <span>{notify.notify.viewers ?? 0}</span>

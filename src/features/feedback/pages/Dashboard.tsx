@@ -10,12 +10,12 @@ import { useQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_FEED_BACK_BY_PARENT_ID, GET_PARENT_FEED_BACK, SUBSCRIPTION_FEED_BACK } from '~/schema/query/feedback'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 import { InputForm, Messages } from '../components'
 
 const Dashboard = () => {
     const { t } = useTranslation()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { loading, setSubmitLoading } = useLoading()
     const [{ query, params, tags, refactor }, setQuery] = useState<{
         query: QueryTypeUseQuery<FeedbackQueryData>
@@ -227,10 +227,10 @@ const Dashboard = () => {
 
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.FEEDBACK)}>
-            <div className='mt-5 bg-gray-200 dark:bg-slate-800 sm:rounded-lg -mx-4 sm:-mx-0 h-[80vh] flex flex-col'>
-                <div className='flex-1 sm:px-5 pb-10 px-3 overflow-auto'>
+            <div className='-mx-4 mt-5 flex h-[80vh] flex-col bg-gray-200 dark:bg-slate-800 sm:-mx-0 sm:rounded-lg'>
+                <div className='flex-1 overflow-auto px-3 pb-10 sm:px-5'>
                     {loading.submit && (
-                        <p className='text-gray-700 dark:text-slate-300 text-center mt-5'>{t(LANGUAGE.LOADING)}</p>
+                        <p className='mt-5 text-center text-gray-700 dark:text-slate-300'>{t(LANGUAGE.LOADING)}</p>
                     )}
                     <Messages
                         data={feedback.data?.data}
@@ -240,7 +240,7 @@ const Dashboard = () => {
                         onDelete={handleDeleteMessage}
                     />
                 </div>
-                <div className='flex-shrink-0 border-t dark:border-slate-700 sm:p-5 p-3'>
+                <div className='flex-shrink-0 border-t p-3 dark:border-slate-700 sm:p-5'>
                     <InputForm onSubmit={handleSubmitNewMessage} />
                 </div>
             </div>

@@ -22,7 +22,7 @@ const CheckName: React.FC<CheckNameProps> = ({ show, list, watchValue }) => {
                     {!isEmpty(list) ? (
                         <>
                             <h4></h4>
-                            <span className='text-yellow-500 flex items-center gap-1'>
+                            <span className='flex items-center gap-1 text-yellow-500'>
                                 <ExclamationCircleIcon className='h-6 w-6' />
                                 <span>{t(LANGUAGE.SOME_SIMILAR_NAME)}</span>
                             </span>
@@ -45,7 +45,7 @@ const CheckName: React.FC<CheckNameProps> = ({ show, list, watchValue }) => {
                             </ul>
                         </>
                     ) : (
-                        <span className='text-green-500 flex items-center gap-1'>
+                        <span className='flex items-center gap-1 text-green-500'>
                             <CheckBadgeIcon className='h-6 w-6' />
                             {t(LANGUAGE.NOT_SIMILAR_NAME)}
                         </span>

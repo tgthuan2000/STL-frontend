@@ -2,19 +2,19 @@ import moment from 'moment'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DashboardQueryData } from '~/@types/loan'
-import { Box2, ButtonMenuLoan, Divider, Transaction } from '~/components'
+import { Box2, ButtonMenuDesktop, Divider, Transaction } from '~/components'
 import { TAGS } from '~/constant'
 import { menuLoanMobile } from '~/constant/components'
 import { useCheck, useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
-import useAuth from '~/store/auth'
+import { useProfile } from '~/store/auth'
 
 const Dashboard = () => {
     const { t } = useTranslation()
     const { width } = useWindowSize()
-    const { userProfile } = useAuth()
+    const { userProfile } = useProfile()
     const { getKindSpendingId } = useConfig()
 
     const [{ recent, paydue, statistic }, fetchData, deleteCache, reload] = useQuery<DashboardQueryData>(
@@ -53,12 +53,12 @@ const Dashboard = () => {
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.LOAN_MANAGEMENT)}>
             {width < 1280 && (
-                <div className='xl:hidden block'>
-                    <ButtonMenuLoan data={menuLoanMobile} />
+                <div className='block xl:hidden'>
+                    <ButtonMenuDesktop small data={menuLoanMobile} />
                 </div>
             )}
 
-            <Divider className='xl:hidden py-6' dashed />
+            <Divider className='py-6 xl:hidden' dashed />
 
             {/* Show user */}
             <div className='space-y-6'>

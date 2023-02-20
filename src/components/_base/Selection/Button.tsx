@@ -8,10 +8,10 @@ const Button: React.FC<SelectionButtonProps> = ({ field, valueKey, placeholder, 
     return (
         <Listbox.Button
             className={clsx(
-                'relative w-full rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
+                'relative w-full cursor-default rounded-md py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm',
                 disabled
-                    ? 'bg-gray-50 text-gray-500 select-none dark:bg-slate-600 dark:border-slate-700 dark:text-slate-300'
-                    : 'bg-white text-gray-900 dark:bg-slate-700 dark:border-slate-800 dark:text-slate-200'
+                    ? 'select-none bg-gray-50 text-gray-500 dark:border-slate-700 dark:bg-slate-600 dark:text-slate-300'
+                    : 'bg-white text-gray-900 dark:border-slate-800 dark:bg-slate-700 dark:text-slate-200'
             )}
         >
             <span
@@ -21,7 +21,7 @@ const Button: React.FC<SelectionButtonProps> = ({ field, valueKey, placeholder, 
             >
                 {field.value?.[valueKey] ?? placeholder}
             </span>
-            <span className='absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>
+            <span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>
                 <ChevronUpDownIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
             </span>
         </Listbox.Button>

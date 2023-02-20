@@ -1,17 +1,17 @@
 const BudgetSkeleton = () => (
-    <ul role='list' className='select-none pointer-events-none divide-y divide-gray-300 dark:divide-slate-700'>
+    <ul role='list' className='pointer-events-none select-none divide-y divide-gray-300 dark:divide-slate-700'>
         {Array.from(Array(5)).map((value, index) => (
             <li key={index}>
-                <div className='flex justify-between px-2 mt-2'>
-                    <span className='animate-pulse bg-gray-200 dark:bg-slate-700 h-4 w-1/3 rounded-full' />
-                    <span className='animate-pulse bg-gray-200 dark:bg-slate-700 h-4 w-1/4 rounded-full' />
+                <div className='mt-2 flex justify-between px-2'>
+                    <span className='h-4 w-1/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
+                    <span className='h-4 w-1/4 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
                 </div>
                 <div className='relative mx-2 my-2 h-4'>
-                    <span className='animate-pulse bg-gray-200 dark:bg-slate-700 absolute w-full h-full rounded-full' />
+                    <span className='absolute h-full w-full animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
                 </div>
-                <div className='flex justify-between px-2 mb-4'>
-                    <span className='animate-pulse bg-gray-200 dark:bg-slate-700 h-4 w-1/4 rounded-full' />
-                    <span className='animate-pulse bg-gray-200 dark:bg-slate-700 h-4 w-1/3 rounded-full' />
+                <div className='mb-4 flex justify-between px-2'>
+                    <span className='h-4 w-1/4 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
+                    <span className='h-4 w-1/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
                 </div>
             </li>
         ))}

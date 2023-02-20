@@ -36,7 +36,7 @@ const ReloadPrompt = () => {
     return (
         <>
             {(offlineReady || needRefresh) && (
-                <div className='fixed z-50 sm:bottom-10 sm:top-auto sm:right-0 sm:left-auto top-32 left-0 m-4 p-3 border border-[#8885] rounded text-left shadow-md bg-white dark:bg-slate-800'>
+                <div className='fixed top-32 left-0 z-50 m-4 rounded border border-[#8885] bg-white p-3 text-left shadow-md dark:bg-slate-800 sm:bottom-10 sm:top-auto sm:right-0 sm:left-auto'>
                     <div className='mb-2 text-gray-900 dark:text-slate-200'>
                         {offlineReady ? (
                             <span>{t(LANGUAGE.APP_READY_WORK_OFFLINE)}</span>
@@ -44,7 +44,7 @@ const ReloadPrompt = () => {
                             <span>{t(LANGUAGE.RELOAD_TEXT)}</span>
                         )}
                     </div>
-                    <div className='flex justify-between items-center'>
+                    <div className='flex items-center justify-between'>
                         <div className='space-x-2'>
                             {needRefresh && (
                                 <Button type='button' color='cyan' onClick={() => updateServiceWorker(true)}>

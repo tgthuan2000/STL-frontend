@@ -153,7 +153,17 @@ const translation: {
     [LANGUAGE.NOTIFY_ERROR]: 'Something went wrong',
     [LANGUAGE.NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD]: 'Account can not login by email and password',
     [LANGUAGE.NOTIFY_INVALID_PASSWORD]: 'Invalid password',
+    [LANGUAGE.NOTIFY_INVALID_OLD_PASSWORD]: 'Invalid old password',
     [LANGUAGE.NOTIFY_NO_CHANGE]: 'No change',
+    [LANGUAGE.NOTIFY_REQUIRED_EMAIL]: 'Required email',
+    [LANGUAGE.NOTIFY_REQUIRED_ID]: 'Required id',
+    [LANGUAGE.NOTIFY_REQUIRED_PASSWORD]: 'Required password',
+    [LANGUAGE.NOTIFY_FORBIDDEN]: 'Forbidden',
+    [LANGUAGE.NOTIFY_REQUIRED_REFRESH_TOKEN]: 'Required refresh token',
+    [LANGUAGE.NOTIFY_EXPIRED_TOKEN]: 'Expired token',
+    [LANGUAGE.NOTIFY_REQUIRED_CREDENTIAL]: 'Required credential',
+    [LANGUAGE.NOTIFY_REQUIRED_DATA]: 'Required data',
+    [LANGUAGE.NOTIFY_REQUIRED_URL]: 'Required url',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Do you want to notify?',

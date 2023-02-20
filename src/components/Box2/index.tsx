@@ -7,7 +7,7 @@ const Box2 = ({ data, label, onReload, loading = false, children }: Box2Props) =
     return (
         <div>
             <Title label={label} onReload={onReload} loading={loading} />
-            <AnimateWrap className='flex lg:flex-wrap gap-4 w-full overflow-x-auto overflow-y-hidden pb-6'>
+            <AnimateWrap className='flex w-full gap-4 overflow-x-auto overflow-y-hidden pb-6 lg:flex-wrap'>
                 {children?.({ data, loading })}
             </AnimateWrap>
         </div>

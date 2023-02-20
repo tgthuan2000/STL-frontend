@@ -47,7 +47,11 @@ export interface AutocompleteLabelProps {
     onReload?: () => Promise<void>
     loading?: boolean
 }
-
+export interface ButtonMenuProps {
+    className?: string
+    data: IMenuBtn[]
+    small?: boolean
+}
 export interface AutocompleteButtonProps {
     disabledClear?: boolean
     disabled?: boolean
@@ -287,6 +291,11 @@ export interface ContentUserLoanBox2Props {
     data?: IUserLoan[]
     loading?: boolean
 }
+
+export interface ButtonMenuProviderProps {
+    data: IMenuBtn[]
+    children: (data: IMenuBtn) => React.ReactNode
+}
 export interface MenuButtonProps {
     data: IMenuBtn
 }
@@ -299,7 +308,7 @@ export interface IMenuBtn {
     children?: () => React.ReactNode
     query?: SlideParams
     divider?: boolean
-    action?: (cb: () => void) => void
+    action?: (...cb: Array<() => void>) => void
 }
 export interface AnimateWrapProps {
     children: React.ReactNode

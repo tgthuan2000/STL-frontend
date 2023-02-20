@@ -42,15 +42,15 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
 
     return (
         <div>
-            <div className='flex justify-between items-center mb-4'>
-                <div className='flex items-center text-gray-900 dark:text-slate-200 space-x-2 select-none'>
+            <div className='mb-4 flex items-center justify-between'>
+                <div className='flex select-none items-center space-x-2 text-gray-900 dark:text-slate-200'>
                     <ArrowSmallLeftIcon
-                        className='h-7 w-7 hover:opacity-50 cursor-pointer'
+                        className='h-7 w-7 cursor-pointer hover:opacity-50'
                         onClick={() => {
                             navigate(-1)
                         }}
                     />
-                    <h4 className='xl:text-2xl text-xl font-semibold'>Cập nhật giao dịch</h4>
+                    <h4 className='text-xl font-semibold xl:text-2xl'>Cập nhật giao dịch</h4>
                 </div>
 
                 {!transaction.paid && (
@@ -63,8 +63,8 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
                     </IconButton>
                 )}
             </div>
-            <div className='bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-200 rounded-xl shadow-lg py-2 sm:py-6 lg:py-8'>
-                <div className='max-w-lg w-full mx-auto'>
+            <div className='rounded-xl bg-white py-2 text-gray-900 shadow-lg dark:bg-slate-800 dark:text-slate-200 sm:py-6 lg:py-8'>
+                <div className='mx-auto w-full max-w-lg'>
                     <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
                         <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
                             <div className='flex flex-1 flex-col justify-between'>
@@ -88,7 +88,7 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
                                                             <span className={clsx(...getColorPrize(calc))}>
                                                                 {numeral(calc).format()}
                                                             </span>
-                                                            <span className='inline-block w-px h-full border border-gray-400' />
+                                                            <span className='inline-block h-full w-px border border-gray-400' />
                                                             <span className={clsx(...getColorPrize(surplus))}>
                                                                 {numeral(surplus).format()}
                                                             </span>

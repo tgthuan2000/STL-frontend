@@ -7,33 +7,36 @@ import { Navigate, useLocation } from 'react-router-dom'
 import { Button } from '~/components'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
-import useAuth from '~/store/auth'
+import { useAuth, useProfile } from '~/store/auth'
 import { fetchGoogleResponse, loginByEmailPassword } from '../services'
 
 const LoginByEmailPasswordForm = React.lazy(() => import('../components/LoginByEmailPasswordForm'))
 
 const Auth = () => {
     const { t } = useTranslation()
-    const { addUserProfile, userProfile } = useAuth()
+    const { addUserProfile } = useProfile()
+    const { accessToken, setToken } = useAuth()
     const { setConfigLoading } = useLoading()
     const { state } = useLocation()
 
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const [showFormLogin, setShowFormLogin] = useState(false)
 
-    if (userProfile) return <Navigate to={get(state, 'url', '/')} />
+    if (accessToken) return <Navigate to={get(state, 'url', '/')} />
 
     return (
-        <div className='h-screen flex flex-col gap-2 items-center justify-center overflow-hidden' ref={parent}>
+        <div className='flex h-screen flex-col items-center justify-center gap-2 overflow-hidden' ref={parent}>
             {!showFormLogin ? (
                 <>
                     <GoogleLogin
-                        onSuccess={async (res) => await fetchGoogleResponse(res, addUserProfile, setConfigLoading)}
+                        onSuccess={async (res) =>
+                            await fetchGoogleResponse(res, setToken, addUserProfile, setConfigLoading)
+                        }
                         onError={() => {}}
                     />
                     <span className='text-xs text-gray-900 dark:text-white'>{t(LANGUAGE.OR)}</span>
                     <Button
-                        className='sm:!text-sm border-transparent !text-xs sm:!py-3 sm:!px-6 !w-auto bg-gradient-to-r from-[#12c2e9] via-[#c471ed] to-[#f64f59] animate-bg-animate bg-400% text-white'
+                        className='!w-auto animate-bg-animate border-transparent bg-gradient-to-r from-[#12c2e9] via-[#c471ed] to-[#f64f59] bg-400% !text-xs text-white sm:!py-3 sm:!px-6 sm:!text-sm'
                         type='button'
                         color='custom'
                         onClick={() => setShowFormLogin(true)}
@@ -43,7 +46,7 @@ const Auth = () => {
                 </>
             ) : (
                 <LoginByEmailPasswordForm
-                    onSubmit={async (data) => loginByEmailPassword(data, addUserProfile, setConfigLoading)}
+                    onSubmit={async (data) => loginByEmailPassword(data, setToken, addUserProfile, setConfigLoading)}
                     onBack={() => setShowFormLogin(false)}
                 />
             )}
