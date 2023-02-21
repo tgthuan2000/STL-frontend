@@ -91,6 +91,8 @@ const translation: {
     [LANGUAGE.HIDDEN]: 'Ẩn',
     [LANGUAGE.NAME]: 'Tên',
     [LANGUAGE.SAVING]: 'Đang lưu...',
+    [LANGUAGE.SEARCH]: 'Tìm kiếm',
+    [LANGUAGE.SEND_NOTIFY]: 'Gửi thông báo',
 
     /* PWA */
     [LANGUAGE.APP_READY_WORK_OFFLINE]: 'Ứng dụng đã sẵn sàng để làm việc ngoại tuyến',
@@ -122,6 +124,9 @@ const translation: {
     [LANGUAGE.REQUIRED_NEW_PASSWORD]: 'Yêu cầu nhập mật khẩu mới!',
     [LANGUAGE.REQUIRED_RE_PASSWORD]: 'Yêu cầu nhập lại mật khẩu mới!',
     [LANGUAGE.REQUIRED_FULL_NAME]: 'Yêu cầu nhập họ và tên!',
+    [LANGUAGE.REQUIRED_NOTIFY_CONTENT]: 'Yêu cầu nhập nội dung thông báo!',
+    [LANGUAGE.REQUIRED_NOTIFY_TITLE]: 'Yêu cầu nhập tiều đề thông báo!',
+    [LANGUAGE.RECEIVER_MIN_1]: 'Yêu cầu chọn ít nhất 1 người nhận!',
     [LANGUAGE.AMOUNT_MIN_ZERO]: 'Số tiền phải lớn hơn 0!',
     [LANGUAGE.RECEIVE_MIN_ZERO]: 'Thu nhập phải lớn hơn 0!',
     [LANGUAGE.TRANSFER_MIN_ZERO]: 'Số tiền chuyển khoản phải lớn hơn 0!',
@@ -137,6 +142,8 @@ const translation: {
     /* PLACEHOLDER */
     [LANGUAGE.PLACEHOLDER_CHOOSE_KIND]: '--- Chọn loại ---',
     [LANGUAGE.PLACEHOLDER_CHOOSE_TIME]: 'Chọn thời gian',
+    [LANGUAGE.PLACEHOLDER_ENTER_CONTENT]: 'Nhập nội dung',
+    [LANGUAGE.PLACEHOLDER_SHORT_DESCRIPTION]: 'Nhập mô tả ngắn',
 
     /* NOTIFY/TOAST */
     [LANGUAGE.NOTIFY_UPDATE_SUCCESS]: 'Cập nhật thành công!',
@@ -149,6 +156,7 @@ const translation: {
     [LANGUAGE.NOTIFY_CREATE_GET_LOAN_SUCCESS]: 'Thêm khoản vay thành công!',
     [LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS]: 'Đổi mật khẩu thành công!',
     [LANGUAGE.NOTIFY_CREATE_MEMBER_SUCCESS]: 'Thêm thành viên thành công!',
+    [LANGUAGE.NOTIFY_CREATE_NOTIFY_SUCCESS]: 'Tạo thông báo thành công!',
     [LANGUAGE.NOTIFY_NOT_EXIST_ACCOUNT]: 'Tài khoản không tồn tại!',
     [LANGUAGE.NOTIFY_ERROR]: 'Đã có lỗi xảy ra!',
     [LANGUAGE.NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD]: 'Tài khoản chưa cài đặt đăng nhập bằng email và mật khẩu!',
@@ -253,6 +261,10 @@ const translation: {
     [LANGUAGE.PROGRESS_TITLE_DESC]: 'Tiêu đề và mô tả',
     [LANGUAGE.PROGRESS_CHOOSE_MEMBER]: 'Chọn người nhận',
     [LANGUAGE.PROGRESS_PREVIEW_AND_SEND]: 'Xem trước và gửi',
+    [LANGUAGE.SEND_TO_ALL_MEMBER]: 'Gửi cho tất cả mọi người',
+    [LANGUAGE.SEND_MAIL_TO_ALL]: 'Gửi mail cho tất cả',
+    [LANGUAGE.NOTIFY_RECEIVER_LIST]: 'Danh sách người nhận thông báo',
+    [LANGUAGE.SEND_NOTIFY_BY_EMAIL]: 'Gửi thông báo qua email',
 
     /* LAYOUT */
     [LANGUAGE.SPENDING_MANAGEMENT]: 'Quản lý chi tiêu',

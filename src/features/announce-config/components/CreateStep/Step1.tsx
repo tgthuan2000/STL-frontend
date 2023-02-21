@@ -1,18 +1,24 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
 import { CreateStep1Props } from '~/@types/announce-config'
 import { DraftNotify, NotifyContentForm } from '~/@types/notify'
 import { RichText } from '~/components/_base'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { useLocalStorage } from '~/hook'
+import i18n from '~/i18n'
+import LANGUAGE from '~/i18n/language/key'
+
+const { t } = i18n
 
 const schema = yup.object().shape({
-    content: yup.string().required('Vui lòng nhập nội dung thông báo'),
+    content: yup.string().required(t(LANGUAGE.REQUIRED_NOTIFY_CONTENT) as string),
 })
 
 const Step1: React.FC<CreateStep1Props> = ({ id, onSubmit }) => {
+    const { t } = useTranslation()
     const [draftNotify] = useLocalStorage<DraftNotify>(LOCAL_STORAGE_KEY.STL_DRAFT_NOTIFY)
     const form = useForm<NotifyContentForm>({
         defaultValues: {
@@ -26,7 +32,12 @@ const Step1: React.FC<CreateStep1Props> = ({ id, onSubmit }) => {
     return (
         <form id={id} onSubmit={form.handleSubmit(handleSubmit)} className='flex h-full flex-col'>
             <div className='mt-3 mb-5'>
-                <RichText form={form} name='content' label='Nội dung' placeholder='Nhập nội dung thông báo' />
+                <RichText
+                    form={form}
+                    name='content'
+                    label={t(LANGUAGE.CONTENT)}
+                    placeholder={t(LANGUAGE.PLACEHOLDER_ENTER_CONTENT)}
+                />
             </div>
         </form>
     )

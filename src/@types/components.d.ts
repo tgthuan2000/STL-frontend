@@ -468,7 +468,7 @@ export interface LazySearchSelectProps {
     className?: string
     onChange: (value: any) => void
     disabled?: boolean
-    label?: string
+    label?: string | DefaultTFuncReturn
     options?: any[]
     hasNextPage?: boolean
     onGetMore?: () => void
@@ -480,7 +480,7 @@ export interface LazySearchSelectProps {
     autoFocus?: boolean
 }
 export interface LazySearchSelectLabelProps {
-    label?: string
+    label?: string | DefaultTFuncReturn
 }
 
 export interface LazySearchSelectInputProp {

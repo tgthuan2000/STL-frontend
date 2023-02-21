@@ -15,8 +15,11 @@ import { LazySearchSelect, Toggle } from '~/components/_base'
 import { COUNT_PAGINATE, TAGS } from '~/constant'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { useLocalStorage, useQuery } from '~/hook'
+import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
 import { SEARCH_USER_PAGINATE } from '~/schema/query/user'
+
+const { t } = i18n
 
 const schema = yup.object().shape({
     search: yup.object().nullable(),
@@ -25,7 +28,7 @@ const schema = yup.object().shape({
         .nullable()
         .when('sendAll', {
             is: false,
-            then: yup.array().min(1, 'Vui lòng chọn ít nhất 1 người nhận'),
+            then: yup.array().min(1, t(LANGUAGE.RECEIVER_MIN_1) as string),
         }),
     sendAll: yup.boolean(),
 })
@@ -112,7 +115,8 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                         name='sendAll'
                         label={
                             <p>
-                                Gửi cho tất cả mọi người <i className='text-gray-400'>(Gửi mail đến tất cả)</i>
+                                {t(LANGUAGE.SEND_TO_ALL_MEMBER)}{' '}
+                                <i className='text-gray-400'>({t(LANGUAGE.SEND_MAIL_TO_ALL)})</i>
                             </p>
                         }
                     />
@@ -122,7 +126,7 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                     autoFocus
                     hasNextPage={users.data?.hasNextPage}
                     loading={searchFirst.current ? users.loading : false}
-                    label='Tìm kiếm'
+                    label={t(LANGUAGE.SEARCH)}
                     disabled={form.watch('sendAll')}
                     onChange={handleChange}
                     onSearch={handleSearch}
@@ -156,7 +160,7 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
 
                 <div>
                     <p className='inline-block text-sm font-medium text-gray-700 dark:text-slate-100'>
-                        Danh sách người nhận thông báo
+                        {t(LANGUAGE.NOTIFY_RECEIVER_LIST)}
                     </p>
                     <div className='mt-1 select-none rounded-lg border dark:border-slate-700' ref={userRef}>
                         {isEmpty(__users) ? (
@@ -177,7 +181,7 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                                     </div>
                                     {user.allowSendMail && (
                                         <button
-                                            title='Gửi thông báo qua email'
+                                            title={t(LANGUAGE.SEND_NOTIFY_BY_EMAIL) as string}
                                             type='button'
                                             disabled={form.watch('sendAll')}
                                             className={clsx(
