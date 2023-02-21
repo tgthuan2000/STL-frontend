@@ -164,6 +164,7 @@ const translation: {
     [LANGUAGE.NOTIFY_REQUIRED_CREDENTIAL]: 'Không tìm thấy thông tin đăng nhập!',
     [LANGUAGE.NOTIFY_REQUIRED_DATA]: 'Không tìm thấy giá trị data!',
     [LANGUAGE.NOTIFY_REQUIRED_URL]: 'Không tìm thấy giá trị url!',
+    [LANGUAGE.NOTIFY_REQUIRED_SUBSCRIPTION_ID]: 'Không tìm thấy giá trị subscription id!',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Bạn có chắc chắn muốn gửi thông báo này?',

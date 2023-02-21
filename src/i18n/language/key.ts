@@ -160,6 +160,7 @@ enum LANGUAGE {
     NOTIFY_REQUIRED_CREDENTIAL = 'notify-required-credential',
     NOTIFY_REQUIRED_DATA = 'notify-required-data',
     NOTIFY_REQUIRED_URL = 'notify-required-url',
+    NOTIFY_REQUIRED_SUBSCRIPTION_ID = 'notify-required-subscription-id',
 
     /* CONFIRM */
     CONFIRM_NOTIFY = 'confirm-notify',
