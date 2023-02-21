@@ -1,6 +1,7 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
 import React, { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { localStorageValue } from '~/@types/hook'
@@ -11,9 +12,11 @@ import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { createProgressOptions } from '~/constant/progress'
 import { useLoading } from '~/context'
 import { useLocalStorage } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import { CreateStep1, CreateStep2, CreateStep3, CreateStep4 } from '../components'
 
 const Create = () => {
+    const { t } = useTranslation()
     const [, setDraftNotify, removeDraft] = useLocalStorage<DraftNotify>(LOCAL_STORAGE_KEY.STL_DRAFT_NOTIFY)
     const [stepParent] = useAutoAnimate<HTMLDivElement>()
     const navigate = useNavigate()
@@ -64,7 +67,7 @@ const Create = () => {
                 await axios.post('/notification/assign', { data, url: import.meta.env.VITE_APP_URL })
                 removeDraft()
                 navigate('/announce-config', { replace: true })
-                toast.success('Tạo thông báo thành công')
+                toast.success(t(LANGUAGE.NOTIFY_CREATE_NOTIFY_SUCCESS))
             }
         } catch (error) {
             console.log(error)
@@ -122,7 +125,7 @@ const Create = () => {
                             form={stepId}
                             disabled={loading.submit}
                         >
-                            {step === 4 ? 'Gửi thông báo' : 'Tiếp theo'}
+                            {step === 4 ? t(LANGUAGE.SEND_NOTIFY) : t(LANGUAGE.NEXT)}
                         </Button>
                         {/* {step === 4 && (
                                 <Button
@@ -143,7 +146,7 @@ const Create = () => {
                                     navigate(-1)
                                 }}
                             >
-                                Hủy bỏ
+                                {t(LANGUAGE.CANCEL)}
                             </Button>
                         )}
                     </SubmitWrap>
