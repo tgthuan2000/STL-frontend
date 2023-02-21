@@ -21,6 +21,7 @@ export const handleDataStatus = (code: CODE) => {
         [CODE.REQUIRED_REFRESH_TOKEN]: () => toast.error(t(LANGUAGE.NOTIFY_REQUIRED_REFRESH_TOKEN)),
         [CODE.REQUIRED_DATA]: () => toast.error(t(LANGUAGE.NOTIFY_REQUIRED_DATA)),
         [CODE.REQUIRED_URL]: () => toast.error(t(LANGUAGE.NOTIFY_REQUIRED_URL)),
+        [CODE.REQUIRED_SUBSCRIPTION_ID]: () => toast.error(t(LANGUAGE.NOTIFY_REQUIRED_SUBSCRIPTION_ID)),
 
         /* INVALID */
         [CODE.INVALID_OLD_PASSWORD]: () => toast.error(t(LANGUAGE.NOTIFY_INVALID_OLD_PASSWORD)),

@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useRegisterSW } from 'virtual:pwa-register/react'
+import axios from '~/axiosConfig'
 import LANGUAGE from '~/i18n/language/key'
-import { client } from '~/sanityConfig'
 import Button from './Button'
 
 const ReloadPrompt = () => {
@@ -13,13 +13,17 @@ const ReloadPrompt = () => {
     } = useRegisterSW({
         async onRegistered(r) {
             if (r) {
-                let subscription = await r.pushManager.getSubscription()
-                if (!subscription) {
-                    subscription = await r.pushManager.subscribe({
-                        userVisibleOnly: true,
-                        applicationServerKey: import.meta.env.VITE_SERVER_PUBLIC_KEY,
-                    })
-                    // send subscription to server
+                try {
+                    let subscription = await r.pushManager.getSubscription()
+                    if (!subscription) {
+                        subscription = await r.pushManager.subscribe({
+                            userVisibleOnly: true,
+                            applicationServerKey: import.meta.env.VITE_SERVER_PUBLIC_KEY,
+                        })
+                    }
+                    await axios.post('/notification/web-push', { subscription })
+                } catch (error) {
+                    console.log(error)
                 }
             }
         },

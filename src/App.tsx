@@ -35,7 +35,6 @@ function App() {
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
             <BrowserRouter>
                 <ErrorBoundary FallbackComponent={ErrorFallback}>
-                    <ReloadPrompt />
                     <ToastContainer
                         position='bottom-left'
                         autoClose={5000}
@@ -66,6 +65,7 @@ function App() {
                                                     <CacheProvider>
                                                         <NotifyProvider>
                                                             <DefaultLayout />
+                                                            <ReloadPrompt />
                                                         </NotifyProvider>
                                                     </CacheProvider>
                                                 </ConfigProvider>

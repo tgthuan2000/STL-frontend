@@ -12,7 +12,10 @@ export default defineConfig({
         }),
         tsconfigPaths(),
         VitePWA({
-            registerType: 'prompt',
+            strategies: 'injectManifest',
+            srcDir: 'src',
+            filename: 'sw.ts',
+            registerType: 'autoUpdate',
             injectRegister: 'auto',
             workbox: {
                 globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,wav}'],
@@ -75,6 +78,7 @@ export default defineConfig({
             },
             devOptions: {
                 enabled: true,
+                type: 'module',
             },
         }),
     ],
