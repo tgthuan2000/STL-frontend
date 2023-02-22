@@ -97,6 +97,9 @@ const translation: {
     [LANGUAGE.DROP_IMAGE_HERE]: 'Thả ảnh vào đây',
     [LANGUAGE.SHORT_COST]: 'CP',
     [LANGUAGE.SHORT_REMAINING]: 'CL',
+    [LANGUAGE.ENABLE]: 'Bật',
+    [LANGUAGE.DISABLED]: 'Tắt',
+    [LANGUAGE.SET_UP]: 'Cài đặt',
 
     /* PWA */
     [LANGUAGE.APP_READY_WORK_OFFLINE]: 'Ứng dụng đã sẵn sàng để làm việc ngoại tuyến',
@@ -226,7 +229,8 @@ const translation: {
 
     /* PROFILE */
     [LANGUAGE.JOIN_DATE]: 'Ngày tham gia',
-    [LANGUAGE.ALLOW_RECEIVE_NOTIFY_BY_MAIL]: 'Cho phép nhận thông báo qua mail',
+    [LANGUAGE.RECEIVE_NOTIFY_BY_MAIL]: 'Nhận thông báo qua mail',
+    [LANGUAGE.TWO_FACTOR_AUTHENTICATION]: 'Xác thực hai bước',
     [LANGUAGE.MOST_USED]: 'Sử dụng nhiều nhất',
     [LANGUAGE.MOST_USED_RECEIVE]: 'Thu nhập nhiều nhất',
     [LANGUAGE.MOST_USED_COST]: 'Chi phí nhiều nhất',

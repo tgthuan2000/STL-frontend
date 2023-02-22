@@ -55,7 +55,10 @@ const AllowSendMail = () => {
 
     return (
         <form onSubmit={(e) => e.preventDefault()}>
-            <Toggle form={form} name='allowSendMail' label={t(LANGUAGE.ALLOW_RECEIVE_NOTIFY_BY_MAIL)} />
+            <div className='flex items-center justify-between'>
+                <label className='text-base'>{t(LANGUAGE.RECEIVE_NOTIFY_BY_MAIL)}</label>
+                <Toggle form={form} name='allowSendMail' />
+            </div>
         </form>
     )
 }
