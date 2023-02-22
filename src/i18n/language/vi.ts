@@ -89,6 +89,7 @@ const translation: {
     [LANGUAGE.PASSWORD]: 'Mật khẩu',
     [LANGUAGE.OTHERS]: 'Khác',
     [LANGUAGE.HIDDEN]: 'Ẩn',
+    [LANGUAGE.SHOW]: 'Hiện',
     [LANGUAGE.NAME]: 'Tên',
     [LANGUAGE.SAVING]: 'Đang lưu...',
     [LANGUAGE.SEARCH]: 'Tìm kiếm',

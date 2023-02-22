@@ -85,6 +85,7 @@ enum LANGUAGE {
     PASSWORD = 'password',
     OTHERS = 'others',
     HIDDEN = 'hidden',
+    SHOW = 'show',
     NAME = 'name',
     SAVING = 'saving',
     SEARCH = 'search',

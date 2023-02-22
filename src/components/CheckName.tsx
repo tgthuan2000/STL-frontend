@@ -35,7 +35,7 @@ const CheckName: React.FC<CheckNameProps> = ({ show, list, watchValue }) => {
                                     }
                                     const [start, middle, end] = component
                                     return (
-                                        <li key={item._id}>
+                                        <li key={item._id} className='text-gray-900 dark:text-slate-200'>
                                             {start}
                                             <span className='font-medium text-yellow-600'>{middle}</span>
                                             {end}

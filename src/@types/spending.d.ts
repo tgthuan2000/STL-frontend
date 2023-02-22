@@ -16,12 +16,14 @@ export interface ICategorySpending {
     name: string
     kindSpending: IKindSpending
     user: IUserProfile
+    display: boolean
 }
 export interface IMethodSpending {
     _id: string
     name: string
     surplus: number
     user: IUserProfile
+    display: boolean
 }
 export interface IBudgetSpending {
     _id: string
@@ -136,6 +138,7 @@ export interface ListOptionProps {
     data: any[] | undefined
     loading: boolean
     cleanCache: () => void
+    renderItem: (item: any) => React.ReactNode
 }
 
 export interface TransactionDetailFormProps {
