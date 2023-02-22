@@ -72,12 +72,12 @@ const Others = () => {
                                 <div className='flex items-center gap-1'>
                                     <span
                                         title={kind?.name}
-                                        className={clsx('inline-block h-2 w-2 rounded-full', {
+                                        className={clsx('inline-block h-2 w-2 flex-shrink-0 rounded-full', {
                                             'bg-red-500': kind?.key === KIND_SPENDING.COST,
                                             'bg-green-500': kind?.key === KIND_SPENDING.RECEIVE,
                                         })}
                                     />
-                                    <h4 className='font-medium'>{item?.name}</h4>
+                                    <h4 className='truncate font-medium'>{item?.name}</h4>
                                 </div>
                             )
                         }}

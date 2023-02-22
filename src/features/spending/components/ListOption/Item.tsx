@@ -36,9 +36,9 @@ const Item: React.FC<ItemOptionProps> = ({ data, origin, onEdit, renderItem, onD
 
     return (
         <li ref={parent}>
-            <div className='flex px-3 py-3 hover:bg-gray-100 dark:hover:bg-slate-600'>
-                <div className='w-2/3 truncate'>{renderItem()}</div>
-                <div className='flex w-1/3 justify-end gap-1'>
+            <div className='flex items-center justify-between gap-2 px-3 py-3 hover:bg-gray-100 dark:hover:bg-slate-600'>
+                <div className='overflow-hidden'>{renderItem()}</div>
+                <div className='flex flex-shrink-0 justify-end gap-1'>
                     {!edit && (
                         <Chip className='bg-cyan-500 text-white' onClick={openEdit}>
                             {t(LANGUAGE.EDIT)}
