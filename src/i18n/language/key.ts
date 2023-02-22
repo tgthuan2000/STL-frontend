@@ -91,6 +91,8 @@ enum LANGUAGE {
     SEARCH = 'search',
     SEND_NOTIFY = 'send-notify',
     DROP_IMAGE_HERE = 'drop-image-here',
+    SHORT_COST = 'short-cost',
+    SHORT_REMAINING = 'short-remaining',
 
     /* PWA */
     APP_READY_WORK_OFFLINE = 'app-ready-work-offline',
