@@ -6,8 +6,8 @@ import { Box, ButtonMenuDesktop, Divider, Transaction } from '~/components'
 import { TAGS } from '~/constant'
 import { menuMobileOthers } from '~/constant/components'
 import { KIND_SPENDING } from '~/constant/spending'
-import { useCheck } from '~/context'
-import { useQuery, useWindowSize } from '~/hook'
+import { useCache, useCheck } from '~/context'
+import { useQuery, useServiceQuery, useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { GET_CATEGORY, GET_METHOD } from '~/schema/query/spending'
 import { useProfile } from '~/store/auth'
@@ -17,8 +17,11 @@ const Others = () => {
     const { t } = useTranslation()
     const { width } = useWindowSize()
     const { userProfile } = useProfile()
+    const { METHOD_SPENDING_DESC_SURPLUS, COST_CATEGORY_SPENDING, RECEIVE_CATEGORY_SPENDING, METHOD_SPENDING } =
+        useServiceQuery()
+    const { deleteCache } = useCache()
 
-    const [{ category, method }, fetchData, deleteCache, reload] = useQuery<OthersQueryData>(
+    const [{ category, method }, fetchData, deleteCaches, reload] = useQuery<OthersQueryData>(
         {
             method: GET_METHOD,
             category: GET_CATEGORY,
@@ -59,7 +62,10 @@ const Others = () => {
                     <ListOption
                         data={category?.data}
                         loading={category.loading}
-                        cleanCache={() => deleteCache('category')}
+                        cleanCache={() => {
+                            deleteCaches('category')
+                            deleteCache([COST_CATEGORY_SPENDING, RECEIVE_CATEGORY_SPENDING])
+                        }}
                         renderItem={(item) => {
                             const kind = item?.kindSpending
                             return (
@@ -87,7 +93,10 @@ const Others = () => {
                     <ListOption
                         data={method?.data}
                         loading={method.loading}
-                        cleanCache={() => deleteCache('method')}
+                        cleanCache={() => {
+                            deleteCaches('method')
+                            deleteCache([METHOD_SPENDING_DESC_SURPLUS, METHOD_SPENDING])
+                        }}
                         renderItem={(item) => <h4 className='font-medium'>{item?.name}</h4>}
                     />
                 </Box.Content>
