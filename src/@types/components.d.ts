@@ -195,11 +195,20 @@ export interface UploadImageProps {
     rules?: Rules
 }
 
+export interface UploadBoxProps {
+    id: string
+    loading: boolean
+    getRootProps: ReturnType<typeof useDropzone>['getRootProps']
+    isDragActive: ReturnType<typeof useDropzone>['isDragActive']
+}
+
 export interface UploadImageCoreProps {
     loading: boolean
     id: string
     image: string | null | undefined
     clearImage: () => void
+    isDragActive: boolean
+    getRootProps: (props?: any) => any
 }
 
 export interface DateProps {

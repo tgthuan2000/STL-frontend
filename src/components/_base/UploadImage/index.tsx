@@ -1,5 +1,6 @@
 import clsx from 'clsx'
-import { ChangeEvent, forwardRef, useCallback, useEffect, useId, useState } from 'react'
+import { forwardRef, useEffect, useId, useState } from 'react'
+import { useDropzone } from 'react-dropzone'
 import { Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { UploadImageProps } from '~/@types/components'
@@ -22,14 +23,21 @@ const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
             return urlFor(image)
         })
 
+        const { getRootProps, getInputProps, isDragActive } = useDropzone({
+            onDrop: (files) => {
+                handleUploadFile(files)
+            },
+            noClick: true,
+        })
+
         useEffect(() => {
             if (!form.getValues(name) && image) {
                 setImage(null)
             }
         }, [JSON.stringify(form.getValues(name))])
 
-        const handleUploadFile = async (e: ChangeEvent<HTMLInputElement>) => {
-            const file = e.target.files?.[0]
+        const handleUploadFile = (files: FileList | File[] | null) => {
+            const file = files?.[0]
             if (file) {
                 try {
                     setLoading(true)
@@ -71,7 +79,14 @@ const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
                     <div className={clsx(className)}>
                         <Label id={id} label={label} />
                         <div className='mt-1'>
-                            <Core image={image} clearImage={handleClearFile} id={id} loading={loading} />
+                            <Core
+                                id={id}
+                                loading={loading}
+                                image={image}
+                                clearImage={handleClearFile}
+                                getRootProps={getRootProps}
+                                isDragActive={isDragActive}
+                            />
                         </div>
                         <ErrorMessage error={error} />
                         <input
@@ -80,7 +95,7 @@ const UploadImage = forwardRef<HTMLInputElement, UploadImageProps>(
                             accept='image/png, image/jpeg'
                             disabled={disabled || loading}
                             hidden
-                            onChange={handleUploadFile}
+                            {...getInputProps()}
                             {...props}
                         />
                     </div>
