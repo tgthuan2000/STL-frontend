@@ -1,13 +1,15 @@
+import clsx from 'clsx'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { OthersQueryData } from '~/@types/spending'
 import { Box, ButtonMenuDesktop, Divider, Transaction } from '~/components'
 import { TAGS } from '~/constant'
 import { menuMobileOthers } from '~/constant/components'
+import { KIND_SPENDING } from '~/constant/spending'
 import { useCheck } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
-import { GET_CATEGORY, GET_METHOD_SPENDING } from '~/schema/query/spending'
+import { GET_CATEGORY, GET_METHOD } from '~/schema/query/spending'
 import { useProfile } from '~/store/auth'
 import { ListOption } from '../components'
 
@@ -18,7 +20,7 @@ const Others = () => {
 
     const [{ category, method }, fetchData, deleteCache, reload] = useQuery<OthersQueryData>(
         {
-            method: GET_METHOD_SPENDING,
+            method: GET_METHOD,
             category: GET_CATEGORY,
         },
         {
@@ -58,6 +60,21 @@ const Others = () => {
                         data={category?.data}
                         loading={category.loading}
                         cleanCache={() => deleteCache('category')}
+                        renderItem={(item) => {
+                            const kind = item?.kindSpending
+                            return (
+                                <div className='flex items-center gap-1'>
+                                    <span
+                                        title={kind?.name}
+                                        className={clsx('inline-block h-2 w-2 rounded-full', {
+                                            'bg-red-500': kind?.key === KIND_SPENDING.COST,
+                                            'bg-green-500': kind?.key === KIND_SPENDING.RECEIVE,
+                                        })}
+                                    />
+                                    <h4 className='font-medium'>{item?.name}</h4>
+                                </div>
+                            )
+                        }}
                     />
                 </Box.Content>
                 <Box.Content
@@ -67,7 +84,12 @@ const Others = () => {
                     seeMore={false}
                     fullWidth
                 >
-                    <ListOption data={method?.data} loading={method.loading} cleanCache={() => deleteCache('method')} />
+                    <ListOption
+                        data={method?.data}
+                        loading={method.loading}
+                        cleanCache={() => deleteCache('method')}
+                        renderItem={(item) => <h4 className='font-medium'>{item?.name}</h4>}
+                    />
                 </Box.Content>
             </Box>
         </Transaction>

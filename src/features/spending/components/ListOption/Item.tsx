@@ -1,4 +1,6 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { ArrowPathIcon } from '@heroicons/react/24/outline'
+import clsx from 'clsx'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Chip } from '~/components'
@@ -9,12 +11,16 @@ interface ItemOptionProps {
     data: any
     origin: any[]
     onEdit: (data: any) => Promise<void>
+    renderItem: () => React.ReactNode
+    onDisplayChange: () => Promise<void>
 }
 
-const Item: React.FC<ItemOptionProps> = ({ data, origin, onEdit }) => {
+const Item: React.FC<ItemOptionProps> = ({ data, origin, onEdit, renderItem, onDisplayChange }) => {
     const { t } = useTranslation()
+    const [displayLoading, setDisplayLoading] = useState(false)
     const [parent] = useAutoAnimate<HTMLLIElement>()
     const [edit, setEdit] = useState(false)
+
     const openEdit = () => {
         setEdit(true)
     }
@@ -22,20 +28,37 @@ const Item: React.FC<ItemOptionProps> = ({ data, origin, onEdit }) => {
         setEdit(false)
     }
 
+    const handleDisplayChange = async () => {
+        setDisplayLoading(true)
+        await onDisplayChange()
+        setDisplayLoading(false)
+    }
+
     return (
         <li ref={parent}>
             <div className='flex px-3 py-3 hover:bg-gray-100 dark:hover:bg-slate-600'>
-                <div className='w-2/3 truncate'>
-                    <h4 className='font-medium'>{data?.name}</h4>
-                </div>
+                <div className='w-2/3 truncate'>{renderItem()}</div>
                 <div className='flex w-1/3 justify-end gap-1'>
                     {!edit && (
                         <Chip className='bg-cyan-500 text-white' onClick={openEdit}>
                             {t(LANGUAGE.EDIT)}
                         </Chip>
                     )}
-                    <Chip className='bg-radical-red-500 text-white' disabled onClick={() => {}}>
-                        {t(LANGUAGE.HIDDEN)}
+                    <Chip
+                        className={clsx('text-white', {
+                            'bg-radical-red-500': data?.display,
+                            'bg-green-500': !data?.display,
+                            'pointer-events-none opacity-70': displayLoading,
+                        })}
+                        onClick={handleDisplayChange}
+                    >
+                        {displayLoading ? (
+                            <div>
+                                <ArrowPathIcon className='h-3.5 w-3.5 animate-spin text-white' />
+                            </div>
+                        ) : (
+                            <>{data?.display ? t(LANGUAGE.HIDDEN) : t(LANGUAGE.SHOW)}</>
+                        )}
                     </Chip>
                 </div>
             </div>

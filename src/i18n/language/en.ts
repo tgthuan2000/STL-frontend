@@ -89,6 +89,7 @@ const translation: {
     [LANGUAGE.PASSWORD]: 'Password',
     [LANGUAGE.OTHERS]: 'Others',
     [LANGUAGE.HIDDEN]: 'Hidden',
+    [LANGUAGE.SHOW]: 'Show',
     [LANGUAGE.NAME]: 'Name',
     [LANGUAGE.SAVING]: 'Saving',
     [LANGUAGE.SEARCH]: 'Search',
