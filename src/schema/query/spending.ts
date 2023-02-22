@@ -243,7 +243,7 @@ export const GET_CATEGORY = groq`
     }
 `
 export const GET_METHOD_SPENDING_DESC_SURPLUS = groq`
-    *[_type == "methodSpending" && user._ref == $userId] | order(surplus desc)
+    *[_type == "methodSpending" && user._ref == $userId && display == true] | order(surplus desc)
     {
         _id,
         surplus,
