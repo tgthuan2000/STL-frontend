@@ -85,8 +85,11 @@ enum LANGUAGE {
     PASSWORD = 'password',
     OTHERS = 'others',
     HIDDEN = 'hidden',
+    SHOW = 'show',
     NAME = 'name',
     SAVING = 'saving',
+    SEARCH = 'search',
+    SEND_NOTIFY = 'send-notify',
 
     /* PWA */
     APP_READY_WORK_OFFLINE = 'app-ready-work-offline',
@@ -114,6 +117,9 @@ enum LANGUAGE {
     REQUIRED_NEW_PASSWORD = 'required-new-password',
     REQUIRED_RE_PASSWORD = 'required-re-password',
     REQUIRED_FULL_NAME = 'required-full-name',
+    REQUIRED_NOTIFY_CONTENT = 'required-notify-content',
+    REQUIRED_NOTIFY_TITLE = 'required-notify-title',
+    RECEIVER_MIN_1 = 'receiver-min-1',
     AMOUNT_MIN_ZERO = 'amount-min-zero',
     RECEIVE_MIN_ZERO = 'receive-min-zero',
     TRANSFER_MIN_ZERO = 'transfer-min-zero',
@@ -133,6 +139,8 @@ enum LANGUAGE {
     /* PLACEHOLDER */
     PLACEHOLDER_CHOOSE_KIND = 'placeholder-choose-kind',
     PLACEHOLDER_CHOOSE_TIME = 'placeholder-choose-time',
+    PLACEHOLDER_ENTER_CONTENT = 'placeholder-enter-content',
+    PLACEHOLDER_SHORT_DESCRIPTION = 'placeholder-short-description',
 
     /* NOTIFY/TOAST */
     NOTIFY_UPDATE_SUCCESS = 'notify-update-success',
@@ -145,6 +153,7 @@ enum LANGUAGE {
     NOTIFY_CREATE_GET_LOAN_SUCCESS = 'notify-create-get-loan-success',
     NOTIFY_UPDATE_PASSWORD_SUCCESS = 'notify-update-password-success',
     NOTIFY_CREATE_MEMBER_SUCCESS = 'notify-create-member-success',
+    NOTIFY_CREATE_NOTIFY_SUCCESS = 'notify-create-notify-success',
     NOTIFY_NOT_EXIST_ACCOUNT = 'notify-not-exist-account',
     NOTIFY_ERROR = 'notify-error',
     NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD = 'notify-account-cant-login-by-email-password',
@@ -160,6 +169,7 @@ enum LANGUAGE {
     NOTIFY_REQUIRED_CREDENTIAL = 'notify-required-credential',
     NOTIFY_REQUIRED_DATA = 'notify-required-data',
     NOTIFY_REQUIRED_URL = 'notify-required-url',
+    NOTIFY_REQUIRED_SUBSCRIPTION_ID = 'notify-required-subscription-id',
 
     /* CONFIRM */
     CONFIRM_NOTIFY = 'confirm-notify',
@@ -235,6 +245,10 @@ enum LANGUAGE {
     PROGRESS_TITLE_DESC = 'progress-title-desc',
     PROGRESS_CHOOSE_MEMBER = 'progress-choose-member',
     PROGRESS_PREVIEW_AND_SEND = 'progress-preview-and-send',
+    SEND_TO_ALL_MEMBER = 'send-to-all-member',
+    SEND_MAIL_TO_ALL = 'send-mail-to-all',
+    NOTIFY_RECEIVER_LIST = 'notify-receiver-list',
+    SEND_NOTIFY_BY_EMAIL = 'send-notify-by-email',
 
     /* AUTH */
     OR = 'or',

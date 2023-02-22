@@ -8,7 +8,7 @@ import { client } from '~/sanityConfig'
 import { MethodSkeleton } from '../Method'
 import Item from './Item'
 
-const ListOption: React.FC<ListOptionProps> = ({ data: _data, loading, cleanCache }) => {
+const ListOption: React.FC<ListOptionProps> = ({ data: _data, loading, cleanCache, renderItem }) => {
     const { t } = useTranslation()
     const [data, setData] = useState(_data)
 
@@ -18,31 +18,44 @@ const ListOption: React.FC<ListOptionProps> = ({ data: _data, loading, cleanCach
         }
     }, [_data])
 
+    const _set = (id: string, value: {}) => {
+        setData((prev) => {
+            const temp = cloneDeep(prev)
+            const index = prev?.findIndex((item) => item._id === id)
+            if (index !== undefined && index !== -1 && temp) {
+                temp[index] = {
+                    ...temp[index],
+                    ...value,
+                }
+            }
+            return temp
+        })
+    }
+
+    const _update = async (id: string, value: {}) => {
+        const response = await client.patch(id).set(value).commit()
+        return response
+    }
+
     const handleEdit = async (data: any, id: string) => {
         {
             try {
-                const response = await client
-                    .patch(id)
-                    .set({
-                        name: data.name,
-                    })
-                    .commit()
-                toast.success(t(LANGUAGE.NOTIFY_UPDATE_SUCCESS))
-                setData((prev) => {
-                    const temp = cloneDeep(prev)
-                    const index = prev?.findIndex((item) => item._id === id)
-                    if (index !== undefined && index !== -1 && temp) {
-                        temp[index] = {
-                            ...temp[index],
-                            name: response.name,
-                        }
-                    }
-                    return temp
-                })
+                const response = await _update(id, { name: data.name })
+                _set(id, { name: response.name })
                 cleanCache()
             } catch (error: any) {
                 toast.error(error.message)
             }
+        }
+    }
+
+    const handleDisplayChange = async (display: boolean, id: string) => {
+        try {
+            const response = await _update(id, { display: !display })
+            _set(id, { display: response.display })
+            cleanCache()
+        } catch (error: any) {
+            toast.error(error.message)
         }
     }
 
@@ -58,6 +71,8 @@ const ListOption: React.FC<ListOptionProps> = ({ data: _data, loading, cleanCach
                             data={item}
                             origin={data}
                             onEdit={async (data) => await handleEdit(data, item._id)}
+                            renderItem={() => renderItem(item)}
+                            onDisplayChange={async () => await handleDisplayChange(item.display, item._id)}
                         />
                     )
                 })}

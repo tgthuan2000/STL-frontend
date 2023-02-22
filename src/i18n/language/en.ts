@@ -89,8 +89,11 @@ const translation: {
     [LANGUAGE.PASSWORD]: 'Password',
     [LANGUAGE.OTHERS]: 'Others',
     [LANGUAGE.HIDDEN]: 'Hidden',
+    [LANGUAGE.SHOW]: 'Show',
     [LANGUAGE.NAME]: 'Name',
     [LANGUAGE.SAVING]: 'Saving',
+    [LANGUAGE.SEARCH]: 'Search',
+    [LANGUAGE.SEND_NOTIFY]: 'Send notify',
 
     /* PWA */
     [LANGUAGE.APP_READY_WORK_OFFLINE]: 'App ready to work offline',
@@ -122,6 +125,9 @@ const translation: {
     [LANGUAGE.REQUIRED_NEW_PASSWORD]: 'Required new password',
     [LANGUAGE.REQUIRED_RE_PASSWORD]: 'Required re-password',
     [LANGUAGE.REQUIRED_FULL_NAME]: 'Required full name',
+    [LANGUAGE.REQUIRED_NOTIFY_CONTENT]: 'Required notify content',
+    [LANGUAGE.REQUIRED_NOTIFY_TITLE]: 'Required notify title',
+    [LANGUAGE.RECEIVER_MIN_1]: 'Receiver must be greater than 1 characters',
     [LANGUAGE.AMOUNT_MIN_ZERO]: 'Amount must be greater than zero',
     [LANGUAGE.RECEIVE_MIN_ZERO]: 'Receive must be greater than zero',
     [LANGUAGE.TRANSFER_MIN_ZERO]: 'Transfer must be greater than zero',
@@ -137,6 +143,8 @@ const translation: {
     /* PLACEHOLDER */
     [LANGUAGE.PLACEHOLDER_CHOOSE_KIND]: 'Choose kind',
     [LANGUAGE.PLACEHOLDER_CHOOSE_TIME]: 'Choose time',
+    [LANGUAGE.PLACEHOLDER_ENTER_CONTENT]: 'Enter content',
+    [LANGUAGE.PLACEHOLDER_SHORT_DESCRIPTION]: 'Short description',
 
     /* NOTIFY/TOAST */
     [LANGUAGE.NOTIFY_UPDATE_SUCCESS]: 'Update success',
@@ -149,6 +157,7 @@ const translation: {
     [LANGUAGE.NOTIFY_CREATE_GET_LOAN_SUCCESS]: 'Create get loan success',
     [LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS]: 'Update password success',
     [LANGUAGE.NOTIFY_CREATE_MEMBER_SUCCESS]: 'Create member success',
+    [LANGUAGE.NOTIFY_CREATE_NOTIFY_SUCCESS]: 'Create notify success',
     [LANGUAGE.NOTIFY_NOT_EXIST_ACCOUNT]: 'Not exist account',
     [LANGUAGE.NOTIFY_ERROR]: 'Something went wrong',
     [LANGUAGE.NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD]: 'Account can not login by email and password',
@@ -164,6 +173,7 @@ const translation: {
     [LANGUAGE.NOTIFY_REQUIRED_CREDENTIAL]: 'Required credential',
     [LANGUAGE.NOTIFY_REQUIRED_DATA]: 'Required data',
     [LANGUAGE.NOTIFY_REQUIRED_URL]: 'Required url',
+    [LANGUAGE.NOTIFY_REQUIRED_SUBSCRIPTION_ID]: 'Required subscription id',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Do you want to notify?',
@@ -239,6 +249,10 @@ const translation: {
     [LANGUAGE.PROGRESS_TITLE_DESC]: 'Title and description',
     [LANGUAGE.PROGRESS_CHOOSE_MEMBER]: 'Choose member',
     [LANGUAGE.PROGRESS_PREVIEW_AND_SEND]: 'Preview and send',
+    [LANGUAGE.SEND_TO_ALL_MEMBER]: 'Send to all member',
+    [LANGUAGE.SEND_MAIL_TO_ALL]: 'Send mail to all',
+    [LANGUAGE.NOTIFY_RECEIVER_LIST]: 'Notify receiver list',
+    [LANGUAGE.SEND_NOTIFY_BY_EMAIL]: 'Send notify by email',
 
     /* AUTH */
     [LANGUAGE.OR]: 'Or',
