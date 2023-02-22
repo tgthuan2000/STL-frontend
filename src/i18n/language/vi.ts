@@ -94,6 +94,7 @@ const translation: {
     [LANGUAGE.SAVING]: 'Đang lưu...',
     [LANGUAGE.SEARCH]: 'Tìm kiếm',
     [LANGUAGE.SEND_NOTIFY]: 'Gửi thông báo',
+    [LANGUAGE.DROP_IMAGE_HERE]: 'Thả ảnh vào đây',
 
     /* PWA */
     [LANGUAGE.APP_READY_WORK_OFFLINE]: 'Ứng dụng đã sẵn sàng để làm việc ngoại tuyến',
