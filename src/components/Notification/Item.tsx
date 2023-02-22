@@ -52,7 +52,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, o
                         <div>
                             {!data.read ? (
                                 isClickRead ? (
-                                    <p className='flex items-center gap-0.5 font-normal text-cyan-500'>
+                                    <p className='flex items-center gap-0.5 text-xs font-normal text-cyan-500 lg:text-sm'>
                                         <CheckIcon className='h-4 w-4' />
                                         {t(LANGUAGE.READ)}
                                     </p>

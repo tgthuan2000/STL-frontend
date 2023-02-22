@@ -1,9 +1,12 @@
 import clsx from 'clsx'
 import numeral from 'numeral'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { BudgetItemProps } from '~/@types/spending'
+import LANGUAGE from '~/i18n/language/key'
 
 const BudgetItem: React.FC<BudgetItemProps> = ({ name, textColor, amount, percent, bgColor, isOver, totalAmounts }) => {
+    const { t } = useTranslation()
     return (
         <li>
             <div className='mt-2 flex justify-between px-2'>
@@ -27,9 +30,11 @@ const BudgetItem: React.FC<BudgetItemProps> = ({ name, textColor, amount, percen
                 )}
             >
                 <span>
-                    CP: {numeral(totalAmounts).format()} • {numeral(percent).format()}%
+                    {t(LANGUAGE.SHORT_COST)}: {numeral(totalAmounts).format()} • {numeral(percent).format()}%
                 </span>
-                <span>CL: {numeral(amount - totalAmounts).format()}</span>
+                <span>
+                    {t(LANGUAGE.SHORT_REMAINING)}: {numeral(amount - totalAmounts).format()}
+                </span>
             </div>
         </li>
     )

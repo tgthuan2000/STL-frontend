@@ -111,7 +111,7 @@ export const renderList: (data: any, index: number) => React.ReactNode = (
     <div
         className={clsx(
             'flex cursor-pointer items-center p-2 hover:bg-gray-200 dark:hover:bg-slate-500',
-            index % 2 ? 'bg-white dark:bg-slate-700' : 'bg-gray-50 dark:bg-slate-600'
+            index % 2 ? 'bg-white dark:bg-slate-700' : 'bg-white dark:bg-slate-600'
         )}
     >
         <div className='flex flex-1 flex-col text-gray-900 dark:text-slate-200'>

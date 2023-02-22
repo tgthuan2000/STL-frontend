@@ -54,11 +54,11 @@ const FilePreview = () => {
                                 leaveTo='translate-y-full opacity-0'
                             >
                                 <Dialog.Panel className='pointer-events-auto w-screen max-w-full sm:max-w-6xl'>
-                                    <div className='flex h-full flex-col items-center justify-center overflow-y-auto bg-gray-900 shadow-xl dark:bg-slate-800'>
+                                    <div className='flex h-full flex-col items-center justify-center overflow-y-auto bg-gray-100 shadow-xl dark:bg-slate-800'>
                                         <div className='fixed right-5 top-5'>
                                             <button
                                                 type='button'
-                                                className='text-white focus:outline-none'
+                                                className='text-gray-900 focus:outline-none dark:text-slate-200'
                                                 onClick={() => {
                                                     clear()
                                                 }}
