@@ -34,6 +34,7 @@ const Method = () => {
     const isMobileScreen = width < 768
 
     const dataFilter = useMemo(() => {
+        if (!Array.isArray(method.data)) return []
         const data = method.data?.filter((item) => item.surplus > 0)
         return data
     }, [method.data])
