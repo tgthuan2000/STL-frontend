@@ -95,6 +95,8 @@ const translation: {
     [LANGUAGE.SEARCH]: 'Search',
     [LANGUAGE.SEND_NOTIFY]: 'Send notify',
     [LANGUAGE.DROP_IMAGE_HERE]: 'Drop image here',
+    [LANGUAGE.SHORT_COST]: 'Cost',
+    [LANGUAGE.SHORT_REMAINING]: 'Re',
 
     /* PWA */
     [LANGUAGE.APP_READY_WORK_OFFLINE]: 'App ready to work offline',

@@ -13,7 +13,7 @@ export const renderList: (data: any, index: number) => React.ReactNode = (data, 
     <div
         className={clsx(
             'flex w-full cursor-pointer flex-col px-2 py-2 hover:bg-slate-200 dark:hover:bg-slate-600',
-            !data.read ? 'bg-gray-200 dark:bg-slate-700' : 'bg-gray-100 dark:bg-slate-800'
+            !data.read ? 'bg-white dark:bg-slate-700' : 'bg-slate-50 dark:bg-slate-800'
         )}
         title={t(LANGUAGE.CLICK_TO_READ_DETAIL) as string}
     >
@@ -43,7 +43,7 @@ export const renderList: (data: any, index: number) => React.ReactNode = (data, 
         <div className='mt-2 flex items-center justify-between'>
             <div>
                 {data.read && (
-                    <p className='text-xs text-gray-600 dark:text-orange-400'>
+                    <p className='text-xs text-cyan-400 dark:text-orange-400'>
                         {t(LANGUAGE.READ)}: <b>{moment(data._updatedAt).format(DATE_FORMAT.TIME_DATE)}</b>
                     </p>
                 )}

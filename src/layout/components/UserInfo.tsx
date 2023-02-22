@@ -17,7 +17,7 @@ const UserInfo = () => {
     )
 
     return (
-        <Menu as='div' className='relative flex bg-gray-700 p-4 cursor-pointer select-none'>
+        <Menu as='div' className='relative flex cursor-pointer select-none bg-gray-700 p-4'>
             <Menu.Button className='block max-w-full'>
                 <div className='flex items-center justify-center gap-x-3'>
                     <div className='flex-shrink-0'>
@@ -25,19 +25,19 @@ const UserInfo = () => {
                     </div>
                     <div
                         className={clsx(
-                            'text-left flex-1 overflow-hidden',
-                            !desktop.open && 'group-hover:block hidden'
+                            'flex-1 overflow-hidden text-left',
+                            !desktop.open && 'hidden group-hover:block'
                         )}
                     >
-                        <p className='text-base font-normal text-white truncate'>{userProfile?.userName}</p>
-                        <p className='text-sm font-normal text-gray-400 truncate'>{userProfile?.email}</p>
+                        <p className='truncate text-base font-normal text-white'>{userProfile?.userName}</p>
+                        <p className='truncate text-sm font-normal text-gray-400'>{userProfile?.email}</p>
                     </div>
                 </div>
             </Menu.Button>
 
-            <Menu.Items className='absolute bottom-full left-1/2 mt-2 select-none whitespace-nowrap origin-top-right divide-y overflow-hidden divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
+            <Menu.Items className='absolute bottom-full left-1/2 mt-2 origin-top-right select-none divide-y divide-gray-100 overflow-hidden whitespace-nowrap rounded-md bg-white text-gray-900 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:divide-slate-700 dark:bg-slate-800 dark:text-slate-200'>
                 {_userOptionData.map((options, index) => (
-                    <div className='px-1 py-1 space-y-0.5' key={index}>
+                    <div className='space-y-0.5 px-1 py-1' key={index}>
                         {options?.map((option) => (
                             <MenuItem key={option.id} data={option} />
                         ))}
