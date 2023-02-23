@@ -7,7 +7,7 @@ import Label from '~/components/Label'
 import NumberHint from './NumberHint'
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-    ({ className, label, name, form, tracking, rules, type, ...props }, ref) => {
+    ({ className, label, name, form, tracking, rules, type, numberHint = true, ...props }, ref) => {
         const id = useId()
         return (
             <Controller
@@ -32,7 +32,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                                 {...props}
                             />
                         </div>
-                        {type === 'number' && <NumberHint field={field} />}
+                        {type === 'number' && numberHint && <NumberHint field={field} />}
                         <ErrorMessage error={error} />
                     </div>
                 )}
