@@ -7,7 +7,7 @@ exports[`query > getCategorySpending 1`] = `
     "userId": "123",
   },
   "query": "
-    *[_type == \\"categorySpending\\" && user._ref == $userId && kindSpending._ref == $kindSpending] | order(countUsed desc)
+    *[_type == \\"categorySpending\\" && user._ref == $userId && kindSpending._ref == $kindSpending && display == true] | order(countUsed desc)
     {
         _id,
         name
@@ -23,7 +23,7 @@ exports[`query > getMethodSpending 1`] = `
     "userId": "123",
   },
   "query": "
-    *[_type == \\"methodSpending\\" && user._ref == $userId] | order(countUsed desc)
+    *[_type == \\"methodSpending\\" && user._ref == $userId && display == true] | order(countUsed desc)
     {
         _id,
         surplus,
@@ -40,7 +40,7 @@ exports[`query > getMethodSpendingDescSurplus 1`] = `
     "userId": "123",
   },
   "query": "
-    *[_type == \\"methodSpending\\" && user._ref == $userId] | order(surplus desc)
+    *[_type == \\"methodSpending\\" && user._ref == $userId && display == true] | order(surplus desc)
     {
         _id,
         surplus,

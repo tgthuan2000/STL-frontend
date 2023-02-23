@@ -325,7 +325,7 @@ export interface AnimateWrapProps {
 }
 
 export interface ToggleProps {
-    label: string | React.ReactNode
+    label?: string | React.ReactNode
     form: UseFormReturn<any, object>
     rules?: Rules
     name: string
