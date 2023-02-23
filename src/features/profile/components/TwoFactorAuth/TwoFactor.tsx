@@ -4,10 +4,10 @@ import React, { useEffect, useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import axios from '~/axiosConfig'
+import { TwoFactorForm } from '~/components'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import { useAuth, useProfile } from '~/store/auth'
-import TwoFactorForm from './Form'
 import TwoFactorImage from './Image'
 
 interface TwoFactorProps {

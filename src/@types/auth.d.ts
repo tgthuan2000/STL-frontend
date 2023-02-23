@@ -11,7 +11,8 @@ export interface IUserProfile {
     google: string
     isHasPassword: boolean
     allowSendMail: boolean
-    enableTwoFactor: boolean
+    twoFA: boolean
+    base32: string
 }
 
 type Token = { accessToken?: string | null; refreshToken?: string | null }
@@ -35,7 +36,8 @@ export type IFetchGoogleResponse = (
     res: CredentialResponse,
     addToken: AddToken,
     addUserProfile: AddUserProfile,
-    setLoading: (value: boolean) => void
+    setLoading: (value: boolean) => void,
+    navigate: (path: string) => void
 ) => Promise<void>
 
 export interface GoogleData {
@@ -53,7 +55,8 @@ export type ILoginByEmailPassword = (
     data: LoginForm,
     addToken: AddToken,
     addUserProfile: AddUserProfile,
-    setLoading: (value: boolean) => void
+    setLoading: (value: boolean) => void,
+    navigate: (path: string) => void
 ) => Promise<void>
 
 export interface LoginByEmailPasswordFormProps {

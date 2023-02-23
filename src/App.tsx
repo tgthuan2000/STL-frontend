@@ -151,7 +151,7 @@ function App() {
                                             />
                                             <Route path='*' element={<Navigate to='/' />} />
                                         </Route>
-                                        <Route path='/auth' element={<AuthFeature />} />
+                                        <Route path='/auth/*' element={<AuthFeature />} />
                                     </Routes>
                                 </Suspense>
                             </FilePreviewProvider>

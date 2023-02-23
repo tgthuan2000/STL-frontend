@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
-import { Input } from '~/components/_base'
+import { Input, InputCode } from '~/components/_base'
 import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
 
@@ -19,7 +19,7 @@ const schema = yup.object().shape({
 })
 
 interface TwoFactorFormProps {
-    id: string
+    id?: string
     onSubmit: (data: { value: string }) => void
 }
 
@@ -38,13 +38,7 @@ const TwoFactorForm: React.FC<TwoFactorFormProps> = ({ id, onSubmit }) => {
 
     return (
         <form id={id} onSubmit={form.handleSubmit(handleSubmit)}>
-            <Input
-                form={form}
-                name='value'
-                type='number'
-                numberHint={false}
-                label={t(LANGUAGE.ENTER_CODE_APPLICATION)}
-            />
+            <InputCode form={form} name='value' label={t(LANGUAGE.ENTER_CODE_APPLICATION)} />
         </form>
     )
 }

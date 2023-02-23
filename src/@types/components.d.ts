@@ -621,3 +621,9 @@ export interface ListViewFilterProps {
     costTitle?: DefaultTFuncReturn
     countTitle?: DefaultTFuncReturn
 }
+
+export interface InputCodeProps {
+    form: UseFormReturn<any, object>
+    name: string
+    label?: string | DefaultTFuncReturn
+}

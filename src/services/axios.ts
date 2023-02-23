@@ -9,6 +9,7 @@ export const handleDataStatus = (code: CODE) => {
     const codes: { [key in CODE]: () => boolean | Id | void } = {
         /* COMMON */
         [CODE.SUCCESS]: () => true,
+
         [CODE.FORBIDDEN]: () => {
             return toast.error(t(LANGUAGE.NOTIFY_FORBIDDEN))
         },
@@ -31,6 +32,7 @@ export const handleDataStatus = (code: CODE) => {
         /* TOKEN */
         [CODE.ACCESS_TOKEN_EXPIRED]: () => {},
         [CODE.REFRESH_TOKEN_EXPIRED]: () => {},
+        [CODE.CHECK_2FA]: () => true,
     }
 
     return codes[code]?.()
