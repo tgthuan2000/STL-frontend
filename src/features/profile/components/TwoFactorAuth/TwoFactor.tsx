@@ -1,6 +1,6 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { googleLogout } from '@react-oauth/google'
-import React, { useEffect, useId, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import axios from '~/axiosConfig'
@@ -16,7 +16,6 @@ interface TwoFactorProps {
 
 const TwoFactor: React.FC<TwoFactorProps> = ({ onClose }) => {
     const { t } = useTranslation()
-    const id = useId()
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState('')
     const [imageRef] = useAutoAnimate<HTMLDivElement>()
@@ -39,10 +38,10 @@ const TwoFactor: React.FC<TwoFactorProps> = ({ onClose }) => {
         fetchData()
     }, [])
 
-    const handleSubmit = async (data: { value: string }) => {
+    const handleSubmit = async (data: string) => {
         try {
             setSubmitLoading(true)
-            const d = (await axios.post('/auth/verify-2fa', { code: data.value })) as { verified: boolean }
+            const d = (await axios.post('/auth/verify-2fa', { code: data })) as { verified: boolean }
             if (d.verified) {
                 onClose()
                 toast.success(t(LANGUAGE.NOTIFY_TWO_FA_CODE_SUCCESS))
@@ -71,19 +70,19 @@ const TwoFactor: React.FC<TwoFactorProps> = ({ onClose }) => {
                     <TwoFactorImage data={data} loading={loading} />
                 </div>
                 <p className='text-left text-xs'>{t(LANGUAGE.SCAN_QR_CODE_DESCRIPTION_2)}</p>
-                <TwoFactorForm id={id} onSubmit={handleSubmit} />
+                <TwoFactorForm onSubmit={handleSubmit} />
             </div>
             {/* Footer */}
             <div className='flex-shrink-0 select-none'>
-                <div className=' flex justify-end gap-2'>
-                    <button
+                <div className='flex justify-end gap-2'>
+                    {/* <button
                         type='submit'
                         form={id}
                         disabled={loading}
                         className='py-1 px-2 font-medium text-pink-500 hover:opacity-50 disabled:opacity-50 sm:text-base'
                     >
                         {t(LANGUAGE.SAVE)}
-                    </button>
+                    </button> */}
                     <button
                         type='button'
                         className='py-1 px-2 text-gray-400 hover:opacity-50 sm:text-base'

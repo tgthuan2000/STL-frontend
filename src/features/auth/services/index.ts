@@ -26,7 +26,7 @@ export const fetchGoogleResponse: IFetchGoogleResponse = async (
             })) as { accessToken: string; refreshToken: string; data: any; code: CODE }
 
             if (d.code === CODE.CHECK_2FA) {
-                navigate('/auth/2fa')
+                navigate('/auth/2fa', { state: { credential } })
                 return
             }
 
@@ -64,7 +64,7 @@ export const loginByEmailPassword: ILoginByEmailPassword = async (
         }
 
         if (d.code === CODE.CHECK_2FA) {
-            navigate('/auth/2fa')
+            navigate('/auth/2fa', { state: { _id: document._id, data } })
             return
         }
 

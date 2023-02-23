@@ -33,6 +33,7 @@ export const handleDataStatus = (code: CODE) => {
         [CODE.ACCESS_TOKEN_EXPIRED]: () => {},
         [CODE.REFRESH_TOKEN_EXPIRED]: () => {},
         [CODE.CHECK_2FA]: () => true,
+        [CODE.TWO_FA_INVALID]: () => toast.error(t(LANGUAGE.NOTIFY_TWO_FA_CODE_INVALID)),
     }
 
     return codes[code]?.()

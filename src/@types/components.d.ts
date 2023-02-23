@@ -622,8 +622,14 @@ export interface ListViewFilterProps {
     countTitle?: DefaultTFuncReturn
 }
 
-export interface InputCodeProps {
-    form: UseFormReturn<any, object>
-    name: string
-    label?: string | DefaultTFuncReturn
+export interface TwoFactorFormRef {
+    clear: () => void
+}
+
+export interface TwoFactorFormProps {
+    number?: number
+    disabled?: boolean
+    password?: boolean
+    placeholder?: string
+    onSubmit: (data: string) => void
 }
