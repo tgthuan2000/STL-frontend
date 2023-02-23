@@ -96,6 +96,8 @@ enum LANGUAGE {
     ENABLE = 'enable',
     DISABLED = 'disabled',
     SET_UP = 'set-up',
+    SECURITY = 'security',
+    EMAIL = 'email',
 
     /* PWA */
     APP_READY_WORK_OFFLINE = 'app-ready-work-offline',
@@ -236,6 +238,11 @@ enum LANGUAGE {
     MOST_COST_TOTAL = 'most-cost-total',
     MOST_METHOD_AMOUNT = 'most-method-amount',
     MOST_CATEGORY_AMOUNT = 'most-category-amount',
+    TWO_FACTOR_AUTHENTICATION_ERROR = 'two-factor-authentication-error',
+    ENTER_CODE_APPLICATION = 'enter-code-application',
+    SCAN_QR_CODE = 'scan-qr-code',
+    SCAN_QR_CODE_DESCRIPTION = 'scan-qr-code-description',
+    TWO_FA_SETUP = 'two-fa-setup',
 
     /* SETTING */
     OLD_PASSWORD_INCORRECT = 'old-password-incorrect',

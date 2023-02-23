@@ -100,6 +100,8 @@ const translation: {
     [LANGUAGE.ENABLE]: 'Enable',
     [LANGUAGE.DISABLED]: 'Disabled',
     [LANGUAGE.SET_UP]: 'Set up',
+    [LANGUAGE.SECURITY]: 'Security',
+    [LANGUAGE.EMAIL]: 'Email',
 
     /* PWA */
     [LANGUAGE.APP_READY_WORK_OFFLINE]: 'App ready to work offline',
@@ -240,6 +242,11 @@ const translation: {
     [LANGUAGE.MOST_COST_TOTAL]: 'Total cost most',
     [LANGUAGE.MOST_METHOD_AMOUNT]: 'Method amount most',
     [LANGUAGE.MOST_CATEGORY_AMOUNT]: 'Category amount most',
+    [LANGUAGE.TWO_FACTOR_AUTHENTICATION_ERROR]: 'Two factor authentication error',
+    [LANGUAGE.ENTER_CODE_APPLICATION]: 'Enter the six-digit code from the application',
+    [LANGUAGE.SCAN_QR_CODE]: 'Scan QR code',
+    [LANGUAGE.SCAN_QR_CODE_DESCRIPTION]: 'Scan the QR code with the Google Authenticator application on your phone',
+    [LANGUAGE.TWO_FA_SETUP]: '2 FA setup',
 
     /* SETTING */
     [LANGUAGE.OLD_PASSWORD_INCORRECT]: 'Old password incorrect',

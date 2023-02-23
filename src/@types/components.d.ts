@@ -164,6 +164,7 @@ export interface InputProps
     form: UseFormReturn<any, object>
     rules?: Rules
     autoFocus?: boolean
+    numberHint?: boolean
     tracking?: TrackingFunc
 }
 

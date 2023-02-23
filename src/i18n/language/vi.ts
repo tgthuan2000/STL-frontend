@@ -100,6 +100,8 @@ const translation: {
     [LANGUAGE.ENABLE]: 'Bật',
     [LANGUAGE.DISABLED]: 'Tắt',
     [LANGUAGE.SET_UP]: 'Cài đặt',
+    [LANGUAGE.SECURITY]: 'Bảo mật',
+    [LANGUAGE.EMAIL]: 'Email',
 
     /* PWA */
     [LANGUAGE.APP_READY_WORK_OFFLINE]: 'Ứng dụng đã sẵn sàng để làm việc ngoại tuyến',
@@ -240,6 +242,11 @@ const translation: {
     [LANGUAGE.MOST_COST_TOTAL]: 'Tổng chi phí nhiều nhất',
     [LANGUAGE.MOST_METHOD_AMOUNT]: 'Số tiền nhiều nhất theo phương thức',
     [LANGUAGE.MOST_CATEGORY_AMOUNT]: 'Số tiền nhiều nhất thể loại',
+    [LANGUAGE.TWO_FACTOR_AUTHENTICATION_ERROR]: 'Mã xác thực không đúng',
+    [LANGUAGE.ENTER_CODE_APPLICATION]: 'Nhập mã xác thực (6 số) từ ứng dụng',
+    [LANGUAGE.SCAN_QR_CODE]: 'Quét mã QR',
+    [LANGUAGE.SCAN_QR_CODE_DESCRIPTION]: 'Quét mã QR bằng ứng dụng Google Authenticator trên điện thoại của bạn',
+    [LANGUAGE.TWO_FA_SETUP]: 'Thiết lập xác thực hai bước',
 
     /* AUTH */
     [LANGUAGE.OR]: 'Hoặc',

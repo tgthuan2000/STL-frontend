@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import LANGUAGE from '~/i18n/language/key'
 import { useProfile } from '~/store/auth'
-import TwoFactorDialog from './TwoFactorDialog'
+import TwoFactorDialog from './Dialog'
 
 interface TwoFactorForm {
     enable: boolean
@@ -67,7 +67,7 @@ const TwoFactorAuth = () => {
                     )}
                 </div>
             </form>
-            <TwoFactorDialog isShow={show && enable} title='2FA setup' onClose={_closeDialog} />
+            <TwoFactorDialog isShow={show && enable} onClose={_closeDialog} />
         </>
     )
 }
