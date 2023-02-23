@@ -171,6 +171,7 @@ const translation: {
     [LANGUAGE.NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD]: 'Account can not login by email and password',
     [LANGUAGE.NOTIFY_INVALID_PASSWORD]: 'Invalid password',
     [LANGUAGE.NOTIFY_INVALID_OLD_PASSWORD]: 'Invalid old password',
+    [LANGUAGE.NOTIFY_INVALID_DATA]: 'Invalid data',
     [LANGUAGE.NOTIFY_NO_CHANGE]: 'No change',
     [LANGUAGE.NOTIFY_REQUIRED_EMAIL]: 'Required email',
     [LANGUAGE.NOTIFY_REQUIRED_ID]: 'Required id',
@@ -182,6 +183,8 @@ const translation: {
     [LANGUAGE.NOTIFY_REQUIRED_DATA]: 'Required data',
     [LANGUAGE.NOTIFY_REQUIRED_URL]: 'Required url',
     [LANGUAGE.NOTIFY_REQUIRED_SUBSCRIPTION_ID]: 'Required subscription id',
+    [LANGUAGE.NOTIFY_TWO_FA_CODE_INVALID]: 'Two factor authentication code invalid',
+    [LANGUAGE.NOTIFY_TWO_FA_CODE_SUCCESS]: 'Two factor authentication code success',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Do you want to notify?',
@@ -246,6 +249,8 @@ const translation: {
     [LANGUAGE.ENTER_CODE_APPLICATION]: 'Enter the six-digit code from the application',
     [LANGUAGE.SCAN_QR_CODE]: 'Scan QR code',
     [LANGUAGE.SCAN_QR_CODE_DESCRIPTION]: 'Scan the QR code with the Google Authenticator application on your phone',
+    [LANGUAGE.SCAN_QR_CODE_DESCRIPTION_2]:
+        'After scanning the barcode above, the app will display a six-digit code that you can enter below. Upon successful activation, you will also be logged out of all other active sessions.',
     [LANGUAGE.TWO_FA_SETUP]: '2 FA setup',
 
     /* SETTING */

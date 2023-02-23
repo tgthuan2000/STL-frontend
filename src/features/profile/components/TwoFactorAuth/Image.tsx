@@ -1,4 +1,5 @@
 import React from 'react'
+import LoadingIcon from '~/components/Loading/LoadingIcon'
 
 interface TwoFactorImageProps {
     data: string
@@ -6,7 +7,14 @@ interface TwoFactorImageProps {
 }
 
 const TwoFactorImage: React.FC<TwoFactorImageProps> = ({ data, loading }) => {
-    return <span className='inline-block h-full w-full bg-pink-500' />
+    if (loading) {
+        return (
+            <div className='flex h-full w-full items-center justify-center'>
+                <LoadingIcon />
+            </div>
+        )
+    }
+    return <img src={data} alt='#qr-code' className='inline-block h-full w-full border-none bg-pink-500 outline-none' />
 }
 
 export default TwoFactorImage

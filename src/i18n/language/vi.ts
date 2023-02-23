@@ -171,6 +171,7 @@ const translation: {
     [LANGUAGE.NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD]: 'Tài khoản chưa cài đặt đăng nhập bằng email và mật khẩu!',
     [LANGUAGE.NOTIFY_INVALID_PASSWORD]: 'Mật khẩu không đúng!',
     [LANGUAGE.NOTIFY_INVALID_OLD_PASSWORD]: 'Mật khẩu cũ không đúng!',
+    [LANGUAGE.NOTIFY_INVALID_DATA]: 'Dữ liệu không hợp lệ!',
     [LANGUAGE.NOTIFY_NO_CHANGE]: 'Không thay đổi',
     [LANGUAGE.NOTIFY_REQUIRED_EMAIL]: 'Không tìm thấy email!',
     [LANGUAGE.NOTIFY_REQUIRED_ID]: 'Không tìm thấy id!',
@@ -182,6 +183,8 @@ const translation: {
     [LANGUAGE.NOTIFY_REQUIRED_DATA]: 'Không tìm thấy giá trị data!',
     [LANGUAGE.NOTIFY_REQUIRED_URL]: 'Không tìm thấy giá trị url!',
     [LANGUAGE.NOTIFY_REQUIRED_SUBSCRIPTION_ID]: 'Không tìm thấy giá trị subscription id!',
+    [LANGUAGE.NOTIFY_TWO_FA_CODE_INVALID]: 'Mã xác thực không đúng!',
+    [LANGUAGE.NOTIFY_TWO_FA_CODE_SUCCESS]: 'Xác thực thành công!',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Bạn có chắc chắn muốn gửi thông báo này?',
@@ -246,6 +249,9 @@ const translation: {
     [LANGUAGE.ENTER_CODE_APPLICATION]: 'Nhập mã xác thực (6 số) từ ứng dụng',
     [LANGUAGE.SCAN_QR_CODE]: 'Quét mã QR',
     [LANGUAGE.SCAN_QR_CODE_DESCRIPTION]: 'Quét mã QR bằng ứng dụng Google Authenticator trên điện thoại của bạn',
+    [LANGUAGE.SCAN_QR_CODE_DESCRIPTION_2]:
+        'Sau khi quét mã vạch ở trên, ứng dụng sẽ hiển thị mã gồm sáu số mà bạn có thể nhập vào bên dưới. Sau khi kích hoạt thành công, bạn cũng sẽ đăng xuất khỏi tất cả các phiên hoạt động khác.',
+
     [LANGUAGE.TWO_FA_SETUP]: 'Thiết lập xác thực hai bước',
 
     /* AUTH */

@@ -26,6 +26,7 @@ export const handleDataStatus = (code: CODE) => {
         /* INVALID */
         [CODE.INVALID_OLD_PASSWORD]: () => toast.error(t(LANGUAGE.NOTIFY_INVALID_OLD_PASSWORD)),
         [CODE.INVALID_PASSWORD]: () => toast.error(t(LANGUAGE.NOTIFY_INVALID_PASSWORD)),
+        [CODE.INVALID_DATA]: () => toast.error(t(LANGUAGE.NOTIFY_INVALID_DATA)),
 
         /* TOKEN */
         [CODE.ACCESS_TOKEN_EXPIRED]: () => {},

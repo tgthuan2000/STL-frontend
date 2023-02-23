@@ -167,6 +167,7 @@ enum LANGUAGE {
     NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD = 'notify-account-cant-login-by-email-password',
     NOTIFY_INVALID_PASSWORD = 'notify-invalid-password',
     NOTIFY_INVALID_OLD_PASSWORD = 'notify-invalid-old-password',
+    NOTIFY_INVALID_DATA = 'notify-invalid-data',
     NOTIFY_NO_CHANGE = 'no-change',
     NOTIFY_REQUIRED_EMAIL = 'notify-required-email',
     NOTIFY_REQUIRED_ID = 'notify-required-id',
@@ -178,6 +179,8 @@ enum LANGUAGE {
     NOTIFY_REQUIRED_DATA = 'notify-required-data',
     NOTIFY_REQUIRED_URL = 'notify-required-url',
     NOTIFY_REQUIRED_SUBSCRIPTION_ID = 'notify-required-subscription-id',
+    NOTIFY_TWO_FA_CODE_INVALID = 'notify-two-fa-code-invalid',
+    NOTIFY_TWO_FA_CODE_SUCCESS = 'notify-two-fa-code-success',
 
     /* CONFIRM */
     CONFIRM_NOTIFY = 'confirm-notify',
@@ -242,6 +245,7 @@ enum LANGUAGE {
     ENTER_CODE_APPLICATION = 'enter-code-application',
     SCAN_QR_CODE = 'scan-qr-code',
     SCAN_QR_CODE_DESCRIPTION = 'scan-qr-code-description',
+    SCAN_QR_CODE_DESCRIPTION_2 = 'scan-qr-code-description-2',
     TWO_FA_SETUP = 'two-fa-setup',
 
     /* SETTING */
