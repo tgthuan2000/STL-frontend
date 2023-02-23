@@ -93,6 +93,9 @@ enum LANGUAGE {
     DROP_IMAGE_HERE = 'drop-image-here',
     SHORT_COST = 'short-cost',
     SHORT_REMAINING = 'short-remaining',
+    ENABLE = 'enable',
+    DISABLED = 'disabled',
+    SET_UP = 'set-up',
 
     /* PWA */
     APP_READY_WORK_OFFLINE = 'app-ready-work-offline',
@@ -222,7 +225,8 @@ enum LANGUAGE {
 
     /* PROFILE */
     JOIN_DATE = 'join-date',
-    ALLOW_RECEIVE_NOTIFY_BY_MAIL = 'allow-receive-notify-by-mail',
+    RECEIVE_NOTIFY_BY_MAIL = 'receive-notify-by-mail',
+    TWO_FACTOR_AUTHENTICATION = 'two-factor-authentication',
     MOST_USED = 'most-used',
     MOST_USED_RECEIVE = 'most-used-receive',
     MOST_USED_COST = 'most-used-cost',

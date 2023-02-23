@@ -11,6 +11,7 @@ export interface IUserProfile {
     google: string
     isHasPassword: boolean
     allowSendMail: boolean
+    enableTwoFactor: boolean
 }
 
 type Token = { accessToken?: string | null; refreshToken?: string | null }

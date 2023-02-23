@@ -16,7 +16,7 @@ import { useConfig, useLoading } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { useProfile } from '~/store/auth'
-import { AllowSendMail, ProfileInfo, ProfileInfoGroup, ProfileInfoSkeleton } from '../components'
+import { AllowSendMail, ProfileInfo, ProfileInfoGroup, ProfileInfoSkeleton, TwoFactorAuth } from '../components'
 import { services } from '../services'
 import * as profileServices from '../services/profile'
 
@@ -113,10 +113,9 @@ const Dashboard = () => {
                         <Button
                             type='button'
                             color='primary'
-                            className='inline-flex min-w-0 items-center justify-center rounded-lg border bg-gray-200 text-gray-700 shadow transition-all hover:bg-gray-700 hover:text-white dark:border-slate-700 dark:bg-slate-700 dark:text-slate-200 dark:hover:opacity-50'
+                            className='inline-flex min-w-0 items-center justify-center gap-1 rounded-lg border bg-gray-200 text-gray-700 shadow transition-all hover:bg-gray-700 hover:text-white dark:border-slate-700 dark:bg-slate-700 dark:text-slate-200 dark:hover:opacity-50 sm:gap-2'
                         >
-                            <PencilSquareIcon className='h-4 w-4' />{' '}
-                            <span className='hidden sm:inline-block'>{t(LANGUAGE.UPDATE)}</span>
+                            <PencilSquareIcon className='h-4 w-4' /> <span>{t(LANGUAGE.UPDATE)}</span>
                         </Button>
                     </div>
                     {/* USER INFO */}
@@ -129,9 +128,25 @@ const Dashboard = () => {
                             {t(LANGUAGE.JOIN_DATE)}:{' '}
                             <b>{moment(userProfile?._createdAt).format(DATE_FORMAT.TIME_DATE)}</b>
                         </span>
-                        <AllowSendMail />
                     </div>
                     {/* DASHBOARD */}
+
+                    <div className='mx-auto my-10 w-full max-w-lg space-y-6 text-gray-900 dark:text-slate-200 sm:rounded-lg sm:border sm:p-5 sm:shadow-md dark:sm:border-slate-600'>
+                        <div className='space-y-2 px-2'>
+                            <h4 className='border-b border-gray-200 pb-2 text-2xl font-normal dark:border-slate-700 sm:text-xl'>
+                                Email
+                            </h4>
+                            <AllowSendMail />
+                        </div>
+                        <div className='space-y-2 px-2'>
+                            <h4 className='border-b border-gray-200 pb-2 text-2xl font-normal dark:border-slate-700 sm:text-xl'>
+                                Security
+                            </h4>
+                            <TwoFactorAuth />
+                        </div>
+                    </div>
+
+                    <hr className='mx-2 block border-gray-200 dark:border-slate-700 sm:hidden' />
 
                     <div className='mt-2 space-y-2 sm:mt-5 sm:space-y-5'>
                         <div className='sm:px-3'>

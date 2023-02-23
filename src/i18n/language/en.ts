@@ -97,6 +97,9 @@ const translation: {
     [LANGUAGE.DROP_IMAGE_HERE]: 'Drop image here',
     [LANGUAGE.SHORT_COST]: 'Cost',
     [LANGUAGE.SHORT_REMAINING]: 'Re',
+    [LANGUAGE.ENABLE]: 'Enable',
+    [LANGUAGE.DISABLED]: 'Disabled',
+    [LANGUAGE.SET_UP]: 'Set up',
 
     /* PWA */
     [LANGUAGE.APP_READY_WORK_OFFLINE]: 'App ready to work offline',
@@ -226,7 +229,8 @@ const translation: {
 
     /* PROFILE */
     [LANGUAGE.JOIN_DATE]: 'Join date',
-    [LANGUAGE.ALLOW_RECEIVE_NOTIFY_BY_MAIL]: 'Allow receive notify by mail',
+    [LANGUAGE.RECEIVE_NOTIFY_BY_MAIL]: 'Receive notify by mail',
+    [LANGUAGE.TWO_FACTOR_AUTHENTICATION]: 'Two factor authentication',
     [LANGUAGE.MOST_USED]: 'Most used',
     [LANGUAGE.MOST_USED_RECEIVE]: 'Receive used most',
     [LANGUAGE.MOST_USED_COST]: 'Cost used most',
