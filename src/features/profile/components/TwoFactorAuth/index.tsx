@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import LANGUAGE from '~/i18n/language/key'
 import { useProfile } from '~/store/auth'
 import TwoFactorDialog from './Dialog'
+import DisabledTwoFactorDialog from './DisabledDialog'
 
 interface TwoFactorForm {
     enable: boolean
@@ -55,7 +56,7 @@ const TwoFactorAuth = () => {
                             type='submit'
                             className='rounded-md border border-radical-red-500 bg-radical-red-50 py-2 px-4 font-medium text-radical-red-500 transition-all hover:bg-radical-red-500 hover:text-white dark:bg-transparent dark:hover:bg-radical-red-500'
                         >
-                            {t(LANGUAGE.DISABLED)}
+                            {t(LANGUAGE.DISABLED_2FA)}
                         </button>
                     ) : (
                         <button
@@ -68,6 +69,7 @@ const TwoFactorAuth = () => {
                 </div>
             </form>
             <TwoFactorDialog isShow={show && enable} onClose={_closeDialog} />
+            <DisabledTwoFactorDialog isShow={show && !enable} onClose={_closeDialog} />
         </>
     )
 }

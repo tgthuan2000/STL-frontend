@@ -3,6 +3,7 @@ import { googleLogout } from '@react-oauth/google'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { OptionMenuItemProps } from '~/@types/layout'
+import axios from '~/axiosConfig'
 import LANGUAGE from '~/i18n/language/key'
 import { useAuth, useProfile } from '~/store/auth'
 
@@ -15,6 +16,7 @@ const LogoutMenuItem: React.FC<OptionMenuItemProps> = ({ btnClassName, iconClass
         removeToken()
         removeUserProfile()
         googleLogout()
+        axios.defaults.headers.common['Authorization'] = null
     }
 
     return (
