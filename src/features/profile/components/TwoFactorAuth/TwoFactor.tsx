@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import axios from '~/axiosConfig'
-import { TwoFactorForm } from '~/components'
+import { CopyCode, TwoFactorForm } from '~/components'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import { useAuth, useProfile } from '~/store/auth'
@@ -19,6 +19,7 @@ const TwoFactor: React.FC<TwoFactorProps> = ({ onClose }) => {
     const { t } = useTranslation()
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState('')
+    const [secret, setSecret] = useState('')
     const [imageRef] = useAutoAnimate<HTMLDivElement>()
     const { setSubmitLoading } = useLoading()
     const { removeToken } = useAuth()
@@ -27,10 +28,11 @@ const TwoFactor: React.FC<TwoFactorProps> = ({ onClose }) => {
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
-            const data = (await axios.get('/auth/2fa')) as { otpAuthUrl: string }
+            const data = (await axios.get('/auth/2fa')) as { otpAuthUrl: string; secret: string }
             if (data.otpAuthUrl) {
                 const image = await QRCode.toDataURL(data.otpAuthUrl)
                 setData(image)
+                setSecret(data.secret)
             }
             try {
             } catch (error) {
@@ -66,28 +68,29 @@ const TwoFactor: React.FC<TwoFactorProps> = ({ onClose }) => {
     return (
         <div className='flex h-full flex-col'>
             {/* Header */}
-            <h1 className='flex-shrink-0 select-none text-2xl font-normal sm:text-3xl'>{t(LANGUAGE.TWO_FA_SETUP)}</h1>
+            <h1 className='flex-shrink-0 select-none px-8 pt-8 pb-4 text-2xl font-normal sm:text-3xl'>
+                {t(LANGUAGE.TWO_FA_SETUP)}
+            </h1>
             {/* Content */}
-            <div className='flex flex-1 flex-col items-center justify-center gap-3'>
-                <h2 className='text-lg font-normal'>{t(LANGUAGE.SCAN_QR_CODE)}</h2>
-                <p className='text-center text-sm'>{t(LANGUAGE.SCAN_QR_CODE_DESCRIPTION)}</p>
-                <div ref={imageRef} className='my-5 h-48 w-48 overflow-hidden rounded-md'>
-                    <TwoFactorImage data={data} loading={loading} />
+            <div className='flex-1 overflow-y-auto overflow-x-hidden p-8'>
+                <div className='flex flex-col items-center justify-center gap-5'>
+                    <h2 className='text-lg font-normal'>{t(LANGUAGE.SCAN_QR_CODE)}</h2>
+                    <p className='text-center text-sm'>{t(LANGUAGE.SCAN_QR_CODE_DESCRIPTION)}</p>
+                    <div ref={imageRef} className='h-52 w-52 overflow-hidden'>
+                        <TwoFactorImage data={data} loading={loading} />
+                    </div>
+                    <span className='text-center text-lg font-medium'>{t(LANGUAGE.OR)}</span>
+                    <span>{t(LANGUAGE.SCAN_QR_CODE_DESCRIPTION_3)}</span>
+                    <span className='overflow-hidden rounded-md bg-gray-200 py-2 px-4 text-base font-normal dark:bg-slate-700'>
+                        <CopyCode data={secret} loading={loading} />
+                    </span>
+                    <p className='text-left text-xs'>{t(LANGUAGE.SCAN_QR_CODE_DESCRIPTION_2)}</p>
+                    <TwoFactorForm onSubmit={handleSubmit} />
                 </div>
-                <p className='text-left text-xs'>{t(LANGUAGE.SCAN_QR_CODE_DESCRIPTION_2)}</p>
-                <TwoFactorForm onSubmit={handleSubmit} />
             </div>
             {/* Footer */}
-            <div className='flex-shrink-0 select-none'>
+            <div className='flex-shrink-0 select-none py-4 px-8'>
                 <div className='flex justify-end gap-2'>
-                    {/* <button
-                        type='submit'
-                        form={id}
-                        disabled={loading}
-                        className='py-1 px-2 font-medium text-pink-500 hover:opacity-50 disabled:opacity-50 sm:text-base'
-                    >
-                        {t(LANGUAGE.SAVE)}
-                    </button> */}
                     <button
                         type='button'
                         className='py-1 px-2 text-gray-400 hover:opacity-50 sm:text-base'
