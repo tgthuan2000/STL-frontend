@@ -93,7 +93,7 @@ const TwoFactor: React.FC<TwoFactorProps> = ({ onClose }) => {
                 <div className='flex justify-end gap-2'>
                     <button
                         type='button'
-                        className='py-1 px-2 text-gray-400 hover:opacity-50 sm:text-base'
+                        className='py-1 px-2 font-normal text-gray-400 hover:opacity-50 sm:text-base sm:font-medium'
                         onClick={onClose}
                     >
                         {t(LANGUAGE.CANCEL)}
