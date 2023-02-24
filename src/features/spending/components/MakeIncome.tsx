@@ -192,6 +192,7 @@ const MakeIncome = () => {
                 _type: 'reference',
                 _ref: userProfile?._id,
             },
+            active: true,
         }
 
         try {
@@ -214,6 +215,7 @@ const MakeIncome = () => {
                 _type: 'reference',
                 _ref: userProfile?._id,
             },
+            active: true,
         }
 
         try {

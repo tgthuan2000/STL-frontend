@@ -119,6 +119,7 @@ const TransactionDetail = () => {
                 _type: 'reference',
                 _ref: userProfile?._id,
             },
+            active: true,
         }
 
         try {
