@@ -3,6 +3,7 @@ import { googleLogout } from '@react-oauth/google'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { SettingComponentProps } from '~/@types/setting'
+import axios from '~/axiosConfig'
 import LANGUAGE from '~/i18n/language/key'
 import { useAuth, useProfile } from '~/store/auth'
 
@@ -17,6 +18,7 @@ const Logout: React.FC<SettingComponentProps> = (props) => {
                 googleLogout()
                 removeToken()
                 removeUserProfile()
+                axios.defaults.headers.common['Authorization'] = null
             }}
             {...props}
         >

@@ -57,6 +57,7 @@ const ChangePassword = () => {
             removeUserProfile()
             removeToken()
             googleLogout()
+            axios.defaults.headers.common['Authorization'] = null
         } catch (error) {
             console.log(error)
         } finally {

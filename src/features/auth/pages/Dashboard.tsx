@@ -7,14 +7,13 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { Button } from '~/components'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
-import { useAuth, useProfile } from '~/store/auth'
+import { useAuth } from '~/store/auth'
 import { fetchGoogleResponse, loginByEmailPassword } from '../services'
 
 const LoginByEmailPasswordForm = React.lazy(() => import('../components/LoginByEmailPasswordForm'))
 
 const Dashboard = () => {
     const { t } = useTranslation()
-    const { addUserProfile } = useProfile()
     const { accessToken, setToken } = useAuth()
     const { setConfigLoading } = useLoading()
     const { state } = useLocation()
@@ -30,9 +29,7 @@ const Dashboard = () => {
             {!showFormLogin ? (
                 <>
                     <GoogleLogin
-                        onSuccess={async (res) =>
-                            await fetchGoogleResponse(res, setToken, addUserProfile, setConfigLoading, navigate)
-                        }
+                        onSuccess={async (res) => await fetchGoogleResponse(res, setToken, setConfigLoading, navigate)}
                         onError={() => {}}
                     />
                     <span className='text-xs text-gray-900 dark:text-white'>{t(LANGUAGE.OR)}</span>
@@ -47,9 +44,7 @@ const Dashboard = () => {
                 </>
             ) : (
                 <LoginByEmailPasswordForm
-                    onSubmit={async (data) =>
-                        await loginByEmailPassword(data, setToken, addUserProfile, setConfigLoading, navigate)
-                    }
+                    onSubmit={async (data) => await loginByEmailPassword(data, setToken, setConfigLoading, navigate)}
                     onBack={() => setShowFormLogin(false)}
                 />
             )}

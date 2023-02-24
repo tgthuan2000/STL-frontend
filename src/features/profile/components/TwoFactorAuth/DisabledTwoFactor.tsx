@@ -27,6 +27,7 @@ const DisabledTwoFactor: React.FC<DisabledTwoFactorProps> = ({ onClose }) => {
             removeToken()
             removeUserProfile()
             googleLogout()
+            axios.defaults.headers.common['Authorization'] = null
         } catch (error) {
             console.log(error)
         } finally {

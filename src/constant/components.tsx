@@ -14,6 +14,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { googleLogout } from '@react-oauth/google'
 import { IMenuBtn } from '~/@types/components'
+import axios from '~/axiosConfig'
 import { CreateMember, MakeGetLoan } from '~/features/loan/components'
 import { AddCategory, AddMethod, MakeBudget, MakeCost, MakeIncome, MakeTransfer } from '~/features/spending/components'
 import i18n from '~/i18n'
@@ -175,6 +176,7 @@ export const menuSpendingPC: IMenuBtn[] = [
         action: (logout) => {
             googleLogout()
             logout()
+            axios.defaults.headers.common['Authorization'] = null
         },
         divider: true,
     },
@@ -264,6 +266,7 @@ export const menuLoanPC: IMenuBtn[] = [
         action: (logout) => {
             googleLogout()
             logout()
+            axios.defaults.headers.common['Authorization'] = null
         },
         divider: true,
     },

@@ -10,20 +10,14 @@ import { GET_DATA_BY_EMAIL } from '~/schema/query/login'
 
 const { t } = i18n
 
-export const fetchGoogleResponse: IFetchGoogleResponse = async (
-    res,
-    addUserToken,
-    addUserProfile,
-    setLoading,
-    navigate
-) => {
+export const fetchGoogleResponse: IFetchGoogleResponse = async (res, addUserToken, setLoading, navigate) => {
     try {
         setLoading(true)
         const credential = res.credential
         if (credential) {
             const d = (await axios.post('/auth/google/sign-in', {
                 credential,
-            })) as { accessToken: string; refreshToken: string; data: any; code: CODE }
+            })) as { accessToken: string; refreshToken: string; code: CODE }
 
             if (d.code === CODE.CHECK_2FA) {
                 navigate('/auth/2fa', { state: { credential } })
@@ -34,7 +28,6 @@ export const fetchGoogleResponse: IFetchGoogleResponse = async (
                 accessToken: d.accessToken,
                 refreshToken: d.refreshToken,
             })
-            addUserProfile(d.data)
         }
     } catch (error) {
         console.error(error)
@@ -47,7 +40,6 @@ export const fetchGoogleResponse: IFetchGoogleResponse = async (
 export const loginByEmailPassword: ILoginByEmailPassword = async (
     { data, password },
     addUserToken,
-    addUserProfile,
     setLoading,
     navigate
 ) => {
@@ -61,7 +53,6 @@ export const loginByEmailPassword: ILoginByEmailPassword = async (
             accessToken: string
             refreshToken: string
             code: CODE
-            data: any
         }
 
         if (d.code === CODE.CHECK_2FA) {
@@ -73,7 +64,6 @@ export const loginByEmailPassword: ILoginByEmailPassword = async (
             accessToken: d.accessToken,
             refreshToken: d.refreshToken,
         })
-        addUserProfile(d.data)
     } catch (error) {
         console.error({ error })
     } finally {

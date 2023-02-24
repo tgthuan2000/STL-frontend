@@ -52,6 +52,7 @@ const TwoFactor: React.FC<TwoFactorProps> = ({ onClose }) => {
                 removeToken()
                 removeUserProfile()
                 googleLogout()
+                axios.defaults.headers.common['Authorization'] = null
             } else {
                 toast.error(t(LANGUAGE.NOTIFY_TWO_FA_CODE_INVALID))
             }

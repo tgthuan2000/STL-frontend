@@ -36,7 +36,6 @@ interface UserProfileStore {
 export type IFetchGoogleResponse = (
     res: CredentialResponse,
     addToken: AddToken,
-    addUserProfile: AddUserProfile,
     setLoading: (value: boolean) => void,
     navigate: NavigateFunction
 ) => Promise<void>
@@ -55,7 +54,6 @@ export interface LoginForm {
 export type ILoginByEmailPassword = (
     data: LoginForm,
     addToken: AddToken,
-    addUserProfile: AddUserProfile,
     setLoading: (value: boolean) => void,
     navigate: NavigateFunction
 ) => Promise<void>
