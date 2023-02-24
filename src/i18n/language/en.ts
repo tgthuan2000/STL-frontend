@@ -255,8 +255,7 @@ const translation: {
         'After scanning the barcode above, the app will display a six-digit code that you can enter below. Upon successful activation, you will also be logged out of all other active sessions.',
     [LANGUAGE.TWO_FA_SETUP]: '2 FA setup',
     [LANGUAGE.DISABLED_TWO_FA_SETUP]: 'Disabled 2 FA setup',
-    [LANGUAGE.DISABLED_TWO_FA_DESCRIPTION]:
-        'Enter the six-digit code from your two-factor authenticator app to continue.',
+    [LANGUAGE.TWO_FA_DESCRIPTION]: 'Enter the six-digit code from your two-factor authenticator app to continue.',
 
     /* SETTING */
     [LANGUAGE.OLD_PASSWORD_INCORRECT]: 'Old password incorrect',

@@ -250,7 +250,7 @@ enum LANGUAGE {
     SCAN_QR_CODE_DESCRIPTION_2 = 'scan-qr-code-description-2',
     TWO_FA_SETUP = 'two-fa-setup',
     DISABLED_TWO_FA_SETUP = 'disabled-two-fa-setup',
-    DISABLED_TWO_FA_DESCRIPTION = 'disabled-two-fa-description',
+    TWO_FA_DESCRIPTION = 'two-fa-description',
 
     /* SETTING */
     OLD_PASSWORD_INCORRECT = 'old-password-incorrect',

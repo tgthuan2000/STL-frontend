@@ -8,6 +8,7 @@ const TwoFactorForm = forwardRef<TwoFactorFormRef, TwoFactorFormProps>(
 
         useEffect(() => {
             inputsRef.current[0]?.focus()
+            inputsRef.current[0]?.select()
         }, [])
 
         useImperativeHandle(ref, () => ({ clear }), [])
@@ -15,6 +16,23 @@ const TwoFactorForm = forwardRef<TwoFactorFormRef, TwoFactorFormProps>(
         const clear = () => {
             inputsRef.current.forEach((v) => (v.value = ''))
             inputsRef.current[0]?.focus()
+            inputsRef.current[0]?.select()
+        }
+
+        const handleOnPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+            const { clipboardData } = e
+            const data = clipboardData?.getData('text')
+            if (data !== undefined) {
+                const arr = data.split('')
+                if (arr.length === number) {
+                    arr.forEach((v, i) => {
+                        inputsRef.current[i].value = v
+                    })
+                    const last = inputsRef.current[number - 1]
+                    last.focus()
+                    last.select()
+                }
+            }
         }
 
         const handleOnKeyDown = (e: any) => {
@@ -25,6 +43,7 @@ const TwoFactorForm = forwardRef<TwoFactorFormRef, TwoFactorFormProps>(
                     if (prev !== null) {
                         const t = prev as HTMLInputElement
                         t.focus()
+                        t.select()
                     }
                 }
             }
@@ -38,10 +57,13 @@ const TwoFactorForm = forwardRef<TwoFactorFormRef, TwoFactorFormProps>(
                 if (nextElementSibling !== null) {
                     const t = nextElementSibling as HTMLInputElement
                     t.focus()
+                    t.select()
                 } else {
                     const data = inputsRef.current.map((v) => v.value).join('')
                     onSubmit(data)
                 }
+            } else if (value.length > 1) {
+                e.target.value = value.slice(0, 1)
             }
         }
 
@@ -59,6 +81,7 @@ const TwoFactorForm = forwardRef<TwoFactorFormRef, TwoFactorFormProps>(
                             }}
                             onChange={handleOnChange}
                             onKeyDown={handleOnKeyDown}
+                            onPaste={handleOnPaste}
                         />
                     )
                 })}

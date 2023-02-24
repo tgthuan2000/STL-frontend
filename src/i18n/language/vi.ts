@@ -256,7 +256,7 @@ const translation: {
 
     [LANGUAGE.TWO_FA_SETUP]: 'Thiết lập xác thực hai bước',
     [LANGUAGE.DISABLED_TWO_FA_SETUP]: 'Tắt xác thực hai bước',
-    [LANGUAGE.DISABLED_TWO_FA_DESCRIPTION]: 'Nhập mã gồm sáu số từ ứng dụng xác thực hai yếu tố của bạn để tiếp tục.',
+    [LANGUAGE.TWO_FA_DESCRIPTION]: 'Nhập mã gồm sáu số từ ứng dụng xác thực hai yếu tố của bạn để tiếp tục.',
 
     /* AUTH */
     [LANGUAGE.OR]: 'Hoặc',

@@ -42,7 +42,7 @@ const DisabledTwoFactor: React.FC<DisabledTwoFactorProps> = ({ onClose }) => {
             </h1>
             {/* Content */}
             <div className='flex flex-1 flex-col items-center justify-center gap-3'>
-                <p className='text-left text-sm'>{t(LANGUAGE.DISABLED_TWO_FA_DESCRIPTION)}</p>
+                <p className='text-left text-sm'>{t(LANGUAGE.TWO_FA_DESCRIPTION)}</p>
                 <TwoFactorForm onSubmit={handleSubmit} />
             </div>
             {/* Footer */}
