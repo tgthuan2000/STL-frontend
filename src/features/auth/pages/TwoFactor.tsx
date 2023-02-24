@@ -34,7 +34,7 @@ const TwoFactor = () => {
                 accessToken: data.accessToken,
                 refreshToken: data.refreshToken,
             })
-            addUserProfile(state?.data ?? data.data)
+            addUserProfile(data.data)
             navigate('/')
         } catch (error) {
             console.log(error)

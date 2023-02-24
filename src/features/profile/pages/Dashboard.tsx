@@ -30,7 +30,7 @@ const Dashboard = () => {
     const { getKindSpendingIds } = useConfig()
     const { loading, setConfigLoading } = useLoading()
     const { width } = useWindowSize()
-
+    console.log(userProfile)
     const getAll = useMemo(
         () =>
             services.getAll({

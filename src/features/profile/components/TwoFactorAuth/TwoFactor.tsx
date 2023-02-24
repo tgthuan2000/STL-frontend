@@ -1,5 +1,6 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { googleLogout } from '@react-oauth/google'
+import QRCode from 'qrcode'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -26,8 +27,11 @@ const TwoFactor: React.FC<TwoFactorProps> = ({ onClose }) => {
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
-            const data = (await axios.get('/auth/2fa')) as { qrImage: string }
-            setData(data.qrImage)
+            const data = (await axios.get('/auth/2fa')) as { otpAuthUrl: string }
+            if (data.otpAuthUrl) {
+                const image = await QRCode.toDataURL(data.otpAuthUrl)
+                setData(image)
+            }
             try {
             } catch (error) {
                 console.log(error)

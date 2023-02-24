@@ -99,6 +99,7 @@ const translation: {
     [LANGUAGE.SHORT_REMAINING]: 'CL',
     [LANGUAGE.ENABLE]: 'Bật',
     [LANGUAGE.DISABLED]: 'Tắt',
+    [LANGUAGE.DISABLED_2FA]: 'Tắt xác thực 2 bước',
     [LANGUAGE.SET_UP]: 'Cài đặt',
     [LANGUAGE.SECURITY]: 'Bảo mật',
     [LANGUAGE.EMAIL]: 'Email',
@@ -185,6 +186,7 @@ const translation: {
     [LANGUAGE.NOTIFY_REQUIRED_SUBSCRIPTION_ID]: 'Không tìm thấy giá trị subscription id!',
     [LANGUAGE.NOTIFY_TWO_FA_CODE_INVALID]: 'Mã xác thực không đúng!',
     [LANGUAGE.NOTIFY_TWO_FA_CODE_SUCCESS]: 'Xác thực thành công!',
+    [LANGUAGE.NOTIFY_DISABLED_TWO_FA_SUCCESS]: 'Vô hiệu hóa xác thực 2 bước thành công!',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Bạn có chắc chắn muốn gửi thông báo này?',
@@ -253,6 +255,8 @@ const translation: {
         'Sau khi quét mã vạch ở trên, ứng dụng sẽ hiển thị mã gồm sáu số mà bạn có thể nhập vào bên dưới. Sau khi kích hoạt thành công, bạn cũng sẽ đăng xuất khỏi tất cả các phiên hoạt động khác.',
 
     [LANGUAGE.TWO_FA_SETUP]: 'Thiết lập xác thực hai bước',
+    [LANGUAGE.DISABLED_TWO_FA_SETUP]: 'Tắt xác thực hai bước',
+    [LANGUAGE.DISABLED_TWO_FA_DESCRIPTION]: 'Nhập mã gồm sáu số từ ứng dụng xác thực hai yếu tố của bạn để tiếp tục.',
 
     /* AUTH */
     [LANGUAGE.OR]: 'Hoặc',

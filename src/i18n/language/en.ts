@@ -99,6 +99,7 @@ const translation: {
     [LANGUAGE.SHORT_REMAINING]: 'Re',
     [LANGUAGE.ENABLE]: 'Enable',
     [LANGUAGE.DISABLED]: 'Disabled',
+    [LANGUAGE.DISABLED_2FA]: 'Disabled 2FA',
     [LANGUAGE.SET_UP]: 'Set up',
     [LANGUAGE.SECURITY]: 'Security',
     [LANGUAGE.EMAIL]: 'Email',
@@ -185,6 +186,7 @@ const translation: {
     [LANGUAGE.NOTIFY_REQUIRED_SUBSCRIPTION_ID]: 'Required subscription id',
     [LANGUAGE.NOTIFY_TWO_FA_CODE_INVALID]: 'Two factor authentication code invalid',
     [LANGUAGE.NOTIFY_TWO_FA_CODE_SUCCESS]: 'Two factor authentication code success',
+    [LANGUAGE.NOTIFY_DISABLED_TWO_FA_SUCCESS]: 'Disabled two factor authentication success',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Do you want to notify?',
@@ -252,6 +254,9 @@ const translation: {
     [LANGUAGE.SCAN_QR_CODE_DESCRIPTION_2]:
         'After scanning the barcode above, the app will display a six-digit code that you can enter below. Upon successful activation, you will also be logged out of all other active sessions.',
     [LANGUAGE.TWO_FA_SETUP]: '2 FA setup',
+    [LANGUAGE.DISABLED_TWO_FA_SETUP]: 'Disabled 2 FA setup',
+    [LANGUAGE.DISABLED_TWO_FA_DESCRIPTION]:
+        'Enter the six-digit code from your two-factor authenticator app to continue.',
 
     /* SETTING */
     [LANGUAGE.OLD_PASSWORD_INCORRECT]: 'Old password incorrect',

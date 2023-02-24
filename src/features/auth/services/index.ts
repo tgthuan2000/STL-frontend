@@ -61,10 +61,11 @@ export const loginByEmailPassword: ILoginByEmailPassword = async (
             accessToken: string
             refreshToken: string
             code: CODE
+            data: any
         }
 
         if (d.code === CODE.CHECK_2FA) {
-            navigate('/auth/2fa', { state: { _id: document._id, data } })
+            navigate('/auth/2fa', { state: { _id: document._id } })
             return
         }
 
@@ -72,7 +73,7 @@ export const loginByEmailPassword: ILoginByEmailPassword = async (
             accessToken: d.accessToken,
             refreshToken: d.refreshToken,
         })
-        addUserProfile(data)
+        addUserProfile(d.data)
     } catch (error) {
         console.error({ error })
     } finally {
