@@ -64,3 +64,36 @@ export type UseLocalStorageResult<T> = [
     set: (value: valueSet<T>) => void,
     remove: () => void
 ]
+
+export type CreateDoc = { _id: string; name: string }
+
+export interface Service {
+    createMethod(name: string): CreateMethodDoc
+    createCategory(name: string, kindSpendingId: string): CreateCategoryDoc
+    create(document: CreateMethodDoc | CreateCategoryDoc): Promise<SanityDocument<CreateDoc>>
+}
+
+export interface CreateMethodDoc {
+    _type: string
+    name?: string
+    surplus: number
+    user: {
+        _type: string
+        _ref?: string
+    }
+    active: boolean
+}
+
+export interface CreateCategoryDoc {
+    _type: string
+    name?: string
+    kindSpending: {
+        _type: string
+        _ref?: string
+    }
+    user: {
+        _type: string
+        _ref?: string
+    }
+    active: boolean
+}

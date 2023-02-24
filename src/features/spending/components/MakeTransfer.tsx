@@ -10,7 +10,7 @@ import { Button, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
-import { useQuery, useServiceQuery } from '~/hook'
+import { useDocument, useQuery, useServiceQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
@@ -26,6 +26,7 @@ const MakeTransfer = () => {
     const { getKindSpendingId } = useConfig()
     const { needCheckWhenLeave } = useCheck()
     const { METHOD_SPENDING_DESC_SURPLUS, RECENT_SPENDING, RECENT_SPENDING_PAGINATE } = useServiceQuery()
+    const document = useDocument()
 
     const [{ methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<MakeTransferQueryData>(
         { methodSpending: GET_METHOD_SPENDING },
@@ -148,18 +149,9 @@ const MakeTransfer = () => {
     }
 
     const handleAddMoreMethodSpending = async (name: string) => {
-        const document = {
-            _type: 'methodSpending',
-            name,
-            surplus: 0,
-            user: {
-                _type: 'reference',
-                _ref: userProfile?._id,
-            },
-        }
-
+        const methodDoc = document.createMethod(name)
         try {
-            const { _id, name } = await client.create(document)
+            const { _id, name } = await document.create(methodDoc)
             const res = deleteCacheData('methodSpending')
             console.log(res)
             reloadData()
