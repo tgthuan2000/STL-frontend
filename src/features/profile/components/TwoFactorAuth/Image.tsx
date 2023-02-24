@@ -14,7 +14,13 @@ const TwoFactorImage: React.FC<TwoFactorImageProps> = ({ data, loading }) => {
             </div>
         )
     }
-    return <img src={data} alt='#qr-code' className='inline-block h-full w-full border-none bg-pink-500 outline-none' />
+    return (
+        <img
+            src={data}
+            alt='#qr-code'
+            className='inline-block h-full w-full rounded-md border-none bg-pink-500 outline-none'
+        />
+    )
 }
 
 export default TwoFactorImage

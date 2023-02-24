@@ -103,6 +103,7 @@ const translation: {
     [LANGUAGE.SET_UP]: 'Set up',
     [LANGUAGE.SECURITY]: 'Security',
     [LANGUAGE.EMAIL]: 'Email',
+    [LANGUAGE.COPIED]: 'Copied',
 
     /* PWA */
     [LANGUAGE.APP_READY_WORK_OFFLINE]: 'App ready to work offline',
@@ -253,6 +254,7 @@ const translation: {
     [LANGUAGE.SCAN_QR_CODE_DESCRIPTION]: 'Scan the QR code with the Google Authenticator application on your phone',
     [LANGUAGE.SCAN_QR_CODE_DESCRIPTION_2]:
         'After scanning the barcode above, the app will display a six-digit code that you can enter below. Upon successful activation, you will also be logged out of all other active sessions.',
+    [LANGUAGE.SCAN_QR_CODE_DESCRIPTION_3]: 'Manually enter the code below in the 2FA authenticator app on your phone.',
     [LANGUAGE.TWO_FA_SETUP]: '2 FA setup',
     [LANGUAGE.DISABLED_TWO_FA_SETUP]: 'Disabled 2 FA setup',
     [LANGUAGE.TWO_FA_DESCRIPTION]: 'Enter the six-digit code from your two-factor authenticator app to continue.',
