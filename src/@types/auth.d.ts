@@ -2,6 +2,7 @@ import { CredentialResponse } from '@react-oauth/google'
 import { SanityAssetDocument, SanityDocument } from '@sanity/client'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import React from 'react'
+import { NavigateFunction } from 'react-router-dom'
 
 export interface IUserProfile {
     _id: string
@@ -11,7 +12,8 @@ export interface IUserProfile {
     google: string
     isHasPassword: boolean
     allowSendMail: boolean
-    enableTwoFactor: boolean
+    twoFA: boolean
+    base32: string
 }
 
 type Token = { accessToken?: string | null; refreshToken?: string | null }
@@ -34,8 +36,8 @@ interface UserProfileStore {
 export type IFetchGoogleResponse = (
     res: CredentialResponse,
     addToken: AddToken,
-    addUserProfile: AddUserProfile,
-    setLoading: (value: boolean) => void
+    setLoading: (value: boolean) => void,
+    navigate: NavigateFunction
 ) => Promise<void>
 
 export interface GoogleData {
@@ -52,8 +54,8 @@ export interface LoginForm {
 export type ILoginByEmailPassword = (
     data: LoginForm,
     addToken: AddToken,
-    addUserProfile: AddUserProfile,
-    setLoading: (value: boolean) => void
+    setLoading: (value: boolean) => void,
+    navigate: NavigateFunction
 ) => Promise<void>
 
 export interface LoginByEmailPasswordFormProps {

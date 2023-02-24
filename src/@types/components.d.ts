@@ -164,6 +164,7 @@ export interface InputProps
     form: UseFormReturn<any, object>
     rules?: Rules
     autoFocus?: boolean
+    numberHint?: boolean
     tracking?: TrackingFunc
 }
 
@@ -619,4 +620,16 @@ export interface ListViewFilterProps {
     receiveTitle?: DefaultTFuncReturn
     costTitle?: DefaultTFuncReturn
     countTitle?: DefaultTFuncReturn
+}
+
+export interface TwoFactorFormRef {
+    clear: () => void
+}
+
+export interface TwoFactorFormProps {
+    number?: number
+    disabled?: boolean
+    password?: boolean
+    placeholder?: string
+    onSubmit: (data: string) => void
 }
