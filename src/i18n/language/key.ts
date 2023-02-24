@@ -99,6 +99,7 @@ enum LANGUAGE {
     SET_UP = 'set-up',
     SECURITY = 'security',
     EMAIL = 'email',
+    COPIED = 'copied',
 
     /* PWA */
     APP_READY_WORK_OFFLINE = 'app-ready-work-offline',
@@ -248,6 +249,7 @@ enum LANGUAGE {
     SCAN_QR_CODE = 'scan-qr-code',
     SCAN_QR_CODE_DESCRIPTION = 'scan-qr-code-description',
     SCAN_QR_CODE_DESCRIPTION_2 = 'scan-qr-code-description-2',
+    SCAN_QR_CODE_DESCRIPTION_3 = 'scan-qr-code-description-3',
     TWO_FA_SETUP = 'two-fa-setup',
     DISABLED_TWO_FA_SETUP = 'disabled-two-fa-setup',
     TWO_FA_DESCRIPTION = 'two-fa-description',

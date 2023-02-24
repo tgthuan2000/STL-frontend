@@ -103,6 +103,7 @@ const translation: {
     [LANGUAGE.SET_UP]: 'Cài đặt',
     [LANGUAGE.SECURITY]: 'Bảo mật',
     [LANGUAGE.EMAIL]: 'Email',
+    [LANGUAGE.COPIED]: 'Đã sao chép',
 
     /* PWA */
     [LANGUAGE.APP_READY_WORK_OFFLINE]: 'Ứng dụng đã sẵn sàng để làm việc ngoại tuyến',
@@ -253,7 +254,8 @@ const translation: {
     [LANGUAGE.SCAN_QR_CODE_DESCRIPTION]: 'Quét mã QR bằng ứng dụng Google Authenticator trên điện thoại của bạn',
     [LANGUAGE.SCAN_QR_CODE_DESCRIPTION_2]:
         'Sau khi quét mã vạch ở trên, ứng dụng sẽ hiển thị mã gồm sáu số mà bạn có thể nhập vào bên dưới. Sau khi kích hoạt thành công, bạn cũng sẽ đăng xuất khỏi tất cả các phiên hoạt động khác.',
-
+    [LANGUAGE.SCAN_QR_CODE_DESCRIPTION_3]:
+        'Nhập thủ công mã bên dưới vào ứng dụng xác thực 2FA trên điện thoại của bạn.',
     [LANGUAGE.TWO_FA_SETUP]: 'Thiết lập xác thực hai bước',
     [LANGUAGE.DISABLED_TWO_FA_SETUP]: 'Tắt xác thực hai bước',
     [LANGUAGE.TWO_FA_DESCRIPTION]: 'Nhập mã gồm sáu số từ ứng dụng xác thực hai yếu tố của bạn để tiếp tục.',

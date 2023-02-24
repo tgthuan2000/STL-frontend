@@ -42,8 +42,8 @@ const TwoFactorDialog: React.FC<TwoFactorDialogProps> = ({ isShow, onClose }) =>
                                 leaveFrom='opacity-1'
                                 leaveTo='opacity-0'
                             >
-                                <Dialog.Panel className='pointer-events-auto mx-3 h-[80vh] w-screen max-w-full sm:max-w-xl'>
-                                    <div className='relative h-full min-h-[500px] flex-1 gap-2 overflow-hidden rounded-xl bg-gray-100 p-8 text-gray-900 shadow-xl dark:bg-slate-800 dark:text-slate-200 sm:p-10'>
+                                <Dialog.Panel className='pointer-events-auto mx-3 h-[90vh] w-screen max-w-full sm:max-w-xl'>
+                                    <div className='relative h-full min-h-[500px] flex-1 gap-2 overflow-hidden rounded-xl bg-gray-100 text-gray-900 shadow-xl dark:bg-slate-800 dark:text-slate-200 sm:p-10'>
                                         <button
                                             type='button'
                                             className='absolute top-8 right-8 text-gray-900 hover:opacity-70 focus:outline-none dark:text-slate-200'
