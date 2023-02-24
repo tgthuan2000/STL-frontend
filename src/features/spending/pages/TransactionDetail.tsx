@@ -14,7 +14,7 @@ import {
 import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useCache, useLoading } from '~/context'
-import { useQuery, useServiceQuery } from '~/hook'
+import { useDocument, useQuery, useServiceQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING, GET_TRANSACTION_DETAIL } from '~/schema/query/spending'
@@ -36,6 +36,7 @@ const TransactionDetail = () => {
         RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE,
         STATISTIC_SPENDING,
     } = useServiceQuery()
+    const document = useDocument()
 
     const [{ transaction, methodSpending }, fetchData, deleteCacheData, reloadData] =
         useQuery<TransactionDetailQueryData>(
@@ -86,21 +87,9 @@ const TransactionDetail = () => {
     }, [kindSpending, transaction.data])
 
     const handleAddMoreCategorySpending = async (name: string) => {
-        const document = {
-            _type: 'categorySpending',
-            name,
-            kindSpending: {
-                _type: 'reference',
-                _ref: kindSpending?._id,
-            },
-            user: {
-                _type: 'reference',
-                _ref: userProfile?._id,
-            },
-        }
-
+        const categoryDocument = document.createCategory(name, kindSpending?._id as string)
         try {
-            const { _id, name } = await client.create(document)
+            const { _id, name } = await document.create(categoryDocument)
             const res = deleteCacheDataCategory('categorySpending')
             console.log(res)
             reloadData()
@@ -111,18 +100,9 @@ const TransactionDetail = () => {
     }
 
     const handleAddMoreMethodSpending = async (name: string) => {
-        const document = {
-            _type: 'methodSpending',
-            name,
-            surplus: 0,
-            user: {
-                _type: 'reference',
-                _ref: userProfile?._id,
-            },
-        }
-
+        const methodDocument = document.createMethod(name)
         try {
-            const { _id, name } = await client.create(document)
+            const { _id, name } = await document.create(methodDocument)
             const res = deleteCacheData('methodSpending')
             console.log(res)
             reloadData()

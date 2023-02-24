@@ -10,7 +10,7 @@ import { Button, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
-import { useQuery, useServiceQuery } from '~/hook'
+import { useDocument, useQuery, useServiceQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
@@ -27,6 +27,7 @@ const MakeCost = () => {
     const { needCheckWhenLeave } = useCheck()
     const { METHOD_SPENDING_DESC_SURPLUS, RECENT_SPENDING, RECENT_SPENDING_PAGINATE, STATISTIC_SPENDING } =
         useServiceQuery()
+    const document = useDocument()
 
     const kindSpendingId = useMemo(() => {
         return getKindSpendingId('COST')
@@ -155,21 +156,10 @@ const MakeCost = () => {
     }
 
     const handleAddMoreCategorySpending = async (name: string) => {
-        const document = {
-            _type: 'categorySpending',
-            name,
-            kindSpending: {
-                _type: 'reference',
-                _ref: kindSpendingId,
-            },
-            user: {
-                _type: 'reference',
-                _ref: userProfile?._id,
-            },
-        }
+        const categoryDocument = document.createCategory(name, kindSpendingId as string)
 
         try {
-            const { _id, name } = await client.create(document)
+            const { _id, name } = await document.create(categoryDocument)
             const res = deleteCacheData('categorySpending')
             console.log(res)
             reloadData()
@@ -180,18 +170,10 @@ const MakeCost = () => {
     }
 
     const handleAddMoreMethodSpending = async (name: string) => {
-        const document = {
-            _type: 'methodSpending',
-            name,
-            surplus: 0,
-            user: {
-                _type: 'reference',
-                _ref: userProfile?._id,
-            },
-        }
+        const methodDoc = document.createMethod(name)
 
         try {
-            const { _id, name } = await client.create(document)
+            const { _id, name } = await document.create(methodDoc)
             const res = deleteCacheData('methodSpending')
             console.log(res)
             reloadData()
