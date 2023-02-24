@@ -10,7 +10,7 @@ import { ISpendingData } from '~/@types/spending'
 import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useCache, useLoading } from '~/context'
-import { useQuery, useServiceQuery } from '~/hook'
+import { useDocument, useQuery, useServiceQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_TRANSACTION_DETAIL, GET_USER_LOAN } from '~/schema/query/loan'
@@ -36,6 +36,7 @@ const TransactionEdit = () => {
         GET_STATISTIC_LOAN,
     } = useServiceQuery()
     const { deleteCache } = useCache()
+    const document = useDocument()
 
     const [{ transaction, methodSpending, userLoan }, fetchData, deleteCacheData, reloadData] =
         useQuery<TransactionEditQueryData>(
@@ -215,19 +216,9 @@ const TransactionEdit = () => {
     }
 
     const handleAddMoreMethodSpending = async (name: string) => {
-        const document = {
-            _type: 'methodSpending',
-            name,
-            surplus: 0,
-            user: {
-                _type: 'reference',
-                _ref: userProfile?._id,
-            },
-            active: true,
-        }
-
+        const methodDoc = document.createMethod(name)
         try {
-            const { _id, name } = await client.create(document)
+            const { _id, name } = await document.create(methodDoc)
             const res = deleteCacheData('methodSpending')
             console.log(res)
             reloadData()

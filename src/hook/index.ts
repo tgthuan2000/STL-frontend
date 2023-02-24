@@ -1,3 +1,4 @@
+export { default as useDocument } from './useDocument'
 export { default as useEventListener } from './useEventListener'
 export { default as useListViewFilter } from './useListViewFilter'
 export { default as useLocalStorage } from './useLocalStorage'
