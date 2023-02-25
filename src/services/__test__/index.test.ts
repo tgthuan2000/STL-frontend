@@ -1,16 +1,6 @@
 import moment from 'moment'
 import { describe, expect, it } from 'vitest'
-import {
-    deleteObjKeys,
-    getBudgetId,
-    getColorPrize,
-    getDate,
-    getDateOfMonth,
-    getSpacingTime,
-    hashCode,
-    listToTree,
-    sum,
-} from '..'
+import { service } from '..'
 
 describe('getDateOfMonth', () => {
     const testCases: Array<{ date: string; type: 'start' | 'end'; expected: string }> = [
@@ -38,7 +28,7 @@ describe('getDateOfMonth', () => {
     testCases.forEach((testCase) => {
         it(`${testCase.type}DateOfMonth/withDate`, () => {
             const date = moment(testCase.date, 'DD-MM-YYYY')
-            const actual = getDateOfMonth(testCase.type, date)
+            const actual = service.getDateOfMonth(testCase.type, date)
             const expected = testCase.expected
             expect(actual).toBe(expected)
         })
@@ -87,31 +77,7 @@ describe('getDate', () => {
     testCases.forEach((testCase) => {
         it(`${testCase.type}Date/${testCase.of}/withDate`, () => {
             const date = moment(testCase.date, 'DD-MM-YYYY').toDate()
-            const actual = getDate(date, testCase.type, testCase.of)
-            const expected = testCase.expected
-            expect(actual).toBe(expected)
-        })
-    })
-})
-
-describe('sum', () => {
-    const testCases: Array<{ arr: number[]; expected: number }> = [
-        {
-            arr: [1, 2, 3, 4, 5],
-            expected: 15,
-        },
-        {
-            arr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            expected: 55,
-        },
-        {
-            arr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-            expected: 120,
-        },
-    ]
-    testCases.forEach((testCase) => {
-        it(`${testCase.arr}/withArray`, () => {
-            const actual = sum(testCase.arr)
+            const actual = service.getDate(date, testCase.type, testCase.of)
             const expected = testCase.expected
             expect(actual).toBe(expected)
         })
@@ -152,7 +118,7 @@ describe('deleteObjKeys', () => {
     ]
     testCases.forEach((testCase) => {
         it(`${testCase.keys}/withKeys`, () => {
-            const actual = deleteObjKeys(testCase.obj, testCase.keys)
+            const actual = service.deleteObjKeys(testCase.obj, testCase.keys)
             const expected = testCase.expected
             expect(actual).toEqual(expected)
         })
@@ -176,7 +142,7 @@ describe('hashCode', () => {
     ]
     testCases.forEach((testCase) => {
         it(`${testCase.str}/withString`, () => {
-            const actual = hashCode(testCase.str)
+            const actual = service.hashCode(testCase.str)
             const expected = testCase.expected
             expect(actual).toBe(expected)
         })
@@ -200,7 +166,7 @@ describe('getColorPrize', () => {
     ]
     testCases.forEach((testCase) => {
         it(`${testCase.prize}/withPrize`, () => {
-            const actual = getColorPrize(testCase.prize)
+            const actual = service.getColorPrize(testCase.prize)
             const expected = testCase.expected
             expect(actual).toStrictEqual(expected)
         })
@@ -234,7 +200,7 @@ describe('getBudgetId', () => {
     testCases.forEach((testCase) => {
         it(`${testCase.budget.userId}/withBudget`, () => {
             const date = moment(testCase.budget.date, 'DD-MM-YYYY')
-            const actual = getBudgetId(testCase.budget.userId, date)
+            const actual = service.getBudgetId(testCase.budget.userId, date)
             const expected = testCase.expected
             expect(actual).toBe(expected)
         })
@@ -271,7 +237,7 @@ describe('getSpacingTime', () => {
     ]
     testCases.forEach((testCase) => {
         it(`${testCase.time}/withTime`, () => {
-            const actual = getSpacingTime(testCase.time, testCase.now)
+            const actual = service.getSpacingTime(testCase.time, testCase.now)
             const expected = testCase.expected
             expect(actual).toBe(expected)
         })
@@ -525,7 +491,7 @@ describe('listToTree', () => {
     ]
     testCases.forEach((testCase) => {
         it('should return correct tree', () => {
-            expect(listToTree(testCase.list)).toEqual(testCase.expected)
+            expect(service.listToTree(testCase.list)).toEqual(testCase.expected)
         })
     })
 })

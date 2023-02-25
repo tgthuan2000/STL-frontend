@@ -2,7 +2,7 @@ import { filter, get, isEmpty } from 'lodash'
 import React, { useMemo } from 'react'
 import { List } from '~/@types'
 import { Feedback, MessagesProps } from '~/@types/feedback'
-import { listToTree } from '~/services'
+import { service } from '~/services'
 import ChatInfoItem from './ChatInfoItem'
 import './message.css'
 import SeeMoreButton from './SeeMoreButton'
@@ -10,7 +10,7 @@ import SeeMoreButton from './SeeMoreButton'
 const Messages: React.FC<MessagesProps> = ({ data, onSeeMoreClick, onReply, onEdit, onDelete }) => {
     const memo = useMemo(() => {
         if (!data) return null
-        const _d = listToTree<Feedback>(data)
+        const _d = service.listToTree<Feedback>(data)
 
         const callBack = (data: Array<List<Feedback>>, parentReplyNum: number) => {
             return data

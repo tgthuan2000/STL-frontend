@@ -4,7 +4,7 @@ import { Services } from '~/@types/announce-config'
 import { COUNT_PAGINATE, TAGS } from '~/constant'
 import { E_FILTER_DATE } from '~/constant/template'
 import { GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE, GET_NOTIFY_CONFIG_PAGINATE } from '~/schema/query/notify'
-import { getDate, getDate as _getDate } from '~/services'
+import { service } from '~/services'
 
 export const services: Services = {
     getAll: {
@@ -30,30 +30,30 @@ export const services: Services = {
                 switch (Number(type)) {
                     case E_FILTER_DATE.DATE: {
                         params = {
-                            __startDate: _getDate(moment(data).toDate(), 'start'),
-                            __endDate: _getDate(moment(data).toDate(), 'end'),
+                            __startDate: service.getDate(moment(data).toDate(), 'start'),
+                            __endDate: service.getDate(moment(data).toDate(), 'end'),
                         }
                         break
                     }
                     case E_FILTER_DATE.DATE_RANGE: {
                         const [startDate, endDate] = data
                         params = {
-                            __startDate: _getDate(moment(startDate).toDate(), 'start'),
-                            __endDate: _getDate(moment(endDate).toDate(), 'end'),
+                            __startDate: service.getDate(moment(startDate).toDate(), 'start'),
+                            __endDate: service.getDate(moment(endDate).toDate(), 'end'),
                         }
                         break
                     }
                     case E_FILTER_DATE.MONTH: {
                         params = {
-                            __startDate: _getDate(moment(data).toDate(), 'start', 'month'),
-                            __endDate: _getDate(moment(data).toDate(), 'end', 'month'),
+                            __startDate: service.getDate(moment(data).toDate(), 'start', 'month'),
+                            __endDate: service.getDate(moment(data).toDate(), 'end', 'month'),
                         }
                         break
                     }
                     case E_FILTER_DATE.YEAR: {
                         params = {
-                            __startDate: _getDate(moment(data).toDate(), 'start', 'year'),
-                            __endDate: _getDate(moment(data).toDate(), 'end', 'year'),
+                            __startDate: service.getDate(moment(data).toDate(), 'start', 'year'),
+                            __endDate: service.getDate(moment(data).toDate(), 'end', 'year'),
                         }
                         break
                     }
@@ -81,8 +81,8 @@ export const services: Services = {
                     query: { notify: GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
-                        __startDate: getDate(date, 'start'),
-                        __endDate: getDate(date, 'end'),
+                        __startDate: service.getDate(date, 'start'),
+                        __endDate: service.getDate(date, 'end'),
                     },
                 })
             case E_FILTER_DATE.DATE_RANGE:
@@ -92,8 +92,8 @@ export const services: Services = {
                     query: { notify: GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
-                        __startDate: getDate(startDate, 'start'),
-                        __endDate: getDate(endDate, 'end'),
+                        __startDate: service.getDate(startDate, 'start'),
+                        __endDate: service.getDate(endDate, 'end'),
                     },
                 })
             case E_FILTER_DATE.MONTH:
@@ -103,8 +103,8 @@ export const services: Services = {
                     query: { notify: GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
-                        __startDate: getDate(month, 'start', 'month'),
-                        __endDate: getDate(month, 'end', 'month'),
+                        __startDate: service.getDate(month, 'start', 'month'),
+                        __endDate: service.getDate(month, 'end', 'month'),
                     },
                 })
             case E_FILTER_DATE.YEAR:
@@ -114,8 +114,8 @@ export const services: Services = {
                     query: { notify: GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE },
                     params: {
                         ...defaultValues.params,
-                        __startDate: getDate(year, 'start', 'year'),
-                        __endDate: getDate(year, 'end', 'year'),
+                        __startDate: service.getDate(year, 'start', 'year'),
+                        __endDate: service.getDate(year, 'end', 'year'),
                     },
                 })
         }

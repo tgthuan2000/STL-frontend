@@ -13,7 +13,7 @@ import { KIND_SPENDING } from '~/constant/spending'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_CONFIG } from '~/schema/query/config'
-import { getBudgetId } from '~/services'
+import { service } from '~/services'
 import { useAuth, useProfile } from '~/store/auth'
 import { useLoading } from './LoadingContext'
 
@@ -99,7 +99,7 @@ const ConfigProvider = configHOC(({ children }) => {
                     setConfig((prev) => ({
                         ...prev,
                         kindSpending,
-                        budgetSpending: { _id: getBudgetId(userProfile?._id as string) },
+                        budgetSpending: { _id: service.getBudgetId(userProfile?._id as string) },
                         role: role?.role as IRoleControl,
                     }))
                     setOk(true)

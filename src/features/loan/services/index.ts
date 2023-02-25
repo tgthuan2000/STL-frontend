@@ -9,7 +9,7 @@ import {
     GET_RECENT_SPENDING_PAGINATE,
     GET_RECENT_SPENDING_TOTAL,
 } from '~/schema/query/spending'
-import { getDate } from '~/services'
+import { service } from '~/services'
 
 export const services: Services = {
     getAll: ({ kindSpendingIds, userId }) => ({
@@ -42,30 +42,30 @@ export const services: Services = {
                 switch (Number(type)) {
                     case E_FILTER_DATE.DATE: {
                         params = {
-                            startDate: getDate(moment(data).toDate(), 'start'),
-                            endDate: getDate(moment(data).toDate(), 'end'),
+                            startDate: service.getDate(moment(data).toDate(), 'start'),
+                            endDate: service.getDate(moment(data).toDate(), 'end'),
                         }
                         break
                     }
                     case E_FILTER_DATE.DATE_RANGE: {
                         const [startDate, endDate] = data
                         params = {
-                            startDate: getDate(moment(startDate).toDate(), 'start'),
-                            endDate: getDate(moment(endDate).toDate(), 'end'),
+                            startDate: service.getDate(moment(startDate).toDate(), 'start'),
+                            endDate: service.getDate(moment(endDate).toDate(), 'end'),
                         }
                         break
                     }
                     case E_FILTER_DATE.MONTH: {
                         params = {
-                            startDate: getDate(moment(data).toDate(), 'start', 'month'),
-                            endDate: getDate(moment(data).toDate(), 'end', 'month'),
+                            startDate: service.getDate(moment(data).toDate(), 'start', 'month'),
+                            endDate: service.getDate(moment(data).toDate(), 'end', 'month'),
                         }
                         break
                     }
                     case E_FILTER_DATE.YEAR: {
                         params = {
-                            startDate: getDate(moment(data).toDate(), 'start', 'year'),
-                            endDate: getDate(moment(data).toDate(), 'end', 'year'),
+                            startDate: service.getDate(moment(data).toDate(), 'start', 'year'),
+                            endDate: service.getDate(moment(data).toDate(), 'end', 'year'),
                         }
                         break
                     }
@@ -97,8 +97,8 @@ export const services: Services = {
                     query,
                     params: {
                         ...defaultValues.params,
-                        __startDate: getDate(date, 'start'),
-                        __endDate: getDate(date, 'end'),
+                        __startDate: service.getDate(date, 'start'),
+                        __endDate: service.getDate(date, 'end'),
                     },
                 })
             case E_FILTER_DATE.DATE_RANGE:
@@ -108,8 +108,8 @@ export const services: Services = {
                     query,
                     params: {
                         ...defaultValues.params,
-                        __startDate: getDate(startDate, 'start'),
-                        __endDate: getDate(endDate, 'end'),
+                        __startDate: service.getDate(startDate, 'start'),
+                        __endDate: service.getDate(endDate, 'end'),
                     },
                 })
             case E_FILTER_DATE.MONTH:
@@ -119,8 +119,8 @@ export const services: Services = {
                     query,
                     params: {
                         ...defaultValues.params,
-                        __startDate: getDate(month, 'start', 'month'),
-                        __endDate: getDate(month, 'end', 'month'),
+                        __startDate: service.getDate(month, 'start', 'month'),
+                        __endDate: service.getDate(month, 'end', 'month'),
                     },
                 })
             case E_FILTER_DATE.YEAR:
@@ -130,8 +130,8 @@ export const services: Services = {
                     query,
                     params: {
                         ...defaultValues.params,
-                        __startDate: getDate(year, 'start', 'year'),
-                        __endDate: getDate(year, 'end', 'year'),
+                        __startDate: service.getDate(year, 'start', 'year'),
+                        __endDate: service.getDate(year, 'end', 'year'),
                     },
                 })
         }

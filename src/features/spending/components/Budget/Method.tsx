@@ -1,11 +1,10 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { isEmpty } from 'lodash'
+import { isEmpty, sum } from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { BudgetProps } from '~/@types/spending'
 import { colors } from '~/constant/spending'
 import LANGUAGE from '~/i18n/language/key'
-import { sum } from '~/services'
 import BudgetItem from './Item'
 import BudgetSkeleton from './Skeleton'
 

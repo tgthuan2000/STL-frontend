@@ -1,4 +1,4 @@
-import { isEmpty, isNil } from 'lodash'
+import { isEmpty, isNil, sum } from 'lodash'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -15,7 +15,7 @@ import {
     GET_RECENT_SPENDING,
     GET_STATISTIC_SPENDING,
 } from '~/schema/query/spending'
-import { getDateOfMonth, sum } from '~/services'
+import { service } from '~/services'
 import { useProfile } from '~/store/auth'
 import { BudgetCategory, BudgetMethod, Method, Recent, Statistic } from '../components'
 
@@ -38,8 +38,8 @@ const Dashboard = () => {
             kindSpendingIds: getKindSpendingIds('COST', 'RECEIVE', 'TRANSFER_FROM', 'TRANSFER_TO'),
             from: 0,
             to: 5,
-            startDate: getDateOfMonth('start'),
-            endDate: getDateOfMonth('end'),
+            startDate: service.getDateOfMonth('start'),
+            endDate: service.getDateOfMonth('end'),
             budgetKind: getKindSpendingId('COST') as string,
             ...(budgetId && { budgetId }),
         },
@@ -73,7 +73,9 @@ const Dashboard = () => {
         )
         const surplus = _.receive - _.cost
         return {
-            dateRange: ['start', 'end'].map((value) => moment(getDateOfMonth(value as any)).format(DATE_FORMAT.D_DATE)),
+            dateRange: ['start', 'end'].map((value) =>
+                moment(service.getDateOfMonth(value as any)).format(DATE_FORMAT.D_DATE)
+            ),
             data: [
                 {
                     _id: getKindSpendingId('RECEIVE') as string,
