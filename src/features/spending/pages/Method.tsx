@@ -1,36 +1,18 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { BarSvgProps, ComputedDatum, ResponsiveBar } from '@nivo/bar'
-import { isEmpty, map, size } from 'lodash'
+import { map, size } from 'lodash'
 import numeral from 'numeral'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { IMethodSpending } from '~/@types/spending'
-import { TAGS } from '~/constant'
-import { useCheck, useConfig } from '~/context'
-import { useQuery, useWindowSize } from '~/hook'
+import { useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
-import { GET_METHOD_SPENDING_DESC_SURPLUS } from '~/schema/query/spending'
-import { useProfile } from '~/store/auth'
+import useMethod from '../hook/useMethod'
 
 const Method = () => {
     const { t } = useTranslation()
-    const { kindSpending } = useConfig()
-    const { userProfile } = useProfile()
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const { width } = useWindowSize()
-
-    const [{ method }, fetchData, , reload] = useQuery<{
-        method: IMethodSpending[]
-    }>({ method: GET_METHOD_SPENDING_DESC_SURPLUS }, { userId: userProfile?._id as string }, { method: TAGS.ALTERNATE })
-
-    useEffect(() => {
-        if (!isEmpty(kindSpending)) {
-            fetchData()
-        }
-    }, [kindSpending])
-
-    useCheck(reload)
-
+    const [{ method }] = useMethod()
     const isMobileScreen = width < 768
 
     const dataFilter = useMemo(() => {
