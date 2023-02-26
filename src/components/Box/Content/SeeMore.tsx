@@ -8,7 +8,7 @@ const SeeMore: React.FC<{ seeMore?: boolean; to?: string }> = ({ seeMore, to = '
     const { t } = useTranslation()
     if (!seeMore) return null
     return (
-        <div className='border-t border-gray-200 bg-gray-50 px-6 py-2 text-right text-sm font-medium dark:border-slate-700 dark:bg-slate-700'>
+        <div className='border-t border-gray-200 bg-white px-6 py-2 text-right text-sm font-medium dark:border-slate-700 dark:bg-slate-700'>
             <Link
                 to={to}
                 className='inline-flex cursor-pointer items-center gap-x-1 text-blue-500 hover:opacity-70 dark:text-blue-600'
