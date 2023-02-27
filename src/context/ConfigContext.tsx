@@ -68,7 +68,7 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
                 }
             }
             getUserProfile()
-        }, [accessToken, userProfile, accessToken])
+        }, [accessToken, userProfile])
 
         if (!accessToken) return <Navigate to='/auth' replace={true} state={{ url: pathname }} />
 

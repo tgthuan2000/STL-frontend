@@ -5,7 +5,7 @@ import axios from '~/axiosConfig'
 import { TwoFactorForm } from '~/components'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
-import { useAuth, useProfile } from '~/store/auth'
+import { useAuth } from '~/store/auth'
 
 const TwoFactor = () => {
     const { t } = useTranslation()
@@ -13,7 +13,6 @@ const TwoFactor = () => {
     const { loading, setSubmitLoading } = useLoading()
     const navigate = useNavigate()
     const { setToken } = useAuth()
-    const { addUserProfile } = useProfile()
     const ref = useRef<{ clear: () => void }>(null)
 
     const handleSubmit = async (code: string) => {
@@ -31,13 +30,11 @@ const TwoFactor = () => {
             const data = (await axios.post('/auth/2fa', body)) as {
                 accessToken: string
                 refreshToken: string
-                data: any
             }
             setToken({
                 accessToken: data.accessToken,
                 refreshToken: data.refreshToken,
             })
-            addUserProfile(data.data)
             navigate('/')
         } catch (error) {
             console.log(error)
