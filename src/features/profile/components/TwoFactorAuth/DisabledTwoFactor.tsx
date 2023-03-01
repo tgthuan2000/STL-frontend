@@ -1,12 +1,11 @@
-import { googleLogout } from '@react-oauth/google'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import axios from '~/axiosConfig'
 import { TwoFactorForm } from '~/components'
 import { useLoading } from '~/context'
+import { useLogout } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
-import { useAuth, useProfile } from '~/store/auth'
 
 interface DisabledTwoFactorProps {
     onClose: () => void
@@ -15,19 +14,15 @@ interface DisabledTwoFactorProps {
 const DisabledTwoFactor: React.FC<DisabledTwoFactorProps> = ({ onClose }) => {
     const { t } = useTranslation()
     const { setSubmitLoading } = useLoading()
-    const { removeToken } = useAuth()
-    const { removeUserProfile } = useProfile()
+    const logout = useLogout()
 
     const handleSubmit = async (data: string) => {
         try {
             setSubmitLoading(true)
             await axios.post('/auth/disabled-2fa', { code: data })
+            await logout()
             onClose()
             toast.success(t(LANGUAGE.NOTIFY_DISABLED_TWO_FA_SUCCESS))
-            removeToken()
-            removeUserProfile()
-            googleLogout()
-            axios.defaults.headers.common['Authorization'] = null
         } catch (error) {
             console.log(error)
         } finally {

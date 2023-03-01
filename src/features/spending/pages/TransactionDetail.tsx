@@ -1,8 +1,6 @@
 import { get, head } from 'lodash'
 import moment from 'moment'
-import { useEffect, useMemo } from 'react'
 import { SubmitHandler } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
     DataCategory,
@@ -11,20 +9,16 @@ import {
     TransactionDetailFormData,
     TransactionDetailQueryData,
 } from '~/@types/spending'
-import { TAGS } from '~/constant'
+import LoadingText from '~/components/Loading/LoadingText'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useCache, useLoading } from '~/context'
-import { useDocument, useQuery, useServiceQuery } from '~/hook'
-import LANGUAGE from '~/i18n/language/key'
+import { useDocument, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
-import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING, GET_TRANSACTION_DETAIL } from '~/schema/query/spending'
-import { useProfile } from '~/store/auth'
 import { TransactionDetailForm } from '../components'
+import useTransactionDetail from '../hook/useTransactionDetail'
 
 const TransactionDetail = () => {
-    const { t } = useTranslation()
     const navigate = useNavigate()
-    const { userProfile } = useProfile()
     const { setSubmitLoading } = useLoading()
     const { id } = useParams()
     const { deleteCache } = useCache()
@@ -37,54 +31,10 @@ const TransactionDetail = () => {
         STATISTIC_SPENDING,
     } = useServiceQuery()
     const document = useDocument()
-
-    const [{ transaction, methodSpending }, fetchData, deleteCacheData, reloadData] =
-        useQuery<TransactionDetailQueryData>(
-            {
-                transaction: GET_TRANSACTION_DETAIL,
-                methodSpending: GET_METHOD_SPENDING,
-            },
-            {
-                userId: userProfile?._id as string,
-                id: id as string,
-            },
-            {
-                methodSpending: TAGS.ENUM,
-                transaction: TAGS.SHORT,
-            }
-        )
-
-    const kindSpending = useMemo(() => {
-        try {
-            return transaction.data?.[0].kindSpending
-        } catch (error) {
-            console.log(error)
-            navigate('/')
-        }
-    }, [transaction.data])
-
-    const [{ categorySpending }, fetchDataCategory, deleteCacheDataCategory, reloadDataCategory] =
-        useQuery<DataCategory>(
-            { categorySpending: GET_CATEGORY_SPENDING },
-            {
-                userId: userProfile?._id as string,
-                kindSpending: kindSpending?._id as string,
-            },
-            { categorySpending: TAGS.ENUM }
-        )
-
-    useEffect(() => {
-        setSubmitLoading(true)
-        fetchData().then(() => {
-            setSubmitLoading(false)
-        })
-    }, [])
-
-    useEffect(() => {
-        if (kindSpending?._id && head(transaction.data)?.categorySpending) {
-            fetchDataCategory()
-        }
-    }, [kindSpending, transaction.data])
+    const [
+        [{ methodSpending, transaction }, kindSpending, deleteCacheData, reloadData],
+        [{ categorySpending }, deleteCacheDataCategory, reloadDataCategory],
+    ] = useTransactionDetail()
 
     const handleAddMoreCategorySpending = async (name: string) => {
         const categoryDocument = document.createCategory(name, kindSpending?._id as string)
@@ -244,10 +194,6 @@ const TransactionDetail = () => {
             console.log(error)
         } finally {
             setSubmitLoading(false)
-
-            // navigate('/spending', {
-            //     replace: true,
-            // })
             navigate(-1)
         }
     }
@@ -323,7 +269,7 @@ const TransactionDetail = () => {
         transaction: transaction.data?.[0] as ISpendingData,
     }
 
-    if (transaction.loading) return <div className='text-gray-900 dark:text-slate-200'>{t(LANGUAGE.LOADING)}</div>
+    if (transaction.loading) return <LoadingText />
 
     return <TransactionDetailForm data={data} />
 }

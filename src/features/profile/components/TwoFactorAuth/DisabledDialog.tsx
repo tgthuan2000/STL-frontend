@@ -13,7 +13,7 @@ const DisabledDialog: React.FC<DisabledTwoFactorDialogProps> = ({ isShow, onClos
         <Transition.Root show={isShow} as={Fragment}>
             <Dialog
                 as='div'
-                className='relative z-20'
+                className='relative z-30'
                 onClose={() => {
                     // onClose()
                 }}

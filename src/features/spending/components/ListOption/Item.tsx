@@ -39,11 +39,6 @@ const Item: React.FC<ItemOptionProps> = ({ data, origin, onEdit, renderItem, onD
             <div className='flex items-center justify-between gap-2 px-3 py-3 hover:bg-gray-100 dark:hover:bg-slate-600'>
                 <div className='overflow-hidden'>{renderItem()}</div>
                 <div className='flex flex-shrink-0 justify-end gap-1'>
-                    {!edit && (
-                        <Chip className='bg-cyan-500 text-white' onClick={openEdit}>
-                            {t(LANGUAGE.EDIT)}
-                        </Chip>
-                    )}
                     <Chip
                         className={clsx('text-white', {
                             'bg-radical-red-500': data?.display,
@@ -60,6 +55,11 @@ const Item: React.FC<ItemOptionProps> = ({ data, origin, onEdit, renderItem, onD
                             <>{data?.display ? t(LANGUAGE.HIDDEN) : t(LANGUAGE.SHOW)}</>
                         )}
                     </Chip>
+                    {!edit && (
+                        <Chip className='bg-cyan-500 text-white' onClick={openEdit}>
+                            {t(LANGUAGE.EDIT)}
+                        </Chip>
+                    )}
                 </div>
             </div>
             {edit && <EditForm name={data?.name} origin={origin} onCancel={closeEdit} onSubmit={onEdit} />}

@@ -1,50 +1,23 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { get, isEmpty, isNil, sum } from 'lodash'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSearchParams } from 'react-router-dom'
 import { DataListViewList, DataListViewTable, TimeFilterPayload } from '~/@types/components'
-import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/@types/hook'
-import { RecentQueryData } from '~/@types/spending'
 import { DataListView, ListViewFilter } from '~/components'
-import { COUNT_PAGINATE } from '~/constant'
 import { __groupBy } from '~/constant/component'
-import { useCheck, useConfig } from '~/context'
-import { useListViewFilter, useQuery, useWindowSize } from '~/hook'
+import { useListViewFilter, useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
-import { useProfile } from '~/store/auth'
 import { getLinkSpending } from '~/utils'
+import useTransactionRecent from '../hook/useTransactionRecent'
 import * as __services from '../services/dataListView'
 import { services } from '../services/transaction'
 
 const TransactionRecent = () => {
     const { t } = useTranslation()
-    const { userProfile } = useProfile()
-    const { getKindSpendingIds } = useConfig()
-    const [searchParams] = useSearchParams()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
-    const getAll = useMemo(
-        () =>
-            services.getAll({
-                userId: userProfile?._id as string,
-                kindSpendingIds: getKindSpendingIds('COST', 'RECEIVE', 'TRANSFER_FROM', 'TRANSFER_TO'),
-            }),
-        []
-    )
 
-    const defaultValues = useMemo(() => services.getDefaultValue({ getAll, searchParams }), [])
-
-    const [{ query, params, tags }, setQuery] = useState<{
-        query: QueryTypeUseQuery<RecentQueryData>
-        params: ParamsTypeUseQuery
-        tags: TagsTypeUseQuery<RecentQueryData>
-    }>(defaultValues)
-
-    const [{ recent, total }, fetchData, deleteCacheData, reload, error] = useQuery<RecentQueryData>(
-        query,
-        params,
-        tags
-    )
+    const [{ recent, total }, deleteCacheData, reloadData, error, { defaultValues, getAll, reload, getMore, set }] =
+        useTransactionRecent()
 
     const dataTotal = useMemo(() => {
         const data = total.data
@@ -75,23 +48,17 @@ const TransactionRecent = () => {
         }
     }, [total.data, t])
 
-    useCheck(reload)
-
-    useEffect(() => {
-        fetchData()
-    }, [])
-
     const onReload = () => {
         const res = deleteCacheData('recent', 'total')
         console.log(res)
-        reload()
+        reloadData()
     }
 
     const handleFilterSubmit = (data: TimeFilterPayload) => {
         const _data = services.filterSubmit(data, { defaultValues, getAll })
 
         if (_data) {
-            setQuery(_data)
+            set(_data)
             onReload()
         }
     }
@@ -100,16 +67,13 @@ const TransactionRecent = () => {
         const length = recent?.data?.data.length
 
         if (length) {
-            setQuery((prev) => ({
-                ...prev,
-                params: { ...prev.params, __fromRecent: length, __toRecent: length + COUNT_PAGINATE },
-            }))
-            reload('recent')
+            getMore()
+            reloadData('recent')
         }
     }
 
     const handleClickReload = () => {
-        setQuery((prev) => ({ ...prev, params: { ...prev.params, __fromRecent: 0, __toRecent: COUNT_PAGINATE } }))
+        reload()
         onReload()
     }
 

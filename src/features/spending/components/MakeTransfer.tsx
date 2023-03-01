@@ -184,7 +184,7 @@ const MakeTransfer = () => {
                                     },
                                 }}
                                 type='number'
-                                label={t(LANGUAGE.COST)}
+                                label={t(LANGUAGE.AMOUNT)}
                             />
 
                             <AutoComplete

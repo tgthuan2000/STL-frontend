@@ -45,19 +45,19 @@ const ListViewFilter: React.FC<ListViewFilterProps> = ({
                         ) : (
                             <>
                                 {!isNil(totalData?.receive) && (
-                                    <span>
+                                    <span className='sm:text-sm'>
                                         {receiveTitle}{' '}
                                         <p className='text-sm text-green-500'>{numeral(totalData?.receive).format()}</p>
                                     </span>
                                 )}
                                 {!isNil(totalData?.cost) && (
-                                    <span>
+                                    <span className='sm:text-sm'>
                                         {costTitle}{' '}
                                         <p className='text-sm text-red-500'>{numeral(totalData?.cost).format()}</p>
                                     </span>
                                 )}
                                 {!isNil(totalData?.count) && (
-                                    <span>
+                                    <span className='sm:text-sm'>
                                         {countTitle}{' '}
                                         <p className='text-sm text-indigo-500'>{numeral(totalData?.count).format()}</p>
                                     </span>

@@ -1,14 +1,25 @@
 import clsx from 'clsx'
-import { forwardRef, useId } from 'react'
+import React, { forwardRef, Suspense, useId } from 'react'
 import { Controller } from 'react-hook-form'
 import { InputProps } from '~/@types/components'
 import ErrorMessage from '~/components/ErrorMessage'
 import Label from '~/components/Label'
+import LoadingText from '~/components/Loading/LoadingText'
 import NumberHint from './NumberHint'
 
+const Calculator = React.lazy(() => import('~/components/Calculator'))
+
 const Input = forwardRef<HTMLInputElement, InputProps>(
-    ({ className, label, name, form, tracking, rules, type, numberHint = true, ...props }, ref) => {
+    ({ className, label, name, form, tracking, rules, type, numberHint = true, calculator = true, ...props }, ref) => {
         const id = useId()
+
+        const handleSubmitCalculator = (value: number, fieldChange: (...event: any[]) => void) => {
+            if (type === 'number' && calculator && value) {
+                fieldChange(value)
+                // tracking?.(name)
+            }
+        }
+
         return (
             <Controller
                 name={name}
@@ -16,7 +27,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 rules={rules}
                 render={({ field, fieldState: { error } }) => (
                     <div className={clsx(className)}>
-                        <Label id={id} label={label} />
+                        <div className='flex items-center justify-between'>
+                            <Label id={id} label={label} />
+                            {type === 'number' && calculator && (
+                                <Suspense fallback={<LoadingText />}>
+                                    <Calculator onSubmit={(value) => handleSubmitCalculator(value, field.onChange)} />
+                                </Suspense>
+                            )}
+                        </div>
                         <div className='mt-1'>
                             <input
                                 id={id}

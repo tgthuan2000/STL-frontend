@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { PaidForm, TransactionDetailFormData, TransactionDetailQueryData } from '~/@types/loan'
 import { ISpendingData } from '~/@types/spending'
+import LoadingText from '~/components/Loading/LoadingText'
 import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useCache, useLoading } from '~/context'
@@ -174,8 +175,7 @@ const TransactionDetail = () => {
         transaction: trans as ISpendingData,
     }
 
-    if (transaction.loading || methodSpending.loading)
-        return <div className='text-gray-900 dark:text-slate-200'>{t(LANGUAGE.LOADING)}</div>
+    if (transaction.loading || methodSpending.loading) return <LoadingText />
 
     if (isEmpty(transaction.data))
         return <div className='text-gray-900 dark:text-slate-200'>{t(LANGUAGE.EMPTY_DATA)}</div>

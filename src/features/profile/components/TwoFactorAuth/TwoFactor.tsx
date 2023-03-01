@@ -1,5 +1,4 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { googleLogout } from '@react-oauth/google'
 import QRCode from 'qrcode'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -7,8 +6,8 @@ import { toast } from 'react-toastify'
 import axios from '~/axiosConfig'
 import { CopyCode, TwoFactorForm } from '~/components'
 import { useLoading } from '~/context'
+import { useLogout } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
-import { useAuth, useProfile } from '~/store/auth'
 import TwoFactorImage from './Image'
 
 interface TwoFactorProps {
@@ -22,8 +21,7 @@ const TwoFactor: React.FC<TwoFactorProps> = ({ onClose }) => {
     const [secret, setSecret] = useState('')
     const [imageRef] = useAutoAnimate<HTMLDivElement>()
     const { setSubmitLoading } = useLoading()
-    const { removeToken } = useAuth()
-    const { removeUserProfile } = useProfile()
+    const logout = useLogout()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -51,10 +49,7 @@ const TwoFactor: React.FC<TwoFactorProps> = ({ onClose }) => {
             if (d.verified) {
                 onClose()
                 toast.success(t(LANGUAGE.NOTIFY_TWO_FA_CODE_SUCCESS))
-                removeToken()
-                removeUserProfile()
-                googleLogout()
-                axios.defaults.headers.common['Authorization'] = null
+                await logout()
             } else {
                 toast.error(t(LANGUAGE.NOTIFY_TWO_FA_CODE_INVALID))
             }

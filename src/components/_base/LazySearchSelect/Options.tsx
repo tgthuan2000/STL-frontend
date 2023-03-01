@@ -5,6 +5,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Waypoint } from 'react-waypoint'
 import { LazySearchSelectOptionsProps } from '~/@types/components'
+import LoadingText from '~/components/Loading/LoadingText'
 import LANGUAGE from '~/i18n/language/key'
 
 const Options: React.FC<LazySearchSelectOptionsProps> = ({
@@ -21,7 +22,7 @@ const Options: React.FC<LazySearchSelectOptionsProps> = ({
         <Combobox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-slate-600 sm:text-sm'>
             {loading ? (
                 <Combobox.Option value={null} disabled>
-                    <p className='p-2 text-center text-xs text-gray-500 dark:text-slate-200'>{t(LANGUAGE.LOADING)}</p>
+                    <LoadingText className='p-2 text-center text-xs' />
                 </Combobox.Option>
             ) : (
                 <>

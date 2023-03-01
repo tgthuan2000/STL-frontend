@@ -3,7 +3,7 @@ import React, { createContext, useContext, useRef } from 'react'
 import { DataCache, DeleteCache, ICacheContext, ICacheData, QueryParams, TagsField } from '~/@types/context'
 import { TAGS } from '~/constant'
 import { client } from '~/sanityConfig'
-import { deleteObjKeys, hashCode } from '~/services'
+import { service } from '~/services'
 
 const CACHE_RANGE = {
     [TAGS.ALTERNATE]: 10,
@@ -81,9 +81,9 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
         payloads.forEach((payload) => {
             const { query, params, tags } = payload
 
-            const __params = deleteObjKeys(params, DeleteObjKeys)
+            const __params = service.deleteObjKeys(params, DeleteObjKeys)
             /* queryHash: hash query & params (exclude from, to params) */
-            const queryHash = hashCode(JSON.stringify({ query, params: __params }))
+            const queryHash = service.hashCode(JSON.stringify({ query, params: __params }))
 
             /* __cache: cache data of tag */
             const __cache = cache[tags]
@@ -155,7 +155,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
         tags: { [x: string]: TAGS },
         keys: Array<keyof T> = []
     ) => {
-        const __params = deleteObjKeys(params, DeleteObjKeys)
+        const __params = service.deleteObjKeys(params, DeleteObjKeys)
         const callApi: {
             [x: string]: { query: string; key: number }
         } = {}
@@ -176,7 +176,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
                   )
 
             /* queryHash: hash query & params (exclude from to params) */
-            const queryHash = hashCode(JSON.stringify({ query: value, params: p }))
+            const queryHash = service.hashCode(JSON.stringify({ query: value, params: p }))
 
             /* __cache: cache data of tag */
             const __cache = cache[tags[key]]
