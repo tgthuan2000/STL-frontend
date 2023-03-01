@@ -1,45 +1,21 @@
 import clsx from 'clsx'
-import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { OthersQueryData } from '~/@types/spending'
 import { Box, ButtonMenuDesktop, Divider, Transaction } from '~/components'
-import { TAGS } from '~/constant'
 import { menuMobileOthers } from '~/constant/components'
 import { KIND_SPENDING } from '~/constant/spending'
-import { useCache, useCheck } from '~/context'
-import { useQuery, useServiceQuery, useWindowSize } from '~/hook'
+import { useCache } from '~/context'
+import { useServiceQuery, useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
-import { GET_CATEGORY, GET_METHOD } from '~/schema/query/spending'
-import { useProfile } from '~/store/auth'
 import { ListOption } from '../components'
+import useOthers from '../hook/useOthers'
 
 const Others = () => {
     const { t } = useTranslation()
     const { width } = useWindowSize()
-    const { userProfile } = useProfile()
     const { METHOD_SPENDING_DESC_SURPLUS, COST_CATEGORY_SPENDING, RECEIVE_CATEGORY_SPENDING, METHOD_SPENDING } =
         useServiceQuery()
     const { deleteCache } = useCache()
-
-    const [{ category, method }, fetchData, deleteCaches, reload] = useQuery<OthersQueryData>(
-        {
-            method: GET_METHOD,
-            category: GET_CATEGORY,
-        },
-        {
-            userId: userProfile?._id as string,
-        },
-        {
-            category: TAGS.ENUM,
-            method: TAGS.ENUM,
-        }
-    )
-
-    useEffect(() => {
-        fetchData()
-    }, [])
-
-    useCheck(reload)
+    const [{ category, method }, deleteCaches] = useOthers()
 
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.OTHERS)}>

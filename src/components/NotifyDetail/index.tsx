@@ -10,6 +10,7 @@ import { useQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { GET_NOTIFY_ADMIN, GET_NOTIFY_BY_USER } from '~/schema/query/notify'
 import { useProfile } from '~/store/auth'
+import LoadingText from '../Loading/LoadingText'
 import NotifyDetailForm from './Form'
 
 interface NotifyDetailProps {
@@ -51,7 +52,7 @@ const NotifyDetail: React.FC<NotifyDetailProps> = ({ isAdmin = false }) => {
         notify: notify.data as SanityDocument<NotifyItem>,
     }
 
-    if (notify.loading) return <div className='text-gray-900 dark:text-slate-200'>{t(LANGUAGE.LOADING)}</div>
+    if (notify.loading) return <LoadingText />
 
     if (!notify.data) return <div className='font-normal text-radical-red-500'>{t(LANGUAGE.ERROR)}</div>
 

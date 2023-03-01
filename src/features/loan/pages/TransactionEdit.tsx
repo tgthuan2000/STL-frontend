@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IMakeGetLoanForm, TransactionEditFormData, TransactionEditQueryData } from '~/@types/loan'
 import { ISpendingData } from '~/@types/spending'
+import LoadingText from '~/components/Loading/LoadingText'
 import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useCache, useLoading } from '~/context'
@@ -239,8 +240,7 @@ const TransactionEdit = () => {
         transaction: trans as ISpendingData,
     }
 
-    if (transaction.loading || methodSpending.loading || userLoan.loading)
-        return <div className='text-gray-900 dark:text-slate-200'>{t(LANGUAGE.LOADING)}</div>
+    if (transaction.loading || methodSpending.loading || userLoan.loading) return <LoadingText />
 
     if (isEmpty(transaction.data))
         return <div className='text-gray-900 dark:text-slate-200'>{t(LANGUAGE.EMPTY_DATA)}</div>

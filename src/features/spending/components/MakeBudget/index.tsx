@@ -14,7 +14,7 @@ import { useQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_BUDGET_BY_MONTH, GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
-import { getBudgetId, getDateOfMonth } from '~/services'
+import { service } from '~/services'
 import { useProfile } from '~/store/auth'
 import * as servicesBudget from '../../services/budget'
 import { budgetSchema } from '../../services/schema'
@@ -52,10 +52,10 @@ const MakeBudget = () => {
         },
         params: {
             userId: userProfile?._id as string,
-            budgetId: getBudgetId(userProfile?._id as string),
+            budgetId: service.getBudgetId(userProfile?._id as string),
             budgetKind: getKindSpendingId('COST') as string,
-            startDate: getDateOfMonth('start'),
-            endDate: getDateOfMonth('end'),
+            startDate: service.getDateOfMonth('start'),
+            endDate: service.getDateOfMonth('end'),
             kindSpending: getKindSpendingId('COST') as string,
         },
         tags: {
@@ -133,7 +133,7 @@ const MakeBudget = () => {
             setSubmitLoading(true)
             const { MethodSpending, CategorySpending, date } = data
             const _date = moment(date)
-            const _id = getBudgetId(userProfile?._id as string, _date)
+            const _id = service.getBudgetId(userProfile?._id as string, _date)
             const dateFormatted = _date.format('YYYY-MM-01')
             const __ = client.transaction()
             __.createIfNotExists({
@@ -197,14 +197,14 @@ const MakeBudget = () => {
 
     const setQueryDataFn = (date: Date) => {
         const _date = moment(date)
-        const _id = getBudgetId(userProfile?._id as string, _date)
+        const _id = service.getBudgetId(userProfile?._id as string, _date)
         setQueryData((prev) => ({
             ...prev,
             params: {
                 ...prev.params,
                 budgetId: _id,
-                startDate: getDateOfMonth('start', _date),
-                endDate: getDateOfMonth('end', _date),
+                startDate: service.getDateOfMonth('start', _date),
+                endDate: service.getDateOfMonth('end', _date),
             },
         }))
     }

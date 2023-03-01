@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { MenuButtonProps } from '~/@types/components'
 import { SlideOver } from '~/components'
 import { useSlideOver } from '~/context'
-import { useAuth, useProfile } from '~/store/auth'
+import { useLogout } from '~/hook'
 import DesktopButton from './desktop/Button'
 import MobileButton from './mobile/Button'
 
@@ -11,8 +11,7 @@ const ButtonItem: React.FC<MenuButtonProps & { mobile?: boolean }> = ({ data, mo
     const { title, children, to, query, action } = data
     const { setIsOpen, setTitle } = useSlideOver()
     const navigate = useNavigate()
-    const { removeUserProfile } = useProfile()
-    const { removeToken } = useAuth()
+    const logout = useLogout()
 
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         if (query || action) {
@@ -22,11 +21,6 @@ const ButtonItem: React.FC<MenuButtonProps & { mobile?: boolean }> = ({ data, mo
             setIsOpen(true)
             setTitle(title)
         }
-    }
-
-    const logout = () => {
-        removeToken()
-        removeUserProfile()
     }
 
     return (

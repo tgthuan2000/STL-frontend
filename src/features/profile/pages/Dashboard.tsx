@@ -10,6 +10,7 @@ import { TimeFilterPayload } from '~/@types/components'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/@types/hook'
 import { ProfileQueryData } from '~/@types/profile'
 import { Button, Image, TimeFilter, Transaction } from '~/components'
+import LoadingText from '~/components/Loading/LoadingText'
 import { DATE_FORMAT } from '~/constant'
 import { E_FILTER_DATE } from '~/constant/template'
 import { useConfig, useLoading } from '~/context'
@@ -155,9 +156,7 @@ const Dashboard = () => {
                         <div className='overflow-hidden px-1 sm:bg-gradient-to-tl sm:from-indigo-500 sm:via-purple-500 sm:to-pink-500 sm:p-3 sm:shadow-lg'>
                             <div className='grid grid-cols-1 backdrop-blur-lg xl:grid-cols-4' ref={parent}>
                                 {loading.config ? (
-                                    <p className='my-5 animate-pulse text-center text-sm font-normal text-gray-700 sm:my-3 sm:text-lg sm:text-white'>
-                                        {t(LANGUAGE.LOADING)}
-                                    </p>
+                                    <LoadingText className='my-5 text-center text-sm font-normal sm:my-3 sm:text-lg sm:text-white' />
                                 ) : isEmpty(profileOptions) ? (
                                     <ProfileInfoSkeleton />
                                 ) : (

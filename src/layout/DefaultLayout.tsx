@@ -1,14 +1,12 @@
 import { Suspense, useLayoutEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Outlet } from 'react-router-dom'
+import LoadingText from '~/components/Loading/LoadingText'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { useLocalStorage } from '~/hook'
-import LANGUAGE from '~/i18n/language/key'
 import { checkDarkTheme } from '~/utils'
 import SideBar from './components/SideBar'
 
 const DefaultLayout = () => {
-    const { t } = useTranslation()
     const [theme] = useLocalStorage<string>(LOCAL_STORAGE_KEY.STL_THEME)
 
     useLayoutEffect(() => {
@@ -19,7 +17,7 @@ const DefaultLayout = () => {
 
     return (
         <SideBar>
-            <Suspense fallback={<div className='text-gray-900 dark:text-slate-200'>{t(LANGUAGE.LOADING)}</div>}>
+            <Suspense fallback={<LoadingText />}>
                 <Outlet />
             </Suspense>
         </SideBar>

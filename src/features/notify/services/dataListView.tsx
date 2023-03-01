@@ -5,7 +5,7 @@ import { Prose } from '~/components'
 import { DATE_FORMAT } from '~/constant'
 import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
-import { getSpacingTime } from '~/services'
+import { service } from '~/services'
 
 const { t } = i18n
 
@@ -48,7 +48,9 @@ export const renderList: (data: any, index: number) => React.ReactNode = (data, 
                     </p>
                 )}
             </div>
-            <p className='text-xs italic text-gray-600 dark:text-slate-100'>{getSpacingTime(data.notify._createdAt)}</p>
+            <p className='text-xs italic text-gray-600 dark:text-slate-100'>
+                {service.getSpacingTime(data.notify._createdAt)}
+            </p>
         </div>
     </div>
 )

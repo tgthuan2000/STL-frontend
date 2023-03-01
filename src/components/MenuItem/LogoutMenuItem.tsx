@@ -1,22 +1,20 @@
 import { ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline'
-import { googleLogout } from '@react-oauth/google'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { OptionMenuItemProps } from '~/@types/layout'
-import axios from '~/axiosConfig'
+import { useLogout } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
-import { useAuth, useProfile } from '~/store/auth'
 
 const LogoutMenuItem: React.FC<OptionMenuItemProps> = ({ btnClassName, iconClassName }) => {
     const { t } = useTranslation()
-    const { removeUserProfile } = useProfile()
-    const { removeToken } = useAuth()
+    const logout = useLogout()
 
-    const handleLogout = () => {
-        removeToken()
-        removeUserProfile()
-        googleLogout()
-        axios.defaults.headers.common['Authorization'] = null
+    const handleLogout = async () => {
+        try {
+            await logout()
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (

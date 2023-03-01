@@ -22,7 +22,7 @@ import {
     GET_RECENT_SPENDING_PAGINATE,
     GET_STATISTIC_SPENDING,
 } from '~/schema/query/spending'
-import { getDateOfMonth } from '.'
+import { service } from '.'
 
 export const getCategorySpending = <T extends Record<string, any>>({
     userProfile,
@@ -62,8 +62,8 @@ export const getStatisticSpending = <T extends Record<string, any>>({
         query: GET_STATISTIC_SPENDING,
         params: {
             userId: userProfile?._id as string,
-            startDate: getDateOfMonth('start'),
-            endDate: getDateOfMonth('end'),
+            startDate: service.getDateOfMonth('start'),
+            endDate: service.getDateOfMonth('end'),
         },
         tags: TAGS.ALTERNATE,
     }

@@ -11,7 +11,7 @@ import { Button, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useLoading } from '~/context'
-import { getColorPrize } from '~/services'
+import { service } from '~/services'
 import IconButton from './common/IconButton'
 import StatusLoan from './common/StatusLoan'
 
@@ -85,11 +85,11 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
                                                             Số dư tại thời điểm
                                                         </h4>
                                                         <div className='flex items-center space-x-2 font-normal'>
-                                                            <span className={clsx(...getColorPrize(calc))}>
+                                                            <span className={clsx(...service.getColorPrize(calc))}>
                                                                 {numeral(calc).format()}
                                                             </span>
                                                             <span className='inline-block h-full w-px border border-gray-400' />
-                                                            <span className={clsx(...getColorPrize(surplus))}>
+                                                            <span className={clsx(...service.getColorPrize(surplus))}>
                                                                 {numeral(surplus).format()}
                                                             </span>
                                                         </div>

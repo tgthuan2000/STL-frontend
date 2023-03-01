@@ -97,3 +97,23 @@ export interface CreateCategoryDoc {
     }
     active: boolean
 }
+
+export interface DataStatistic {
+    dateRange: string[]
+    data: (
+        | {
+              _id: string
+              value: number
+              getLoan: number
+              name: string
+              color: string
+          }
+        | {
+              _id: string
+              value: number
+              name: string
+              color: string
+              getLoan?: undefined
+          }
+    )[]
+}

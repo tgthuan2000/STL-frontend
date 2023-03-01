@@ -1,6 +1,5 @@
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { googleLogout } from '@react-oauth/google'
 import { get } from 'lodash'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -10,16 +9,17 @@ import axios from '~/axiosConfig'
 import { Button, SubmitWrap, Transaction } from '~/components'
 import { Input } from '~/components/_base'
 import { useLoading } from '~/context'
+import { useLogout } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
-import { useAuth, useProfile } from '~/store/auth'
+import { useProfile } from '~/store/auth'
 import { changePasswordSchema } from '../services/schema'
 
 const ChangePassword = () => {
     const { t } = useTranslation()
     const { loading, setSubmitLoading } = useLoading()
-    const { userProfile, removeUserProfile } = useProfile()
-    const { removeToken } = useAuth()
+    const { userProfile } = useProfile()
     const navigate = useNavigate()
+    const logout = useLogout()
 
     const isHasPassword = get(userProfile, 'isHasPassword', false)
 
@@ -54,10 +54,7 @@ const ChangePassword = () => {
                 })
             }
             toast.success(t(LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS))
-            removeUserProfile()
-            removeToken()
-            googleLogout()
-            axios.defaults.headers.common['Authorization'] = null
+            await logout()
         } catch (error) {
             console.log(error)
         } finally {

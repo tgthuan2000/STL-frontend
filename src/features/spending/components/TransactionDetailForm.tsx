@@ -13,7 +13,7 @@ import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/compon
 import { KIND_SPENDING } from '~/constant/spending'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
-import { getColorPrize } from '~/services'
+import { service } from '~/services'
 
 const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) => {
     const {
@@ -101,11 +101,11 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                                             {t(LANGUAGE.SURPLUS_AT_TIME)}
                                                         </h4>
                                                         <div className='flex items-center space-x-2 font-normal'>
-                                                            <span className={clsx(...getColorPrize(calc))}>
+                                                            <span className={clsx(...service.getColorPrize(calc))}>
                                                                 {numeral(calc).format()}
                                                             </span>
                                                             <span className='inline-block h-full w-px border border-gray-400 dark:border-slate-700' />
-                                                            <span className={clsx(...getColorPrize(surplus))}>
+                                                            <span className={clsx(...service.getColorPrize(surplus))}>
                                                                 {numeral(surplus).format()}
                                                             </span>
                                                         </div>
