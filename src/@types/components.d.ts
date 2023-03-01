@@ -165,6 +165,7 @@ export interface InputProps
     rules?: Rules
     autoFocus?: boolean
     numberHint?: boolean
+    calculator?: boolean
     tracking?: TrackingFunc
 }
 

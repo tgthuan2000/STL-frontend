@@ -4,8 +4,8 @@ import { map, size } from 'lodash'
 import numeral from 'numeral'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import LoadingText from '~/components/Loading/LoadingText'
 import { useWindowSize } from '~/hook'
-import LANGUAGE from '~/i18n/language/key'
 import useMethod from '../hook/useMethod'
 
 const Method = () => {
@@ -113,11 +113,7 @@ const Method = () => {
                 style={{ height: dataFilter ? size(dataFilter) * 90 : 'auto' }}
                 ref={parent}
             >
-                {dataFilter ? (
-                    <ResponsiveBar {...options} />
-                ) : (
-                    <div className='animate-pulse p-2 text-gray-900 dark:text-slate-200'>{t(LANGUAGE.LOADING)}</div>
-                )}
+                {dataFilter ? <ResponsiveBar {...options} /> : <LoadingText className='p-2' />}
             </div>
         </div>
     )

@@ -185,6 +185,7 @@ enum LANGUAGE {
     NOTIFY_TWO_FA_CODE_SUCCESS = 'notify-two-fa-code-success',
     NOTIFY_DISABLED_TWO_FA_SUCCESS = 'notify-disabled-two-fa-success',
     NOTIFY_REFRESH_TOKEN_EXPIRED = 'notify-refresh-token-expired',
+    NOTIFY_TOKEN_REVOKED = 'notify-token-revoked',
 
     /* CONFIRM */
     CONFIRM_NOTIFY = 'confirm-notify',

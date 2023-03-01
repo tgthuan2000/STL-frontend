@@ -1,7 +1,6 @@
 import { get, head } from 'lodash'
 import moment from 'moment'
 import { SubmitHandler } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
     DataCategory,
@@ -10,16 +9,15 @@ import {
     TransactionDetailFormData,
     TransactionDetailQueryData,
 } from '~/@types/spending'
+import LoadingText from '~/components/Loading/LoadingText'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useCache, useLoading } from '~/context'
 import { useDocument, useServiceQuery } from '~/hook'
-import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { TransactionDetailForm } from '../components'
 import useTransactionDetail from '../hook/useTransactionDetail'
 
 const TransactionDetail = () => {
-    const { t } = useTranslation()
     const navigate = useNavigate()
     const { setSubmitLoading } = useLoading()
     const { id } = useParams()
@@ -271,7 +269,7 @@ const TransactionDetail = () => {
         transaction: transaction.data?.[0] as ISpendingData,
     }
 
-    if (transaction.loading) return <div className='text-gray-900 dark:text-slate-200'>{t(LANGUAGE.LOADING)}</div>
+    if (transaction.loading) return <LoadingText />
 
     return <TransactionDetailForm data={data} />
 }

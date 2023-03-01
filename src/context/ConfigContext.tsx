@@ -10,6 +10,7 @@ import axios from '~/axiosConfig'
 import { CODE } from '~/constant/code'
 import { PERMISSION } from '~/constant/permission'
 import { KIND_SPENDING } from '~/constant/spending'
+import { useLogout } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_CONFIG } from '~/schema/query/config'
@@ -32,10 +33,11 @@ const ConfigContext = createContext<IConfigContext>({
 
 const configHOC = (Component: React.FC<IConfigProps>) => {
     return ({ children }: IConfigProps) => {
-        const { accessToken, refreshToken, setToken, removeToken } = useAuth()
+        const { accessToken, refreshToken, setToken } = useAuth()
         const { userProfile, addUserProfile } = useProfile()
         const { pathname } = useLocation()
         const { t } = useTranslation()
+        const logout = useLogout()
 
         useEffect(() => {
             if (userProfile !== null || accessToken === null) return
@@ -47,22 +49,29 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
                         addUserProfile(data)
                     }
                 } catch (error: any) {
-                    if (get(error, 'response.data.code') === CODE.ACCESS_TOKEN_EXPIRED) {
-                        axios.defaults.headers.common['Authorization'] = null
+                    axios.defaults.headers.common['Authorization'] = null
+                    switch (get(error, 'response.data.code')) {
+                        case CODE.ACCESS_TOKEN_EXPIRED: {
+                            try {
+                                const data = (await axios.post('/auth/access-token', {
+                                    refreshToken,
+                                })) as { accessToken: string }
 
-                        try {
-                            const data = (await axios.post('/auth/access-token', {
-                                refreshToken,
-                            })) as { accessToken: string }
-
-                            if (data) {
-                                setToken({ accessToken: data.accessToken })
+                                if (data) {
+                                    setToken({ accessToken: data.accessToken })
+                                }
+                            } catch (error: any) {
+                                if (get(error, 'response.data.code') === CODE.REFRESH_TOKEN_EXPIRED) {
+                                    await logout()
+                                    toast.warn(t(LANGUAGE.NOTIFY_EXPIRED_TOKEN))
+                                }
                             }
-                        } catch (error: any) {
-                            if (get(error, 'response.data.code') === CODE.REFRESH_TOKEN_EXPIRED) {
-                                removeToken()
-                                toast.warn(t(LANGUAGE.NOTIFY_EXPIRED_TOKEN))
-                            }
+                            break
+                        }
+                        case CODE.TOKEN_REVOKED: {
+                            toast.warn(t(LANGUAGE.NOTIFY_TOKEN_REVOKED))
+                            await logout()
+                            break
                         }
                     }
                 }

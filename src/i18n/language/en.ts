@@ -189,6 +189,7 @@ const translation: {
     [LANGUAGE.NOTIFY_TWO_FA_CODE_SUCCESS]: 'Two factor authentication code success',
     [LANGUAGE.NOTIFY_DISABLED_TWO_FA_SUCCESS]: 'Disabled two factor authentication success',
     [LANGUAGE.NOTIFY_REFRESH_TOKEN_EXPIRED]: 'Refresh token expired',
+    [LANGUAGE.NOTIFY_TOKEN_REVOKED]: 'Token revoked',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Do you want to notify?',

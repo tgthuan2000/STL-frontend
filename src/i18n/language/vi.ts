@@ -189,6 +189,7 @@ const translation: {
     [LANGUAGE.NOTIFY_TWO_FA_CODE_SUCCESS]: 'Xác thực thành công!',
     [LANGUAGE.NOTIFY_DISABLED_TWO_FA_SUCCESS]: 'Vô hiệu hóa xác thực 2 bước thành công!',
     [LANGUAGE.NOTIFY_REFRESH_TOKEN_EXPIRED]: 'Phiên làm việc đã hết hạn, vui lòng đăng nhập lại!',
+    [LANGUAGE.NOTIFY_TOKEN_REVOKED]: 'Phiên làm việc đã bị hủy, vui lòng đăng nhập lại!',
 
     /* CONFIRM */
     [LANGUAGE.CONFIRM_NOTIFY]: 'Bạn có chắc chắn muốn gửi thông báo này?',
