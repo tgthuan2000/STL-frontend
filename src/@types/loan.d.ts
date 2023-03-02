@@ -86,7 +86,6 @@ export interface TransactionEditQueryData {
 /* OTHERS */
 
 export interface TransactionEditFormData {
-    title: string
     onsubmit: SubmitHandler<any>
     handleReloadData: (keys: keyof TransactionEditQueryData) => Promise<void>
     handleDeleteTransaction: () => void
@@ -108,6 +107,7 @@ export interface PaidForm {
     paid: boolean
     methodSpending: IMethodSpending | null
     amount: number
+    image?: SanityImageAssetDocument | null
 }
 
 export interface IconButtonProps {

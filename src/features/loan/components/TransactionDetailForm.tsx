@@ -13,6 +13,7 @@ import { AutoComplete, Input, Toggle } from '~/components/_base'
 import { DATE_FORMAT } from '~/constant'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
+import { urlFor } from '~/sanityConfig'
 import IconButton from './common/IconButton'
 import Group from './Group'
 
@@ -26,6 +27,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
             paid: transaction.paid,
             methodSpending: transaction.methodSpending ?? transaction.methodReference ?? null,
             amount: transaction.realPaid ?? transaction.amount,
+            image: transaction.image ?? null,
         },
     })
     const [parent] = useAutoAnimate<HTMLDivElement>()
@@ -174,6 +176,15 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                         {transaction.paidDate && (
                                             <Group label={t(LANGUAGE.PAID_TIME)} className='justify-between'>
                                                 {moment(transaction.paidDate).format(DATE_FORMAT.D_DATE_TIME)}
+                                            </Group>
+                                        )}
+
+                                        {transaction.image && (
+                                            <Group label={t(LANGUAGE.IMAGE)} className='flex-col'>
+                                                <img
+                                                    src={urlFor(transaction.image)}
+                                                    className='h-40 w-full rounded-md bg-gray-200 object-contain dark:bg-slate-700'
+                                                />
                                             </Group>
                                         )}
 

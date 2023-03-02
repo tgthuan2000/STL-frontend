@@ -1,4 +1,5 @@
 import { FireIcon, ListBulletIcon } from '@heroicons/react/24/outline'
+import clsx from 'clsx'
 import { isNil } from 'lodash'
 import numeral from 'numeral'
 import React from 'react'
@@ -32,7 +33,7 @@ const ListViewFilter: React.FC<ListViewFilterProps> = ({
                     <TimeFilter onSubmit={onSubmitTimeFilter} />
                 </div>
             )}
-            <div className='mx-2 mt-2 flex justify-between'>
+            <div className={clsx('mx-2 mt-2 flex', viewTotal ? 'justify-between' : 'justify-end')}>
                 {viewTotal && (
                     <div className='flex gap-3 text-xs font-normal text-gray-900 dark:text-slate-200'>
                         {totalLoading ? (
