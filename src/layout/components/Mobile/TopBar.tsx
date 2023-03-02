@@ -12,11 +12,11 @@ const TopBar = () => {
     )
     return (
         <>
-            <div className='sticky -top-16 left-0 right-0 z-10 md:hidden h-32 bg-white dark:bg-slate-900 border-b dark:border-slate-800'>
-                <div className='flex justify-between items-center h-1/2 pl-1 sm:pl-3'>
+            <div className='sticky -top-16 left-0 right-0 z-10 h-32 border-b bg-white dark:border-slate-800 dark:bg-slate-900 md:hidden'>
+                <div className='flex h-1/2 items-center justify-between pl-1 sm:pl-3'>
                     <Logo />
                 </div>
-                <nav className='flex justify-around items-center h-1/2'>
+                <nav className='flex h-1/2 items-center justify-around'>
                     {_navigation.map((item) => (
                         <NavLinkIcon key={item.href} data={item} />
                     ))}

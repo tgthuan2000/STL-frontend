@@ -133,19 +133,19 @@ export const userOptionData: Array<Array<OptionMenu>> = [
         {
             id: 'change-password',
             component: ChangePasswordMenuItem,
-            permissions: [PERMISSION.PROFILE_READ],
+            permissions: [PERMISSION.PROFILE_CHANGE_PASSWORD],
         },
     ],
     [
         {
             id: 'mode',
             component: ModeMenuItem,
-            permissions: [PERMISSION.PROFILE_READ],
+            permissions: [PERMISSION.PROFILE_CHANGE_MODE],
         },
         {
             id: 'feedback',
             component: FeedbackMenuItem,
-            permissions: [PERMISSION.PROFILE_READ],
+            permissions: [PERMISSION.FEEDBACK],
         },
         {
             id: 'logout',
