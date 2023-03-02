@@ -105,6 +105,9 @@ const translation: {
     [LANGUAGE.EMAIL]: 'Email',
     [LANGUAGE.COPIED]: 'Đã sao chép',
     [LANGUAGE.IMAGE]: 'Hình ảnh',
+    [LANGUAGE.USER]: 'Người dùng',
+    [LANGUAGE.ROLE]: 'Vai trò',
+    [LANGUAGE.SERVICE]: 'Dịch vụ',
 
     /* PWA */
     [LANGUAGE.APP_READY_WORK_OFFLINE]: 'Ứng dụng đã sẵn sàng để làm việc ngoại tuyến',
