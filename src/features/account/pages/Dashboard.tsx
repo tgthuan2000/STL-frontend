@@ -3,7 +3,6 @@ import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DataListViewTable } from '~/@types/components'
 import { Table, Transaction } from '~/components'
-import { useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import useDashboard from '../hook/useDashboard'
 import * as __services from '../services/dataListView'
@@ -11,15 +10,14 @@ import * as __services from '../services/dataListView'
 const Dashboard = () => {
     const { t } = useTranslation()
     const [parent] = useAutoAnimate<HTMLDivElement>()
-    const { width } = useWindowSize()
 
     const [{ account }, , , { getMore }] = useDashboard()
 
     const tableProps: DataListViewTable = useMemo(
         () => ({
-            columns: __services.columns(width),
+            columns: __services.columns(),
         }),
-        [width]
+        []
     )
 
     return (

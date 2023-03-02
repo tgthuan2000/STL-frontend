@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import moment from 'moment'
 import numeral from 'numeral'
 import { TableColumn } from '~/@types/components'
+import { Notify } from '~/@types/notify'
 import { Prose } from '~/components'
 import { DATE_FORMAT } from '~/constant'
 import i18n from '~/i18n'
@@ -9,7 +10,7 @@ import LANGUAGE from '~/i18n/language/key'
 
 const { t } = i18n
 
-const getDate = (date: string, width: number) => {
+const getDate = (date: string | undefined, width: number) => {
     return width <= 900 ? (
         <>
             <span>{moment(date).format(DATE_FORMAT.D_DATE)}</span>
@@ -21,7 +22,7 @@ const getDate = (date: string, width: number) => {
     )
 }
 
-export const columns: (width: number) => Array<TableColumn> = (width) => [
+export const columns: (width: number) => Array<TableColumn<Notify>> = (width) => [
     {
         key: 'title',
         title: t(LANGUAGE.CONTENT),

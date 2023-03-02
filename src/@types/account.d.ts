@@ -1,8 +1,11 @@
+import { IUserProfile } from './auth'
+
 export interface IAccount extends IUserProfile {
     role: {
         _id: string
         name: string
     }
+    _createdAt?: string
 }
 
 export interface AccountService {
