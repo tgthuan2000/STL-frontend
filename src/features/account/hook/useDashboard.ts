@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { AccountDefaultValueResult, AccountQueryData } from '~/@types/account'
 import { Data } from '~/@types/hook'
 import { COUNT_PAGINATE } from '~/constant'
 import { useCheck } from '~/context'
 import { useQuery } from '~/hook'
-import { AccountDefaultValueResult, AccountQueryData, services } from '../services/account'
+import { services } from '../services/account'
 
 type UseDashboard = [
     Data<AccountQueryData>,
