@@ -73,6 +73,7 @@ export const GET_TRANSACTION_DETAIL = groq`
         date,
         estimatePaidDate,
         paidDate,
+        image,
         categorySpending-> {
             _id,
             name

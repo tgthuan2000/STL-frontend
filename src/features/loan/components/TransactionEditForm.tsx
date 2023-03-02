@@ -5,12 +5,14 @@ import moment from 'moment'
 import numeral from 'numeral'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { TransactionEditFormProps } from '~/@types/loan'
 import { Button, SubmitWrap } from '~/components'
-import { AutoComplete, DatePicker, Input, TextArea } from '~/components/_base'
+import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useLoading } from '~/context'
+import LANGUAGE from '~/i18n/language/key'
 import { service } from '~/services'
 import IconButton from './common/IconButton'
 import StatusLoan from './common/StatusLoan'
@@ -24,8 +26,8 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
         methodSpending,
         transaction,
         userLoan,
-        title,
     } = data
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const { loading } = useLoading()
     const form = useForm<any>({
@@ -37,6 +39,7 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
             estimatePaidDate: moment(transaction.estimatePaidDate).toDate(),
             userLoan: transaction.userLoan ?? null,
             surplus: transaction.surplus ?? null,
+            image: transaction.image ?? null,
         },
     })
 
@@ -50,13 +53,14 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
                             navigate(-1)
                         }}
                     />
-                    <h4 className='text-xl font-semibold xl:text-2xl'>Cập nhật giao dịch</h4>
+                    <h4 className='text-xl font-semibold xl:text-2xl'>{t(LANGUAGE.TRANSACTION)}</h4>
                 </div>
 
                 {!transaction.paid && (
                     <IconButton
                         onClick={() =>
-                            window.confirm('Bạn có chắc muốn xóa giao dịch này ?') && handleDeleteTransaction()
+                            window.confirm(t(LANGUAGE.CONFIRM_DELETE_TRANSACTION) as string) &&
+                            handleDeleteTransaction()
                         }
                     >
                         <TrashIcon />
@@ -82,7 +86,7 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
                                                 return (
                                                     <div className='flex justify-between'>
                                                         <h4 className='inline-block font-medium'>
-                                                            Số dư tại thời điểm
+                                                            {t(LANGUAGE.SURPLUS_AT_TIME)}
                                                         </h4>
                                                         <div className='flex items-center space-x-2 font-normal'>
                                                             <span className={clsx(...service.getColorPrize(calc))}>
@@ -101,12 +105,12 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
                                             name='amount'
                                             form={form}
                                             type='number'
-                                            label={title}
+                                            label={t(LANGUAGE.AMOUNT)}
                                             rules={{
-                                                required: 'Yêu cầu nhập chi phí!',
+                                                required: t(LANGUAGE.REQUIRED_AMOUNT) as any,
                                                 min: {
                                                     value: 0,
-                                                    message: 'Chi phí phải lớn hơn 0!',
+                                                    message: t(LANGUAGE.AMOUNT_MIN_ZERO),
                                                 },
                                             }}
                                         />
@@ -115,7 +119,7 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
                                             name='methodReference'
                                             form={form}
                                             data={methodSpending.data}
-                                            label='Phương thức nhận tiền'
+                                            label={t(LANGUAGE.METHOD_RECEIVE)}
                                             loading={methodSpending.loading}
                                             addMore={handleAddMoreMethodSpending}
                                             onReload={
@@ -131,10 +135,10 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
                                             name='userLoan'
                                             form={form}
                                             rules={{
-                                                required: 'Yêu cầu chọn đối tượng vay!',
+                                                required: t(LANGUAGE.REQUIRED_USER_GET_LOAN) as any,
                                             }}
                                             data={userLoan.data}
-                                            label='Đối tượng vay'
+                                            label={t(LANGUAGE.USER_GET_LOAN)}
                                             valueKey='userName'
                                             loading={userLoan.loading}
                                             onReload={
@@ -143,16 +147,22 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
                                             showImage
                                         />
 
-                                        <DatePicker name='estimatePaidDate' form={form} label='Hạn trả' />
+                                        <DatePicker
+                                            name='estimatePaidDate'
+                                            form={form}
+                                            label={t(LANGUAGE.ESTIMATE_PAID_DATE)}
+                                        />
 
-                                        <TextArea name='description' form={form} label='Ghi chú' />
+                                        <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
+
+                                        <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <SubmitWrap>
                             <Button color='blue' type='submit' disabled={loading.submit}>
-                                Cập nhật
+                                {t(LANGUAGE.UPDATE)}
                             </Button>
                             <Button
                                 color='outline'
@@ -161,7 +171,7 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
                                     navigate(-1)
                                 }}
                             >
-                                Hủy bỏ
+                                {t(LANGUAGE.CANCEL)}
                             </Button>
                         </SubmitWrap>
                     </form>

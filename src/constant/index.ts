@@ -16,4 +16,4 @@ export enum TAGS {
     SHORT = 'short',
 }
 
-export const COUNT_PAGINATE = 15
+export const COUNT_PAGINATE = 25

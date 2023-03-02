@@ -29,11 +29,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                     <div className={clsx(className)}>
                         <div className='flex items-center justify-between'>
                             <Label id={id} label={label} />
-                            {type === 'number' && calculator && (
+                            {/* {type === 'number' && calculator && (
                                 <Suspense fallback={<LoadingText />}>
                                     <Calculator onSubmit={(value) => handleSubmitCalculator(value, field.onChange)} />
                                 </Suspense>
-                            )}
+                            )} */}
                         </div>
                         <div className='mt-1'>
                             <input

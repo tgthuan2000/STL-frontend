@@ -104,6 +104,7 @@ const translation: {
     [LANGUAGE.SECURITY]: 'Security',
     [LANGUAGE.EMAIL]: 'Email',
     [LANGUAGE.COPIED]: 'Copied',
+    [LANGUAGE.IMAGE]: 'Image',
 
     /* PWA */
     [LANGUAGE.APP_READY_WORK_OFFLINE]: 'App ready to work offline',

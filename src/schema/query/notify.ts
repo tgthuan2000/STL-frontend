@@ -42,7 +42,7 @@ export const GET_NOTIFY_CONFIG_PAGINATE = groq`
 
 export const GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE = groq`
     {
-        "data": *[_type == "notify" && $startDate <= _updatedAt && _updatedAt <= $endDate] | order(_updatedAt desc)[$__fromNotify...$__toNotify]
+        "data": *[_type == "notify" && $__startDate <= _updatedAt && _updatedAt <= $__endDate] | order(_updatedAt desc)[$__fromNotify...$__toNotify]
         {
             _id,
             _createdAt,
@@ -51,7 +51,7 @@ export const GET_NOTIFY_CONFIG_FILTER_DATE_RANGE_PAGINATE = groq`
             description,
             "viewers": count(viewers)
         },
-        "hasNextPage": count(*[_type == "notify" && $startDate <= _updatedAt && _updatedAt <= $endDate]) > $__toNotify
+        "hasNextPage": count(*[_type == "notify" && $__startDate <= _updatedAt && _updatedAt <= $__endDate]) > $__toNotify
     }
 `
 

@@ -12,7 +12,7 @@ const FilePreview = () => {
         if (!file) return null
         switch (type) {
             case 'image':
-                return <img src={file} className='object-cover' />
+                return <img src={file} className='h-full w-full object-contain' />
             default:
                 return null
         }
