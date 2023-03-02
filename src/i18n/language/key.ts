@@ -100,6 +100,7 @@ enum LANGUAGE {
     SECURITY = 'security',
     EMAIL = 'email',
     COPIED = 'copied',
+    IMAGE = 'image',
 
     /* PWA */
     APP_READY_WORK_OFFLINE = 'app-ready-work-offline',

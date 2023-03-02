@@ -104,6 +104,7 @@ const translation: {
     [LANGUAGE.SECURITY]: 'Bảo mật',
     [LANGUAGE.EMAIL]: 'Email',
     [LANGUAGE.COPIED]: 'Đã sao chép',
+    [LANGUAGE.IMAGE]: 'Hình ảnh',
 
     /* PWA */
     [LANGUAGE.APP_READY_WORK_OFFLINE]: 'Ứng dụng đã sẵn sàng để làm việc ngoại tuyến',

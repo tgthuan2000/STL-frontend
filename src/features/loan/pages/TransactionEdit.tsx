@@ -230,7 +230,6 @@ const TransactionEdit = () => {
     }
 
     const data: TransactionEditFormData = {
-        title: trans?.kindSpending?.name as string,
         onsubmit,
         handleReloadData,
         handleDeleteTransaction,
