@@ -30,7 +30,7 @@ const ScrollToTopProvider = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <ScrollToTopContext.Provider value={value}>
-            <div ref={ref} className='h-16 -mt-16' />
+            <div ref={ref} className='h-16' />
             {children}
         </ScrollToTopContext.Provider>
     )

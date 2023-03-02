@@ -17,6 +17,7 @@ import {
     NotifyProvider,
 } from './context'
 
+const Dashboard = React.lazy(() => import('./Dashboard'))
 const AuthFeature = React.lazy(() => import('./features/auth'))
 const SpendingFeature = React.lazy(() => import('./features/spending'))
 const LoanFeature = React.lazy(() => import('./features/loan'))
@@ -65,7 +66,7 @@ function App() {
                                                 </ConfigProvider>
                                             }
                                         >
-                                            <Route index element={<Navigate to='spending' />} />
+                                            <Route index element={<Dashboard />} />
                                             <Route
                                                 path='spending/*'
                                                 element={
@@ -138,7 +139,7 @@ function App() {
                                             <Route
                                                 path='feedback/*'
                                                 element={
-                                                    <PermissionCheck permissions={[PERMISSION.PROFILE_READ]}>
+                                                    <PermissionCheck permissions={[PERMISSION.FEEDBACK]}>
                                                         <FeedbackFeature />
                                                     </PermissionCheck>
                                                 }

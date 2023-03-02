@@ -27,16 +27,19 @@ const Sidebar: React.FC<SideBarProps> = ({ children }) => {
             )}
 
             <ScrollToTopProvider>
-                <div className={clsx('flex flex-col flex-1 transition-all', desktop.open ? 'md:pl-64' : 'md:pl-16')}>
+                <div
+                    className={clsx(
+                        'transition-all md:min-h-[calc(100vh-64px)]',
+                        desktop.open ? 'md:pl-64' : 'md:pl-16'
+                    )}
+                >
                     {/* --- Top bar --- */}
 
-                    <main className='flex-1'>
-                        <div className='py-6'>
-                            <div className='max-w-7xl mx-auto px-4 sm:px-6 md:px-8'>
-                                {/* Replace with your content */}
-                                <div className='min-h-screen sm:min-h-[calc(100vh-50px)]'>{children}</div>
-                                {/* /End replace */}
-                            </div>
+                    <main className='sm:py-6'>
+                        <div className='mx-auto max-w-7xl px-4 sm:px-6 md:px-8'>
+                            {/* Replace with your content */}
+                            <div className='sm:min-h-[calc(100vh-120px)]'>{children}</div>
+                            {/* /End replace */}
                         </div>
                     </main>
                 </div>
