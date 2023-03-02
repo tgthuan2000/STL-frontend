@@ -43,8 +43,8 @@ export const columns: () => Array<TableColumn<IAccount>> = () => [
         renderRow: ({ twoFA, isHasPassword }) => (
             <td className='px-1 text-center'>
                 <div className='inline-flex flex-wrap gap-1.5'>
-                    {isHasPassword && <Chip>Password</Chip>}
-                    {twoFA && <Chip>2FA</Chip>}
+                    {isHasPassword && <Chip className='bg-indigo-500 font-medium text-white'>Password</Chip>}
+                    {twoFA && <Chip className='bg-orange-500 font-medium text-white'>2FA</Chip>}
                 </div>
             </td>
         ),

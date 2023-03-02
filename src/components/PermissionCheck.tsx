@@ -6,12 +6,16 @@ import WarningGif from '~/assets/warning.gif'
 import { useConfig } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 
-const PermissionCheck: React.FC<PermissionCheckProps> = ({ permissions, children }) => {
+const PermissionCheck: React.FC<PermissionCheckProps> = ({ permissions, children, fallback }) => {
     const { t } = useTranslation()
     const { hasPermissions } = useConfig()
     const navigation = useNavigate()
     if (hasPermissions(permissions)) {
         return <>{children}</>
+    }
+
+    if (fallback) {
+        return <>{fallback}</>
     }
 
     return (

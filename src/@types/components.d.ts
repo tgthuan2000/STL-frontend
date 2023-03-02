@@ -516,6 +516,7 @@ export interface LazySearchSelectOptionsProps {
 export interface PermissionCheckProps {
     permissions: PERMISSION[]
     children: React.ReactNode
+    fallback?: React.ReactNode
 }
 
 export interface ProgressItem {

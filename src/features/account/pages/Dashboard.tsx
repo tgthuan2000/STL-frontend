@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { DataListViewTable } from '~/@types/components'
 import { Table, Transaction } from '~/components'
 import LANGUAGE from '~/i18n/language/key'
+import Skeleton from '../components/Skeleton'
 import useDashboard from '../hook/useDashboard'
 import * as __services from '../services/dataListView'
 
@@ -13,12 +14,7 @@ const Dashboard = () => {
 
     const [{ account }, , , { getMore }] = useDashboard()
 
-    const tableProps: DataListViewTable = useMemo(
-        () => ({
-            columns: __services.columns(),
-        }),
-        []
-    )
+    const tableProps: DataListViewTable = useMemo(() => ({ columns: __services.columns() }), [])
 
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.ACCOUNT_MANAGEMENT)}>
@@ -29,6 +25,7 @@ const Dashboard = () => {
                     loading={account.loading}
                     onGetMore={getMore}
                     onRowClick={() => ''}
+                    SkeletonTable={(loading) => <Skeleton elNumber={loading ? 2 : 10} />}
                     {...tableProps}
                 />
             </div>
