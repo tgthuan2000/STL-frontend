@@ -6,6 +6,8 @@ export interface Notify {
     content: string
     description: string
     viewers: number
+    _createdAt?: string
+    _updatedAt?: string
 }
 export interface NotifyItem {
     read: boolean

@@ -12,7 +12,7 @@ const Image: React.FC<ImageProps> = ({ size = 'medium', src, alt, errorComp = <U
 
     return img ? (
         <img
-            className={clsx('inline-block rounded-full', getSizeAvatarUser[size], className)}
+            className={clsx('inline-block flex-shrink-0 rounded-full', getSizeAvatarUser[size], className)}
             onError={handleError}
             src={img}
             alt={alt}

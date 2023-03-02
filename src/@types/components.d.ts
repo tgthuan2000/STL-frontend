@@ -453,11 +453,11 @@ export interface NotifyDetailFormProps {
     data: NotifyDetailFormData
 }
 
-export interface TableColumn {
+export interface TableColumn<T extends any> {
     key: string
     title: React.ReactNode
     label: string
-    renderRow: (item: any, index: number) => React.ReactNode
+    renderRow: (item: T, index: number) => React.ReactNode
     sort?: boolean
     className?: string
     colSpan?: number
