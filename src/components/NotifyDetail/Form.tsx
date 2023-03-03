@@ -1,11 +1,14 @@
 import { UserIcon } from '@heroicons/react/24/outline'
 import moment from 'moment'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { NotifyDetailFormProps } from '~/@types/components'
 import { DATE_FORMAT } from '~/constant'
+import LANGUAGE from '~/i18n/language/key'
 import Prose from '../Prose'
 
 const NotifyDetailForm: React.FC<NotifyDetailFormProps> = ({ data }) => {
+    const { t } = useTranslation()
     const { notify } = data
     const createdAt = notify._createdAt || notify.notify._createdAt
     return (
@@ -17,7 +20,7 @@ const NotifyDetailForm: React.FC<NotifyDetailFormProps> = ({ data }) => {
                             {notify.notify.title}
                         </h1>
                         {createdAt && (
-                            <span className='text-xs font-medium text-gray-500'>
+                            <span className='text-xs font-medium text-gray-500 dark:text-slate-300'>
                                 {moment(createdAt).format(DATE_FORMAT.TIME_DATE)}
                             </span>
                         )}
@@ -25,7 +28,7 @@ const NotifyDetailForm: React.FC<NotifyDetailFormProps> = ({ data }) => {
                     <div>
                         <span
                             className='flex flex-shrink-0 items-center gap-0.5 text-xs text-cyan-400 lg:text-sm'
-                            title='Số người đã xem'
+                            title={t(LANGUAGE.VIEWERS) as string}
                         >
                             <span>{notify.notify.viewers ?? 0}</span>
                             <UserIcon className='h-4 w-4' />

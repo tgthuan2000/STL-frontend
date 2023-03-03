@@ -1,4 +1,10 @@
-import { ArrowsUpDownIcon, BanknotesIcon, BellIcon, UserIcon } from '@heroicons/react/24/outline'
+import {
+    ArrowsUpDownIcon,
+    BanknotesIcon,
+    BellIcon,
+    ChatBubbleLeftRightIcon,
+    UserGroupIcon,
+} from '@heroicons/react/24/outline'
 import React from 'react'
 import { localStorageValue } from '~/@types/hook'
 import { NavigationMobile, NavLinkIconProps, OptionMenu } from '~/@types/layout'
@@ -14,6 +20,7 @@ const NotifyNavLink = React.lazy(() => import('~/components/NavLink/NotifyNavLin
 const ProfileNavLink = React.lazy(() => import('~/components/NavLink/ProfileNavLink'))
 const SettingNavLink = React.lazy(() => import('~/components/NavLink/SettingNavLink'))
 const SpendingNavLink = React.lazy(() => import('~/components/NavLink/SpendingNavLink'))
+const FeedbackConfigNavLink = React.lazy(() => import('~/components/NavLink/FeedbackConfigNavLink'))
 
 const SettingMenuItem = React.lazy(() => import('~/components/MenuItem/SettingMenuItem'))
 const ProfileMenuItem = React.lazy(() => import('~/components/MenuItem/ProfileMenuItem'))
@@ -62,8 +69,14 @@ export const navigation: Array<Navigation> = [
     {
         name: t(LANGUAGE.ACCOUNT_MANAGEMENT),
         href: '/account',
-        icon: UserIcon,
+        icon: UserGroupIcon,
         permissions: [PERMISSION.ACCOUNT_READ],
+    },
+    {
+        name: t(LANGUAGE.FEEDBACK_MANAGEMENT),
+        href: '/feedback-config',
+        icon: ChatBubbleLeftRightIcon,
+        permissions: [PERMISSION.FEEDBACK_CONFIG],
     },
 ]
 
@@ -80,6 +93,12 @@ export const navigationMobile: Array<NavigationMobile> = [
         href: '/account',
         permissions: [PERMISSION.ACCOUNT_READ],
         component: AccountNavLink,
+    },
+    {
+        name: t(LANGUAGE.FEEDBACK_MANAGEMENT),
+        href: '/feedback-config',
+        permissions: [PERMISSION.FEEDBACK_CONFIG],
+        component: FeedbackConfigNavLink,
     },
 
     /* CLIENT */

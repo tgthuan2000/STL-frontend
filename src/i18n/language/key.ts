@@ -306,6 +306,7 @@ enum LANGUAGE {
     SET_PASSWORD = 'set-password',
     CHANGE_PASSWORD = 'change-password',
     FEEDBACK = 'feedback',
+    FEEDBACK_MANAGEMENT = 'feedback-management',
 }
 
 export default LANGUAGE

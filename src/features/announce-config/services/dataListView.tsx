@@ -29,7 +29,7 @@ export const columns: (width: number) => Array<TableColumn<Notify>> = (width) =>
         label: 'string',
         colSpan: 2,
         renderRow: ({ title, description }: { title: string; description: string }) => (
-            <td className='whitespace-nowrap pt-3 pl-2 pr-3 text-xs sm:pl-3 sm:text-sm' colSpan={2}>
+            <td className='whitespace-nowrap py-3 pl-2 pr-3 text-xs sm:pl-3 sm:text-sm' colSpan={2}>
                 <p className='truncate font-medium'>{title}</p>
                 {description ? (
                     <Prose

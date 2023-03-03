@@ -312,6 +312,7 @@ const translation: {
     [LANGUAGE.SET_PASSWORD]: 'Đặt mật khẩu',
     [LANGUAGE.CHANGE_PASSWORD]: 'Đổi mật khẩu',
     [LANGUAGE.FEEDBACK]: 'Gửi phản hồi',
+    [LANGUAGE.FEEDBACK_MANAGEMENT]: 'Quản lý phản hồi',
 }
 
 export default { translation }

@@ -311,6 +311,7 @@ const translation: {
     [LANGUAGE.SET_PASSWORD]: 'Set password',
     [LANGUAGE.CHANGE_PASSWORD]: 'Change password',
     [LANGUAGE.FEEDBACK]: 'Feedback',
+    [LANGUAGE.FEEDBACK_MANAGEMENT]: 'Feedback management',
 }
 
 export default { translation }
