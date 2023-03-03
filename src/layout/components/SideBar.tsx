@@ -35,7 +35,7 @@ const Sidebar: React.FC<SideBarProps> = ({ children }) => {
                 >
                     {/* --- Top bar --- */}
 
-                    <main className='sm:py-6'>
+                    <main className='py-6'>
                         <div className='mx-auto max-w-7xl px-4 sm:px-6 md:px-8'>
                             {/* Replace with your content */}
                             <div className='sm:min-h-[calc(100vh-120px)]'>{children}</div>
