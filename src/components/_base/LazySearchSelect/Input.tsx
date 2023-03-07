@@ -3,7 +3,14 @@ import clsx from 'clsx'
 import React from 'react'
 import { LazySearchSelectInputProp } from '~/@types/components'
 
-const Input: React.FC<LazySearchSelectInputProp> = ({ field, autoFocus, loading, disabled, handleSearch }) => {
+const Input: React.FC<LazySearchSelectInputProp> = ({
+    field,
+    autoFocus,
+    loading,
+    disabled,
+    placeholder,
+    handleSearch,
+}) => {
     return (
         <Combobox.Input
             className={clsx(
@@ -16,6 +23,7 @@ const Input: React.FC<LazySearchSelectInputProp> = ({ field, autoFocus, loading,
             spellCheck={false}
             autoComplete='off'
             autoFocus={autoFocus}
+            placeholder={placeholder as string}
         />
     )
 }

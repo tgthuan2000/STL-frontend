@@ -11,11 +11,12 @@ import {
     QrCodeIcon,
     UserPlusIcon,
     EllipsisHorizontalCircleIcon,
+    ArrowTrendingDownIcon,
 } from '@heroicons/react/24/outline'
 import { googleLogout } from '@react-oauth/google'
 import { IMenuBtn } from '~/@types/components'
 import axios from '~/axiosConfig'
-import { CreateMember, MakeGetLoan } from '~/features/loan/components'
+import { CreateMember, MakeGetLoan, MakeLoan } from '~/features/loan/components'
 import { AddCategory, AddMethod, MakeBudget, MakeCost, MakeIncome, MakeTransfer } from '~/features/spending/components'
 import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
@@ -238,16 +239,16 @@ export const menuLoanPC: IMenuBtn[] = [
             slide: 'get-loan',
         },
     },
-    // {
-    //     title: t(LANGUAGE_MAKE_LOAN),
-    //     color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
-    //     icon: TrendingDownIcon,
-    //     children: () => <MakeLoan />,
-    //     to: '?slide=loan',
-    //     query: {
-    //         slide: 'loan',
-    //     },
-    // },
+    {
+        title: t(LANGUAGE.MAKE_LOAN),
+        color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
+        icon: ArrowTrendingDownIcon,
+        children: () => <MakeLoan />,
+        to: '?slide=loan',
+        query: {
+            slide: 'loan',
+        },
+    },
     {
         title: t(LANGUAGE.CREATE_MEMBER),
         color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',

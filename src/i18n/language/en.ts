@@ -159,6 +159,7 @@ const translation: {
     [LANGUAGE.PLACEHOLDER_CHOOSE_TIME]: 'Choose time',
     [LANGUAGE.PLACEHOLDER_ENTER_CONTENT]: 'Enter content',
     [LANGUAGE.PLACEHOLDER_SHORT_DESCRIPTION]: 'Short description',
+    [LANGUAGE.PLACEHOLDER_ENTER_USER_INFO]: 'Enter user info',
 
     /* NOTIFY/TOAST */
     [LANGUAGE.NOTIFY_UPDATE_SUCCESS]: 'Update success',
@@ -169,6 +170,7 @@ const translation: {
     [LANGUAGE.NOTIFY_CREATE_METHOD_SUCCESS]: 'Create method success',
     [LANGUAGE.NOTIFY_CREATE_CATEGORY_SUCCESS]: 'Create category success',
     [LANGUAGE.NOTIFY_CREATE_GET_LOAN_SUCCESS]: 'Create get loan success',
+    [LANGUAGE.NOTIFY_CREATE_LOAN_SUCCESS]: 'Create loan success',
     [LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS]: 'Update password success',
     [LANGUAGE.NOTIFY_CREATE_MEMBER_SUCCESS]: 'Create member success',
     [LANGUAGE.NOTIFY_CREATE_NOTIFY_SUCCESS]: 'Create notify success',
@@ -228,6 +230,7 @@ const translation: {
     [LANGUAGE.NEAR_DEADLINE]: 'Near deadline',
     [LANGUAGE.METHOD_RECEIVE]: 'Receive method',
     [LANGUAGE.USER_GET_LOAN]: 'User get loan',
+    [LANGUAGE.USER_LOAN]: 'User loan',
     [LANGUAGE.ESTIMATE_PAID_DATE]: 'Estimate paid date',
     [LANGUAGE.ASSET]: 'Asset',
     [LANGUAGE.ADD_ORIGIN_AMOUNT]: 'Add origin',

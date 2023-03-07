@@ -476,12 +476,14 @@ export interface TableProps {
 }
 
 export interface LazySearchSelectProps {
+    name: string
     className?: string
-    onChange: (value: any) => void
+    onChange: (value: any) => any | any[]
     disabled?: boolean
     label?: string | DefaultTFuncReturn
     options?: any[]
     hasNextPage?: boolean
+    placeholder?: string | DefaultTFuncReturn
     onGetMore?: () => void
     onSearch?: (value: string) => void
     valueKey?: string
@@ -495,10 +497,11 @@ export interface LazySearchSelectLabelProps {
 }
 
 export interface LazySearchSelectInputProp {
-    field: ControllerRenderProps<{ search: string }, 'search'>
+    field: ControllerRenderProps<{ __search: string }, '__search'>
     autoFocus?: boolean
     loading?: boolean
     disabled?: boolean
+    placeholder?: string | DefaultTFuncReturn
     handleSearch?: (value: string, onChange: (...event: any[]) => void) => void
 }
 export interface LazySearchSelectIconProps {

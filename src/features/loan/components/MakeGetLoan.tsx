@@ -16,6 +16,7 @@ import { client } from '~/sanityConfig'
 import { GET_USER_LOAN } from '~/schema/query/loan'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
 import { useProfile } from '~/store/auth'
+import { getImageReference } from '~/utils'
 import StatusLoan from './common/StatusLoan'
 
 const MakeGetLoan = () => {
@@ -95,7 +96,7 @@ const MakeGetLoan = () => {
                     _type: 'reference',
                     _ref: userProfile?._id,
                 },
-                ...(imageId && { image: { _type: 'image', asset: { _type: 'reference', _ref: imageId } } }),
+                ...getImageReference(imageId),
             }
             const __ = client.transaction()
             __.create(documentSpending)

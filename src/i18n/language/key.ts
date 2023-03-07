@@ -155,6 +155,7 @@ enum LANGUAGE {
     PLACEHOLDER_CHOOSE_TIME = 'placeholder-choose-time',
     PLACEHOLDER_ENTER_CONTENT = 'placeholder-enter-content',
     PLACEHOLDER_SHORT_DESCRIPTION = 'placeholder-short-description',
+    PLACEHOLDER_ENTER_USER_INFO = 'placeholder-enter-user-info',
 
     /* NOTIFY/TOAST */
     NOTIFY_UPDATE_SUCCESS = 'notify-update-success',
@@ -165,6 +166,7 @@ enum LANGUAGE {
     NOTIFY_CREATE_METHOD_SUCCESS = 'notify-create-method-success',
     NOTIFY_CREATE_CATEGORY_SUCCESS = 'notify-create-category-success',
     NOTIFY_CREATE_GET_LOAN_SUCCESS = 'notify-create-get-loan-success',
+    NOTIFY_CREATE_LOAN_SUCCESS = 'notify-create-loan-success',
     NOTIFY_UPDATE_PASSWORD_SUCCESS = 'notify-update-password-success',
     NOTIFY_CREATE_MEMBER_SUCCESS = 'notify-create-member-success',
     NOTIFY_CREATE_NOTIFY_SUCCESS = 'notify-create-notify-success',
@@ -224,6 +226,7 @@ enum LANGUAGE {
     NEAR_DEADLINE = 'near-deadline',
     METHOD_RECEIVE = 'method-receive',
     USER_GET_LOAN = 'user-get-loan',
+    USER_LOAN = 'user-loan',
     ESTIMATE_PAID_DATE = 'estimate-paid-date',
     ASSET = 'asset',
     ADD_ORIGIN_AMOUNT = 'add-origin-amount',

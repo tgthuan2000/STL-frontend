@@ -1,23 +1,25 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { EnvelopeIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { EnvelopeIcon } from '@heroicons/react/24/outline'
 import { yupResolver } from '@hookform/resolvers/yup'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
-import { useRef, useState } from 'react'
+import { Fragment } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
-import { CreateStep3Props, QueryDataStep3 } from '~/@types/announce-config'
-import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/@types/hook'
+import { CreateStep3Props } from '~/@types/announce-config'
 import { DraftNotify, NotifyAssignForm } from '~/@types/notify'
 import { Image } from '~/components'
 import { LazySearchSelect, Toggle } from '~/components/_base'
-import { COUNT_PAGINATE, TAGS } from '~/constant'
+import useLazySearchSelect from '~/components/_base/LazySearchSelect/hook/useLazySearchSelect'
+import UserAllowSendMailButton from '~/components/_base/LazySearchSelect/UserAllowSendMailButton'
+import UserDeleteButton from '~/components/_base/LazySearchSelect/UserDeleteButton'
+import UserList from '~/components/_base/LazySearchSelect/UserList'
+import UserOption from '~/components/_base/LazySearchSelect/UserOption'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
-import { useLocalStorage, useQuery } from '~/hook'
+import { useLocalStorage } from '~/hook'
 import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
-import { SEARCH_USER_PAGINATE } from '~/schema/query/user'
 
 const { t } = i18n
 
@@ -35,70 +37,28 @@ const schema = yup.object().shape({
 
 const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
     const { t } = useTranslation()
-    const [draftNotify] = useLocalStorage<DraftNotify>(LOCAL_STORAGE_KEY.STL_DRAFT_NOTIFY)
     const [userRef] = useAutoAnimate<HTMLDivElement>()
+    const [draftNotify] = useLocalStorage<DraftNotify>(LOCAL_STORAGE_KEY.STL_DRAFT_NOTIFY)
+    const [searchLoading, users, handleSearch, handleScrollGetMore] = useLazySearchSelect()
 
-    const [{ query, params, tags }, setQuery] = useState<{
-        query: QueryTypeUseQuery<QueryDataStep3>
-        params: ParamsTypeUseQuery
-        tags: TagsTypeUseQuery<QueryDataStep3>
-    }>({
-        query: { users: SEARCH_USER_PAGINATE },
-        params: { search: '', __fromUser: 0, __toUser: COUNT_PAGINATE },
-        tags: { users: TAGS.SHORT },
-    })
-
-    const searchFirst = useRef(false)
-    const [{ users }, , , reload] = useQuery<QueryDataStep3>(query, params, tags)
     const form = useForm<NotifyAssignForm>({
         defaultValues: { users: draftNotify?.users ?? [], sendAll: draftNotify?.sendAll ?? false },
         resolver: yupResolver(schema),
     })
+
+    const __users = form.watch('users')
+
     const handleSubmit = async (data: NotifyAssignForm) => {
         onSubmit(data)
     }
 
-    const __users = form.watch('users')
-
     const handleChange = (data: any) => {
         if (data) {
             if (!__users.find((u) => u._id === data._id)) {
-                form.setValue('users', [...__users, { ...data, sendMail: data.allowSendMail }])
+                return [...__users, { ...data, sendMail: data.allowSendMail }]
             } else {
-                form.setValue(
-                    'users',
-                    __users.filter((u) => u._id !== data._id)
-                )
+                return __users.filter((u) => u._id !== data._id)
             }
-        }
-    }
-
-    const handleSearch = (search: string) => {
-        if (search) {
-            if (!searchFirst.current) {
-                searchFirst.current = true
-            }
-            setQuery((prev) => ({
-                ...prev,
-                params: {
-                    ...prev.params,
-                    search: '*' + search.toLowerCase() + '*',
-                },
-            }))
-
-            reload()
-        }
-    }
-
-    const handleScrollGetMore = () => {
-        const length = users?.data?.data.length
-
-        if (length) {
-            setQuery((prev) => ({
-                ...prev,
-                params: { ...prev.params, __fromUser: length, __toUser: length + COUNT_PAGINATE },
-            }))
-            reload('users')
         }
     }
 
@@ -122,46 +82,48 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                     />
                 </div>
                 <LazySearchSelect
+                    name='users'
                     options={users.data?.data}
                     autoFocus
                     hasNextPage={users.data?.hasNextPage}
-                    loading={searchFirst.current ? users.loading : false}
+                    loading={searchLoading}
                     label={t(LANGUAGE.SEARCH)}
                     disabled={form.watch('sendAll')}
+                    placeholder={t(LANGUAGE.PLACEHOLDER_ENTER_USER_INFO)}
                     onChange={handleChange}
                     onSearch={handleSearch}
                     onGetMore={handleScrollGetMore}
-                    getOptionLabel={(option, active) => {
-                        return (
-                            <div className='flex items-center gap-2'>
-                                <Image src={option.image} alt={option.userName} size='small' />
-                                <div className='flex-1'>
-                                    <p
-                                        className={clsx(
-                                            'truncate font-medium',
-                                            active ? 'text-white' : 'text-gray-900 dark:text-slate-200'
-                                        )}
-                                    >
-                                        {option.userName}
-                                    </p>
-                                    <small
-                                        className={clsx(
-                                            'block truncate font-normal',
-                                            active ? 'text-white' : 'text-gray-500 dark:text-slate-400'
-                                        )}
-                                    >
-                                        {option.email}
-                                    </small>
-                                </div>
-                            </div>
-                        )
-                    }}
+                    getOptionLabel={(option, active) => <UserOption active={active} data={option} />}
                 />
 
                 <div>
                     <p className='inline-block text-sm font-medium text-gray-700 dark:text-slate-100'>
                         {t(LANGUAGE.NOTIFY_RECEIVER_LIST)}
                     </p>
+
+                    <UserList data={__users}>
+                        {(user, index) => (
+                            <Fragment>
+                                <UserAllowSendMailButton
+                                    active={user.sendMail}
+                                    disabled={form.watch('sendAll')}
+                                    hidden={!user.allowSendMail}
+                                    onClick={() => {
+                                        form.setValue(`users.${index}.sendMail`, !user.sendMail)
+                                    }}
+                                />
+                                <UserDeleteButton
+                                    disabled={form.watch('sendAll')}
+                                    onClick={() => {
+                                        form.setValue(
+                                            'users',
+                                            __users.filter((u) => u._id !== user._id)
+                                        )
+                                    }}
+                                />
+                            </Fragment>
+                        )}
+                    </UserList>
                     <div className='mt-1 select-none rounded-lg border dark:border-slate-700' ref={userRef}>
                         {isEmpty(__users) ? (
                             <p className='px-4 py-2 text-center text-gray-900 dark:text-slate-200'>
@@ -206,19 +168,6 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                                             <EnvelopeIcon className='h-5' />
                                         </button>
                                     )}
-                                    <button
-                                        className='cursor-pointer rounded-lg bg-slate-100 p-2 text-radical-red-500 transition-all hover:bg-slate-200 disabled:cursor-not-allowed disabled:text-gray-500 disabled:hover:bg-slate-100 dark:bg-slate-700'
-                                        onClick={() => {
-                                            form.setValue(
-                                                'users',
-                                                __users.filter((u) => u._id !== user._id)
-                                            )
-                                        }}
-                                        disabled={form.watch('sendAll')}
-                                        type='button'
-                                    >
-                                        <TrashIcon className='h-5' />
-                                    </button>
                                 </div>
                             ))
                         )}

@@ -159,6 +159,7 @@ const translation: {
     [LANGUAGE.PLACEHOLDER_CHOOSE_TIME]: 'Chọn thời gian',
     [LANGUAGE.PLACEHOLDER_ENTER_CONTENT]: 'Nhập nội dung',
     [LANGUAGE.PLACEHOLDER_SHORT_DESCRIPTION]: 'Nhập mô tả ngắn',
+    [LANGUAGE.PLACEHOLDER_ENTER_USER_INFO]: 'Nhập thông tin người dùng',
 
     /* NOTIFY/TOAST */
     [LANGUAGE.NOTIFY_UPDATE_SUCCESS]: 'Cập nhật thành công!',
@@ -169,6 +170,7 @@ const translation: {
     [LANGUAGE.NOTIFY_CREATE_METHOD_SUCCESS]: 'Thêm phương thức thành công!',
     [LANGUAGE.NOTIFY_CREATE_CATEGORY_SUCCESS]: 'Thêm thể loại thành công!',
     [LANGUAGE.NOTIFY_CREATE_GET_LOAN_SUCCESS]: 'Thêm khoản vay thành công!',
+    [LANGUAGE.NOTIFY_CREATE_LOAN_SUCCESS]: 'Thêm khoản cho vay thành công!',
     [LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS]: 'Đổi mật khẩu thành công!',
     [LANGUAGE.NOTIFY_CREATE_MEMBER_SUCCESS]: 'Thêm thành viên thành công!',
     [LANGUAGE.NOTIFY_CREATE_NOTIFY_SUCCESS]: 'Tạo thông báo thành công!',
@@ -228,6 +230,7 @@ const translation: {
     [LANGUAGE.NEAR_DEADLINE]: 'Gần hạn',
     [LANGUAGE.METHOD_RECEIVE]: 'Phương thức nhận',
     [LANGUAGE.USER_GET_LOAN]: 'Đối tượng vay',
+    [LANGUAGE.USER_LOAN]: 'Đối tượng cho vay',
     [LANGUAGE.ESTIMATE_PAID_DATE]: 'Hạn trả',
     [LANGUAGE.ASSET]: 'Tài sản',
     [LANGUAGE.ADD_ORIGIN_AMOUNT]: 'Cộng gốc',

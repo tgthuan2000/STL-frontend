@@ -19,14 +19,6 @@ export interface ICreateMemberForm {
     image: SanityAssetDocument | null
 }
 
-export interface IMakeGetLoanForm {
-    amount: number | string
-    methodReference: IMethodSpending | null
-    date: Date | null
-    description: string
-    userLoan: IUserLoan | null
-}
-
 export interface IAddIncomeForm {
     amount: number | string
     categorySpending: ICategorySpending | null
@@ -35,12 +27,20 @@ export interface IAddIncomeForm {
     description: string
     userLoan: IUserLoan[] | null
 }
-interface IMakeGetLoanForm {
+export interface IMakeGetLoanForm {
     amount: number | string
     methodReference: IMethodSpending | null
     estimatePaidDate: Date | null
     description: string
     userLoan: IUserLoan | null
+    image?: File | null
+}
+export interface IMakeLoanForm {
+    amount: number | string
+    methodReference: IMethodSpending | null
+    estimatePaidDate: Date | null
+    description: string
+    loanUsers: IUserLoan[] | null
     image?: File | null
 }
 
@@ -127,7 +127,6 @@ export interface QueryDataMakeGetLoan {
 
 interface QueryDataMakeLoan {
     methodSpending: IMethodSpending[]
-    userLoan: IUserLoan[]
 }
 
 /* --- SERVICES --- */
