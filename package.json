@@ -27,6 +27,7 @@
         "howler": "^2.2.3",
         "html-react-parser": "^3.0.8",
         "i18next": "^22.4.9",
+        "i18next-http-backend": "^2.2.0",
         "lodash": "^4.17.21",
         "moment": "^2.29.4",
         "numeral": "^2.0.6",

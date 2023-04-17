@@ -1,0 +1,413 @@
+import {
+    ArrowRightOnRectangleIcon,
+    ArrowTrendingDownIcon,
+    ArrowTrendingUpIcon,
+    ArrowsRightLeftIcon,
+    ClipboardDocumentListIcon,
+    EllipsisHorizontalCircleIcon,
+    HomeIcon,
+    MinusCircleIcon,
+    PlusCircleIcon,
+    PuzzlePieceIcon,
+    QrCodeIcon,
+    RectangleGroupIcon,
+    UserPlusIcon,
+} from '@heroicons/react/24/outline'
+import { googleLogout } from '@react-oauth/google'
+import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+import { IMenuBtn } from '~/@types/components'
+import axios from '~/axiosConfig'
+import { CreateMember, MakeGetLoan, MakeLoan } from '~/features/loan/components'
+import { AddCategory, AddMethod, MakeBudget, MakeCost, MakeIncome, MakeTransfer } from '~/features/spending/components'
+import LANGUAGE from '~/i18n/language/key'
+
+export const useMenuMobile = (): IMenuBtn[] => {
+    const { t } = useTranslation()
+
+    const data = useMemo(() => {
+        return [
+            {
+                title: t(LANGUAGE.MAKE_INCOME),
+                color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
+                icon: PlusCircleIcon,
+                children: () => <MakeIncome />,
+                to: '?slide=add-income',
+                query: {
+                    slide: 'add-income',
+                },
+            },
+            {
+                title: t(LANGUAGE.MAKE_COST),
+                color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
+                icon: MinusCircleIcon,
+                children: () => <MakeCost />,
+                to: '?slide=add-payment',
+                query: {
+                    slide: 'add-payment',
+                },
+            },
+            {
+                title: t(LANGUAGE.MAKE_TRANSFER),
+                color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
+                icon: ArrowsRightLeftIcon,
+                children: () => <MakeTransfer />,
+                to: '?slide=transfer',
+                query: {
+                    slide: 'transfer',
+                },
+            },
+            {
+                title: t(LANGUAGE.MAKE_BUDGET),
+                color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
+                icon: PuzzlePieceIcon,
+                children: () => <MakeBudget />,
+                to: '?slide=budget',
+                query: {
+                    slide: 'budget',
+                },
+            },
+            // {
+            //     title: t(LANGUAGE.TRANSACTION),
+            //     color: 'text-orange-700 bg-orange-200 hover:bg-orange-300 dark:text-orange-500',
+            //     icon: ClipboardDocumentListIcon,
+            //     to: 'transaction',
+            // },
+        ]
+    }, [t])
+
+    return data
+}
+export const useMenuMobileOthers = (): IMenuBtn[] => {
+    const { t } = useTranslation()
+    const data = useMemo(() => {
+        return [
+            {
+                title: t(LANGUAGE.CREATE_METHOD),
+                color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
+                icon: QrCodeIcon,
+                children: () => <AddMethod />,
+                to: '?slide=add-method',
+                query: {
+                    slide: 'add-method',
+                },
+            },
+            {
+                title: t(LANGUAGE.CREATE_CATEGORY),
+                color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
+                icon: RectangleGroupIcon,
+                children: () => <AddCategory />,
+                to: '?slide=category',
+                query: {
+                    slide: 'category',
+                },
+            },
+        ]
+    }, [t])
+    return data
+}
+
+export const useMenuLoanMobile = (): IMenuBtn[] => {
+    const { t } = useTranslation()
+    const data = useMemo(() => {
+        return [
+            {
+                title: t(LANGUAGE.MAKE_GET_LOAN),
+                color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
+                icon: ArrowTrendingUpIcon,
+                children: () => <MakeGetLoan />,
+                to: '?slide=get-loan',
+                query: {
+                    slide: 'get-loan',
+                },
+            },
+            // {
+            //     title: t(LANGUAGE_MAKE_LOAN),
+            //     color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
+            //     icon: TrendingDownIcon,
+            //     children: () => <MakeLoan />,
+            //     to: '?slide=loan',
+            //     query: {
+            //         slide: 'loan',
+            //     },
+            // },
+            {
+                title: t(LANGUAGE.CREATE_MEMBER),
+                color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
+                icon: UserPlusIcon,
+                children: () => <CreateMember />,
+                to: '?slide=create-member',
+                query: {
+                    slide: 'create-member',
+                },
+            },
+        ]
+    }, [t])
+    return data
+}
+export const useMenuSpendingPC = (): IMenuBtn[] => {
+    const { t } = useTranslation()
+    const data: IMenuBtn[] = useMemo(() => {
+        return [
+            {
+                title: t(LANGUAGE.MAKE_INCOME),
+                color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
+                icon: PlusCircleIcon,
+                children: () => <MakeIncome />,
+                to: '?slide=add-income',
+                query: {
+                    slide: 'add-income',
+                },
+            },
+            {
+                title: t(LANGUAGE.MAKE_COST),
+                color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
+                icon: MinusCircleIcon,
+                children: () => <MakeCost />,
+                to: '?slide=add-payment',
+                query: {
+                    slide: 'add-payment',
+                },
+            },
+            {
+                title: t(LANGUAGE.MAKE_TRANSFER),
+                color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
+                icon: ArrowsRightLeftIcon,
+                children: () => <MakeTransfer />,
+                to: '?slide=transfer',
+                query: {
+                    slide: 'transfer',
+                },
+            },
+            {
+                title: t(LANGUAGE.MAKE_BUDGET),
+                color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
+                icon: PuzzlePieceIcon,
+                children: () => <MakeBudget />,
+                to: '?slide=budget',
+                query: {
+                    slide: 'budget',
+                },
+            },
+
+            {
+                title: t(LANGUAGE.LOGOUT),
+                color: 'text-gray-700 bg-gray-200 hover:bg-gray-300 dark:text-gray-500',
+                icon: ArrowRightOnRectangleIcon,
+                to: '/',
+                action: (logout) => {
+                    googleLogout()
+                    logout()
+                    axios.defaults.headers.common['Authorization'] = null
+                },
+                divider: true,
+            },
+            {
+                title: t(LANGUAGE.HOME),
+                color: 'text-red-700 bg-red-200 hover:bg-red-300 dark:text-red-500',
+                icon: HomeIcon,
+                to: '/spending',
+            },
+            {
+                title: t(LANGUAGE.TRANSACTION),
+                color: 'text-orange-700 bg-orange-200 hover:bg-orange-300 dark:text-orange-500',
+                icon: ClipboardDocumentListIcon,
+                to: 'transaction',
+            },
+            {
+                title: t(LANGUAGE.METHOD_SPENDING),
+                color: 'text-purple-700 bg-purple-200 hover:bg-purple-300 dark:text-purple-500',
+                icon: QrCodeIcon,
+                to: 'method',
+            },
+            {
+                title: t(LANGUAGE.OTHERS),
+                color: 'text-pink-700 bg-pink-200 hover:bg-pink-300 dark:text-pink-500',
+                icon: EllipsisHorizontalCircleIcon,
+                to: 'others',
+            },
+            {
+                title: t(LANGUAGE.CREATE_METHOD),
+                color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
+                icon: QrCodeIcon,
+                children: () => <AddMethod />,
+                to: '?slide=add-method',
+                query: {
+                    slide: 'add-method',
+                },
+                divider: true,
+            },
+            {
+                title: t(LANGUAGE.CREATE_CATEGORY),
+                color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
+                icon: RectangleGroupIcon,
+                children: () => <AddCategory />,
+                to: '?slide=add-category',
+                query: {
+                    slide: 'add-category',
+                },
+            },
+        ]
+    }, [t])
+    return data
+}
+
+export const useMenuLoanPC = (): IMenuBtn[] => {
+    const { t } = useTranslation()
+    const data: IMenuBtn[] = useMemo(() => {
+        return [
+            {
+                title: t(LANGUAGE.MAKE_GET_LOAN),
+                color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
+                icon: ArrowTrendingUpIcon,
+                children: () => <MakeGetLoan />,
+                to: '?slide=get-loan',
+                query: {
+                    slide: 'get-loan',
+                },
+            },
+            {
+                title: t(LANGUAGE.MAKE_LOAN),
+                color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
+                icon: ArrowTrendingDownIcon,
+                children: () => <MakeLoan />,
+                to: '?slide=loan',
+                query: {
+                    slide: 'loan',
+                },
+            },
+            {
+                title: t(LANGUAGE.CREATE_MEMBER),
+                color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
+                icon: UserPlusIcon,
+                children: () => <CreateMember />,
+                to: '?slide=create-member',
+                query: {
+                    slide: 'create-member',
+                },
+            },
+            {
+                title: t(LANGUAGE.LOGOUT),
+                color: 'text-gray-700 bg-gray-200 hover:bg-gray-300 dark:text-gray-500',
+                icon: ArrowRightOnRectangleIcon,
+                to: '/',
+                action: (logout) => {
+                    googleLogout()
+                    logout()
+                    axios.defaults.headers.common['Authorization'] = null
+                },
+                divider: true,
+            },
+            {
+                title: t(LANGUAGE.HOME),
+                color: 'text-red-700 bg-red-200 hover:bg-red-300 dark:text-red-500',
+                icon: HomeIcon,
+                to: '/loan',
+            },
+            {
+                title: t(LANGUAGE.TRANSACTION),
+                color: 'text-orange-700 bg-orange-200 hover:bg-orange-300 dark:text-orange-500',
+                icon: ClipboardDocumentListIcon,
+                to: 'transaction',
+            },
+            // {
+            //     title: t(LANGUAGE.METHOD_SPENDING),
+            //     color: 'text-purple-700 bg-purple-200 hover:bg-purple-300 dark:text-purple-500',
+            //     icon: QrCodeIcon,
+            //     to: 'method',
+            // },
+        ]
+    }, [t])
+    return data
+}
+
+export const useMenuSpendingPages = (): IMenuBtn[] => {
+    const { t } = useTranslation()
+
+    const data = useMemo(() => {
+        return [
+            {
+                title: t(LANGUAGE.HOME),
+                color: 'text-red-700 dark:text-red-500',
+                icon: HomeIcon,
+                to: '/spending',
+            },
+            {
+                title: t(LANGUAGE.TRANSACTION),
+                color: 'text-orange-700 dark:text-orange-500',
+                icon: ClipboardDocumentListIcon,
+                to: 'transaction',
+            },
+            {
+                title: t(LANGUAGE.METHOD_SPENDING),
+                color: 'text-purple-700 dark:text-purple-500',
+                icon: QrCodeIcon,
+                to: 'method',
+            },
+            {
+                title: t(LANGUAGE.OTHERS),
+                color: 'text-pink-700 dark:text-pink-500',
+                icon: EllipsisHorizontalCircleIcon,
+                to: 'others',
+            },
+            // {
+            //     title: t(LANGUAGE.MAKE_BUDGET),
+            //     color: 'text-yellow-700 dark:text-yellow-500',
+            //     icon: PuzzlePieceIcon,
+            //     children: () => <MakeBudget />,
+            //     to: '?slide=budget',
+            //     query: {
+            //         slide: 'budget',
+            //     },
+            // },
+            // {
+            //     title: t(LANGUAGE.CREATE_METHOD),
+            //     color: 'text-cyan-700 dark:text-cyan-500',
+            //     icon: QrCodeIcon,
+            //     children: () => <AddMethod />,
+            //     to: '?slide=add-method',
+            //     query: {
+            //         slide: 'add-method',
+            //     },
+            // },
+            // {
+            //     title: t(LANGUAGE.CREATE_CATEGORY),
+            //     color: 'text-cyan-700 dark:text-cyan-500',
+            //     icon: RectangleGroupIcon,
+            //     children: () => <AddCategory />,
+            //     to: '?slide=add-category',
+            //     query: {
+            //         slide: 'add-category',
+            //     },
+            // },
+        ]
+    }, [t])
+
+    return data
+}
+export const useMenuLoanPages = (): IMenuBtn[] => {
+    const { t } = useTranslation()
+    const data = useMemo(() => {
+        return [
+            {
+                title: t(LANGUAGE.HOME),
+                color: 'text-red-700 dark:text-red-500',
+                icon: HomeIcon,
+                to: '/loan',
+            },
+            {
+                title: t(LANGUAGE.TRANSACTION),
+                color: 'text-orange-700 dark:text-orange-500',
+                icon: ClipboardDocumentListIcon,
+                to: 'transaction',
+            },
+            // {
+            //     title: t(LANGUAGE.METHOD_SPENDING),
+            //     color: 'text-purple-700 dark:text-purple-500',
+            //     icon: QrCodeIcon,
+            //     to: 'method',
+            // },
+        ]
+    }, [t])
+    return data
+}

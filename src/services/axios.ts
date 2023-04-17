@@ -1,20 +1,18 @@
+import { useCallback, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Id, toast } from 'react-toastify'
 import { CODE } from '~/constant/code'
-import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
 
-const { t } = i18n
+export const useAxiosService = () => {
+    const { t } = useTranslation()
 
-export const axiosService = {
-    notify(code: CODE) {
-        const codes: { [key in CODE]: () => boolean | Id | void } = {
+    const codes: { [key in CODE]: () => boolean | Id | void } = useMemo(() => {
+        return {
             /* COMMON */
             [CODE.SUCCESS]: () => true,
 
-            [CODE.FORBIDDEN]: () => {
-                return toast.error(t(LANGUAGE.NOTIFY_FORBIDDEN))
-            },
-
+            [CODE.FORBIDDEN]: () => toast.error(t(LANGUAGE.NOTIFY_FORBIDDEN)),
             /* REQUIRED */
             [CODE.REQUIRED_EMAIL]: () => toast.error(t(LANGUAGE.NOTIFY_REQUIRED_EMAIL)),
             [CODE.REQUIRED_ID]: () => toast.error(t(LANGUAGE.NOTIFY_REQUIRED_ID)),
@@ -37,7 +35,9 @@ export const axiosService = {
             [CODE.TWO_FA_INVALID]: () => toast.error(t(LANGUAGE.NOTIFY_TWO_FA_CODE_INVALID)),
             [CODE.TOKEN_REVOKED]: () => toast.error(t(LANGUAGE.NOTIFY_TOKEN_REVOKED)),
         }
+    }, [t])
 
-        return codes[code]?.()
-    },
+    const notify = useCallback((code: CODE) => codes[code]?.(), [codes])
+
+    return { notify }
 }

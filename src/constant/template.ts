@@ -1,5 +1,3 @@
-import i18n from '~/i18n'
-import LANGUAGE from '~/i18n/language/key'
 import { DATE_FORMAT } from '.'
 
 export enum E_FILTER_DATE {
@@ -21,40 +19,3 @@ export interface IFILTER_DATE {
     dateName: string | undefined | null
     formatDate: keyof typeof DATE_FORMAT
 }
-
-const { t } = i18n
-export const TABS_FILTER_DATE: IFILTER_DATE[] = [
-    {
-        id: E_FILTER_DATE.DATE_RANGE,
-        name: 'dateRange',
-        labelName: t(LANGUAGE.ADVANCE),
-        dateName: t(LANGUAGE.DATE_RANGE),
-        formatDate: 'DATE',
-    },
-    {
-        id: E_FILTER_DATE.DATE,
-        name: 'date',
-        labelName: t(LANGUAGE.BY_DAY),
-        dateName: t(LANGUAGE.DAY),
-        formatDate: 'DATE',
-    },
-    {
-        id: E_FILTER_DATE.MONTH,
-        name: 'month',
-        labelName: t(LANGUAGE.BY_MONTH),
-        dateName: t(LANGUAGE.MONTH),
-        formatDate: 'MONTH',
-    },
-    {
-        id: E_FILTER_DATE.YEAR,
-        name: 'year',
-        labelName: t(LANGUAGE.BY_YEAR),
-        dateName: t(LANGUAGE.YEAR),
-        formatDate: 'YEAR',
-    },
-]
-
-export const dateRangeSuggestions = [
-    { id: E_DATE_RANGE_SUGGESTION.THIS_WEEK, label: t(LANGUAGE.THIS_WEEK) },
-    { id: E_DATE_RANGE_SUGGESTION.LAST_WEEK, label: t(LANGUAGE.LAST_WEEK) },
-]

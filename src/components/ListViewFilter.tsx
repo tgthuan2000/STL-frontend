@@ -3,28 +3,29 @@ import clsx from 'clsx'
 import { isNil } from 'lodash'
 import numeral from 'numeral'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { ListViewFilterProps } from '~/@types/components'
 import { DATA_LIST_MODE } from '~/constant/component'
-import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
 import TimeFilter from './TimeFilter'
 import { Dropdown } from './_base'
 
-const { t } = i18n
-const ListViewFilter: React.FC<ListViewFilterProps> = ({
-    loading,
-    totalLoading,
-    timeFilter = true,
-    viewListMode = true,
-    viewTotal = true,
-    onSubmitTimeFilter,
-    children,
-    totalData,
-    receiveTitle = t(LANGUAGE.RECEIVE),
-    costTitle = t(LANGUAGE.COST),
-    countTitle = t(LANGUAGE.TRANSACTION),
-    _,
-}) => {
+const ListViewFilter: React.FC<ListViewFilterProps> = (props) => {
+    const { t } = useTranslation()
+    const {
+        loading,
+        totalLoading,
+        timeFilter = true,
+        viewListMode = true,
+        viewTotal = true,
+        onSubmitTimeFilter,
+        children,
+        totalData,
+        receiveTitle = t(LANGUAGE.RECEIVE),
+        costTitle = t(LANGUAGE.COST),
+        countTitle = t(LANGUAGE.TRANSACTION),
+        _,
+    } = props
     const { dropdownOptions, form, listGroupOptions, viewMode } = _
     return (
         <div className='flex flex-col'>

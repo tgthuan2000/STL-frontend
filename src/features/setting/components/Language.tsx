@@ -1,10 +1,10 @@
 import { LanguageIcon } from '@heroicons/react/24/outline'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { SettingComponentProps } from '~/@types/setting'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { useLocalStorage } from '~/hook'
-import languages from '~/i18n/language'
+import { languages } from '~/i18n'
 
 const languageFlat = languages.flat()
 
@@ -20,7 +20,7 @@ const Language: React.FC<SettingComponentProps> = (props) => {
         i18n.changeLanguage(language.code)
         setLanguageStorage(language.code)
         setLabel(language)
-        window.location.reload()
+        // window.location.reload()
     }
 
     return (

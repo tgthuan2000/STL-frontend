@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { useLocalStorage, useMounted } from '~/hook'
-import languages, { Language } from '~/i18n/language'
+import { Language, languages } from '~/i18n'
 import { ButtonGroup } from '../_base'
 
 const LanguageSelection = () => {
@@ -22,7 +22,7 @@ const LanguageSelection = () => {
         if (language) {
             i18n.changeLanguage(language.code)
             setLanguageStorage(language.code)
-            window.location.reload()
+            // window.location.reload()
         }
     }
 

@@ -7,13 +7,17 @@ import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import { Button, CheckName } from '~/components'
 import { Input } from '~/components/_base'
-import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
 
-const { t } = i18n
-const schema = yup.object().shape({
-    name: yup.string().required(t(LANGUAGE.REQUIRED_FIELD) as string),
-})
+const useSchema = () => {
+    const { t } = useTranslation()
+    const schema = useMemo(() => {
+        return yup.object().shape({
+            name: yup.string().required(t(LANGUAGE.REQUIRED_FIELD) as string),
+        })
+    }, [t])
+    return schema
+}
 
 interface EditFormProps {
     name: any
@@ -25,6 +29,7 @@ const EditForm: React.FC<EditFormProps> = ({ name, origin, onCancel, onSubmit })
     const { t } = useTranslation()
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const [loading, setLoading] = useState(false)
+    const schema = useSchema()
     const form = useForm({
         defaultValues: {
             name,

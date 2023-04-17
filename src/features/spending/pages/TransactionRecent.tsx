@@ -5,9 +5,10 @@ import { useTranslation } from 'react-i18next'
 import { DataListViewList, DataListViewTable, TimeFilterPayload } from '~/@types/components'
 import { DataListView, ListViewFilter } from '~/components'
 import { __groupBy } from '~/constant/component'
-import { useListViewFilter, useWindowSize } from '~/hook'
+import { useListViewFilter } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { getLinkSpending } from '~/utils'
+import { useColumns } from '../hook/dataListView'
 import useTransactionRecent from '../hook/useTransactionRecent'
 import * as __services from '../services/dataListView'
 import { services } from '../services/transaction'
@@ -77,17 +78,11 @@ const TransactionRecent = () => {
         onReload()
     }
 
-    const { width } = useWindowSize()
     const _ = useListViewFilter(handleClickReload)
     const { listGroup, viewMode } = _
+    const columns = useColumns()
 
-    const tableProps: DataListViewTable = useMemo(
-        () => ({
-            columns: __services.columns(width),
-            subRow: __services.subRow,
-        }),
-        [width]
-    )
+    const tableProps: DataListViewTable = useMemo(() => ({ columns, subRow: __services.subRow }), [columns])
 
     const listProps: DataListViewList = useMemo(
         () => ({

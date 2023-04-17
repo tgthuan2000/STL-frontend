@@ -14,6 +14,7 @@ import { useListViewFilter, useQuery, useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { useProfile } from '~/store/auth'
 import { getLinkSpending } from '~/utils'
+import { useColumns, useRenderList } from '../hook/dataListView'
 import { services } from '../services'
 import * as __services from '../services/dataListView'
 
@@ -107,21 +108,18 @@ const TransactionRecent = () => {
     const _ = useListViewFilter(handleClickReload)
     const { listGroup, viewMode } = _
 
-    const tableProps: DataListViewTable = useMemo(
-        () => ({
-            columns: __services.columns(width),
-            subRow: __services.subRow,
-        }),
-        [width]
-    )
+    const columns = useColumns()
+    const renderList = useRenderList()
+
+    const tableProps: DataListViewTable = useMemo(() => ({ columns, subRow: __services.subRow }), [columns])
 
     const listProps: DataListViewList = useMemo(
         () => ({
             groupBy: __services.groupBy(__groupBy[listGroup?.id]),
-            renderList: __services.renderList,
+            renderList,
             renderTitle: __services.renderTitle,
         }),
-        [JSON.stringify(listGroup)]
+        [JSON.stringify(listGroup), renderList]
     )
 
     return (

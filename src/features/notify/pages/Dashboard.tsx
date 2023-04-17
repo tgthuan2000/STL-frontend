@@ -7,20 +7,21 @@ import { DATE_FORMAT } from '~/constant'
 import { useNotify } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import * as __services from '../services/dataListView'
+import { useRenderList } from '../hook/dataListView'
 
 const Dashboard = () => {
     const { t } = useTranslation()
     const { notify, hasNextPage, loading, getMore } = useNotify()
     const [parent] = useAutoAnimate<HTMLDivElement>()
-
+    const renderList = useRenderList()
     const listProps: DataListViewList & { onRowClick: (data: any) => string } = useMemo(
         () => ({
             groupBy: __services.groupBy(DATE_FORMAT.D_DATE),
-            renderList: __services.renderList,
+            renderList,
             renderTitle: __services.renderTitle,
             onRowClick: __services.rowClick,
         }),
-        []
+        [renderList]
     )
 
     return (
