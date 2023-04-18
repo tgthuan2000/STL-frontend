@@ -5,20 +5,29 @@ import { IDataListView } from '~/@types/components'
 import { UseListViewFilter } from '~/@types/hook'
 import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
-import { service } from '~/services'
+import { useService } from '~/services'
 import { getDefaultMode } from '~/utils'
 import useLocalStorage from './useLocalStorage'
 
-export const _services = {
-    getDropdownOptions: service.dataListOptions,
-    getListGroupOptions: () => [service.listGroupOptions],
+export const use_services = () => {
+    const { dataListOptions, listGroupOptions } = useService()
+
+    const services = useMemo(() => {
+        return {
+            getDropdownOptions: dataListOptions,
+            getListGroupOptions: () => [listGroupOptions],
+        }
+    }, [dataListOptions, listGroupOptions])
+
+    return services
 }
 
 const useListViewFilter: UseListViewFilter = (onReload?: () => void) => {
     const { t } = useTranslation()
     const [dataListView, setDataListView] = useLocalStorage<IDataListView>(LOCAL_STORAGE_KEY.STL_DATALIST_VIEW)
-    const dropdownOptions = useMemo(() => _services.getDropdownOptions({ onReloadClick: () => onReload?.() }), [t])
-    const listGroupOptions = useMemo(() => _services.getListGroupOptions(), [t])
+    const { getDropdownOptions, getListGroupOptions } = use_services()
+    const dropdownOptions = useMemo(() => getDropdownOptions({ onReloadClick: () => onReload?.() }), [t])
+    const listGroupOptions = useMemo(() => getListGroupOptions(), [t])
 
     const form = useForm({
         defaultValues: {

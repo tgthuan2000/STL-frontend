@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
 import { AsideButtonDesktopWrap, AsideButtonMobileWrap, ButtonMenuDesktop, ButtonMenuMobile } from '~/components'
 import LoadingText from '~/components/Loading/LoadingText'
-import { menuSpendingPages, menuSpendingPC } from '~/constant/components'
+import { useMenuSpendingPages, useMenuSpendingPC } from '~/hook/components'
 import { useLoading } from '~/context'
 import { useWindowSize } from '~/hook'
 
@@ -19,16 +19,28 @@ const Spending = () => {
                     <Outlet />
                 </Suspense>
             </main>
-            {width >= 1280 ? (
-                <AsideButtonDesktopWrap>
-                    <ButtonMenuDesktop data={menuSpendingPC} />
-                </AsideButtonDesktopWrap>
-            ) : (
-                <AsideButtonMobileWrap>
-                    <ButtonMenuMobile data={menuSpendingPages} />
-                </AsideButtonMobileWrap>
-            )}
+            {width >= 1280 ? <Desktop /> : <Mobile />}
         </div>
+    )
+}
+
+const Desktop = () => {
+    const menuSpendingPC = useMenuSpendingPC()
+
+    return (
+        <AsideButtonDesktopWrap>
+            <ButtonMenuDesktop data={menuSpendingPC} />
+        </AsideButtonDesktopWrap>
+    )
+}
+
+const Mobile = () => {
+    const menuSpendingPages = useMenuSpendingPages()
+
+    return (
+        <AsideButtonMobileWrap>
+            <ButtonMenuMobile data={menuSpendingPages} />
+        </AsideButtonMobileWrap>
     )
 }
 

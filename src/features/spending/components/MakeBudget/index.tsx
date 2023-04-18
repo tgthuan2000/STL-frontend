@@ -17,7 +17,7 @@ import { GET_BUDGET_BY_MONTH, GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from 
 import { service } from '~/services'
 import { useProfile } from '~/store/auth'
 import * as servicesBudget from '../../services/budget'
-import { budgetSchema } from '../../services/schema'
+import { useBudgetSchema } from '../../hook/schema'
 
 const Category = React.lazy(() => import('./Category'))
 const Method = React.lazy(() => import('./Method'))
@@ -64,6 +64,9 @@ const MakeBudget = () => {
             budgetSpending: TAGS.ALTERNATE,
         },
     })
+
+    const budgetSchema = useBudgetSchema()
+
     const form = useForm<IMakeBudgetForm>({
         mode: 'onChange',
         defaultValues: {

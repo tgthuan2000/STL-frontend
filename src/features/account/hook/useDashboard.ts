@@ -13,7 +13,7 @@ type UseDashboard = [
     (...keys: (keyof AccountQueryData)[]) => void,
     {
         reload: () => void
-        getMore: () => void
+        getMore: (length: number) => void
     }
 ]
 
@@ -30,7 +30,7 @@ const useDashboard = (): UseDashboard => {
         setQuery((prev) => ({ ...prev, params: { ...prev.params, __fromAccount: 0, __toAccount: COUNT_PAGINATE } }))
     }
 
-    const getMore = () => {
+    const getMore = (length: number) => {
         setQuery((prev) => ({
             ...prev,
             params: { ...prev.params, __fromAccount: length, __toAccount: length + COUNT_PAGINATE },

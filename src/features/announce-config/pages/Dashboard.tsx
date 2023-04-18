@@ -9,9 +9,10 @@ import { NotifyQueryData } from '~/@types/notify'
 import { Button, DataListView, ListViewFilter } from '~/components'
 import { COUNT_PAGINATE } from '~/constant'
 import { __groupBy } from '~/constant/component'
-import { useListViewFilter, useQuery, useWindowSize } from '~/hook'
+import { useListViewFilter, useQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { EmptyTableNotify, SkeletonTableNotify } from '../components'
+import { useColumns, useRenderList } from '../hook/dataListView'
 import { services } from '../services'
 import * as __services from '../services/dataListView'
 
@@ -22,7 +23,6 @@ const Dashboard = () => {
     const defaultValues = useMemo(() => services.getDefaultValue({ searchParams }), [])
     const [{ query, params, tags }, setQuery] = useState<DefaultValueResult>(defaultValues)
     const [{ notify }, fetchData, deleteCacheData, reload, error] = useQuery<NotifyQueryData>(query, params, tags)
-    const { width } = useWindowSize()
 
     useEffect(() => {
         fetchData()
@@ -63,20 +63,18 @@ const Dashboard = () => {
     const _ = useListViewFilter(handleClickReload)
     const { listGroup, viewMode } = _
 
-    const tableProps: DataListViewTable = useMemo(
-        () => ({
-            columns: __services.columns(width),
-        }),
-        [width]
-    )
+    const columns = useColumns()
+    const renderList = useRenderList()
+
+    const tableProps: DataListViewTable = useMemo(() => ({ columns }), [columns])
 
     const listProps: DataListViewList = useMemo(
         () => ({
             groupBy: __services.groupBy(__groupBy[listGroup.id]),
-            renderList: __services.renderList,
+            renderList,
             renderTitle: __services.renderTitle,
         }),
-        [JSON.stringify(listGroup)]
+        [JSON.stringify(listGroup), renderList]
     )
 
     return (

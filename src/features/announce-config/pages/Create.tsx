@@ -9,7 +9,7 @@ import { DraftNotify, NotifyAssignForm, NotifyContentForm, NotifyTitleDescForm }
 import axios from '~/axiosConfig'
 import { BackButton, Button, Progress, SubmitWrap } from '~/components'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
-import { createProgressOptions } from '~/constant/progress'
+import { useCreateProgressOptions } from '~/hook/progress'
 import { useLoading } from '~/context'
 import { useLocalStorage } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
@@ -22,6 +22,7 @@ const Create = () => {
     const navigate = useNavigate()
     const { loading, setSubmitLoading } = useLoading()
     const [step, setStep] = useState(1)
+    const createProgressOptions = useCreateProgressOptions()
 
     const onSubmitStep1 = async (data: NotifyContentForm) => {
         try {

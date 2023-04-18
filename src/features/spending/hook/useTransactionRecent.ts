@@ -17,7 +17,7 @@ type UseTransactionRecent = [
         defaultValues: TransactionDefaultValueResult
         getAll: TransactionDefaultValueResult
         reload: () => void
-        getMore: () => void
+        getMore: (length: number) => void
         set: Dispatch<
             SetStateAction<{
                 query: QueryTypeUseQuery<RecentQueryData>
@@ -54,7 +54,7 @@ const useTransactionRecent = (): UseTransactionRecent => {
         setQuery((prev) => ({ ...prev, params: { ...prev.params, __fromRecent: 0, __toRecent: COUNT_PAGINATE } }))
     }
 
-    const getMore = () => {
+    const getMore = (length: number) => {
         setQuery((prev) => ({
             ...prev,
             params: { ...prev.params, __fromRecent: length, __toRecent: length + COUNT_PAGINATE },

@@ -10,10 +10,11 @@ import { DataListView, ListViewFilter } from '~/components'
 import { COUNT_PAGINATE } from '~/constant'
 import { __groupBy } from '~/constant/component'
 import { useConfig } from '~/context'
-import { useListViewFilter, useQuery, useWindowSize } from '~/hook'
+import { useListViewFilter, useQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { useProfile } from '~/store/auth'
 import { getLinkSpending } from '~/utils'
+import { useColumns } from '../hook/dataListView'
 import * as __services from '../services/dataListView'
 import { services } from '../services/method'
 
@@ -21,7 +22,6 @@ const MethodDetail = () => {
     const { t } = useTranslation()
     const { userProfile } = useProfile()
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
-    const { width } = useWindowSize()
     const { getKindSpendingIds } = useConfig()
     const [searchParams] = useSearchParams()
     const { id } = useParams()
@@ -113,13 +113,14 @@ const MethodDetail = () => {
 
     const _ = useListViewFilter(handleClickReload)
     const { listGroup, viewMode } = _
+    const columns = useColumns()
 
     const tableProps: DataListViewTable = useMemo(
         () => ({
-            columns: __services.columns(width),
+            columns,
             subRow: __services.subRow,
         }),
-        [width]
+        [columns]
     )
 
     const listProps: DataListViewList = useMemo(
@@ -143,7 +144,7 @@ const MethodDetail = () => {
                         onSubmitTimeFilter={handleFilterSubmit}
                     />
                     {error ? (
-                        <p className='m-5 text-radical-red-500 font-medium'>{t(LANGUAGE.ERROR)}</p>
+                        <p className='m-5 font-medium text-radical-red-500'>{t(LANGUAGE.ERROR)}</p>
                     ) : (
                         <div ref={parentRef}>
                             <DataListView

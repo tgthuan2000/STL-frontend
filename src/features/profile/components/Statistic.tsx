@@ -13,8 +13,8 @@ import { E_FILTER_DATE } from '~/constant/template'
 import { useConfig, useLoading } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
 import { useProfile } from '~/store/auth'
+import { useProfileOptions } from '../hook'
 import { services } from '../services'
-import * as profileServices from '../services/profile'
 import ProfileInfo from './ProfileInfo'
 import ProfileInfoGroup from './ProfileInfoGroup'
 import ProfileInfoSkeleton from './ProfileInfoSkeleton'
@@ -71,10 +71,12 @@ const Statistic = () => {
         reload()
     }
 
+    const getProfileOptions = useProfileOptions()
+
     const profileOptions = useMemo(() => {
         if (method.loading || budget.loading || category.loading) return []
 
-        const data = profileServices.getProfileOptions({
+        const data = getProfileOptions({
             method: method.data,
             budget: budget.data,
             category: category.data,

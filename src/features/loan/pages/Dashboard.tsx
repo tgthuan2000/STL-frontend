@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next'
 import { DashboardQueryData } from '~/@types/loan'
 import { Box2, ButtonMenuDesktop, Divider, Transaction } from '~/components'
 import { TAGS } from '~/constant'
-import { menuLoanMobile } from '~/constant/components'
 import { useCheck, useConfig } from '~/context'
 import { useQuery, useWindowSize } from '~/hook'
+import { useMenuLoanMobile } from '~/hook/components'
 import LANGUAGE from '~/i18n/language/key'
 import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
 import { useProfile } from '~/store/auth'
@@ -16,6 +16,7 @@ const Dashboard = () => {
     const { width } = useWindowSize()
     const { userProfile } = useProfile()
     const { getKindSpendingId } = useConfig()
+    const menuLoanMobile = useMenuLoanMobile()
 
     const [{ recent, paydue, statistic }, fetchData, deleteCache, reload] = useQuery<DashboardQueryData>(
         {

@@ -24,3 +24,8 @@ export const checkDarkTheme = (value: localStorageValue<string>) => {
         (!(LOCAL_STORAGE_KEY.STL_THEME in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
     )
 }
+
+export const getImageReference = (imageId: string | null | undefined) => {
+    if (!imageId) return null
+    return { image: { _type: 'image', asset: { _type: 'reference', _ref: imageId } } }
+}

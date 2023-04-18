@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Box, ButtonMenuDesktop, Divider, Transaction } from '~/components'
-import { menuMobile } from '~/constant/components'
 import { useWindowSize } from '~/hook'
+import { useMenuMobile } from '~/hook/components'
 import LANGUAGE from '~/i18n/language/key'
 import { BudgetCategory, BudgetMethod, Method, Recent, Statistic } from '../components'
 import useDashboard from '../hook/useDashboard'
@@ -9,6 +9,7 @@ import useDashboard from '../hook/useDashboard'
 const Dashboard = () => {
     const { width } = useWindowSize()
     const { t } = useTranslation()
+    const menuMobile = useMenuMobile()
     const [{ method, recent, statistic, budget }, handleReload, dataStatistic] = useDashboard()
 
     return (
