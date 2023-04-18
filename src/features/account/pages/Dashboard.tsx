@@ -6,15 +6,25 @@ import { Table, Transaction } from '~/components'
 import LANGUAGE from '~/i18n/language/key'
 import Skeleton from '../components/Skeleton'
 import useDashboard from '../hook/useDashboard'
-import * as __services from '../services/dataListView'
+import { useColumns } from '../hook/dataListView'
 
 const Dashboard = () => {
     const { t } = useTranslation()
     const [parent] = useAutoAnimate<HTMLDivElement>()
+    const columns = useColumns()
 
-    const [{ account }, , , { getMore }] = useDashboard()
+    const [{ account }, , reloadData, { getMore }] = useDashboard()
 
-    const tableProps: DataListViewTable = useMemo(() => ({ columns: __services.columns() }), [])
+    const tableProps: DataListViewTable = useMemo(() => ({ columns }), [])
+
+    const handleScrollGetMore = () => {
+        const length = account?.data?.length
+
+        if (length) {
+            getMore(length)
+            reloadData('account')
+        }
+    }
 
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.ACCOUNT_MANAGEMENT)}>
@@ -23,7 +33,7 @@ const Dashboard = () => {
                     hasNextPage={false}
                     data={account.data}
                     loading={account.loading}
-                    onGetMore={getMore}
+                    onGetMore={handleScrollGetMore}
                     onRowClick={() => ''}
                     SkeletonTable={(loading) => <Skeleton elNumber={loading ? 2 : 10} />}
                     {...tableProps}

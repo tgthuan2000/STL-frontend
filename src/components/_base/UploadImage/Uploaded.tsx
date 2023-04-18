@@ -28,7 +28,7 @@ const Uploaded: React.FC<UploadedProps> = ({ id, image, loading, onClearImage })
             })}
         >
             <img
-                className='h-32 w-32 cursor-pointer rounded-md border bg-white object-cover transition-opacity hover:opacity-70'
+                className='h-32 w-32 cursor-pointer rounded-md border bg-white object-cover transition-opacity hover:opacity-70 dark:border-slate-700'
                 src={image}
                 alt='#image'
                 onClick={handlePreviewImage}

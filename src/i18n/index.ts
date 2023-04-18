@@ -1,9 +1,23 @@
 import i18n from 'i18next'
+import I18NextHttpBackend, { HttpBackendOptions } from 'i18next-http-backend'
 import { initReactI18next } from 'react-i18next'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
-import languages, * as AllResources from './language'
 
-const { default: _, ...resources } = AllResources
+export interface Language {
+    code: string
+    name: string
+}
+
+export const languages: Array<Language> = [
+    {
+        code: 'en',
+        name: 'English',
+    },
+    {
+        code: 'vi',
+        name: 'Tiếng Việt',
+    },
+]
 
 let languageStorage = localStorage.getItem(LOCAL_STORAGE_KEY.STL_LANGUAGE)
 const languageOptions = languages.flat().map((language) => language.code)
@@ -15,10 +29,12 @@ if (languageStorage) {
     }
 }
 
-i18n.use(initReactI18next).init<string>({
-    resources: resources as any,
-    lng,
-    fallbackLng: 'vi',
-})
-
-export default i18n
+i18n.use(initReactI18next)
+    .use(I18NextHttpBackend)
+    .init<HttpBackendOptions>({
+        lng,
+        fallbackLng: 'vi',
+        backend: {
+            loadPath: '/locales/{{lng}}.json',
+        },
+    })

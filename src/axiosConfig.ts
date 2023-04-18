@@ -1,5 +1,5 @@
 import _axios from 'axios'
-import { axiosService } from './services/axios'
+import { useAxiosService } from './services/axios'
 
 const axios = _axios.create({
     baseURL: `${import.meta.env.VITE_SERVER}/api`,
@@ -21,12 +21,16 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
     (response) => {
-        const isSuccess = axiosService.notify(response.data.code)
+        // TODO: Call hook outside components
+        // const { notify } = useAxiosService()
+        // const isSuccess = notify(response.data.code)
 
-        if (typeof isSuccess === 'boolean' && isSuccess === true) {
-            return response.data
-        }
-        return Promise.reject(response.data.code)
+        // if (typeof isSuccess === 'boolean' && isSuccess === true) {
+        //     return response.data
+        // }
+        // return Promise.reject(response.data.code)
+
+        return response.data
     },
     (error) => {
         return Promise.reject(error)

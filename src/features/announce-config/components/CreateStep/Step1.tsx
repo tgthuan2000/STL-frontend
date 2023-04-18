@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
@@ -8,18 +8,22 @@ import { DraftNotify, NotifyContentForm } from '~/@types/notify'
 import { RichText } from '~/components/_base'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { useLocalStorage } from '~/hook'
-import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
 
-const { t } = i18n
-
-const schema = yup.object().shape({
-    content: yup.string().required(t(LANGUAGE.REQUIRED_NOTIFY_CONTENT) as string),
-})
+const useSchema = () => {
+    const { t } = useTranslation()
+    const schema = useMemo(() => {
+        return yup.object().shape({
+            content: yup.string().required(t(LANGUAGE.REQUIRED_NOTIFY_CONTENT) as string),
+        })
+    }, [t])
+    return schema
+}
 
 const Step1: React.FC<CreateStep1Props> = ({ id, onSubmit }) => {
     const { t } = useTranslation()
     const [draftNotify] = useLocalStorage<DraftNotify>(LOCAL_STORAGE_KEY.STL_DRAFT_NOTIFY)
+    const schema = useSchema()
     const form = useForm<NotifyContentForm>({
         defaultValues: {
             content: draftNotify?.content ?? '',

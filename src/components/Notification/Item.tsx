@@ -7,12 +7,13 @@ import { useTranslation } from 'react-i18next'
 import { NotificationItemProps } from '~/@types/components'
 import { DATE_FORMAT } from '~/constant'
 import LANGUAGE from '~/i18n/language/key'
-import { service } from '~/services'
+import { useService } from '~/services'
 import Prose from '../Prose'
 
 const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, onReadDetail }) => {
     const { t } = useTranslation()
     const [isClickRead, setIsClickRead] = useState(false)
+    const { getSpacingTime } = useService()
 
     return (
         <div className='space-y-0.5 px-2 py-1'>
@@ -74,7 +75,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data, onItemRead, o
                             )}
                         </div>
                         <p className='text-xs italic text-gray-400 dark:text-slate-100'>
-                            {service.getSpacingTime(data._createdAt)}
+                            {getSpacingTime(data._createdAt)}
                         </p>
                     </div>
                 </div>

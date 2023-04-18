@@ -13,32 +13,36 @@ import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/compon
 import { TAGS } from '~/constant'
 import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useDocument, useQuery, useServiceQuery, useTracking } from '~/hook'
-import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
 import { TRACKING_INCOME } from '~/schema/query/tracking'
 import { useProfile } from '~/store/auth'
 
-const { t } = i18n
-const schema = yup.object().shape({
-    amount: yup
-        .number()
-        .required(t(LANGUAGE.REQUIRED_RECEIVE) as string)
-        .min(1, t(LANGUAGE.RECEIVE_MIN_ZERO) as string)
-        .typeError(t(LANGUAGE.REQUIRED_NUMBER) as string),
-    categorySpending: yup
-        .object()
-        .nullable()
-        .required(t(LANGUAGE.REQUIRED_CATEGORY) as string),
-    methodSpending: yup
-        .object()
-        .nullable()
-        .required(t(LANGUAGE.REQUIRED_METHOD) as string),
-    date: yup.date().required(t(LANGUAGE.REQUIRED_DATE) as string),
-    description: yup.string(),
-    image: yup.mixed(),
-})
+const useSchema = () => {
+    const { t } = useTranslation()
+    const schema = useMemo(() => {
+        return yup.object().shape({
+            amount: yup
+                .number()
+                .required(t(LANGUAGE.REQUIRED_RECEIVE) as string)
+                .min(1, t(LANGUAGE.RECEIVE_MIN_ZERO) as string)
+                .typeError(t(LANGUAGE.REQUIRED_NUMBER) as string),
+            categorySpending: yup
+                .object()
+                .nullable()
+                .required(t(LANGUAGE.REQUIRED_CATEGORY) as string),
+            methodSpending: yup
+                .object()
+                .nullable()
+                .required(t(LANGUAGE.REQUIRED_METHOD) as string),
+            date: yup.date().required(t(LANGUAGE.REQUIRED_DATE) as string),
+            description: yup.string(),
+            image: yup.mixed(),
+        })
+    }, [t])
+    return schema
+}
 
 const MakeIncome = () => {
     const { t } = useTranslation()
@@ -79,6 +83,7 @@ const MakeIncome = () => {
         }
     }, [kindSpendingId])
 
+    const schema = useSchema()
     const form = useForm<IAddIncomeForm>({
         defaultValues: {
             amount: '',

@@ -1,14 +1,9 @@
 import { SanityDocument } from '@sanity/client'
-import { toast } from 'react-toastify'
 import { IFetchGoogleResponse, ILoginByEmailPassword, IUserProfile } from '~/@types/auth'
 import axios from '~/axiosConfig'
 import { CODE } from '~/constant/code'
-import i18n from '~/i18n'
-import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_DATA_BY_EMAIL } from '~/schema/query/login'
-
-const { t } = i18n
 
 export const fetchGoogleResponse: IFetchGoogleResponse = async (res, addUserToken, setLoading, navigate) => {
     try {
@@ -31,7 +26,6 @@ export const fetchGoogleResponse: IFetchGoogleResponse = async (res, addUserToke
         }
     } catch (error) {
         console.error(error)
-        toast.error(t(LANGUAGE.ERROR))
     } finally {
         setLoading(false)
     }

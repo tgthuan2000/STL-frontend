@@ -1,10 +1,10 @@
 import clsx from 'clsx'
 import { useTranslation } from 'react-i18next'
 import { Box, ButtonMenuDesktop, Divider, Transaction } from '~/components'
-import { menuMobileOthers } from '~/constant/components'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useCache } from '~/context'
 import { useServiceQuery, useWindowSize } from '~/hook'
+import { useMenuMobileOthers } from '~/hook/components'
 import LANGUAGE from '~/i18n/language/key'
 import { ListOption } from '../components'
 import useOthers from '../hook/useOthers'
@@ -16,6 +16,7 @@ const Others = () => {
         useServiceQuery()
     const { deleteCache } = useCache()
     const [{ category, method }, deleteCaches] = useOthers()
+    const menuMobileOthers = useMenuMobileOthers()
 
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.OTHERS)}>

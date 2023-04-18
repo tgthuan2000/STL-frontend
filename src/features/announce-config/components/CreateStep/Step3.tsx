@@ -3,7 +3,7 @@ import { EnvelopeIcon } from '@heroicons/react/24/outline'
 import { yupResolver } from '@hookform/resolvers/yup'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
-import { Fragment } from 'react'
+import { Fragment, useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
@@ -18,29 +18,32 @@ import UserList from '~/components/_base/LazySearchSelect/UserList'
 import UserOption from '~/components/_base/LazySearchSelect/UserOption'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { useLocalStorage } from '~/hook'
-import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
 
-const { t } = i18n
-
-const schema = yup.object().shape({
-    search: yup.object().nullable(),
-    users: yup
-        .array()
-        .nullable()
-        .when('sendAll', {
-            is: false,
-            then: yup.array().min(1, t(LANGUAGE.RECEIVER_MIN_1) as string),
-        }),
-    sendAll: yup.boolean(),
-})
+const useSchema = () => {
+    const { t } = useTranslation()
+    const schema = useMemo(() => {
+        return yup.object().shape({
+            search: yup.object().nullable(),
+            users: yup
+                .array()
+                .nullable()
+                .when('sendAll', {
+                    is: false,
+                    then: yup.array().min(1, t(LANGUAGE.RECEIVER_MIN_1) as string),
+                }),
+            sendAll: yup.boolean(),
+        })
+    }, [t])
+    return schema
+}
 
 const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
     const { t } = useTranslation()
     const [userRef] = useAutoAnimate<HTMLDivElement>()
     const [draftNotify] = useLocalStorage<DraftNotify>(LOCAL_STORAGE_KEY.STL_DRAFT_NOTIFY)
     const [searchLoading, users, handleSearch, handleScrollGetMore] = useLazySearchSelect()
-
+    const schema = useSchema()
     const form = useForm<NotifyAssignForm>({
         defaultValues: { users: draftNotify?.users ?? [], sendAll: draftNotify?.sendAll ?? false },
         resolver: yupResolver(schema),

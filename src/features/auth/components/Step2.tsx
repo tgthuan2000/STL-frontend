@@ -3,7 +3,7 @@ import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/ou
 import { yupResolver } from '@hookform/resolvers/yup'
 import { SanityDocument } from '@sanity/client'
 import { isEmpty } from 'lodash'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
@@ -12,19 +12,24 @@ import { Button } from '~/components'
 import { Input } from '~/components/_base'
 import { UserSvg } from '~/components/_constant'
 import { useLoading } from '~/context'
-import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
 
-const { t } = i18n
-const schema = yup.object().shape({
-    password: yup.string().required(t(LANGUAGE.REQUIRED_FIELD) as string),
-})
+const useSchema = () => {
+    const { t } = useTranslation()
+    const schema = useMemo(() => {
+        return yup.object().shape({
+            password: yup.string().required(t(LANGUAGE.REQUIRED_FIELD) as string),
+        })
+    }, [t])
+    return schema
+}
 
 const Step2: React.FC<Step2Props> = ({ previewData, onSubmit }) => {
     const { t } = useTranslation()
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const [chose, setChose] = useState<SanityDocument<IUserProfile> | null | undefined>(previewData?.[0])
     const { loading } = useLoading()
+    const schema = useSchema()
     const form = useForm<{ password: string }>({
         mode: 'onBlur',
         defaultValues: {

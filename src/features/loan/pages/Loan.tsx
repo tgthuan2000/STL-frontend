@@ -1,16 +1,16 @@
 import { Suspense } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Outlet } from 'react-router-dom'
 import { AsideButtonDesktopWrap, AsideButtonMobileWrap, ButtonMenuDesktop, ButtonMenuMobile } from '~/components'
 import LoadingText from '~/components/Loading/LoadingText'
-import { menuLoanPages, menuLoanPC } from '~/constant/components'
 import { useLoading } from '~/context'
 import { useWindowSize } from '~/hook'
+import { useMenuLoanPC, useMenuLoanPages } from '~/hook/components'
 
 const Loan = () => {
-    const { t } = useTranslation()
     const { loading } = useLoading()
     const { width } = useWindowSize()
+    const menuLoanPC = useMenuLoanPC()
+    const menuLoanPages = useMenuLoanPages()
 
     if (loading.config) return <LoadingText />
 

@@ -121,7 +121,7 @@ export interface ICheckingContext {
     needCheck: () => void
     needCheckWhenLeave: () => void
     cancelCheck: () => void
-    checkWhenLeave: boolean
+    checkWhenLeave: React.MutableRefObject<boolean>
 }
 
 export interface ISideBarContext {

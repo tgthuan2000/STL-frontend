@@ -9,20 +9,24 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { DateRange, FilterDateType, IFilterDate, TimeFilterPayload, TimeFilterProps } from '~/@types/components'
 import { AutoComplete, DatePicker } from '~/components/_base'
-import { dateRangeSuggestions, E_DATE_RANGE_SUGGESTION, E_FILTER_DATE, TABS_FILTER_DATE } from '~/constant/template'
+import { E_DATE_RANGE_SUGGESTION, E_FILTER_DATE } from '~/constant/template'
+import { useDateRangeSuggestions, useTabsFilterDate } from '~/hook/template'
 import LANGUAGE from '~/i18n/language/key'
 import Chip from '../Chip'
-import { getDefaultValues, schema } from './service'
+import { schema, useDefaultValue } from './service'
 
 const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit, excludes = [] }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
     const [parent] = useAutoAnimate<HTMLDivElement>()
+    const { getDefaultValues } = useDefaultValue()
     const form = useForm<IFilterDate>({
         defaultValues: getDefaultValues(searchParams),
         resolver: yupResolver(schema),
     })
+    const tabsFilterDate = useTabsFilterDate()
+    const dateRangeSuggestions = useDateRangeSuggestions()
 
     const createParamsUrl = (payload: TimeFilterPayload) => {
         const { id, data } = payload
@@ -75,7 +79,7 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit, excludes = [] }) => {
     const filter = form.watch('filter')
     const dateRange = form.watch('dateRange')
 
-    const filterTab = find(TABS_FILTER_DATE, ['id', filter?.id])
+    const filterTab = find(tabsFilterDate, ['id', filter?.id])
 
     const { isDateRangeFilter, isDateFilter, isMonthFilter, isYearFilter } = useMemo(() => {
         const result: {
@@ -140,7 +144,7 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit, excludes = [] }) => {
         }
     }, [isDateRangeFilter, dateRange])
 
-    const dataOptions = useMemo(() => TABS_FILTER_DATE.filter((tab) => !excludes.includes(tab.id)), [excludes])
+    const dataOptions = useMemo(() => tabsFilterDate.filter((tab) => !excludes.includes(tab.id)), [excludes])
 
     return (
         <div className='mx-3 mb-2 flex flex-wrap gap-2'>
