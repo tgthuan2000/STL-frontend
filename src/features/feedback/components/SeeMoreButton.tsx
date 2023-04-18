@@ -25,7 +25,7 @@ const SeeMoreButton: React.FC<SeeMoreButtonProps> = ({ replyNum, onClick }) => {
         >
             {loading
                 ? t(LANGUAGE.LOADING)
-                : `${t(LANGUAGE.SEE_MORE)} ${numeral(replyNum).format()} ${t(LANGUAGE.L_REPLIES)}}`}
+                : `${t(LANGUAGE.SEE_MORE)} ${numeral(replyNum).format()} ${t(LANGUAGE.L_REPLIES)}`}
         </button>
     )
 }

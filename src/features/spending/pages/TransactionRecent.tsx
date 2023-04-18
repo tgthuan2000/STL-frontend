@@ -68,7 +68,7 @@ const TransactionRecent = () => {
         const length = recent?.data?.data.length
 
         if (length) {
-            getMore()
+            getMore(length)
             reloadData('recent')
         }
     }

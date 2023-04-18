@@ -3,7 +3,7 @@ import { ICheckingContext } from '~/@types/context'
 
 const CheckingContext = createContext<ICheckingContext>({
     check: false,
-    checkWhenLeave: false,
+    checkWhenLeave: { current: false },
     needCheck: () => {},
     needCheckWhenLeave: () => {},
     cancelCheck: () => {},
@@ -11,7 +11,7 @@ const CheckingContext = createContext<ICheckingContext>({
 
 const CheckingProvider = ({ children }: { children: React.ReactNode }) => {
     const [check, setCheck] = useState<boolean>(false)
-    const [checkWhenLeave, setCheckWhenLeave] = useState<boolean>(false)
+    const checkWhenLeave = useRef<boolean>(false)
 
     const needCheck = () => {
         if (!check) {
@@ -20,8 +20,8 @@ const CheckingProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const needCheckWhenLeave = () => {
-        if (!checkWhenLeave) {
-            setCheckWhenLeave(true)
+        if (!checkWhenLeave.current) {
+            checkWhenLeave.current = true
         }
     }
 
@@ -29,8 +29,8 @@ const CheckingProvider = ({ children }: { children: React.ReactNode }) => {
         if (check) {
             setCheck(false)
         }
-        if (checkWhenLeave) {
-            setCheckWhenLeave(false)
+        if (checkWhenLeave.current) {
+            checkWhenLeave.current = false
         }
     }
 
@@ -57,11 +57,11 @@ const useCheck = (callback?: Function) => {
 
     useEffect(() => {
         return () => {
-            if (checkWhenLeave) {
+            if (checkWhenLeave.current) {
                 ctx.needCheck()
             }
         }
-    }, [checkWhenLeave])
+    }, [])
 
     useEffect(() => {
         if (ctx.check && cbRef.current) {

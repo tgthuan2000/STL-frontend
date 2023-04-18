@@ -13,9 +13,18 @@ const Dashboard = () => {
     const [parent] = useAutoAnimate<HTMLDivElement>()
     const columns = useColumns()
 
-    const [{ account }, , , { getMore }] = useDashboard()
+    const [{ account }, , reloadData, { getMore }] = useDashboard()
 
     const tableProps: DataListViewTable = useMemo(() => ({ columns }), [])
+
+    const handleScrollGetMore = () => {
+        const length = account?.data?.length
+
+        if (length) {
+            getMore(length)
+            reloadData('account')
+        }
+    }
 
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.ACCOUNT_MANAGEMENT)}>
@@ -24,7 +33,7 @@ const Dashboard = () => {
                     hasNextPage={false}
                     data={account.data}
                     loading={account.loading}
-                    onGetMore={getMore}
+                    onGetMore={handleScrollGetMore}
                     onRowClick={() => ''}
                     SkeletonTable={(loading) => <Skeleton elNumber={loading ? 2 : 10} />}
                     {...tableProps}
