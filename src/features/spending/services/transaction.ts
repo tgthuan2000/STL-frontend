@@ -37,6 +37,11 @@ export const services: TransactionServices = {
                     total: GET_RECENT_SPENDING_FILTER_DATE_RANGE_TOTAL,
                 }
                 let { type, data } = d
+
+                if (!type || !data) {
+                    return getAll
+                }
+
                 data = JSON.parse(data)
 
                 switch (Number(type)) {

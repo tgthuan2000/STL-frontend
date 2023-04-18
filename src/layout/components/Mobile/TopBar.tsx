@@ -1,14 +1,16 @@
 import { useMemo } from 'react'
-import { navigation, navigationMobile } from '~/constant/layout'
 import { useConfig } from '~/context'
 import Logo from '../Logo'
 import NavLinkIcon from '../NavLinkIcon'
+import { useNavigationMobile } from '~/hook/layout'
 
 const TopBar = () => {
     const { hasPermissions } = useConfig()
+    const navigationMobile = useNavigationMobile()
+
     const _navigation = useMemo(
         () => navigationMobile.filter((nav) => hasPermissions(nav.permissions)),
-        [navigation, hasPermissions]
+        [navigationMobile, hasPermissions]
     )
     return (
         <>

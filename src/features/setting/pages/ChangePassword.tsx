@@ -12,7 +12,7 @@ import { useLoading } from '~/context'
 import { useLogout } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { useProfile } from '~/store/auth'
-import { changePasswordSchema } from '../services/schema'
+import { useChangePasswordSchema } from '../hook/schema'
 
 const ChangePassword = () => {
     const { t } = useTranslation()
@@ -20,6 +20,7 @@ const ChangePassword = () => {
     const { userProfile } = useProfile()
     const navigate = useNavigate()
     const logout = useLogout()
+    const changePasswordSchema = useChangePasswordSchema()
 
     const isHasPassword = get(userProfile, 'isHasPassword', false)
 

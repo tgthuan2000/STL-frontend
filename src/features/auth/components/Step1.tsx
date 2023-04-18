@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
@@ -7,21 +7,25 @@ import { Step1Props } from '~/@types/auth'
 import { Button } from '~/components'
 import { Input } from '~/components/_base'
 import { useLoading } from '~/context'
-import i18n from '~/i18n'
 import LANGUAGE from '~/i18n/language/key'
 
-const { t } = i18n
-
-const schema = yup.object().shape({
-    email: yup
-        .string()
-        .email(t(LANGUAGE.INVALID_FORMAT) as string)
-        .required(t(LANGUAGE.REQUIRED_FIELD) as string),
-})
+const useSchema = () => {
+    const { t } = useTranslation()
+    const schema = useMemo(() => {
+        return yup.object().shape({
+            email: yup
+                .string()
+                .email(t(LANGUAGE.INVALID_FORMAT) as string)
+                .required(t(LANGUAGE.REQUIRED_FIELD) as string),
+        })
+    }, [t])
+    return schema
+}
 
 const Step1: React.FC<Step1Props> = ({ onSubmit }) => {
     const { t } = useTranslation()
     const { loading } = useLoading()
+    const schema = useSchema()
     const form = useForm<{ email: string }>({
         mode: 'onBlur',
         defaultValues: {

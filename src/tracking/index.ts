@@ -64,7 +64,7 @@ const trackingService: ITrackingService = {
             },
             async execute() {
                 validate()
-                log()
+                // log()
                 const query = getExecuteQuery()
                 // const data = await fetchTrackingData(query)
                 // return data

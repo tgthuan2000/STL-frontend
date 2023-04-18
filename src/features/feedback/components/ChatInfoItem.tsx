@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { ChatInfoItemProps } from '~/@types/feedback'
 import { Image } from '~/components'
 import LANGUAGE from '~/i18n/language/key'
-import { service } from '~/services'
+import { useService } from '~/services'
 import { useProfile } from '~/store/auth'
 import InputForm from './InputForm'
 
@@ -23,6 +23,7 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
         isEdit: false,
         message: '',
     })
+    const { getSpacingTime } = useService()
     const handleSubmitForm = (message: string) => {
         message = message.trim()
         if (data._id && message) {
@@ -59,7 +60,7 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
                     </div>
                     <div className='mt-2 flex items-center gap-2'>
                         <span className='select-none whitespace-nowrap text-xs text-gray-500 dark:text-slate-400'>
-                            {service.getSpacingTime(data._createdAt)}
+                            {getSpacingTime(data._createdAt)}
                         </span>
                         <button
                             type='button'
