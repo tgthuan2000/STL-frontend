@@ -1,7 +1,7 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
-import React, { useMemo, useRef } from 'react'
+import React, { useMemo } from 'react'
 import { TableProps } from '~/@types/components'
 import { getLinkSpending } from '~/utils'
 import BodyTable from './Body'
@@ -10,9 +10,9 @@ import SkeletonTableTemplate from './Skeleton'
 
 const Table: React.FC<TableProps> = ({ columns, loading, data, EmptyTable, ...props }) => {
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
-    const { current: __columns } = useRef(columns)
+
     const Columns = useMemo(() => {
-        return __columns.map((column) => {
+        return columns.map((column) => {
             return (
                 <th
                     key={column.key}
@@ -27,7 +27,7 @@ const Table: React.FC<TableProps> = ({ columns, loading, data, EmptyTable, ...pr
                 </th>
             )
         })
-    }, [])
+    }, [columns])
 
     return (
         <div className='inline-block w-full py-2 align-middle'>
@@ -40,7 +40,7 @@ const Table: React.FC<TableProps> = ({ columns, loading, data, EmptyTable, ...pr
                         {!loading && (!data || isEmpty(data)) ? (
                             EmptyTable
                         ) : (
-                            <BodyTable loading={loading} data={data} columns={__columns} {...props} />
+                            <BodyTable loading={loading} data={data} columns={columns} {...props} />
                         )}
                     </tbody>
                 </table>

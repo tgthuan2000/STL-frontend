@@ -103,6 +103,8 @@
     "USER": "Người dùng",
     "ROLE": "Vai trò",
     "SERVICE": "Dịch vụ",
+    "NOTIFICATION": "Thông báo",
+    "ACTIONS": "Hành động",
 
     "APP_READY_WORK_OFFLINE": "Ứng dụng đã sẵn sàng để làm việc ngoại tuyến",
     "RELOAD_TEXT": "Ứng dụng đã được cập nhật. Vui lòng nhấn nút tải lại để xem thay đổi.",
@@ -186,6 +188,7 @@
     "NOTIFY_DISABLED_TWO_FA_SUCCESS": "Vô hiệu hóa xác thực 2 bước thành công!",
     "NOTIFY_REFRESH_TOKEN_EXPIRED": "Phiên làm việc đã hết hạn, vui lòng đăng nhập lại!",
     "NOTIFY_TOKEN_REVOKED": "Phiên làm việc đã bị hủy, vui lòng đăng nhập lại!",
+    "NOTIFY_INACTIVE_ACCOUNT": "Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản trị viên!",
 
     "CONFIRM_NOTIFY": "Bạn có chắc chắn muốn gửi thông báo này?",
     "CONFIRM_DELETE_TRANSACTION": "Bạn có chắc muốn xóa giao dịch này ?",
@@ -284,9 +287,9 @@
 
     "SPENDING_MANAGEMENT": "Quản lý chi tiêu",
     "LOAN_MANAGEMENT": "Quản lý vay/cho vay",
-    "TIME_KEEPING_MANAGEMENT": "Quản lý chấm công",
+    "TIME_MANAGEMENT": "Quản lý thời gian",
     "ACCOUNT_MANAGEMENT": "Quản lý tài khoản",
-    "NOTIFY_MANAGEMENT": "Thông báo",
+    "NOTIFY_MANAGEMENT": "Quản lý thông báo",
     "SETTING_MANAGEMENT": "Cài đặt",
     "PROFILE_MANAGEMENT": "Thông tin cá nhân",
     "DARK_MODE": "Chế độ tối",
@@ -294,5 +297,6 @@
     "SET_PASSWORD": "Đặt mật khẩu",
     "CHANGE_PASSWORD": "Đổi mật khẩu",
     "FEEDBACK": "Gửi phản hồi",
-    "FEEDBACK_MANAGEMENT": "Quản lý phản hồi"
+    "FEEDBACK_MANAGEMENT": "Quản lý phản hồi",
+    "ROLE_CONTROL": "Quản lý phân quyền"
 }

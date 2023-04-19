@@ -6,8 +6,8 @@ export const GET_PASSWORD_BY_ID = groq`
     }
 `
 
-export const GET_DATA_BY_EMAIL = groq`
-    *[_type == "user" && email == $email] {
+export const GET_ACTIVE_USERS_BY_EMAIL = groq`
+    *[_type == "user" && email == $email && active == true] {
         _id,
         _createdAt,
         userName,

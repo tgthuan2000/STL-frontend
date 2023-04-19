@@ -36,6 +36,11 @@ const Skeleton: React.FC<SkeletonProps> = ({ elNumber }) => {
                                 <span className='mx-auto block h-4 w-1/2 rounded-full bg-gray-200 dark:bg-slate-600' />
                             </span>
                         </td>
+                        <td className='py-4 px-2'>
+                            <span className='flex w-full flex-col gap-2'>
+                                <span className='mx-auto block h-4 w-1/2 rounded-full bg-gray-200 dark:bg-slate-600' />
+                            </span>
+                        </td>
                     </tr>
                 </Fragment>
             ))}

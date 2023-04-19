@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom'
 import LoadingText from '~/components/Loading/LoadingText'
 import { useLoading } from '~/context'
 
-const TimeKeeping = () => {
+const Time = () => {
     const { setConfigLoading } = useLoading()
     useEffect(() => {
         setConfigLoading(true)
@@ -20,4 +20,4 @@ const TimeKeeping = () => {
     )
 }
 
-export default TimeKeeping
+export default Time
