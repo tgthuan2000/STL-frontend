@@ -103,6 +103,8 @@
     "USER": "User",
     "ROLE": "Role",
     "SERVICE": "Service",
+    "NOTIFICATION": "Notification",
+    "ACTIONS": "Actions",
 
     "APP_READY_WORK_OFFLINE": "App ready to work offline",
     "RELOAD_TEXT": "New content available, click on reload button to update.",
@@ -186,6 +188,7 @@
     "NOTIFY_DISABLED_TWO_FA_SUCCESS": "Disabled two factor authentication success",
     "NOTIFY_REFRESH_TOKEN_EXPIRED": "Refresh token expired",
     "NOTIFY_TOKEN_REVOKED": "Token revoked",
+    "NOTIFY_INACTIVE_ACCOUNT": "Inactive account",
 
     "CONFIRM_NOTIFY": "Do you want to notify?",
     "CONFIRM_DELETE_TRANSACTION": "Do you want to delete transaction?",
@@ -284,9 +287,9 @@
 
     "SPENDING_MANAGEMENT": "Spending management",
     "LOAN_MANAGEMENT": "Loan/Get loan management",
-    "TIME_KEEPING_MANAGEMENT": "Time keeping management",
+    "TIME_MANAGEMENT": "Time management",
     "ACCOUNT_MANAGEMENT": "Account management",
-    "NOTIFY_MANAGEMENT": "Notify",
+    "NOTIFY_MANAGEMENT": "Notify management",
     "SETTING_MANAGEMENT": "Setting",
     "PROFILE_MANAGEMENT": "Profile",
     "DARK_MODE": "Dark mode",
@@ -294,5 +297,6 @@
     "SET_PASSWORD": "Set password",
     "CHANGE_PASSWORD": "Change password",
     "FEEDBACK": "Feedback",
-    "FEEDBACK_MANAGEMENT": "Feedback management"
+    "FEEDBACK_MANAGEMENT": "Feedback management",
+    "ROLE_CONTROL": "Role control"
 }

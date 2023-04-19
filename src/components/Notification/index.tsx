@@ -9,7 +9,6 @@ import { Waypoint } from 'react-waypoint'
 import { ItemReadEvent, NotificationProps, ReadDetailEvent } from '~/@types/components'
 import BellIcon from '~/assets/notification.gif'
 import { useNotify } from '~/context'
-import { useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import EmptyNotify from './Empty'
 import NotificationItem from './Item'
@@ -17,7 +16,6 @@ import SkeletonNotify from './Skeleton'
 
 const Notification: React.FC<NotificationProps> = () => {
     const { t } = useTranslation()
-    const { width } = useWindowSize()
     const [parentRef] = useAutoAnimate<HTMLDivElement>()
     const [readAllRef] = useAutoAnimate<HTMLButtonElement>()
     const [notifyRef] = useAutoAnimate<HTMLDivElement>()
@@ -66,7 +64,7 @@ const Notification: React.FC<NotificationProps> = () => {
                     <>
                         <div className='flex justify-between'>
                             <h1 className='p-2 text-base font-medium text-gray-900 dark:text-white'>
-                                {t(LANGUAGE.NOTIFY_MANAGEMENT)}
+                                {t(LANGUAGE.NOTIFICATION)}
                             </h1>
                             {/* <button
                                 className='group p-2 text-sm text-cyan-500 font-medium hover:underline disabled:hover:no-underline flex items-center gap-1'

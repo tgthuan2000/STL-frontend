@@ -3,6 +3,7 @@ import {
     BanknotesIcon,
     BellIcon,
     ChatBubbleLeftRightIcon,
+    LockClosedIcon,
     UserGroupIcon,
 } from '@heroicons/react/24/outline'
 import React, { useMemo } from 'react'
@@ -33,10 +34,10 @@ export const useNavigation = (): Array<Navigation> => {
                 permissions: [PERMISSION.SPENDING_READ],
             },
             // {
-            //     name: t(LANGUAGE.TIME_KEEPING_MANAGEMENT),
-            //     href: '/timekeeping',
+            //     name: t(LANGUAGE.TIME_MANAGEMENT),
+            //     href: '/time',
             //     icon: CalendarIcon,
-            //     permissions: [PERMISSION.TIMEKEEPING_READ],
+            //     permissions: [PERMISSION.TIME_READ],
             // },
             {
                 name: t(LANGUAGE.LOAN_MANAGEMENT),
@@ -63,6 +64,12 @@ export const useNavigation = (): Array<Navigation> => {
                 href: '/feedback-config',
                 icon: ChatBubbleLeftRightIcon,
                 permissions: [PERMISSION.FEEDBACK_CONFIG],
+            },
+            {
+                name: t(LANGUAGE.ROLE_CONTROL),
+                href: '/role-control',
+                icon: LockClosedIcon,
+                permissions: [PERMISSION.ROLE_CONTROL],
             },
         ]
     }, [t])
@@ -101,10 +108,10 @@ export const useNavigationMobile = (): Array<NavigationMobile> => {
                 component: SpendingNavLink,
             },
             // {
-            //     name: t(LANGUAGE.TIME_KEEPING_MANAGEMENT),
-            //     href: '/timekeeping',
+            //     name: t(LANGUAGE.TIME_MANAGEMENT),
+            //     href: '/time',
             //     icon: CalendarIcon,
-            //     permissions: [PERMISSION.TIMEKEEPING_READ],
+            //     permissions: [PERMISSION.TIME_READ],
             // },
             {
                 name: t(LANGUAGE.LOAN_MANAGEMENT),

@@ -99,6 +99,29 @@ export const useColumns = (): Array<TableColumn<IAccount>> => {
                     </td>
                 ),
             },
+            {
+                key: 'actions',
+                title: t(LANGUAGE.ACTIONS),
+                label: 'string',
+                renderRow: ({ _createdAt }) => (
+                    <td className='px-1 text-center'>
+                        <button
+                            title={t(LANGUAGE.SEND_NOTIFY_BY_EMAIL) as string}
+                            type='button'
+                            className={clsx(
+                                `
+                            cursor-default 
+                            rounded-lg
+                            p-2 
+                        `,
+                                true ? 'bg-cyan-400 text-gray-100' : 'bg-slate-100 text-gray-400 dark:bg-slate-700'
+                            )}
+                        >
+                            <EnvelopeIcon className='h-5' />
+                        </button>
+                    </td>
+                ),
+            },
         ]
     }, [t])
     return data
