@@ -1,4 +1,5 @@
 import { AxiosRequestConfig } from 'axios'
+import { get } from 'lodash'
 import { useCallback } from 'react'
 import axios from '~/axiosConfig'
 import { CODE } from '~/constant/code'
@@ -8,6 +9,10 @@ type ReturnType<T> = { code?: CODE; data?: T }
 type Url = string
 type Data = any
 type Config = AxiosRequestConfig<any> | undefined
+
+const getError = (error: any) => {
+    return get(error, 'response.data.code')
+}
 
 const useAxios = () => {
     const { notify } = useAxiosService()
@@ -35,7 +40,7 @@ const useAxios = () => {
                 const _data = _catchNotify<T>(res)
                 return _data
             } catch (error: any) {
-                throw new Error(error)
+                throw new Error(getError(error))
             }
         },
         [_catchNotify, axios]
@@ -48,7 +53,7 @@ const useAxios = () => {
                 const _data = _catchNotify(res)
                 return _data
             } catch (error: any) {
-                throw new Error(error)
+                throw new Error(getError(error))
             }
         },
         [_catchNotify, axios]
@@ -61,7 +66,7 @@ const useAxios = () => {
                 const _data = _catchNotify(res)
                 return _data
             } catch (error: any) {
-                throw new Error(error)
+                throw new Error(getError(error))
             }
         },
         [_catchNotify, axios]
@@ -74,7 +79,7 @@ const useAxios = () => {
                 const _data = _catchNotify(res)
                 return _data
             } catch (error: any) {
-                throw new Error(error)
+                throw new Error(getError(error))
             }
         },
         [_catchNotify, axios]
