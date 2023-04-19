@@ -34,6 +34,8 @@ export const useAxiosService = () => {
             [CODE.CHECK_2FA]: () => true,
             [CODE.TWO_FA_INVALID]: () => toast.error(t(LANGUAGE.NOTIFY_TWO_FA_CODE_INVALID)),
             [CODE.TOKEN_REVOKED]: () => toast.error(t(LANGUAGE.NOTIFY_TOKEN_REVOKED)),
+
+            [CODE.INACTIVE_ACCOUNT]: () => toast.error(t(LANGUAGE.NOTIFY_INACTIVE_ACCOUNT)),
         }
     }, [t])
 

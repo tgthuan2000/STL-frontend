@@ -3,10 +3,9 @@ import QRCode from 'qrcode'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
-import axios from '~/axiosConfig'
 import { CopyCode, TwoFactorForm } from '~/components'
 import { useLoading } from '~/context'
-import { useLogout } from '~/hook'
+import { useAxios, useLogout } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import TwoFactorImage from './Image'
 
@@ -22,17 +21,19 @@ const TwoFactor: React.FC<TwoFactorProps> = ({ onClose }) => {
     const [imageRef] = useAutoAnimate<HTMLDivElement>()
     const { setSubmitLoading } = useLoading()
     const logout = useLogout()
+    const axios = useAxios()
 
     useEffect(() => {
         const fetchData = async () => {
-            setLoading(true)
-            const data = (await axios.get('/auth/2fa')) as { otpAuthUrl: string; secret: string }
-            if (data.otpAuthUrl) {
-                const image = await QRCode.toDataURL(data.otpAuthUrl)
-                setData(image)
-                setSecret(data.secret)
-            }
             try {
+                setLoading(true)
+                const { data } = await axios.get<{ otpAuthUrl: string; secret: string }>('/auth/2fa')
+
+                if (data?.otpAuthUrl) {
+                    const image = await QRCode.toDataURL(data.otpAuthUrl)
+                    setData(image)
+                    setSecret(data.secret)
+                }
             } catch (error) {
                 console.log(error)
             } finally {
@@ -45,8 +46,8 @@ const TwoFactor: React.FC<TwoFactorProps> = ({ onClose }) => {
     const handleSubmit = async (data: string) => {
         try {
             setSubmitLoading(true)
-            const d = (await axios.post('/auth/verify-2fa', { code: data })) as { verified: boolean }
-            if (d.verified) {
+            const { data: _data } = await axios.post<{ verified: boolean }>('/auth/verify-2fa', { code: data })
+            if (_data?.verified) {
                 onClose()
                 toast.success(t(LANGUAGE.NOTIFY_TWO_FA_CODE_SUCCESS))
                 await logout()

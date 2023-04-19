@@ -5,11 +5,10 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import axios from '~/axiosConfig'
 import { Button, SubmitWrap, Transaction } from '~/components'
 import { Input } from '~/components/_base'
 import { useLoading } from '~/context'
-import { useLogout } from '~/hook'
+import { useAxios, useLogout } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { useProfile } from '~/store/auth'
 import { useChangePasswordSchema } from '../hook/schema'
@@ -21,6 +20,7 @@ const ChangePassword = () => {
     const navigate = useNavigate()
     const logout = useLogout()
     const changePasswordSchema = useChangePasswordSchema()
+    const axios = useAxios()
 
     const isHasPassword = get(userProfile, 'isHasPassword', false)
 
@@ -45,14 +45,9 @@ const ChangePassword = () => {
             const { 'new-password': newPassword, 'old-password': oldPassword } = data
 
             if (isHasPassword) {
-                await axios.post('/auth/change-password', {
-                    oldPassword,
-                    newPassword,
-                })
+                await axios.post('/auth/change-password', { oldPassword, newPassword })
             } else {
-                await axios.post('/auth/set-password', {
-                    password: newPassword,
-                })
+                await axios.post('/auth/set-password', { password: newPassword })
             }
             toast.success(t(LANGUAGE.NOTIFY_UPDATE_PASSWORD_SUCCESS))
             await logout()

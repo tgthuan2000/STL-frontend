@@ -1,15 +1,15 @@
 import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-const TimeKeepingPage = React.lazy(() => import('./pages/TimeKeeping'))
+const TimePage = React.lazy(() => import('./pages/Time'))
 
-const TimeKeeping = () => {
+const Time = () => {
     return (
         <Routes>
-            <Route index element={<TimeKeepingPage />} />
+            <Route index element={<TimePage />} />
             <Route path='*' element={<Navigate to='/' />} />
         </Routes>
     )
 }
 
-export default TimeKeeping
+export default Time

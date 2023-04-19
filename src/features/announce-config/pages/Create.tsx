@@ -6,12 +6,11 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { localStorageValue } from '~/@types/hook'
 import { DraftNotify, NotifyAssignForm, NotifyContentForm, NotifyTitleDescForm } from '~/@types/notify'
-import axios from '~/axiosConfig'
 import { BackButton, Button, Progress, SubmitWrap } from '~/components'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { useCreateProgressOptions } from '~/hook/progress'
 import { useLoading } from '~/context'
-import { useLocalStorage } from '~/hook'
+import { useAxios, useLocalStorage } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { CreateStep1, CreateStep2, CreateStep3, CreateStep4 } from '../components'
 
@@ -23,6 +22,7 @@ const Create = () => {
     const { loading, setSubmitLoading } = useLoading()
     const [step, setStep] = useState(1)
     const createProgressOptions = useCreateProgressOptions()
+    const axios = useAxios()
 
     const onSubmitStep1 = async (data: NotifyContentForm) => {
         try {

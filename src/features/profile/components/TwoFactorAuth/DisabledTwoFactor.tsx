@@ -1,10 +1,10 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
-import axios from '~/axiosConfig'
 import { TwoFactorForm } from '~/components'
 import { useLoading } from '~/context'
 import { useLogout } from '~/hook'
+import useAxios from '~/hook/useAxios'
 import LANGUAGE from '~/i18n/language/key'
 
 interface DisabledTwoFactorProps {
@@ -15,6 +15,7 @@ const DisabledTwoFactor: React.FC<DisabledTwoFactorProps> = ({ onClose }) => {
     const { t } = useTranslation()
     const { setSubmitLoading } = useLoading()
     const logout = useLogout()
+    const axios = useAxios()
 
     const handleSubmit = async (data: string) => {
         try {

@@ -1,5 +1,4 @@
 import _axios from 'axios'
-import { useAxiosService } from './services/axios'
 
 const axios = _axios.create({
     baseURL: `${import.meta.env.VITE_SERVER}/api`,
