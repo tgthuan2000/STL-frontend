@@ -1,5 +1,4 @@
 import { SanityDocument } from '@sanity/client'
-import { get } from 'lodash'
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useLocation } from 'react-router-dom'
@@ -52,7 +51,7 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
                     }
                 } catch (error: any) {
                     axios.defaults.headers.common['Authorization'] = null
-                    switch (get(error, 'response.data.code')) {
+                    switch (error.message) {
                         case CODE.ACCESS_TOKEN_EXPIRED: {
                             try {
                                 const { data } = await _axios.post<{ accessToken: string }>('/auth/access-token', {
@@ -63,7 +62,7 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
                                     setToken({ accessToken: data.accessToken })
                                 }
                             } catch (error: any) {
-                                if (get(error, 'response.data.code') === CODE.REFRESH_TOKEN_EXPIRED) {
+                                if (error.message === CODE.REFRESH_TOKEN_EXPIRED) {
                                     await logout()
                                     toast.warn(t(LANGUAGE.NOTIFY_EXPIRED_TOKEN))
                                 }
