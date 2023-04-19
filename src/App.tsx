@@ -21,7 +21,7 @@ const Dashboard = React.lazy(() => import('./Dashboard'))
 const AuthFeature = React.lazy(() => import('./features/auth'))
 const SpendingFeature = React.lazy(() => import('./features/spending'))
 const LoanFeature = React.lazy(() => import('./features/loan'))
-const TimeKeepingFeature = React.lazy(() => import('./features/time-keeping'))
+const TimeFeature = React.lazy(() => import('./features/time'))
 const ProfileFeature = React.lazy(() => import('./features/profile'))
 const AnnounceConfigFeature = React.lazy(() => import('./features/announce-config'))
 const AccountFeature = React.lazy(() => import('./features/account'))
@@ -29,6 +29,7 @@ const NotifyFeature = React.lazy(() => import('./features/notify'))
 const SettingFeature = React.lazy(() => import('./features/setting'))
 const FeedbackFeature = React.lazy(() => import('./features/feedback'))
 const FeedbackConfigFeature = React.lazy(() => import('./features/feedback-config'))
+const RoleControlFeature = React.lazy(() => import('./features/role-control'))
 
 function App() {
     return (
@@ -77,10 +78,10 @@ function App() {
                                                 }
                                             />
                                             <Route
-                                                path='timekeeping/*'
+                                                path='time/*'
                                                 element={
-                                                    <PermissionCheck permissions={[PERMISSION.TIMEKEEPING_READ]}>
-                                                        <TimeKeepingFeature />
+                                                    <PermissionCheck permissions={[PERMISSION.TIME_READ]}>
+                                                        <TimeFeature />
                                                     </PermissionCheck>
                                                 }
                                             />
@@ -150,6 +151,14 @@ function App() {
                                                 element={
                                                     <PermissionCheck permissions={[PERMISSION.FEEDBACK_CONFIG]}>
                                                         <FeedbackConfigFeature />
+                                                    </PermissionCheck>
+                                                }
+                                            />
+                                            <Route
+                                                path='role-control/*'
+                                                element={
+                                                    <PermissionCheck permissions={[PERMISSION.ROLE_CONTROL]}>
+                                                        <RoleControlFeature />
                                                     </PermissionCheck>
                                                 }
                                             />

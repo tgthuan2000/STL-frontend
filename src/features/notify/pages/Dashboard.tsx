@@ -25,7 +25,7 @@ const Dashboard = () => {
     )
 
     return (
-        <Transaction hasBack={false} title={t(LANGUAGE.NOTIFY_MANAGEMENT)}>
+        <Transaction hasBack={false} title={t(LANGUAGE.NOTIFICATION)}>
             <div className='-mx-4' ref={parent}>
                 <List hasNextPage={hasNextPage} data={notify} loading={loading} onGetMore={getMore} {...listProps} />
             </div>

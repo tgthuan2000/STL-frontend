@@ -8,7 +8,7 @@ import { IUserProfile, LoginByEmailPasswordFormProps, SubmitPassword } from '~/@
 import { BackButton } from '~/components'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
-import { getDataByEmail } from '../services'
+import { getActiveUsersByEmail } from '../services'
 import Step1 from './Step1'
 import Step2 from './Step2'
 
@@ -22,7 +22,7 @@ const LoginByEmailPasswordForm: React.FC<LoginByEmailPasswordFormProps> = ({ onS
     const onSubmitEmail = async ({ email }: { email: string }) => {
         try {
             setSubmitLoading(true)
-            const data = await getDataByEmail(email)
+            const data = await getActiveUsersByEmail(email)
             if (data && !isEmpty(data)) {
                 setPreviewData(data)
                 setStep(2)

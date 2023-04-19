@@ -10,7 +10,7 @@ import axios from '~/axiosConfig'
 import { CODE } from '~/constant/code'
 import { PERMISSION } from '~/constant/permission'
 import { KIND_SPENDING } from '~/constant/spending'
-import { useLogout } from '~/hook'
+import { useAxios, useLogout } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_CONFIG } from '~/schema/query/config'
@@ -38,13 +38,14 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
         const { pathname } = useLocation()
         const { t } = useTranslation()
         const logout = useLogout()
+        const _axios = useAxios()
 
         useEffect(() => {
             if (userProfile !== null || accessToken === null) return
             const getUserProfile = async () => {
                 try {
                     axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
-                    const { data } = await axios.get<SanityDocument<IUserProfile>>('/auth/profile')
+                    const { data } = await _axios.get<SanityDocument<IUserProfile>>('/auth/profile')
                     if (data) {
                         addUserProfile(data)
                     }
@@ -53,11 +54,11 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
                     switch (get(error, 'response.data.code')) {
                         case CODE.ACCESS_TOKEN_EXPIRED: {
                             try {
-                                const data = (await axios.post('/auth/access-token', {
+                                const { data } = await _axios.post<{ accessToken: string }>('/auth/access-token', {
                                     refreshToken,
-                                })) as { accessToken: string }
+                                })
 
-                                if (data) {
+                                if (data?.accessToken) {
                                     setToken({ accessToken: data.accessToken })
                                 }
                             } catch (error: any) {

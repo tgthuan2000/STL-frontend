@@ -1,11 +1,12 @@
 import { useTranslation } from 'react-i18next'
 import { useRegisterSW } from 'virtual:pwa-register/react'
-import axios from '~/axiosConfig'
+import { useAxios } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import Button from './Button'
 
 const ReloadPrompt = () => {
     const { t } = useTranslation()
+    const axios = useAxios()
     const {
         offlineReady: [offlineReady, setOfflineReady],
         needRefresh: [needRefresh, setNeedRefresh],

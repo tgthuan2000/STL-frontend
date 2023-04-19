@@ -1,9 +1,9 @@
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
-import axios from '~/axiosConfig'
 import { TwoFactorForm } from '~/components'
 import { useLoading } from '~/context'
+import { useAxios } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { useAuth } from '~/store/auth'
 
@@ -14,6 +14,7 @@ const TwoFactor = () => {
     const navigate = useNavigate()
     const { setToken } = useAuth()
     const ref = useRef<{ clear: () => void }>(null)
+    const axios = useAxios()
 
     const handleSubmit = async (code: string) => {
         try {
@@ -27,15 +28,12 @@ const TwoFactor = () => {
             if (state?.credential) {
                 body.credential = state.credential
             }
-            const data = (await axios.post('/auth/2fa', body)) as {
-                accessToken: string
-                refreshToken: string
+            const { data } = await axios.post<{ accessToken: string; refreshToken: string }>('/auth/2fa', body)
+
+            if (data?.accessToken && data?.refreshToken) {
+                setToken({ accessToken: data.accessToken, refreshToken: data.refreshToken })
+                navigate('/')
             }
-            setToken({
-                accessToken: data.accessToken,
-                refreshToken: data.refreshToken,
-            })
-            navigate('/')
         } catch (error) {
             console.log(error)
             ref.current?.clear()
