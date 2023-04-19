@@ -5,13 +5,21 @@ import LANGUAGE from '~/i18n/language/key'
 
 interface LoadingTextProps {
     className?: string
+    text?: React.ReactNode
+    cancelAnimate?: boolean
 }
 
-const LoadingText: React.FC<LoadingTextProps> = ({ className }) => {
+const LoadingText: React.FC<LoadingTextProps> = ({ className, text, cancelAnimate }) => {
     const { t } = useTranslation()
     return (
-        <span className={clsx('inline-block animate-pulse text-gray-700 dark:text-slate-200', className)}>
-            {t(LANGUAGE.LOADING)}
+        <span
+            className={clsx(
+                'inline-block text-gray-700 dark:text-slate-200',
+                { 'animate-pulse': !cancelAnimate },
+                className
+            )}
+        >
+            {text ?? t(LANGUAGE.LOADING)}
         </span>
     )
 }

@@ -29,7 +29,11 @@ const Option: React.FC<AutocompleteOptionProps> = ({ filterData, idKey, valueKey
                                     <>
                                         <div className='flex items-center gap-2'>
                                             {showImage && (
-                                                <Image src={urlFor(item.image)} alt={item.name} size='small' />
+                                                <Image
+                                                    src={urlFor(item.image)}
+                                                    alt={item.name}
+                                                    avatar={{ roundFull: true, size: 'small' }}
+                                                />
                                             )}
                                             <span className={clsx('block truncate', selected && 'font-semibold')}>
                                                 {item[valueKey]}

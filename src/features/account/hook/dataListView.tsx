@@ -30,7 +30,7 @@ export const useColumns = (): Array<TableColumn<IAccount>> => {
                 renderRow: ({ email, image, userName }) => (
                     <td className='whitespace-nowrap py-3 pl-2 pr-3 text-xs sm:pl-3 sm:text-sm'>
                         <div className='flex items-center gap-2 px-4 py-2'>
-                            <Image src={image} />
+                            <Image src={image} avatar={{ roundFull: true, size: 'medium' }} />
                             <div className='flex-1'>
                                 <p className='truncate font-medium text-gray-900 dark:text-slate-200'>{userName}</p>
                                 <small className='block truncate font-normal text-gray-500 dark:text-slate-400'>

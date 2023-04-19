@@ -563,12 +563,16 @@ export interface TransactionProps {
     hasBack?: boolean
 }
 
+export interface AvatarImage {
+    size?: 'small' | 'medium' | 'large' | 'custom'
+    roundFull?: boolean
+}
 export interface ImageProps {
     src: string | undefined
+    avatar?: AvatarImage
     alt?: string
     className?: string
-    errorComp?: React.ReactNode
-    size?: 'small' | 'medium' | 'large' | 'custom'
+    fallback?: React.ReactNode
     className?: string
 }
 
