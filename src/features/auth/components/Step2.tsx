@@ -8,7 +8,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
 import { IUserProfile, Step2Props } from '~/@types/auth'
-import { Button } from '~/components'
+import { Button, Image } from '~/components'
 import { Input } from '~/components/_base'
 import { UserSvg } from '~/components/_constant'
 import { useLoading } from '~/context'
@@ -54,17 +54,13 @@ const Step2: React.FC<Step2Props> = ({ previewData, onSubmit }) => {
                                 className='flex cursor-pointer items-center gap-2 px-4 py-2'
                                 onClick={() => !checked && setChose(data)}
                             >
-                                {data.image ? (
-                                    <img
-                                        src={data.image}
-                                        alt={data.userName}
-                                        className='h-8 w-8 flex-shrink-0 rounded-full object-cover'
-                                    />
-                                ) : (
-                                    <div className='h-8 w-8 flex-shrink-0 overflow-hidden rounded-full bg-gray-400'>
-                                        <UserSvg />
-                                    </div>
-                                )}
+                                <Image
+                                    src={data.image}
+                                    alt={data.userName}
+                                    avatar={{ roundFull: true, size: 'custom' }}
+                                    className='h-8 w-8'
+                                />
+
                                 <div className='max-w-[250px] flex-1'>
                                     <p className='truncate font-medium text-gray-900 dark:text-slate-200'>
                                         {data.userName}

@@ -10,7 +10,7 @@ interface UserOptionProps {
 const UserOption: React.FC<UserOptionProps> = ({ data, active }) => {
     return (
         <div className='flex items-center gap-2'>
-            <Image src={data.image} alt={data.userName} size='small' />
+            <Image src={data.image} alt={data.userName} avatar={{ roundFull: true, size: 'small' }} />
             <div className='flex-1'>
                 <p
                     className={clsx(

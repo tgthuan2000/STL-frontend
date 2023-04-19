@@ -105,6 +105,8 @@
     "SERVICE": "Dịch vụ",
     "NOTIFICATION": "Thông báo",
     "ACTIONS": "Hành động",
+    "LOADING_PROFILE": "Đang tải thông tin cá nhân",
+    "LOADING_CONFIG": "Đang tải cấu hình",
 
     "APP_READY_WORK_OFFLINE": "Ứng dụng đã sẵn sàng để làm việc ngoại tuyến",
     "RELOAD_TEXT": "Ứng dụng đã được cập nhật. Vui lòng nhấn nút tải lại để xem thay đổi.",

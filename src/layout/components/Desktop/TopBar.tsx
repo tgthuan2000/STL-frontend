@@ -1,8 +1,7 @@
 import { ChevronDoubleRightIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
-import { LanguageSelection, Notification } from '~/components'
+import { LanguageSelection, Logo, Notification } from '~/components'
 import { useSideBar } from '~/context'
-import Logo from '../Logo'
 
 const TopBar = () => {
     const { desktop } = useSideBar()
@@ -16,7 +15,7 @@ const TopBar = () => {
                         desktop.open ? 'bg-gray-800' : 'bg-transparent'
                     )}
                 >
-                    <Logo />
+                    <Logo className='text-4xl' />
                     <span
                         onClick={() => desktop.set(!desktop.open)}
                         className={clsx(
