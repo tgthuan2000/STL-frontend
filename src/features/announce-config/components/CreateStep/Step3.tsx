@@ -135,7 +135,11 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                         ) : (
                             __users.map((user, index) => (
                                 <div key={user._id} className='flex items-center gap-2 px-4 py-2'>
-                                    <Image src={user.image} alt={user.userName} size='small' />
+                                    <Image
+                                        src={user.image}
+                                        alt={user.userName}
+                                        avatar={{ roundFull: true, size: 'small' }}
+                                    />
                                     <div className='flex-1'>
                                         <p className='truncate font-medium text-gray-900 dark:text-slate-200'>
                                             {user.userName}

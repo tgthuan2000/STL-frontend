@@ -7,6 +7,8 @@ import { toast } from 'react-toastify'
 import { IUserProfile } from '~/@types/auth'
 import { IConfig, IConfigContext, IRoleControl } from '~/@types/context'
 import axios from '~/axiosConfig'
+import { FlashScreen } from '~/components'
+import LoadingText from '~/components/Loading/LoadingText'
 import { CODE } from '~/constant/code'
 import { PERMISSION } from '~/constant/permission'
 import { KIND_SPENDING } from '~/constant/spending'
@@ -16,7 +18,6 @@ import { client } from '~/sanityConfig'
 import { GET_CONFIG } from '~/schema/query/config'
 import { service } from '~/services'
 import { useAuth, useProfile } from '~/store/auth'
-import { useLoading } from './LoadingContext'
 
 interface IConfigProps {
     children: React.ReactNode
@@ -82,7 +83,13 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
 
         if (!accessToken) return <Navigate to='/auth' replace={true} state={{ url: pathname }} />
 
-        if (userProfile === null) return null
+        if (userProfile === null) {
+            return (
+                <FlashScreen>
+                    <LoadingText text={t(LANGUAGE.LOADING_PROFILE)} className='text-md whitespace-nowrap sm:text-lg' />
+                </FlashScreen>
+            )
+        }
 
         return <Component>{children}</Component>
     }
@@ -95,13 +102,12 @@ const ConfigProvider = configHOC(({ children }) => {
         budgetSpending: { _id: null },
         role: null,
     })
+    const { t } = useTranslation()
     const [ok, setOk] = useState(false)
-    const { setConfigLoading } = useLoading()
 
     useEffect(() => {
         const getConfig = async () => {
             try {
-                setConfigLoading(true)
                 if (userProfile?._id) {
                     const { kindSpending, role }: IConfig = await client.fetch(GET_CONFIG, {
                         userId: userProfile?._id as string,
@@ -117,7 +123,6 @@ const ConfigProvider = configHOC(({ children }) => {
             } catch (error) {
                 console.log(error)
             } finally {
-                setConfigLoading(false)
             }
         }
         getConfig()
@@ -164,7 +169,11 @@ const ConfigProvider = configHOC(({ children }) => {
     }
 
     if (!ok) {
-        return null
+        return (
+            <FlashScreen>
+                <LoadingText text={t(LANGUAGE.LOADING_CONFIG)} className='text-md whitespace-nowrap sm:text-lg' />
+            </FlashScreen>
+        )
     }
 
     return <ConfigContext.Provider value={value}>{children}</ConfigContext.Provider>

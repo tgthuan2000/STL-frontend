@@ -4,29 +4,22 @@ import { ImageProps } from '~/@types/components'
 import { getSizeAvatarUser } from '~/constant/component'
 import { UserSvg } from './_constant'
 
-const Image: React.FC<ImageProps> = ({ size = 'medium', src, alt, errorComp = <UserSvg />, className }) => {
+const Image: React.FC<ImageProps> = ({ avatar, src, alt, fallback = <UserSvg />, className }) => {
     const [img, setImg] = React.useState<string | undefined>(src)
+    const _avatar = avatar
+        ? clsx({ 'rounded-full': avatar.roundFull }, getSizeAvatarUser[avatar.size ?? 'medium'])
+        : undefined
+
+    const _className = clsx('inline-block flex-shrink-0', _avatar, className)
+
     const handleError = () => {
         setImg(undefined)
     }
 
     return img ? (
-        <img
-            className={clsx('inline-block flex-shrink-0 rounded-full', getSizeAvatarUser[size], className)}
-            onError={handleError}
-            src={img}
-            alt={alt}
-        />
+        <img className={_className} onError={handleError} src={img} alt={alt} />
     ) : (
-        <div
-            className={clsx(
-                'flex-shrink-0 overflow-hidden rounded-full bg-gray-400',
-                getSizeAvatarUser[size],
-                className
-            )}
-        >
-            {errorComp}
-        </div>
+        <div className={_className}>{fallback}</div>
     )
 }
 

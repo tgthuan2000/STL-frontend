@@ -4,6 +4,9 @@ module.exports = {
     darkMode: 'class',
     theme: {
         extend: {
+            fontFamily: {
+                DynaPuff: ['DynaPuff', 'cursive'],
+            },
             keyframes: {
                 bgAnimate: {
                     '0%, 100%': {

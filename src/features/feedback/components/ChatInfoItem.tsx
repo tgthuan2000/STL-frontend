@@ -46,7 +46,11 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
         <div className='relative'>
             <div className='inline-flex items-start gap-2 pt-10'>
                 <div className='flex-shrink-0'>
-                    <Image className='!h-8 !w-8 sm:!h-10 sm:!w-10' src={data.user.image} />
+                    <Image
+                        className='!h-8 !w-8 sm:!h-10 sm:!w-10'
+                        src={data.user.image}
+                        avatar={{ roundFull: true, size: 'custom' }}
+                    />
                 </div>
                 <div className='relative flex-1'>
                     <div className='relative inline-flex max-w-[70vw] flex-col rounded bg-gray-100 p-2 dark:bg-slate-700 sm:max-w-[60vw]'>

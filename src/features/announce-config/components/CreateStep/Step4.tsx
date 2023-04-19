@@ -36,7 +36,11 @@ const Step4: React.FC<CreateStep4Props> = ({ id, onSubmit }) => {
                         <div className='m-2 max-w-sm rounded-lg border dark:border-slate-600'>
                             {draftNotify?.users?.map((user) => (
                                 <div key={user._id} className='flex items-center gap-2 px-4 py-2'>
-                                    <Image src={user.image} alt={user.userName} size='small' />
+                                    <Image
+                                        src={user.image}
+                                        alt={user.userName}
+                                        avatar={{ roundFull: true, size: 'small' }}
+                                    />
 
                                     <div className='flex-1'>
                                         <p className='truncate font-medium'>{user.userName}</p>

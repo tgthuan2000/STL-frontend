@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { TwoFactorForm } from '~/components'
+import { Logo, TwoFactorForm } from '~/components'
 import { useLoading } from '~/context'
 import { useAxios } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
@@ -47,12 +47,15 @@ const TwoFactor = () => {
     }
 
     return (
-        <div className='flex h-screen items-center justify-center overflow-hidden'>
-            <div className='flex flex-1 flex-col items-center justify-center gap-10'>
-                <p className='max-w-[400px] text-center text-sm text-gray-900 dark:text-slate-200 sm:text-base'>
-                    {t(LANGUAGE.TWO_FA_DESCRIPTION)}
-                </p>
-                <TwoFactorForm onSubmit={handleSubmit} disabled={loading.submit} ref={ref} />
+        <div className='relative h-screen overflow-hidden'>
+            <div className='absolute top-1/4 flex w-full flex-col items-center justify-center'>
+                <div className='flex flex-1 flex-col items-center justify-center gap-10'>
+                    <Logo className='mb-10 text-8xl' />
+                    <p className='mx-2 max-w-[400px] text-center text-sm text-gray-900 dark:text-slate-200 sm:text-base'>
+                        {t(LANGUAGE.TWO_FA_DESCRIPTION)}
+                    </p>
+                    <TwoFactorForm onSubmit={handleSubmit} disabled={loading.submit} ref={ref} />
+                </div>
             </div>
         </div>
     )

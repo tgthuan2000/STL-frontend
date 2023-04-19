@@ -21,7 +21,7 @@ const UserInfo = () => {
             <Menu.Button className='block max-w-full'>
                 <div className='flex items-center justify-center gap-x-3'>
                     <div className='flex-shrink-0'>
-                        <Image size='large' src={userProfile?.image as string} />
+                        <Image avatar={{ roundFull: true, size: 'large' }} src={userProfile?.image as string} />
                     </div>
                     <div
                         className={clsx(

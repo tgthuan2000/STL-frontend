@@ -2,9 +2,11 @@ import React from 'react'
 import { FallbackProps } from 'react-error-boundary'
 import { useNavigate } from 'react-router-dom'
 import Button from './Button'
+import { useTranslation } from 'react-i18next'
 
 const ErrorFallback: React.ComponentType<FallbackProps> = ({ error, resetErrorBoundary }) => {
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     if (error.message.includes('dynamically imported module')) {
         return (

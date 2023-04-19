@@ -105,6 +105,8 @@
     "SERVICE": "Service",
     "NOTIFICATION": "Notification",
     "ACTIONS": "Actions",
+    "LOADING_PROFILE": "Waiting to loading profile",
+    "LOADING_CONFIG": "Waiting to loading config",
 
     "APP_READY_WORK_OFFLINE": "App ready to work offline",
     "RELOAD_TEXT": "New content available, click on reload button to update.",
