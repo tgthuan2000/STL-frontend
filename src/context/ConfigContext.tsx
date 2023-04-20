@@ -62,16 +62,19 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
                                     setToken({ accessToken: data.accessToken })
                                 }
                             } catch (error: any) {
-                                if (error.message === CODE.REFRESH_TOKEN_EXPIRED) {
-                                    await logout()
-                                    toast.warn(t(LANGUAGE.NOTIFY_EXPIRED_TOKEN))
+                                switch (error.message) {
+                                    case CODE.REFRESH_TOKEN_EXPIRED: {
+                                        await logout()
+                                        toast.warn(t(LANGUAGE.NOTIFY_EXPIRED_TOKEN))
+                                        break
+                                    }
+                                    case CODE.TOKEN_REVOKED: {
+                                        toast.warn(t(LANGUAGE.NOTIFY_TOKEN_REVOKED))
+                                        await logout()
+                                        break
+                                    }
                                 }
                             }
-                            break
-                        }
-                        case CODE.TOKEN_REVOKED: {
-                            toast.warn(t(LANGUAGE.NOTIFY_TOKEN_REVOKED))
-                            await logout()
                             break
                         }
                     }
