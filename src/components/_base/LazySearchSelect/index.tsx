@@ -7,8 +7,6 @@ import Input from './Input'
 import Label from './Label'
 import Options from './Options'
 
-const __search = '__search'
-
 const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
     name,
     className,
@@ -26,15 +24,17 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
     getOptionLabel,
     autoFocus,
 }) => {
+    const inputRef = useRef<HTMLInputElement>(null)
     const form = useForm({
         defaultValues: {
-            [name]: undefined,
-            [__search]: '',
+            __search: '',
         },
     })
+
     const handleChange = (value: any) => {
-        form.setValue(name, onChange(value))
-        form.setValue(__search, '')
+        onChange(value)
+        form.setValue('__search', '')
+        inputRef.current?.focus()
     }
 
     const wpLoading = useRef(false)
@@ -55,7 +55,7 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
     useEffect(() => {
         let timeout: NodeJS.Timeout | null = null
 
-        const value = form.watch(__search).trim()
+        const value = form.watch('__search').trim()
         if (value) {
             timeout = setTimeout(() => {
                 try {
@@ -68,7 +68,7 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
         return () => {
             timeout && clearTimeout(timeout)
         }
-    }, [JSON.stringify(form.watch(__search))])
+    }, [JSON.stringify(form.watch('__search'))])
 
     const handleSearch = (value: string, onChange: (...event: any[]) => void) => {
         onChange(value)
@@ -77,7 +77,7 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
     return (
         <Controller
             control={form.control}
-            name={__search}
+            name={'__search'}
             render={({ field }) => (
                 <div className={className}>
                     <Combobox
@@ -87,7 +87,7 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
                         onBlur={() => {
                             field.onBlur()
                             setTimeout(() => {
-                                form.setValue(__search, '')
+                                form.setValue('__search', '')
                             }, 300)
                         }}
                         disabled={disabled}
@@ -95,6 +95,7 @@ const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
                         <Label label={label} />
                         <div className='relative mt-1'>
                             <Input
+                                ref={inputRef}
                                 autoFocus={autoFocus}
                                 disabled={disabled}
                                 placeholder={placeholder}

@@ -284,6 +284,9 @@
     "ACCOUNT_OPTION_EMAIL": "Email",
     "ACCOUNT_NOT_HAVE_PASSWORD": "Account not have password",
 
+    "ACCOUNT_ACTIVE": "Account active",
+    "ACCOUNT_INACTIVE": "Account inactive",
+
     "SOME_SIMILAR_NAME": "Some similar name",
     "NOT_SIMILAR_NAME": "Not similar name",
     "INVALID_FORMAT_IMAGE": "Invalid format image",

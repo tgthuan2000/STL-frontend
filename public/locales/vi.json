@@ -266,6 +266,9 @@
     "ACCOUNT_OPTION_EMAIL": "Tài khoản (email)",
     "ACCOUNT_NOT_HAVE_PASSWORD": "Tài khoản này chưa có mật khẩu",
 
+    "ACCOUNT_ACTIVE": "Tài khoản đã được kích hoạt",
+    "ACCOUNT_INACTIVE": "Tài khoản chưa được kích hoạt",
+
     "SOME_SIMILAR_NAME": "Một số loại gần giống tên",
     "NOT_SIMILAR_NAME": "Không có loại gần giống tên",
     "INVALID_FORMAT_IMAGE": "Sai định dạng hình ảnh cho phép",

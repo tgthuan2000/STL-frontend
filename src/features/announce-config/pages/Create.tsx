@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { localStorageValue } from '~/@types/hook'
 import { DraftNotify, NotifyAssignForm, NotifyContentForm, NotifyTitleDescForm } from '~/@types/notify'
-import { BackButton, Button, Progress, SubmitWrap } from '~/components'
+import { AnimateWrap, BackButton, Button, Progress, SubmitWrap } from '~/components'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { useCreateProgressOptions } from '~/hook/progress'
 import { useLoading } from '~/context'
@@ -17,7 +17,6 @@ import { CreateStep1, CreateStep2, CreateStep3, CreateStep4 } from '../component
 const Create = () => {
     const { t } = useTranslation()
     const [, setDraftNotify, removeDraft] = useLocalStorage<DraftNotify>(LOCAL_STORAGE_KEY.STL_DRAFT_NOTIFY)
-    const [stepParent] = useAutoAnimate<HTMLDivElement>()
     const navigate = useNavigate()
     const { loading, setSubmitLoading } = useLoading()
     const [step, setStep] = useState(1)
@@ -108,7 +107,7 @@ const Create = () => {
         <div className='mt-5 sm:mt-10'>
             <div className='min-h-[80vh] rounded-xl bg-white py-6 px-4 shadow-lg dark:bg-slate-800 sm:py-8'>
                 <Progress step={step} options={createProgressOptions} className='mx-auto w-full max-w-xl' />
-                <div ref={stepParent}>
+                <AnimateWrap>
                     {step > 1 && (
                         <div
                             className={clsx('mx-auto w-full', {
@@ -151,7 +150,7 @@ const Create = () => {
                             </Button>
                         )}
                     </SubmitWrap>
-                </div>
+                </AnimateWrap>
             </div>
         </div>
     )

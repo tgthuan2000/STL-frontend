@@ -1,13 +1,14 @@
-import { EnvelopeIcon } from '@heroicons/react/24/outline'
+import { ArrowPathIcon, BoltIcon, BoltSlashIcon, EnvelopeIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import moment from 'moment'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IAccount } from '~/@types/account'
 import { TableColumn } from '~/@types/components'
 import { Chip, Image } from '~/components'
 import { DATE_FORMAT } from '~/constant'
 import LANGUAGE from '~/i18n/language/key'
+import { useProfile } from '~/store/auth'
 
 const getDate = (date: string | undefined) => {
     return (
@@ -19,8 +20,14 @@ const getDate = (date: string | undefined) => {
     )
 }
 
-export const useColumns = (): Array<TableColumn<IAccount>> => {
+interface Option {
+    toggleActive: (id: string, active: boolean) => Promise<void>
+}
+
+export const useColumns = (options: Option): Array<TableColumn<IAccount>> => {
     const { t } = useTranslation()
+    const { toggleActive } = options
+
     const data: Array<TableColumn<IAccount>> = useMemo(() => {
         return [
             {
@@ -64,11 +71,7 @@ export const useColumns = (): Array<TableColumn<IAccount>> => {
                             title={t(LANGUAGE.SEND_NOTIFY_BY_EMAIL) as string}
                             type='button'
                             className={clsx(
-                                `
-                            cursor-default 
-                            rounded-lg
-                            p-2 
-                        `,
+                                'cursor-default rounded-lg p-2',
                                 allowSendMail
                                     ? 'bg-cyan-400 text-gray-100'
                                     : 'bg-slate-100 text-gray-400 dark:bg-slate-700'
@@ -103,26 +106,53 @@ export const useColumns = (): Array<TableColumn<IAccount>> => {
                 key: 'actions',
                 title: t(LANGUAGE.ACTIONS),
                 label: 'string',
-                renderRow: ({ _createdAt }) => (
-                    <td className='px-1 text-center'>
-                        <button
-                            title={t(LANGUAGE.SEND_NOTIFY_BY_EMAIL) as string}
-                            type='button'
-                            className={clsx(
-                                `
-                            cursor-default 
-                            rounded-lg
-                            p-2 
-                        `,
-                                true ? 'bg-cyan-400 text-gray-100' : 'bg-slate-100 text-gray-400 dark:bg-slate-700'
-                            )}
-                        >
-                            <EnvelopeIcon className='h-5' />
-                        </button>
-                    </td>
-                ),
+                renderRow: ({ active, _id }) => <Actions id={_id} active={active} onClick={toggleActive} />,
             },
         ]
     }, [t])
     return data
+}
+
+interface ActionsProps {
+    id: string
+    active: boolean
+    onClick: (id: string, active: boolean) => Promise<void>
+}
+
+const Actions: React.FC<ActionsProps> = (props) => {
+    const { active, id, onClick } = props
+    const { t } = useTranslation()
+    const { userProfile } = useProfile()
+    const [clicked, setClicked] = useState(false)
+
+    return (
+        <td className='px-1 text-center'>
+            <button
+                title={t(active ? LANGUAGE.ACCOUNT_ACTIVE : LANGUAGE.ACCOUNT_INACTIVE) as string}
+                type='button'
+                className={clsx(
+                    'cursor-pointer rounded-lg p-2 text-white hover:opacity-70 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:opacity-50',
+                    active ? 'bg-green-500' : 'bg-radical-red-500 dark:bg-indigo-700'
+                )}
+                disabled={userProfile?._id === id || clicked}
+                onClick={async (e) => {
+                    try {
+                        e.stopPropagation()
+                        setClicked(true)
+                        await onClick(id, active)
+                    } catch (error) {
+                        console.log(error)
+                    } finally {
+                        setClicked(false)
+                    }
+                }}
+            >
+                {clicked ? (
+                    <ArrowPathIcon className='h-5 animate-spin' />
+                ) : (
+                    <>{active ? <BoltIcon className='h-5' /> : <BoltSlashIcon className='h-5' />}</>
+                )}
+            </button>
+        </td>
+    )
 }
