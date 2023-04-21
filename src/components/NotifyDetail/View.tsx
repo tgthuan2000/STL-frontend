@@ -2,15 +2,20 @@ import { UserIcon } from '@heroicons/react/24/outline'
 import moment from 'moment'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { NotifyDetailFormProps } from '~/@types/components'
 import { DATE_FORMAT } from '~/constant'
 import LANGUAGE from '~/i18n/language/key'
 import Prose from '../Prose'
+import { NotifyDetailFormData } from '~/@types/components'
 
-const NotifyDetailForm: React.FC<NotifyDetailFormProps> = ({ data }) => {
+export interface Props {
+    data: NotifyDetailFormData
+}
+
+const NotifyDetailView: React.FC<Props> = ({ data }) => {
     const { t } = useTranslation()
     const { notify } = data
     const createdAt = notify._createdAt || notify.notify._createdAt
+
     return (
         <div className='-mx-4 bg-white p-2 dark:bg-slate-800 sm:rounded-lg sm:p-3 sm:shadow-xl'>
             <div className='flex flex-col gap-2'>
@@ -45,4 +50,4 @@ const NotifyDetailForm: React.FC<NotifyDetailFormProps> = ({ data }) => {
     )
 }
 
-export default NotifyDetailForm
+export default NotifyDetailView

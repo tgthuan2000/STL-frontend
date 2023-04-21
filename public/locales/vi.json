@@ -103,7 +103,6 @@
     "USER": "Người dùng",
     "ROLE": "Vai trò",
     "SERVICE": "Dịch vụ",
-    "NOTIFICATION": "Thông báo",
     "ACTIONS": "Hành động",
     "LOADING_PROFILE": "Đang tải thông tin cá nhân",
     "LOADING_PROFILE_DONE": "Đã tải thông tin cá nhân",
@@ -279,6 +278,7 @@
     "NEW_PASSWORD": "Mật khẩu mới",
     "RE_PASSWORD": "Xác nhận mật khẩu",
 
+    "NOTIFICATION": "Thông báo",
     "LIST_RECEIVE_NOTIFY_MEMBER": "Danh sách thành viên nhận thông báo",
     "SEND_ALL_MEMBER": "Gửi tất cả thành viên",
     "SEND_MAIL": "Gửi mail",
@@ -291,6 +291,7 @@
     "SEND_MAIL_TO_ALL": "Gửi mail cho tất cả",
     "NOTIFY_RECEIVER_LIST": "Danh sách người nhận thông báo",
     "SEND_NOTIFY_BY_EMAIL": "Gửi thông báo qua email",
+    "EDIT_NOTIFY": "Chỉnh sửa thông báo",
 
     "SPENDING_MANAGEMENT": "Quản lý chi tiêu",
     "LOAN_MANAGEMENT": "Quản lý vay/cho vay",

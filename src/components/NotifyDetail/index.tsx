@@ -11,13 +11,15 @@ import LANGUAGE from '~/i18n/language/key'
 import { GET_NOTIFY_ADMIN, GET_NOTIFY_BY_USER } from '~/schema/query/notify'
 import { useProfile } from '~/store/auth'
 import LoadingText from '../Loading/LoadingText'
-import NotifyDetailForm from './Form'
+import NotifyDetailEdit from './Edit'
+import NotifyDetailView from './View'
 
 interface NotifyDetailProps {
     isAdmin?: boolean
+    children: (data: NotifyDetailFormData) => React.ReactElement
 }
 
-const NotifyDetail: React.FC<NotifyDetailProps> = ({ isAdmin = false }) => {
+const NotifyDetail = ({ isAdmin = false, children }: NotifyDetailProps) => {
     const { t } = useTranslation()
     const { id } = useParams()
     const { userProfile } = useProfile()
@@ -29,7 +31,7 @@ const NotifyDetail: React.FC<NotifyDetailProps> = ({ isAdmin = false }) => {
         { notifyId: id as string, ...(!isAdmin && { userId: userProfile?._id as string }) },
         { notify: TAGS.SHORT }
     )
-
+    console.log(notify)
     useEffect(() => {
         setSubmitLoading(true)
         fetchData().then(() => {
@@ -56,7 +58,10 @@ const NotifyDetail: React.FC<NotifyDetailProps> = ({ isAdmin = false }) => {
 
     if (!notify.data) return <div className='font-normal text-radical-red-500'>{t(LANGUAGE.ERROR)}</div>
 
-    return <NotifyDetailForm data={data} />
+    return <>{children(data)}</>
 }
+
+NotifyDetail.View = NotifyDetailView
+NotifyDetail.Edit = NotifyDetailEdit
 
 export default NotifyDetail

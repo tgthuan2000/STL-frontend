@@ -103,7 +103,6 @@
     "USER": "User",
     "ROLE": "Role",
     "SERVICE": "Service",
-    "NOTIFICATION": "Notification",
     "ACTIONS": "Actions",
     "LOADING_PROFILE": "Waiting to loading profile",
     "LOADING_PROFILE_DONE": "Loading profile done",
@@ -265,6 +264,7 @@
     "NEW_PASSWORD": "New password",
     "RE_PASSWORD": "Re-password",
 
+    "NOTIFICATION": "Notification",
     "LIST_RECEIVE_NOTIFY_MEMBER": "List receive notify member",
     "SEND_ALL_MEMBER": "Send all member",
     "SEND_MAIL": "Send mail",
@@ -277,6 +277,7 @@
     "SEND_MAIL_TO_ALL": "Send mail to all",
     "NOTIFY_RECEIVER_LIST": "Notify receiver list",
     "SEND_NOTIFY_BY_EMAIL": "Send notify by email",
+    "EDIT_NOTIFY": "Edit notify",
 
     "OR": "Or",
     "LOGIN_WITH_EMAIL_PASSWORD": "Login with email and password",
