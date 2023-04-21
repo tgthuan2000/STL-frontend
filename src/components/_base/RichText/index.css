@@ -1,21 +1,21 @@
 .ql-editor {
-    @apply min-h-[400px] border-t border-t-gray-300 dark:border-t-slate-600;
+    @apply border-t border-t-gray-300 dark:border-t-slate-600;
 }
 
 .xs .ql-editor {
-    @apply min-h-[60px];
+    @apply h-[100px];
 }
 
 .sm .ql-editor {
-    @apply min-h-[120px];
+    @apply h-[180px];
 }
 
 .md .ql-editor {
-    @apply min-h-[200px];
+    @apply h-[250px];
 }
 
 .lg .ql-editor {
-    @apply min-h-[300px];
+    @apply h-[400px];
 }
 
 .ql-toolbar.ql-snow,

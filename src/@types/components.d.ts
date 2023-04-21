@@ -593,6 +593,7 @@ export interface BackButtonProps {
 export interface SubmitWrapProps {
     children: React.ReactNode
     className?: string
+    hiddenBorder?: boolean
 }
 
 export interface AsideProps {
