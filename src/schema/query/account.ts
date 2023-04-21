@@ -10,6 +10,7 @@ export const GET_ACCOUNTS = groq`
         image,
         "isHasPassword": defined(password),
         twoFA,
+        active,
         role-> {
             _id,
             name,

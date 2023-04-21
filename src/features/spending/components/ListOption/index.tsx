@@ -32,7 +32,7 @@ const ListOption: React.FC<ListOptionProps> = ({ data: _data, loading, cleanCach
         })
     }
 
-    const _update = async (id: string, value: {}) => {
+    const _update = async (id: string, value: { [x: string]: any }) => {
         const response = await client.patch(id).set(value).commit()
         return response
     }

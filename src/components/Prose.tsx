@@ -22,6 +22,9 @@ const Prose: React.FC<ProseProps> = ({ children, className }) => {
                     prose-blockquote:font-normal
                     prose-blockquote:text-gray-600
                     prose-strong:font-medium
+                    prose-strong:text-gray-900
+                    prose-ol:text-gray-900
+                    prose-ul:text-gray-900
                     prose-li:text-gray-900
                     dark:text-slate-200
                     dark:prose-h1:text-slate-200
@@ -30,6 +33,10 @@ const Prose: React.FC<ProseProps> = ({ children, className }) => {
                     dark:prose-h4:text-slate-200
                     dark:prose-h5:text-slate-200
                     dark:prose-h6:text-slate-200
+                    dark:prose-blockquote:text-slate-200
+                    dark:prose-strong:text-slate-200
+                    dark:prose-ol:text-slate-200
+                    dark:prose-ul:text-slate-200
                     dark:prose-li:text-slate-200
                 `,
                 className

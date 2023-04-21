@@ -1,4 +1,3 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { BellIcon } from '@heroicons/react/24/outline'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -6,7 +5,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { DefaultValueResult } from '~/@types/announce-config'
 import { DataListViewList, DataListViewTable, TimeFilterPayload } from '~/@types/components'
 import { NotifyQueryData } from '~/@types/notify'
-import { Button, DataListView, ListViewFilter } from '~/components'
+import { AnimateWrap, Button, DataListView, ListViewFilter } from '~/components'
 import { COUNT_PAGINATE } from '~/constant'
 import { __groupBy } from '~/constant/component'
 import { useListViewFilter, useQuery } from '~/hook'
@@ -19,7 +18,6 @@ import * as __services from '../services/dataListView'
 const Dashboard = () => {
     const { t } = useTranslation()
     const [searchParams] = useSearchParams()
-    const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
     const defaultValues = useMemo(() => services.getDefaultValue({ searchParams }), [])
     const [{ query, params, tags }, setQuery] = useState<DefaultValueResult>(defaultValues)
     const [{ notify }, fetchData, deleteCacheData, reload, error] = useQuery<NotifyQueryData>(query, params, tags)
@@ -98,7 +96,7 @@ const Dashboard = () => {
                     {error ? (
                         <p className='m-5 font-medium text-radical-red-500'>{t(LANGUAGE.ERROR)}</p>
                     ) : (
-                        <div ref={parentRef}>
+                        <AnimateWrap>
                             <DataListView
                                 mode={viewMode?.id}
                                 loading={notify.loading}
@@ -113,7 +111,7 @@ const Dashboard = () => {
                                 SkeletonTable={(loading) => <SkeletonTableNotify elNumber={loading ? 2 : 10} />}
                                 EmptyTable={<EmptyTableNotify />}
                             />
-                        </div>
+                        </AnimateWrap>
                     )}
                 </div>
             </div>

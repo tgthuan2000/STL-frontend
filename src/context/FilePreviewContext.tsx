@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react'
 import { IFilePreview } from '~/@types/context'
+import { FilePreview as FilePreviewComp } from '~/components'
 
 const FilePreview = createContext<IFilePreview>({
     file: null,
@@ -36,7 +37,12 @@ const FilePreviewProvider = ({ children }: { children: React.ReactNode }) => {
         clear,
     }
 
-    return <FilePreview.Provider value={value}>{children}</FilePreview.Provider>
+    return (
+        <FilePreview.Provider value={value}>
+            <FilePreviewComp />
+            {children}
+        </FilePreview.Provider>
+    )
 }
 
 const useFilePreviewConfig = () => {

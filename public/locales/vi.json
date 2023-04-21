@@ -106,6 +106,8 @@
     "NOTIFICATION": "Thông báo",
     "ACTIONS": "Hành động",
     "LOADING_PROFILE": "Đang tải thông tin cá nhân",
+    "LOADING_PROFILE_DONE": "Đã tải thông tin cá nhân",
+    "RELOADING_PROFILE": "Đang tải lại thông tin cá nhân",
     "LOADING_CONFIG": "Đang tải cấu hình",
 
     "APP_READY_WORK_OFFLINE": "Ứng dụng đã sẵn sàng để làm việc ngoại tuyến",
@@ -264,6 +266,9 @@
     "ACCOUNT_OPTION_EMAIL": "Tài khoản (email)",
     "ACCOUNT_NOT_HAVE_PASSWORD": "Tài khoản này chưa có mật khẩu",
 
+    "ACCOUNT_ACTIVE": "Tài khoản đã được kích hoạt",
+    "ACCOUNT_INACTIVE": "Tài khoản chưa được kích hoạt",
+
     "SOME_SIMILAR_NAME": "Một số loại gần giống tên",
     "NOT_SIMILAR_NAME": "Không có loại gần giống tên",
     "INVALID_FORMAT_IMAGE": "Sai định dạng hình ảnh cho phép",
@@ -300,5 +305,6 @@
     "CHANGE_PASSWORD": "Đổi mật khẩu",
     "FEEDBACK": "Gửi phản hồi",
     "FEEDBACK_MANAGEMENT": "Quản lý phản hồi",
-    "ROLE_CONTROL": "Quản lý phân quyền"
+    "ROLE_CONTROL": "Quản lý phân quyền",
+    "DEVICE_CONTROL": "Quản lý thiết bị"
 }

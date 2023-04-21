@@ -1,15 +1,10 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { EnvelopeIcon } from '@heroicons/react/24/outline'
 import { yupResolver } from '@hookform/resolvers/yup'
-import clsx from 'clsx'
-import { isEmpty } from 'lodash'
 import { Fragment, useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
 import { CreateStep3Props } from '~/@types/announce-config'
 import { DraftNotify, NotifyAssignForm } from '~/@types/notify'
-import { Image } from '~/components'
 import { LazySearchSelect, Toggle } from '~/components/_base'
 import useLazySearchSelect from '~/components/_base/LazySearchSelect/hook/useLazySearchSelect'
 import UserAllowSendMailButton from '~/components/_base/LazySearchSelect/UserAllowSendMailButton'
@@ -40,7 +35,6 @@ const useSchema = () => {
 
 const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
     const { t } = useTranslation()
-    const [userRef] = useAutoAnimate<HTMLDivElement>()
     const [draftNotify] = useLocalStorage<DraftNotify>(LOCAL_STORAGE_KEY.STL_DRAFT_NOTIFY)
     const [searchLoading, users, handleSearch, handleScrollGetMore] = useLazySearchSelect()
     const schema = useSchema()
@@ -58,9 +52,12 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
     const handleChange = (data: any) => {
         if (data) {
             if (!__users.find((u) => u._id === data._id)) {
-                return [...__users, { ...data, sendMail: data.allowSendMail }]
+                form.setValue('users', [...__users, { ...data, sendMail: data.allowSendMail }])
             } else {
-                return __users.filter((u) => u._id !== data._id)
+                form.setValue(
+                    'users',
+                    __users.filter((u) => u._id !== data._id)
+                )
             }
         }
     }
@@ -127,58 +124,6 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                             </Fragment>
                         )}
                     </UserList>
-                    <div className='mt-1 select-none rounded-lg border dark:border-slate-700' ref={userRef}>
-                        {isEmpty(__users) ? (
-                            <p className='px-4 py-2 text-center text-gray-900 dark:text-slate-200'>
-                                {t(LANGUAGE.EMPTY_DATA)}
-                            </p>
-                        ) : (
-                            __users.map((user, index) => (
-                                <div key={user._id} className='flex items-center gap-2 px-4 py-2'>
-                                    <Image
-                                        src={user.image}
-                                        alt={user.userName}
-                                        avatar={{ roundFull: true, size: 'small' }}
-                                    />
-                                    <div className='flex-1'>
-                                        <p className='truncate font-medium text-gray-900 dark:text-slate-200'>
-                                            {user.userName}
-                                        </p>
-                                        <small className='block truncate font-normal text-gray-500 dark:text-slate-400'>
-                                            {user.email}
-                                        </small>
-                                    </div>
-                                    {user.allowSendMail && (
-                                        <button
-                                            title={t(LANGUAGE.SEND_NOTIFY_BY_EMAIL) as string}
-                                            type='button'
-                                            disabled={form.watch('sendAll')}
-                                            className={clsx(
-                                                `
-                                                    cursor-pointer 
-                                                    rounded-lg 
-                                                    p-2 
-                                                    transition-all
-                                                    hover:bg-cyan-500
-                                                    disabled:cursor-not-allowed
-                                                    disabled:bg-slate-700
-                                                    disabled:text-gray-500
-                                                `,
-                                                user.sendMail
-                                                    ? 'bg-cyan-400 text-gray-100'
-                                                    : 'bg-slate-100 text-gray-400 dark:bg-slate-700'
-                                            )}
-                                            onClick={() => {
-                                                form.setValue(`users.${index}.sendMail`, !user.sendMail)
-                                            }}
-                                        >
-                                            <EnvelopeIcon className='h-5' />
-                                        </button>
-                                    )}
-                                </div>
-                            ))
-                        )}
-                    </div>
                     <Controller
                         name='users'
                         control={form.control}

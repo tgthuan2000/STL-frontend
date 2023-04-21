@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react'
 import { ILoadingContext } from '~/@types/context'
+import { Loading } from '~/components'
 
 const LoadingContext = createContext<ILoadingContext>({
     loading: {
@@ -29,7 +30,12 @@ const LoadingProvider = ({ children }: { children: React.ReactNode }) => {
         setConfigLoading,
         setSubmitLoading,
     }
-    return <LoadingContext.Provider value={value}>{children}</LoadingContext.Provider>
+    return (
+        <LoadingContext.Provider value={value}>
+            <Loading />
+            {children}
+        </LoadingContext.Provider>
+    )
 }
 
 const useLoading = () => {
