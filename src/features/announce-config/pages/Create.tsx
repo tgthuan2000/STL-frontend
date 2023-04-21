@@ -1,4 +1,3 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -6,11 +5,11 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { localStorageValue } from '~/@types/hook'
 import { DraftNotify, NotifyAssignForm, NotifyContentForm, NotifyTitleDescForm } from '~/@types/notify'
-import { AnimateWrap, BackButton, Button, Progress, SubmitWrap } from '~/components'
+import { AnimateWrap, BackButton, Button, Progress, SubmitWrap, Transaction } from '~/components'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
-import { useCreateProgressOptions } from '~/hook/progress'
 import { useLoading } from '~/context'
 import { useAxios, useLocalStorage } from '~/hook'
+import { useCreateProgressOptions } from '~/hook/progress'
 import LANGUAGE from '~/i18n/language/key'
 import { CreateStep1, CreateStep2, CreateStep3, CreateStep4 } from '../components'
 
@@ -104,30 +103,31 @@ const Create = () => {
     const stepId = useMemo(() => getStepId(step), [step])
 
     return (
-        <div className='mt-5 sm:mt-10'>
-            <div className='min-h-[80vh] rounded-xl bg-white py-6 px-4 shadow-lg dark:bg-slate-800 sm:py-8'>
-                <Progress step={step} options={createProgressOptions} className='mx-auto w-full max-w-xl' />
-                <AnimateWrap>
-                    {step > 1 && (
-                        <div
-                            className={clsx('mx-auto w-full', {
-                                'max-w-xl': ![4].includes(step),
-                            })}
-                        >
-                            <BackButton onClick={handleBack} disabled={loading.submit} />
-                        </div>
-                    )}
-                    {stepData}
-                    <SubmitWrap className={clsx({ 'max-w-xl': ![1, 4].includes(step) })}>
-                        <Button
-                            color={step === 4 ? 'radicalRed' : 'blue'}
-                            type='submit'
-                            form={stepId}
-                            disabled={loading.submit}
-                        >
-                            {step === 4 ? t(LANGUAGE.SEND_NOTIFY) : t(LANGUAGE.NEXT)}
-                        </Button>
-                        {/* {step === 4 && (
+        <Transaction title={t(LANGUAGE.CREATE_NOTIFY)}>
+            <div className='mt-5 sm:mt-10'>
+                <div className='min-h-[80vh] rounded-xl bg-white py-6 px-4 shadow-lg dark:bg-slate-800 sm:py-8'>
+                    <Progress step={step} options={createProgressOptions} className='mx-auto w-full max-w-xl' />
+                    <AnimateWrap>
+                        {step > 1 && (
+                            <div
+                                className={clsx('mx-auto w-full', {
+                                    'max-w-xl': ![4].includes(step),
+                                })}
+                            >
+                                <BackButton onClick={handleBack} disabled={loading.submit} />
+                            </div>
+                        )}
+                        {stepData}
+                        <SubmitWrap className={clsx({ 'max-w-xl': ![1, 4].includes(step) })}>
+                            <Button
+                                color={step === 4 ? 'radicalRed' : 'blue'}
+                                type='submit'
+                                form={stepId}
+                                disabled={loading.submit}
+                            >
+                                {step === 4 ? t(LANGUAGE.SEND_NOTIFY) : t(LANGUAGE.NEXT)}
+                            </Button>
+                            {/* {step === 4 && (
                                 <Button
                                     color='cyan'
                                     type='button'
@@ -138,21 +138,22 @@ const Create = () => {
                                     Lên lịch hẹn
                                 </Button>
                             )} */}
-                        {step === 1 && (
-                            <Button
-                                color='outline'
-                                type='button'
-                                onClick={() => {
-                                    navigate(-1)
-                                }}
-                            >
-                                {t(LANGUAGE.CANCEL)}
-                            </Button>
-                        )}
-                    </SubmitWrap>
-                </AnimateWrap>
+                            {step === 1 && (
+                                <Button
+                                    color='outline'
+                                    type='button'
+                                    onClick={() => {
+                                        navigate(-1)
+                                    }}
+                                >
+                                    {t(LANGUAGE.CANCEL)}
+                                </Button>
+                            )}
+                        </SubmitWrap>
+                    </AnimateWrap>
+                </div>
             </div>
-        </div>
+        </Transaction>
     )
 }
 

@@ -5,7 +5,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { DefaultValueResult } from '~/@types/announce-config'
 import { DataListViewList, DataListViewTable, TimeFilterPayload } from '~/@types/components'
 import { NotifyQueryData } from '~/@types/notify'
-import { AnimateWrap, Button, DataListView, ListViewFilter } from '~/components'
+import { AnimateWrap, Button, DataListView, ListViewFilter, Transaction } from '~/components'
 import { COUNT_PAGINATE } from '~/constant'
 import { __groupBy } from '~/constant/component'
 import { useListViewFilter, useQuery } from '~/hook'
@@ -76,46 +76,48 @@ const Dashboard = () => {
     )
 
     return (
-        <div className='sm:px-6 lg:px-8'>
-            <div className='mt-4 flex flex-col'>
-                <div className='-my-2 -mx-4 sm:-mx-6 lg:-mx-8'>
-                    <ListViewFilter
-                        _={_}
-                        loading={notify.loading}
-                        viewTotal={false}
-                        onSubmitTimeFilter={handleFilterSubmit}
-                    >
-                        <Link to='create'>
-                            <Button type='button' color='green'>
-                                <BellIcon className='h-6' />
-                                {t(LANGUAGE.CREATE)}
-                            </Button>
-                        </Link>
-                    </ListViewFilter>
+        <Transaction title={t(LANGUAGE.NOTIFY_MANAGEMENT)} hasBack={false}>
+            <div className='sm:px-6 lg:px-8'>
+                <div className='mt-4 flex flex-col'>
+                    <div className='-my-2 -mx-4 sm:-mx-6 lg:-mx-8'>
+                        <ListViewFilter
+                            _={_}
+                            loading={notify.loading}
+                            viewTotal={false}
+                            onSubmitTimeFilter={handleFilterSubmit}
+                        >
+                            <Link to='create'>
+                                <Button type='button' color='green'>
+                                    <BellIcon className='h-6' />
+                                    {t(LANGUAGE.CREATE)}
+                                </Button>
+                            </Link>
+                        </ListViewFilter>
 
-                    {error ? (
-                        <p className='m-5 font-medium text-radical-red-500'>{t(LANGUAGE.ERROR)}</p>
-                    ) : (
-                        <AnimateWrap>
-                            <DataListView
-                                mode={viewMode?.id}
-                                loading={notify.loading}
-                                onGetMore={handleScrollGetMore}
-                                data={notify.data?.data}
-                                hasNextPage={Boolean(notify.data?.hasNextPage)}
-                                onRowClick={(data) => `/announce-config/${data._id}`}
-                                view={{
-                                    table: tableProps,
-                                    list: listProps,
-                                }}
-                                SkeletonTable={(loading) => <SkeletonTableNotify elNumber={loading ? 2 : 10} />}
-                                EmptyTable={<EmptyTableNotify />}
-                            />
-                        </AnimateWrap>
-                    )}
+                        {error ? (
+                            <p className='m-5 font-medium text-radical-red-500'>{t(LANGUAGE.ERROR)}</p>
+                        ) : (
+                            <AnimateWrap>
+                                <DataListView
+                                    mode={viewMode?.id}
+                                    loading={notify.loading}
+                                    onGetMore={handleScrollGetMore}
+                                    data={notify.data?.data}
+                                    hasNextPage={Boolean(notify.data?.hasNextPage)}
+                                    onRowClick={(data) => `/announce-config/${data._id}`}
+                                    view={{
+                                        table: tableProps,
+                                        list: listProps,
+                                    }}
+                                    SkeletonTable={(loading) => <SkeletonTableNotify elNumber={loading ? 2 : 10} />}
+                                    EmptyTable={<EmptyTableNotify />}
+                                />
+                            </AnimateWrap>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+        </Transaction>
     )
 }
 

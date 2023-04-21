@@ -8,6 +8,7 @@ import ErrorMessage from '~/components/ErrorMessage'
 import Label from '~/components/Label'
 import { reactQuillOptions } from '~/constant/component'
 import './index.css'
+import clsx from 'clsx'
 
 Quill.register('modules/imageResize', ImageResize)
 Quill.register(Quill.import('attributors/style/direction'), true)
@@ -36,7 +37,12 @@ const RichText: React.FC<RichTextProps> = ({
                         <ReactQuill
                             id={id}
                             theme='snow'
-                            className={disabled ? 'cursor-not-allowed select-none bg-gray-100' : 'bg-white'}
+                            className={clsx(
+                                'block w-full rounded-md border border-gray-300 font-light shadow-sm dark:border-slate-800',
+                                disabled
+                                    ? 'cursor-not-allowed select-none bg-gray-100 text-gray-400 dark:bg-slate-800 dark:text-slate-400'
+                                    : 'bg-white dark:bg-slate-700 dark:text-slate-200'
+                            )}
                             readOnly={disabled}
                             placeholder={placeholder as string}
                             {...reactQuillOptions}

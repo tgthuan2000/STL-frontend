@@ -449,10 +449,6 @@ export interface NotifyDetailFormData {
     notify: SanityDocument<NotifyItem>
 }
 
-export interface NotifyDetailFormProps {
-    data: NotifyDetailFormData
-}
-
 export interface TableColumn<T extends any> {
     key: string
     title: React.ReactNode
