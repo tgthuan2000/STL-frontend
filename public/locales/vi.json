@@ -302,5 +302,6 @@
     "CHANGE_PASSWORD": "Đổi mật khẩu",
     "FEEDBACK": "Gửi phản hồi",
     "FEEDBACK_MANAGEMENT": "Quản lý phản hồi",
-    "ROLE_CONTROL": "Quản lý phân quyền"
+    "ROLE_CONTROL": "Quản lý phân quyền",
+    "DEVICE_CONTROL": "Quản lý thiết bị"
 }

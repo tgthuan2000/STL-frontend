@@ -23,7 +23,7 @@ const Content: React.FC<ContentUserLoanBox2Props> = ({ data, loading }) => {
                 return (
                     <Link
                         to={`member/${item._id}`}
-                        className='group flex cursor-pointer items-center gap-x-3 rounded-md border bg-white py-3 px-3 shadow-md transition-all hover:bg-gray-50 hover:shadow-lg dark:border-slate-800 dark:bg-slate-800 lg:px-6'
+                        className='group flex cursor-pointer snap-start items-center gap-x-3 rounded-md border bg-white py-3 px-3 shadow-md transition-all hover:bg-gray-50 hover:shadow-lg dark:border-slate-800 dark:bg-slate-800 lg:px-6'
                         key={item._id}
                     >
                         <AvatarUser size='large' image={item?.image} />

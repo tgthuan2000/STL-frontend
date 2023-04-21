@@ -302,5 +302,6 @@
     "CHANGE_PASSWORD": "Change password",
     "FEEDBACK": "Feedback",
     "FEEDBACK_MANAGEMENT": "Feedback management",
-    "ROLE_CONTROL": "Role control"
+    "ROLE_CONTROL": "Role control",
+    "DEVICE_CONTROL": "Device control"
 }

@@ -13,10 +13,7 @@ const Dashboard = () => {
     const { hasPermissions } = useConfig()
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.SETTING_MANAGEMENT)}>
-            {/* <small className='fixed z-50 bottom-2 right-2 italic text-gray-500 dark:text-slate-500 select-none'>
-                {import.meta.env.VITE_VERSION_APP} • <b>{import.meta.env.VITE_VERSION_RELEASE_DATE}</b>
-            </small> */}
-            <div className='mx-2 mt-10 grid h-[300px] grid-cols-10 grid-rows-2 gap-2'>
+            <div className='mx-2 mt-10 grid grid-cols-2 gap-2 md:grid-cols-12 md:grid-rows-2'>
                 <Suspense fallback={<LoadingText />}>
                     {settingOptions.map((option) => {
                         let Component = option.component
@@ -29,7 +26,7 @@ const Dashboard = () => {
                                 key={option.id}
                                 className={clsx(
                                     option.className,
-                                    'flex flex-col items-center justify-center gap-2 rounded p-2 text-lg font-normal',
+                                    'flex items-center justify-start gap-2 rounded p-4 text-sm font-normal hover:opacity-70 md:min-h-[150px] md:flex-col md:justify-center md:p-2 md:text-lg',
                                     hasPermission
                                         ? 'cursor-pointer bg-gray-300 text-gray-900 dark:bg-slate-700'
                                         : 'cursor-not-allowed bg-gray-400 text-gray-600 dark:bg-slate-800'

@@ -55,7 +55,7 @@ const Content: React.FC<ContentLoanBox2Props> = ({ data, loading }) => {
                 return (
                     <Link
                         to={`transaction/${item._id}/detail`}
-                        className='group flex cursor-pointer flex-col gap-x-3 gap-y-1 rounded-md border bg-white py-3 px-3 shadow-md transition-all hover:bg-gray-50 hover:shadow-lg dark:border-slate-800 dark:bg-slate-800'
+                        className='group flex cursor-pointer snap-start flex-col gap-x-3 gap-y-1 rounded-md border bg-white py-3 px-3 shadow-md transition-all hover:bg-gray-50 hover:shadow-lg dark:border-slate-800 dark:bg-slate-800'
                         key={item._id}
                     >
                         <AvatarUser size='small' image={item.userLoan?.image} />
