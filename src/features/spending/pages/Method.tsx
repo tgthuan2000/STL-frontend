@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next'
 import LoadingText from '~/components/Loading/LoadingText'
 import { useWindowSize } from '~/hook'
 import useMethod from '../hook/useMethod'
+import { Transaction } from '~/components'
+import LANGUAGE from '~/i18n/language/key'
 
 const Method = () => {
     const { t } = useTranslation()
@@ -107,15 +109,17 @@ const Method = () => {
     }, [isMobileScreen, dataFilter])
 
     return (
-        <div className='mt-5'>
-            <div
-                className='rounded-md border border-gray-300 bg-white dark:border-slate-700 dark:bg-slate-700 lg:py-2 lg:px-4 xl:sticky xl:top-6'
-                style={{ height: dataFilter ? size(dataFilter) * 90 : 'auto' }}
-                ref={parent}
-            >
-                {dataFilter ? <ResponsiveBar {...options} /> : <LoadingText className='p-2' />}
+        <Transaction title={t(LANGUAGE.METHOD_SPENDING)} hasBack={false}>
+            <div className='mt-5'>
+                <div
+                    className='rounded-md border border-gray-300 bg-white dark:border-slate-700 dark:bg-slate-700 lg:py-2 lg:px-4 xl:sticky xl:top-6'
+                    style={{ height: dataFilter ? size(dataFilter) * 90 : 'auto' }}
+                    ref={parent}
+                >
+                    {dataFilter ? <ResponsiveBar {...options} /> : <LoadingText className='p-2' />}
+                </div>
             </div>
-        </div>
+        </Transaction>
     )
 }
 

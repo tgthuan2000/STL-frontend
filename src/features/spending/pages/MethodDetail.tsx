@@ -6,7 +6,7 @@ import { useParams, useSearchParams } from 'react-router-dom'
 import { DataListViewList, DataListViewTable, TimeFilterPayload } from '~/@types/components'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/@types/hook'
 import { MethodQueryData } from '~/@types/spending'
-import { DataListView, ListViewFilter } from '~/components'
+import { DataListView, ListViewFilter, Transaction } from '~/components'
 import { COUNT_PAGINATE } from '~/constant'
 import { __groupBy } from '~/constant/component'
 import { useConfig } from '~/context'
@@ -133,37 +133,41 @@ const MethodDetail = () => {
     )
 
     return (
-        <div className='sm:px-6 lg:px-8'>
-            <div className='mt-4 flex flex-col'>
-                <div className='-my-2 -mx-4 sm:-mx-6 lg:-mx-8'>
-                    <ListViewFilter
-                        _={_}
-                        totalData={dataTotal}
-                        totalLoading={total.loading}
-                        loading={method.loading}
-                        onSubmitTimeFilter={handleFilterSubmit}
-                    />
-                    {error ? (
-                        <p className='m-5 font-medium text-radical-red-500'>{t(LANGUAGE.ERROR)}</p>
-                    ) : (
-                        <div ref={parentRef}>
-                            <DataListView
-                                mode={viewMode?.id}
-                                loading={method.loading}
-                                onGetMore={handleScrollGetMore}
-                                data={method.data?.data}
-                                hasNextPage={Boolean(method.data?.hasNextPage)}
-                                onRowClick={(data) => getLinkSpending(get(data, 'kindSpending.key'), get(data, '_id'))}
-                                view={{
-                                    table: tableProps,
-                                    list: listProps,
-                                }}
-                            />
-                        </div>
-                    )}
+        <Transaction title={t(LANGUAGE.METHOD_SPENDING)}>
+            <div className='sm:px-6 lg:px-8'>
+                <div className='mt-4 flex flex-col'>
+                    <div className='-my-2 -mx-4 sm:-mx-6 lg:-mx-8'>
+                        <ListViewFilter
+                            _={_}
+                            totalData={dataTotal}
+                            totalLoading={total.loading}
+                            loading={method.loading}
+                            onSubmitTimeFilter={handleFilterSubmit}
+                        />
+                        {error ? (
+                            <p className='m-5 font-medium text-radical-red-500'>{t(LANGUAGE.ERROR)}</p>
+                        ) : (
+                            <div ref={parentRef}>
+                                <DataListView
+                                    mode={viewMode?.id}
+                                    loading={method.loading}
+                                    onGetMore={handleScrollGetMore}
+                                    data={method.data?.data}
+                                    hasNextPage={Boolean(method.data?.hasNextPage)}
+                                    onRowClick={(data) =>
+                                        getLinkSpending(get(data, 'kindSpending.key'), get(data, '_id'))
+                                    }
+                                    view={{
+                                        table: tableProps,
+                                        list: listProps,
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+        </Transaction>
     )
 }
 export default MethodDetail

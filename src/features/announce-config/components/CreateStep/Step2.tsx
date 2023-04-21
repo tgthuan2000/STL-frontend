@@ -39,7 +39,7 @@ const Step2: React.FC<CreateStep2Props> = ({ id, onSubmit }) => {
         <form
             id={id}
             onSubmit={form.handleSubmit(handleSubmit)}
-            className='mx-auto flex h-full w-full max-w-xl flex-col'
+            className='mx-auto mt-5 flex h-full w-full max-w-xl flex-col'
         >
             <div className='mb-5 space-y-5'>
                 <Input label={t(LANGUAGE.TITLE)} form={form} name='title' autoFocus />
