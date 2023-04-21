@@ -6,7 +6,6 @@ import { toast } from 'react-toastify'
 import { IUserProfile } from '~/@types/auth'
 import { IConfig, IConfigContext, IRoleControl } from '~/@types/context'
 import axios from '~/axiosConfig'
-import { FlashScreen } from '~/components'
 import LoadingText from '~/components/Loading/LoadingText'
 import { CODE } from '~/constant/code'
 import { PERMISSION } from '~/constant/permission'
@@ -17,6 +16,7 @@ import { client } from '~/sanityConfig'
 import { GET_CONFIG } from '~/schema/query/config'
 import { service } from '~/services'
 import { useAuth, useProfile } from '~/store/auth'
+import { useFlashScreen } from './FlashScreenContext'
 
 interface IConfigProps {
     children: React.ReactNode
@@ -33,6 +33,7 @@ const ConfigContext = createContext<IConfigContext>({
 
 const configHOC = (Component: React.FC<IConfigProps>) => {
     return ({ children }: IConfigProps) => {
+        const { showFlashScreen, hiddenFlashScreen } = useFlashScreen()
         const { accessToken, refreshToken, setToken } = useAuth()
         const { userProfile, addUserProfile } = useProfile()
         const { pathname } = useLocation()
@@ -41,15 +42,35 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
         const _axios = useAxios()
 
         useEffect(() => {
-            if (userProfile !== null || accessToken === null) return
+            if (userProfile !== null || accessToken === null) {
+                return
+            }
             const getUserProfile = async () => {
                 try {
+                    showFlashScreen(
+                        <LoadingText
+                            text={t(LANGUAGE.LOADING_PROFILE)}
+                            className='text-md whitespace-nowrap sm:text-lg'
+                        />
+                    )
                     axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
                     const { data } = await _axios.get<SanityDocument<IUserProfile>>('/auth/profile')
                     if (data) {
+                        showFlashScreen(
+                            <LoadingText
+                                text={t(LANGUAGE.LOADING_PROFILE_DONE)}
+                                className='text-md whitespace-nowrap sm:text-lg'
+                            />
+                        )
                         addUserProfile(data)
                     }
                 } catch (error: any) {
+                    showFlashScreen(
+                        <LoadingText
+                            text={t(LANGUAGE.RELOADING_PROFILE)}
+                            className='text-md whitespace-nowrap sm:text-lg'
+                        />
+                    )
                     axios.defaults.headers.common['Authorization'] = null
                     switch (error.message) {
                         case CODE.ACCESS_TOKEN_EXPIRED: {
@@ -62,6 +83,7 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
                                     setToken({ accessToken: data.accessToken })
                                 }
                             } catch (error: any) {
+                                hiddenFlashScreen()
                                 switch (error.message) {
                                     case CODE.REFRESH_TOKEN_EXPIRED: {
                                         await logout()
@@ -86,11 +108,7 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
         if (!accessToken) return <Navigate to='/auth' replace={true} state={{ url: pathname }} />
 
         if (userProfile === null) {
-            return (
-                <FlashScreen>
-                    <LoadingText text={t(LANGUAGE.LOADING_PROFILE)} className='text-md whitespace-nowrap sm:text-lg' />
-                </FlashScreen>
-            )
+            return <></>
         }
 
         return <Component>{children}</Component>
@@ -99,6 +117,7 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
 
 const ConfigProvider = configHOC(({ children }) => {
     const { userProfile } = useProfile()
+    const { showFlashScreen, hiddenFlashScreen } = useFlashScreen()
     const [config, setConfig] = useState<Omit<IConfig, 'role'> & { role: IRoleControl | null }>({
         kindSpending: [],
         budgetSpending: { _id: null },
@@ -111,6 +130,12 @@ const ConfigProvider = configHOC(({ children }) => {
         const getConfig = async () => {
             try {
                 if (userProfile?._id) {
+                    showFlashScreen(
+                        <LoadingText
+                            text={t(LANGUAGE.LOADING_CONFIG)}
+                            className='text-md whitespace-nowrap sm:text-lg'
+                        />
+                    )
                     const { kindSpending, role }: IConfig = await client.fetch(GET_CONFIG, {
                         userId: userProfile?._id as string,
                     })
@@ -125,6 +150,7 @@ const ConfigProvider = configHOC(({ children }) => {
             } catch (error) {
                 console.log(error)
             } finally {
+                hiddenFlashScreen()
             }
         }
         getConfig()
@@ -171,11 +197,7 @@ const ConfigProvider = configHOC(({ children }) => {
     }
 
     if (!ok) {
-        return (
-            <FlashScreen>
-                <LoadingText text={t(LANGUAGE.LOADING_CONFIG)} className='text-md whitespace-nowrap sm:text-lg' />
-            </FlashScreen>
-        )
+        return <></>
     }
 
     return <ConfigContext.Provider value={value}>{children}</ConfigContext.Provider>

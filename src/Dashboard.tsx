@@ -1,9 +1,10 @@
 import clsx from 'clsx'
-import DashboardImg from '~/assets/dashboard-image.png'
+import { SayHiImage } from './components'
 import { useWindowSize } from './hook'
 
 const Dashboard = () => {
     const { width } = useWindowSize()
+
     return (
         <div
             className={clsx(
@@ -13,7 +14,7 @@ const Dashboard = () => {
         >
             <div className='flex flex-col items-center justify-center gap-2 text-gray-900 dark:text-white'>
                 {/* <p className='text-4xl font-medium'>{t(LANGUAGE.HOME)}</p> */}
-                <img src={DashboardImg} className='h-full w-full object-cover' />
+                <SayHiImage />
             </div>
         </div>
     )

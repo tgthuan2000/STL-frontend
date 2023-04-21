@@ -106,6 +106,8 @@
     "NOTIFICATION": "Notification",
     "ACTIONS": "Actions",
     "LOADING_PROFILE": "Waiting to loading profile",
+    "LOADING_PROFILE_DONE": "Loading profile done",
+    "RELOADING_PROFILE": "Reloading profile",
     "LOADING_CONFIG": "Waiting to loading config",
 
     "APP_READY_WORK_OFFLINE": "App ready to work offline",
@@ -282,6 +284,9 @@
     "ACCOUNT_OPTION_EMAIL": "Email",
     "ACCOUNT_NOT_HAVE_PASSWORD": "Account not have password",
 
+    "ACCOUNT_ACTIVE": "Account active",
+    "ACCOUNT_INACTIVE": "Account inactive",
+
     "SOME_SIMILAR_NAME": "Some similar name",
     "NOT_SIMILAR_NAME": "Not similar name",
     "INVALID_FORMAT_IMAGE": "Invalid format image",
@@ -300,5 +305,6 @@
     "CHANGE_PASSWORD": "Change password",
     "FEEDBACK": "Feedback",
     "FEEDBACK_MANAGEMENT": "Feedback management",
-    "ROLE_CONTROL": "Role control"
+    "ROLE_CONTROL": "Role control",
+    "DEVICE_CONTROL": "Device control"
 }

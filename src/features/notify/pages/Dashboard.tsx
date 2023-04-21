@@ -1,18 +1,16 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DataListViewList } from '~/@types/components'
-import { List, Transaction } from '~/components'
+import { AnimateWrap, List, Transaction } from '~/components'
 import { DATE_FORMAT } from '~/constant'
 import { useNotify } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
-import * as __services from '../services/dataListView'
 import { useRenderList } from '../hook/dataListView'
+import * as __services from '../services/dataListView'
 
 const Dashboard = () => {
     const { t } = useTranslation()
     const { notify, hasNextPage, loading, getMore } = useNotify()
-    const [parent] = useAutoAnimate<HTMLDivElement>()
     const renderList = useRenderList()
     const listProps: DataListViewList & { onRowClick: (data: any) => string } = useMemo(
         () => ({
@@ -26,9 +24,9 @@ const Dashboard = () => {
 
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.NOTIFICATION)}>
-            <div className='-mx-4' ref={parent}>
+            <AnimateWrap className='-mx-4'>
                 <List hasNextPage={hasNextPage} data={notify} loading={loading} onGetMore={getMore} {...listProps} />
-            </div>
+            </AnimateWrap>
         </Transaction>
     )
 }

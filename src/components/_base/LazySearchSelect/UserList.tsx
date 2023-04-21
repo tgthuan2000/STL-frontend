@@ -1,9 +1,8 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { TrashIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { AnimateWrap } from '~/components'
 import Image from '~/components/Image'
 import LANGUAGE from '~/i18n/language/key'
 
@@ -16,9 +15,8 @@ interface UserListProps {
 
 const UserList: React.FC<UserListProps> = ({ data, className, emptyComp, children }) => {
     const { t } = useTranslation()
-    const [userRef] = useAutoAnimate<HTMLDivElement>()
     return (
-        <div className={clsx('mt-1 select-none rounded-lg border dark:border-slate-700', className)} ref={userRef}>
+        <AnimateWrap className={clsx('mt-1 select-none rounded-lg border dark:border-slate-700', className)}>
             {isEmpty(data)
                 ? emptyComp ?? (
                       <p className='px-4 py-2 text-center text-gray-900 dark:text-slate-200'>
@@ -37,7 +35,7 @@ const UserList: React.FC<UserListProps> = ({ data, className, emptyComp, childre
                           {children(user, index)}
                       </div>
                   ))}
-        </div>
+        </AnimateWrap>
     )
 }
 
