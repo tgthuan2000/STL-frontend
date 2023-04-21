@@ -152,3 +152,10 @@ export interface IFilePreview {
     onPreview: (file: any) => void
     clear: () => void
 }
+
+export interface IFlashScreen {
+    show: boolean
+    content: React.ReactNode
+    showFlashScreen: (content: React.ReactNode) => void
+    hiddenFlashScreen: () => void
+}

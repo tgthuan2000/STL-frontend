@@ -106,6 +106,8 @@
     "NOTIFICATION": "Notification",
     "ACTIONS": "Actions",
     "LOADING_PROFILE": "Waiting to loading profile",
+    "LOADING_PROFILE_DONE": "Loading profile done",
+    "RELOADING_PROFILE": "Reloading profile",
     "LOADING_CONFIG": "Waiting to loading config",
 
     "APP_READY_WORK_OFFLINE": "App ready to work offline",

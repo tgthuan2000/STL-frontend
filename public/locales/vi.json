@@ -106,6 +106,8 @@
     "NOTIFICATION": "Thông báo",
     "ACTIONS": "Hành động",
     "LOADING_PROFILE": "Đang tải thông tin cá nhân",
+    "LOADING_PROFILE_DONE": "Đã tải thông tin cá nhân",
+    "RELOADING_PROFILE": "Đang tải lại thông tin cá nhân",
     "LOADING_CONFIG": "Đang tải cấu hình",
 
     "APP_READY_WORK_OFFLINE": "Ứng dụng đã sẵn sàng để làm việc ngoại tuyến",
