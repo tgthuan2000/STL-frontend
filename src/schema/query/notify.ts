@@ -88,6 +88,7 @@ export const GET_NOTIFY_BY_USER = groq`
         notify-> {
             _id,
             title,
+            description,
             content,
             "viewers": count(viewers)
         }
@@ -99,6 +100,7 @@ export const GET_NOTIFY_ADMIN = groq`
         "notify": *[_type == "notify" && _id == $notifyId][0] {
             _createdAt,
             title,
+            description,
             content,
             "viewers": count(viewers)
         }

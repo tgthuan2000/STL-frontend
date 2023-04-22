@@ -75,7 +75,7 @@ const EditForm: React.FC<EditFormProps> = ({ name, origin, onCancel, onSubmit })
                             <Button type='submit' color='cyan' disabled={loading}>
                                 {t(LANGUAGE.SAVE)}
                             </Button>
-                            <Button type='button' color='primary' onClick={onCancel} disabled={loading}>
+                            <Button type='button' color='custom' onClick={onCancel} disabled={loading}>
                                 {t(LANGUAGE.CANCEL)}
                             </Button>
                         </>

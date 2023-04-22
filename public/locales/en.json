@@ -108,6 +108,7 @@
     "LOADING_PROFILE_DONE": "Loading profile done",
     "RELOADING_PROFILE": "Reloading profile",
     "LOADING_CONFIG": "Waiting to loading config",
+    "PREVIEW": "Preview",
 
     "APP_READY_WORK_OFFLINE": "App ready to work offline",
     "RELOAD_TEXT": "New content available, click on reload button to update.",

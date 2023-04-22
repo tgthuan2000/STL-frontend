@@ -34,7 +34,7 @@ const Dashboard = () => {
                         <div className='absolute bottom-[calc(100%+12px)] right-2'>
                             <Button
                                 type='button'
-                                color='primary'
+                                color='custom'
                                 className='inline-flex min-w-0 items-center justify-center gap-1 rounded-lg border bg-gray-200 text-gray-700 shadow transition-all hover:bg-gray-700 hover:text-white dark:border-slate-700 dark:bg-slate-700 dark:text-slate-200 dark:hover:opacity-50 sm:gap-2'
                             >
                                 <PencilSquareIcon className='h-4 w-4' /> <span>{t(LANGUAGE.UPDATE)}</span>

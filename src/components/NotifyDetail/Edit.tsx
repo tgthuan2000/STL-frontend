@@ -10,6 +10,7 @@ import SubmitWrap from '../SubmitWrap'
 import { Input, RichText } from '../_base'
 import { get } from 'lodash'
 import clsx from 'clsx'
+import LazySearchUser from './LazySearchUser'
 
 interface Props {
     data: NotifyDetailFormData
@@ -34,48 +35,13 @@ const NotifyDetailEdit: React.FC<Props> = (props) => {
     // const __users = form.watch('users')
 
     return (
-        //                             {/* <div>
-        //                                 <p className='inline-block text-sm font-medium text-gray-700 dark:text-slate-100'>
-        //                                     {t(LANGUAGE.NOTIFY_RECEIVER_LIST)}
-        //                                 </p>
-        //                                 <UserList data={__users}>
-        //                                     {(user, index) => (
-        //                                         <Fragment>
-        //                                             <UserAllowSendMailButton
-        //                                                 active={user.sendMail}
-        //                                                 disabled={form.watch('sendAll')}
-        //                                                 hidden={!user.allowSendMail}
-        //                                                 onClick={() => {
-        //                                                     form.setValue(`users.${index}.sendMail`, !user.sendMail)
-        //                                                 }}
-        //                                             />
-        //                                             <UserDeleteButton
-        //                                                 disabled={form.watch('sendAll')}
-        //                                                 onClick={() => {
-        //                                                     form.setValue(
-        //                                                         'users',
-        //                                                         __users.filter((u) => u._id !== user._id)
-        //                                                     )
-        //                                                 }}
-        //                                             />
-        //                                         </Fragment>
-        //                                     )}
-        //                                 </UserList>
-        //                             </div> */}
-
         <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full w-full flex-col gap-3 md:gap-4'>
-            <SubmitWrap hiddenBorder className='rounded-xl bg-white shadow-sm dark:bg-slate-800'>
-                <Button color='blue' type='submit' disabled={loading.submit}>
+            <SubmitWrap hiddenBorder className='sm:rounded-xl sm:bg-white sm:shadow-sm sm:dark:bg-slate-800'>
+                <Button color='blue' type='submit' disabled={loading.submit || true}>
                     {t(LANGUAGE.UPDATE)}
                 </Button>
-                <Button
-                    color='outline'
-                    type='button'
-                    onClick={() => {
-                        navigate(-1)
-                    }}
-                >
-                    {t(LANGUAGE.BACK)}
+                <Button color='outline-indigo' type='button' onClick={() => {}}>
+                    {t(LANGUAGE.PREVIEW)}
                 </Button>
             </SubmitWrap>
             <div className='flex flex-col-reverse gap-3 md:gap-4 lg:flex-row lg:items-start'>
@@ -85,10 +51,10 @@ const NotifyDetailEdit: React.FC<Props> = (props) => {
                         name='content'
                         label={t(LANGUAGE.CONTENT)}
                         placeholder={t(LANGUAGE.PLACEHOLDER_ENTER_CONTENT)}
-                        className='lg'
+                        className='xl'
                     />
                 </Wrap>
-                <div className='flex w-full flex-col gap-3 md:gap-4 lg:w-96'>
+                <div className='flex w-full flex-col-reverse gap-3 md:gap-4 lg:w-96 lg:flex-col'>
                     <Wrap className='space-y-4'>
                         <Input label={t(LANGUAGE.TITLE)} form={form} name='title' />
 
@@ -100,9 +66,9 @@ const NotifyDetailEdit: React.FC<Props> = (props) => {
                             className='xs'
                         />
                     </Wrap>
-                    <Wrap className='h-80 space-y-4'>
+                    <Wrap className='space-y-4'>
                         {/* List user */}
-                        <></>
+                        <LazySearchUser form={form} autoFocus={false} />
                     </Wrap>
                 </div>
             </div>
@@ -119,7 +85,9 @@ const Wrap: React.FC<WrapProps> = (props) => {
     const { className, children } = props
 
     return (
-        <div className={clsx('rounded-xl bg-white p-4 shadow-sm dark:bg-slate-800 xl:p-6', className)}>{children}</div>
+        <div className={clsx('sm:rounded-xl sm:bg-white sm:p-4 sm:shadow-sm sm:dark:bg-slate-800 xl:p-6', className)}>
+            {children}
+        </div>
     )
 }
 

@@ -108,6 +108,7 @@
     "LOADING_PROFILE_DONE": "Đã tải thông tin cá nhân",
     "RELOADING_PROFILE": "Đang tải lại thông tin cá nhân",
     "LOADING_CONFIG": "Đang tải cấu hình",
+    "PREVIEW": "Xem trước",
 
     "APP_READY_WORK_OFFLINE": "Ứng dụng đã sẵn sàng để làm việc ngoại tuyến",
     "RELOAD_TEXT": "Ứng dụng đã được cập nhật. Vui lòng nhấn nút tải lại để xem thay đổi.",
