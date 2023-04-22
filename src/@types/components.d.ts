@@ -12,7 +12,7 @@ import { ListViewResult } from '~/hook'
 import { localStorageValue } from '~/hook/useLocalStorage'
 import { HeroIcon } from '.'
 import { IUserLoan } from './loan'
-import { NotifyItem } from './notify'
+import { NotifyAdminItem, NotifyItem } from './notify'
 import { ISpendingData } from './spending'
 
 type TrackingFunc = (name: Path<any>) => Promise<void>
@@ -449,6 +449,10 @@ export interface NotifyDetailFormData {
     notify: SanityDocument<NotifyItem>
 }
 
+export interface NotifyDetailAdminFormData {
+    notify: SanityDocument<NotifyAdminItem>
+}
+
 export interface TableColumn<T extends any> {
     key: string
     title: React.ReactNode
@@ -472,7 +476,6 @@ export interface TableProps {
 }
 
 export interface LazySearchSelectProps {
-    name: string
     className?: string
     onChange: (value: any) => any | any[]
     disabled?: boolean

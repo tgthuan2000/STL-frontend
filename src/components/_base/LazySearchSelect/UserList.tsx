@@ -11,9 +11,15 @@ interface UserListProps {
     className?: string
     children: (data: any, index: number) => React.ReactNode
     emptyComp?: React.ReactNode
+    getOptionItem?: (data: any) => {
+        key: string
+        image: string
+        username: string
+        email: string
+    }
 }
 
-const UserList: React.FC<UserListProps> = ({ data, className, emptyComp, children }) => {
+const UserList: React.FC<UserListProps> = ({ data, className, emptyComp, children, getOptionItem }) => {
     const { t } = useTranslation()
     return (
         <AnimateWrap className={clsx('mt-1 select-none rounded-lg border dark:border-slate-700', className)}>
@@ -23,18 +29,33 @@ const UserList: React.FC<UserListProps> = ({ data, className, emptyComp, childre
                           {t(LANGUAGE.EMPTY_DATA)}
                       </p>
                   )
-                : data?.map((user, index) => (
-                      <div key={user._id} className='flex items-center gap-2 px-4 py-2'>
-                          <Image src={user.image} alt={user.userName} avatar={{ roundFull: true, size: 'small' }} />
-                          <div className='flex-1'>
-                              <p className='truncate font-medium text-gray-900 dark:text-slate-200'>{user.userName}</p>
-                              <small className='block truncate font-normal text-gray-500 dark:text-slate-400'>
-                                  {user.email}
-                              </small>
+                : data?.map((user, index) => {
+                      const { email, image, key, username } = getOptionItem?.(user) ?? {
+                          email: user.email,
+                          image: user.image,
+                          key: user._id,
+                          username: user.userName,
+                      }
+
+                      return (
+                          <div key={key} className='flex items-center gap-2 px-4 py-2'>
+                              <Image src={image} alt={username} avatar={{ roundFull: true, size: 'small' }} />
+                              <div className='flex-1'>
+                                  {username && (
+                                      <p className='truncate font-medium text-gray-900 dark:text-slate-200'>
+                                          {username}
+                                      </p>
+                                  )}
+                                  {email && (
+                                      <small className='block truncate font-normal text-gray-500 dark:text-slate-400'>
+                                          {email}
+                                      </small>
+                                  )}
+                              </div>
+                              {children(user, index)}
                           </div>
-                          {children(user, index)}
-                      </div>
-                  ))}
+                      )
+                  })}
         </AnimateWrap>
     )
 }

@@ -6,7 +6,7 @@ const Detail = () => {
     const { t } = useTranslation()
     return (
         <Transaction title={t(LANGUAGE.NOTIFICATION)}>
-            <NotifyDetail isAdmin>{(data) => <NotifyDetail.View data={data} />}</NotifyDetail>
+            <NotifyDetail.Client>{(data) => <NotifyDetail.View data={data} />}</NotifyDetail.Client>
         </Transaction>
     )
 }

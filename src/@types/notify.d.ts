@@ -11,11 +11,21 @@ export interface Notify {
 }
 export interface NotifyItem {
     read: boolean
+    sentMail: boolean
     notify: SanityDocument<Notify> & {
         _ref: string
     }
     user: SanityDocument<IUserProfile> & {
         _ref: string
+    }
+}
+
+export interface NotifyAdminItem {
+    notify: SanityDocument<Notify> & {
+        assigned: Array<{
+            sentMail: boolean
+            user: IUserProfile
+        }>
     }
 }
 
@@ -55,4 +65,8 @@ export interface NotifyAssignForm {
 
 export interface NotifyDetailQueryData {
     notify: SanityDocument<NotifyItem>
+}
+
+export interface NotifyDetailAdminQueryData {
+    notify: SanityDocument<NotifyAdminItem>
 }

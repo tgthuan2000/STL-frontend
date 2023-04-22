@@ -1,32 +1,31 @@
+import clsx from 'clsx'
+import { get } from 'lodash'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
-import { NotifyDetailFormData } from '~/@types/components'
+import { NotifyDetailAdminFormData } from '~/@types/components'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import Button from '../Button'
 import SubmitWrap from '../SubmitWrap'
 import { Input, RichText } from '../_base'
-import { get } from 'lodash'
-import clsx from 'clsx'
 import LazySearchUser from './LazySearchUser'
 
 interface Props {
-    data: NotifyDetailFormData
+    data: NotifyDetailAdminFormData
 }
 
 const NotifyDetailEdit: React.FC<Props> = (props) => {
     const { data } = props
     const { t } = useTranslation()
     const { loading } = useLoading()
-    const navigate = useNavigate()
 
     const form = useForm({
         defaultValues: {
             title: get(data, 'notify.notify.title', ''),
             description: get(data, 'notify.notify.description', ''),
             content: get(data, 'notify.notify.content', ''),
+            assigned: get(data, 'notify.notify.assigned', []) as any[],
         },
     })
 

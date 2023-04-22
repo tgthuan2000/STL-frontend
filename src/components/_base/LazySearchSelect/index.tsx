@@ -8,7 +8,6 @@ import Label from './Label'
 import Options from './Options'
 
 const LazySearchSelect: React.FC<LazySearchSelectProps> = ({
-    name,
     className,
     onChange,
     disabled,

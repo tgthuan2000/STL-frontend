@@ -102,7 +102,17 @@ export const GET_NOTIFY_ADMIN = groq`
             title,
             description,
             content,
-            "viewers": count(viewers)
+            "viewers": count(viewers),
+            "assigned": *[_type == "assignNotify" && notify._ref == ^._id] {
+                "sentMail": defined(sentMail),
+                user -> {
+                    _id,
+                    userName,
+                    email,
+                    image,
+                    "allowSendMail": defined(allowSendMail)
+                }
+            }
         }
     }
 `

@@ -7,7 +7,7 @@ const Edit = () => {
 
     return (
         <Transaction title={t(LANGUAGE.EDIT_NOTIFY)}>
-            <NotifyDetail isAdmin>{(data) => <NotifyDetail.Edit data={data} />}</NotifyDetail>
+            <NotifyDetail.Admin>{(data) => <NotifyDetail.Edit data={data} />}</NotifyDetail.Admin>
         </Transaction>
     )
 }
