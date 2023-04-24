@@ -17,7 +17,7 @@ const Detail = () => {
                     <PencilSquareIcon className='h-4 w-4' /> <span>{t(LANGUAGE.UPDATE)}</span>
                 </Link>
             </div>
-            <NotifyDetail isAdmin>{(data) => <NotifyDetail.View data={data} />}</NotifyDetail>
+            <NotifyDetail.Admin>{(data) => <NotifyDetail.Admin.View data={data} />}</NotifyDetail.Admin>
         </Transaction>
     )
 }

@@ -96,22 +96,26 @@ export const GET_NOTIFY_BY_USER = groq`
 `
 
 export const GET_NOTIFY_ADMIN = groq`
-    {
-        "notify": *[_type == "notify" && _id == $notifyId][0] {
-            _createdAt,
-            title,
-            description,
-            content,
-            "viewers": count(viewers),
-            "assigned": *[_type == "assignNotify" && notify._ref == ^._id] {
-                "sentMail": defined(sentMail),
-                user -> {
-                    _id,
-                    userName,
-                    email,
-                    image,
-                    "allowSendMail": defined(allowSendMail)
-                }
+    *[_type == "notify" && _id == $notifyId][0] {
+        _createdAt,
+        title,
+        description,
+        content,
+        viewers -> {
+            _id,
+            userName,
+            email,
+            image
+        },
+        "assigned": *[_type == "assignNotify" && notify._ref == ^._id] {
+            _id,
+            sentMail,
+            user -> {
+                _id,
+                userName,
+                email,
+                image,
+                allowSendMail
             }
         }
     }

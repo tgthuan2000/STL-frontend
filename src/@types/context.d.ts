@@ -1,10 +1,9 @@
-import { SanityDocument } from '@sanity/client'
 import React from 'react'
 import { TagsTypeUseQuery } from '~/@types/hook'
 import { TAGS } from '~/constant'
 import { PERMISSION } from '~/constant/permission'
 import { KIND_SPENDING } from '~/constant/spending'
-import { NotifyItem } from './notify'
+import { AssignedNotify, ClientNotifyDataType } from './notify'
 
 type LoadingItems = {
     config: boolean
@@ -132,14 +131,14 @@ export interface ISideBarContext {
 }
 
 export interface INotifyContext {
-    notify: SanityDocument<NotifyItem>[]
+    notify: AssignedNotify[]
     total: number
     loadNewNotify: boolean
     hasNextPage: boolean
     loading: boolean
     fetch: (__fromNotify?: number, __toNotify?: number) => Promise<void>
     getMore: () => Promise<void>
-    readDetail: (data: SanityDocument<NotifyItem>) => Promise<string>
+    readDetail: (data: ClientNotifyDataType) => Promise<string>
 }
 
 export interface IScrollToTopContext {

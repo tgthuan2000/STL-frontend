@@ -2,23 +2,16 @@ import React, { Fragment } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import LANGUAGE from '~/i18n/language/key'
-import { LazySearchSelect } from '../_base'
-import UserAllowSendMailButton from '../_base/LazySearchSelect/UserAllowSendMailButton'
-import UserDeleteButton from '../_base/LazySearchSelect/UserDeleteButton'
-import UserList from '../_base/LazySearchSelect/UserList'
-import UserOption from '../_base/LazySearchSelect/UserOption'
-import useLazySearchSelect from '../_base/LazySearchSelect/hook/useLazySearchSelect'
+import { LazySearchSelect } from '../../_base'
+import UserAllowSendMailButton from '../../_base/LazySearchSelect/UserAllowSendMailButton'
+import UserDeleteButton from '../../_base/LazySearchSelect/UserDeleteButton'
+import UserList from '../../_base/LazySearchSelect/UserList'
+import UserOption from '../../_base/LazySearchSelect/UserOption'
+import useLazySearchSelect from '../../_base/LazySearchSelect/hook/useLazySearchSelect'
+import { NotifyDetailEditForm, _Assigned } from './Edit'
 
 interface Props {
-    form: UseFormReturn<
-        {
-            title: string
-            description: string
-            content: string
-            assigned: Array<{ sentMail: boolean; user: { _id: string; email: string; sendMail: boolean } }>
-        },
-        any
-    >
+    form: UseFormReturn<NotifyDetailEditForm, any>
     autoFocus?: boolean
 }
 
@@ -29,16 +22,27 @@ const LazySearchUser: React.FC<Props> = (props) => {
 
     const assigned = form.watch('assigned')
 
+    const _handleAssign = (index: number, assignsFiltered: _Assigned[]) => {
+        const item = assigned[index]
+
+        if (!item._id) {
+            form.setValue('assigned', assignsFiltered)
+        } else {
+            form.setValue(`assigned.${index}.deleted`, !item.deleted)
+        }
+    }
+
     const handleChange = (data: any) => {
         if (data) {
-            if (!assigned.find((u) => u.user._id === data._id)) {
+            const indexItem = assigned.findIndex((u) => u.user._id === data._id)
+            if (indexItem === -1) {
                 form.setValue('assigned', [
                     ...assigned,
                     { sentMail: false, user: { ...data, sendMail: data.allowSendMail } },
                 ])
             } else {
-                form.setValue(
-                    'assigned',
+                _handleAssign(
+                    indexItem,
                     assigned.filter((u) => u.user._id !== data._id)
                 )
             }
@@ -68,30 +72,34 @@ const LazySearchUser: React.FC<Props> = (props) => {
 
                 <UserList
                     data={assigned}
-                    getOptionItem={({ user }) => ({
+                    getOptionItem={({ user, deleted }) => ({
                         email: user.email,
                         image: user.image,
                         username: user.userName,
                         key: user._id,
+                        deleted,
                     })}
                 >
-                    {({ user, sentMail }, index) => (
+                    {({ user, deleted, sentMail, _id }, index) => (
                         <Fragment>
                             <UserAllowSendMailButton
                                 active={sentMail || user.sendMail}
-                                disabled={false}
+                                disabled={sentMail || deleted}
                                 hidden={!user.allowSendMail}
                                 onClick={() => {
                                     form.setValue(`assigned.${index}.user.sendMail`, !user.sendMail)
                                 }}
                             />
                             <UserDeleteButton
-                                disabled={false}
                                 onClick={() => {
-                                    form.setValue(
-                                        'assigned',
-                                        assigned.filter((u) => u.user._id !== user._id)
-                                    )
+                                    if (!_id) {
+                                        form.setValue(
+                                            'assigned',
+                                            assigned.filter((u) => u.user._id !== user._id)
+                                        )
+                                    } else {
+                                        form.setValue(`assigned.${index}.deleted`, !deleted)
+                                    }
                                 }}
                             />
                         </Fragment>

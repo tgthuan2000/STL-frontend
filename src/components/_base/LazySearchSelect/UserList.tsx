@@ -16,13 +16,14 @@ interface UserListProps {
         image: string
         username: string
         email: string
+        deleted?: boolean
     }
 }
 
 const UserList: React.FC<UserListProps> = ({ data, className, emptyComp, children, getOptionItem }) => {
     const { t } = useTranslation()
     return (
-        <AnimateWrap className={clsx('mt-1 select-none rounded-lg border dark:border-slate-700', className)}>
+        <AnimateWrap className={clsx('relative mt-1 select-none rounded-lg border dark:border-slate-700', className)}>
             {isEmpty(data)
                 ? emptyComp ?? (
                       <p className='px-4 py-2 text-center text-gray-900 dark:text-slate-200'>
@@ -30,7 +31,7 @@ const UserList: React.FC<UserListProps> = ({ data, className, emptyComp, childre
                       </p>
                   )
                 : data?.map((user, index) => {
-                      const { email, image, key, username } = getOptionItem?.(user) ?? {
+                      const { email, image, key, username, deleted } = getOptionItem?.(user) ?? {
                           email: user.email,
                           image: user.image,
                           key: user._id,
@@ -52,6 +53,11 @@ const UserList: React.FC<UserListProps> = ({ data, className, emptyComp, childre
                                       </small>
                                   )}
                               </div>
+                              {deleted && (
+                                  <small className='absolute -top-3 -right-2 block truncate rounded-md bg-radical-red-500 py-0.5 px-1 text-xs font-bold uppercase text-white sm:top-0 sm:left-full sm:right-auto sm:-translate-x-1/2 sm:rotate-45 sm:p-1'>
+                                      {t(LANGUAGE.DELETED)}
+                                  </small>
+                              )}
                               {children(user, index)}
                           </div>
                       )

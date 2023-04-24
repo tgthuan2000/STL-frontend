@@ -1,26 +1,26 @@
-import { SanityDocument } from '@sanity/client'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
-import { NotifyDetailAdminFormData } from '~/@types/components'
-import { NotifyAdminItem, NotifyDetailAdminQueryData } from '~/@types/notify'
+import { AdminNotifyData, AdminNotifyDataType } from '~/@types/notify'
 import { TAGS } from '~/constant'
 import { useLoading } from '~/context'
 import { useQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { GET_NOTIFY_ADMIN } from '~/schema/query/notify'
-import LoadingText from '../Loading/LoadingText'
+import LoadingText from '../../Loading/LoadingText'
+import NotifyDetailEdit from './Edit'
+import NotifyDetailView from './View'
 
 interface Props {
-    children: (data: NotifyDetailAdminFormData) => React.ReactElement
+    children: (data: AdminNotifyData, refetch: () => void) => React.ReactElement
 }
 
-const Admin: React.FC<Props> = ({ children }) => {
+const Admin = ({ children }: Props) => {
     const { t } = useTranslation()
     const { id } = useParams()
     const { setSubmitLoading } = useLoading()
 
-    const [{ notify }, fetchData] = useQuery<NotifyDetailAdminQueryData>(
+    const [{ notify }, fetchData, deleteCache, reloadData] = useQuery<AdminNotifyData>(
         { notify: GET_NOTIFY_ADMIN },
         { notifyId: id as string },
         { notify: TAGS.SHORT }
@@ -33,15 +33,22 @@ const Admin: React.FC<Props> = ({ children }) => {
         })
     }, [id])
 
-    const data: NotifyDetailAdminFormData = {
-        notify: notify.data as SanityDocument<NotifyAdminItem>,
+    const refetch = () => {
+        deleteCache('notify')
+    }
+
+    const data: AdminNotifyData = {
+        notify: notify.data as AdminNotifyDataType,
     }
 
     if (notify.loading) return <LoadingText />
 
     if (!notify.data) return <div className='font-normal text-radical-red-500'>{t(LANGUAGE.ERROR)}</div>
 
-    return <>{children(data)}</>
+    return <>{children(data, refetch)}</>
 }
+
+Admin.Edit = NotifyDetailEdit
+Admin.View = NotifyDetailView
 
 export default Admin

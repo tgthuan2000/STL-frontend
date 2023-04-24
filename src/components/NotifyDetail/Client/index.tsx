@@ -1,29 +1,28 @@
-import { SanityDocument } from '@sanity/client'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
-import { NotifyDetailFormData } from '~/@types/components'
-import { NotifyDetailQueryData, NotifyItem } from '~/@types/notify'
+import { ClientNotifyData, ClientNotifyDataType } from '~/@types/notify'
 import { TAGS } from '~/constant'
 import { useLoading, useNotify } from '~/context'
 import { useQuery } from '~/hook'
+import LANGUAGE from '~/i18n/language/key'
 import { GET_NOTIFY_BY_USER } from '~/schema/query/notify'
 import { useProfile } from '~/store/auth'
-import LoadingText from '../Loading/LoadingText'
-import LANGUAGE from '~/i18n/language/key'
+import LoadingText from '../../Loading/LoadingText'
+import NotifyDetailView from './View'
 
 interface Props {
-    children: (data: NotifyDetailFormData) => React.ReactElement
+    children: (data: ClientNotifyData) => React.ReactElement
 }
 
-const Client: React.FC<Props> = ({ children }) => {
+const Client = ({ children }: Props) => {
     const { t } = useTranslation()
     const { id } = useParams()
     const { userProfile } = useProfile()
     const { setSubmitLoading } = useLoading()
     const { readDetail } = useNotify()
 
-    const [{ notify }, fetchData] = useQuery<NotifyDetailQueryData>(
+    const [{ notify }, fetchData] = useQuery<ClientNotifyData>(
         { notify: GET_NOTIFY_BY_USER },
         { notifyId: id as string, userId: userProfile?._id as string },
         { notify: TAGS.SHORT }
@@ -47,8 +46,8 @@ const Client: React.FC<Props> = ({ children }) => {
         }
     }, [notify.data, readDetail])
 
-    const data: NotifyDetailFormData = {
-        notify: notify.data as SanityDocument<NotifyItem>,
+    const data: ClientNotifyData = {
+        notify: notify.data as ClientNotifyDataType,
     }
 
     if (notify.loading) return <LoadingText />
@@ -57,5 +56,7 @@ const Client: React.FC<Props> = ({ children }) => {
 
     return <>{children(data)}</>
 }
+
+Client.View = NotifyDetailView
 
 export default Client

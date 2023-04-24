@@ -63,7 +63,21 @@ const Create = () => {
             setSubmitLoading(true)
 
             if (data) {
-                await axios.post('/notification/assign', { data, url: import.meta.env.VITE_APP_URL })
+                const dataRefactored = {
+                    content: data.content,
+                    title: data.title,
+                    description: data.description,
+                    sendAll: data.sendAll,
+                    users:
+                        data.users?.map((user) => ({
+                            _id: user._id,
+                            username: user.userName,
+                            email: user.email,
+                            sendMail: user.sendMail,
+                            allowSendMail: user.allowSendMail,
+                        })) ?? [],
+                }
+                await axios.post('/notification/assign', { data: dataRefactored, url: import.meta.env.VITE_APP_URL })
                 removeDraft()
                 navigate('/announce-config', { replace: true })
                 toast.success(t(LANGUAGE.NOTIFY_CREATE_NOTIFY_SUCCESS))

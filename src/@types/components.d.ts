@@ -12,7 +12,7 @@ import { ListViewResult } from '~/hook'
 import { localStorageValue } from '~/hook/useLocalStorage'
 import { HeroIcon } from '.'
 import { IUserLoan } from './loan'
-import { NotifyAdminItem, NotifyItem } from './notify'
+import { AssignedNotify, NotifyAdminItem } from './notify'
 import { ISpendingData } from './spending'
 
 type TrackingFunc = (name: Path<any>) => Promise<void>
@@ -436,17 +436,17 @@ export interface NotificationProps {}
 
 export type ItemReadEvent = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    data: SanityDocument<NotifyItem>
+    data: ClientNotifyDataType
 ) => Promise<void>
-export type ReadDetailEvent = (data: SanityDocument<NotifyItem>) => Promise<void>
+export type ReadDetailEvent = (data: ClientNotifyDataType) => Promise<void>
 export interface NotificationItemProps {
-    data: SanityDocument<NotifyItem>
+    data: ClientNotifyDataType & { _updatedAt: string }
     onItemRead: ItemReadEvent
     onReadDetail: ReadDetailEvent
 }
 
 export interface NotifyDetailFormData {
-    notify: SanityDocument<NotifyItem>
+    notify: ClientNotifyDataType
 }
 
 export interface NotifyDetailAdminFormData {
