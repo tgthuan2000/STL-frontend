@@ -1,4 +1,3 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { SanityDocument } from '@sanity/client'
@@ -8,9 +7,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
 import { IUserProfile, Step2Props } from '~/@types/auth'
-import { Button, Image } from '~/components'
+import { AnimateWrap, Button, Image } from '~/components'
 import { Input } from '~/components/_base'
-import { UserSvg } from '~/components/_constant'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 
@@ -26,7 +24,6 @@ const useSchema = () => {
 
 const Step2: React.FC<Step2Props> = ({ previewData, onSubmit }) => {
     const { t } = useTranslation()
-    const [parent] = useAutoAnimate<HTMLDivElement>()
     const [chose, setChose] = useState<SanityDocument<IUserProfile> | null | undefined>(previewData?.[0])
     const { loading } = useLoading()
     const schema = useSchema()
@@ -73,7 +70,7 @@ const Step2: React.FC<Step2Props> = ({ previewData, onSubmit }) => {
                     })}
                 </div>
             )}
-            <div ref={parent}>
+            <AnimateWrap>
                 {chose?.isHasPassword ? (
                     <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-2'>
                         <Input
@@ -94,7 +91,7 @@ const Step2: React.FC<Step2Props> = ({ previewData, onSubmit }) => {
                         <p className='font-normal'>{t(LANGUAGE.ACCOUNT_NOT_HAVE_PASSWORD)}</p>
                     </div>
                 )}
-            </div>
+            </AnimateWrap>
         </div>
     )
 }

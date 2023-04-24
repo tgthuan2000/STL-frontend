@@ -1,10 +1,10 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { CheckBadgeIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline'
 import { isEmpty } from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { searchName } from '~/features/spending/services'
 import LANGUAGE from '~/i18n/language/key'
+import AnimateWrap from './AnimateWrap'
 
 interface CheckNameProps {
     show: boolean
@@ -14,9 +14,8 @@ interface CheckNameProps {
 
 const CheckName: React.FC<CheckNameProps> = ({ show, list, watchValue }) => {
     const { t } = useTranslation()
-    const [parent] = useAutoAnimate<HTMLDivElement>()
     return (
-        <div ref={parent}>
+        <AnimateWrap>
             {show && (
                 <>
                     {!isEmpty(list) ? (
@@ -52,7 +51,7 @@ const CheckName: React.FC<CheckNameProps> = ({ show, list, watchValue }) => {
                     )}
                 </>
             )}
-        </div>
+        </AnimateWrap>
     )
 }
 

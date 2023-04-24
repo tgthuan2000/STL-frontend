@@ -1,9 +1,8 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { get, isEmpty, isNil, sum } from 'lodash'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DataListViewList, DataListViewTable, TimeFilterPayload } from '~/@types/components'
-import { DataListView, ListViewFilter, Transaction } from '~/components'
+import { AnimateWrap, DataListView, ListViewFilter, Transaction } from '~/components'
 import { __groupBy } from '~/constant/component'
 import { useListViewFilter } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
@@ -15,7 +14,6 @@ import { services } from '../services/transaction'
 
 const TransactionRecent = () => {
     const { t } = useTranslation()
-    const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
 
     const [{ recent, total }, deleteCacheData, reloadData, error, { defaultValues, getAll, reload, getMore, set }] =
         useTransactionRecent()
@@ -108,7 +106,7 @@ const TransactionRecent = () => {
                         {error ? (
                             <p className='m-5 font-medium text-radical-red-500'>{t(LANGUAGE.ERROR)}</p>
                         ) : (
-                            <div ref={parentRef}>
+                            <AnimateWrap>
                                 <DataListView
                                     mode={viewMode?.id}
                                     loading={recent.loading}
@@ -123,7 +121,7 @@ const TransactionRecent = () => {
                                         list: listProps,
                                     }}
                                 />
-                            </div>
+                            </AnimateWrap>
                         )}
                     </div>
                 </div>

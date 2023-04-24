@@ -4,7 +4,7 @@ import React from 'react'
 import { useFieldArray } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { ICategorySpending, MakeBudgetProps } from '~/@types/spending'
-import { Button } from '~/components'
+import { AnimateWrap, Button } from '~/components'
 import { AutoComplete, Input } from '~/components/_base'
 import LANGUAGE from '~/i18n/language/key'
 
@@ -17,7 +17,6 @@ const Category: React.FC<MakeBudgetProps & { optionData: ICategorySpending[] | u
     optionLoading,
 }) => {
     const { t } = useTranslation()
-    const [wrapRef] = useAutoAnimate<HTMLDivElement>()
     const [loadingRef] = useAutoAnimate<HTMLButtonElement>()
 
     const { fields, append, remove } = useFieldArray({
@@ -56,7 +55,7 @@ const Category: React.FC<MakeBudgetProps & { optionData: ICategorySpending[] | u
                     </>
                 )}
             </Button>
-            <div className='space-y-6' ref={wrapRef}>
+            <AnimateWrap className='space-y-6'>
                 {fields.map((item, index) => (
                     <div key={item.id}>
                         <div className='flex justify-start'>
@@ -91,7 +90,7 @@ const Category: React.FC<MakeBudgetProps & { optionData: ICategorySpending[] | u
                         </div>
                     </div>
                 ))}
-            </div>
+            </AnimateWrap>
         </>
     )
 }

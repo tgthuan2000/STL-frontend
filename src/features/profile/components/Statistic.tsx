@@ -1,4 +1,3 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
@@ -7,7 +6,7 @@ import { useSearchParams } from 'react-router-dom'
 import { TimeFilterPayload } from '~/@types/components'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/@types/hook'
 import { ProfileQueryData } from '~/@types/profile'
-import { TimeFilter } from '~/components'
+import { AnimateWrap, TimeFilter } from '~/components'
 import LoadingText from '~/components/Loading/LoadingText'
 import { E_FILTER_DATE } from '~/constant/template'
 import { useConfig, useLoading } from '~/context'
@@ -24,7 +23,6 @@ const excludeOptions = [E_FILTER_DATE.DATE]
 const Statistic = () => {
     const { t } = useTranslation()
     const { userProfile } = useProfile()
-    const [parent] = useAutoAnimate<HTMLDivElement>()
     const [searchParams] = useSearchParams()
     const { getKindSpendingIds } = useConfig()
     const { loading, setConfigLoading } = useLoading()
@@ -105,7 +103,7 @@ const Statistic = () => {
                     <TimeFilter onSubmit={handleFilterSubmit} excludes={excludeOptions} />
                 </div>
                 <div className='overflow-hidden px-1 sm:bg-gradient-to-tl sm:from-indigo-500 sm:via-purple-500 sm:to-pink-500 sm:p-3 sm:shadow-lg'>
-                    <div className='grid grid-cols-1 backdrop-blur-lg xl:grid-cols-4' ref={parent}>
+                    <AnimateWrap className='grid grid-cols-1 backdrop-blur-lg xl:grid-cols-4'>
                         {loading.config ? (
                             <LoadingText className='my-5 text-center text-sm font-normal sm:my-3 sm:text-lg sm:text-white' />
                         ) : isEmpty(profileOptions) ? (
@@ -130,7 +128,7 @@ const Statistic = () => {
                                 </ProfileInfoGroup>
                             ))
                         )}
-                    </div>
+                    </AnimateWrap>
                 </div>
             </div>
         </>

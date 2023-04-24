@@ -1,8 +1,8 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Tab } from '@headlessui/react'
 import clsx from 'clsx'
 import React, { memo, Suspense } from 'react'
 import { TabsProps } from '~/@types/spending'
+import AnimateWrap from './AnimateWrap'
 import LoadingText from './Loading/LoadingText'
 
 const Tabs: React.FC<TabsProps> = ({
@@ -14,10 +14,8 @@ const Tabs: React.FC<TabsProps> = ({
     getOptionContent,
     className,
 }) => {
-    const [parent] = useAutoAnimate<HTMLDivElement>()
-
     return (
-        <div className={className} ref={parent}>
+        <AnimateWrap className={className}>
             <Tab.Group>
                 <Tab.List className='mb-4 space-x-2 border-b dark:border-slate-700'>
                     {options.map((option, index) => (
@@ -47,7 +45,7 @@ const Tabs: React.FC<TabsProps> = ({
                     ))}
                 </Tab.Panels>
             </Tab.Group>
-        </div>
+        </AnimateWrap>
     )
 }
 

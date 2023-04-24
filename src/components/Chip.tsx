@@ -1,12 +1,11 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
 import React from 'react'
 import { ChipProps } from '~/@types/components'
+import AnimateWrap from './AnimateWrap'
 
 const Chip: React.FC<ChipProps> = ({ children, disabled, hidden, className, onClick }) => {
-    const [parent] = useAutoAnimate<HTMLDivElement>()
     return (
-        <div ref={parent}>
+        <AnimateWrap>
             {!hidden && (
                 <button
                     className={clsx(
@@ -20,7 +19,7 @@ const Chip: React.FC<ChipProps> = ({ children, disabled, hidden, className, onCl
                     {children}
                 </button>
             )}
-        </div>
+        </AnimateWrap>
     )
 }
 
