@@ -1,14 +1,13 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { PaperAirplaneIcon } from '@heroicons/react/24/outline'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { InputFormProps } from '~/@types/feedback'
+import { AnimateWrap } from '~/components'
 import LANGUAGE from '~/i18n/language/key'
 
 const InputForm: React.FC<InputFormProps> = ({ onSubmit, defaultMessage = '' }) => {
     const { t } = useTranslation()
-    const [submitRef] = useAutoAnimate<HTMLDivElement>()
     const form = useForm({
         defaultValues: {
             message: defaultMessage,
@@ -41,13 +40,13 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit, defaultMessage = '' }) 
                     />
                 )}
             />
-            <div className='inline-flex flex-shrink-0 items-center' ref={submitRef}>
+            <AnimateWrap className='inline-flex flex-shrink-0 items-center'>
                 {form.watch('message').trim() && (
                     <button type='submit' className='font-bold text-indigo-500 hover:opacity-50'>
                         <PaperAirplaneIcon className='h-6' />
                     </button>
                 )}
-            </div>
+            </AnimateWrap>
         </form>
     )
 }

@@ -1,4 +1,3 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { ArrowSmallLeftIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import moment from 'moment'
@@ -8,14 +7,14 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { PaidForm, TransactionDetailFormProps } from '~/@types/loan'
-import { AvatarUser, Button, Divider, SubmitWrap } from '~/components'
+import { AnimateWrap, AvatarUser, Button, Divider, SubmitWrap } from '~/components'
 import { AutoComplete, Input, Toggle } from '~/components/_base'
 import { DATE_FORMAT } from '~/constant'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import { urlFor } from '~/sanityConfig'
-import IconButton from './common/IconButton'
 import Group from './Group'
+import IconButton from './common/IconButton'
 
 const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) => {
     const { t } = useTranslation()
@@ -30,7 +29,6 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
             image: transaction.image ?? null,
         },
     })
-    const [parent] = useAutoAnimate<HTMLDivElement>()
 
     return (
         <div>
@@ -79,7 +77,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                                 label={transaction.paid ? t(LANGUAGE.PAID) : t(LANGUAGE.UNPAID)}
                                                 disabled={transaction.paid}
                                             />
-                                            <div ref={parent}>
+                                            <AnimateWrap>
                                                 {form.watch('paid') && (
                                                     <div className='mt-2 space-y-4'>
                                                         <AutoComplete
@@ -113,7 +111,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                                         />
                                                     </div>
                                                 )}
-                                            </div>
+                                            </AnimateWrap>
                                         </Group>
                                         <Divider />
                                         <Group label={t(LANGUAGE.OBJECT)} className='flex-col'>

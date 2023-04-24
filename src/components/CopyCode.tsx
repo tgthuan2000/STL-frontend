@@ -1,8 +1,8 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { CheckIcon, Square2StackIcon } from '@heroicons/react/24/outline'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import LANGUAGE from '~/i18n/language/key'
+import AnimateWrap from './AnimateWrap'
 
 interface CopyCodeProps {
     data: string
@@ -11,7 +11,6 @@ interface CopyCodeProps {
 
 const CopyCode: React.FC<CopyCodeProps> = ({ data, loading }) => {
     const { t } = useTranslation()
-    const [parent] = useAutoAnimate<HTMLDivElement>()
     const [copied, setCopied] = useState(false)
 
     const handleCopyToClipboard = async () => {
@@ -34,7 +33,7 @@ const CopyCode: React.FC<CopyCodeProps> = ({ data, loading }) => {
     }, [copied])
 
     return (
-        <div ref={parent} className='flex items-center gap-2'>
+        <AnimateWrap className='flex items-center gap-2'>
             {loading ? (
                 t(LANGUAGE.LOADING)
             ) : (
@@ -50,7 +49,7 @@ const CopyCode: React.FC<CopyCodeProps> = ({ data, loading }) => {
                     )}
                 </>
             )}
-        </div>
+        </AnimateWrap>
     )
 }
 

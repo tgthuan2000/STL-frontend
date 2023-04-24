@@ -1,7 +1,7 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
 import React from 'react'
 import { ContentBoxProps } from '~/@types/components'
+import AnimateWrap from '~/components/AnimateWrap'
 import SeeMore from './SeeMore'
 import Title from './Title'
 
@@ -16,7 +16,6 @@ const ContentBox: React.FC<ContentBoxProps> = ({
     fullWidth,
     customHeaderEvent,
 }) => {
-    const [parent] = useAutoAnimate<HTMLDivElement>()
     return (
         <div
             className={clsx(
@@ -26,7 +25,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
             )}
         >
             <Title title={title} onReload={onReload} loading={loading} customEvent={customHeaderEvent} />
-            <div ref={parent}>{children}</div>
+            <AnimateWrap>{children}</AnimateWrap>
             <SeeMore seeMore={seeMore} to={to} />
         </div>
     )

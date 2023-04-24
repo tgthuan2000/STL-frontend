@@ -324,6 +324,7 @@ export interface IMenuBtn {
 export interface AnimateWrapProps {
     children: React.ReactNode
     className?: string
+    style?: React.CSSProperties
 }
 
 export interface ToggleProps {

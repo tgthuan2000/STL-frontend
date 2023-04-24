@@ -1,4 +1,3 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import clsx from 'clsx'
 import { find, get, isEmpty } from 'lodash'
@@ -12,6 +11,7 @@ import { AutoComplete, DatePicker } from '~/components/_base'
 import { E_DATE_RANGE_SUGGESTION, E_FILTER_DATE } from '~/constant/template'
 import { useDateRangeSuggestions, useTabsFilterDate } from '~/hook/template'
 import LANGUAGE from '~/i18n/language/key'
+import AnimateWrap from '../AnimateWrap'
 import Chip from '../Chip'
 import { schema, useDefaultValue } from './service'
 
@@ -19,7 +19,6 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit, excludes = [] }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
-    const [parent] = useAutoAnimate<HTMLDivElement>()
     const { getDefaultValues } = useDefaultValue()
     const form = useForm<IFilterDate>({
         defaultValues: getDefaultValues(searchParams),
@@ -157,7 +156,7 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit, excludes = [] }) => {
                 label={t(LANGUAGE.FILTER)}
                 onChange={form.handleSubmit(onsubmit)}
             />
-            <div ref={parent}>
+            <AnimateWrap>
                 {filterTab && (
                     <div className={clsx('transition-all', isDateRangeFilter ? 'min-w-[300px]' : 'min-w-[200px]')}>
                         <DatePicker
@@ -184,7 +183,7 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit, excludes = [] }) => {
                         ))}
                     </div>
                 )}
-            </div>
+            </AnimateWrap>
         </div>
     )
 }

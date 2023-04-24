@@ -9,7 +9,7 @@ import { AppProviders, LayoutProviders } from './Providers'
 import { ErrorFallback, PermissionCheck } from './components'
 import { LOCAL_STORAGE_KEY } from './constant/localStorage'
 import { PERMISSION } from './constant/permission'
-import { useLocalStorage } from './hook'
+import { useLocalStorage, useWindowSize } from './hook'
 import { checkDarkTheme } from './utils'
 import Dashboard from './Dashboard'
 
@@ -39,18 +39,7 @@ function App() {
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
             <BrowserRouter>
                 <ErrorBoundary FallbackComponent={ErrorFallback}>
-                    <ToastContainer
-                        position='bottom-left'
-                        autoClose={5000}
-                        hideProgressBar
-                        newestOnTop={false}
-                        closeOnClick
-                        rtl={false}
-                        pauseOnFocusLoss
-                        draggable
-                        pauseOnHover
-                        theme='colored'
-                    />
+                    <Toast />
                     <AppProviders>
                         <Routes>
                             <Route
@@ -160,6 +149,25 @@ function App() {
                 </ErrorBoundary>
             </BrowserRouter>
         </GoogleOAuthProvider>
+    )
+}
+
+const Toast = () => {
+    const { width } = useWindowSize()
+
+    return (
+        <ToastContainer
+            position={width > 768 ? 'top-center' : 'bottom-center'}
+            autoClose={5000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme='colored'
+        />
     )
 }
 

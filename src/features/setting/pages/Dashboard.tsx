@@ -11,6 +11,7 @@ import { settingOptions } from '../services'
 const Dashboard = () => {
     const { t } = useTranslation()
     const { hasPermissions } = useConfig()
+
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.SETTING_MANAGEMENT)}>
             <div className='mx-2 mt-10 grid grid-cols-2 gap-2 md:grid-cols-12 md:grid-rows-2'>

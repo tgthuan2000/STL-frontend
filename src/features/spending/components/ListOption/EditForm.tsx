@@ -1,11 +1,10 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import React, { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
-import { Button, CheckName } from '~/components'
+import { AnimateWrap, Button, CheckName } from '~/components'
 import { Input } from '~/components/_base'
 import LANGUAGE from '~/i18n/language/key'
 
@@ -27,7 +26,6 @@ interface EditFormProps {
 }
 const EditForm: React.FC<EditFormProps> = ({ name, origin, onCancel, onSubmit }) => {
     const { t } = useTranslation()
-    const [parent] = useAutoAnimate<HTMLDivElement>()
     const [loading, setLoading] = useState(false)
     const schema = useSchema()
     const form = useForm({
@@ -65,7 +63,7 @@ const EditForm: React.FC<EditFormProps> = ({ name, origin, onCancel, onSubmit })
             <div className='flex flex-col gap-2 rounded border p-5 shadow-md'>
                 <Input form={form} name='name' label={t(LANGUAGE.NAME)} autoFocus disabled={loading} />
                 <CheckName show={Boolean(!loading && watchName.length >= 2)} list={sameList} watchValue={watchName} />
-                <div className='flex gap-2' ref={parent}>
+                <AnimateWrap className='flex gap-2'>
                     {loading ? (
                         <span className='animate-pulse font-normal text-gray-900 dark:text-slate-200'>
                             {t(LANGUAGE.SAVING)}
@@ -80,7 +78,7 @@ const EditForm: React.FC<EditFormProps> = ({ name, origin, onCancel, onSubmit })
                             </Button>
                         </>
                     )}
-                </div>
+                </AnimateWrap>
             </div>
         </form>
     )

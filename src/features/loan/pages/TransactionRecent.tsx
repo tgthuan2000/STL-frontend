@@ -1,4 +1,3 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { get, isEmpty, isNil, sum } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -6,7 +5,7 @@ import { useSearchParams } from 'react-router-dom'
 import { DataListViewList, DataListViewTable, TimeFilterPayload } from '~/@types/components'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/@types/hook'
 import { RecentQueryData } from '~/@types/spending'
-import { DataListView, ListViewFilter, Transaction } from '~/components'
+import { AnimateWrap, DataListView, ListViewFilter, Transaction } from '~/components'
 import { COUNT_PAGINATE } from '~/constant'
 import { __groupBy } from '~/constant/component'
 import { useCheck, useConfig } from '~/context'
@@ -21,7 +20,6 @@ import * as __services from '../services/dataListView'
 const TransactionRecent = () => {
     const { t } = useTranslation()
     const { userProfile } = useProfile()
-    const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
     const { width } = useWindowSize()
     const { getKindSpendingIds } = useConfig()
     const [searchParams] = useSearchParams()
@@ -140,7 +138,7 @@ const TransactionRecent = () => {
                         {error ? (
                             <p className='m-5 font-medium text-radical-red-500'>{t(LANGUAGE.ERROR)}</p>
                         ) : (
-                            <div ref={parentRef}>
+                            <AnimateWrap>
                                 <DataListView
                                     mode={viewMode?.id}
                                     loading={recent.loading}
@@ -155,7 +153,7 @@ const TransactionRecent = () => {
                                         list: listProps,
                                     }}
                                 />
-                            </div>
+                            </AnimateWrap>
                         )}
                     </div>
                 </div>
