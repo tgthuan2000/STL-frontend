@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { get } from 'lodash'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { UseFormReturn, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { AdminAssigned } from '~/@types/notify'
@@ -14,6 +14,8 @@ import { IUserProfile } from '~/@types/auth'
 import { toast } from 'react-toastify'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAxios } from '~/hook'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 
 interface Props {
     refetch: () => void
@@ -32,6 +34,18 @@ export interface NotifyDetailEditForm {
     assigned: Array<_Assigned>
 }
 
+const useSchema = () => {
+    const { t } = useTranslation()
+    const schema = useMemo(() => {
+        return yup.object().shape({
+            title: yup.string().required(t(LANGUAGE.REQUIRED_NOTIFY_TITLE) as string),
+            description: yup.string(),
+            content: yup.string().required(t(LANGUAGE.REQUIRED_NOTIFY_CONTENT) as string),
+        })
+    }, [])
+    return schema
+}
+
 const NotifyDetailEdit: React.FC<Props> = (props) => {
     const { data, refetch } = props
     const { id } = useParams()
@@ -39,6 +53,7 @@ const NotifyDetailEdit: React.FC<Props> = (props) => {
     const { loading, setSubmitLoading } = useLoading()
     const axios = useAxios()
     const navigate = useNavigate()
+    const schema = useSchema()
 
     const form: UseFormReturn<NotifyDetailEditForm, any> = useForm({
         defaultValues: {
@@ -47,6 +62,7 @@ const NotifyDetailEdit: React.FC<Props> = (props) => {
             content: get(data, 'notify.content', ''),
             assigned: get(data, 'notify.assigned', []),
         },
+        resolver: yupResolver(schema),
     })
 
     const onsubmit = async (data: NotifyDetailEditForm) => {
@@ -110,9 +126,6 @@ const NotifyDetailEdit: React.FC<Props> = (props) => {
             <SubmitWrap hiddenBorder className='sm:rounded-xl sm:bg-white sm:shadow-sm sm:dark:bg-slate-800'>
                 <Button color='blue' type='submit' disabled={loading.submit}>
                     {t(LANGUAGE.UPDATE)}
-                </Button>
-                <Button color='outline-indigo' type='button' onClick={() => {}}>
-                    {t(LANGUAGE.PREVIEW)}
                 </Button>
             </SubmitWrap>
             <div className='flex flex-col-reverse gap-3 md:gap-4 lg:flex-row lg:items-start'>
