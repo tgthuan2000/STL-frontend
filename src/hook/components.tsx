@@ -3,6 +3,8 @@ import {
     ArrowTrendingDownIcon,
     ArrowTrendingUpIcon,
     ArrowsRightLeftIcon,
+    CalendarDaysIcon,
+    ClipboardDocumentCheckIcon,
     ClipboardDocumentListIcon,
     EllipsisHorizontalCircleIcon,
     HomeIcon,
@@ -18,6 +20,7 @@ import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IMenuBtn } from '~/@types/components'
 import axios from '~/axiosConfig'
+import { MakeSchedule, MakeTimeKeeping } from '~/features/time/components'
 import { CreateMember, MakeGetLoan, MakeLoan } from '~/features/loan/components'
 import { AddCategory, AddMethod, MakeBudget, MakeCost, MakeIncome, MakeTransfer } from '~/features/spending/components'
 import LANGUAGE from '~/i18n/language/key'
@@ -318,6 +321,70 @@ export const useMenuLoanPC = (): IMenuBtn[] => {
             // },
         ]
     }, [t])
+    return data
+}
+
+export const useMenuTimePC = (): IMenuBtn[] => {
+    const { t } = useTranslation()
+    const data: IMenuBtn[] = useMemo(() => {
+        return [
+            {
+                title: t(LANGUAGE.MAKE_SCHEDULE),
+                color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
+                icon: CalendarDaysIcon,
+                children: () => <MakeSchedule />,
+                to: '?slide=create-schedule',
+                query: {
+                    slide: 'create-schedule',
+                },
+            },
+            {
+                title: t(LANGUAGE.MAKE_TIMEKEEPING),
+                color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
+                icon: ClipboardDocumentCheckIcon,
+                children: () => <MakeTimeKeeping />,
+                to: '?slide=timekeeping',
+                query: {
+                    slide: 'timekeeping',
+                },
+            },
+            {
+                title: t(LANGUAGE.LOGOUT),
+                color: 'text-gray-700 bg-gray-200 hover:bg-gray-300 dark:text-gray-500',
+                icon: ArrowRightOnRectangleIcon,
+                to: '/',
+                action: (logout) => {
+                    googleLogout()
+                    logout()
+                    axios.defaults.headers.common['Authorization'] = null
+                },
+                divider: true,
+            },
+            {
+                title: t(LANGUAGE.HOME),
+                color: 'text-red-700 bg-red-200 hover:bg-red-300 dark:text-red-500',
+                icon: HomeIcon,
+                to: '/time',
+            },
+        ]
+    }, [t])
+    return data
+}
+
+export const useMenuTimePages = (): IMenuBtn[] => {
+    const { t } = useTranslation()
+
+    const data = useMemo(() => {
+        return [
+            {
+                title: t(LANGUAGE.HOME),
+                color: 'text-red-700 dark:text-red-500',
+                icon: HomeIcon,
+                to: '/time',
+            },
+        ]
+    }, [t])
+
     return data
 }
 

@@ -1,6 +1,5 @@
 import { CubeTransparentIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
-import { motion } from 'framer-motion'
 import React, { Suspense } from 'react'
 import { NavLink } from 'react-router-dom'
 import { NavLinkIconProps } from '~/@types/layout'
@@ -25,9 +24,7 @@ const NavLinkIcon: React.FC<NavLinkIconProps> = ({ data }) => {
                         </Suspense>
                     </div>
                     {isActive && (
-                        <motion.span
-                            layoutId='underline'
-                            transition={{ duration: 0.2 }}
+                        <span
                             className={clsx(
                                 'absolute bottom-0 left-0 right-0 h-1 rounded-tl-full rounded-tr-full bg-radical-red-500 dark:animate-bg-animate dark:bg-gradient-to-r dark:from-[#12c2e9] dark:via-[#c471ed] dark:to-[#f64f59] dark:bg-400%'
                             )}

@@ -81,7 +81,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                         <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
                             <div className='flex flex-1 flex-col justify-between'>
                                 <div className='divide-y divide-gray-200 px-4 sm:px-6'>
-                                    <div className='space-y-6 pt-6 pb-5'>
+                                    <div className='space-y-6 pt-3 pb-5'>
                                         {!isNil(form.watch('surplus')) &&
                                             (() => {
                                                 const surplus = form.watch('surplus')
