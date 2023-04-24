@@ -2,6 +2,7 @@ import {
     ArrowsUpDownIcon,
     BanknotesIcon,
     BellIcon,
+    CalendarIcon,
     ChatBubbleLeftRightIcon,
     LockClosedIcon,
     UserGroupIcon,
@@ -16,6 +17,7 @@ import LANGUAGE from '~/i18n/language/key'
 const AccountNavLink = React.lazy(() => import('~/components/NavLink/AccountNavLink'))
 const AnnounceConfigNavLink = React.lazy(() => import('~/components/NavLink/AnnounceConfigNavLink'))
 const LoanNavLink = React.lazy(() => import('~/components/NavLink/LoanNavLink'))
+const TimeNavLink = React.lazy(() => import('~/components/NavLink/TimeNavLink'))
 const NotifyNavLink = React.lazy(() => import('~/components/NavLink/NotifyNavLink'))
 const ProfileNavLink = React.lazy(() => import('~/components/NavLink/ProfileNavLink'))
 const SettingNavLink = React.lazy(() => import('~/components/NavLink/SettingNavLink'))
@@ -33,17 +35,17 @@ export const useNavigation = (): Array<Navigation> => {
                 icon: BanknotesIcon,
                 permissions: [PERMISSION.SPENDING_READ],
             },
-            // {
-            //     name: t(LANGUAGE.TIME_MANAGEMENT),
-            //     href: '/time',
-            //     icon: CalendarIcon,
-            //     permissions: [PERMISSION.TIME_READ],
-            // },
             {
                 name: t(LANGUAGE.LOAN_MANAGEMENT),
                 href: '/loan',
                 icon: ArrowsUpDownIcon,
                 permissions: [PERMISSION.LOAN_READ],
+            },
+            {
+                name: t(LANGUAGE.TIME_MANAGEMENT),
+                href: '/time',
+                icon: CalendarIcon,
+                permissions: [PERMISSION.TIME_READ],
             },
 
             /* ADMIN */
@@ -107,17 +109,17 @@ export const useNavigationMobile = (): Array<NavigationMobile> => {
                 permissions: [PERMISSION.SPENDING_READ],
                 component: SpendingNavLink,
             },
-            // {
-            //     name: t(LANGUAGE.TIME_MANAGEMENT),
-            //     href: '/time',
-            //     icon: CalendarIcon,
-            //     permissions: [PERMISSION.TIME_READ],
-            // },
             {
                 name: t(LANGUAGE.LOAN_MANAGEMENT),
                 href: '/loan',
                 permissions: [PERMISSION.LOAN_READ],
                 component: LoanNavLink,
+            },
+            {
+                name: t(LANGUAGE.TIME_MANAGEMENT),
+                href: '/time',
+                permissions: [PERMISSION.TIME_READ],
+                component: TimeNavLink,
             },
             {
                 name: t(LANGUAGE.NOTIFY_MANAGEMENT),
