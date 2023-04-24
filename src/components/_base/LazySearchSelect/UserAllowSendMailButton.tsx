@@ -31,10 +31,10 @@ const UserAllowSendMailButton: React.FC<UserAllowSendMailButtonProps> = ({
             type='button'
             disabled={disabled}
             className={clsx(
-                'cursor-pointer rounded-lg p-2 transition-all hover:bg-cyan-500 disabled:cursor-not-allowed',
+                'cursor-pointer rounded-lg p-2 transition-all disabled:cursor-not-allowed disabled:opacity-50',
                 active
-                    ? 'disabled: bg-cyan-400 text-gray-100 disabled:bg-cyan-700 disabled:text-gray-400'
-                    : 'bg-slate-100 text-gray-400 disabled:bg-slate-700 disabled:text-gray-500 dark:bg-slate-700',
+                    ? 'bg-cyan-400 text-gray-100 disabled:bg-cyan-700 disabled:text-gray-400'
+                    : 'bg-slate-100 text-gray-400 hover:bg-gray-400 hover:text-white disabled:text-gray-500 disabled:hover:bg-slate-100 dark:bg-slate-700 dark:hover:opacity-70 dark:disabled:bg-slate-700',
                 className
             )}
             onClick={onClick}
