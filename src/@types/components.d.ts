@@ -12,7 +12,7 @@ import { ListViewResult } from '~/hook'
 import { localStorageValue } from '~/hook/useLocalStorage'
 import { HeroIcon } from '.'
 import { IUserLoan } from './loan'
-import { NotifyItem } from './notify'
+import { AssignedNotify, NotifyAdminItem } from './notify'
 import { ISpendingData } from './spending'
 
 type TrackingFunc = (name: Path<any>) => Promise<void>
@@ -263,14 +263,14 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
     color:
         | 'outline'
-        | 'primary'
+        | 'indigo'
         | 'cyan'
         | 'green'
         | 'blue'
         | 'radicalRed'
         | 'prussianBlue'
         | 'yellow'
-        | 'outline-primary'
+        | 'outline-indigo'
         | 'outline-cyan'
         | 'outline-green'
         | 'outline-blue'
@@ -436,17 +436,21 @@ export interface NotificationProps {}
 
 export type ItemReadEvent = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    data: SanityDocument<NotifyItem>
+    data: ClientNotifyDataType
 ) => Promise<void>
-export type ReadDetailEvent = (data: SanityDocument<NotifyItem>) => Promise<void>
+export type ReadDetailEvent = (data: ClientNotifyDataType) => Promise<void>
 export interface NotificationItemProps {
-    data: SanityDocument<NotifyItem>
+    data: ClientNotifyDataType & { _updatedAt: string }
     onItemRead: ItemReadEvent
     onReadDetail: ReadDetailEvent
 }
 
 export interface NotifyDetailFormData {
-    notify: SanityDocument<NotifyItem>
+    notify: ClientNotifyDataType
+}
+
+export interface NotifyDetailAdminFormData {
+    notify: SanityDocument<NotifyAdminItem>
 }
 
 export interface TableColumn<T extends any> {
@@ -472,7 +476,6 @@ export interface TableProps {
 }
 
 export interface LazySearchSelectProps {
-    name: string
     className?: string
     onChange: (value: any) => any | any[]
     disabled?: boolean
@@ -593,6 +596,7 @@ export interface BackButtonProps {
 export interface SubmitWrapProps {
     children: React.ReactNode
     className?: string
+    hiddenBorder?: boolean
 }
 
 export interface AsideProps {

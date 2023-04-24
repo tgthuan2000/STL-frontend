@@ -1,8 +1,9 @@
 import { SanityDocument, Transaction } from '@sanity/client'
 import { isEmpty } from 'lodash'
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { IUserProfile } from '~/@types/auth'
 import { INotifyContext } from '~/@types/context'
-import { NotifyItem, NotifyPaginate } from '~/@types/notify'
+import { AssignedNotify, ClientNotifyDataType, NotifyPaginate } from '~/@types/notify'
 import { notifySound } from '~/constant/component'
 import { client } from '~/sanityConfig'
 import { GET_NOTIFY_PAGINATE, GET_NOTIFY_SUBSCRIPTION, SUBSCRIPTION_NOTIFY } from '~/schema/query/notify'
@@ -21,7 +22,7 @@ const NotifyContext = createContext<INotifyContext>({
 
 const NotifyProvider = ({ children }: { children: React.ReactNode }) => {
     const { userProfile } = useProfile()
-    const [notify, setNotify] = useState<SanityDocument<NotifyItem>[]>([])
+    const [notify, setNotify] = useState<AssignedNotify[]>([])
     const [total, setTotal] = useState(0)
     const [loadNewNotify, setLoadNewNotify] = useState(false)
     const [hasNextPage, setHasNextPage] = useState(true)
@@ -59,7 +60,7 @@ const NotifyProvider = ({ children }: { children: React.ReactNode }) => {
         __.patch(notifyItemId, { set: { read: true } })
     }
 
-    const readDetail = useCallback(async (data: SanityDocument<NotifyItem>) => {
+    const readDetail = useCallback(async (data: ClientNotifyDataType) => {
         if (data.read === false) {
             const __ = client.transaction()
             readNotify(__, data.notify._id, data._id)
@@ -92,16 +93,20 @@ const NotifyProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         const sub = client
-            .listen<SanityDocument<NotifyItem>>(SUBSCRIPTION_NOTIFY, { userId: userProfile?._id })
+            .listen<SanityDocument<AssignedNotify>>(SUBSCRIPTION_NOTIFY, { userId: userProfile?._id })
             .subscribe((update) => {
                 if (update.documentId.includes('drafts')) return
+
+                console.log({ update })
                 if (update.result) {
-                    const __ = update.result as SanityDocument<NotifyItem>
+                    const __ = update.result as SanityDocument<
+                        Omit<AssignedNotify, 'user'> & { user: IUserProfile & { _ref: string } }
+                    >
                     if (__.user._ref !== userProfile?._id) return
 
                     setTimeout(async () => {
                         try {
-                            const data = await client.fetch<SanityDocument<NotifyItem>>(GET_NOTIFY_SUBSCRIPTION, {
+                            const data = await client.fetch<SanityDocument<AssignedNotify>>(GET_NOTIFY_SUBSCRIPTION, {
                                 notifyId: __._id,
                             })
 
@@ -138,6 +143,19 @@ const NotifyProvider = ({ children }: { children: React.ReactNode }) => {
                         } finally {
                         }
                     }, 1000)
+                } else {
+                    switch (update.transition) {
+                        case 'disappear': {
+                            setNotify((prev) => {
+                                const index = prev.findIndex((item) => item._id === update.documentId)
+                                if (index > -1) {
+                                    prev.splice(index, 1)
+                                }
+                                return prev
+                            })
+                            setTotal((prev) => prev - 1)
+                        }
+                    }
                 }
             })
 

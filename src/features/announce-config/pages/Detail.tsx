@@ -9,7 +9,7 @@ const Detail = () => {
 
     return (
         <Transaction title={t(LANGUAGE.NOTIFICATION)}>
-            <div className='-mx-4 mb-2 flex justify-end'>
+            <div className='mb-2 flex justify-end sm:-mx-4'>
                 <Link
                     to='edit'
                     className='inline-flex min-w-0 items-center justify-center gap-1 rounded-lg border bg-gray-200 px-4 py-3 font-medium text-gray-700 shadow transition-all hover:bg-gray-700 hover:text-white dark:border-slate-700 dark:bg-slate-700 dark:text-slate-200 dark:hover:opacity-50 sm:gap-2'
@@ -17,7 +17,7 @@ const Detail = () => {
                     <PencilSquareIcon className='h-4 w-4' /> <span>{t(LANGUAGE.UPDATE)}</span>
                 </Link>
             </div>
-            <NotifyDetail isAdmin>{(data) => <NotifyDetail.View data={data} />}</NotifyDetail>
+            <NotifyDetail.Admin>{(data) => <NotifyDetail.Admin.View data={data} />}</NotifyDetail.Admin>
         </Transaction>
     )
 }

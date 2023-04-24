@@ -188,7 +188,6 @@ const MakeLoan = () => {
                             <DatePicker name='date' form={form} label={t(LANGUAGE.DATE)} />
 
                             <LazySearchSelect
-                                name='loanUsers'
                                 options={users.data?.data}
                                 hasNextPage={users.data?.hasNextPage}
                                 loading={searchLoading}

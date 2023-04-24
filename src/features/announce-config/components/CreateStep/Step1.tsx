@@ -41,6 +41,7 @@ const Step1: React.FC<CreateStep1Props> = ({ id, onSubmit }) => {
                     name='content'
                     label={t(LANGUAGE.CONTENT)}
                     placeholder={t(LANGUAGE.PLACEHOLDER_ENTER_CONTENT)}
+                    className='xl'
                 />
             </div>
         </form>

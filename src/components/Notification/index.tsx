@@ -1,4 +1,3 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Menu } from '@headlessui/react'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
@@ -10,15 +9,13 @@ import { ItemReadEvent, NotificationProps, ReadDetailEvent } from '~/@types/comp
 import BellIcon from '~/assets/notification.gif'
 import { useNotify } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
+import AnimateWrap from '../AnimateWrap'
 import EmptyNotify from './Empty'
 import NotificationItem from './Item'
 import SkeletonNotify from './Skeleton'
 
 const Notification: React.FC<NotificationProps> = () => {
     const { t } = useTranslation()
-    const [parentRef] = useAutoAnimate<HTMLDivElement>()
-    const [readAllRef] = useAutoAnimate<HTMLButtonElement>()
-    const [notifyRef] = useAutoAnimate<HTMLDivElement>()
     const navigate = useNavigate()
     const { notify, loadNewNotify, total, hasNextPage, loading, getMore, readDetail } = useNotify()
 
@@ -36,7 +33,7 @@ const Notification: React.FC<NotificationProps> = () => {
     return (
         <Menu as='div' className='relative mr-3 inline-block'>
             <Menu.Button className='group px-2 pt-1'>
-                <div className='relative' ref={notifyRef}>
+                <AnimateWrap className='relative'>
                     <img src={BellIcon} className='h-8 w-8 rounded' />
                     <span className='absolute -top-3 -right-3 inline-flex h-[22px] w-[22px] items-center justify-center rounded-full bg-radical-red-500 text-xs text-white dark:bg-prussian-blue-400'>
                         {total > 99 ? '99+' : total}
@@ -50,7 +47,7 @@ const Notification: React.FC<NotificationProps> = () => {
                             {t(LANGUAGE.NEW_NOTIFY)}
                         </span>
                     )}
-                </div>
+                </AnimateWrap>
             </Menu.Button>
 
             <Menu.Items
@@ -76,7 +73,7 @@ const Notification: React.FC<NotificationProps> = () => {
                                 <span className='group-disabled:opacity-50 '>Đã xem tất cả</span>
                             </button> */}
                         </div>
-                        <div className='max-h-[85vh] overflow-auto' ref={parentRef}>
+                        <AnimateWrap className='max-h-[85vh] overflow-auto'>
                             {notify.map((data) => (
                                 <NotificationItem
                                     key={data._id}
@@ -90,7 +87,7 @@ const Notification: React.FC<NotificationProps> = () => {
                             ) : (
                                 hasNextPage && <Waypoint onEnter={getMore} bottomOffset='-20%' />
                             )}
-                        </div>
+                        </AnimateWrap>
                     </>
                 )}
             </Menu.Items>
