@@ -82,7 +82,6 @@ const Step3: React.FC<CreateStep3Props> = ({ id, onSubmit }) => {
                     />
                 </div>
                 <LazySearchSelect
-                    name='users'
                     options={users.data?.data}
                     autoFocus
                     hasNextPage={users.data?.hasNextPage}

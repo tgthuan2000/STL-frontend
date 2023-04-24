@@ -73,6 +73,7 @@
     "EDIT": "Edit",
     "EDITED": "Edited",
     "DELETE": "Delete",
+    "DELETED": "Deleted",
     "REPLY": "Reply",
     "L_REPLIES": "replies",
     "CLICK_TO_READ_DETAIL": "Click to read detail",
@@ -108,6 +109,7 @@
     "LOADING_PROFILE_DONE": "Loading profile done",
     "RELOADING_PROFILE": "Reloading profile",
     "LOADING_CONFIG": "Waiting to loading config",
+    "PREVIEW": "Preview",
 
     "APP_READY_WORK_OFFLINE": "App ready to work offline",
     "RELOAD_TEXT": "New content available, click on reload button to update.",
@@ -169,6 +171,7 @@
     "NOTIFY_UPDATE_PASSWORD_SUCCESS": "Update password success",
     "NOTIFY_CREATE_MEMBER_SUCCESS": "Create member success",
     "NOTIFY_CREATE_NOTIFY_SUCCESS": "Create notify success",
+    "NOTIFY_UPDATE_NOTIFY_SUCCESS": "Update notify success",
     "NOTIFY_NOT_EXIST_ACCOUNT": "Not exist account",
     "NOTIFY_ERROR": "Something went wrong",
     "NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD": "Account can not login by email and password",
