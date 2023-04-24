@@ -77,6 +77,7 @@ export interface AdminNotifyData {
 
 export interface AdminAssigned {
     _id?: string
+    read: boolean
     sentMail: boolean
     user: IUserProfile
 }

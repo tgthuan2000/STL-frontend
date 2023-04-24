@@ -17,6 +17,7 @@ interface UserListProps {
         username: string
         email: string
         deleted?: boolean
+        read?: boolean
     }
 }
 
@@ -31,7 +32,7 @@ const UserList: React.FC<UserListProps> = ({ data, className, emptyComp, childre
                       </p>
                   )
                 : data?.map((user, index) => {
-                      const { email, image, key, username, deleted } = getOptionItem?.(user) ?? {
+                      const { email, image, key, username, deleted, read } = getOptionItem?.(user) ?? {
                           email: user.email,
                           image: user.image,
                           key: user._id,
@@ -53,16 +54,43 @@ const UserList: React.FC<UserListProps> = ({ data, className, emptyComp, childre
                                       </small>
                                   )}
                               </div>
-                              {deleted && (
-                                  <small className='absolute -top-3 -right-2 block truncate rounded-md bg-radical-red-500 py-0.5 px-1 text-xs font-bold uppercase text-white sm:top-0 sm:left-full sm:right-auto sm:-translate-x-1/2 sm:rotate-45 sm:p-1'>
-                                      {t(LANGUAGE.DELETED)}
-                                  </small>
-                              )}
+                              <Tag hidden={!deleted} color='red'>
+                                  {t(LANGUAGE.DELETED)}
+                              </Tag>
+                              <Tag hidden={!read} color='blue'>
+                                  {t(LANGUAGE.READ)}
+                              </Tag>
                               {children(user, index)}
                           </div>
                       )
                   })}
         </AnimateWrap>
+    )
+}
+
+const Tag = ({
+    hidden = false,
+    children,
+    color = 'red',
+}: {
+    hidden?: boolean
+    children: React.ReactNode
+    color?: 'red' | 'blue'
+}) => {
+    if (hidden) {
+        return <></>
+    }
+
+    return (
+        <span
+            className={clsx(
+                'absolute -top-3 -right-2 block truncate rounded-md py-0.5 px-1 text-xs font-bold uppercase text-white sm:top-0 sm:left-full sm:right-auto sm:-translate-x-1/2 sm:rotate-45 sm:p-1',
+                { 'bg-radical-red-500': color === 'red' },
+                { 'bg-prussian-blue-500': color === 'blue' }
+            )}
+        >
+            {children}
+        </span>
     )
 }
 

@@ -109,6 +109,7 @@ export const GET_NOTIFY_ADMIN = groq`
         },
         "assigned": *[_type == "assignNotify" && notify._ref == ^._id] {
             _id,
+            read,
             sentMail,
             user -> {
                 _id,

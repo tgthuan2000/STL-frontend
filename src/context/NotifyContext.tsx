@@ -96,6 +96,8 @@ const NotifyProvider = ({ children }: { children: React.ReactNode }) => {
             .listen<SanityDocument<AssignedNotify>>(SUBSCRIPTION_NOTIFY, { userId: userProfile?._id })
             .subscribe((update) => {
                 if (update.documentId.includes('drafts')) return
+
+                console.log({ update })
                 if (update.result) {
                     const __ = update.result as SanityDocument<
                         Omit<AssignedNotify, 'user'> & { user: IUserProfile & { _ref: string } }
@@ -141,6 +143,19 @@ const NotifyProvider = ({ children }: { children: React.ReactNode }) => {
                         } finally {
                         }
                     }, 1000)
+                } else {
+                    switch (update.transition) {
+                        case 'disappear': {
+                            setNotify((prev) => {
+                                const index = prev.findIndex((item) => item._id === update.documentId)
+                                if (index > -1) {
+                                    prev.splice(index, 1)
+                                }
+                                return prev
+                            })
+                            setTotal((prev) => prev - 1)
+                        }
+                    }
                 }
             })
 

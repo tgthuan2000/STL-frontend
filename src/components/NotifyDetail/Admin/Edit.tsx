@@ -59,10 +59,8 @@ const NotifyDetailEdit: React.FC<Props> = (props) => {
                         if (cur._id) {
                             if (cur.deleted) {
                                 acc.deletes.push(cur._id)
-                            } else {
-                                if (!cur.sentMail && cur.user.sendMail) {
-                                    acc.updates.push(cur)
-                                }
+                            } else if (!cur.sentMail && cur.user.allowSendMail && cur.user.sendMail && !cur.read) {
+                                acc.updates.push(cur)
                             }
                         } else {
                             acc.creates.push(cur.user)
@@ -72,7 +70,12 @@ const NotifyDetailEdit: React.FC<Props> = (props) => {
                     { creates: [], updates: [], deletes: [] } as {
                         deletes: string[]
                         creates: Array<IUserProfile & { sendMail?: boolean }>
-                        updates: { _id?: string; sentMail?: boolean; user?: IUserProfile & { sendMail?: boolean } }[]
+                        updates: {
+                            _id?: string
+                            sentMail?: boolean
+                            read: boolean
+                            user?: IUserProfile & { sendMail?: boolean }
+                        }[]
                     }
                 )
                 const refactoredData = {

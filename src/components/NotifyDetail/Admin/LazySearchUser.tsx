@@ -27,7 +27,7 @@ const LazySearchUser: React.FC<Props> = (props) => {
 
         if (!item._id) {
             form.setValue('assigned', assignsFiltered)
-        } else {
+        } else if (!item.read) {
             form.setValue(`assigned.${index}.deleted`, !item.deleted)
         }
     }
@@ -38,7 +38,7 @@ const LazySearchUser: React.FC<Props> = (props) => {
             if (indexItem === -1) {
                 form.setValue('assigned', [
                     ...assigned,
-                    { sentMail: false, user: { ...data, sendMail: data.allowSendMail } },
+                    { sentMail: false, read: false, user: { ...data, sendMail: data.allowSendMail } },
                 ])
             } else {
                 _handleAssign(
@@ -72,15 +72,16 @@ const LazySearchUser: React.FC<Props> = (props) => {
 
                 <UserList
                     data={assigned}
-                    getOptionItem={({ user, deleted }) => ({
+                    getOptionItem={({ user, deleted, read }) => ({
                         email: user.email,
                         image: user.image,
                         username: user.userName,
                         key: user._id,
                         deleted,
+                        read,
                     })}
                 >
-                    {({ user, deleted, sentMail, _id }, index) => (
+                    {({ user, deleted, read, sentMail, _id }, index) => (
                         <Fragment>
                             <UserAllowSendMailButton
                                 active={sentMail || user.sendMail}
@@ -91,6 +92,7 @@ const LazySearchUser: React.FC<Props> = (props) => {
                                 }}
                             />
                             <UserDeleteButton
+                                disabled={read}
                                 onClick={() => {
                                     if (!_id) {
                                         form.setValue(
