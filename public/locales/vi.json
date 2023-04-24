@@ -240,6 +240,9 @@
     "REAL_AMOUNT": "Số tiền thực trả",
     "AMOUNT_RECEIVE_METHOD": "Phương thức nhận tiền",
 
+    "MAKE_SCHEDULE": "Lên lịch trình",
+    "MAKE_TIMEKEEPING": "Chấm công",
+
     "JOIN_DATE": "Ngày tham gia",
     "RECEIVE_NOTIFY_BY_MAIL": "Nhận thông báo qua mail",
     "TWO_FACTOR_AUTHENTICATION": "Xác thực hai bước",

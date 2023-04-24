@@ -240,6 +240,9 @@
     "REAL_AMOUNT": "Real amount",
     "AMOUNT_RECEIVE_METHOD": "Amount receive method",
 
+    "MAKE_SCHEDULE": "Make schedule",
+    "MAKE_TIMEKEEPING": "Make timekeeping",
+
     "JOIN_DATE": "Join date",
     "RECEIVE_NOTIFY_BY_MAIL": "Receive notify by mail",
     "TWO_FACTOR_AUTHENTICATION": "Two factor authentication",

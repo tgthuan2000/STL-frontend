@@ -48,7 +48,7 @@ const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
                             >
                                 <Dialog.Panel className='pointer-events-auto w-screen max-w-full sm:max-w-md'>
                                     <div className='flex h-full flex-col overflow-y-auto bg-white shadow-xl dark:bg-slate-800'>
-                                        <div className='px-4 pt-6 sm:px-6'>
+                                        <div className='px-4 pt-6 pb-3 sm:px-6'>
                                             <div className='flex items-start justify-between'>
                                                 <Dialog.Title className='text-lg font-medium text-gray-900 dark:text-white'>
                                                     {title}
@@ -68,7 +68,7 @@ const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className='flex-1'>
+                                        <div className='h-full flex-1 overflow-hidden'>
                                             {children?.()}
                                             {/* /End replace */}
                                         </div>
