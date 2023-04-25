@@ -1,23 +1,10 @@
-.rbc-toolbar {
-    @apply m-5 justify-start gap-6 md:mx-0 md:mt-auto;
-}
-.rbc-toolbar .rbc-toolbar-label {
-    @apply flex-grow-0;
-}
-
-.rbc-calendar,
-.rbc-toolbar button {
+.rbc-calendar {
     @apply text-gray-900 dark:text-slate-200;
 }
 
 .rbc-toolbar button {
     @apply dark:bg-slate-800 dark:hover:bg-slate-900 dark:focus:border-slate-700 dark:active:text-slate-500;
 }
-.rbc-toolbar button,
-.rbc-toolbar button:active:hover,
-.rbc-toolbar button:active:focus,
-.rbc-toolbar button.rbc-active:hover,
-.rbc-toolbar button.rbc-active:focus,
 .rbc-header {
     @apply dark:border-slate-700;
 }
@@ -31,20 +18,6 @@
     @apply dark:border-t-slate-700;
 }
 
-.rbc-toolbar button.rbc-active:hover,
-.rbc-toolbar button.rbc-active:focus {
-    @apply dark:bg-slate-900 dark:text-cyan-500;
-}
-
-.rbc-btn-group {
-    @apply rounded-md shadow-md;
-}
-.rbc-btn-group > button:first-child:not(:last-child) {
-    @apply rounded-tl-lg rounded-bl-lg;
-}
-.rbc-btn-group > button:last-child:not(:first-child) {
-    @apply rounded-tr-lg rounded-br-lg;
-}
 .rbc-month-view {
     @apply dark:border-slate-800 dark:bg-slate-800 lg:rounded-md;
 }
@@ -64,4 +37,13 @@
 }
 .rbc-month-view .rbc-month-row:last-child {
     @apply lg:rounded-br-md;
+}
+
+.rbc-show-more {
+    @apply text-red-500 dark:text-cyan-400;
+}
+
+.rbc-show-more:hover,
+.rbc-show-more:focus {
+    @apply text-red-600 dark:text-cyan-500;
 }
