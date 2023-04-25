@@ -1,7 +1,9 @@
 import { useMemo } from 'react'
-import { Messages } from 'react-big-calendar'
+import { Components, Messages } from 'react-big-calendar'
 import { useTranslation } from 'react-i18next'
 import LANGUAGE from '~/i18n/language/key'
+import { CalendarEvent } from '..'
+import { DateHeader, EventWrapper, Header, Toolbar } from '../components'
 
 export const useMessage = (): Messages => {
     const { t } = useTranslation()
@@ -62,4 +64,20 @@ export const useLabel = (label: string) => {
     }, [t])
 
     return translatedLabel
+}
+
+export const useComponents = () => {
+    const components = useMemo(() => {
+        const comps: Components<CalendarEvent> = {
+            toolbar: Toolbar,
+            month: {
+                header: Header,
+                dateHeader: DateHeader,
+            },
+            eventWrapper: EventWrapper as any,
+        }
+        return comps
+    }, [])
+
+    return components
 }

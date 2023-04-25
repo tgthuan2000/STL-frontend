@@ -19,18 +19,20 @@ interface HiddenProps {
 const EventWrapper: React.ComponentType<EventWrapperProps<CalendarEvent> & HiddenProps> = (props) => {
     const { accessors, event, getters, onDoubleClick, selected, continuesAfter, continuesPrior, children, components } =
         props
+    // console.log(props)
 
     return (
         <div
             className={clsx(
-                'cursor-pointer px-2',
+                'flex cursor-pointer items-center',
                 { 'rounded-l-full': !continuesPrior },
                 { 'rounded-r-full': !continuesAfter },
                 event.resource.color
             )}
-            title={event.resource.tooltip}
+            // title={event.resource.tooltip}
         >
             <MonthEvent event={event} />
+            {/* {children} */}
         </div>
     )
 }
