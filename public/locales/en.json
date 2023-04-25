@@ -242,6 +242,10 @@
 
     "MAKE_SCHEDULE": "Make schedule",
     "MAKE_TIMEKEEPING": "Make timekeeping",
+    "FROM_DATE": "From date",
+    "TO_DATE": "To date",
+    "LOOP": "Loop",
+    "COLOR": "Color",
 
     "CALENDAR_PREVIOUS": "Previous",
     "CALENDAR_NEXT": "Next",

@@ -8,7 +8,7 @@ interface Props {
 const TitleEvent: React.FC<Props> = (props) => {
     const { title } = props
 
-    return <Prose className='block w-full truncate text-sm'>{title}</Prose>
+    return <span className='block w-full truncate text-sm'>{title}</span>
 }
 
 export default TitleEvent
