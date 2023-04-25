@@ -1,17 +1,13 @@
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import React, { useLayoutEffect } from 'react'
+import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { DefaultLayout } from '~/layout'
+import Dashboard from './Dashboard'
 import { AppProviders, LayoutProviders } from './Providers'
 import { ErrorFallback, PermissionCheck } from './components'
-import { LOCAL_STORAGE_KEY } from './constant/localStorage'
 import { PERMISSION } from './constant/permission'
-import { useLocalStorage, useWindowSize } from './hook'
-import { checkDarkTheme } from './utils'
-import Dashboard from './Dashboard'
 
 const AuthFeature = React.lazy(() => import('./features/auth'))
 const SpendingFeature = React.lazy(() => import('./features/spending'))
@@ -27,19 +23,10 @@ const FeedbackConfigFeature = React.lazy(() => import('./features/feedback-confi
 const RoleControlFeature = React.lazy(() => import('./features/role-control'))
 
 function App() {
-    const [theme] = useLocalStorage<string>(LOCAL_STORAGE_KEY.STL_THEME)
-
-    useLayoutEffect(() => {
-        checkDarkTheme(theme)
-            ? document.documentElement.classList.add('dark')
-            : document.documentElement.classList.remove('dark')
-    }, [])
-
     return (
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
             <BrowserRouter>
                 <ErrorBoundary FallbackComponent={ErrorFallback}>
-                    <Toast />
                     <AppProviders>
                         <Routes>
                             <Route
@@ -149,25 +136,6 @@ function App() {
                 </ErrorBoundary>
             </BrowserRouter>
         </GoogleOAuthProvider>
-    )
-}
-
-const Toast = () => {
-    const { width } = useWindowSize()
-
-    return (
-        <ToastContainer
-            position={width > 768 ? 'top-center' : 'bottom-center'}
-            autoClose={5000}
-            hideProgressBar
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme='colored'
-        />
     )
 }
 

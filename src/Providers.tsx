@@ -9,6 +9,7 @@ import {
     FlashScreenProvider,
     LoadingProvider,
     NotifyProvider,
+    ThemeProvider,
 } from './context'
 
 interface Props {
@@ -19,15 +20,17 @@ export const AppProviders: React.FC<Props> = (props) => {
     const { children } = props
 
     return (
-        <FlashScreenProvider>
-            <LoadingProvider>
-                <CheckingProvider>
-                    <FilePreviewProvider>
-                        <Suspense fallback={<LoadingText />}>{children}</Suspense>
-                    </FilePreviewProvider>
-                </CheckingProvider>
-            </LoadingProvider>
-        </FlashScreenProvider>
+        <ThemeProvider>
+            <FlashScreenProvider>
+                <LoadingProvider>
+                    <CheckingProvider>
+                        <FilePreviewProvider>
+                            <Suspense fallback={<LoadingText />}>{children}</Suspense>
+                        </FilePreviewProvider>
+                    </CheckingProvider>
+                </LoadingProvider>
+            </FlashScreenProvider>
+        </ThemeProvider>
     )
 }
 

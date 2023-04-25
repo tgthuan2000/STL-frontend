@@ -5,6 +5,14 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --toastify-color-success: rgb(16 185 129);
+    --toastify-color-error: rgb(255 51 85);
+    --toastify-color-warning: rgb(245 158 11);
+    --toastify-color-info: rgb(6 182 212);
+    --toastify-color-dark: rgb(30 41 59);
+}
+
 * {
     margin: 0;
     padding: 0;
