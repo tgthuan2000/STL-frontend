@@ -1,21 +1,30 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useMemo } from 'react'
-import { useForm } from 'react-hook-form'
+import { get } from 'lodash'
+import { Fragment, memo, useCallback, useMemo } from 'react'
+import { UseFormReturn, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { Button, SubmitWrap } from '~/components'
-import { DatePicker, Input, RichText, Selection, UploadImage } from '~/components/_base'
-import { useLoading } from '~/context'
-import LANGUAGE from '~/i18n/language/key'
 import * as yup from 'yup'
 import { DateRange } from '~/@types/components'
+import { Loop } from '~/@types/time'
+import { Button, SubmitWrap } from '~/components'
+import { DatePicker, Input, Radio, RichText, UploadImage } from '~/components/_base'
+import { useCheck, useLoading } from '~/context'
+import LANGUAGE from '~/i18n/language/key'
 import { isValidDateRange } from '~/services'
-import { get } from 'lodash'
+import useCalendarLoop from '../hook/useCalendarLoop'
+import ChooseColor from './ChooseColor'
+import { toast } from 'react-toastify'
+import moment from 'moment'
+import { client } from '~/sanityConfig'
+import { useProfile } from '~/store/auth'
 interface ScheduleForm {
     title: string
     description: string
-    dateRange: [Date | null, Date | null]
-    loop: any
-    color: string
+    startDate: Date | undefined
+    endDate: Date | undefined
+    loop: Loop | null
+    textColor: string
+    bgColor: string
     image: null
 }
 
@@ -25,13 +34,19 @@ const useSchema = () => {
         return yup.object().shape({
             title: yup.string().required(t(LANGUAGE.REQUIRED_FIELD) as string),
             description: yup.string(),
-            dateRange: yup
-                .array()
-                .of(yup.date())
-                .test('dateRange', t(LANGUAGE.REQUIRED_FIELD) as string, (value) => {
-                    return isValidDateRange(value as DateRange)
+            startDate: yup.date().required(t(LANGUAGE.REQUIRED_FIELD) as string),
+            endDate: yup
+                .date()
+                .when('startDate', (startDate: Date, schema: yup.DateSchema) => {
+                    return schema.min(startDate, t(LANGUAGE.END_DATE_MUST_BE_GREATER_THAN_START_DATE) as string)
                 })
-                .nullable(),
+                .required(t(LANGUAGE.REQUIRED_FIELD) as string),
+            loop: yup
+                .object()
+                .nullable()
+                .required(t(LANGUAGE.REQUIRED_FIELD) as string),
+            textColor: yup.string().required(t(LANGUAGE.REQUIRED_FIELD) as string),
+            bgColor: yup.string().required(t(LANGUAGE.REQUIRED_FIELD) as string),
         })
     }, [t])
 
@@ -40,24 +55,91 @@ const useSchema = () => {
 
 const MakeSchedule = () => {
     const { t } = useTranslation()
-    const { loading } = useLoading()
+    const { loading, setSubmitLoading } = useLoading()
+    const { userProfile } = useProfile()
+    const { needCheckWhenLeave } = useCheck()
     const schema = useSchema()
+
     const form = useForm<ScheduleForm>({
         defaultValues: {
             title: '',
-            color: '',
+            textColor: '#ffffff',
+            bgColor: '#000000',
             description: '',
-            dateRange: [null, null],
-            loop: '',
+            startDate: new Date(),
+            endDate: new Date(),
+            loop: null,
             image: null,
         },
         resolver: yupResolver(schema),
     })
-    const dateRange = form.watch('dateRange')
+
+    const startDate = form.watch('startDate')
+    const endDate = form.watch('endDate')
 
     const onsubmit = async (data: ScheduleForm) => {
         console.log(data)
+        try {
+            setSubmitLoading(true)
+            let { bgColor, startDate, endDate, description, image, loop, textColor, title } = data
+            let imageId = null
+
+            title = title.trim()
+
+            if (image) {
+                const response = await client.assets.upload('image', image)
+                imageId = response._id
+            }
+
+            const document = {
+                _type: 'schedule',
+                title,
+                description,
+                startDate: moment(startDate).format(),
+                endDate: moment(endDate).format(),
+                loop: {
+                    _type: 'reference',
+                    _ref: loop?._id,
+                },
+                textColor,
+                bgColor,
+                user: {
+                    _type: 'reference',
+                    _ref: userProfile?._id,
+                },
+                ...(imageId && { image: { _type: 'image', asset: { _type: 'reference', _ref: imageId } } }),
+            }
+
+            await client.create(document)
+
+            form.reset({ title: '', description: '', image: null }, { keepDefaultValues: true })
+
+            toast.success(t(LANGUAGE.NOTIFY_CREATE_SCHEDULE_SUCCESS))
+            needCheckWhenLeave()
+        } catch (error) {
+            console.log(error)
+            toast.error<string>(get(error, 'response.data.message', 'Something went wrong'))
+        } finally {
+            setSubmitLoading(false)
+        }
     }
+
+    const renderLoop = useCallback(
+        (data: Loop[] | undefined, loading: boolean) => (
+            <Radio
+                name='loop'
+                form={form}
+                loading={loading}
+                options={data}
+                label={t(LANGUAGE.LOOP)}
+                getOptionKey={(option: Loop) => option?._id}
+                getOptionLabel={(option: Loop) => option?.name}
+            />
+        ),
+        []
+    )
+
+    const getDefaultLoopValue = useCallback((value: Loop) => form.setValue('loop', value), [])
 
     return (
         <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
@@ -76,53 +158,33 @@ const MakeSchedule = () => {
                             />
 
                             <DatePicker
-                                showTimeInput={false}
-                                selectsRange
                                 form={form}
-                                name='dateRange'
-                                label={t(LANGUAGE.DATE_RANGE)}
+                                name='startDate'
+                                label={t(LANGUAGE.START_DATE)}
                                 placeholderText={t(LANGUAGE.PLACEHOLDER_CHOOSE_TIME)}
-                                format='DATE'
-                                startDate={get(dateRange, '[0]')}
-                                endDate={get(dateRange, '[1]')}
-                                onChange={(dateRange: DateRange) => {
-                                    if (isValidDateRange(dateRange)) {
-                                        form.setValue('dateRange', dateRange)
-                                    }
-                                }}
+                                format='DATE_TIME'
+                                disabledClear={!startDate}
+                                startDate={startDate}
+                                endDate={endDate}
+                                selectsStart
                             />
 
-                            <Selection
-                                name='loop'
+                            <DatePicker
                                 form={form}
-                                label={t(LANGUAGE.LOOP)}
-                                data={[
-                                    {
-                                        label: 'Không lặp',
-                                        value: 'none',
-                                    },
-                                    {
-                                        label: 'Hàng ngày',
-                                        value: 'daily',
-                                    },
-                                    {
-                                        label: 'Hàng tuần',
-                                        value: 'weekly',
-                                    },
-                                    {
-                                        label: 'Hàng tháng',
-                                        value: 'monthly',
-                                    },
-                                    {
-                                        label: 'Hàng năm',
-                                        value: 'yearly',
-                                    },
-                                ]}
-                                valueKey='label'
-                                idKey='value'
+                                name='endDate'
+                                label={t(LANGUAGE.END_DATE)}
+                                placeholderText={t(LANGUAGE.PLACEHOLDER_CHOOSE_TIME)}
+                                format='DATE_TIME'
+                                disabledClear={!endDate}
+                                startDate={startDate}
+                                endDate={endDate}
+                                selectsEnd
+                                minDate={startDate}
                             />
 
-                            <Input name='color' type='color' form={form} label={t(LANGUAGE.COLOR)} />
+                            <GetLoop onDefaultValue={getDefaultLoopValue}>{renderLoop}</GetLoop>
+
+                            <ChooseColor form={form} bgColorName='bgColor' textColorName='textColor' />
 
                             <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
                         </div>
@@ -140,5 +202,17 @@ const MakeSchedule = () => {
         </form>
     )
 }
+
+interface LoopProps {
+    children: (data: Loop[] | undefined, loading: boolean) => React.ReactNode
+    onDefaultValue: (value: Loop) => void
+}
+
+const GetLoop: React.FC<LoopProps> = memo((props) => {
+    const { children, onDefaultValue } = props
+    const { data, loading } = useCalendarLoop((data) => onDefaultValue(data[0]))
+
+    return <>{children(data, loading)}</>
+})
 
 export default MakeSchedule

@@ -26,10 +26,10 @@ const EventWrapper: React.ComponentType<EventWrapperProps<CalendarEvent> & Hidde
             className={clsx(
                 'flex cursor-pointer items-center',
                 { 'rounded-l-full': !continuesPrior },
-                { 'rounded-r-full': !continuesAfter },
-                event.resource.color
+                { 'rounded-r-full': !continuesAfter }
             )}
-            // title={event.resource.tooltip}
+            style={{ backgroundColor: event.resource.bgColor }}
+            title={event.resource.title}
         >
             <MonthEvent event={event} />
             {/* {children} */}

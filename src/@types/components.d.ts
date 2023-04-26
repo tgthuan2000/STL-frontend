@@ -172,6 +172,7 @@ export interface InputProps
 export interface LabelProps {
     id?: string
     label?: DefaultTFuncReturn
+    className?: string
 }
 
 export interface InputNumberHintProps {
@@ -235,6 +236,9 @@ export interface DateProps {
     InputProps?: {
         readOnly?: boolean
     }
+    selectsStart?: boolean
+    selectsEnd?: boolean
+    minDate?: Date
 }
 
 export interface DatePickerInputProps {

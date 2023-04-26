@@ -1,30 +1,62 @@
 import clsx from 'clsx'
+import { isEmpty } from 'lodash'
 import moment from 'moment'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Calendar as BigCalendar, Event as IEvent, momentLocalizer } from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import { mocks } from './services'
+import { ICalendar } from '~/@types/time'
+import LoadingText from '../Loading/LoadingText'
+import { TitleEvent } from './events'
 import { useComponents, useMessage } from './services/components'
 import './style.css'
 
 moment.locale('en', { week: { dow: 1 } })
 const localizer = momentLocalizer(moment)
 
-export interface CalendarResource {
-    tooltip: string
-    color: string
+export interface CalendarResource extends Omit<ICalendar, 'startDate' | 'endDate'> {}
+
+export type CalendarEvent = Omit<IEvent, 'resource' | 'start' | 'end'> & {
+    resource: CalendarResource
+    start: Date | string | undefined
+    end: Date | string | undefined
 }
-export type CalendarEvent = Omit<IEvent, 'resource'> & { resource: CalendarResource }
 
 interface Props {
     className?: string
-    data?: any[]
+    data?: ICalendar[]
+    loading?: boolean
 }
 
 const Calendar: React.FC<Props> = (props) => {
-    const { className, data } = props
+    const { className, data, loading } = props
     const messages = useMessage()
     const components = useComponents()
+
+    const refactoredData = useMemo(() => {
+        if (!data || isEmpty(data)) return []
+
+        const refactored: CalendarEvent[] = data.map(
+            ({ _id, bgColor, endDate, image, loop, startDate, textColor, title }) => {
+                return {
+                    end: endDate,
+                    start: startDate,
+                    allDay: true,
+                    title: <TitleEvent title={title} color={textColor} />,
+                    resource: {
+                        _id,
+                        title,
+                        image,
+                        loop,
+                        bgColor,
+                        textColor,
+                    },
+                }
+            }
+        )
+        return refactored
+    }, [data])
+
+    if (loading) return <LoadingText />
 
     return (
         <div
@@ -36,7 +68,7 @@ const Calendar: React.FC<Props> = (props) => {
             <BigCalendar
                 localizer={localizer}
                 components={components as any}
-                events={mocks}
+                events={refactoredData}
                 views={['month']}
                 startAccessor='start'
                 endAccessor='end'

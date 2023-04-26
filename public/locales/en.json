@@ -11,6 +11,8 @@
     "CATEGORY": "Category",
     "CATEGORY_NAME": "Category name",
     "DATE": "Date",
+    "START_DATE": "Start date",
+    "END_DATE": "End date",
     "DAY": "Day",
     "L_DAYS": "day(s)",
     "L_MAXIMUM": "maximum",
@@ -153,6 +155,7 @@
     "REAL_MONEY_MUST_BE_LESS_THAN_AMOUNT": "Real money must be less than amount",
     "INVALID_FORMAT": "Invalid format",
 
+    "PLACEHOLDER_TEXT": "Placeholder 🎉",
     "PLACEHOLDER_CHOOSE_KIND": "Choose kind",
     "PLACEHOLDER_CHOOSE_TIME": "Choose time",
     "PLACEHOLDER_ENTER_CONTENT": "Enter content",
@@ -161,6 +164,7 @@
 
     "NOTIFY_UPDATE_SUCCESS": "Update success",
     "NOTIFY_UPDATE_FAILED": "Update failed",
+    "NOTIFY_CREATE_SCHEDULE_SUCCESS": "Create schedule success",
     "NOTIFY_CREATE_RECEIVE_SUCCESS": "Receive success",
     "NOTIFY_CREATE_TRANSFER_SUCCESS": "Transfer success",
     "NOTIFY_CREATE_COST_SUCCESS": "Cost success",
@@ -199,6 +203,7 @@
     "CONFIRM_NOTIFY": "Do you want to notify?",
     "CONFIRM_DELETE_TRANSACTION": "Do you want to delete transaction?",
     "CONFIRM_DELETE_MESSAGE": "Do you want to delete message?",
+    "NEED_SAVE_TO_UPDATED": "Need save after changed to update",
 
     "SPENDING": "Spending management",
     "BUDGET_BY_CATEGORY": "Budget by category",
@@ -246,6 +251,8 @@
     "TO_DATE": "To date",
     "LOOP": "Loop",
     "COLOR": "Color",
+    "TEXT_COLOR": "Text",
+    "BG_COLOR": "Background",
 
     "CALENDAR_PREVIOUS": "Previous",
     "CALENDAR_NEXT": "Next",
@@ -339,6 +346,7 @@
     "NOT_SIMILAR_NAME": "Not similar name",
     "INVALID_FORMAT_IMAGE": "Invalid format image",
     "INVALID_FORMAT_IMAGE_SIZE": "Invalid format image size",
+    "END_DATE_MUST_BE_GREATER_THAN_START_DATE": "End date must be greater than start date",
 
     "SPENDING_MANAGEMENT": "Spending management",
     "LOAN_MANAGEMENT": "Loan/Get loan management",
