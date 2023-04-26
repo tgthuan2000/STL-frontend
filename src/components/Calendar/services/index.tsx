@@ -39,7 +39,7 @@ export const mocks = Array.from(Array(20)).map(() => {
         end: randomDate(),
         start: randomDate(),
         allDay: Math.random() > 0.5,
-        title: <TitleEvent title={title} />,
+        title: <TitleEvent title={title} color='#000000' />,
         resource: {
             tooltip: title,
             color: randomColor(),

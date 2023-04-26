@@ -1,8 +1,8 @@
 import React from 'react'
-import { Event } from 'react-big-calendar'
+import { CalendarEvent } from '..'
 
 interface Props {
-    event: Event
+    event: CalendarEvent
 }
 
 const MonthEvent: React.FC<Props> = (props) => {

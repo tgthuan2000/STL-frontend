@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import { Suspense, memo } from 'react'
 import { Outlet } from 'react-router-dom'
 import { AsideButtonDesktopWrap, AsideButtonMobileWrap, ButtonMenuDesktop, ButtonMenuMobile } from '~/components'
 import LoadingText from '~/components/Loading/LoadingText'
@@ -7,7 +7,6 @@ import { useLoading } from '~/context'
 import { useWindowSize } from '~/hook'
 
 const Spending = () => {
-    const { width } = useWindowSize()
     const { loading } = useLoading()
 
     if (loading.config) return null
@@ -19,29 +18,35 @@ const Spending = () => {
                     <Outlet />
                 </Suspense>
             </main>
-            {width >= 1280 ? <Desktop /> : <Mobile />}
+            <RenderMenu />
         </div>
     )
 }
 
-const Desktop = () => {
+const RenderMenu = () => {
+    const { width } = useWindowSize()
+
+    return width >= 1280 ? <Desktop /> : <Mobile />
+}
+
+const Desktop = memo(() => {
     const menuSpendingPC = useMenuSpendingPC()
 
     return (
         <AsideButtonDesktopWrap>
-            <ButtonMenuDesktop data={menuSpendingPC} />
+            <ButtonMenuDesktop.v1 data={menuSpendingPC} />
         </AsideButtonDesktopWrap>
     )
-}
+})
 
-const Mobile = () => {
+const Mobile = memo(() => {
     const menuSpendingPages = useMenuSpendingPages()
 
     return (
         <AsideButtonMobileWrap>
-            <ButtonMenuMobile data={menuSpendingPages} />
+            <ButtonMenuMobile.v1 data={menuSpendingPages} />
         </AsideButtonMobileWrap>
     )
-}
+})
 
 export default Spending

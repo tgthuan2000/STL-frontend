@@ -2,21 +2,19 @@ import moment from 'moment'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DashboardQueryData } from '~/@types/loan'
-import { Box2, ButtonMenuDesktop, Divider, Transaction } from '~/components'
+import { Box2, Divider, Transaction } from '~/components'
 import { TAGS } from '~/constant'
 import { useCheck, useConfig } from '~/context'
-import { useQuery, useWindowSize } from '~/hook'
-import { useMenuLoanMobile } from '~/hook/components'
+import { useQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
 import { useProfile } from '~/store/auth'
+import { MobileMenu } from '../components'
 
 const Dashboard = () => {
     const { t } = useTranslation()
-    const { width } = useWindowSize()
     const { userProfile } = useProfile()
     const { getKindSpendingId } = useConfig()
-    const menuLoanMobile = useMenuLoanMobile()
 
     const [{ recent, paydue, statistic }, fetchData, deleteCache, reload] = useQuery<DashboardQueryData>(
         {
@@ -53,11 +51,7 @@ const Dashboard = () => {
 
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.LOAN_MANAGEMENT)}>
-            {width < 1280 && (
-                <div className='block xl:hidden'>
-                    <ButtonMenuDesktop small data={menuLoanMobile} />
-                </div>
-            )}
+            <MobileMenu />
 
             <Divider className='py-6 xl:hidden' dashed />
 

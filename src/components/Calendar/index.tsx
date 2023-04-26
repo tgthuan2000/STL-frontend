@@ -56,8 +56,6 @@ const Calendar: React.FC<Props> = (props) => {
         return refactored
     }, [data])
 
-    if (loading) return <LoadingText />
-
     return (
         <div
             className={clsx(
