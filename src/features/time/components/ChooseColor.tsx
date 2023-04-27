@@ -1,5 +1,6 @@
 import { LockClosedIcon, LockOpenIcon } from '@heroicons/react/24/outline'
-import React, { useCallback, useMemo, useState } from 'react'
+import clsx from 'clsx'
+import React, { useCallback, useMemo } from 'react'
 import { UseFormReturn, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { AnimateWrap } from '~/components'
@@ -14,7 +15,9 @@ interface Props {
 const ChooseColor: React.FC<Props> = (props) => {
     const { form, bgColorName, textColorName } = props
     const { t } = useTranslation()
-    const [fix, setFix] = useState(false)
+
+    const __loopValid = form.watch('__loopValid') ?? true
+    const __loopError = !!form.formState.errors.__loopValid
 
     const localForm = useForm({
         defaultValues: {
@@ -23,23 +26,22 @@ const ChooseColor: React.FC<Props> = (props) => {
         },
     })
 
-    const Icon = useMemo(() => (fix ? LockOpenIcon : LockClosedIcon), [fix])
+    const Icon = useMemo(() => (__loopValid ? LockClosedIcon : LockOpenIcon), [__loopValid])
+    const title = useMemo(() => (__loopValid ? t(LANGUAGE.EDIT) : t(LANGUAGE.SAVE)), [__loopValid])
 
     const handleClick = useCallback(() => {
-        if (fix) {
+        if (!__loopValid) {
             form.setValue(textColorName, localForm.getValues('textColor'))
             form.setValue(bgColorName, localForm.getValues('bgColor'))
         }
-        setFix((prev) => !prev)
-    }, [fix])
-
-    const title = useMemo(() => (fix ? t(LANGUAGE.SAVE) : t(LANGUAGE.EDIT)), [fix])
+        form.setValue('__loopValid', !__loopValid)
+    }, [__loopValid])
 
     return (
         <div className=''>
             <div className='relative flex items-end gap-6'>
                 <Input
-                    disabled={!fix}
+                    disabled={__loopValid}
                     className='flex-1'
                     name='textColor'
                     type='color'
@@ -47,7 +49,7 @@ const ChooseColor: React.FC<Props> = (props) => {
                     label={t(LANGUAGE.TEXT_COLOR)}
                 />
                 <Input
-                    disabled={!fix}
+                    disabled={__loopValid}
                     className='flex-1'
                     name='bgColor'
                     type='color'
@@ -66,12 +68,23 @@ const ChooseColor: React.FC<Props> = (props) => {
                     onClick={handleClick}
                     title={title}
                 >
-                    <Icon className='h-5 w-5 text-gray-500 dark:text-slate-200 sm:h-6 sm:w-6' />
+                    <Icon
+                        className={clsx(
+                            'h-5 w-5 sm:h-6 sm:w-6',
+                            { 'text-gray-500 dark:text-slate-200': __loopValid },
+                            { 'text-orange-400': !__loopValid },
+                            { '!text-red-500': !__loopValid && __loopError }
+                        )}
+                    />
                 </button>
             </div>
 
-            <AnimateWrap className='mt-1'>
-                {fix && <span className='font-medium text-orange-400'>{t(LANGUAGE.NEED_SAVE_TO_UPDATED)}</span>}
+            <AnimateWrap className='mt-1 flex flex-col'>
+                {!__loopValid && (
+                    <span className={clsx('font-medium', __loopError ? 'text-red-500' : 'text-orange-400')}>
+                        {t(LANGUAGE.NEED_SAVE_TO_UPDATED)}
+                    </span>
+                )}
             </AnimateWrap>
         </div>
     )

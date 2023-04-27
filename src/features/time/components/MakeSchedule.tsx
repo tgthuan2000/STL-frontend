@@ -24,6 +24,8 @@ interface ScheduleForm {
     textColor: string
     bgColor: string
     image: null
+
+    __loopValid: boolean
 }
 
 const useSchema = () => {
@@ -45,6 +47,10 @@ const useSchema = () => {
                 .required(t(LANGUAGE.REQUIRED_FIELD) as string),
             textColor: yup.string().required(t(LANGUAGE.REQUIRED_FIELD) as string),
             bgColor: yup.string().required(t(LANGUAGE.REQUIRED_FIELD) as string),
+
+            __loopValid: yup
+                .boolean()
+                .test('__loopValid', t(LANGUAGE.NEED_SAVE_TO_UPDATED) as string, (value) => value === true),
         })
     }, [t])
 
@@ -68,6 +74,7 @@ const MakeSchedule = () => {
             endDate: new Date(),
             loop: null,
             image: null,
+            __loopValid: true, // using for validate loop
         },
         resolver: yupResolver(schema),
     })

@@ -8,7 +8,7 @@ export const GET_SCHEDULE_LOOPS = groq`
 `
 
 export const GET_SCHEDULE = groq`
-    *[_type == "schedule" && user._ref == $userId && startDate >= $fromDate || endDate <= $toDate] | order(startDate asc) {
+    *[_type == "schedule" && user._ref == $userId && ((startDate <= $startDate && $endDate <= endDate) ||  ($startDate <= endDate && endDate <= $endDate) || (startDate <= $endDate && $startDate <= startDate)) ] | order(startDate asc) {
         _id,
         title,
         startDate,

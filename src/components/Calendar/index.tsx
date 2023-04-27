@@ -8,6 +8,8 @@ import { ICalendar } from '~/@types/time'
 import { TitleEvent } from './events'
 import { useComponents, useMessage } from './services/components'
 import './style.css'
+import { useParams } from 'react-router-dom'
+import { DATE_FORMAT } from '~/constant'
 
 moment.locale('en', { week: { dow: 1 } })
 const localizer = momentLocalizer(moment)
@@ -28,6 +30,7 @@ interface Props {
 
 const Calendar: React.FC<Props> = (props) => {
     const { className, data } = props
+    const { month } = useParams()
     const messages = useMessage()
     const components = useComponents()
 
@@ -67,6 +70,7 @@ const Calendar: React.FC<Props> = (props) => {
                 startAccessor='start'
                 endAccessor='end'
                 messages={messages}
+                defaultDate={month ? moment(month, DATE_FORMAT.MONTH).toDate() : new Date()}
             />
         </div>
     )

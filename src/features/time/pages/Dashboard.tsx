@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next'
 import { AnimateWrap, Calendar, Transaction } from '~/components'
+import { useCheck } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import { MobileMenu } from '../components'
 import useCalendar from '../hook/useCalendar'
-import { useCheck } from '~/context'
 
 const Dashboard = () => {
     const { t } = useTranslation()

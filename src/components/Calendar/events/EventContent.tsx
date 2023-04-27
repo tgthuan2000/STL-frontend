@@ -25,19 +25,17 @@ const EventContent: React.FC<Props> = (props) => {
     } = useCalendarDetail(id)
 
     return (
-        <div className='text-gray-900 dark:text-slate-200'>
-            <AnimateWrap className='flex flex-col gap-2'>
-                {loading ? (
-                    <div className='mb-6 flex justify-center'>
-                        <LoadingIcon />
-                    </div>
-                ) : !data ? (
-                    <span className='px-6 pb-6 text-red-500'>{t(LANGUAGE.EMPTY_DATA)}</span>
-                ) : (
-                    <Content id={id} description={data.description} image={urlFor(data.image)} />
-                )}
-            </AnimateWrap>
-        </div>
+        <AnimateWrap className='h-full text-gray-900 dark:text-slate-200'>
+            {loading ? (
+                <div className='mb-6 flex justify-center'>
+                    <LoadingIcon />
+                </div>
+            ) : !data ? (
+                <span className='px-6 pb-6 text-red-500'>{t(LANGUAGE.EMPTY_DATA)}</span>
+            ) : (
+                <Content id={id} description={data.description} image={urlFor(data.image)} />
+            )}
+        </AnimateWrap>
     )
 }
 
@@ -78,20 +76,22 @@ const Content: React.FC<ContentProp> = (props) => {
     }
 
     return (
-        <Fragment>
+        <div className='flex h-full flex-col gap-2'>
             {description && <Prose className='px-6'>{description}</Prose>}
-            <Image
-                src={image}
-                fallback={<>#{t(LANGUAGE.NO_IMAGE)}</>}
-                className={(error) =>
-                    clsx(
-                        'flex items-center justify-center object-cover',
-                        { 'h-full w-full cursor-pointer transition hover:opacity-90': !error },
-                        { 'mx-6 h-40 w-40 rounded-xl border dark:border-slate-700': error }
-                    )
-                }
-                onClick={() => preview({ type: 'image', file: image })}
-            />
+            <div className='flex-1 overflow-hidden'>
+                <Image
+                    src={image}
+                    fallback={<>#{t(LANGUAGE.NO_IMAGE)}</>}
+                    className={(error) =>
+                        clsx(
+                            'flex items-center justify-center bg-gray-700 object-contain dark:bg-slate-700',
+                            { 'h-full w-full flex-1 cursor-pointer transition hover:opacity-90': !error },
+                            { 'mx-6 h-40 w-40 rounded-xl border dark:border-slate-700': error }
+                        )
+                    }
+                    onClick={() => preview({ type: 'image', file: image })}
+                />
+            </div>
             <div className='flex justify-end gap-2 px-6 pb-6 pt-4'>
                 <Button type='button' color='outline-radicalRed' onClick={handleDelete}>
                     {t(LANGUAGE.DELETE)}
@@ -100,7 +100,7 @@ const Content: React.FC<ContentProp> = (props) => {
                     {t(LANGUAGE.UPDATE)}
                 </Button>
             </div>
-        </Fragment>
+        </div>
     )
 }
 

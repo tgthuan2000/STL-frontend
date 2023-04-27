@@ -61,7 +61,7 @@ export const useLabel = (label: string) => {
             case 'December':
                 return t(LANGUAGE.CALENDAR_DECEMBER)
         }
-    }, [t])
+    }, [t, label])
 
     return translatedLabel
 }
