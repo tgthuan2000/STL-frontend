@@ -5,7 +5,6 @@ import React, { useMemo } from 'react'
 import { Calendar as BigCalendar, Event as IEvent, momentLocalizer } from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { ICalendar } from '~/@types/time'
-import LoadingText from '../Loading/LoadingText'
 import { TitleEvent } from './events'
 import { useComponents, useMessage } from './services/components'
 import './style.css'
@@ -28,31 +27,28 @@ interface Props {
 }
 
 const Calendar: React.FC<Props> = (props) => {
-    const { className, data, loading } = props
+    const { className, data } = props
     const messages = useMessage()
     const components = useComponents()
 
     const refactoredData = useMemo(() => {
-        if (!data || isEmpty(data)) return []
+        if (!data || isEmpty(data) || !Array.isArray(data)) return []
 
-        const refactored: CalendarEvent[] = data.map(
-            ({ _id, bgColor, endDate, image, loop, startDate, textColor, title }) => {
-                return {
-                    end: endDate,
-                    start: startDate,
-                    allDay: true,
-                    title: <TitleEvent title={title} color={textColor} />,
-                    resource: {
-                        _id,
-                        title,
-                        image,
-                        loop,
-                        bgColor,
-                        textColor,
-                    },
-                }
+        const refactored: CalendarEvent[] = data.map(({ _id, bgColor, endDate, loop, startDate, textColor, title }) => {
+            return {
+                end: endDate,
+                start: startDate,
+                allDay: true,
+                title: <TitleEvent title={title} color={textColor} />,
+                resource: {
+                    _id,
+                    title,
+                    loop,
+                    bgColor,
+                    textColor,
+                },
             }
-        )
+        })
         return refactored
     }, [data])
 

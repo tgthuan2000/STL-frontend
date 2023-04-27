@@ -2,6 +2,7 @@ import { SanityAssetDocument } from '@sanity/client'
 
 export interface Loop {
     _id: string
+    key: string
     name: string
 }
 
@@ -12,6 +13,10 @@ export interface ICalendar {
     endDate: string
     textColor: string
     bgColor: string
-    image: SanityAssetDocument
     loop: Loop
+}
+
+export interface ICalendarDetail extends ICalendar {
+    description?: string
+    image?: SanityAssetDocument
 }

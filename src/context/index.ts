@@ -1,6 +1,7 @@
 export * from './CacheContext'
 export * from './CheckingContext'
 export * from './ConfigContext'
+export * from './DetailDialogContext'
 export * from './FilePreviewContext'
 export * from './FlashScreenContext'
 export * from './LoadingContext'

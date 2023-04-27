@@ -1,5 +1,10 @@
 import React from 'react'
+import LoadingText from '~/components/Loading/LoadingText'
+import { useDetailDialog } from '~/context'
 import { CalendarEvent } from '..'
+import EventTitle from './EventTitle'
+
+const EventContent = React.lazy(() => import('./EventContent'))
 
 interface Props {
     event: CalendarEvent
@@ -7,9 +12,21 @@ interface Props {
 
 const MonthEvent: React.FC<Props> = (props) => {
     const { event } = props
+    const { set } = useDetailDialog()
 
     const handleClick = () => {
-        console.log('Month Event Clicked')
+        set({
+            title: (
+                <EventTitle
+                    title={event.resource.title}
+                    loop={event.resource.loop.name}
+                    start={event.start}
+                    end={event.end}
+                />
+            ),
+            content: <EventContent id={event.resource._id} />,
+            fallback: <LoadingText />,
+        })
     }
 
     return (

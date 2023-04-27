@@ -103,6 +103,7 @@
     "EMAIL": "Email",
     "COPIED": "Copied",
     "IMAGE": "Image",
+    "NO_IMAGE": "No image",
     "USER": "User",
     "ROLE": "Role",
     "SERVICE": "Service",
@@ -199,10 +200,13 @@
     "NOTIFY_REFRESH_TOKEN_EXPIRED": "Refresh token expired",
     "NOTIFY_TOKEN_REVOKED": "Token revoked",
     "NOTIFY_INACTIVE_ACCOUNT": "Inactive account",
+    "NOTIFY_DELETE_SCHEDULE_SUCCESSFULLY": "Delete schedule successfully",
+    "NOTIFY_UPDATE_SCHEDULE_SUCCESSFULLY": "Update schedule successfully",
 
     "CONFIRM_NOTIFY": "Do you want to notify?",
     "CONFIRM_DELETE_TRANSACTION": "Do you want to delete transaction?",
     "CONFIRM_DELETE_MESSAGE": "Do you want to delete message?",
+    "CONFIRM_DELETE_SCHEDULE": "Do you want to delete this schedule?",
     "NEED_SAVE_TO_UPDATED": "Need save after changed to update",
 
     "SPENDING": "Spending management",
@@ -245,6 +249,7 @@
     "REAL_AMOUNT": "Real amount",
     "AMOUNT_RECEIVE_METHOD": "Amount receive method",
 
+    "SCHEDULE_DETAIL": "Schedule detail",
     "MAKE_SCHEDULE": "Make schedule",
     "MAKE_TIMEKEEPING": "Make timekeeping",
     "FROM_DATE": "From date",
@@ -266,6 +271,7 @@
     "CALENDAR_DATE": "Date",
     "CALENDAR_TIME": "Time",
     "CALENDAR_EVENT": "Event",
+    "CALENDAR_EVENT_DETAIL": "Event detail",
     "CALENDAR_NO_EVENTS_IN_RANGE": "No events in range",
     "CALENDAR_SHOW_MORE": "Show more",
     "CALENDAR_L_EVENTS": "events",

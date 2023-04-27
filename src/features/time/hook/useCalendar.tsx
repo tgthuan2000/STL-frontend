@@ -1,5 +1,6 @@
 import moment from 'moment'
 import React, { useEffect } from 'react'
+import { Data } from '~/@types/hook'
 import { ICalendar } from '~/@types/time'
 import { TAGS } from '~/constant'
 import { useQuery } from '~/hook'
@@ -12,7 +13,7 @@ interface CalendarQueryData {
 
 const useCalendar = () => {
     const { userProfile } = useProfile()
-    const [{ calendar }, fetchData] = useQuery<CalendarQueryData>(
+    const [{ calendar }, fetchData, deletedCaches, reloadData] = useQuery<CalendarQueryData>(
         { calendar: GET_SCHEDULE },
         {
             fromDate: moment().startOf('month').toISOString(),
@@ -22,11 +23,19 @@ const useCalendar = () => {
         { calendar: TAGS.ALTERNATE }
     )
 
+    const refetch = () => {
+        deletedCaches('calendar')
+        reloadData()
+    }
+
     useEffect(() => {
         fetchData()
     }, [])
 
-    return calendar
+    return {
+        calendar,
+        refetch,
+    }
 }
 
 export default useCalendar

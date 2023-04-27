@@ -137,7 +137,7 @@ const MakeSchedule = () => {
         []
     )
 
-    const getDefaultLoopValue = useCallback((value: Loop) => form.setValue('loop', value), [])
+    const setDefaultLoopValue = useCallback((value: Loop) => form.setValue('loop', value), [])
 
     return (
         <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
@@ -180,7 +180,7 @@ const MakeSchedule = () => {
                                 minDate={startDate}
                             />
 
-                            <GetLoop onDefaultValue={getDefaultLoopValue}>{renderLoop}</GetLoop>
+                            <GetLoop onDefaultValue={setDefaultLoopValue}>{renderLoop}</GetLoop>
 
                             <ChooseColor form={form} bgColorName='bgColor' textColorName='textColor' />
 
@@ -203,12 +203,12 @@ const MakeSchedule = () => {
 
 interface LoopProps {
     children: (data: Loop[] | undefined, loading: boolean) => React.ReactNode
-    onDefaultValue: (value: Loop) => void
+    onDefaultValue?: (value: Loop) => void
 }
 
-const GetLoop: React.FC<LoopProps> = memo((props) => {
+export const GetLoop: React.FC<LoopProps> = memo((props) => {
     const { children, onDefaultValue } = props
-    const { data, loading } = useCalendarLoop((data) => onDefaultValue(data[0]))
+    const { data, loading } = useCalendarLoop((data) => onDefaultValue?.(data[0]))
 
     return <>{children(data, loading)}</>
 })

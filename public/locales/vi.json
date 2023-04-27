@@ -103,6 +103,7 @@
     "EMAIL": "Email",
     "COPIED": "Đã sao chép",
     "IMAGE": "Hình ảnh",
+    "NO_IMAGE": "Không có ảnh",
     "USER": "Người dùng",
     "ROLE": "Vai trò",
     "SERVICE": "Dịch vụ",
@@ -199,10 +200,13 @@
     "NOTIFY_REFRESH_TOKEN_EXPIRED": "Phiên làm việc đã hết hạn, vui lòng đăng nhập lại!",
     "NOTIFY_TOKEN_REVOKED": "Phiên làm việc đã bị hủy, vui lòng đăng nhập lại!",
     "NOTIFY_INACTIVE_ACCOUNT": "Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản trị viên!",
+    "NOTIFY_DELETE_SCHEDULE_SUCCESSFULLY": "Xóa lịch trình thành công!",
+    "NOTIFY_UPDATE_SCHEDULE_SUCCESSFULLY": "Cập nhật lịch trình thành công!",
 
     "CONFIRM_NOTIFY": "Bạn có chắc chắn muốn gửi thông báo này?",
     "CONFIRM_DELETE_TRANSACTION": "Bạn có chắc muốn xóa giao dịch này ?",
     "CONFIRM_DELETE_MESSAGE": "Bạn có chắc muốn xóa tin nhắn này ?",
+    "CONFIRM_DELETE_SCHEDULE": "Bạn có chắc muốn xóa lịch trình này ?",
     "NEED_SAVE_TO_UPDATED": "Bạn cần lưu lại sau khi chỉnh sửa để cập nhật!",
 
     "SPENDING": "Quản lý chi tiêu",
@@ -245,6 +249,7 @@
     "REAL_AMOUNT": "Số tiền thực trả",
     "AMOUNT_RECEIVE_METHOD": "Phương thức nhận tiền",
 
+    "SCHEDULE_DETAIL": "Chi tiết lịch trình",
     "MAKE_SCHEDULE": "Lên lịch trình",
     "MAKE_TIMEKEEPING": "Chấm công",
     "FROM_DATE": "Từ ngày",
@@ -266,6 +271,7 @@
     "CALENDAR_DATE": "Ngày",
     "CALENDAR_TIME": "Thời gian",
     "CALENDAR_EVENT": "Sự kiện",
+    "CALENDAR_EVENT_DETAIL": "Chi tiết sự kiện",
     "CALENDAR_NO_EVENTS_IN_RANGE": "Không có sự kiện nào trong khoảng thời gian này",
     "CALENDAR_SHOW_MORE": "Xem thêm",
     "CALENDAR_L_EVENTS": "sự kiện",

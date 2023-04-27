@@ -10,7 +10,7 @@ const ButtonMobile: React.FC<AsideProps> = ({ children }) => {
             <div className='h-16' />
             <aside
                 className={clsx(
-                    'fixed bottom-0 left-0 right-0 block h-16 border-t-2 border-gray-300 bg-white transition-all dark:border-slate-500 dark:bg-slate-700 xl:hidden',
+                    'fixed bottom-0 left-0 right-0 z-[4] block h-16 border-t-2 border-gray-300 bg-white transition-all dark:border-slate-500 dark:bg-slate-700 xl:hidden',
                     !desktop.open ? 'md:left-16' : 'md:left-64'
                 )}
             >

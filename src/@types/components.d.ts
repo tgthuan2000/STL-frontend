@@ -575,9 +575,10 @@ export interface ImageProps {
     src: string | undefined
     avatar?: AvatarImage
     alt?: string
-    className?: string
+    className?: string | ((error: boolean) => string)
     fallback?: React.ReactNode
     className?: string
+    onClick?: () => void
 }
 
 export interface ChipProps {

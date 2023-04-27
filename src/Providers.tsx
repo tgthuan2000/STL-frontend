@@ -5,6 +5,7 @@ import {
     CacheProvider,
     CheckingProvider,
     ConfigProvider,
+    DetailDialogProvider,
     FilePreviewProvider,
     FlashScreenProvider,
     LoadingProvider,
@@ -41,8 +42,10 @@ export const LayoutProviders: React.FC<Props> = (props) => {
         <ConfigProvider>
             <CacheProvider>
                 <NotifyProvider>
-                    <ReloadPrompt />
-                    {children}
+                    <DetailDialogProvider>
+                        <ReloadPrompt />
+                        {children}
+                    </DetailDialogProvider>
                 </NotifyProvider>
             </CacheProvider>
         </ConfigProvider>
