@@ -10,10 +10,11 @@ import { DATE_FORMAT } from '~/constant'
 
 interface ButtonGroupProps {
     onNavigate: (navigate: NavigateAction, date?: Date | undefined) => void
+    value: string
 }
 
 const ButtonGroup: React.FC<ButtonGroupProps> = (props) => {
-    const { onNavigate } = props
+    const { onNavigate, value } = props
     const messages = useMessage()
     const navigate = useNavigate()
 
@@ -30,17 +31,17 @@ const ButtonGroup: React.FC<ButtonGroupProps> = (props) => {
 
     const handlePrevClick = () => {
         onNavigate('PREV')
-        // createParamsUrl(moment().subtract(1, 'month').format(DATE_FORMAT.MONTH))
+        createParamsUrl(moment(value, DATE_FORMAT.MONTH).subtract(1, 'month').format(DATE_FORMAT.MONTH))
     }
 
     const handleNextClick = () => {
         onNavigate('NEXT')
-        // createParamsUrl(moment().add(1, 'month').format(DATE_FORMAT.MONTH))
+        createParamsUrl(moment(value, DATE_FORMAT.MONTH).add(1, 'month').format(DATE_FORMAT.MONTH))
     }
 
     const handleTodayClick = () => {
         onNavigate('TODAY')
-        // createParamsUrl(null)
+        createParamsUrl(null)
     }
 
     return (

@@ -28,7 +28,7 @@ interface ScheduleForm {
     __loopValid: boolean
 }
 
-const useSchema = () => {
+export const useScheduleSchema = () => {
     const { t } = useTranslation()
     const schema = useMemo(() => {
         return yup.object().shape({
@@ -62,7 +62,7 @@ const MakeSchedule = () => {
     const { loading, setSubmitLoading } = useLoading()
     const { userProfile } = useProfile()
     const { needCheckWhenLeave } = useCheck()
-    const schema = useSchema()
+    const schema = useScheduleSchema()
 
     const form = useForm<ScheduleForm>({
         defaultValues: {

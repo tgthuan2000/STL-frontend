@@ -8,18 +8,20 @@ export const GET_SCHEDULE_LOOPS = groq`
 `
 
 export const GET_SCHEDULE = groq`
-    *[_type == "schedule" && user._ref == $userId && ((startDate <= $startDate && $endDate <= endDate) ||  ($startDate <= endDate && endDate <= $endDate) || (startDate <= $endDate && $startDate <= startDate)) ] | order(startDate asc) {
-        _id,
-        title,
-        startDate,
-        endDate,
-        textColor,
-        bgColor,
-        loop -> {
+    {
+        "data": *[_type == "schedule" && user._ref == $userId && (($__startDate <= startDate && startDate <= $__endDate) ||  ($__startDate <= endDate && endDate <= $__endDate) || (startDate <= $__startDate && $__endDate <= endDate)) && !(_id in $__excludeIds)] | order(startDate asc) {
             _id,
-            key,
-            name
-        },
+            title,
+            startDate,
+            endDate,
+            textColor,
+            bgColor,
+            loop -> {
+                _id,
+                key,
+                name
+            },
+        }
     }
 `
 

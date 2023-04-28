@@ -84,8 +84,11 @@ const Content: React.FC<ContentProp> = (props) => {
                     fallback={<>#{t(LANGUAGE.NO_IMAGE)}</>}
                     className={(error) =>
                         clsx(
-                            'flex items-center justify-center bg-gray-700 object-contain dark:bg-slate-700',
-                            { 'h-full w-full flex-1 cursor-pointer transition hover:opacity-90': !error },
+                            'flex items-center justify-center object-contain',
+                            {
+                                'h-full w-full flex-1 cursor-pointer bg-gray-700 transition hover:opacity-90 dark:bg-slate-700':
+                                    !error,
+                            },
                             { 'mx-6 h-40 w-40 rounded-xl border dark:border-slate-700': error }
                         )
                     }

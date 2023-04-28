@@ -8,7 +8,7 @@ import { ICalendar } from '~/@types/time'
 import { TitleEvent } from './events'
 import { useComponents, useMessage } from './services/components'
 import './style.css'
-import { useParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 import { DATE_FORMAT } from '~/constant'
 
 moment.locale('en', { week: { dow: 1 } })
@@ -24,34 +24,48 @@ export type CalendarEvent = Omit<IEvent, 'resource' | 'start' | 'end'> & {
 
 interface Props {
     className?: string
-    data?: ICalendar[]
+    data?: { data: ICalendar[] }
     loading?: boolean
 }
 
 const Calendar: React.FC<Props> = (props) => {
-    const { className, data } = props
-    const { month } = useParams()
+    const { className, data, loading } = props
+    const [searchParams] = useSearchParams()
     const messages = useMessage()
     const components = useComponents()
 
-    const refactoredData = useMemo(() => {
-        if (!data || isEmpty(data) || !Array.isArray(data)) return []
-
-        const refactored: CalendarEvent[] = data.map(({ _id, bgColor, endDate, loop, startDate, textColor, title }) => {
-            return {
-                end: endDate,
-                start: startDate,
-                allDay: true,
-                title: <TitleEvent title={title} color={textColor} />,
-                resource: {
-                    _id,
-                    title,
-                    loop,
-                    bgColor,
-                    textColor,
-                },
+    const month = useMemo(() => {
+        try {
+            const month = searchParams.get('month')
+            if (month) {
+                return moment(month, DATE_FORMAT.MONTH).toDate()
             }
-        })
+            return new Date()
+        } catch (error) {
+            return new Date()
+        }
+    }, [])
+
+    const refactoredData = useMemo(() => {
+        if (!data?.data || isEmpty(data.data) || !Array.isArray(data.data)) return []
+
+        const refactored: CalendarEvent[] = data.data.map(
+            ({ _id, bgColor, endDate, loop, startDate, textColor, title }) => {
+                return {
+                    end: endDate,
+                    start: startDate,
+                    allDay: true,
+                    title: <TitleEvent title={title} color={textColor} />,
+                    resource: {
+                        _id,
+                        title,
+                        loop,
+                        bgColor,
+                        textColor,
+                    },
+                }
+            }
+        )
         return refactored
     }, [data])
 
@@ -70,7 +84,7 @@ const Calendar: React.FC<Props> = (props) => {
                 startAccessor='start'
                 endAccessor='end'
                 messages={messages}
-                defaultDate={month ? moment(month, DATE_FORMAT.MONTH).toDate() : new Date()}
+                defaultDate={month}
             />
         </div>
     )

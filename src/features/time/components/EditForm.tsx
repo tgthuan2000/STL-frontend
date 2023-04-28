@@ -1,6 +1,6 @@
 import { ArrowSmallLeftIcon, TrashIcon } from '@heroicons/react/24/outline'
 import moment from 'moment'
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -10,7 +10,9 @@ import { DatePicker, Input, Radio, RichText, UploadImage } from '~/components/_b
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import ChooseColor from './ChooseColor'
-import { GetLoop } from './MakeSchedule'
+import { GetLoop, useScheduleSchema } from './MakeSchedule'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 
 interface Props {
     data: ICalendarDetail
@@ -21,6 +23,7 @@ interface Props {
 export interface EditUseForm extends Omit<ICalendarDetail, 'startDate' | 'endDate'> {
     startDate: Date
     endDate: Date
+    __loopValid: boolean
 }
 
 const EditForm: React.FC<Props> = ({ data, onDelete, onSubmit }) => {
@@ -28,6 +31,7 @@ const EditForm: React.FC<Props> = ({ data, onDelete, onSubmit }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { loading } = useLoading()
+    const schema = useScheduleSchema()
     const form = useForm<EditUseForm>({
         defaultValues: {
             _id,
@@ -39,7 +43,9 @@ const EditForm: React.FC<Props> = ({ data, onDelete, onSubmit }) => {
             startDate: moment(startDate).toDate(),
             textColor,
             title,
+            __loopValid: true, // using for validate loop
         },
+        resolver: yupResolver(schema),
     })
 
     const _loop = form.watch('loop')

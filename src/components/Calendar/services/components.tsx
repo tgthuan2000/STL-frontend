@@ -63,7 +63,7 @@ export const useLabel = (label: string) => {
         }
     }, [t, label])
 
-    return translatedLabel
+    return translatedLabel as string
 }
 
 export const useComponents = () => {

@@ -37,11 +37,11 @@ const useQuery = <T extends { [x: string]: any }>(
 
     useEffect(() => {
         paramsRef.current = params
-    }, [params])
+    }, [JSON.stringify(params)])
 
     useEffect(() => {
         tagsRef.current = tags
-    }, [tags])
+    }, [JSON.stringify(tags)])
 
     useEffect(() => {
         refactorRef.current = refactor
