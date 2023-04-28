@@ -1,24 +1,16 @@
 import { useTranslation } from 'react-i18next'
-import { Box, ButtonMenuDesktop, Divider, Transaction } from '~/components'
-import { useWindowSize } from '~/hook'
-import { useMenuMobile } from '~/hook/components'
+import { Box, Divider, Transaction } from '~/components'
 import LANGUAGE from '~/i18n/language/key'
-import { BudgetCategory, BudgetMethod, Method, Recent, Statistic } from '../components'
+import { BudgetCategory, BudgetMethod, Method, MobileMenu, Recent, Statistic } from '../components'
 import useDashboard from '../hook/useDashboard'
 
 const Dashboard = () => {
-    const { width } = useWindowSize()
     const { t } = useTranslation()
-    const menuMobile = useMenuMobile()
     const [{ method, recent, statistic, budget }, handleReload, dataStatistic] = useDashboard()
 
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.SPENDING)}>
-            {width < 1280 && (
-                <div className='block xl:hidden'>
-                    <ButtonMenuDesktop data={menuMobile} />
-                </div>
-            )}
+            <MobileMenu />
 
             <Divider className='py-6 xl:hidden' dashed />
 

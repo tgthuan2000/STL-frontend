@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Button, SubmitWrap } from '~/components'
-import { DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
+import { DatePicker, Input, TextArea } from '~/components/_base'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 

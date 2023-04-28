@@ -24,7 +24,7 @@ const CacheContext = createContext<ICacheContext>({
     saveCache: <T,>() => ({} as T),
 })
 
-const DeleteObjKeys = ['__from', '__to', '__start', '__end']
+const DeleteObjKeys = ['__from', '__to', '__start', '__end', '__exclude']
 
 const CacheProvider = ({ children }: { children: React.ReactNode }) => {
     const cacheRef = useRef<ICacheData<any>>(Object.assign({}, ...Object.values(TAGS).map((tag) => ({ [tag]: [] }))))

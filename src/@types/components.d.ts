@@ -172,6 +172,7 @@ export interface InputProps
 export interface LabelProps {
     id?: string
     label?: DefaultTFuncReturn
+    className?: string
 }
 
 export interface InputNumberHintProps {
@@ -235,6 +236,9 @@ export interface DateProps {
     InputProps?: {
         readOnly?: boolean
     }
+    selectsStart?: boolean
+    selectsEnd?: boolean
+    minDate?: Date
 }
 
 export interface DatePickerInputProps {
@@ -571,9 +575,10 @@ export interface ImageProps {
     src: string | undefined
     avatar?: AvatarImage
     alt?: string
-    className?: string
+    className?: string | ((error: boolean) => string)
     fallback?: React.ReactNode
     className?: string
+    onClick?: () => void
 }
 
 export interface ChipProps {

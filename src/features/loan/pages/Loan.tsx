@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import { Suspense, memo } from 'react'
 import { Outlet } from 'react-router-dom'
 import { AsideButtonDesktopWrap, AsideButtonMobileWrap, ButtonMenuDesktop, ButtonMenuMobile } from '~/components'
 import LoadingText from '~/components/Loading/LoadingText'
@@ -8,9 +8,6 @@ import { useMenuLoanPC, useMenuLoanPages } from '~/hook/components'
 
 const Loan = () => {
     const { loading } = useLoading()
-    const { width } = useWindowSize()
-    const menuLoanPC = useMenuLoanPC()
-    const menuLoanPages = useMenuLoanPages()
 
     if (loading.config) return <LoadingText />
 
@@ -21,17 +18,34 @@ const Loan = () => {
                     <Outlet />
                 </Suspense>
             </main>
-            {width >= 1280 ? (
-                <AsideButtonDesktopWrap>
-                    <ButtonMenuDesktop data={menuLoanPC} />
-                </AsideButtonDesktopWrap>
-            ) : (
-                <AsideButtonMobileWrap>
-                    <ButtonMenuMobile data={menuLoanPages} />
-                </AsideButtonMobileWrap>
-            )}
+            <RenderMenu />
         </div>
     )
 }
 
+const RenderMenu = () => {
+    const { width } = useWindowSize()
+
+    return width >= 1280 ? <Desktop /> : <Mobile />
+}
+
+const Desktop = memo(() => {
+    const menuLoanPC = useMenuLoanPC()
+
+    return (
+        <AsideButtonDesktopWrap>
+            <ButtonMenuDesktop.v1 data={menuLoanPC} />
+        </AsideButtonDesktopWrap>
+    )
+})
+
+const Mobile = memo(() => {
+    const menuLoanPages = useMenuLoanPages()
+
+    return (
+        <AsideButtonMobileWrap>
+            <ButtonMenuMobile.v1 data={menuLoanPages} />
+        </AsideButtonMobileWrap>
+    )
+})
 export default Loan

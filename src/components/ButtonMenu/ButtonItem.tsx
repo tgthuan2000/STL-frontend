@@ -7,7 +7,11 @@ import { useLogout } from '~/hook'
 import DesktopButton from './desktop/Button'
 import MobileButton from './mobile/Button'
 
-const ButtonItem: React.FC<MenuButtonProps & { mobile?: boolean }> = ({ data, mobile = false }) => {
+const ButtonItem: React.FC<MenuButtonProps & { mobile?: boolean; mode?: 'v1' | 'v2' }> = ({
+    data,
+    mobile = false,
+    mode = 'v1',
+}) => {
     const { title, children, to, query, action } = data
     const { setIsOpen, setTitle } = useSlideOver()
     const navigate = useNavigate()
@@ -23,12 +27,23 @@ const ButtonItem: React.FC<MenuButtonProps & { mobile?: boolean }> = ({ data, mo
         }
     }
 
+    const props = {
+        data,
+        onClick: handleClick,
+    }
+
     return (
         <>
             {mobile ? (
-                <MobileButton data={data} onClick={handleClick} />
+                <>
+                    {mode === 'v1' && <MobileButton.v1 {...props} />}
+                    {mode === 'v2' && <MobileButton.v2 {...props} />}
+                </>
             ) : (
-                <DesktopButton data={data} onClick={handleClick} />
+                <>
+                    {mode === 'v1' && <DesktopButton.v1 {...props} />}
+                    {mode === 'v2' && <DesktopButton.v2 {...props} />}
+                </>
             )}
             <SlideOver>{children}</SlideOver>
         </>

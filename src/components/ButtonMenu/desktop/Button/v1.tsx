@@ -1,10 +1,10 @@
 import clsx from 'clsx'
-import React from 'react'
+import React, { memo } from 'react'
 import { Link } from 'react-router-dom'
-import Divider from '../../Divider'
-import { MobileButtonProps } from '../ButtonMenuProvider'
+import { MobileButtonProps } from '../../ButtonMenuProvider'
+import Divider from '~/components/Divider'
 
-const Button: React.FC<MobileButtonProps> = ({ data, onClick }) => {
+const v1: React.FC<MobileButtonProps> = ({ data, onClick }) => {
     const { title, color, icon: Icon, to, divider } = data
     return (
         <>
@@ -24,5 +24,4 @@ const Button: React.FC<MobileButtonProps> = ({ data, onClick }) => {
         </>
     )
 }
-
-export default Button
+export default memo(v1)

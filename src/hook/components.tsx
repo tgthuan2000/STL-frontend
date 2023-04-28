@@ -81,6 +81,37 @@ export const useMenuMobile = (): IMenuBtn[] => {
 
     return data
 }
+
+export const useMenuTimeMobile = (): IMenuBtn[] => {
+    const { t } = useTranslation()
+    const data = useMemo(() => {
+        return [
+            {
+                title: t(LANGUAGE.MAKE_SCHEDULE),
+                color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
+                icon: CalendarDaysIcon,
+                children: () => <MakeSchedule />,
+                to: '?slide=create-schedule',
+                query: {
+                    slide: 'create-schedule',
+                },
+            },
+            {
+                title: t(LANGUAGE.MAKE_TIMEKEEPING),
+                color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
+                icon: ClipboardDocumentCheckIcon,
+                children: () => <MakeTimeKeeping />,
+                to: '?slide=timekeeping',
+                query: {
+                    slide: 'timekeeping',
+                },
+            },
+        ]
+    }, [t])
+
+    return data
+}
+
 export const useMenuMobileOthers = (): IMenuBtn[] => {
     const { t } = useTranslation()
     const data = useMemo(() => {

@@ -14,6 +14,7 @@ import LANGUAGE from '~/i18n/language/key'
 import AnimateWrap from '../AnimateWrap'
 import Chip from '../Chip'
 import { schema, useDefaultValue } from './service'
+import { isValidDateRange } from '~/services'
 
 const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit, excludes = [] }) => {
     const { t } = useTranslation()
@@ -123,12 +124,6 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit, excludes = [] }) => {
                 break
         }
         form.handleSubmit(onsubmit)()
-    }
-
-    const isValidDateRange = (dateRange: DateRange | null | undefined) => {
-        if (!dateRange || isEmpty(dateRange)) return false
-        if (dateRange.some((date) => date === null)) return false
-        return true
     }
 
     const props = useMemo(() => {

@@ -4,17 +4,17 @@ import clsx from 'clsx'
 import ImageResize from 'quill-image-resize-module-react'
 import React, { useId, useState } from 'react'
 import { Controller } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { RichTextProps } from '~/@types/components'
 import AnimateWrap from '~/components/AnimateWrap'
 import ErrorMessage from '~/components/ErrorMessage'
 import Label from '~/components/Label'
-import { reactQuillOptions } from '~/constant/component'
-import './index.css'
 import Prose from '~/components/Prose'
-import { useTranslation } from 'react-i18next'
+import { reactQuillOptions } from '~/constant/component'
 import LANGUAGE from '~/i18n/language/key'
+import './index.css'
 
 Quill.register('modules/imageResize', ImageResize)
 Quill.register(Quill.import('attributors/style/direction'), true)
@@ -53,8 +53,9 @@ const RichText: React.FC<RichTextProps> = ({
                         <button
                             ref={ref}
                             type='button'
-                            className='inline-flex h-5 w-5 cursor-pointer items-center justify-center text-gray-900 hover:opacity-70 dark:text-slate-200'
+                            className='inline-flex h-5 w-5 cursor-pointer items-center justify-center text-gray-700 hover:opacity-70 disabled:cursor-not-allowed disabled:opacity-50 dark:text-slate-200'
                             onClick={togglePreview}
+                            disabled={disabled || !field.value}
                         >
                             <IconPreview className='h-full w-full' title={t(LANGUAGE.PREVIEW) as string} />
                         </button>

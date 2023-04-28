@@ -1,9 +1,10 @@
 import { ArrowPathIcon, ListBulletIcon, TableCellsIcon } from '@heroicons/react/24/outline'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, isEmpty } from 'lodash'
 import moment from 'moment'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DataListOptionsResult, List, _List } from '~/@types'
+import { DateRange } from '~/@types/components'
 import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
 import LANGUAGE from '~/i18n/language/key'
 
@@ -114,4 +115,10 @@ export const service = {
         }
         return roots
     },
+}
+
+export const isValidDateRange = (dateRange: DateRange | null | undefined) => {
+    if (!dateRange || isEmpty(dateRange)) return false
+    if (dateRange.some((date: Date | string) => date === null || date.toString() === 'Invalid Date')) return false
+    return true
 }
