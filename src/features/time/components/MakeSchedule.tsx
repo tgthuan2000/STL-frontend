@@ -38,6 +38,9 @@ export const useScheduleSchema = () => {
             endDate: yup
                 .date()
                 .when('startDate', (startDate: Date, schema: yup.DateSchema) => {
+                    if (!startDate) {
+                        return schema
+                    }
                     return schema.min(startDate, t(LANGUAGE.END_DATE_MUST_BE_GREATER_THAN_START_DATE) as string)
                 })
                 .required(t(LANGUAGE.REQUIRED_FIELD) as string),
@@ -83,7 +86,6 @@ const MakeSchedule = () => {
     const endDate = form.watch('endDate')
 
     const onsubmit = async (data: ScheduleForm) => {
-        console.log(data)
         try {
             setSubmitLoading(true)
             let { bgColor, startDate, endDate, description, image, loop, textColor, title } = data

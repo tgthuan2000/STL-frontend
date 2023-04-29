@@ -1,6 +1,6 @@
 import { isEmpty, isEqual } from 'lodash'
 import moment from 'moment'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/@types/hook'
 import { ICalendar } from '~/@types/time'
@@ -51,18 +51,19 @@ const useCalendar = () => {
             if (month) {
                 const monthValue = moment(JSON.parse(month), DATE_FORMAT.MONTH)
                 const monthValueFormatted = monthValue.format(DATE_FORMAT.MONTH)
-                if (calledMonths.current.includes(monthValueFormatted)) {
-                    result.needRefetch = false
-                    return result
-                }
-
-                calledMonths.current.push(monthValueFormatted)
 
                 result.params = {
                     ...result.params,
                     __startDate: getStartDate(monthValue),
                     __endDate: getEndDate(monthValue),
                 }
+
+                if (calledMonths.current.includes(monthValueFormatted)) {
+                    result.needRefetch = false
+                    return result
+                }
+
+                calledMonths.current.push(monthValueFormatted)
             } else {
                 const month = moment().format(DATE_FORMAT.MONTH)
                 if (calledMonths.current.includes(month)) {
@@ -115,6 +116,7 @@ const useCalendar = () => {
     const refetch = () => {
         deletedCaches('calendar')
         excludes.current = []
+        calledMonths.current = []
         reloadData()
     }
 
