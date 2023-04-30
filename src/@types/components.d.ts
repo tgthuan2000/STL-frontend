@@ -469,6 +469,7 @@ export interface TableColumn<T extends any> {
 
 export interface TableProps {
     columns: Array<TableColumn>
+    overflowScroll?: boolean
     data: Array<any> | undefined
     loading: boolean
     EmptyTable?: React.ReactNode

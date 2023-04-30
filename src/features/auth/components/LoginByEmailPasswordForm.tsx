@@ -20,7 +20,7 @@ const LoginByEmailPasswordForm: React.FC<LoginByEmailPasswordFormProps> = ({ onS
     const onSubmitEmail = async ({ email }: { email: string }) => {
         try {
             setSubmitLoading(true)
-            const data = await getActiveUsersByEmail(email)
+            const data = await getActiveUsersByEmail(email.trim().toLowerCase())
             if (data && !isEmpty(data)) {
                 setPreviewData(data)
                 setStep(2)

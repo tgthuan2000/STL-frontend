@@ -23,6 +23,7 @@ const ProfileNavLink = React.lazy(() => import('~/components/NavLink/ProfileNavL
 const SettingNavLink = React.lazy(() => import('~/components/NavLink/SettingNavLink'))
 const SpendingNavLink = React.lazy(() => import('~/components/NavLink/SpendingNavLink'))
 const FeedbackConfigNavLink = React.lazy(() => import('~/components/NavLink/FeedbackConfigNavLink'))
+const RoleControlNavLink = React.lazy(() => import('~/components/NavLink/RoleControlNavLink'))
 
 export const useNavigation = (): Array<Navigation> => {
     const { t } = useTranslation()
@@ -100,6 +101,12 @@ export const useNavigationMobile = (): Array<NavigationMobile> => {
                 href: '/feedback-config',
                 permissions: [PERMISSION.FEEDBACK_CONFIG],
                 component: FeedbackConfigNavLink,
+            },
+            {
+                name: t(LANGUAGE.FEEDBACK_MANAGEMENT),
+                href: '/role-control',
+                permissions: [PERMISSION.ROLE_CONTROL],
+                component: RoleControlNavLink,
             },
 
             /* CLIENT */

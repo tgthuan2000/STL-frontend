@@ -42,6 +42,7 @@ const Dashboard = () => {
             <AnimateWrap className='-mx-4'>
                 <Table
                     hasNextPage={false}
+                    overflowScroll
                     data={account.data}
                     loading={false}
                     onGetMore={handleScrollGetMore}

@@ -105,7 +105,6 @@
     "IMAGE": "Hình ảnh",
     "NO_IMAGE": "Không có ảnh",
     "USER": "Người dùng",
-    "ROLE": "Vai trò",
     "SERVICE": "Dịch vụ",
     "ACTIONS": "Hành động",
     "LOADING_PROFILE": "Đang tải thông tin cá nhân",
@@ -327,6 +326,9 @@
 
     "ACCOUNT_ACTIVE": "Tài khoản đã được kích hoạt",
     "ACCOUNT_INACTIVE": "Tài khoản chưa được kích hoạt",
+
+    "ROLE": "Vai trò",
+    "PERMISSION": "Quyền hạn",
 
     "SOME_SIMILAR_NAME": "Một số loại gần giống tên",
     "NOT_SIMILAR_NAME": "Không có loại gần giống tên",

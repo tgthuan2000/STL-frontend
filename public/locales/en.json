@@ -105,7 +105,6 @@
     "IMAGE": "Image",
     "NO_IMAGE": "No image",
     "USER": "User",
-    "ROLE": "Role",
     "SERVICE": "Service",
     "ACTIONS": "Actions",
     "LOADING_PROFILE": "Waiting to loading profile",
@@ -347,6 +346,9 @@
 
     "ACCOUNT_ACTIVE": "Account active",
     "ACCOUNT_INACTIVE": "Account inactive",
+
+    "ROLE": "Role",
+    "PERMISSION": "Permission",
 
     "SOME_SIMILAR_NAME": "Some similar name",
     "NOT_SIMILAR_NAME": "Not similar name",

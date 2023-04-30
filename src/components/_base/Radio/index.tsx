@@ -43,7 +43,7 @@ const Radio = forwardRef<HTMLInputElement, Props>((props, ref) => {
                                 return (
                                     <CheckButton
                                         key={key}
-                                        className='flex items-center gap-1'
+                                        className='flex w-full items-center gap-1'
                                         value={key}
                                         checked={checked}
                                         onChange={() => field.onChange(option)}

@@ -98,17 +98,6 @@ export interface ICacheData<T> {
 
 export type QueryParams = { [key: string]: string | number | undefined | string[] | null }
 
-export interface IPermissions {
-    _id: PERMISSION
-    name: string
-    key: string
-}
-export interface IRoleControl {
-    _id: string
-    name: string
-    key: string
-    permissions: IPermissions[]
-}
 export interface IConfig {
     kindSpending: IKindSpending[]
     budgetSpending: { _id: string | undefined | null }

@@ -18,7 +18,7 @@ const CheckButton: React.FC<Props> = (props) => {
     return (
         <label
             className={clsx(
-                'flex min-h-[40px] w-full select-none items-center justify-between gap-2 rounded-xl py-2 px-2 sm:gap-4 sm:px-4',
+                'flex min-h-[40px] select-none items-center justify-between gap-2 rounded-xl py-2 px-2 sm:gap-4 sm:px-4',
                 checked
                     ? 'bg-indigo-500 text-white dark:bg-cyan-500'
                     : 'bg-gray-200 text-gray-900 dark:bg-slate-700 dark:text-slate-200',
