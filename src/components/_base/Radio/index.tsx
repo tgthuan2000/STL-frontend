@@ -3,10 +3,10 @@ import { DefaultTFuncReturn } from 'i18next'
 import { forwardRef } from 'react'
 import { Controller, UseFormReturn } from 'react-hook-form'
 import AnimateWrap from '~/components/AnimateWrap'
+import CheckButton from '~/components/CheckButton'
 import ErrorMessage from '~/components/ErrorMessage'
 import Label from '~/components/Label'
 import LoadingText from '~/components/Loading/LoadingText'
-import Item from './Item'
 
 interface Props {
     name: string
@@ -31,7 +31,7 @@ const Radio = forwardRef<HTMLInputElement, Props>((props, ref) => {
                     <div className='flex items-center justify-between'>
                         <Label label={label} />
                     </div>
-                    <AnimateWrap className='mt-1 flex flex-wrap gap-3'>
+                    <AnimateWrap className='mt-1 grid grid-cols-2 gap-2'>
                         {loading ? (
                             <LoadingText />
                         ) : (
@@ -41,8 +41,9 @@ const Radio = forwardRef<HTMLInputElement, Props>((props, ref) => {
                                 const checked = key === getOptionKey(field.value)
 
                                 return (
-                                    <Item
+                                    <CheckButton
                                         key={key}
+                                        className='flex items-center gap-1'
                                         value={key}
                                         checked={checked}
                                         onChange={() => field.onChange(option)}
