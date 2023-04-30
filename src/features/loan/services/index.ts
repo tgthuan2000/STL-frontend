@@ -4,8 +4,8 @@ import { Services } from '~/@types/loan'
 import { COUNT_PAGINATE, TAGS } from '~/constant'
 import { E_FILTER_DATE } from '~/constant/template'
 import {
-    GET_RECENT_SPENDING_BY_METHOD_FILTER_DATE_RANGE_TOTAL,
     GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE,
+    GET_RECENT_SPENDING_FILTER_DATE_RANGE_TOTAL,
     GET_RECENT_SPENDING_PAGINATE,
     GET_RECENT_SPENDING_TOTAL,
 } from '~/schema/query/spending'
@@ -34,7 +34,7 @@ export const services: Services = {
             if (!isEmpty(d)) {
                 query = {
                     recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE,
-                    total: GET_RECENT_SPENDING_BY_METHOD_FILTER_DATE_RANGE_TOTAL,
+                    total: GET_RECENT_SPENDING_FILTER_DATE_RANGE_TOTAL,
                 }
                 let { type, data } = d
                 data = JSON.parse(data)
@@ -42,30 +42,30 @@ export const services: Services = {
                 switch (Number(type)) {
                     case E_FILTER_DATE.DATE: {
                         params = {
-                            startDate: service.getDate(moment(data).toDate(), 'start'),
-                            endDate: service.getDate(moment(data).toDate(), 'end'),
+                            __startDate: service.getDate(moment(data).toDate(), 'start'),
+                            __endDate: service.getDate(moment(data).toDate(), 'end'),
                         }
                         break
                     }
                     case E_FILTER_DATE.DATE_RANGE: {
                         const [startDate, endDate] = data
                         params = {
-                            startDate: service.getDate(moment(startDate).toDate(), 'start'),
-                            endDate: service.getDate(moment(endDate).toDate(), 'end'),
+                            __startDate: service.getDate(moment(startDate).toDate(), 'start'),
+                            __endDate: service.getDate(moment(endDate).toDate(), 'end'),
                         }
                         break
                     }
                     case E_FILTER_DATE.MONTH: {
                         params = {
-                            startDate: service.getDate(moment(data).toDate(), 'start', 'month'),
-                            endDate: service.getDate(moment(data).toDate(), 'end', 'month'),
+                            __startDate: service.getDate(moment(data).toDate(), 'start', 'month'),
+                            __endDate: service.getDate(moment(data).toDate(), 'end', 'month'),
                         }
                         break
                     }
                     case E_FILTER_DATE.YEAR: {
                         params = {
-                            startDate: service.getDate(moment(data).toDate(), 'start', 'year'),
-                            endDate: service.getDate(moment(data).toDate(), 'end', 'year'),
+                            __startDate: service.getDate(moment(data).toDate(), 'start', 'year'),
+                            __endDate: service.getDate(moment(data).toDate(), 'end', 'year'),
                         }
                         break
                     }
@@ -84,7 +84,7 @@ export const services: Services = {
     filterSubmit(data, { defaultValues, getAll }) {
         const query = {
             recent: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE,
-            total: GET_RECENT_SPENDING_BY_METHOD_FILTER_DATE_RANGE_TOTAL,
+            total: GET_RECENT_SPENDING_FILTER_DATE_RANGE_TOTAL,
         }
         switch (data.id) {
             case E_FILTER_DATE.ALL:
