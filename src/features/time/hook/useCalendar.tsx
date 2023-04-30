@@ -121,8 +121,17 @@ const useCalendar = () => {
     }
 
     useEffect(() => {
-        if (needRefetch) {
-            reloadData('calendar')
+        let timeout = setTimeout(() => {
+            if (needRefetch) {
+                reloadData('calendar')
+            }
+        }, 500)
+
+        return () => {
+            if (timeout) {
+                clearTimeout(timeout)
+                calledMonths.current.pop()
+            }
         }
     }, [needRefetch, params])
 
