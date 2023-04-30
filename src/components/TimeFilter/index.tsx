@@ -5,21 +5,20 @@ import moment from 'moment'
 import React, { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { DateRange, FilterDateType, IFilterDate, TimeFilterPayload, TimeFilterProps } from '~/@types/components'
 import { AutoComplete, DatePicker } from '~/components/_base'
 import { E_DATE_RANGE_SUGGESTION, E_FILTER_DATE } from '~/constant/template'
 import { useDateRangeSuggestions, useTabsFilterDate } from '~/hook/template'
 import LANGUAGE from '~/i18n/language/key'
+import { isValidDateRange } from '~/services'
 import AnimateWrap from '../AnimateWrap'
 import Chip from '../Chip'
 import { schema, useDefaultValue } from './service'
-import { isValidDateRange } from '~/services'
 
 const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit, excludes = [] }) => {
     const { t } = useTranslation()
-    const navigate = useNavigate()
-    const [searchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams()
     const { getDefaultValues } = useDefaultValue()
     const form = useForm<IFilterDate>({
         defaultValues: getDefaultValues(searchParams),
@@ -31,16 +30,16 @@ const TimeFilter: React.FC<TimeFilterProps> = ({ onSubmit, excludes = [] }) => {
     const createParamsUrl = (payload: TimeFilterPayload) => {
         const { id, data } = payload
 
-        const paramsUrl = new URLSearchParams()
+        const paramsUrl = new URLSearchParams(searchParams)
 
         if (id === E_FILTER_DATE.ALL && data === null) {
             paramsUrl.delete('type')
             paramsUrl.delete('data')
         } else {
-            paramsUrl.append('type', JSON.stringify(id))
-            paramsUrl.append('data', JSON.stringify(data))
+            paramsUrl.set('type', JSON.stringify(id))
+            paramsUrl.set('data', JSON.stringify(data))
         }
-        navigate(`?${paramsUrl.toString()}`, { replace: true })
+        setSearchParams(paramsUrl)
     }
 
     const onsubmit = () => {

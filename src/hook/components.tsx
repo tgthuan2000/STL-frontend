@@ -35,7 +35,6 @@ export const useMenuMobile = (): IMenuBtn[] => {
                 color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
                 icon: PlusCircleIcon,
                 children: () => <MakeIncome />,
-                to: '?slide=add-income',
                 query: {
                     slide: 'add-income',
                 },
@@ -45,7 +44,6 @@ export const useMenuMobile = (): IMenuBtn[] => {
                 color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
                 icon: MinusCircleIcon,
                 children: () => <MakeCost />,
-                to: '?slide=add-payment',
                 query: {
                     slide: 'add-payment',
                 },
@@ -55,7 +53,6 @@ export const useMenuMobile = (): IMenuBtn[] => {
                 color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
                 icon: ArrowsRightLeftIcon,
                 children: () => <MakeTransfer />,
-                to: '?slide=transfer',
                 query: {
                     slide: 'transfer',
                 },
@@ -65,7 +62,6 @@ export const useMenuMobile = (): IMenuBtn[] => {
                 color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
                 icon: PuzzlePieceIcon,
                 children: () => <MakeBudget />,
-                to: '?slide=budget',
                 query: {
                     slide: 'budget',
                 },
@@ -91,7 +87,6 @@ export const useMenuTimeMobile = (): IMenuBtn[] => {
                 color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
                 icon: CalendarDaysIcon,
                 children: () => <MakeSchedule />,
-                to: '?slide=create-schedule',
                 query: {
                     slide: 'create-schedule',
                 },
@@ -101,7 +96,6 @@ export const useMenuTimeMobile = (): IMenuBtn[] => {
                 color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
                 icon: ClipboardDocumentCheckIcon,
                 children: () => <MakeTimeKeeping />,
-                to: '?slide=timekeeping',
                 query: {
                     slide: 'timekeeping',
                 },
@@ -121,7 +115,6 @@ export const useMenuMobileOthers = (): IMenuBtn[] => {
                 color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
                 icon: QrCodeIcon,
                 children: () => <AddMethod />,
-                to: '?slide=add-method',
                 query: {
                     slide: 'add-method',
                 },
@@ -131,7 +124,6 @@ export const useMenuMobileOthers = (): IMenuBtn[] => {
                 color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
                 icon: RectangleGroupIcon,
                 children: () => <AddCategory />,
-                to: '?slide=category',
                 query: {
                     slide: 'category',
                 },
@@ -150,7 +142,6 @@ export const useMenuLoanMobile = (): IMenuBtn[] => {
                 color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
                 icon: ArrowTrendingUpIcon,
                 children: () => <MakeGetLoan />,
-                to: '?slide=get-loan',
                 query: {
                     slide: 'get-loan',
                 },
@@ -160,7 +151,6 @@ export const useMenuLoanMobile = (): IMenuBtn[] => {
             //     color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
             //     icon: TrendingDownIcon,
             //     children: () => <MakeLoan />,
-            //     to: '?slide=loan',
             //     query: {
             //         slide: 'loan',
             //     },
@@ -170,7 +160,6 @@ export const useMenuLoanMobile = (): IMenuBtn[] => {
                 color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
                 icon: UserPlusIcon,
                 children: () => <CreateMember />,
-                to: '?slide=create-member',
                 query: {
                     slide: 'create-member',
                 },
@@ -188,7 +177,6 @@ export const useMenuSpendingPC = (): IMenuBtn[] => {
                 color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
                 icon: PlusCircleIcon,
                 children: () => <MakeIncome />,
-                to: '?slide=add-income',
                 query: {
                     slide: 'add-income',
                 },
@@ -198,7 +186,6 @@ export const useMenuSpendingPC = (): IMenuBtn[] => {
                 color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
                 icon: MinusCircleIcon,
                 children: () => <MakeCost />,
-                to: '?slide=add-payment',
                 query: {
                     slide: 'add-payment',
                 },
@@ -208,7 +195,6 @@ export const useMenuSpendingPC = (): IMenuBtn[] => {
                 color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
                 icon: ArrowsRightLeftIcon,
                 children: () => <MakeTransfer />,
-                to: '?slide=transfer',
                 query: {
                     slide: 'transfer',
                 },
@@ -218,7 +204,6 @@ export const useMenuSpendingPC = (): IMenuBtn[] => {
                 color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
                 icon: PuzzlePieceIcon,
                 children: () => <MakeBudget />,
-                to: '?slide=budget',
                 query: {
                     slide: 'budget',
                 },
@@ -265,7 +250,6 @@ export const useMenuSpendingPC = (): IMenuBtn[] => {
                 color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
                 icon: QrCodeIcon,
                 children: () => <AddMethod />,
-                to: '?slide=add-method',
                 query: {
                     slide: 'add-method',
                 },
@@ -276,7 +260,6 @@ export const useMenuSpendingPC = (): IMenuBtn[] => {
                 color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
                 icon: RectangleGroupIcon,
                 children: () => <AddCategory />,
-                to: '?slide=add-category',
                 query: {
                     slide: 'add-category',
                 },
@@ -295,7 +278,6 @@ export const useMenuLoanPC = (): IMenuBtn[] => {
                 color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
                 icon: ArrowTrendingUpIcon,
                 children: () => <MakeGetLoan />,
-                to: '?slide=get-loan',
                 query: {
                     slide: 'get-loan',
                 },
@@ -305,7 +287,6 @@ export const useMenuLoanPC = (): IMenuBtn[] => {
                 color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
                 icon: ArrowTrendingDownIcon,
                 children: () => <MakeLoan />,
-                to: '?slide=loan',
                 query: {
                     slide: 'loan',
                 },
@@ -315,7 +296,6 @@ export const useMenuLoanPC = (): IMenuBtn[] => {
                 color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
                 icon: UserPlusIcon,
                 children: () => <CreateMember />,
-                to: '?slide=create-member',
                 query: {
                     slide: 'create-member',
                 },
@@ -364,7 +344,6 @@ export const useMenuTimePC = (): IMenuBtn[] => {
                 color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
                 icon: CalendarDaysIcon,
                 children: () => <MakeSchedule />,
-                to: '?slide=create-schedule',
                 query: {
                     slide: 'create-schedule',
                 },
@@ -374,7 +353,6 @@ export const useMenuTimePC = (): IMenuBtn[] => {
                 color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
                 icon: ClipboardDocumentCheckIcon,
                 children: () => <MakeTimeKeeping />,
-                to: '?slide=timekeeping',
                 query: {
                     slide: 'timekeeping',
                 },
@@ -453,7 +431,6 @@ export const useMenuSpendingPages = (): IMenuBtn[] => {
             //     color: 'text-yellow-700 dark:text-yellow-500',
             //     icon: PuzzlePieceIcon,
             //     children: () => <MakeBudget />,
-            //     to: '?slide=budget',
             //     query: {
             //         slide: 'budget',
             //     },
@@ -463,7 +440,6 @@ export const useMenuSpendingPages = (): IMenuBtn[] => {
             //     color: 'text-cyan-700 dark:text-cyan-500',
             //     icon: QrCodeIcon,
             //     children: () => <AddMethod />,
-            //     to: '?slide=add-method',
             //     query: {
             //         slide: 'add-method',
             //     },
@@ -473,7 +449,6 @@ export const useMenuSpendingPages = (): IMenuBtn[] => {
             //     color: 'text-cyan-700 dark:text-cyan-500',
             //     icon: RectangleGroupIcon,
             //     children: () => <AddCategory />,
-            //     to: '?slide=add-category',
             //     query: {
             //         slide: 'add-category',
             //     },

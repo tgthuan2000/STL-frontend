@@ -5,13 +5,14 @@ import { MobileButtonProps } from '../../ButtonMenuProvider'
 
 const v1: React.FC<MobileButtonProps> = (props) => {
     const { data, onClick } = props
-    const { title, color, icon: Icon, to, divider } = data
+    const { title, color, icon: Icon, divider, to } = data
 
     return (
         <>
             {divider && <div className='pointer-events-none h-2/3 w-px select-none bg-gray-300' />}
             <NavLink
-                to={to}
+                to={to ?? '/'}
+                end
                 onClick={onClick}
                 className={({ isActive }) =>
                     clsx(

@@ -1,12 +1,12 @@
 import { ChevronLeftIcon, ChevronRightIcon, FlagIcon } from '@heroicons/react/24/outline'
+import moment from 'moment'
 import React, { Fragment } from 'react'
 import { NavigateAction } from 'react-big-calendar'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { DATE_FORMAT } from '~/constant'
 import { useMessage } from '../../services/components'
 import Button from './Button'
 import Wrap from './Wrap'
-import { useNavigate } from 'react-router-dom'
-import moment from 'moment'
-import { DATE_FORMAT } from '~/constant'
 
 interface ButtonGroupProps {
     onNavigate: (navigate: NavigateAction, date?: Date | undefined) => void
@@ -17,14 +17,15 @@ const ButtonGroup: React.FC<ButtonGroupProps> = (props) => {
     const { onNavigate, value } = props
     const messages = useMessage()
     const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
 
     const createParamsUrl = (payload: string | null) => {
-        const paramsUrl = new URLSearchParams()
+        const paramsUrl = new URLSearchParams(searchParams)
 
         if (payload === null) {
             paramsUrl.delete('month')
         } else {
-            paramsUrl.append('month', JSON.stringify(payload))
+            paramsUrl.set('month', JSON.stringify(payload))
         }
         navigate(`?${paramsUrl.toString()}`, { replace: true })
     }
