@@ -1,53 +1,123 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { ChevronUpIcon, PlusIcon } from '@heroicons/react/24/outline'
 import { yupResolver } from '@hookform/resolvers/yup'
 import clsx from 'clsx'
-import { isEmpty } from 'lodash'
-import React, { memo, useEffect, useId, useMemo, useState } from 'react'
+import { isEmpty, isEqual } from 'lodash'
+import React, { memo, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { UseFormReturn, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import { List } from '~/@types'
 import { IPermissionGroup, IPermissions, IRoleControl } from '~/@types/role-control'
-import { AnimateWrap, Button, CheckButton, ErrorText } from '~/components'
+import { Button, CheckButton } from '~/components'
 import LoadingText from '~/components/Loading/LoadingText'
-import { Input, RichText, TextArea } from '~/components/_base'
+import LoadingWait from '~/components/Loading/LoadingWait'
+import { Input, TextArea } from '~/components/_base'
 import { useCheck, useDetailDialog, useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
+import { getDifference } from '~/services'
 
 interface Props {
     data: IPermissionGroup[] | undefined
     loading: boolean
     selectedRole: List<IRoleControl> | undefined
+    refetch: () => void
 }
 
-const schema = yup.object().shape({})
+interface FormData {
+    permissions: string[]
+}
 
 const Permission: React.FC<Props> = (props) => {
-    const { data, loading, selectedRole } = props
+    const { data, loading, selectedRole, refetch } = props
     const { t } = useTranslation()
     const formId = useId()
+    const originPermission = useRef<string[]>([])
+    const { setSubmitLoading } = useLoading()
 
-    const handleSubmit = (data: any) => {
-        console.log(data)
+    const form = useForm<FormData>({
+        defaultValues: {
+            permissions: [],
+        },
+        resolver: yupResolver(
+            yup.object().shape({
+                permissions: yup.array().of(yup.string().required()).required(),
+            })
+        ),
+    })
+
+    const permissions = form.watch('permissions')
+
+    useEffect(() => {
+        if (selectedRole) {
+            const permissions = selectedRole.permissions.map((permission) => permission._id)
+            originPermission.current = permissions
+            form.setValue('permissions', permissions)
+        } else {
+            originPermission.current = []
+            form.setValue('permissions', [])
+        }
+    }, [selectedRole])
+
+    const isDisabledSubmitBtn = useMemo(() => {
+        return !selectedRole || isEqual(permissions.sort(), originPermission.current.sort())
+    }, [permissions, selectedRole])
+
+    const handleSubmit = async (data: FormData) => {
+        const { deleted, added } = getDifference(originPermission.current, data.permissions)
+
+        if (isEmpty(deleted) && isEmpty(added)) return
+
+        try {
+            setSubmitLoading(true)
+            const transaction = client.transaction()
+
+            if (!isEmpty(deleted)) {
+                deleted.forEach((permission) => {
+                    const patch = client.patch(selectedRole?._id as string, {
+                        unset: [`permissions[_ref=="${permission}"]`],
+                    })
+                    transaction.patch(patch)
+                })
+            }
+
+            if (!isEmpty(added)) {
+                added.forEach((permission) => {
+                    const patch = client.patch(selectedRole?._id as string, {
+                        insert: {
+                            after: 'permissions[-1]',
+                            items: [{ _ref: permission, _type: 'reference' }],
+                        },
+                    })
+                    transaction.patch(patch)
+                })
+            }
+
+            await transaction.commit({ autoGenerateArrayKeys: true })
+            refetch()
+            toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_SUCCESS))
+        } catch (error: any) {
+            console.log(error)
+            toast.error<string>(error.message)
+        } finally {
+            setSubmitLoading(false)
+        }
     }
-
-    // if (loading) return <LoadingText className='p-6' />
-
-    // if (!data || isEmpty(data) || !Array.isArray(data)) return <ErrorText className='p-6' />
 
     return (
         <div className='flex h-full flex-col'>
             <div className='flex items-center justify-between p-6'>
-                <h1 className='text-xl font-normal sm:text-2xl'>{t(LANGUAGE.PERMISSION)}</h1>
-                <Button type='submit' color='radicalRed' id={formId}>
-                    {t(LANGUAGE.SAVE)}
-                </Button>
+                <h1 className='whitespace-nowrap text-xl font-normal sm:text-2xl'>{t(LANGUAGE.PERMISSION)}</h1>
+
+                <div className='flex items-center gap-3'>
+                    <LoadingWait loading={loading} />
+                    <Button type='submit' color='indigo' form={formId} disabled={isDisabledSubmitBtn}>
+                        {t(LANGUAGE.SAVE)}
+                    </Button>
+                </div>
             </div>
-            {/* <div className='p-6'>search</div> */}
-            <Form data={data} onSubmit={handleSubmit} id={formId} selectedRole={selectedRole} />
+            <Form data={data} form={form} onSubmit={handleSubmit} id={formId} selectedRole={selectedRole} />
         </div>
     )
 }
@@ -57,30 +127,11 @@ interface Form {
     onSubmit: (data: any) => void
     id: string
     selectedRole: List<IRoleControl> | undefined
-}
-
-interface FormData {
-    permissions: string[]
+    form: UseFormReturn<FormData, any>
 }
 
 const Form: React.FC<Form> = (props) => {
-    const { id, data, selectedRole, onSubmit } = props
-    const [ref] = useAutoAnimate<HTMLFormElement>()
-    const form = useForm<FormData>({
-        defaultValues: {
-            permissions: [],
-        },
-        resolver: yupResolver(schema),
-    })
-
-    useEffect(() => {
-        if (selectedRole) {
-            const permissions = selectedRole.permissions.map((permission) => permission._id)
-            form.setValue('permissions', permissions)
-        } else {
-            form.setValue('permissions', [])
-        }
-    }, [selectedRole])
+    const { id, data, form, selectedRole, onSubmit } = props
 
     const permissions = form.watch('permissions')
 
@@ -93,7 +144,6 @@ const Form: React.FC<Form> = (props) => {
         } else {
             permissions.push(permission._id)
         }
-        console.log(permissions)
         form.setValue('permissions', permissions)
     }
 
@@ -121,7 +171,6 @@ const Form: React.FC<Form> = (props) => {
     return (
         <form
             id={id}
-            ref={ref}
             onSubmit={form.handleSubmit(onSubmit)}
             className='flex flex-col gap-4 overflow-auto px-2 dark:border-t-slate-700 sm:p-4 md:border-t md:p-6'
         >
@@ -148,7 +197,7 @@ const Group: React.FC<GroupProps> = (props) => {
     )
 
     return (
-        <AnimateWrap>
+        <div>
             <ExpandHeader
                 id={data._id}
                 label={data.name}
@@ -189,7 +238,7 @@ const Group: React.FC<GroupProps> = (props) => {
                     )}
                 </div>
             )}
-        </AnimateWrap>
+        </div>
     )
 }
 
@@ -336,4 +385,4 @@ const ExpandButton: React.FC<ExpandButtonProps> = (props) => {
     )
 }
 
-export default memo(Permission)
+export default Permission

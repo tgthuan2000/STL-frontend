@@ -1,10 +1,11 @@
 import { isEmpty } from 'lodash'
-import React, { memo, useId, useMemo } from 'react'
+import React, { memo, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { List } from '~/@types'
 import { IRoleControl } from '~/@types/role-control'
-import { AnimateWrap, Button, CheckButton, ErrorText } from '~/components'
+import { Button, CheckButton } from '~/components'
 import LoadingText from '~/components/Loading/LoadingText'
+import LoadingWait from '~/components/Loading/LoadingWait'
 import LANGUAGE from '~/i18n/language/key'
 import { service } from '~/services'
 
@@ -13,12 +14,12 @@ interface Props {
     loading: boolean
     selectedRole: List<IRoleControl> | undefined
     onChangeRole: (role: List<IRoleControl>) => void
+    refetch: () => void
 }
 
 const Role: React.FC<Props> = (props) => {
-    const { data, loading, selectedRole, onChangeRole } = props
+    const { data, loading, selectedRole, refetch, onChangeRole } = props
     const { t } = useTranslation()
-    const formId = useId()
 
     const refactoredData = useMemo(() => {
         if (!data || isEmpty(data) || !Array.isArray(data)) return <LoadingText />
@@ -61,17 +62,21 @@ const Role: React.FC<Props> = (props) => {
         <div className='flex h-full flex-col'>
             <div className='flex items-center justify-between p-6'>
                 <h1 className='text-xl font-normal sm:text-2xl'>{t(LANGUAGE.ROLE)}</h1>
-                <Button type='submit' color='green' id={formId}>
-                    {t(LANGUAGE.CREATE)}
-                </Button>
+
+                <div className='flex items-center gap-3'>
+                    <LoadingWait loading={loading} />
+                    <Button type='button' color='outline-radicalRed' disabled>
+                        {t(LANGUAGE.CREATE)}
+                    </Button>
+                </div>
             </div>
 
             {/* <div className='p-6'>search</div> */}
-            <AnimateWrap className='space-y-3 overflow-auto py-6 pl-6 dark:border-t-slate-700 md:border-t'>
+            <div className='space-y-3 overflow-auto py-6 pl-6 dark:border-t-slate-700 md:border-t'>
                 {refactoredData}
-            </AnimateWrap>
+            </div>
         </div>
     )
 }
 
-export default memo(Role)
+export default Role

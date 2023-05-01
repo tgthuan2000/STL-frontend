@@ -36,14 +36,19 @@ const CheckButton: React.FC<Props> = (props) => {
                 onChange={onChange}
                 className='hidden'
             />
-            <div className='flex flex-col'>
-                {label && <span className='truncate'>{label}</span>}
+            <div className='flex w-full flex-col overflow-hidden'>
+                {label && (
+                    <span title={label} className='truncate'>
+                        {label}
+                    </span>
+                )}
                 {subLabel && (
                     <span
                         className={clsx(
                             'truncate text-xs',
                             checked ? 'text-white dark:text-gray-200' : 'text-gray-600 dark:text-gray-400'
                         )}
+                        title={subLabel}
                     >
                         {subLabel}
                     </span>

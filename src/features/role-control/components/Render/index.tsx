@@ -3,7 +3,7 @@ import Role from './Role'
 
 const Render = () => {}
 
-Render.Permission = Permission
 Render.Role = Role
+Render.Permission = Permission
 
 export default Render

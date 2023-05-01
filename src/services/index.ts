@@ -122,3 +122,9 @@ export const isValidDateRange = (dateRange: DateRange | null | undefined) => {
     if (dateRange.some((date: Date | string) => date === null || date.toString() === 'Invalid Date')) return false
     return true
 }
+
+export const getDifference = (origin: string[], current: string[]) => {
+    const added = current.filter((item) => !origin.includes(item))
+    const deleted = origin.filter((item) => !current.includes(item))
+    return { added, deleted }
+}

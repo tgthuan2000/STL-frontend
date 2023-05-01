@@ -1,13 +1,13 @@
+import { isEqual } from 'lodash'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { List } from '~/@types'
+import { IRoleControl } from '~/@types/role-control'
 import { AnimateWrap, PaperWrap, Transaction } from '~/components'
+import { useCheck } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import { Render } from '../components'
 import useRoleControl from '../hook/useRoleControl'
-import { useCallback, useState } from 'react'
-import { IRoleControl } from '~/@types/role-control'
-import { List } from '~/@types'
-import { isEqual } from 'lodash'
-import { useCheck } from '~/context'
 
 const Dashboard = () => {
     const { permissions, roles, refetch } = useRoleControl()
@@ -25,6 +25,18 @@ const Dashboard = () => {
         [roleSelected]
     )
 
+    useEffect(() => {
+        setRoleSelected((prev) => {
+            if (!prev) return prev
+
+            const role = roles.data?.find((r) => r._id === prev._id)
+            if (role) {
+                return role
+            }
+            return prev
+        })
+    }, [roles.data])
+
     useCheck(refetch)
 
     return (
@@ -39,6 +51,7 @@ const Dashboard = () => {
                         loading={roles.loading}
                         selectedRole={roleSelected}
                         onChangeRole={handleChangeRole}
+                        refetch={refetch}
                     />
                 </AnimateWrap>
                 <AnimateWrap className='sm:h-[calc(100vh-230px)] sm:flex-1 md:flex-[2] lg:flex-[2]'>
@@ -46,6 +59,7 @@ const Dashboard = () => {
                         data={permissions.data}
                         loading={permissions.loading}
                         selectedRole={roleSelected}
+                        refetch={refetch}
                     />
                 </AnimateWrap>
             </PaperWrap>
