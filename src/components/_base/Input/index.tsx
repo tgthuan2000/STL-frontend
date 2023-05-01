@@ -1,10 +1,9 @@
 import clsx from 'clsx'
-import React, { forwardRef, Suspense, useId } from 'react'
+import React, { forwardRef, useId } from 'react'
 import { Controller } from 'react-hook-form'
 import { InputProps } from '~/@types/components'
 import ErrorMessage from '~/components/ErrorMessage'
 import Label from '~/components/Label'
-import LoadingText from '~/components/Loading/LoadingText'
 import NumberHint from './NumberHint'
 
 const Calculator = React.lazy(() => import('~/components/Calculator'))

@@ -1,6 +1,6 @@
 import { CheckIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
-import React from 'react'
+import React, { useId } from 'react'
 
 interface Props {
     label: string
@@ -8,12 +8,13 @@ interface Props {
     value: string
     checked: boolean
     disabled?: boolean
-    onChange: () => void
+    onChange: React.ChangeEventHandler<HTMLInputElement> | undefined
     className?: string
+    type?: 'checkbox' | 'radio'
 }
 
 const CheckButton: React.FC<Props> = (props) => {
-    const { label, subLabel, value, checked, onChange, disabled, className } = props
+    const { label, subLabel, value, checked, onChange, disabled, className, type = 'radio' } = props
 
     return (
         <label
@@ -28,7 +29,7 @@ const CheckButton: React.FC<Props> = (props) => {
             )}
         >
             <input
-                type='radio'
+                type={type}
                 checked={checked}
                 disabled={disabled}
                 value={value}

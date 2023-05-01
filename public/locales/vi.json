@@ -162,6 +162,7 @@
     "PLACEHOLDER_SHORT_DESCRIPTION": "Nhập mô tả ngắn",
     "PLACEHOLDER_ENTER_USER_INFO": "Nhập thông tin người dùng",
 
+    "NOTIFY_CREATE_SUCCESS": "Tạo thành công!",
     "NOTIFY_UPDATE_SUCCESS": "Cập nhật thành công!",
     "NOTIFY_UPDATE_FAILED": "Cập nhật thất bại!",
     "NOTIFY_CREATE_SCHEDULE_SUCCESS": "Thêm lịch thành công!",

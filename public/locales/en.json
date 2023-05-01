@@ -162,6 +162,7 @@
     "PLACEHOLDER_SHORT_DESCRIPTION": "Short description",
     "PLACEHOLDER_ENTER_USER_INFO": "Enter user info",
 
+    "NOTIFY_CREATE_SUCCESS": "Create success",
     "NOTIFY_UPDATE_SUCCESS": "Update success",
     "NOTIFY_UPDATE_FAILED": "Update failed",
     "NOTIFY_CREATE_SCHEDULE_SUCCESS": "Create schedule success",

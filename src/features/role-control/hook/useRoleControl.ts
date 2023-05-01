@@ -10,7 +10,7 @@ interface QueryData {
 }
 
 const useRoleControl = () => {
-    const [{ roles, permissions }, fetchData] = useQuery<QueryData>(
+    const [{ roles, permissions }, fetchData, deletedCaches, reloadData] = useQuery<QueryData>(
         { roles: GET_ROLES, permissions: GET_PERMISSIONS },
         {},
         { roles: TAGS.ENUM, permissions: TAGS.ENUM }
@@ -20,7 +20,12 @@ const useRoleControl = () => {
         fetchData()
     }, [])
 
-    return { roles, permissions }
+    const refetch = () => {
+        deletedCaches('permissions', 'roles')
+        reloadData()
+    }
+
+    return { roles, permissions, refetch }
 }
 
 export default useRoleControl

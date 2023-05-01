@@ -1,4 +1,3 @@
-import React from 'react'
 import Permission from './Permission'
 import Role from './Role'
 
