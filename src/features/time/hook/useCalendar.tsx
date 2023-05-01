@@ -1,6 +1,6 @@
 import { isEmpty, isEqual } from 'lodash'
 import moment from 'moment'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/@types/hook'
 import { ICalendar } from '~/@types/time'
@@ -35,41 +35,28 @@ const useCalendar = () => {
     const ref = useRef<ICalendar[]>([])
     const excludes = useRef<string[]>([])
     const calledMonths = useRef<string[]>([])
+    const month = searchParams.get('month')
 
     const { query, params, tags, needRefetch } = useMemo<QueryState>(() => {
         const query = { calendar: GET_SCHEDULE }
-        const params = {
-            __startDate: getStartDate(),
-            __endDate: getEndDate(),
+        const params: ParamsTypeUseQuery = {
             userId: userProfile?._id as string,
         }
         const tags = { calendar: TAGS.ALTERNATE }
 
         try {
             let result = { query, params, tags, needRefetch: true }
-            const month = searchParams.get('month')
-            if (month) {
-                const monthValue = moment(JSON.parse(month), DATE_FORMAT.MONTH)
-                const monthValueFormatted = monthValue.format(DATE_FORMAT.MONTH)
-                if (calledMonths.current.includes(monthValueFormatted)) {
-                    result.needRefetch = false
-                    return result
-                }
+            const _month = moment(month ? moment(JSON.parse(month), DATE_FORMAT.MONTH) : undefined)
 
-                calledMonths.current.push(monthValueFormatted)
+            result.params = {
+                ...result.params,
+                __startDate: getStartDate(_month),
+                __endDate: getEndDate(_month),
+            }
 
-                result.params = {
-                    ...result.params,
-                    __startDate: getStartDate(monthValue),
-                    __endDate: getEndDate(monthValue),
-                }
-            } else {
-                const month = moment().format(DATE_FORMAT.MONTH)
-                if (calledMonths.current.includes(month)) {
-                    result.needRefetch = false
-                    return result
-                }
-                calledMonths.current.push(month)
+            if (calledMonths.current.includes(_month.format(DATE_FORMAT.MONTH))) {
+                result.needRefetch = false
+                return result
             }
 
             const _ref = ref.current
@@ -97,7 +84,7 @@ const useCalendar = () => {
             console.log(error)
             return { query, params, tags, needRefetch: false }
         }
-    }, [searchParams])
+    }, [month])
 
     const [{ calendar }, fetchData, deletedCaches, reloadData] = useQuery<CalendarQueryData>(
         query,
@@ -109,18 +96,37 @@ const useCalendar = () => {
         const data = calendar.data?.data
         if (data && !isEqual(data, ref.current)) {
             ref.current = data
+
+            const _month = moment(month ? moment(JSON.parse(month), DATE_FORMAT.MONTH) : undefined).format(
+                DATE_FORMAT.MONTH
+            )
+
+            if (!calledMonths.current.includes(_month)) {
+                calledMonths.current.push(_month)
+            }
         }
-    }, [JSON.stringify(calendar.data?.data)])
+    }, [JSON.stringify(calendar.data?.data), month])
 
     const refetch = () => {
         deletedCaches('calendar')
         excludes.current = []
+        calledMonths.current = []
         reloadData()
     }
 
     useEffect(() => {
+        let timeout: NodeJS.Timeout
+
         if (needRefetch) {
-            reloadData('calendar')
+            timeout = setTimeout(() => {
+                reloadData('calendar')
+            }, 500)
+        }
+
+        return () => {
+            if (timeout) {
+                clearTimeout(timeout)
+            }
         }
     }, [needRefetch, params])
 

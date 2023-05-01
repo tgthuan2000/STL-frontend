@@ -16,6 +16,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useAxios } from '~/hook'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import PaperWrap from '~/components/PaperWrap'
 
 interface Props {
     refetch: () => void
@@ -122,14 +123,14 @@ const NotifyDetailEdit: React.FC<Props> = (props) => {
     // const __users = form.watch('users')
 
     return (
-        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full w-full flex-col gap-3 md:gap-4'>
+        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full w-full flex-col gap-4 sm:gap-3 md:gap-4'>
             <SubmitWrap hiddenBorder className='sm:rounded-xl sm:bg-white sm:shadow-sm sm:dark:bg-slate-800'>
                 <Button color='blue' type='submit' disabled={loading.submit}>
                     {t(LANGUAGE.UPDATE)}
                 </Button>
             </SubmitWrap>
-            <div className='flex flex-col-reverse gap-3 md:gap-4 lg:flex-row lg:items-start'>
-                <Wrap className='flex-1'>
+            <div className='flex flex-col-reverse gap-4 sm:gap-3 md:gap-4 lg:flex-row lg:items-start'>
+                <PaperWrap className='flex-1 sm:m-0'>
                     <RichText
                         form={form}
                         name='content'
@@ -137,9 +138,9 @@ const NotifyDetailEdit: React.FC<Props> = (props) => {
                         placeholder={t(LANGUAGE.PLACEHOLDER_ENTER_CONTENT)}
                         className='xl'
                     />
-                </Wrap>
-                <div className='flex w-full flex-col-reverse gap-3 md:gap-4 lg:w-96 lg:flex-col'>
-                    <Wrap className='space-y-4'>
+                </PaperWrap>
+                <div className='flex w-full flex-col-reverse gap-4 sm:gap-3 md:gap-4 lg:w-96 lg:flex-col'>
+                    <PaperWrap className='space-y-4 sm:m-0'>
                         <Input label={t(LANGUAGE.TITLE)} form={form} name='title' />
 
                         <RichText
@@ -149,29 +150,14 @@ const NotifyDetailEdit: React.FC<Props> = (props) => {
                             placeholder={t(LANGUAGE.PLACEHOLDER_SHORT_DESCRIPTION)}
                             className='xs'
                         />
-                    </Wrap>
-                    <Wrap className='space-y-4'>
+                    </PaperWrap>
+                    <PaperWrap className='space-y-4 sm:m-0'>
                         {/* List user */}
                         <LazySearchUser form={form} autoFocus={false} />
-                    </Wrap>
+                    </PaperWrap>
                 </div>
             </div>
         </form>
-    )
-}
-
-interface WrapProps {
-    className?: string
-    children: React.ReactNode
-}
-
-const Wrap: React.FC<WrapProps> = (props) => {
-    const { className, children } = props
-
-    return (
-        <div className={clsx('sm:rounded-xl sm:bg-white sm:p-4 sm:shadow-sm sm:dark:bg-slate-800 xl:p-6', className)}>
-            {children}
-        </div>
     )
 }
 

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Navigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IUserProfile } from '~/@types/auth'
-import { IConfig, IConfigContext, IRoleControl } from '~/@types/context'
+import { IConfig, IConfigContext } from '~/@types/context'
 import axios from '~/axiosConfig'
 import LoadingText from '~/components/Loading/LoadingText'
 import { CODE } from '~/constant/code'
@@ -17,6 +17,7 @@ import { GET_CONFIG } from '~/schema/query/config'
 import { service } from '~/services'
 import { useAuth, useProfile } from '~/store/auth'
 import { useFlashScreen } from './FlashScreenContext'
+import { IRoleControl } from '~/@types/role-control'
 
 interface IConfigProps {
     children: React.ReactNode

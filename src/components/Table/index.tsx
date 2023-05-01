@@ -8,7 +8,7 @@ import BodyTable from './Body'
 import EmptyTableTemplate from './Empty'
 import SkeletonTableTemplate from './Skeleton'
 
-const Table: React.FC<TableProps> = ({ columns, loading, data, EmptyTable, ...props }) => {
+const Table: React.FC<TableProps> = ({ columns, loading, data, EmptyTable, overflowScroll, ...props }) => {
     const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
 
     const Columns = useMemo(() => {
@@ -31,8 +31,16 @@ const Table: React.FC<TableProps> = ({ columns, loading, data, EmptyTable, ...pr
 
     return (
         <div className='inline-block w-full py-2 align-middle'>
-            <div className='overflow-hidden shadow-sm ring-1 ring-black ring-opacity-5 sm:rounded-lg'>
-                <table className='w-full table-fixed border-separate overflow-hidden' style={{ borderSpacing: 0 }}>
+            <div
+                className={clsx(
+                    'shadow-sm ring-1 ring-black ring-opacity-5 sm:rounded-lg',
+                    overflowScroll ? 'overflow-auto' : 'overflow-hidden'
+                )}
+            >
+                <table
+                    className={clsx('w-full border-separate', { 'table-fixed overflow-hidden': !overflowScroll })}
+                    style={{ borderSpacing: 0 }}
+                >
                     <thead className='select-none bg-gray-50 dark:bg-slate-700'>
                         <tr>{Columns}</tr>
                     </thead>

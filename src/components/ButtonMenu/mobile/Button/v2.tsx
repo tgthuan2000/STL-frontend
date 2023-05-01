@@ -5,7 +5,7 @@ import { MobileButtonProps } from '../../ButtonMenuProvider'
 
 const v2: React.FC<MobileButtonProps> = (props) => {
     const { data, onClick } = props
-    const { title, color, icon: Icon, to, divider } = data
+    const { title, color, icon: Icon, divider } = data
 
     return <></>
 }

@@ -1,14 +1,23 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import React, { Fragment } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { SlideOverProps } from '~/@types/components'
 import { useLoading, useSlideOver } from '~/context'
 
 const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
     const { isOpen, setIsOpen, title } = useSlideOver()
     const { loading } = useLoading()
-    const navigate = useNavigate()
+    const [, setSearchParams] = useSearchParams()
+
+    const close = () => {
+        setIsOpen(false)
+        setSearchParams((prev) => {
+            const params = new URLSearchParams(prev)
+            params.delete('slide')
+            return params
+        })
+    }
 
     return (
         <Transition.Root show={isOpen} as={Fragment}>
@@ -17,8 +26,7 @@ const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
                 className='relative z-30'
                 onClose={(value) => {
                     if (!loading.config) {
-                        setIsOpen(value)
-                        navigate(-1)
+                        close()
                     }
                 }}
             >
@@ -57,10 +65,7 @@ const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
                                                     <button
                                                         type='button'
                                                         className='rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none dark:bg-transparent dark:text-slate-100 dark:hover:text-slate-200'
-                                                        onClick={() => {
-                                                            setIsOpen(false)
-                                                            navigate(-1)
-                                                        }}
+                                                        onClick={close}
                                                     >
                                                         <span className='sr-only'>Close panel</span>
                                                         <XMarkIcon className='h-6 w-6' aria-hidden='true' />

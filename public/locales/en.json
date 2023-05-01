@@ -105,7 +105,6 @@
     "IMAGE": "Image",
     "NO_IMAGE": "No image",
     "USER": "User",
-    "ROLE": "Role",
     "SERVICE": "Service",
     "ACTIONS": "Actions",
     "LOADING_PROFILE": "Waiting to loading profile",
@@ -163,6 +162,7 @@
     "PLACEHOLDER_SHORT_DESCRIPTION": "Short description",
     "PLACEHOLDER_ENTER_USER_INFO": "Enter user info",
 
+    "NOTIFY_CREATE_SUCCESS": "Create success",
     "NOTIFY_UPDATE_SUCCESS": "Update success",
     "NOTIFY_UPDATE_FAILED": "Update failed",
     "NOTIFY_CREATE_SCHEDULE_SUCCESS": "Create schedule success",
@@ -347,6 +347,9 @@
 
     "ACCOUNT_ACTIVE": "Account active",
     "ACCOUNT_INACTIVE": "Account inactive",
+
+    "ROLE": "Role",
+    "PERMISSION": "Permission",
 
     "SOME_SIMILAR_NAME": "Some similar name",
     "NOT_SIMILAR_NAME": "Not similar name",

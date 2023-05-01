@@ -3,7 +3,7 @@ import { DefaultTFuncReturn } from 'i18next'
 import React, { HTMLInputTypeAttribute, ReactNode } from 'react'
 import { ControllerRenderProps, FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
 import { ReactQuillProps } from 'react-quill'
-import { NavigateFunction } from 'react-router-dom'
+import { NavigateFunction, To } from 'react-router-dom'
 import { DATE_FORMAT } from '~/constant'
 import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
 import { PERMISSION } from '~/constant/permission'
@@ -319,7 +319,7 @@ export interface IMenuBtn {
     title: string
     icon: HeroIcon
     color: string
-    to: To
+    to?: To
     children?: () => React.ReactNode
     query?: SlideParams
     divider?: boolean
@@ -368,7 +368,6 @@ export interface TabsLinkProps {
 
 export interface TabLinkItemProps {
     tab: TabsLinkData
-    navigate: NavigateFunction
     tabsRef: React.RefObject<HTMLAnchorElement[]>
 }
 
@@ -470,6 +469,7 @@ export interface TableColumn<T extends any> {
 
 export interface TableProps {
     columns: Array<TableColumn>
+    overflowScroll?: boolean
     data: Array<any> | undefined
     loading: boolean
     EmptyTable?: React.ReactNode

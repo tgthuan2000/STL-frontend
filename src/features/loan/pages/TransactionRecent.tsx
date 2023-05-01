@@ -73,7 +73,7 @@ const TransactionRecent = () => {
     }, [])
 
     const onReload = () => {
-        const res = deleteCacheData('recent')
+        const res = deleteCacheData('recent', 'total')
         console.log(res)
         reload()
     }

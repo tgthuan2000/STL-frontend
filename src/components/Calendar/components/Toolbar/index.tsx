@@ -13,7 +13,7 @@ const Toolbar: React.ComponentType<ToolbarProps<CalendarEvent, object>> = (props
     const translatedLabel = useLabel(month)
 
     return (
-        <div className='mx-5 mb-5 mt-5 flex items-center justify-start gap-6 md:mx-0 md:mt-auto'>
+        <div className='mx-5 mb-5 mt-5 flex flex-row-reverse items-center justify-between gap-6 sm:flex-row sm:justify-start md:mx-0 md:mt-auto'>
             <ButtonGroup onNavigate={onNavigate} value={`${translatedLabel}/${year}`} />
             <Label month={translatedLabel} year={year} />
             {/* <Views view={view} views={views as View[]} onView={onView} /> */}
