@@ -104,13 +104,13 @@ const CreateAccount = () => {
                 <div className='flex flex-1 flex-col justify-between'>
                     <div className='divide-y divide-gray-200 px-4 sm:px-6'>
                         <div className='space-y-6 pt-3 pb-5'>
-                            <Input name='userName' form={form} type='text' label={t(LANGUAGE.NAME)} />
+                            <Input name='email' form={form} type='text' label={t(LANGUAGE.EMAIL)} />
 
                             <Input name='password' form={form} type='password' label={t(LANGUAGE.PASSWORD)} />
 
                             <Input name='rePassword' form={form} type='password' label={t(LANGUAGE.RE_PASSWORD)} />
 
-                            <Input name='email' form={form} type='text' label={t(LANGUAGE.EMAIL)} />
+                            <Input name='userName' form={form} type='text' label={t(LANGUAGE.NAME)} />
 
                             <AutoComplete
                                 name='role'

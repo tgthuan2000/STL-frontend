@@ -43,7 +43,7 @@ const Role: React.FC<Props> = (props) => {
                             subLabel=''
                         />
                         {d.children && !isEmpty(d.children) && (
-                            <div className='pl-5'>
+                            <div className='flex flex-col items-start gap-3 pl-5'>
                                 <>{callBack(d.children)}</>
                             </div>
                         )}
