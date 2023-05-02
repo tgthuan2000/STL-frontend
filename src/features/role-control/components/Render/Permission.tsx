@@ -112,12 +112,16 @@ const Permission: React.FC<Props> = (props) => {
 
                 <div className='flex items-center gap-3'>
                     <LoadingWait loading={loading} />
-                    <Button type='submit' color='indigo' form={formId} disabled={isDisabledSubmitBtn}>
-                        {t(LANGUAGE.SAVE)}
-                    </Button>
                 </div>
             </div>
             <Form data={data} form={form} onSubmit={handleSubmit} id={formId} selectedRole={selectedRole} />
+            {!isDisabledSubmitBtn && (
+                <div className='flex justify-end gap-4 border-t p-3 dark:border-t-slate-700'>
+                    <Button type='submit' color='indigo' form={formId}>
+                        {t(LANGUAGE.SAVE)}
+                    </Button>
+                </div>
+            )}
         </div>
     )
 }
@@ -172,7 +176,7 @@ const Form: React.FC<Form> = (props) => {
         <form
             id={id}
             onSubmit={form.handleSubmit(onSubmit)}
-            className='flex flex-col gap-4 overflow-auto px-2 dark:border-t-slate-700 sm:p-4 md:border-t md:p-6'
+            className='flex flex-1 flex-col gap-4 overflow-auto px-2 dark:border-t-slate-700 sm:p-4 md:border-t md:p-6'
         >
             {renderGroup}
         </form>

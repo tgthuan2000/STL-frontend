@@ -27,7 +27,7 @@ export interface AutoCompleteProps {
     data?: any[]
     idKey?: string
     valueKey?: string
-    onReload?: () => Promise<void>
+    onReload?: () => Promise<void> | void
     addMore?: (value: any) => Promise<any>
     loading?: boolean
     form: UseFormReturn<any, object>

@@ -351,6 +351,8 @@
     "ROLE": "Role",
     "PERMISSION": "Permission",
     "CREATE_PERMISSION_GROUP": "Create permission group",
+    "CREATE_ROLE": "Create role",
+    "PARENT_ROLE": "Parent role",
 
     "SOME_SIMILAR_NAME": "Some similar name",
     "NOT_SIMILAR_NAME": "Not similar name",

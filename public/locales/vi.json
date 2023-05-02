@@ -331,6 +331,8 @@
     "ROLE": "Vai trò",
     "PERMISSION": "Quyền hạn",
     "CREATE_PERMISSION_GROUP": "Tạo nhóm quyền hạn",
+    "CREATE_ROLE": "Tạo vai trò",
+    "PARENT_ROLE": "Vai trò cha",
 
     "SOME_SIMILAR_NAME": "Một số loại gần giống tên",
     "NOT_SIMILAR_NAME": "Không có loại gần giống tên",

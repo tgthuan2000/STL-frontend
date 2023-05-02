@@ -65,9 +65,9 @@ const Role: React.FC<Props> = (props) => {
 
                 <div className='flex items-center gap-3'>
                     <LoadingWait loading={loading} />
-                    <Button type='button' color='outline-radicalRed' disabled>
+                    {/* <Button type='button' color='outline-radicalRed'>
                         {t(LANGUAGE.CREATE)}
-                    </Button>
+                    </Button> */}
                 </div>
             </div>
 

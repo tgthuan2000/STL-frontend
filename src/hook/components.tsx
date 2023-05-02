@@ -13,6 +13,7 @@ import {
     PuzzlePieceIcon,
     QrCodeIcon,
     RectangleGroupIcon,
+    UserGroupIcon,
     UserPlusIcon,
 } from '@heroicons/react/24/outline'
 import { googleLogout } from '@react-oauth/google'
@@ -21,7 +22,7 @@ import { useTranslation } from 'react-i18next'
 import { IMenuBtn } from '~/@types/components'
 import axios from '~/axiosConfig'
 import { CreateMember, MakeGetLoan, MakeLoan } from '~/features/loan/components'
-import { CreatePermissionGroup } from '~/features/role-control/components'
+import { CreatePermissionGroup, CreateRole } from '~/features/role-control/components'
 import { AddCategory, AddMethod, MakeBudget, MakeCost, MakeIncome, MakeTransfer } from '~/features/spending/components'
 import { MakeSchedule, MakeTimeKeeping } from '~/features/time/components'
 import LANGUAGE from '~/i18n/language/key'
@@ -414,6 +415,15 @@ export const useMenuRoleControlPC = (): IMenuBtn[] => {
                 children: () => <CreatePermissionGroup />,
                 query: {
                     slide: 'create-permission-group',
+                },
+            },
+            {
+                title: t(LANGUAGE.CREATE_ROLE),
+                color: 'text-rose-700 bg-rose-200 hover:bg-rose-300 dark:text-rose-500',
+                icon: UserGroupIcon,
+                children: () => <CreateRole />,
+                query: {
+                    slide: 'create-role',
                 },
             },
         ]
