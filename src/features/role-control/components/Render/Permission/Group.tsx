@@ -1,22 +1,19 @@
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import React, { useMemo, useState } from 'react'
-import { UseFormReturn } from 'react-hook-form'
 import { IPermissionGroup, IPermissions } from '~/@types/role-control'
 import { CheckButton } from '~/components'
 import ExpandHeader from './ExpandHeader'
-import { FormData } from '.'
 
 interface GroupProps {
     data: IPermissionGroup
-    form: UseFormReturn<FormData, any>
     permissionsChecked: IPermissions[]
     onPermissionCheck: (permission: IPermissions) => void
     disabled: boolean
 }
 
 const Group: React.FC<GroupProps> = (props) => {
-    const { data, form, permissionsChecked, disabled, onPermissionCheck } = props
+    const { data, permissionsChecked, disabled, onPermissionCheck } = props
     const [expand, setExpand] = useState(false)
 
     const numberChecked = useMemo(

@@ -21,6 +21,7 @@ import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IMenuBtn } from '~/@types/components'
 import axios from '~/axiosConfig'
+import { CreateAccount } from '~/features/account/components'
 import { CreateMember, MakeGetLoan, MakeLoan } from '~/features/loan/components'
 import { CreatePermissionGroup, CreateRole } from '~/features/role-control/components'
 import { AddCategory, AddMethod, MakeBudget, MakeCost, MakeIncome, MakeTransfer } from '~/features/spending/components'
@@ -183,6 +184,26 @@ export const useMenuRoleControlMobile = (): IMenuBtn[] => {
                 children: () => <CreatePermissionGroup />,
                 query: {
                     slide: 'create-permission-group',
+                },
+            },
+        ]
+    }, [t])
+
+    return data
+}
+
+export const useMenuAccountMobile = (): IMenuBtn[] => {
+    const { t } = useTranslation()
+
+    const data = useMemo(() => {
+        return [
+            {
+                title: t(LANGUAGE.CREATE_ACCOUNT),
+                color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
+                icon: UserPlusIcon,
+                children: () => <CreateAccount />,
+                query: {
+                    slide: 'create-account',
                 },
             },
         ]
@@ -432,6 +453,26 @@ export const useMenuRoleControlPC = (): IMenuBtn[] => {
     return data
 }
 
+export const useMenuAccountPC = (): IMenuBtn[] => {
+    const { t } = useTranslation()
+
+    const data = useMemo(() => {
+        return [
+            {
+                title: t(LANGUAGE.CREATE_ACCOUNT),
+                color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
+                icon: UserPlusIcon,
+                children: () => <CreateAccount />,
+                query: {
+                    slide: 'create-account',
+                },
+            },
+        ]
+    }, [t])
+
+    return data
+}
+
 export const useMenuSpendingPages = (): IMenuBtn[] => {
     const { t } = useTranslation()
 
@@ -544,6 +585,16 @@ export const useMenuRoleControlPages = (): IMenuBtn[] => {
         return [
             { title: t(LANGUAGE.HOME), color: 'text-red-700 dark:text-red-500', icon: HomeIcon, to: '/role-control' },
         ]
+    }, [t])
+
+    return data
+}
+
+export const useMenuAccountPages = (): IMenuBtn[] => {
+    const { t } = useTranslation()
+
+    const data = useMemo(() => {
+        return [{ title: t(LANGUAGE.HOME), color: 'text-red-700 dark:text-red-500', icon: HomeIcon, to: '/account' }]
     }, [t])
 
     return data

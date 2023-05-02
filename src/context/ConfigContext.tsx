@@ -57,12 +57,12 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
                     axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
                     const { data } = await _axios.get<SanityDocument<IUserProfile>>('/auth/profile')
                     if (data) {
-                        showFlashScreen(
-                            <LoadingText
-                                text={t(LANGUAGE.LOADING_PROFILE_DONE)}
-                                className='text-md whitespace-nowrap sm:text-lg'
-                            />
-                        )
+                        // showFlashScreen(
+                        //     <LoadingText
+                        //         text={t(LANGUAGE.LOADING_PROFILE_DONE)}
+                        //         className='text-md whitespace-nowrap sm:text-lg'
+                        //     />
+                        // )
                         addUserProfile(data)
                     }
                 } catch (error: any) {
@@ -96,9 +96,23 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
                                         await logout()
                                         break
                                     }
+                                    default: {
+                                        toast.error(error.message)
+                                        await logout()
+                                    }
                                 }
                             }
                             break
+                        }
+                        case CODE.INACTIVE_ACCOUNT: {
+                            toast.error(t(LANGUAGE.NOTIFY_INACTIVE_ACCOUNT))
+                            hiddenFlashScreen()
+                            await logout()
+                            break
+                        }
+                        default: {
+                            toast.error(error.message)
+                            await logout()
                         }
                     }
                 }

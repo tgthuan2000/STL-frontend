@@ -42,7 +42,6 @@ const Form: React.FC<Form> = (props) => {
                     <Group
                         key={group._id}
                         data={group}
-                        form={form}
                         permissionsChecked={permissionsChecked}
                         onPermissionCheck={handlePermissionCheck}
                         disabled={!selectedRole}

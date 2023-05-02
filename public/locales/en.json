@@ -105,6 +105,7 @@
     "IMAGE": "Image",
     "NO_IMAGE": "No image",
     "USER": "User",
+    "USERNAME": "Username",
     "SERVICE": "Service",
     "ACTIONS": "Actions",
     "LOADING_PROFILE": "Waiting to loading profile",
@@ -112,6 +113,8 @@
     "RELOADING_PROFILE": "Reloading profile",
     "LOADING_CONFIG": "Waiting to loading config",
     "PREVIEW": "Preview",
+    "ACTIVE": "Active",
+    "INACTIVE": "Inactive",
 
     "APP_READY_WORK_OFFLINE": "App ready to work offline",
     "RELOAD_TEXT": "New content available, click on reload button to update.",
@@ -154,6 +157,7 @@
     "PASSWORD_NOT_MATCH": "Password not match",
     "REAL_MONEY_MUST_BE_LESS_THAN_AMOUNT": "Real money must be less than amount",
     "INVALID_FORMAT": "Invalid format",
+    "MIN_LENGTH_4": "Must be greater than 4 characters",
 
     "PLACEHOLDER_TEXT": "Placeholder 🎉",
     "PLACEHOLDER_CHOOSE_KIND": "Choose kind",
@@ -202,6 +206,7 @@
     "NOTIFY_INACTIVE_ACCOUNT": "Inactive account",
     "NOTIFY_DELETE_SCHEDULE_SUCCESSFULLY": "Delete schedule successfully",
     "NOTIFY_UPDATE_SCHEDULE_SUCCESSFULLY": "Update schedule successfully",
+    "NOTIFY_EMAIL_EXIST": "Email exist",
 
     "CONFIRM_NOTIFY": "Do you want to notify?",
     "CONFIRM_DELETE_TRANSACTION": "Do you want to delete transaction?",
@@ -347,6 +352,7 @@
 
     "ACCOUNT_ACTIVE": "Account active",
     "ACCOUNT_INACTIVE": "Account inactive",
+    "CREATE_ACCOUNT": "Create account",
 
     "ROLE": "Role",
     "PERMISSION": "Permission",

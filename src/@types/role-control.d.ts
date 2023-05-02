@@ -13,5 +13,5 @@ export interface IRoleControl {
     name: string
     description: string
     parentId: string | null
-    permissions: { _id: string }[]
+    permissions: { _id: PERMISSION }[]
 }
