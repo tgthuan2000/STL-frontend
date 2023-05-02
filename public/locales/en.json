@@ -350,6 +350,7 @@
 
     "ROLE": "Role",
     "PERMISSION": "Permission",
+    "CREATE_PERMISSION_GROUP": "Create permission group",
 
     "SOME_SIMILAR_NAME": "Some similar name",
     "NOT_SIMILAR_NAME": "Not similar name",

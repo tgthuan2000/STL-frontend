@@ -330,6 +330,7 @@
 
     "ROLE": "Vai trò",
     "PERMISSION": "Quyền hạn",
+    "CREATE_PERMISSION_GROUP": "Tạo nhóm quyền hạn",
 
     "SOME_SIMILAR_NAME": "Một số loại gần giống tên",
     "NOT_SIMILAR_NAME": "Không có loại gần giống tên",

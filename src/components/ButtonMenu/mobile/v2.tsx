@@ -13,8 +13,8 @@ const v2: React.FC<Props> = (props) => {
     const { className, data } = props
 
     return (
-        <div className={clsx('flex h-full flex-nowrap items-center justify-evenly', className)}>
-            <ButtonMenuProvider data={data}>{(item) => <ButtonItem mode='v2' mobile data={item} />}</ButtonMenuProvider>
+        <div className={clsx('hidden-scrollbar flex w-full snap-x snap-mandatory gap-4 overflow-x-auto', className)}>
+            <ButtonMenuProvider data={data}>{(item) => <ButtonItem mobile mode='v2' data={item} />}</ButtonMenuProvider>
         </div>
     )
 }

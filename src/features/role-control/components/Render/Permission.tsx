@@ -2,7 +2,7 @@ import { ChevronUpIcon, PlusIcon } from '@heroicons/react/24/outline'
 import { yupResolver } from '@hookform/resolvers/yup'
 import clsx from 'clsx'
 import { isEmpty, isEqual } from 'lodash'
-import React, { memo, useEffect, useId, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { UseFormReturn, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -290,6 +290,7 @@ interface ContentProps {
 }
 
 interface CreatePermissionForm {
+    _id: string
     name: string
     description?: string
 }
@@ -303,11 +304,13 @@ const Content: React.FC<ContentProps> = (props) => {
 
     const form = useForm<CreatePermissionForm>({
         defaultValues: {
+            _id: '',
             name: '',
             description: '',
         },
         resolver: yupResolver(
             yup.object().shape({
+                _id: yup.string().required(t(LANGUAGE.REQUIRED_FIELD) as string),
                 name: yup.string().required(t(LANGUAGE.REQUIRED_FIELD) as string),
                 description: yup.string(),
             })
@@ -317,12 +320,14 @@ const Content: React.FC<ContentProps> = (props) => {
     const onSubmit = async (data: CreatePermissionForm) => {
         try {
             setSubmitLoading(true)
-            const name = data.name.trim()
-            const description = data.description?.trim()
+            let { _id, name, description } = data
+            name = data.name.trim()
+            description = data.description?.trim()
+            _id = name.trim().replaceAll(' ', '_').toUpperCase()
 
             await client.createIfNotExists({
                 _type: 'permission',
-                _id: name.replaceAll(' ', '_').toUpperCase(),
+                _id,
                 name,
                 description,
                 group: {
@@ -341,9 +346,17 @@ const Content: React.FC<ContentProps> = (props) => {
         }
     }
 
+    const name = form.watch('name')
+
+    useEffect(() => {
+        form.setValue('_id', name.trim().replaceAll(' ', '_').toUpperCase())
+    }, [name])
+
     return (
         <form onSubmit={form.handleSubmit(onSubmit)} className='flex h-full flex-col gap-2'>
             <div className='flex flex-1 flex-col gap-4 px-6 pb-6 pt-4'>
+                <Input form={form} type='text' name='_id' label='ID' disabled />
+
                 <Input form={form} type='text' name='name' label={t(LANGUAGE.NAME)} />
 
                 <TextArea form={form} name='description' label={t(LANGUAGE.SHORT_DESCRIPTION)} />

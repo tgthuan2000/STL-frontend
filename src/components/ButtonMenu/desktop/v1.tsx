@@ -5,13 +5,12 @@ import ButtonItem from '../ButtonItem'
 import ButtonMenuProvider from '../ButtonMenuProvider'
 
 const v1: React.FC<ButtonMenuProps> = (props) => {
-    const { className, data, small = false } = props
+    const { className, data } = props
 
     return (
         <div
             className={clsx(
-                'mx-auto grid min-w-[80px] max-w-lg gap-2 transition-all xl:grid-cols-1 xl:rounded-lg xl:hover:bg-white xl:hover:bg-opacity-30 xl:hover:p-3 xl:hover:shadow-lg dark:xl:hover:bg-slate-800',
-                small ? 'min-h-[120px] grid-cols-3' : 'min-h-[240px] grid-cols-2',
+                'mx-auto grid min-w-[80px] max-w-lg grid-cols-1 gap-2 rounded-lg transition-all hover:bg-white hover:bg-opacity-30 hover:p-3 hover:shadow-lg dark:hover:bg-slate-800',
                 className
             )}
         >

@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash'
-import React, { memo, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { List } from '~/@types'
 import { IRoleControl } from '~/@types/role-control'

@@ -50,7 +50,6 @@ export interface AutocompleteLabelProps {
 export interface ButtonMenuProps {
     className?: string
     data: IMenuBtn[]
-    small?: boolean
 }
 export interface AutocompleteButtonProps {
     disabledClear?: boolean

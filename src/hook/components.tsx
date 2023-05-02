@@ -20,9 +20,10 @@ import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IMenuBtn } from '~/@types/components'
 import axios from '~/axiosConfig'
-import { MakeSchedule, MakeTimeKeeping } from '~/features/time/components'
 import { CreateMember, MakeGetLoan, MakeLoan } from '~/features/loan/components'
+import { CreatePermissionGroup } from '~/features/role-control/components'
 import { AddCategory, AddMethod, MakeBudget, MakeCost, MakeIncome, MakeTransfer } from '~/features/spending/components'
+import { MakeSchedule, MakeTimeKeeping } from '~/features/time/components'
 import LANGUAGE from '~/i18n/language/key'
 
 export const useMenuMobile = (): IMenuBtn[] => {
@@ -168,6 +169,27 @@ export const useMenuLoanMobile = (): IMenuBtn[] => {
     }, [t])
     return data
 }
+
+export const useMenuRoleControlMobile = (): IMenuBtn[] => {
+    const { t } = useTranslation()
+
+    const data = useMemo(() => {
+        return [
+            {
+                title: t(LANGUAGE.CREATE_PERMISSION_GROUP),
+                color: 'text-indigo-700 bg-indigo-200 hover:bg-indigo-300 dark:text-indigo-500',
+                icon: RectangleGroupIcon,
+                children: () => <CreatePermissionGroup />,
+                query: {
+                    slide: 'create-permission-group',
+                },
+            },
+        ]
+    }, [t])
+
+    return data
+}
+
 export const useMenuSpendingPC = (): IMenuBtn[] => {
     const { t } = useTranslation()
     const data: IMenuBtn[] = useMemo(() => {
@@ -380,16 +402,19 @@ export const useMenuTimePC = (): IMenuBtn[] => {
     return data
 }
 
-export const useMenuTimePages = (): IMenuBtn[] => {
+export const useMenuRoleControlPC = (): IMenuBtn[] => {
     const { t } = useTranslation()
 
     const data = useMemo(() => {
         return [
             {
-                title: t(LANGUAGE.HOME),
-                color: 'text-red-700 dark:text-red-500',
-                icon: HomeIcon,
-                to: '/time',
+                title: t(LANGUAGE.CREATE_PERMISSION_GROUP),
+                color: 'text-indigo-700 bg-indigo-200 hover:bg-indigo-300 dark:text-indigo-500',
+                icon: RectangleGroupIcon,
+                children: () => <CreatePermissionGroup />,
+                query: {
+                    slide: 'create-permission-group',
+                },
             },
         ]
     }, [t])
@@ -482,5 +507,34 @@ export const useMenuLoanPages = (): IMenuBtn[] => {
             // },
         ]
     }, [t])
+    return data
+}
+
+export const useMenuTimePages = (): IMenuBtn[] => {
+    const { t } = useTranslation()
+
+    const data = useMemo(() => {
+        return [
+            {
+                title: t(LANGUAGE.HOME),
+                color: 'text-red-700 dark:text-red-500',
+                icon: HomeIcon,
+                to: '/time',
+            },
+        ]
+    }, [t])
+
+    return data
+}
+
+export const useMenuRoleControlPages = (): IMenuBtn[] => {
+    const { t } = useTranslation()
+
+    const data = useMemo(() => {
+        return [
+            { title: t(LANGUAGE.HOME), color: 'text-red-700 dark:text-red-500', icon: HomeIcon, to: '/role-control' },
+        ]
+    }, [t])
+
     return data
 }

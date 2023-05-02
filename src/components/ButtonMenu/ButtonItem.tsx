@@ -53,7 +53,7 @@ const ButtonItem: React.FC<MenuButtonProps & { mobile?: boolean; mode?: 'v1' | '
             ) : (
                 <>
                     {mode === 'v1' && <DesktopButton.v1 {...props} />}
-                    {mode === 'v2' && <DesktopButton.v2 {...props} />}
+                    {/* {mode === 'v2' && <DesktopButton.v2 {...props} />} */}
                 </>
             )}
             <SlideOver>{children}</SlideOver>
