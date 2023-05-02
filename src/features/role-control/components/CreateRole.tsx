@@ -107,7 +107,7 @@ const CreateRole = () => {
                 </div>
             </div>
             <SubmitWrap>
-                <Button color='indigo' type='submit' disabled={loading.submit}>
+                <Button color='rose' type='submit' disabled={loading.submit}>
                     {t(LANGUAGE.CREATE)}
                 </Button>
                 <Button

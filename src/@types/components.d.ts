@@ -273,6 +273,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
         | 'radicalRed'
         | 'prussianBlue'
         | 'yellow'
+        | 'rose'
         | 'outline-indigo'
         | 'outline-cyan'
         | 'outline-green'
