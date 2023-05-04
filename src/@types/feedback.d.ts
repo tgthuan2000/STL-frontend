@@ -13,7 +13,7 @@ export interface ChatInfoItemProps {
     data: List<Feedback>
     lastEl: boolean
     bottomImageLine: boolean
-    onReply: (message: string, parentId: string) => any
+    onReply: (message: string, parentId: string, responded?: boolean) => any
     onEdit: (message: string, id: string) => any
     onDelete: (id: string) => any
     children: React.ReactNode
@@ -26,7 +26,7 @@ export interface Feedback {
     user: Omit<IUserProfile, 'isHasPassword' | 'google' | 'allowSendMail' | 'email'>
     edited: boolean
     deleted: boolean
-    parentId: string | null
+    parent: Feedback | null
     childNum: number
 }
 
@@ -41,6 +41,8 @@ export interface FeedbackQueryData {
 export interface InputFormProps {
     onSubmit: (message: string) => any
     defaultMessage?: string
+    disabled?: boolean
+    autoFocus?: boolean
 }
 
 export interface SeeMoreButtonProps {

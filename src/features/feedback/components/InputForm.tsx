@@ -6,7 +6,7 @@ import { InputFormProps } from '~/@types/feedback'
 import { AnimateWrap } from '~/components'
 import LANGUAGE from '~/i18n/language/key'
 
-const InputForm: React.FC<InputFormProps> = ({ onSubmit, defaultMessage = '' }) => {
+const InputForm: React.FC<InputFormProps> = ({ onSubmit, defaultMessage = '', disabled, autoFocus = true }) => {
     const { t } = useTranslation()
     const form = useForm({
         defaultValues: {
@@ -32,10 +32,11 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit, defaultMessage = '' }) 
                 render={({ field }) => (
                     <input
                         type='text'
-                        autoFocus
+                        autoFocus={autoFocus}
                         placeholder={t(LANGUAGE.TYPE_YOUR_MESSAGE) as string}
                         autoComplete='off'
-                        className='w-full flex-1 border-none bg-transparent text-sm outline-none focus:ring-transparent sm:text-base'
+                        className='w-full flex-1 border-none bg-transparent text-sm outline-none focus:ring-transparent disabled:opacity-50 sm:text-base'
+                        disabled={disabled}
                         {...field}
                     />
                 )}

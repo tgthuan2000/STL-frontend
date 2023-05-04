@@ -365,6 +365,7 @@
     "NOTIFY_RECEIVER_LIST": "Danh sách người nhận thông báo",
     "SEND_NOTIFY_BY_EMAIL": "Gửi thông báo qua email",
     "EDIT_NOTIFY": "Chỉnh sửa thông báo",
+    "CHOOSE_FEEDBACK_USER": "Chọn phản hồi",
 
     "SPENDING_MANAGEMENT": "Quản lý chi tiêu",
     "LOAN_MANAGEMENT": "Quản lý vay/cho vay",

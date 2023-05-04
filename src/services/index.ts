@@ -93,7 +93,7 @@ export const service = {
     getBudgetId(userId: string, month?: moment.MomentInput) {
         return moment(month).format('YYYY-MM-') + userId
     },
-    listToTree<T extends _List>(_list: T[]) {
+    listToTree<T extends _List>(_list: T[], getParentId: (item: T) => string | null | undefined) {
         let list: Array<List<T>> = cloneDeep(_list),
             map: { [x: string]: number } = {},
             node: List<T>,
@@ -106,9 +106,10 @@ export const service = {
 
         for (let i = 0; i < list.length; i += 1) {
             node = list[i]
-            if (node.parentId) {
+            const parentId = getParentId(node)
+            if (parentId) {
                 // if you have dangling branches check that map[node.parent_id] exists
-                list[map[node.parentId]]?.children?.push(node)
+                list[map[parentId]]?.children?.push(node)
             } else {
                 roots.push(node)
             }

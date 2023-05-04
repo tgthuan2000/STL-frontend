@@ -10,7 +10,7 @@ import SeeMoreButton from './SeeMoreButton'
 const Messages: React.FC<MessagesProps> = ({ data, onSeeMoreClick, onReply, onEdit, onDelete }) => {
     const memo = useMemo(() => {
         if (!data) return null
-        const _d = service.listToTree<Feedback>(data)
+        const _d = service.listToTree<Feedback>(data, (item) => item.parent?._id)
 
         const callBack = (data: Array<List<Feedback>>, parentReplyNum: number) => {
             return data
@@ -18,7 +18,7 @@ const Messages: React.FC<MessagesProps> = ({ data, onSeeMoreClick, onReply, onEd
                 .map((d, index, origin) => {
                     const replyNum =
                         d.childNum - (d.children?.filter((data) => get(data, 'status') !== 'new').length || 0)
-                    const lastEl = !!d.parentId && (index !== origin.length - 1 || parentReplyNum > 0)
+                    const lastEl = !!d.parent && (index !== origin.length - 1 || parentReplyNum > 0)
 
                     return (
                         <div key={d._id} className='flex flex-col items-start'>

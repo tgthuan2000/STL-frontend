@@ -24,7 +24,7 @@ const Role: React.FC<Props> = (props) => {
     const refactoredData = useMemo(() => {
         if (!data || isEmpty(data) || !Array.isArray(data)) return <LoadingText />
 
-        const _d = service.listToTree<IRoleControl>(data)
+        const _d = service.listToTree<IRoleControl>(data, (item) => item.parentId)
 
         const callBack = (data: Array<List<IRoleControl>>) => {
             return data.map((d, index, origin) => {

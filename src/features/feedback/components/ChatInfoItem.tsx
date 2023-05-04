@@ -32,7 +32,7 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
                     onEdit(message, data._id)
                 }
             } else {
-                onReply(message, data._id)
+                onReply(message, data._id, false)
             }
             setShowInput({
                 show: false,
@@ -139,7 +139,7 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
                 </div>
             </div>
 
-            {!!data.parentId && (
+            {!!data.parent && (
                 <>
                     <span className='left-image' />
                 </>

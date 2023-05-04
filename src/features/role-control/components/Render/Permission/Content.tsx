@@ -87,7 +87,7 @@ const Content: React.FC<ContentProps> = (props) => {
                 <TextArea form={form} name='description' label={t(LANGUAGE.SHORT_DESCRIPTION)} />
             </div>
             <div className='flex justify-end gap-2 px-6 pb-6 pt-4'>
-                <Button type='button' color='outline' onClick={close}>
+                <Button type='button' color='outline' onClick={() => close()}>
                     {t(LANGUAGE.CLOSE)}
                 </Button>
                 <Button type='submit' color='indigo'>

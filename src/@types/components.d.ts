@@ -44,7 +44,7 @@ export interface AutoCompleteProps {
 
 export interface AutocompleteLabelProps {
     label?: string | DefaultTFuncReturn
-    onReload?: () => Promise<void>
+    onReload?: () => Promise<void> | void
     loading?: boolean
 }
 export interface ButtonMenuProps {

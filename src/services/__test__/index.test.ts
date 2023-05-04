@@ -491,7 +491,7 @@ describe('listToTree', () => {
     ]
     testCases.forEach((testCase) => {
         it('should return correct tree', () => {
-            expect(service.listToTree(testCase.list)).toEqual(testCase.expected)
+            expect(service.listToTree(testCase.list, (item) => item.parentId)).toEqual(testCase.expected)
         })
     })
 })
