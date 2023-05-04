@@ -11,14 +11,20 @@ const messageZoneHOC = (Component: React.FC<MessageZoneProps>) => () => {
     const { width } = useWindowSize()
     const [searchParams] = useSearchParams()
     const feedbackId = searchParams.get(FEEDBACK_PARAM)
+
     const {
         feedback,
-        actions: { seeMoreClick },
-    } = useFeedbackDetail(feedbackId)
+        treeData,
+        actions: { seeMoreClick, getParent },
+    } = useFeedbackDetail({
+        feedbackId,
+    })
 
     const renderComponent = useMemo(() => {
-        return <Component data={feedback.data} loading={feedback.loading} seeMoreClick={seeMoreClick} />
-    }, [feedback, seeMoreClick])
+        return (
+            <Component data={treeData} loading={feedback.loading} seeMoreClick={seeMoreClick} onGetParent={getParent} />
+        )
+    }, [treeData, seeMoreClick])
 
     if (width <= 1024) return <Dialog>{renderComponent}</Dialog>
 

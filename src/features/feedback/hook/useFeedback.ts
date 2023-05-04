@@ -1,13 +1,13 @@
 import { get, isEmpty } from 'lodash'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { FeedbackQueryData, IFeedback } from '~/@types/feedback'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Feedback, FeedbackQueryData, IFeedback } from '~/@types/feedback'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, RefactorUseQuery, TagsTypeUseQuery } from '~/@types/hook'
 import { TAGS } from '~/constant'
 import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { GET_FEED_BACK_BY_PARENT_ID, GET_PARENT_FEED_BACK, SUBSCRIPTION_FEED_BACK } from '~/schema/query/feedback'
+import { service } from '~/services'
 import { useProfile } from '~/store/auth'
-import useActionFeedback from './useActionFeedback'
 
 interface QueryState {
     query: QueryTypeUseQuery<FeedbackQueryData>
@@ -21,7 +21,12 @@ interface FeedbackSubscription {
     parent: { _ref: string } | null
 }
 
-const useFeedback = () => {
+interface useFeedbackOption {
+    cancelListToTree?: boolean
+}
+
+const useFeedback = (options?: useFeedbackOption) => {
+    const { cancelListToTree } = options || {}
     const { userProfile } = useProfile()
     const isRevert = useRef(true)
     const [{ query, params, tags, refactor }, setQuery] = useState<QueryState>({
@@ -136,6 +141,11 @@ const useFeedback = () => {
         }
     }, [])
 
+    const treeData = useMemo(() => {
+        if (!feedback.data?.data || cancelListToTree) return []
+        return service.listToTree<Feedback>(feedback.data?.data, (item) => item.parent?._id)
+    }, [feedback.data?.data])
+
     const handleSeeMoreClick = useCallback((parentId: string) => {
         const count = feedback.data?.data.filter((d) => d.parent?._id === parentId && d.deleted === false).length || 0
         isRevert.current = false
@@ -155,7 +165,7 @@ const useFeedback = () => {
         reload('feedback')
     }, [])
 
-    return { feedback, actions: { seeMoreClick: handleSeeMoreClick } }
+    return { feedback, treeData, actions: { seeMoreClick: handleSeeMoreClick } }
 }
 
 export default useFeedback

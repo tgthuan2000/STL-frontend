@@ -3,13 +3,14 @@ import { AnimateWrap, Transaction } from '~/components'
 import LoadingText from '~/components/Loading/LoadingText'
 import LANGUAGE from '~/i18n/language/key'
 import { InputForm, Messages } from '../components'
-import useFeedback from '../hook/useFeedback'
 import useActionFeedback from '../hook/useActionFeedback'
+import useFeedback from '../hook/useFeedback'
 
 const Dashboard = () => {
     const { t } = useTranslation()
     const {
         feedback,
+        treeData,
         actions: { seeMoreClick },
     } = useFeedback()
     const { deleteMessage, editMessage, replyMessage, submitNewMessage } = useActionFeedback()
@@ -20,7 +21,7 @@ const Dashboard = () => {
                 <AnimateWrap className='flex-1 overflow-auto px-3 pb-10 sm:px-5'>
                     {feedback.loading && <LoadingText className='mt-5 text-center' />}
                     <Messages
-                        data={feedback.data?.data}
+                        data={treeData}
                         onSeeMoreClick={seeMoreClick}
                         onReply={replyMessage}
                         onEdit={editMessage}

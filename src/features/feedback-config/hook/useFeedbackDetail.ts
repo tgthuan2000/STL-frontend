@@ -1,63 +1,52 @@
 import { isEmpty } from 'lodash'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FeedbackQueryData, IFeedback } from '~/@types/feedback'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, RefactorUseQuery, TagsTypeUseQuery } from '~/@types/hook'
 import { TAGS } from '~/constant'
 import { useQuery } from '~/hook'
 import { GET_FEEDBACK_BY_ID, GET_FEED_BACK_BY_PARENT_ID } from '~/schema/query/feedback'
+import { listToTree } from '../services'
 
 interface State {
     query: QueryTypeUseQuery<FeedbackQueryData>
     params: ParamsTypeUseQuery
     tags: TagsTypeUseQuery<FeedbackQueryData>
-    refactor: RefactorUseQuery<FeedbackQueryData>
 }
 
-const useFeedbackDetail = (feedbackId: string | null) => {
-    const isRevert = useRef(true)
-    const [{ query, params, tags, refactor }, setQuery] = useState<State>({
+interface useFeedbackDetailOptions {
+    feedbackId: string | null
+    cancelListToTree?: boolean
+}
+
+const useFeedbackDetail = (options: useFeedbackDetailOptions) => {
+    const { feedbackId, cancelListToTree } = options
+    const [{ query, params, tags }, setQuery] = useState<State>({
         query: { feedback: GET_FEEDBACK_BY_ID },
-        params: { feedbackId },
+        params: { feedbackId, status: 'old' },
         tags: { feedback: TAGS.ALTERNATE },
-        refactor: ({ feedback }) => {
-            const data =
-                feedback.data.reduce((acc, cur) => {
-                    const { children, ...d } = cur
-
-                    acc.push({ ...d, children: [] })
-
-                    if (children && !isEmpty(children)) {
-                        acc.push(...children.map((child) => ({ ...child, children: [] })))
-                    }
-
-                    return acc
-                }, [] as IFeedback[]) || []
-
-            return {
-                feedback: {
-                    data,
-                },
-            }
-        },
     })
 
-    const [{ feedback }, , , reload, ,] = useQuery<FeedbackQueryData>(query, params, tags, refactor, isRevert.current)
+    const [{ feedback }, , deleteCache, reload, ,] = useQuery<FeedbackQueryData>(query, params, tags)
 
     useEffect(() => {
         if (feedbackId) {
-            isRevert.current = false
             setQuery((prev) => ({
                 ...prev,
                 query: { feedback: GET_FEEDBACK_BY_ID },
-                params: { ...prev.params, status: 'old' },
+                params: { ...prev.params, feedbackId, status: 'old' },
             }))
-            reload('feedback')
+            deleteCache('feedback')
+            reload()
         }
     }, [feedbackId])
 
+    const treeData = useMemo(() => {
+        if (!feedback.data?.data || cancelListToTree) return []
+        return listToTree(feedback.data?.data)
+    }, [feedback.data?.data])
+
     const handleSeeMoreClick = useCallback((parentId: string) => {
         const count = feedback.data?.data.filter((d) => d.parent?._id === parentId && d.deleted === false).length || 0
-        isRevert.current = false
         setQuery((prev) => ({
             ...prev,
             query: {
@@ -65,8 +54,6 @@ const useFeedbackDetail = (feedbackId: string | null) => {
             },
             params: {
                 ...prev.params,
-                __fromFeedback: count,
-                __toFeedback: count + 10,
                 parentId,
                 status: 'old',
             },
@@ -74,7 +61,15 @@ const useFeedbackDetail = (feedbackId: string | null) => {
         reload('feedback')
     }, [])
 
-    return { feedback, actions: { seeMoreClick: handleSeeMoreClick } }
+    const handleGetParent = useCallback((parentId: string) => {
+        setQuery((prev) => ({
+            ...prev,
+        }))
+
+        reload('feedback')
+    }, [])
+
+    return { feedback, treeData, actions: { seeMoreClick: handleSeeMoreClick, getParent: handleGetParent } }
 }
 
 export default useFeedbackDetail

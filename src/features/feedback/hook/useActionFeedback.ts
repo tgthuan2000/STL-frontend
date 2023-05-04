@@ -28,7 +28,7 @@ const useActionFeedback = () => {
         await __.commit()
     }, [])
 
-    const replyMessage = useCallback(async (message: string, parentId: string, responded?: boolean) => {
+    const replyMessage = useCallback(async (message: string, parentId: string) => {
         if (!parentId || !message) return
 
         const __ = client.transaction()
@@ -41,7 +41,7 @@ const useActionFeedback = () => {
             },
             edited: false,
             deleted: false,
-            responded: responded ?? false,
+            responded: false,
             user: {
                 _type: 'reference',
                 _ref: userProfile?._id as string,

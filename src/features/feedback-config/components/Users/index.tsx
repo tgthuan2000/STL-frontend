@@ -2,9 +2,12 @@ import React from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { AnimateWrap, PaperWrap } from '~/components'
 import LoadingWait from '~/components/Loading/LoadingWait'
-import useFeedback from '../../hook/useFeedback'
+import useTopFeedback from '../../hook/useTopFeedback'
 import { FEEDBACK_PARAM } from '../../pages/Dashboard'
 import User from './User'
+import { isEmpty } from 'lodash'
+import { useTranslation } from 'react-i18next'
+import LANGUAGE from '~/i18n/language/key'
 
 interface Props {}
 
@@ -19,9 +22,10 @@ const getUrl = (id: string, searchParams: URLSearchParams) => {
 }
 
 const Users: React.FC<Props> = () => {
-    const { feedbacks } = useFeedback()
+    const { feedbacks, refetch } = useTopFeedback()
     const [searchParams] = useSearchParams()
     const feedbackId = searchParams.get(FEEDBACK_PARAM)
+    const { t } = useTranslation()
 
     return (
         <PaperWrap className='flex-1 sm:m-0' disabledPadding>
@@ -47,9 +51,24 @@ const Users: React.FC<Props> = () => {
                             />
                         )
                     })}
+
+                    <EmptyFeedback show={!feedbacks.loading && isEmpty(feedbacks.data)} />
                 </AnimateWrap>
             </div>
         </PaperWrap>
+    )
+}
+
+const EmptyFeedback = (props: { show: boolean }) => {
+    const { show } = props
+    const { t } = useTranslation()
+
+    if (!show) return <></>
+
+    return (
+        <div className='flex h-full w-full items-center justify-center'>
+            <p className='text-base sm:text-lg'>{t(LANGUAGE.EMPTY_DATA)}</p>
+        </div>
     )
 }
 

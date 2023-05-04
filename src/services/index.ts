@@ -1,5 +1,5 @@
 import { ArrowPathIcon, ListBulletIcon, TableCellsIcon } from '@heroicons/react/24/outline'
-import { cloneDeep, isEmpty } from 'lodash'
+import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -94,7 +94,7 @@ export const service = {
         return moment(month).format('YYYY-MM-') + userId
     },
     listToTree<T extends _List>(_list: T[], getParentId: (item: T) => string | null | undefined) {
-        let list: Array<List<T>> = cloneDeep(_list),
+        let list: Array<List<T>> = structuredClone(_list),
             map: { [x: string]: number } = {},
             node: List<T>,
             roots: Array<List<T>> = []
@@ -107,13 +107,22 @@ export const service = {
         for (let i = 0; i < list.length; i += 1) {
             node = list[i]
             const parentId = getParentId(node)
-            if (parentId) {
+
+            // parentEl: true if have real parent element in map
+            if (parentId && map[parentId] === undefined) {
+                node.parentEl = false
+            } else {
+                node.parentEl = !!parentId
+            }
+
+            if (parentId && map[parentId] !== undefined) {
                 // if you have dangling branches check that map[node.parent_id] exists
                 list[map[parentId]]?.children?.push(node)
             } else {
                 roots.push(node)
             }
         }
+
         return roots
     },
 }

@@ -47,8 +47,13 @@ export const SUBSCRIPTION_FEED_BACK = groq`
     }
 `
 
+export const SUBSCRIPTION_TOP_FEED_BACK = groq`
+    *[_type == "feedback" && responded == false][0] {
+    }
+`
+
 export const GET_TOP_FEEDBACK = groq`
-    *[_type == "feedback" && deleted == false] {
+    *[_type == "feedback" && deleted == false && responded == false] | order(_createdAt asc)[$__fromFeedback...$__toFeedback]{
         _id,
         _createdAt,
         message,
@@ -62,26 +67,40 @@ export const GET_TOP_FEEDBACK = groq`
 `
 
 export const GET_FEEDBACK_BY_ID = groq`
-    *[_type == "feedback" && _id == $feedbackId] {
-        _id,
-        _createdAt,
-        message,
-        parent -> {
+    {
+        "data": *[_type == "feedback" && _id == $feedbackId] {
             _id,
             _createdAt,
             message,
+            edited,
+            deleted,
+            responded,
+            "childNum": count(*[_type == "feedback" && parent._ref == ^._id && deleted == false]),
             user -> {
                 _id,
                 userName,
                 email,
                 image
-            }
-        },
-        user -> {
-            _id,
-            userName,
-            email,
-            image
-        },
+            },
+            parent -> {
+                _id,
+                _createdAt,
+                message,
+                edited,
+                deleted,
+                responded,
+                "childNum": count(*[_type == "feedback" && parent._ref == ^.parent._ref && deleted == false]),
+                user -> {
+                    _id,
+                    userName,
+                    email,
+                    image
+                },
+                parent -> {
+                    _id,
+                }
+            },
+            
+        }
     }
 `

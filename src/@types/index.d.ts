@@ -23,7 +23,7 @@ export interface ListGroupResult {
 export interface _List {
     _id: string
 }
-export type List<T> = T & { children?: Array<T> }
+export type List<T> = T & { children?: Array<T>; parentEl?: boolean }
 
 export interface DataListOptionsParam {
     onReloadClick: () => void
