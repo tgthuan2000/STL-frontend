@@ -52,11 +52,12 @@ export const useColumns = (options: Option): Array<TableColumn<IAccount>> => {
                 key: 'security',
                 title: t(LANGUAGE.SECURITY),
                 label: 'string',
-                renderRow: ({ twoFA, isHasPassword }) => (
-                    <td className='px-1 text-center'>
-                        <div className='inline-flex flex-wrap gap-1.5'>
-                            {isHasPassword && <Chip className='bg-indigo-500 font-medium text-white'>Password</Chip>}
+                renderRow: ({ twoFA, isHasPassword, google }) => (
+                    <td className='px-1'>
+                        <div className='inline-flex gap-1.5'>
+                            {google && <Chip className='bg-radical-red-500 font-medium text-white'>Google</Chip>}
                             {twoFA && <Chip className='bg-orange-500 font-medium text-white'>2FA</Chip>}
+                            {isHasPassword && <Chip className='bg-indigo-500 font-medium text-white'>Password</Chip>}
                         </div>
                     </td>
                 ),

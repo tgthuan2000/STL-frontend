@@ -22,7 +22,8 @@ export type useQueryType<T> = [
     (...keys: Array<keyof T>) => string | null,
     (...keys: Array<keyof T>) => void,
     Boolean,
-    React.Dispatch<React.SetStateAction<Data<T>>>
+    React.Dispatch<React.SetStateAction<Data<T>>>,
+    () => Data<T> | undefined
 ]
 
 export type ParamsTypeUseQuery = { [y: string]: string | number | null | string[] | undefined }

@@ -1,9 +1,8 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import QRCode from 'qrcode'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
-import { CopyCode, TwoFactorForm } from '~/components'
+import { AnimateWrap, CopyCode, TwoFactorForm } from '~/components'
 import { useLoading } from '~/context'
 import { useAxios, useLogout } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
@@ -18,7 +17,6 @@ const TwoFactor: React.FC<TwoFactorProps> = ({ onClose }) => {
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState('')
     const [secret, setSecret] = useState('')
-    const [imageRef] = useAutoAnimate<HTMLDivElement>()
     const { setSubmitLoading } = useLoading()
     const logout = useLogout()
     const axios = useAxios()
@@ -72,9 +70,9 @@ const TwoFactor: React.FC<TwoFactorProps> = ({ onClose }) => {
                 <div className='flex flex-col items-center justify-center gap-5'>
                     <h2 className='text-lg font-normal'>{t(LANGUAGE.SCAN_QR_CODE)}</h2>
                     <p className='text-center text-sm'>{t(LANGUAGE.SCAN_QR_CODE_DESCRIPTION)}</p>
-                    <div ref={imageRef} className='h-52 w-52 overflow-hidden'>
+                    <AnimateWrap className='h-52 w-52 overflow-hidden'>
                         <TwoFactorImage data={data} loading={loading} />
-                    </div>
+                    </AnimateWrap>
                     <span className='text-center text-lg font-medium'>{t(LANGUAGE.OR)}</span>
                     <span>{t(LANGUAGE.SCAN_QR_CODE_DESCRIPTION_3)}</span>
                     <span className='overflow-hidden rounded-md bg-gray-200 py-2 px-4 text-base font-normal dark:bg-slate-700'>

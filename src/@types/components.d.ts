@@ -3,7 +3,7 @@ import { DefaultTFuncReturn } from 'i18next'
 import React, { HTMLInputTypeAttribute, ReactNode } from 'react'
 import { ControllerRenderProps, FieldError, RegisterOptions, UseFormReturn } from 'react-hook-form'
 import { ReactQuillProps } from 'react-quill'
-import { NavigateFunction } from 'react-router-dom'
+import { NavigateFunction, To } from 'react-router-dom'
 import { DATE_FORMAT } from '~/constant'
 import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
 import { PERMISSION } from '~/constant/permission'
@@ -27,7 +27,7 @@ export interface AutoCompleteProps {
     data?: any[]
     idKey?: string
     valueKey?: string
-    onReload?: () => Promise<void>
+    onReload?: () => Promise<void> | void
     addMore?: (value: any) => Promise<any>
     loading?: boolean
     form: UseFormReturn<any, object>
@@ -44,13 +44,12 @@ export interface AutoCompleteProps {
 
 export interface AutocompleteLabelProps {
     label?: string | DefaultTFuncReturn
-    onReload?: () => Promise<void>
+    onReload?: () => Promise<void> | void
     loading?: boolean
 }
 export interface ButtonMenuProps {
     className?: string
     data: IMenuBtn[]
-    small?: boolean
 }
 export interface AutocompleteButtonProps {
     disabledClear?: boolean
@@ -172,6 +171,7 @@ export interface InputProps
 export interface LabelProps {
     id?: string
     label?: DefaultTFuncReturn
+    className?: string
 }
 
 export interface InputNumberHintProps {
@@ -235,6 +235,9 @@ export interface DateProps {
     InputProps?: {
         readOnly?: boolean
     }
+    selectsStart?: boolean
+    selectsEnd?: boolean
+    minDate?: Date
 }
 
 export interface DatePickerInputProps {
@@ -270,6 +273,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
         | 'radicalRed'
         | 'prussianBlue'
         | 'yellow'
+        | 'rose'
         | 'outline-indigo'
         | 'outline-cyan'
         | 'outline-green'
@@ -315,7 +319,7 @@ export interface IMenuBtn {
     title: string
     icon: HeroIcon
     color: string
-    to: To
+    to?: To
     children?: () => React.ReactNode
     query?: SlideParams
     divider?: boolean
@@ -324,6 +328,7 @@ export interface IMenuBtn {
 export interface AnimateWrapProps {
     children: React.ReactNode
     className?: string
+    style?: React.CSSProperties
 }
 
 export interface ToggleProps {
@@ -363,7 +368,6 @@ export interface TabsLinkProps {
 
 export interface TabLinkItemProps {
     tab: TabsLinkData
-    navigate: NavigateFunction
     tabsRef: React.RefObject<HTMLAnchorElement[]>
 }
 
@@ -465,6 +469,7 @@ export interface TableColumn<T extends any> {
 
 export interface TableProps {
     columns: Array<TableColumn>
+    overflowScroll?: boolean
     data: Array<any> | undefined
     loading: boolean
     EmptyTable?: React.ReactNode
@@ -570,9 +575,10 @@ export interface ImageProps {
     src: string | undefined
     avatar?: AvatarImage
     alt?: string
-    className?: string
+    className?: string | ((error: boolean) => string)
     fallback?: React.ReactNode
     className?: string
+    onClick?: () => void
 }
 
 export interface ChipProps {

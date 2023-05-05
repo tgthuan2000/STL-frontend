@@ -30,6 +30,10 @@ const useQuery = <T extends { [x: string]: any }>(
         keys: [],
     })
     const [error, setError] = useState(false)
+    const dataRef = useRef<Data<T>>()
+    const [data, setData] = useState<Data<T>>(() =>
+        filterQueryParams(queryRef.current, paramsRef.current, tagsRef.current)
+    )
 
     useEffect(() => {
         queryRef.current = query
@@ -37,11 +41,11 @@ const useQuery = <T extends { [x: string]: any }>(
 
     useEffect(() => {
         paramsRef.current = params
-    }, [params])
+    }, [JSON.stringify(params)])
 
     useEffect(() => {
         tagsRef.current = tags
-    }, [tags])
+    }, [JSON.stringify(tags)])
 
     useEffect(() => {
         refactorRef.current = refactor
@@ -51,9 +55,9 @@ const useQuery = <T extends { [x: string]: any }>(
         isRevertRef.current = isRevert
     }, [isRevert])
 
-    const [data, setData] = useState<Data<T>>(() =>
-        filterQueryParams(queryRef.current, paramsRef.current, tagsRef.current)
-    )
+    useEffect(() => {
+        dataRef.current = data
+    }, [data])
 
     const fetchData = useCallback(async () => {
         // Check in cache
@@ -115,6 +119,10 @@ const useQuery = <T extends { [x: string]: any }>(
         setRefetch({ reload: true, keys })
     }
 
+    const getCurrentData = useCallback(() => {
+        return structuredClone(dataRef.current)
+    }, [])
+
     useEffect(() => {
         if (refetch.reload) {
             if (error) {
@@ -126,7 +134,7 @@ const useQuery = <T extends { [x: string]: any }>(
         }
     }, [refetch.reload, fetchData])
 
-    return [data, fetchData, deletedCaches, reloadData, error, setData]
+    return [data, fetchData, deletedCaches, reloadData, error, setData, getCurrentData]
 }
 
 export default useQuery

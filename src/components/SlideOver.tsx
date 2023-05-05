@@ -1,14 +1,23 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import React, { Fragment } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { SlideOverProps } from '~/@types/components'
 import { useLoading, useSlideOver } from '~/context'
 
 const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
     const { isOpen, setIsOpen, title } = useSlideOver()
     const { loading } = useLoading()
-    const navigate = useNavigate()
+    const [, setSearchParams] = useSearchParams()
+
+    const close = () => {
+        setIsOpen(false)
+        setSearchParams((prev) => {
+            const params = new URLSearchParams(prev)
+            params.delete('slide')
+            return params
+        })
+    }
 
     return (
         <Transition.Root show={isOpen} as={Fragment}>
@@ -17,8 +26,7 @@ const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
                 className='relative z-30'
                 onClose={(value) => {
                     if (!loading.config) {
-                        setIsOpen(value)
-                        navigate(-1)
+                        close()
                     }
                 }}
             >
@@ -48,7 +56,7 @@ const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
                             >
                                 <Dialog.Panel className='pointer-events-auto w-screen max-w-full sm:max-w-md'>
                                     <div className='flex h-full flex-col overflow-y-auto bg-white shadow-xl dark:bg-slate-800'>
-                                        <div className='px-4 pt-6 sm:px-6'>
+                                        <div className='px-4 pt-6 pb-3 sm:px-6'>
                                             <div className='flex items-start justify-between'>
                                                 <Dialog.Title className='text-lg font-medium text-gray-900 dark:text-white'>
                                                     {title}
@@ -57,10 +65,7 @@ const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
                                                     <button
                                                         type='button'
                                                         className='rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none dark:bg-transparent dark:text-slate-100 dark:hover:text-slate-200'
-                                                        onClick={() => {
-                                                            setIsOpen(false)
-                                                            navigate(-1)
-                                                        }}
+                                                        onClick={close}
                                                     >
                                                         <span className='sr-only'>Close panel</span>
                                                         <XMarkIcon className='h-6 w-6' aria-hidden='true' />
@@ -68,7 +73,7 @@ const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className='flex-1'>
+                                        <div className='h-full flex-1 overflow-hidden'>
                                             {children?.()}
                                             {/* /End replace */}
                                         </div>

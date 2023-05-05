@@ -170,10 +170,14 @@ const TransactionDetail = () => {
                     _ref: methodSpending._id,
                 },
                 ...(imageId && { image: { _type: 'image', asset: { _type: 'reference', _ref: imageId } } }),
-                ...(imageId === null && { image: null }),
             }
 
             const patch = client.patch(id as string).set(document)
+
+            if (imageId === null) {
+                patch.unset(['image'])
+            }
+
             __.patch(patch)
 
             await __.commit()

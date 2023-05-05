@@ -1,15 +1,9 @@
-import clsx from 'clsx'
-import React from 'react'
-import { IMenuBtn } from '~/@types/components'
-import ButtonItem from '../ButtonItem'
-import ButtonMenuProvider from '../ButtonMenuProvider'
+import v1 from './v1'
+import v2 from './v2'
 
-const ButtonMenu: React.FC<{ className?: string; data: IMenuBtn[] }> = ({ className, data }) => {
-    return (
-        <div className={clsx('flex h-full flex-nowrap items-center justify-evenly', className)}>
-            <ButtonMenuProvider data={data}>{(item) => <ButtonItem mobile data={item} />}</ButtonMenuProvider>
-        </div>
-    )
-}
+const ButtonMenu = () => {}
+
+ButtonMenu.v1 = v1
+ButtonMenu.v2 = v2
 
 export default ButtonMenu

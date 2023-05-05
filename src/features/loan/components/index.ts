@@ -1,6 +1,7 @@
 export { default as CreateMember } from './CreateMember'
 export { default as MakeGetLoan } from './MakeGetLoan'
 export { default as MakeLoan } from './MakeLoan'
+export { default as MobileMenu } from './MobileMenu'
 export * from './TransactionDetailForm'
 export { default as TransactionDetailForm } from './TransactionDetailForm'
 export * from './TransactionEditForm'

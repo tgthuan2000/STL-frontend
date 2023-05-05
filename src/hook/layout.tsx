@@ -2,6 +2,7 @@ import {
     ArrowsUpDownIcon,
     BanknotesIcon,
     BellIcon,
+    CalendarIcon,
     ChatBubbleLeftRightIcon,
     LockClosedIcon,
     UserGroupIcon,
@@ -16,11 +17,13 @@ import LANGUAGE from '~/i18n/language/key'
 const AccountNavLink = React.lazy(() => import('~/components/NavLink/AccountNavLink'))
 const AnnounceConfigNavLink = React.lazy(() => import('~/components/NavLink/AnnounceConfigNavLink'))
 const LoanNavLink = React.lazy(() => import('~/components/NavLink/LoanNavLink'))
+const TimeNavLink = React.lazy(() => import('~/components/NavLink/TimeNavLink'))
 const NotifyNavLink = React.lazy(() => import('~/components/NavLink/NotifyNavLink'))
 const ProfileNavLink = React.lazy(() => import('~/components/NavLink/ProfileNavLink'))
 const SettingNavLink = React.lazy(() => import('~/components/NavLink/SettingNavLink'))
 const SpendingNavLink = React.lazy(() => import('~/components/NavLink/SpendingNavLink'))
 const FeedbackConfigNavLink = React.lazy(() => import('~/components/NavLink/FeedbackConfigNavLink'))
+const RoleControlNavLink = React.lazy(() => import('~/components/NavLink/RoleControlNavLink'))
 
 export const useNavigation = (): Array<Navigation> => {
     const { t } = useTranslation()
@@ -33,17 +36,17 @@ export const useNavigation = (): Array<Navigation> => {
                 icon: BanknotesIcon,
                 permissions: [PERMISSION.SPENDING_READ],
             },
-            // {
-            //     name: t(LANGUAGE.TIME_MANAGEMENT),
-            //     href: '/time',
-            //     icon: CalendarIcon,
-            //     permissions: [PERMISSION.TIME_READ],
-            // },
             {
                 name: t(LANGUAGE.LOAN_MANAGEMENT),
                 href: '/loan',
                 icon: ArrowsUpDownIcon,
                 permissions: [PERMISSION.LOAN_READ],
+            },
+            {
+                name: t(LANGUAGE.TIME_MANAGEMENT),
+                href: '/time',
+                icon: CalendarIcon,
+                permissions: [PERMISSION.TIME_READ],
             },
 
             /* ADMIN */
@@ -99,6 +102,12 @@ export const useNavigationMobile = (): Array<NavigationMobile> => {
                 permissions: [PERMISSION.FEEDBACK_CONFIG],
                 component: FeedbackConfigNavLink,
             },
+            {
+                name: t(LANGUAGE.FEEDBACK_MANAGEMENT),
+                href: '/role-control',
+                permissions: [PERMISSION.ROLE_CONTROL],
+                component: RoleControlNavLink,
+            },
 
             /* CLIENT */
             {
@@ -107,17 +116,17 @@ export const useNavigationMobile = (): Array<NavigationMobile> => {
                 permissions: [PERMISSION.SPENDING_READ],
                 component: SpendingNavLink,
             },
-            // {
-            //     name: t(LANGUAGE.TIME_MANAGEMENT),
-            //     href: '/time',
-            //     icon: CalendarIcon,
-            //     permissions: [PERMISSION.TIME_READ],
-            // },
             {
                 name: t(LANGUAGE.LOAN_MANAGEMENT),
                 href: '/loan',
                 permissions: [PERMISSION.LOAN_READ],
                 component: LoanNavLink,
+            },
+            {
+                name: t(LANGUAGE.TIME_MANAGEMENT),
+                href: '/time',
+                permissions: [PERMISSION.TIME_READ],
+                component: TimeNavLink,
             },
             {
                 name: t(LANGUAGE.NOTIFY_MANAGEMENT),

@@ -1,9 +1,10 @@
 import { ArrowPathIcon, ListBulletIcon, TableCellsIcon } from '@heroicons/react/24/outline'
-import { cloneDeep } from 'lodash'
+import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DataListOptionsResult, List, _List } from '~/@types'
+import { DateRange } from '~/@types/components'
 import { DATA_LIST_GROUP, DATA_LIST_MODE } from '~/constant/component'
 import LANGUAGE from '~/i18n/language/key'
 
@@ -92,8 +93,8 @@ export const service = {
     getBudgetId(userId: string, month?: moment.MomentInput) {
         return moment(month).format('YYYY-MM-') + userId
     },
-    listToTree<T extends _List>(_list: T[]) {
-        let list: Array<List<T>> = cloneDeep(_list),
+    listToTree<T extends _List>(_list: T[], getParentId: (item: T) => string | null | undefined) {
+        let list: Array<List<T>> = structuredClone(_list),
             map: { [x: string]: number } = {},
             node: List<T>,
             roots: Array<List<T>> = []
@@ -105,13 +106,35 @@ export const service = {
 
         for (let i = 0; i < list.length; i += 1) {
             node = list[i]
-            if (node.parentId) {
+            const parentId = getParentId(node)
+
+            // parentEl: true if have real parent element in map
+            if (parentId && map[parentId] === undefined) {
+                node.parentEl = false
+            } else {
+                node.parentEl = !!parentId
+            }
+
+            if (parentId && map[parentId] !== undefined) {
                 // if you have dangling branches check that map[node.parent_id] exists
-                list[map[node.parentId]]?.children?.push(node)
+                list[map[parentId]]?.children?.push(node)
             } else {
                 roots.push(node)
             }
         }
+
         return roots
     },
+}
+
+export const isValidDateRange = (dateRange: DateRange | null | undefined) => {
+    if (!dateRange || isEmpty(dateRange)) return false
+    if (dateRange.some((date: Date | string) => date === null || date.toString() === 'Invalid Date')) return false
+    return true
+}
+
+export const getDifference = (origin: string[], current: string[]) => {
+    const added = current.filter((item) => !origin.includes(item))
+    const deleted = origin.filter((item) => !current.includes(item))
+    return { added, deleted }
 }

@@ -1,8 +1,8 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Fragment, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Waypoint } from 'react-waypoint'
 import { BodyListProps } from '~/@types/components'
+import AnimateWrap from '../AnimateWrap'
 
 const BodyList: React.FC<BodyListProps> = ({
     loading,
@@ -15,7 +15,6 @@ const BodyList: React.FC<BodyListProps> = ({
     renderList,
     onItemClick,
 }) => {
-    const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
     const navigate = useNavigate()
     const wpLoading = useRef(false)
 
@@ -33,7 +32,7 @@ const BodyList: React.FC<BodyListProps> = ({
     }, [loading])
 
     return (
-        <div className='overflow-hidden sm:rounded-lg' ref={parentRef}>
+        <AnimateWrap className='overflow-hidden sm:rounded-lg'>
             <>
                 {(!loading || wpLoading.current) &&
                     Object.keys(data).map((key, index) => (
@@ -63,7 +62,7 @@ const BodyList: React.FC<BodyListProps> = ({
                     ? SkeletonList?.(wpLoading.current)
                     : hasNextPage && <Waypoint onEnter={handleGetMoreData} bottomOffset='-20%' />}
             </>
-        </div>
+        </AnimateWrap>
     )
 }
 

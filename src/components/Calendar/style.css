@@ -1,0 +1,49 @@
+.rbc-calendar {
+    @apply text-gray-900 dark:text-slate-200;
+}
+
+.rbc-toolbar button {
+    @apply dark:bg-slate-800 dark:hover:bg-slate-900 dark:focus:border-slate-700 dark:active:text-slate-500;
+}
+.rbc-header {
+    @apply dark:border-slate-700;
+}
+.rbc-header {
+    @apply py-1;
+}
+.rbc-day-bg + .rbc-day-bg {
+    @apply dark:border-l-slate-700;
+}
+.rbc-month-row + .rbc-month-row {
+    @apply dark:border-t-slate-700;
+}
+
+.rbc-month-view {
+    @apply dark:border-slate-800 dark:bg-slate-800 lg:rounded-md;
+}
+
+.rbc-off-range-bg {
+    @apply dark:bg-slate-500;
+}
+
+.rbc-off-range {
+    @apply dark:text-slate-400;
+}
+.rbc-today {
+    @apply dark:bg-slate-900;
+}
+.rbc-date-cell.rbc-now.rbc-current button {
+    @apply dark:text-cyan-400;
+}
+.rbc-month-view .rbc-month-row:last-child {
+    @apply lg:rounded-br-md;
+}
+
+.rbc-show-more {
+    @apply text-red-500 dark:text-cyan-400;
+}
+
+.rbc-show-more:hover,
+.rbc-show-more:focus {
+    @apply text-red-600 dark:text-cyan-500;
+}

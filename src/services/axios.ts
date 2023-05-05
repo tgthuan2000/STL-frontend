@@ -36,6 +36,7 @@ export const useAxiosService = () => {
             [CODE.TOKEN_REVOKED]: () => toast.error(t(LANGUAGE.NOTIFY_TOKEN_REVOKED)),
 
             [CODE.INACTIVE_ACCOUNT]: () => toast.error(t(LANGUAGE.NOTIFY_INACTIVE_ACCOUNT)),
+            [CODE.EMAIL_EXIST]: () => toast.error(t(LANGUAGE.NOTIFY_EMAIL_EXIST)),
         }
     }, [t])
 

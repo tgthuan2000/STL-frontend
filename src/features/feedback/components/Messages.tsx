@@ -1,27 +1,44 @@
 import { filter, get, isEmpty } from 'lodash'
-import React, { useMemo } from 'react'
+import numeral from 'numeral'
+import React, { Fragment, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { List } from '~/@types'
-import { Feedback, MessagesProps } from '~/@types/feedback'
-import { service } from '~/services'
+import { Feedback } from '~/@types/feedback'
+import LANGUAGE from '~/i18n/language/key'
+import ActionButton from './ActionButton'
 import ChatInfoItem from './ChatInfoItem'
 import './message.css'
-import SeeMoreButton from './SeeMoreButton'
+import { replyMessageOption } from '../hook/useActionFeedback'
 
-const Messages: React.FC<MessagesProps> = ({ data, onSeeMoreClick, onReply, onEdit, onDelete }) => {
+export interface Props {
+    data: List<Feedback>[] | undefined
+    onSeeMoreClick: (parentId: string, excludes?: string[]) => void
+    onReply: (options: replyMessageOption) => Promise<void>
+    onEdit: (message: string, id: string) => Promise<void>
+    onDelete: (id: string) => Promise<void>
+    onGetParent?: (id: string) => void
+    fallback?: React.ReactNode
+}
+
+const Messages: React.FC<Props> = (props) => {
+    const { data, fallback, onSeeMoreClick, onReply, onEdit, onDelete, onGetParent } = props
     const memo = useMemo(() => {
         if (!data) return null
-        const _d = service.listToTree<Feedback>(data)
 
         const callBack = (data: Array<List<Feedback>>, parentReplyNum: number) => {
             return data
                 .filter((d) => !d.deleted)
                 .map((d, index, origin) => {
-                    const replyNum =
-                        d.childNum - (d.children?.filter((data) => get(data, 'status') !== 'new').length || 0)
-                    const lastEl = !!d.parentId && (index !== origin.length - 1 || parentReplyNum > 0)
+                    const newMessageNum = d.children?.filter((data) => get(data, 'status') !== 'new').length || 0
+                    const replyNum = d.childNum - newMessageNum
+                    const lastEl = !!d.parent && (index !== origin.length - 1 || parentReplyNum > 0)
 
                     return (
                         <div key={d._id} className='flex flex-col items-start'>
+                            {!!d.parent && !d.parentEl && (
+                                <SeePrevious onClick={() => onGetParent?.(d.parent?._id as string)} />
+                            )}
+
                             <ChatInfoItem
                                 data={d}
                                 lastEl={lastEl}
@@ -38,7 +55,12 @@ const Messages: React.FC<MessagesProps> = ({ data, onSeeMoreClick, onReply, onEd
                                 {replyNum > 0 && (
                                     <div className='pl-10'>
                                         <div className='relative'>
-                                            <SeeMoreButton replyNum={replyNum} onClick={() => onSeeMoreClick(d._id)} />
+                                            <SeeMoreButton
+                                                replyNum={replyNum}
+                                                onClick={() =>
+                                                    onSeeMoreClick(d._id, d.children?.map((child) => child._id) ?? [])
+                                                }
+                                            />
                                             <span className='left-see-more' />
                                         </div>
                                     </div>
@@ -48,10 +70,48 @@ const Messages: React.FC<MessagesProps> = ({ data, onSeeMoreClick, onReply, onEd
                     )
                 })
         }
-        return callBack(_d, 0)
+        return callBack(data, 0)
     }, [data])
 
-    return <div className='text-gray-900 dark:text-slate-200'>{memo}</div>
+    if (isEmpty(data) && fallback) {
+        return <Fragment>{fallback}</Fragment>
+    }
+
+    return <Fragment>{memo}</Fragment>
+}
+
+interface SeeMoreButtonProps {
+    replyNum: number
+    onClick: () => void
+}
+
+const SeeMoreButton: React.FC<SeeMoreButtonProps> = (props) => {
+    const { replyNum, onClick } = props
+    const { t } = useTranslation()
+
+    return (
+        <ActionButton
+            title={`${t(LANGUAGE.SEE_MORE)} ${numeral(replyNum).format()} ${t(LANGUAGE.L_REPLIES)}`}
+            onClick={onClick}
+        />
+    )
+}
+
+interface SeePreviousProps {
+    onClick: () => void
+}
+
+const SeePrevious: React.FC<SeePreviousProps> = (props) => {
+    const { onClick } = props
+    const { t } = useTranslation()
+
+    return (
+        <ActionButton
+            className='-ml-5 pb-1 pt-0'
+            title={`${t(LANGUAGE.SEE_MORE)} ${t(LANGUAGE.L_FEEDBACKS_PREVIOUS)}`}
+            onClick={onClick}
+        />
+    )
 }
 
 export default Messages

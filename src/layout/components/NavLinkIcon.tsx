@@ -12,7 +12,7 @@ const NavLinkIcon: React.FC<NavLinkIconProps> = ({ data }) => {
             className={({ isActive }) =>
                 clsx(
                     isActive ? 'text-radical-red-500 dark:text-cyan-500' : 'text-gray-700 dark:text-slate-400',
-                    'relative flex-1 flex justify-center items-center h-full transition-all'
+                    'relative flex h-full flex-1 items-center justify-center transition-all'
                 )
             }
         >
@@ -23,14 +23,13 @@ const NavLinkIcon: React.FC<NavLinkIconProps> = ({ data }) => {
                             <data.component />
                         </Suspense>
                     </div>
-                    <span
-                        className={clsx(
-                            'absolute bottom-0 left-0 right-0 h-1 rounded-tl-full rounded-tr-full',
-                            isActive
-                                ? 'bg-radical-red-500 dark:bg-gradient-to-r dark:from-[#12c2e9] dark:via-[#c471ed] dark:to-[#f64f59] dark:animate-bg-animate dark:bg-400%'
-                                : 'bg-transparent'
-                        )}
-                    />
+                    {isActive && (
+                        <span
+                            className={clsx(
+                                'absolute bottom-0 left-0 right-0 h-1 rounded-tl-full rounded-tr-full bg-radical-red-500 dark:animate-bg-animate dark:bg-gradient-to-r dark:from-[#12c2e9] dark:via-[#c471ed] dark:to-[#f64f59] dark:bg-400%'
+                            )}
+                        />
+                    )}
                 </>
             )}
         </NavLink>

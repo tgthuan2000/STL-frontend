@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Navigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IUserProfile } from '~/@types/auth'
-import { IConfig, IConfigContext, IRoleControl } from '~/@types/context'
+import { IConfig, IConfigContext } from '~/@types/context'
 import axios from '~/axiosConfig'
 import LoadingText from '~/components/Loading/LoadingText'
 import { CODE } from '~/constant/code'
@@ -17,6 +17,7 @@ import { GET_CONFIG } from '~/schema/query/config'
 import { service } from '~/services'
 import { useAuth, useProfile } from '~/store/auth'
 import { useFlashScreen } from './FlashScreenContext'
+import { IRoleControl } from '~/@types/role-control'
 
 interface IConfigProps {
     children: React.ReactNode
@@ -56,12 +57,12 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
                     axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
                     const { data } = await _axios.get<SanityDocument<IUserProfile>>('/auth/profile')
                     if (data) {
-                        showFlashScreen(
-                            <LoadingText
-                                text={t(LANGUAGE.LOADING_PROFILE_DONE)}
-                                className='text-md whitespace-nowrap sm:text-lg'
-                            />
-                        )
+                        // showFlashScreen(
+                        //     <LoadingText
+                        //         text={t(LANGUAGE.LOADING_PROFILE_DONE)}
+                        //         className='text-md whitespace-nowrap sm:text-lg'
+                        //     />
+                        // )
                         addUserProfile(data)
                     }
                 } catch (error: any) {
@@ -95,9 +96,23 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
                                         await logout()
                                         break
                                     }
+                                    default: {
+                                        toast.error(error.message)
+                                        await logout()
+                                    }
                                 }
                             }
                             break
+                        }
+                        case CODE.INACTIVE_ACCOUNT: {
+                            toast.error(t(LANGUAGE.NOTIFY_INACTIVE_ACCOUNT))
+                            hiddenFlashScreen()
+                            await logout()
+                            break
+                        }
+                        default: {
+                            toast.error(error.message)
+                            await logout()
                         }
                     }
                 }

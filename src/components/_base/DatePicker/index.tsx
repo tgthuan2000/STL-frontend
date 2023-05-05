@@ -6,8 +6,8 @@ import { Controller } from 'react-hook-form'
 import { DateProps } from '~/@types/components'
 import { DATE_FORMAT } from '~/constant'
 import { useWindowSize } from '~/hook'
-import './index.css'
 import Input from './Input'
+import './index.css'
 
 const DatePicker = forwardRef<ReactDatePicker<never, undefined>, DateProps>(
     (
@@ -32,6 +32,9 @@ const DatePicker = forwardRef<ReactDatePicker<never, undefined>, DateProps>(
             disabled: props?.disabled,
         }
 
+        const value = form.getValues(name)
+        const selected = moment(value).isValid() ? value : undefined
+
         return (
             <Controller
                 name={name}
@@ -44,10 +47,7 @@ const DatePicker = forwardRef<ReactDatePicker<never, undefined>, DateProps>(
                         timeInputLabel='Time:'
                         showTimeInput
                         withPortal={width <= 768}
-                        selected={(() => {
-                            const value = form.getValues(name)
-                            return moment(value).isValid() ? value : undefined
-                        })()}
+                        selected={selected}
                         disabledKeyboardNavigation
                         shouldCloseOnSelect
                         customInput={

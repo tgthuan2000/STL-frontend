@@ -1,16 +1,15 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { CheckIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import React, { Fragment } from 'react'
 import { ProgressItem, ProgressProps } from '~/@types/components'
+import AnimateWrap from './AnimateWrap'
 
 const Progress: React.FC<ProgressProps> = ({ step, options, className, onStepClick }) => {
-    const [parent] = useAutoAnimate<HTMLDivElement>()
     const handleClickStepItem = (option: ProgressItem) => {
         onStepClick?.(option)
     }
     return (
-        <div ref={parent} className={clsx('mb-10', className)}>
+        <AnimateWrap className={clsx('mb-10', className)}>
             <div className='flex select-none items-start'>
                 {options.map((option, index, data) => {
                     const isActive = option.step === step
@@ -71,7 +70,7 @@ const Progress: React.FC<ProgressProps> = ({ step, options, className, onStepCli
                     )
                 })}
             </div>
-        </div>
+        </AnimateWrap>
     )
 }
 

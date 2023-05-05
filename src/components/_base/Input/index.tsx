@@ -1,10 +1,9 @@
 import clsx from 'clsx'
-import React, { forwardRef, Suspense, useId } from 'react'
+import React, { forwardRef, useId } from 'react'
 import { Controller } from 'react-hook-form'
 import { InputProps } from '~/@types/components'
 import ErrorMessage from '~/components/ErrorMessage'
 import Label from '~/components/Label'
-import LoadingText from '~/components/Loading/LoadingText'
 import NumberHint from './NumberHint'
 
 const Calculator = React.lazy(() => import('~/components/Calculator'))
@@ -41,7 +40,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                                 type={type}
                                 spellCheck={false}
                                 autoComplete='off'
-                                className='block w-full rounded-md border border-gray-300 bg-white p-2 font-light shadow-sm disabled:bg-gray-100 disabled:text-gray-400 dark:border-slate-800 dark:bg-slate-700 dark:text-slate-200 dark:disabled:bg-slate-800 dark:disabled:text-slate-400'
+                                className='block w-full rounded-md border border-gray-300 bg-white p-2 font-light shadow-sm disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400 dark:border-slate-800 dark:bg-slate-700 dark:text-slate-200 dark:disabled:bg-slate-800 dark:disabled:text-slate-400'
                                 {...field}
                                 onBlur={() => {
                                     field.onBlur()

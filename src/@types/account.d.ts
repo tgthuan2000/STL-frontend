@@ -7,6 +7,7 @@ export interface IAccount extends IUserProfile {
     }
     _createdAt?: string
     active: boolean
+    google: boolean
 }
 
 export interface AccountService {

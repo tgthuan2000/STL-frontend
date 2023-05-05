@@ -1,15 +1,13 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { isEmpty, isNil } from 'lodash'
 import React, { useMemo } from 'react'
 import { ListProps } from '~/@types/components'
 import { getLinkSpending } from '~/utils'
+import AnimateWrap from '../AnimateWrap'
 import BodyList from './Body'
 import EmptyListTemplate from './Empty'
 import SkeletonListTemplate from './Skeleton'
 
 const List: React.FC<ListProps> = ({ loading, data, EmptyList, groupBy, ...props }) => {
-    const [parentRef] = useAutoAnimate<HTMLTableSectionElement>()
-
     const refactorData = useMemo(() => {
         if (!data || isEmpty(data)) return {}
         return data.reduce((acc: { [x: string]: any[] }, cur) => {
@@ -24,13 +22,13 @@ const List: React.FC<ListProps> = ({ loading, data, EmptyList, groupBy, ...props
     }, [JSON.stringify(data), groupBy])
 
     return (
-        <div className='inline-block w-full py-2 align-middle' ref={parentRef}>
+        <AnimateWrap className='inline-block w-full py-2 align-middle'>
             {!loading && (!data || isEmpty(data)) ? (
                 EmptyList
             ) : (
                 <BodyList loading={loading} data={refactorData} {...props} />
             )}
-        </div>
+        </AnimateWrap>
     )
 }
 

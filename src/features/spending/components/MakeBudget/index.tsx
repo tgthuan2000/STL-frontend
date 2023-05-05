@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { cloneDeep, isEmpty } from 'lodash'
+import { isEmpty } from 'lodash'
 import moment from 'moment'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -16,8 +16,8 @@ import { client } from '~/sanityConfig'
 import { GET_BUDGET_BY_MONTH, GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
 import { service } from '~/services'
 import { useProfile } from '~/store/auth'
-import * as servicesBudget from '../../services/budget'
 import { useBudgetSchema } from '../../hook/schema'
+import * as servicesBudget from '../../services/budget'
 
 const Category = React.lazy(() => import('./Category'))
 const Method = React.lazy(() => import('./Method'))
@@ -126,7 +126,7 @@ const MakeBudget = () => {
             if (!isPrevMonthClick.current) {
                 stateRef.current = defaultStateRef
             } else {
-                stateRef.current.updates = cloneDeep(defaultStateRef.updates)
+                stateRef.current.updates = structuredClone(defaultStateRef.updates)
             }
         }
     }, [budgetSpending.data])
@@ -254,7 +254,7 @@ const MakeBudget = () => {
             <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
                 <div className='flex flex-1 flex-col justify-between'>
                     <div className='divide-y divide-gray-200 px-4 sm:px-6'>
-                        <div className='space-y-6 pt-6 pb-5'>
+                        <div className='space-y-6 pt-3 pb-5'>
                             <div className='space-y-2'>
                                 <div className='w-1/3'>
                                     <DatePicker

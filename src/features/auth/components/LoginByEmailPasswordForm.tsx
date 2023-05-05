@@ -1,11 +1,10 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { SanityDocument } from '@sanity/client'
 import { isEmpty } from 'lodash'
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { IUserProfile, LoginByEmailPasswordFormProps, SubmitPassword } from '~/@types/auth'
-import { BackButton } from '~/components'
+import { AnimateWrap, BackButton } from '~/components'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import { getActiveUsersByEmail } from '../services'
@@ -14,7 +13,6 @@ import Step2 from './Step2'
 
 const LoginByEmailPasswordForm: React.FC<LoginByEmailPasswordFormProps> = ({ onSubmit, onBack }) => {
     const { t } = useTranslation()
-    const [stepParent] = useAutoAnimate<HTMLDivElement>()
     const [step, setStep] = useState(1)
     const { loading, setSubmitLoading } = useLoading()
     const [previewData, setPreviewData] = useState<Array<SanityDocument<IUserProfile>> | null>(null)
@@ -22,7 +20,7 @@ const LoginByEmailPasswordForm: React.FC<LoginByEmailPasswordFormProps> = ({ onS
     const onSubmitEmail = async ({ email }: { email: string }) => {
         try {
             setSubmitLoading(true)
-            const data = await getActiveUsersByEmail(email)
+            const data = await getActiveUsersByEmail(email.trim().toLowerCase())
             if (data && !isEmpty(data)) {
                 setPreviewData(data)
                 setStep(2)
@@ -60,7 +58,7 @@ const LoginByEmailPasswordForm: React.FC<LoginByEmailPasswordFormProps> = ({ onS
     return (
         <div className='space-y-2'>
             <BackButton onClick={handleBack} disabled={loading.submit || loading.config} />
-            <div ref={stepParent}>{stepData}</div>
+            <AnimateWrap>{stepData}</AnimateWrap>
         </div>
     )
 }

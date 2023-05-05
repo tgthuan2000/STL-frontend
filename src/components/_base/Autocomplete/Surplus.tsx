@@ -1,14 +1,13 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import clsx from 'clsx'
 import { isNil } from 'lodash'
 import numeral from 'numeral'
 import React from 'react'
 import { AutocompleteSurplusProps } from '~/@types/components'
+import AnimateWrap from '~/components/AnimateWrap'
 
 const Surplus: React.FC<AutocompleteSurplusProps> = ({ surplus, disabledShowSurplus, surplusName, children }) => {
-    const [parent] = useAutoAnimate<HTMLDivElement>()
     return (
-        <div ref={parent}>
+        <AnimateWrap>
             {!isNil(surplus) && !disabledShowSurplus && (
                 <div className='mt-1 ml-3'>
                     <span className='text-gray-900 dark:text-slate-200'>{surplusName}</span>:{' '}
@@ -24,7 +23,7 @@ const Surplus: React.FC<AutocompleteSurplusProps> = ({ surplus, disabledShowSurp
                 </div>
             )}
             {children}
-        </div>
+        </AnimateWrap>
     )
 }
 

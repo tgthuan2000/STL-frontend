@@ -1,18 +1,25 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 import { DataListViewTable } from '~/@types/components'
-import { AnimateWrap, Table, Transaction } from '~/components'
+import { AnimateWrap, Divider, Table, Transaction } from '~/components'
+import EmptyTable from '~/components/Table/Empty'
 import LANGUAGE from '~/i18n/language/key'
+import { client } from '~/sanityConfig'
+import { MobileMenu } from '../components'
 import Skeleton from '../components/Skeleton'
 import { useColumns } from '../hook/dataListView'
 import useDashboard from '../hook/useDashboard'
-import { client } from '~/sanityConfig'
-import EmptyTable from '~/components/Table/Empty'
-import { toast } from 'react-toastify'
+import { useCheck } from '~/context'
 
 const Dashboard = () => {
     const { t } = useTranslation()
     const [{ account }, deleteCache, reloadData, { getMore }] = useDashboard()
+
+    useCheck(() => {
+        deleteCache('account')
+        reloadData()
+    })
 
     const toggleActive = async (id: string, active: boolean) => {
         try {
@@ -39,9 +46,14 @@ const Dashboard = () => {
 
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.ACCOUNT_MANAGEMENT)}>
+            <MobileMenu />
+
+            <Divider className='py-6 xl:hidden' dashed />
+
             <AnimateWrap className='-mx-4'>
                 <Table
                     hasNextPage={false}
+                    overflowScroll
                     data={account.data}
                     loading={false}
                     onGetMore={handleScrollGetMore}
