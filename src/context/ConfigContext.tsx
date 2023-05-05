@@ -57,12 +57,6 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
                     axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
                     const { data } = await _axios.get<SanityDocument<IUserProfile>>('/auth/profile')
                     if (data) {
-                        // showFlashScreen(
-                        //     <LoadingText
-                        //         text={t(LANGUAGE.LOADING_PROFILE_DONE)}
-                        //         className='text-md whitespace-nowrap sm:text-lg'
-                        //     />
-                        // )
                         addUserProfile(data)
                     }
                 } catch (error: any) {
@@ -144,7 +138,7 @@ const ConfigProvider = configHOC(({ children }) => {
     useEffect(() => {
         const getConfig = async () => {
             try {
-                if (userProfile?._id) {
+                if (userProfile?._id && config.role === null) {
                     showFlashScreen(
                         <LoadingText
                             text={t(LANGUAGE.LOADING_CONFIG)}
@@ -169,7 +163,7 @@ const ConfigProvider = configHOC(({ children }) => {
             }
         }
         getConfig()
-    }, [userProfile])
+    }, [userProfile, config])
 
     const getKindSpendingId = useCallback(
         (KEY: keyof typeof KIND_SPENDING) => {

@@ -30,7 +30,7 @@ const Dashboard = () => {
                 {/* MAIN */}
                 <div className='relative -mx-4 select-none bg-white py-12 shadow-lg dark:bg-slate-800 sm:min-h-[calc(100vh-250px)] sm:rounded-lg sm:pt-14'>
                     {/* TOOLS */}
-                    <PermissionCheck permissions={[PERMISSION.PROFILE_WRITE]} fallback={<></>}>
+                    {/* <PermissionCheck permissions={[PERMISSION.PROFILE_WRITE]} fallback={<></>}>
                         <div className='absolute bottom-[calc(100%+12px)] right-2'>
                             <Button
                                 type='button'
@@ -40,7 +40,7 @@ const Dashboard = () => {
                                 <PencilSquareIcon className='h-4 w-4' /> <span>{t(LANGUAGE.UPDATE)}</span>
                             </Button>
                         </div>
-                    </PermissionCheck>
+                    </PermissionCheck> */}
                     {/* USER INFO */}
                     <div className='mt-2 flex flex-col items-center justify-center gap-1'>
                         <h2 className='text-base font-medium text-prussian-blue-700 dark:text-prussian-blue-300 sm:text-xl'>
