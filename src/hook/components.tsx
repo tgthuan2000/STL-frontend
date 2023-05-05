@@ -326,15 +326,15 @@ export const useMenuLoanPC = (): IMenuBtn[] => {
                     slide: 'get-loan',
                 },
             },
-            {
-                title: t(LANGUAGE.MAKE_LOAN),
-                color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
-                icon: ArrowTrendingDownIcon,
-                children: () => <MakeLoan />,
-                query: {
-                    slide: 'loan',
-                },
-            },
+            // {
+            //     title: t(LANGUAGE.MAKE_LOAN),
+            //     color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
+            //     icon: ArrowTrendingDownIcon,
+            //     children: () => <MakeLoan />,
+            //     query: {
+            //         slide: 'loan',
+            //     },
+            // },
             {
                 title: t(LANGUAGE.CREATE_MEMBER),
                 color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
@@ -392,15 +392,15 @@ export const useMenuTimePC = (): IMenuBtn[] => {
                     slide: 'create-schedule',
                 },
             },
-            {
-                title: t(LANGUAGE.MAKE_TIMEKEEPING),
-                color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
-                icon: ClipboardDocumentCheckIcon,
-                children: () => <MakeTimeKeeping />,
-                query: {
-                    slide: 'timekeeping',
-                },
-            },
+            // {
+            //     title: t(LANGUAGE.MAKE_TIMEKEEPING),
+            //     color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
+            //     icon: ClipboardDocumentCheckIcon,
+            //     children: () => <MakeTimeKeeping />,
+            //     query: {
+            //         slide: 'timekeeping',
+            //     },
+            // },
             {
                 title: t(LANGUAGE.LOGOUT),
                 color: 'text-gray-700 bg-gray-200 hover:bg-gray-300 dark:text-gray-500',

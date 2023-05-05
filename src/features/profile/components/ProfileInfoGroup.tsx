@@ -7,7 +7,7 @@ const ProfileInfoGroup: React.FC<ProfileInfoGroupProps> = ({ title, children, cl
 
     return (
         <div className={clsx('bg-transparent p-2 sm:p-3', wrapClassName)}>
-            <h4 className='text-sm font-normal text-gray-700 dark:text-slate-200 sm:text-base sm:font-medium sm:text-white dark:sm:text-slate-900'>
+            <h4 className='text-sm font-normal text-gray-700 dark:text-slate-200 sm:text-base sm:font-medium sm:text-white sm:dark:text-slate-200'>
                 {title}
             </h4>
             <div className={clsx('mt-2', className)}>{children}</div>
