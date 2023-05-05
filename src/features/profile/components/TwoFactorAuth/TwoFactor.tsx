@@ -2,7 +2,7 @@ import QRCode from 'qrcode'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
-import { AnimateWrap, CopyCode, TwoFactorForm } from '~/components'
+import { AnimateWrap, Button, CopyCode, TwoFactorForm } from '~/components'
 import { useLoading } from '~/context'
 import { useAxios, useLogout } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
@@ -60,12 +60,7 @@ const TwoFactor: React.FC<TwoFactorProps> = ({ onClose }) => {
     }
 
     return (
-        <div className='flex h-full flex-col'>
-            {/* Header */}
-            <h1 className='flex-shrink-0 select-none px-8 pt-8 pb-4 text-2xl font-normal sm:text-3xl'>
-                {t(LANGUAGE.TWO_FA_SETUP)}
-            </h1>
-            {/* Content */}
+        <div className='flex h-full flex-col text-gray-900 dark:text-slate-200'>
             <div className='flex-1 overflow-y-auto overflow-x-hidden p-8'>
                 <div className='flex flex-col items-center justify-center gap-5'>
                     <h2 className='text-lg font-normal'>{t(LANGUAGE.SCAN_QR_CODE)}</h2>
@@ -78,20 +73,20 @@ const TwoFactor: React.FC<TwoFactorProps> = ({ onClose }) => {
                     <span className='overflow-hidden rounded-md bg-gray-200 py-2 px-4 text-base font-normal dark:bg-slate-700'>
                         <CopyCode data={secret} loading={loading} />
                     </span>
-                    <p className='text-left text-xs'>{t(LANGUAGE.SCAN_QR_CODE_DESCRIPTION_2)}</p>
+                    <p className='text-left text-sm'>{t(LANGUAGE.SCAN_QR_CODE_DESCRIPTION_2)}</p>
                     <TwoFactorForm onSubmit={handleSubmit} />
                 </div>
             </div>
-            {/* Footer */}
-            <div className='flex-shrink-0 select-none py-4 px-8'>
-                <div className='flex justify-end gap-2'>
-                    <button
+            <div className='mt-10 flex-shrink-0 select-none'>
+                <div className='flex justify-end gap-2 p-5'>
+                    <Button
                         type='button'
-                        className='py-1 px-2 font-normal text-gray-400 hover:opacity-50 sm:text-base sm:font-medium'
+                        color='custom'
+                        className='border-none py-1 px-2 text-gray-400 hover:opacity-50 sm:text-base'
                         onClick={onClose}
                     >
                         {t(LANGUAGE.CANCEL)}
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>

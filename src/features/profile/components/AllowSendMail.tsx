@@ -10,7 +10,7 @@ import { useProfile } from '~/store/auth'
 
 const AllowSendMail = () => {
     const { t } = useTranslation()
-    const { userProfile } = useProfile()
+    const { userProfile, addUserProfile } = useProfile()
     const firstRef = useRef(false)
     const form = useForm({
         defaultValues: {
@@ -23,6 +23,7 @@ const AllowSendMail = () => {
         if (firstRef.current) {
             const allowSendMail = form.watch('allowSendMail')
             if (isUndefined(allowSendMail)) return
+            if (allowSendMail === userProfile?.allowSendMail) return
 
             timeout = setTimeout(() => {
                 try {
@@ -35,6 +36,10 @@ const AllowSendMail = () => {
                             },
                         })
                         await __.commit()
+                        addUserProfile({
+                            ...userProfile,
+                            allowSendMail,
+                        } as any)
                         toast.success(t(LANGUAGE.NOTIFY_UPDATE_SUCCESS))
                     }
                     sendMail()
@@ -42,7 +47,7 @@ const AllowSendMail = () => {
                     console.log(error)
                     toast.error(t(LANGUAGE.NOTIFY_UPDATE_FAILED))
                 }
-            }, 1000)
+            }, 800)
         }
         return () => {
             timeout && clearTimeout(timeout)

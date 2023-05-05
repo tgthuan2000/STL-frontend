@@ -23,8 +23,8 @@ export const useProfileOptions = () => {
                     hidden:
                         !get(_method, 'maxUsed._id') && !get(_method, 'maxReceive._id') && !get(_method, 'maxCost._id'),
                     title: t(LANGUAGE.METHOD_SPENDING),
-                    wrapClassName: 'xl:row-start-2 xl:col-start-2 xl:col-span-3 xl:row-span-1',
-                    className: 'xl:flex-row xl:flex-wrap flex-col',
+                    wrapClassName: 'lg:row-start-1 lg:col-start-2 lg:col-span-1 lg:row-span-3',
+                    className: 'flex-col',
                     values: [
                         {
                             id: 1,
@@ -79,7 +79,7 @@ export const useProfileOptions = () => {
                         !get(_category, 'maxCost._id') &&
                         !get(_category, 'maxReceive._id'),
                     title: t(LANGUAGE.CATEGORY),
-                    wrapClassName: 'xl:row-start-1 xl:col-start-1 xl:col-span-1 xl:row-span-3',
+                    wrapClassName: 'lg:row-start-1 lg:col-start-1 lg:col-span-1 lg:row-span-3',
                     className: 'flex-col',
                     values: [
                         {
@@ -148,7 +148,7 @@ export const useProfileOptions = () => {
                     id: 3,
                     hidden: !get(_budget, 'maxTotalMethod._id') && !get(_budget, 'maxTotalCategory._id'),
                     title: t(LANGUAGE.BUDGET),
-                    wrapClassName: 'xl:row-start-1 xl:col-start-2 xl:col-span-1 xl:row-span-1',
+                    wrapClassName: 'lg:row-start-1 lg:col-start-3 lg:col-span-1 lg:row-span-1',
                     className: 'flex-col',
                     values: [
                         {
