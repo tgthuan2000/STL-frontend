@@ -27,7 +27,7 @@ export interface AutoCompleteProps {
     data?: any[]
     idKey?: string
     valueKey?: string
-    onReload?: () => Promise<void>
+    onReload?: () => Promise<void> | void
     addMore?: (value: any) => Promise<any>
     loading?: boolean
     form: UseFormReturn<any, object>
@@ -44,13 +44,12 @@ export interface AutoCompleteProps {
 
 export interface AutocompleteLabelProps {
     label?: string | DefaultTFuncReturn
-    onReload?: () => Promise<void>
+    onReload?: () => Promise<void> | void
     loading?: boolean
 }
 export interface ButtonMenuProps {
     className?: string
     data: IMenuBtn[]
-    small?: boolean
 }
 export interface AutocompleteButtonProps {
     disabledClear?: boolean
@@ -274,6 +273,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
         | 'radicalRed'
         | 'prussianBlue'
         | 'yellow'
+        | 'rose'
         | 'outline-indigo'
         | 'outline-cyan'
         | 'outline-green'

@@ -21,7 +21,7 @@ export const filterQueryParams = <T>(
             p = Object.assign({}, ...keys.filter((x) => item.includes(x)).map((v) => ({ [v]: params[v] })))
         }
 
-        return { [key]: { loading: true, data: undefined, query: item, params: p, tags: tag } }
+        return { [key]: { loading: false, data: undefined, query: item, params: p, tags: tag } }
     })
     return Object.assign({}, ...data) as Data<T>
 }

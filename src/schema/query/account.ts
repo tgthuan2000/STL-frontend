@@ -9,6 +9,7 @@ export const GET_ACCOUNTS = groq`
         allowSendMail,
         image,
         "isHasPassword": defined(password),
+        "google": defined(google),
         twoFA,
         active,
         role-> {

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useRef, useState } from 'react'
 import { DetailDialog } from '~/components'
 
 interface IDetailDialogContext {
@@ -7,7 +7,7 @@ interface IDetailDialogContext {
     content: React.ReactNode
     fallback: React.ReactNode
     set(option: setOption): void
-    close(): void
+    close(option?: closeOption): void
 }
 
 const DetailDialogContext = createContext<IDetailDialogContext>({
@@ -27,6 +27,11 @@ interface setOption {
     title: string | React.ReactNode
     content?: React.ReactNode
     fallback?: React.ReactNode
+    close?(): void
+}
+
+interface closeOption {
+    cancelCallback: boolean
 }
 
 const DetailDialogProvider: React.FC<Props> = ({ children }) => {
@@ -34,18 +39,30 @@ const DetailDialogProvider: React.FC<Props> = ({ children }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [content, setContent] = useState<React.ReactNode>(<></>)
     const [fallback, setFallback] = useState<React.ReactNode>(<></>)
+    const closeCallback = useRef<(() => void) | undefined>(undefined)
 
     const set = (option: setOption) => {
-        const { title, content, fallback } = option
+        const { title, content, fallback, close } = option
 
         setTitle(title)
         setIsOpen(true)
         setContent(content)
         setFallback(fallback)
+        if (close) {
+            closeCallback.current = close
+        }
     }
 
-    const close = () => {
+    const close = (option?: closeOption) => {
         setIsOpen(false)
+
+        if (!option?.cancelCallback) {
+            closeCallback.current?.()
+        }
+
+        if (closeCallback.current) {
+            closeCallback.current = undefined
+        }
     }
 
     const value = {

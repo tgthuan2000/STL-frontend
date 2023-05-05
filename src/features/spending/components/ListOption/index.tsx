@@ -1,4 +1,4 @@
-import { cloneDeep, isEmpty } from 'lodash'
+import { isEmpty } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -20,7 +20,7 @@ const ListOption: React.FC<ListOptionProps> = ({ data: _data, loading, cleanCach
 
     const _set = (id: string, value: {}) => {
         setData((prev) => {
-            const temp = cloneDeep(prev)
+            const temp = structuredClone(prev)
             const index = prev?.findIndex((item) => item._id === id)
             if (index !== undefined && index !== -1 && temp) {
                 temp[index] = {

@@ -42,6 +42,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                             color === 'yellow',
                     },
                     {
+                        'border-transparent bg-rose-600 text-white hover:bg-rose-700 disabled:hover:bg-rose-600':
+                            color === 'rose',
+                    },
+                    {
                         'border-gray-400 bg-transparent text-gray-500 hover:bg-gray-50 disabled:hover:bg-transparent dark:border-slate-500 dark:text-slate-200 dark:hover:bg-slate-600 dark:disabled:hover:bg-transparent dark:disabled:hover:opacity-30':
                             color === 'outline',
                     },

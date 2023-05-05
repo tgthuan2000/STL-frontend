@@ -6,9 +6,13 @@ import { useConfigDetailDialog } from '~/context'
 const DetailDialog = () => {
     const { content, isOpen, title, fallback, close } = useConfigDetailDialog()
 
+    const handleClose = () => {
+        close()
+    }
+
     return (
         <Transition.Root show={isOpen} as={Fragment}>
-            <Dialog as='div' className='relative z-30' onClose={close}>
+            <Dialog as='div' className='relative z-30' onClose={handleClose}>
                 <Transition.Child
                     as={Fragment}
                     enter='ease-in-out duration-500'
@@ -47,7 +51,7 @@ const DetailDialog = () => {
                                                     <button
                                                         type='button'
                                                         className='rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none dark:bg-transparent dark:text-slate-100 dark:hover:text-slate-200'
-                                                        onClick={close}
+                                                        onClick={handleClose}
                                                     >
                                                         <span className='sr-only'>Close panel</span>
                                                         <XMarkIcon className='h-6 w-6' aria-hidden='true' />

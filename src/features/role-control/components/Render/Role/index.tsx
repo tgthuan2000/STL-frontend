@@ -1,9 +1,9 @@
 import { isEmpty } from 'lodash'
-import React, { memo, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { List } from '~/@types'
 import { IRoleControl } from '~/@types/role-control'
-import { Button, CheckButton } from '~/components'
+import { CheckButton } from '~/components'
 import LoadingText from '~/components/Loading/LoadingText'
 import LoadingWait from '~/components/Loading/LoadingWait'
 import LANGUAGE from '~/i18n/language/key'
@@ -24,7 +24,7 @@ const Role: React.FC<Props> = (props) => {
     const refactoredData = useMemo(() => {
         if (!data || isEmpty(data) || !Array.isArray(data)) return <LoadingText />
 
-        const _d = service.listToTree<IRoleControl>(data)
+        const _d = service.listToTree<IRoleControl>(data, (item) => item.parentId)
 
         const callBack = (data: Array<List<IRoleControl>>) => {
             return data.map((d, index, origin) => {
@@ -43,7 +43,7 @@ const Role: React.FC<Props> = (props) => {
                             subLabel=''
                         />
                         {d.children && !isEmpty(d.children) && (
-                            <div className='pl-5'>
+                            <div className='flex flex-col items-start gap-3 pl-5'>
                                 <>{callBack(d.children)}</>
                             </div>
                         )}
@@ -65,9 +65,9 @@ const Role: React.FC<Props> = (props) => {
 
                 <div className='flex items-center gap-3'>
                     <LoadingWait loading={loading} />
-                    <Button type='button' color='outline-radicalRed' disabled>
+                    {/* <Button type='button' color='outline-radicalRed'>
                         {t(LANGUAGE.CREATE)}
-                    </Button>
+                    </Button> */}
                 </div>
             </div>
 
