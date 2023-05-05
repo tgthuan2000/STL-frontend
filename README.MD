@@ -8,6 +8,7 @@
 -   [Prerequisites](#prerequisites)
 -   [Installation](#installation)
 -   [Usage](#usage)
+-   [Account Demo](#account-demo)
 -   [Directory Structure](#directory-structure)
 
 ## About the Project
@@ -32,7 +33,19 @@ npm install
 
 ```bash
 npm run dev
+# Remember to run the backend server
 ```
+
+[Backend](https://github.com/tgthuan2000/STL-server)
+
+## Account Demo
+
+-   Admin:
+    -   Email: admin@stl.app
+    -   Password: 123
+-   User:
+    -   Email: demo-user.stl.app
+    -   Password: 123
 
 ## Directory Structure
 
