@@ -5,7 +5,12 @@ import { ParamsTypeUseQuery, QueryTypeUseQuery, RefactorUseQuery, TagsTypeUseQue
 import { TAGS } from '~/constant'
 import { useQuery } from '~/hook'
 import { client } from '~/sanityConfig'
-import { GET_FEED_BACK_BY_PARENT_ID, GET_PARENT_FEED_BACK, SUBSCRIPTION_FEED_BACK } from '~/schema/query/feedback'
+import {
+    GET_FEED_BACK_USER_BY_PARENT_ID,
+    GET_FIRST_FEED_BACK_USER_BY_PARENT_ID,
+    GET_PARENT_FEED_BACK,
+    SUBSCRIPTION_FEED_BACK,
+} from '~/schema/query/feedback'
 import { service } from '~/services'
 import { useProfile } from '~/store/auth'
 
@@ -36,8 +41,6 @@ const useFeedback = (options?: useFeedbackOption) => {
         params: {
             userId: userProfile?._id as string,
             parentId: null,
-            __fromFeedback: 0,
-            __toFeedback: 10,
         },
         tags: {
             feedback: TAGS.ALTERNATE,
@@ -64,7 +67,7 @@ const useFeedback = (options?: useFeedbackOption) => {
         },
     })
 
-    const [{ feedback }, fetchData, , reload, , updateData] = useQuery<FeedbackQueryData>(
+    const [{ feedback }, fetchData, , reload, , updateData, getCurrentData] = useQuery<FeedbackQueryData>(
         query,
         params,
         tags,
@@ -85,9 +88,6 @@ const useFeedback = (options?: useFeedbackOption) => {
                 if (update.documentId.includes('drafts')) return
                 if (update.result) {
                     const __ = update.result as FeedbackSubscription
-
-                    console.log(__)
-                    if (get(__, 'feedbackForUser._ref') !== userProfile?._id) return
 
                     setTimeout(async () => {
                         try {
@@ -110,16 +110,23 @@ const useFeedback = (options?: useFeedbackOption) => {
                                     break
                                 }
                                 case 'appear': {
+                                    const current = getCurrentData()
+                                    const feedbackData = current?.feedback.data?.data
+
+                                    if (
+                                        __.parent?._ref &&
+                                        !feedbackData?.find((item) => item._id === __.parent?._ref)
+                                    ) {
+                                        return
+                                    }
                                     isRevert.current = true
                                     setQuery((prev) => ({
                                         ...prev,
                                         query: {
-                                            feedback: GET_FEED_BACK_BY_PARENT_ID,
+                                            feedback: GET_FIRST_FEED_BACK_USER_BY_PARENT_ID,
                                         },
                                         params: {
                                             ...prev.params,
-                                            __fromFeedback: 0,
-                                            __toFeedback: 1,
                                             parentId: __.parent?._ref ?? null,
                                             status: 'new',
                                         },
@@ -146,24 +153,25 @@ const useFeedback = (options?: useFeedbackOption) => {
         return service.listToTree<Feedback>(feedback.data?.data, (item) => item.parent?._id)
     }, [feedback.data?.data])
 
-    const handleSeeMoreClick = useCallback((parentId: string) => {
-        const count = feedback.data?.data.filter((d) => d.parent?._id === parentId && d.deleted === false).length || 0
-        isRevert.current = false
-        setQuery((prev) => ({
-            ...prev,
-            query: {
-                feedback: GET_FEED_BACK_BY_PARENT_ID,
-            },
-            params: {
-                ...prev.params,
-                __fromFeedback: count,
-                __toFeedback: count + 10,
-                parentId,
-                status: 'old',
-            },
-        }))
-        reload('feedback')
-    }, [])
+    const handleSeeMoreClick = useCallback(
+        (parentId: string, excludes?: string[]) => {
+            isRevert.current = false
+            setQuery((prev) => ({
+                ...prev,
+                query: {
+                    feedback: GET_FEED_BACK_USER_BY_PARENT_ID,
+                },
+                params: {
+                    ...prev.params,
+                    __excludeIds: excludes ?? [],
+                    parentId,
+                    status: 'old',
+                },
+            }))
+            reload('feedback')
+        },
+        [feedback.data?.data]
+    )
 
     return { feedback, treeData, actions: { seeMoreClick: handleSeeMoreClick } }
 }

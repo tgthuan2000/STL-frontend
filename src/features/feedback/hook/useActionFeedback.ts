@@ -2,6 +2,13 @@ import { useCallback } from 'react'
 import { client } from '~/sanityConfig'
 import { useProfile } from '~/store/auth'
 
+export interface replyMessageOption {
+    message: string
+    parentId: string
+    feedbackForUser: string
+    responded?: boolean
+}
+
 const useActionFeedback = () => {
     const { userProfile } = useProfile()
 
@@ -19,16 +26,13 @@ const useActionFeedback = () => {
             edited: false,
             deleted: false,
             responded: false,
-            feedbackForUser: {
-                _type: 'reference',
-                _ref: userProfile?._id as string,
-            },
         })
 
         await __.commit()
     }, [])
 
-    const replyMessage = useCallback(async (message: string, parentId: string) => {
+    const replyMessage = useCallback(async (options: replyMessageOption) => {
+        const { feedbackForUser, message, parentId, responded = false } = options
         if (!parentId || !message) return
 
         const __ = client.transaction()
@@ -41,20 +45,14 @@ const useActionFeedback = () => {
             },
             edited: false,
             deleted: false,
-            responded: false,
+            responded: responded,
             user: {
                 _type: 'reference',
                 _ref: userProfile?._id as string,
             },
             feedbackForUser: {
                 _type: 'reference',
-                _ref: userProfile?._id as string,
-            },
-        })
-
-        __.patch(parentId, {
-            set: {
-                responded: true,
+                _ref: feedbackForUser,
             },
         })
 

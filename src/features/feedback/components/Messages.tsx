@@ -1,6 +1,6 @@
 import { filter, get, isEmpty } from 'lodash'
 import numeral from 'numeral'
-import React, { useMemo } from 'react'
+import React, { Fragment, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { List } from '~/@types'
 import { Feedback } from '~/@types/feedback'
@@ -8,18 +8,20 @@ import LANGUAGE from '~/i18n/language/key'
 import ActionButton from './ActionButton'
 import ChatInfoItem from './ChatInfoItem'
 import './message.css'
+import { replyMessageOption } from '../hook/useActionFeedback'
 
 export interface Props {
     data: List<Feedback>[] | undefined
-    onSeeMoreClick: (parentId: string) => any
-    onReply: (message: string, parentId: string) => any
-    onEdit: (message: string, id: string) => any
-    onDelete: (id: string) => any
-    onGetParent?: (id: string) => any
+    onSeeMoreClick: (parentId: string, excludes?: string[]) => void
+    onReply: (options: replyMessageOption) => Promise<void>
+    onEdit: (message: string, id: string) => Promise<void>
+    onDelete: (id: string) => Promise<void>
+    onGetParent?: (id: string) => void
+    fallback?: React.ReactNode
 }
 
 const Messages: React.FC<Props> = (props) => {
-    const { data, onSeeMoreClick, onReply, onEdit, onDelete, onGetParent } = props
+    const { data, fallback, onSeeMoreClick, onReply, onEdit, onDelete, onGetParent } = props
     const memo = useMemo(() => {
         if (!data) return null
 
@@ -53,7 +55,12 @@ const Messages: React.FC<Props> = (props) => {
                                 {replyNum > 0 && (
                                     <div className='pl-10'>
                                         <div className='relative'>
-                                            <SeeMoreButton replyNum={replyNum} onClick={() => onSeeMoreClick(d._id)} />
+                                            <SeeMoreButton
+                                                replyNum={replyNum}
+                                                onClick={() =>
+                                                    onSeeMoreClick(d._id, d.children?.map((child) => child._id) ?? [])
+                                                }
+                                            />
                                             <span className='left-see-more' />
                                         </div>
                                     </div>
@@ -66,7 +73,11 @@ const Messages: React.FC<Props> = (props) => {
         return callBack(data, 0)
     }, [data])
 
-    return <div className='text-gray-900 dark:text-slate-200'>{memo}</div>
+    if (isEmpty(data) && fallback) {
+        return <Fragment>{fallback}</Fragment>
+    }
+
+    return <Fragment>{memo}</Fragment>
 }
 
 interface SeeMoreButtonProps {
@@ -97,7 +108,7 @@ const SeePrevious: React.FC<SeePreviousProps> = (props) => {
     return (
         <ActionButton
             className='-ml-5 pb-1 pt-0'
-            title={`${t(LANGUAGE.SEE_MORE)} ${t(LANGUAGE.L_FEEDBACKS)}`}
+            title={`${t(LANGUAGE.SEE_MORE)} ${t(LANGUAGE.L_FEEDBACKS_PREVIOUS)}`}
             onClick={onClick}
         />
     )

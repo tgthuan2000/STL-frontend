@@ -1,21 +1,25 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ChatInfoItemProps } from '~/@types/feedback'
+import { List } from '~/@types'
+import { Feedback } from '~/@types/feedback'
 import { Image } from '~/components'
 import LANGUAGE from '~/i18n/language/key'
 import { useService } from '~/services'
 import { useProfile } from '~/store/auth'
 import InputForm from './InputForm'
+import { replyMessageOption } from '../hook/useActionFeedback'
 
-const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
-    data,
-    lastEl,
-    onReply,
-    onEdit,
-    onDelete,
-    bottomImageLine,
-    children,
-}) => {
+export interface Props {
+    data: List<Feedback>
+    lastEl: boolean
+    bottomImageLine: boolean
+    onReply: (options: replyMessageOption) => Promise<void>
+    onEdit: (message: string, id: string) => Promise<void>
+    onDelete: (id: string) => Promise<void>
+    children: React.ReactNode
+}
+
+const ChatInfoItem: React.FC<Props> = ({ data, lastEl, onReply, onEdit, onDelete, bottomImageLine, children }) => {
     const { t } = useTranslation()
     const { userProfile } = useProfile()
     const [showInput, setShowInput] = useState({
@@ -24,21 +28,26 @@ const ChatInfoItem: React.FC<ChatInfoItemProps> = ({
         message: '',
     })
     const { getSpacingTime } = useService()
-    const handleSubmitForm = (message: string) => {
+    const handleSubmitForm = async (message: string) => {
         message = message.trim()
         if (data._id && message) {
-            if (showInput.isEdit) {
-                if (message !== data.message) {
-                    onEdit(message, data._id)
-                }
-            } else {
-                onReply(message, data._id, false)
-            }
             setShowInput({
                 show: false,
                 isEdit: false,
                 message: '',
             })
+
+            if (showInput.isEdit) {
+                if (message !== data.message) {
+                    await onEdit(message, data._id)
+                }
+            } else {
+                await onReply({
+                    message,
+                    parentId: data._id,
+                    feedbackForUser: data.user._id,
+                })
+            }
         }
     }
 

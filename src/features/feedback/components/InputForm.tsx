@@ -1,24 +1,35 @@
 import { PaperAirplaneIcon } from '@heroicons/react/24/outline'
-import React from 'react'
+import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { InputFormProps } from '~/@types/feedback'
 import { AnimateWrap } from '~/components'
 import LANGUAGE from '~/i18n/language/key'
 
-const InputForm: React.FC<InputFormProps> = ({ onSubmit, defaultMessage = '', disabled, autoFocus = true }) => {
+export interface Props {
+    onSubmit: (message: string) => Promise<void>
+    defaultMessage?: string
+    disabled?: boolean
+    autoFocus?: boolean
+}
+
+const InputForm: React.FC<Props> = ({ onSubmit, defaultMessage = '', disabled, autoFocus = true }) => {
     const { t } = useTranslation()
+    const [disabledSubmit, setDisabledSubmit] = useState(false)
     const form = useForm({
         defaultValues: {
             message: defaultMessage,
         },
     })
 
-    const handleSubmit = (data: { message: string }) => {
+    const handleSubmit = async (data: { message: string }) => {
         const message = data.message.trim()
         if (!message) return
-        onSubmit(message)
+        setDisabledSubmit(true)
         form.reset()
+        await onSubmit(message)
+        setTimeout(() => {
+            setDisabledSubmit(false)
+        }, 1000)
     }
 
     return (
@@ -43,7 +54,11 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit, defaultMessage = '', di
             />
             <AnimateWrap className='inline-flex flex-shrink-0 items-center'>
                 {form.watch('message').trim() && (
-                    <button type='submit' className='font-bold text-indigo-500 hover:opacity-50'>
+                    <button
+                        type='submit'
+                        className='font-bold text-indigo-500 hover:opacity-50 disabled:opacity-30'
+                        disabled={disabledSubmit}
+                    >
                         <PaperAirplaneIcon className='h-6' />
                     </button>
                 )}

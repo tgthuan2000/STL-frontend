@@ -28,26 +28,27 @@ const MessageZone: React.FC<MessageZoneProps> = (props) => {
 
     return (
         <div className='relative h-full p-4 text-gray-900 dark:text-slate-200'>
+            <LoadingWait loading={loading} className='absolute top-5 right-5 z-10' />
             <AnimateWrap className='flex h-full flex-col'>
-                {!feedbackId && (
+                {!feedbackId ? (
                     <div className='flex flex-1 items-center justify-center'>
                         <p className='text-lg sm:text-xl'>{t(LANGUAGE.CHOOSE_FEEDBACK_USER)}</p>
                     </div>
-                )}
-                {!isEmpty(data) && (
-                    <div className='flex-1 overflow-auto px-3 pb-10 sm:pl-10 sm:pt-10'>
-                        <Messages
-                            data={data}
-                            onSeeMoreClick={seeMoreClick}
-                            onReply={replyMessage}
-                            onEdit={editMessage}
-                            onDelete={deleteMessage}
-                            onGetParent={onGetParent}
-                        />
-                    </div>
+                ) : (
+                    !isEmpty(data) && (
+                        <div className='flex-1 overflow-auto pl-10 pb-10 sm:pt-5'>
+                            <Messages
+                                data={data}
+                                onSeeMoreClick={seeMoreClick}
+                                onReply={(data) => replyMessage({ ...data, responded: true })}
+                                onEdit={editMessage}
+                                onDelete={deleteMessage}
+                                onGetParent={onGetParent}
+                            />
+                        </div>
+                    )
                 )}
             </AnimateWrap>
-            <LoadingWait loading={loading} className='absolute top-3 right-3 z-10' />
         </div>
     )
 }

@@ -115,6 +115,7 @@
     "PREVIEW": "Preview",
     "ACTIVE": "Active",
     "INACTIVE": "Inactive",
+    "RESPONDED": "Responded",
 
     "APP_READY_WORK_OFFLINE": "App ready to work offline",
     "RELOAD_TEXT": "New content available, click on reload button to update.",
@@ -366,7 +367,7 @@
     "INVALID_FORMAT_IMAGE_SIZE": "Invalid format image size",
     "END_DATE_MUST_BE_GREATER_THAN_START_DATE": "End date must be greater than start date",
     "CHOOSE_FEEDBACK_USER": "Choose feedback",
-    "L_FEEDBACKS": "feedback(s)",
+    "L_FEEDBACKS_PREVIOUS": "feedbacks previous",
 
     "SPENDING_MANAGEMENT": "Spending management",
     "LOAN_MANAGEMENT": "Loan/Get loan management",

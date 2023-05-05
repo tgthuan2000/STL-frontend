@@ -24,7 +24,7 @@ const messageZoneHOC = (Component: React.FC<MessageZoneProps>) => () => {
         return (
             <Component data={treeData} loading={feedback.loading} seeMoreClick={seeMoreClick} onGetParent={getParent} />
         )
-    }, [treeData, seeMoreClick])
+    }, [treeData, feedback.loading, seeMoreClick])
 
     if (width <= 1024) return <Dialog>{renderComponent}</Dialog>
 

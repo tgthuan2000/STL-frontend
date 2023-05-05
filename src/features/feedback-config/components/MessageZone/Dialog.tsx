@@ -34,7 +34,7 @@ const Dialog: React.FC<DialogProps> = (props) => {
                 close: handleClose,
             })
         }
-    }, [feedbackId])
+    }, [feedbackId, children])
 
     useEffect(() => {
         return () => {
