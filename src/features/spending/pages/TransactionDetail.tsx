@@ -12,7 +12,7 @@ import {
 import LoadingText from '~/components/Loading/LoadingText'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useCache, useLoading } from '~/context'
-import { useDocument, useServiceQuery } from '~/hook'
+import { useDocument, useMounted, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
 import { TransactionDetailForm } from '../components'
 import useTransactionDetail from '../hook/useTransactionDetail'
@@ -21,6 +21,7 @@ const TransactionDetail = () => {
     const navigate = useNavigate()
     const { setSubmitLoading } = useLoading()
     const { id } = useParams()
+    const mounted = useMounted()
     const { deleteCache } = useCache()
     const {
         METHOD_SPENDING_DESC_SURPLUS,
@@ -273,7 +274,7 @@ const TransactionDetail = () => {
         transaction: transaction.data?.[0] as ISpendingData,
     }
 
-    if (transaction.loading) return <LoadingText />
+    if (transaction.loading || !mounted) return <LoadingText />
 
     return <TransactionDetailForm data={data} />
 }

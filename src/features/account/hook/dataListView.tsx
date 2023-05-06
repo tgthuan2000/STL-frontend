@@ -1,7 +1,7 @@
 import { ArrowPathIcon, BoltIcon, BoltSlashIcon, EnvelopeIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import moment from 'moment'
-import { useMemo, useState } from 'react'
+import { MouseEventHandler, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IAccount } from '~/@types/account'
 import { TableColumn } from '~/@types/components'
@@ -21,12 +21,12 @@ const getDate = (date: string | undefined) => {
 }
 
 interface Option {
-    toggleActive: (id: string, active: boolean) => Promise<void>
+    toggleActive: (params: { id: string; active: boolean }) => Promise<void>
 }
 
 export const useColumns = (options: Option): Array<TableColumn<IAccount>> => {
-    const { t } = useTranslation()
     const { toggleActive } = options
+    const { t } = useTranslation()
 
     const data: Array<TableColumn<IAccount>> = useMemo(() => {
         return [
@@ -117,7 +117,7 @@ export const useColumns = (options: Option): Array<TableColumn<IAccount>> => {
 interface ActionsProps {
     id: string
     active: boolean
-    onClick: (id: string, active: boolean) => Promise<void>
+    onClick: (params: { id: string; active: boolean }) => Promise<void>
 }
 
 const Actions: React.FC<ActionsProps> = (props) => {
@@ -125,6 +125,13 @@ const Actions: React.FC<ActionsProps> = (props) => {
     const { t } = useTranslation()
     const { userProfile } = useProfile()
     const [clicked, setClicked] = useState(false)
+
+    const handleClick: MouseEventHandler<HTMLButtonElement> = async (e) => {
+        e.stopPropagation()
+        setClicked(true)
+        await onClick({ id, active })
+        setClicked(false)
+    }
 
     return (
         <td className='px-1 text-center'>
@@ -136,17 +143,7 @@ const Actions: React.FC<ActionsProps> = (props) => {
                     active ? 'bg-green-500' : 'bg-radical-red-500 dark:bg-indigo-700'
                 )}
                 disabled={userProfile?._id === id || clicked}
-                onClick={async (e) => {
-                    try {
-                        e.stopPropagation()
-                        setClicked(true)
-                        await onClick(id, active)
-                    } catch (error) {
-                        console.log(error)
-                    } finally {
-                        setClicked(false)
-                    }
-                }}
+                onClick={handleClick}
             >
                 {clicked ? (
                     <ArrowPathIcon className='h-5 animate-spin' />

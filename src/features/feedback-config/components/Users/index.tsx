@@ -1,16 +1,15 @@
 import { isEmpty } from 'lodash'
-import React, { useRef } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import { AnimateWrap, PaperWrap } from '~/components'
 import LoadingWait from '~/components/Loading/LoadingWait'
+import { useDebounceFunc } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import useTopFeedback from '../../hook/useTopFeedback'
 import { FEEDBACK_PARAM } from '../../pages/Dashboard'
 import User from './User'
-import { Transaction } from '@sanity/client'
 
 interface Props {}
 
@@ -28,40 +27,20 @@ const Users: React.FC<Props> = () => {
     const { feedbacks, refetch } = useTopFeedback()
     const [searchParams, setSearchParams] = useSearchParams()
     const feedbackId = searchParams.get(FEEDBACK_PARAM)
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-    const transaction = useRef<Transaction | null>(null)
-
-    const handleResponseClick = (id: string) => {
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current)
-        }
-
-        if (!transaction.current) {
-            transaction.current = client.transaction()
-        }
-
+    const handleResponseClick = useDebounceFunc<{ id: string }>((__, { id }) => {
         const patch = client.patch(id, { set: { responded: true } })
-        transaction.current.patch(patch)
+        __.patch(patch)
 
-        timeoutRef.current = setTimeout(async () => {
-            try {
-                await transaction.current?.commit()
-
-                const url = new URLSearchParams(searchParams)
-                if (url.get(FEEDBACK_PARAM)) {
-                    url.delete(FEEDBACK_PARAM)
-                    setSearchParams(url)
-                }
-
-                refetch()
-                transaction.current = null
-                timeoutRef.current = null
-            } catch (error: any) {
-                console.log(error)
-                toast.error<string>(error.message)
+        return () => {
+            const url = new URLSearchParams(searchParams)
+            if (url.get(FEEDBACK_PARAM)) {
+                url.delete(FEEDBACK_PARAM)
+                setSearchParams(url)
             }
-        }, 800)
-    }
+
+            refetch()
+        }
+    }, 800)
 
     return (
         <PaperWrap className='flex-1 sm:m-0' disabledPadding>

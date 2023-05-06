@@ -17,7 +17,7 @@ interface Props {
     createdAt: string
     url: string
     edited: boolean
-    onResponseClick: (id: string) => void
+    onResponseClick: (params: { id: string }) => Promise<void>
 }
 
 const User: React.FC<Props> = (props) => {
@@ -50,7 +50,7 @@ const User: React.FC<Props> = (props) => {
                         title={t(LANGUAGE.RESPONDED) as string}
                         icon={<CheckBadgeIcon className='h-7 w-7' />}
                         loadingIcon={<ArrowPathIcon className='h-7 w-7 animate-spin cursor-wait' />}
-                        onClick={() => onResponseClick(id)}
+                        onClick={() => onResponseClick({ id })}
                     />
                 </div>
             </div>
@@ -71,7 +71,7 @@ const User: React.FC<Props> = (props) => {
 }
 
 interface ButtonProps {
-    onClick: () => void
+    onClick: () => Promise<void>
     icon: React.ReactNode
     loadingIcon: React.ReactNode
     title?: string
@@ -84,11 +84,12 @@ const Button: React.FC<ButtonProps> = (props) => {
 
     const Icon = clicked ? loadingIcon : icon
 
-    const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    const handleClick: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
         e.stopPropagation()
         e.preventDefault()
         setClicked(true)
-        onClick()
+        await onClick()
+        setClicked(false)
     }
 
     return (
