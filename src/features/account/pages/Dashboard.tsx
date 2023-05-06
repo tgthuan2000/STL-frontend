@@ -4,13 +4,14 @@ import { toast } from 'react-toastify'
 import { DataListViewTable } from '~/@types/components'
 import { AnimateWrap, Divider, Table, Transaction } from '~/components'
 import EmptyTable from '~/components/Table/Empty'
+import { useCheck } from '~/context'
+import { useDebounceFunc } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { MobileMenu } from '../components'
 import Skeleton from '../components/Skeleton'
 import { useColumns } from '../hook/dataListView'
 import useDashboard from '../hook/useDashboard'
-import { useCheck } from '~/context'
 
 const Dashboard = () => {
     const { t } = useTranslation()
@@ -21,17 +22,17 @@ const Dashboard = () => {
         reloadData()
     })
 
-    const toggleActive = async (id: string, active: boolean) => {
-        try {
-            await client.patch(id, { set: { active: !active } }).commit()
+    const toggleActive = useDebounceFunc<{ id: string; active: boolean }>((transaction, { id, active }) => {
+        const patch = client.patch(id, { set: { active: !active } })
+        transaction.patch(patch)
+
+        return () => {
             deleteCache('account')
             reloadData()
             toast.success(t(LANGUAGE.NOTIFY_UPDATE_SUCCESS))
-        } catch (error) {
-            console.log(error)
-            toast.error(t(LANGUAGE.NOTIFY_UPDATE_FAILED))
         }
-    }
+    }, 800)
+
     const columns = useColumns({ toggleActive })
     const tableProps: DataListViewTable = useMemo(() => ({ columns }), [columns])
 

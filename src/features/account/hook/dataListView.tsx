@@ -21,7 +21,7 @@ const getDate = (date: string | undefined) => {
 }
 
 interface Option {
-    toggleActive: (id: string, active: boolean) => Promise<void>
+    toggleActive: (params: { id: string; active: boolean }) => Promise<void>
 }
 
 export const useColumns = (options: Option): Array<TableColumn<IAccount>> => {
@@ -117,7 +117,7 @@ export const useColumns = (options: Option): Array<TableColumn<IAccount>> => {
 interface ActionsProps {
     id: string
     active: boolean
-    onClick: (id: string, active: boolean) => Promise<void>
+    onClick: (params: { id: string; active: boolean }) => Promise<void>
 }
 
 const Actions: React.FC<ActionsProps> = (props) => {
@@ -140,7 +140,7 @@ const Actions: React.FC<ActionsProps> = (props) => {
                     try {
                         e.stopPropagation()
                         setClicked(true)
-                        await onClick(id, active)
+                        await onClick({ id, active })
                     } catch (error) {
                         console.log(error)
                     } finally {
