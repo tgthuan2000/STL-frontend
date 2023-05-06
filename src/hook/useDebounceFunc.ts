@@ -8,14 +8,14 @@ const useDebounceFunc = <T extends { [x: string]: any }>(
 ) => {
     const transaction = useRef<Transaction | null>(null)
     const timeout = useRef<NodeJS.Timeout | null>(null)
-    const promise = useRef<Promise<void> | null>(null)
+    const resolves = useRef<Array<(value: void | PromiseLike<void>) => void>>([])
     const callback = useRef(cb)
 
     useEffect(() => {
         callback.current = cb
     }, [cb])
 
-    const debounce = useCallback(async (params: T) => {
+    const debounce = useCallback((params: T) => {
         if (timeout.current) {
             clearTimeout(timeout.current)
         }
@@ -24,27 +24,21 @@ const useDebounceFunc = <T extends { [x: string]: any }>(
             transaction.current = client.transaction()
         }
 
-        if (promise.current) {
-            promise.current = null
-        }
-
         const timeoutCallback = callback.current(transaction.current, params)
 
-        promise.current = new Promise<void>((resolve) => {
+        return new Promise<void>((resolve) => {
+            resolves.current.push(resolve)
             timeout.current = setTimeout(async () => {
                 try {
                     await transaction.current?.commit()
-                    resolve()
                     timeoutCallback?.()
+                    resolves.current.forEach((resolve) => resolve())
+                    resolves.current = []
                     transaction.current = null
                     timeout.current = null
                 } catch (err) {}
             }, ms)
         })
-
-        if (promise.current) {
-            return await promise.current
-        }
     }, [])
 
     return debounce
