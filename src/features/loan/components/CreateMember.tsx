@@ -1,11 +1,10 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { ICreateMemberForm } from '~/@types/loan'
 import { Button, SubmitWrap } from '~/components'
 import { Input, UploadImage } from '~/components/_base'
-import { SlideOverHOC, useCache, useCheck, useLoading, useSlideOver } from '~/context'
+import { useCache, useCheck, useLoading, useSlideOver } from '~/context'
 import { useServiceQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
@@ -18,8 +17,7 @@ const defaultValues = {
 
 const CreateMember = () => {
     const { t } = useTranslation()
-    const { setIsOpen } = useSlideOver()
-    const navigate = useNavigate()
+    const { close } = useSlideOver()
     const { userProfile } = useProfile()
     const { loading, setSubmitLoading } = useLoading()
     const { needCheckWhenLeave } = useCheck()
@@ -100,14 +98,7 @@ const CreateMember = () => {
                 <Button color='green' type='submit' disabled={loading.submit}>
                     {t(LANGUAGE.CREATE)}
                 </Button>
-                <Button
-                    color='outline'
-                    type='button'
-                    onClick={() => {
-                        setIsOpen(false)
-                        navigate(-1)
-                    }}
-                >
+                <Button color='outline' type='button' onClick={close}>
                     {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
@@ -115,4 +106,4 @@ const CreateMember = () => {
     )
 }
 
-export default SlideOverHOC(CreateMember)
+export default CreateMember

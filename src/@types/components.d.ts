@@ -17,9 +17,7 @@ import { ISpendingData } from './spending'
 
 type TrackingFunc = (name: Path<any>) => Promise<void>
 type Rules = Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
-export interface SlideParams {
-    slide?: string
-}
+
 export interface AutoCompleteProps {
     name: string
     className?: string
@@ -147,10 +145,6 @@ export interface DropdownItemsProps {
     selected: any
     handleChange?: (value: any, onChange: (value: any) => void) => void
     field: ControllerRenderProps<any, string>
-}
-
-export interface SlideOverProps {
-    children?: () => React.ReactNode
 }
 
 export interface InputProps
@@ -313,6 +307,8 @@ export interface ButtonMenuProviderProps {
 }
 export interface MenuButtonProps {
     data: IMenuBtn
+    link: To
+    onClick: React.MouseEventHandler<HTMLAnchorElement>
 }
 
 export interface IMenuBtn {
@@ -320,10 +316,10 @@ export interface IMenuBtn {
     icon: HeroIcon
     color: string
     to?: To
-    children?: () => React.ReactNode
-    query?: SlideParams
+    children?: React.ReactNode
+    slide?: string
     divider?: boolean
-    action?: (...cb: Array<() => void>) => void
+    action?: () => void
 }
 export interface AnimateWrapProps {
     children: React.ReactNode

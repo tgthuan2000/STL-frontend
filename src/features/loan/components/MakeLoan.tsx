@@ -3,7 +3,6 @@ import moment from 'moment'
 import { Fragment, useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IMakeLoanForm, QueryDataMakeLoan } from '~/@types/loan'
 import { Button, SubmitWrap } from '~/components'
@@ -13,7 +12,7 @@ import UserDeleteButton from '~/components/_base/LazySearchSelect/UserDeleteButt
 import UserList from '~/components/_base/LazySearchSelect/UserList'
 import UserOption from '~/components/_base/LazySearchSelect/UserOption'
 import { TAGS } from '~/constant'
-import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
+import { useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
@@ -23,8 +22,7 @@ import { getImageReference } from '~/utils'
 
 const MakeLoan = () => {
     const { t } = useTranslation()
-    const { setIsOpen } = useSlideOver()
-    const navigate = useNavigate()
+    const { close } = useSlideOver()
     const { userProfile } = useProfile()
     const { getKindSpendingId, kindSpending } = useConfig()
     const { loading, setSubmitLoading } = useLoading()
@@ -229,14 +227,7 @@ const MakeLoan = () => {
                 <Button color='prussianBlue' type='submit' disabled={loading.submit}>
                     {t(LANGUAGE.CREATE)}
                 </Button>
-                <Button
-                    color='outline'
-                    type='button'
-                    onClick={() => {
-                        setIsOpen(false)
-                        navigate(-1)
-                    }}
-                >
+                <Button color='outline' type='button' onClick={close}>
                     {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
@@ -244,4 +235,4 @@ const MakeLoan = () => {
     )
 }
 
-export default SlideOverHOC(MakeLoan)
+export default MakeLoan

@@ -17,7 +17,7 @@ import { client } from '~/sanityConfig'
 import { GET_TRANSACTION_DETAIL, GET_USER_LOAN } from '~/schema/query/loan'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
 import { useProfile } from '~/store/auth'
-import { TransactionEditForm } from '../components'
+import TransactionEditForm from '../components/TransactionEditForm'
 
 const TransactionEdit = () => {
     const { t } = useTranslation()

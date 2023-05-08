@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { ButtonMenuMobile } from '~/components'
+import { ButtonMenuMobileV2 } from '~/components/ButtonMenu'
 import { useWindowSize } from '~/hook'
 import { useMenuRoleControlMobile } from '~/hook/components'
 
@@ -8,7 +8,7 @@ const MobileMenu = () => {
     const menuMobile = useMenuRoleControlMobile()
 
     if (width < 1280) {
-        return <ButtonMenuMobile.v2 data={menuMobile} />
+        return <ButtonMenuMobileV2 data={menuMobile} />
     }
 
     return <></>

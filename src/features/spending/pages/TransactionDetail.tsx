@@ -14,7 +14,7 @@ import { KIND_SPENDING } from '~/constant/spending'
 import { useCache, useLoading } from '~/context'
 import { useDocument, useMounted, useServiceQuery } from '~/hook'
 import { client } from '~/sanityConfig'
-import { TransactionDetailForm } from '../components'
+import TransactionDetailForm from '../components/TransactionDetailForm'
 import useTransactionDetail from '../hook/useTransactionDetail'
 
 const TransactionDetail = () => {

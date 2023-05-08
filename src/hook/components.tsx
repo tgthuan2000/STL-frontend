@@ -1,10 +1,8 @@
 import {
     ArrowRightOnRectangleIcon,
-    ArrowTrendingDownIcon,
     ArrowTrendingUpIcon,
     ArrowsRightLeftIcon,
     CalendarDaysIcon,
-    ClipboardDocumentCheckIcon,
     ClipboardDocumentListIcon,
     EllipsisHorizontalCircleIcon,
     HomeIcon,
@@ -17,16 +15,37 @@ import {
     UserPlusIcon,
 } from '@heroicons/react/24/outline'
 import { googleLogout } from '@react-oauth/google'
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IMenuBtn } from '~/@types/components'
 import axios from '~/axiosConfig'
-import { CreateAccount } from '~/features/account/components'
-import { CreateMember, MakeGetLoan, MakeLoan } from '~/features/loan/components'
-import { CreatePermissionGroup, CreateRole } from '~/features/role-control/components'
-import { AddCategory, AddMethod, MakeBudget, MakeCost, MakeIncome, MakeTransfer } from '~/features/spending/components'
-import { MakeSchedule, MakeTimeKeeping } from '~/features/time/components'
 import LANGUAGE from '~/i18n/language/key'
+import useLogout from './useLogout'
+
+const CreateAccount = React.lazy(() => import('~/features/account/components/CreateAccount'))
+const CreateMember = React.lazy(() => import('~/features/loan/components/CreateMember'))
+const MakeGetLoan = React.lazy(() => import('~/features/loan/components/MakeGetLoan'))
+const CreatePermissionGroup = React.lazy(() => import('~/features/role-control/components/CreatePermissionGroup'))
+const CreateRole = React.lazy(() => import('~/features/role-control/components/CreateRole'))
+const AddCategory = React.lazy(() => import('~/features/spending/components/AddCategory'))
+const AddMethod = React.lazy(() => import('~/features/spending/components/AddMethod'))
+const MakeBudget = React.lazy(() => import('~/features/spending/components/MakeBudget'))
+const MakeCost = React.lazy(() => import('~/features/spending/components/MakeCost'))
+const MakeIncome = React.lazy(() => import('~/features/spending/components/MakeIncome'))
+const MakeTransfer = React.lazy(() => import('~/features/spending/components/MakeTransfer'))
+const MakeSchedule = React.lazy(() => import('~/features/time/components/MakeSchedule'))
+
+const useLogoutAccount = () => {
+    const logout = useLogout()
+
+    const handleLogout = () => {
+        googleLogout()
+        logout()
+        axios.defaults.headers.common['Authorization'] = null
+    }
+
+    return handleLogout
+}
 
 export const useMenuMobile = (): IMenuBtn[] => {
     const { t } = useTranslation()
@@ -37,37 +56,29 @@ export const useMenuMobile = (): IMenuBtn[] => {
                 title: t(LANGUAGE.MAKE_INCOME),
                 color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
                 icon: PlusCircleIcon,
-                children: () => <MakeIncome />,
-                query: {
-                    slide: 'add-income',
-                },
+                children: <MakeIncome />,
+                slide: 'add-income',
             },
             {
                 title: t(LANGUAGE.MAKE_COST),
                 color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
                 icon: MinusCircleIcon,
-                children: () => <MakeCost />,
-                query: {
-                    slide: 'add-payment',
-                },
+                children: <MakeCost />,
+                slide: 'add-payment',
             },
             {
                 title: t(LANGUAGE.MAKE_TRANSFER),
                 color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
                 icon: ArrowsRightLeftIcon,
-                children: () => <MakeTransfer />,
-                query: {
-                    slide: 'transfer',
-                },
+                children: <MakeTransfer />,
+                slide: 'transfer',
             },
             {
                 title: t(LANGUAGE.MAKE_BUDGET),
                 color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
                 icon: PuzzlePieceIcon,
-                children: () => <MakeBudget />,
-                query: {
-                    slide: 'budget',
-                },
+                children: <MakeBudget />,
+                slide: 'budget',
             },
             // {
             //     title: t(LANGUAGE.TRANSACTION),
@@ -83,26 +94,25 @@ export const useMenuMobile = (): IMenuBtn[] => {
 
 export const useMenuTimeMobile = (): IMenuBtn[] => {
     const { t } = useTranslation()
+
     const data = useMemo(() => {
         return [
             {
                 title: t(LANGUAGE.MAKE_SCHEDULE),
                 color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
                 icon: CalendarDaysIcon,
-                children: () => <MakeSchedule />,
-                query: {
-                    slide: 'create-schedule',
-                },
+                children: <MakeSchedule />,
+                slide: 'create-schedule',
             },
-            {
-                title: t(LANGUAGE.MAKE_TIMEKEEPING),
-                color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
-                icon: ClipboardDocumentCheckIcon,
-                children: () => <MakeTimeKeeping />,
-                query: {
-                    slide: 'timekeeping',
-                },
-            },
+            // {
+            //     title: t(LANGUAGE.MAKE_TIMEKEEPING),
+            //     color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
+            //     icon: ClipboardDocumentCheckIcon,
+            //     children:  <MakeTimeKeeping />,
+            //     query: {
+            //         slide: 'timekeeping',
+            //     },
+            // },
         ]
     }, [t])
 
@@ -111,25 +121,22 @@ export const useMenuTimeMobile = (): IMenuBtn[] => {
 
 export const useMenuMobileOthers = (): IMenuBtn[] => {
     const { t } = useTranslation()
+
     const data = useMemo(() => {
         return [
             {
                 title: t(LANGUAGE.CREATE_METHOD),
                 color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
                 icon: QrCodeIcon,
-                children: () => <AddMethod />,
-                query: {
-                    slide: 'add-method',
-                },
+                children: <AddMethod />,
+                slide: 'add-method',
             },
             {
                 title: t(LANGUAGE.CREATE_CATEGORY),
                 color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
                 icon: RectangleGroupIcon,
-                children: () => <AddCategory />,
-                query: {
-                    slide: 'category',
-                },
+                children: <AddCategory />,
+                slide: 'category',
             },
         ]
     }, [t])
@@ -138,34 +145,29 @@ export const useMenuMobileOthers = (): IMenuBtn[] => {
 
 export const useMenuLoanMobile = (): IMenuBtn[] => {
     const { t } = useTranslation()
+
     const data = useMemo(() => {
         return [
             {
                 title: t(LANGUAGE.MAKE_GET_LOAN),
                 color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
                 icon: ArrowTrendingUpIcon,
-                children: () => <MakeGetLoan />,
-                query: {
-                    slide: 'get-loan',
-                },
+                children: <MakeGetLoan />,
+                slide: 'get-loan',
             },
             // {
             //     title: t(LANGUAGE_MAKE_LOAN),
             //     color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
             //     icon: TrendingDownIcon,
-            //     children: () => <MakeLoan />,
-            //     query: {
+            //     children:  <MakeLoan />,
             //         slide: 'loan',
-            //     },
             // },
             {
                 title: t(LANGUAGE.CREATE_MEMBER),
                 color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
                 icon: UserPlusIcon,
-                children: () => <CreateMember />,
-                query: {
-                    slide: 'create-member',
-                },
+                children: <CreateMember />,
+                slide: 'create-member',
             },
         ]
     }, [t])
@@ -181,10 +183,8 @@ export const useMenuRoleControlMobile = (): IMenuBtn[] => {
                 title: t(LANGUAGE.CREATE_PERMISSION_GROUP),
                 color: 'text-indigo-700 bg-indigo-200 hover:bg-indigo-300 dark:text-indigo-500',
                 icon: RectangleGroupIcon,
-                children: () => <CreatePermissionGroup />,
-                query: {
-                    slide: 'create-permission-group',
-                },
+                children: <CreatePermissionGroup />,
+                slide: 'create-permission-group',
             },
         ]
     }, [t])
@@ -201,10 +201,8 @@ export const useMenuAccountMobile = (): IMenuBtn[] => {
                 title: t(LANGUAGE.CREATE_ACCOUNT),
                 color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
                 icon: UserPlusIcon,
-                children: () => <CreateAccount />,
-                query: {
-                    slide: 'create-account',
-                },
+                children: <CreateAccount />,
+                slide: 'create-account',
             },
         ]
     }, [t])
@@ -214,55 +212,44 @@ export const useMenuAccountMobile = (): IMenuBtn[] => {
 
 export const useMenuSpendingPC = (): IMenuBtn[] => {
     const { t } = useTranslation()
+    const logout = useLogoutAccount()
+
     const data: IMenuBtn[] = useMemo(() => {
         return [
             {
                 title: t(LANGUAGE.MAKE_INCOME),
                 color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
                 icon: PlusCircleIcon,
-                children: () => <MakeIncome />,
-                query: {
-                    slide: 'add-income',
-                },
+                children: <MakeIncome />,
+                slide: 'add-income',
             },
             {
                 title: t(LANGUAGE.MAKE_COST),
                 color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
                 icon: MinusCircleIcon,
-                children: () => <MakeCost />,
-                query: {
-                    slide: 'add-payment',
-                },
+                children: <MakeCost />,
+                slide: 'add-payment',
             },
             {
                 title: t(LANGUAGE.MAKE_TRANSFER),
                 color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
                 icon: ArrowsRightLeftIcon,
-                children: () => <MakeTransfer />,
-                query: {
-                    slide: 'transfer',
-                },
+                children: <MakeTransfer />,
+                slide: 'transfer',
             },
             {
                 title: t(LANGUAGE.MAKE_BUDGET),
                 color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
                 icon: PuzzlePieceIcon,
-                children: () => <MakeBudget />,
-                query: {
-                    slide: 'budget',
-                },
+                children: <MakeBudget />,
+                slide: 'budget',
             },
 
             {
                 title: t(LANGUAGE.LOGOUT),
                 color: 'text-gray-700 bg-gray-200 hover:bg-gray-300 dark:text-gray-500',
                 icon: ArrowRightOnRectangleIcon,
-                to: '/',
-                action: (logout) => {
-                    googleLogout()
-                    logout()
-                    axios.defaults.headers.common['Authorization'] = null
-                },
+                action: logout,
                 divider: true,
             },
             {
@@ -293,20 +280,16 @@ export const useMenuSpendingPC = (): IMenuBtn[] => {
                 title: t(LANGUAGE.CREATE_METHOD),
                 color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
                 icon: QrCodeIcon,
-                children: () => <AddMethod />,
-                query: {
-                    slide: 'add-method',
-                },
+                children: <AddMethod />,
+                slide: 'add-method',
                 divider: true,
             },
             {
                 title: t(LANGUAGE.CREATE_CATEGORY),
                 color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
                 icon: RectangleGroupIcon,
-                children: () => <AddCategory />,
-                query: {
-                    slide: 'add-category',
-                },
+                children: <AddCategory />,
+                slide: 'add-category',
             },
         ]
     }, [t])
@@ -315,22 +298,22 @@ export const useMenuSpendingPC = (): IMenuBtn[] => {
 
 export const useMenuLoanPC = (): IMenuBtn[] => {
     const { t } = useTranslation()
+    const logout = useLogoutAccount()
+
     const data: IMenuBtn[] = useMemo(() => {
         return [
             {
                 title: t(LANGUAGE.MAKE_GET_LOAN),
                 color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
                 icon: ArrowTrendingUpIcon,
-                children: () => <MakeGetLoan />,
-                query: {
-                    slide: 'get-loan',
-                },
+                children: <MakeGetLoan />,
+                slide: 'get-loan',
             },
             // {
             //     title: t(LANGUAGE.MAKE_LOAN),
             //     color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
             //     icon: ArrowTrendingDownIcon,
-            //     children: () => <MakeLoan />,
+            //     children:  <MakeLoan />,
             //     query: {
             //         slide: 'loan',
             //     },
@@ -339,21 +322,14 @@ export const useMenuLoanPC = (): IMenuBtn[] => {
                 title: t(LANGUAGE.CREATE_MEMBER),
                 color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
                 icon: UserPlusIcon,
-                children: () => <CreateMember />,
-                query: {
-                    slide: 'create-member',
-                },
+                children: <CreateMember />,
+                slide: 'create-member',
             },
             {
                 title: t(LANGUAGE.LOGOUT),
                 color: 'text-gray-700 bg-gray-200 hover:bg-gray-300 dark:text-gray-500',
                 icon: ArrowRightOnRectangleIcon,
-                to: '/',
-                action: (logout) => {
-                    googleLogout()
-                    logout()
-                    axios.defaults.headers.common['Authorization'] = null
-                },
+                action: logout,
                 divider: true,
             },
             {
@@ -381,36 +357,29 @@ export const useMenuLoanPC = (): IMenuBtn[] => {
 
 export const useMenuTimePC = (): IMenuBtn[] => {
     const { t } = useTranslation()
+    const logout = useLogoutAccount()
+
     const data: IMenuBtn[] = useMemo(() => {
         return [
             {
                 title: t(LANGUAGE.MAKE_SCHEDULE),
                 color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
                 icon: CalendarDaysIcon,
-                children: () => <MakeSchedule />,
-                query: {
-                    slide: 'create-schedule',
-                },
+                children: <MakeSchedule />,
+                slide: 'create-schedule',
             },
             // {
             //     title: t(LANGUAGE.MAKE_TIMEKEEPING),
             //     color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
             //     icon: ClipboardDocumentCheckIcon,
-            //     children: () => <MakeTimeKeeping />,
-            //     query: {
+            //     children:  <MakeTimeKeeping />,
             //         slide: 'timekeeping',
-            //     },
             // },
             {
                 title: t(LANGUAGE.LOGOUT),
                 color: 'text-gray-700 bg-gray-200 hover:bg-gray-300 dark:text-gray-500',
                 icon: ArrowRightOnRectangleIcon,
-                to: '/',
-                action: (logout) => {
-                    googleLogout()
-                    logout()
-                    axios.defaults.headers.common['Authorization'] = null
-                },
+                action: logout,
                 divider: true,
             },
             {
@@ -433,7 +402,7 @@ export const useMenuRoleControlPC = (): IMenuBtn[] => {
                 title: t(LANGUAGE.CREATE_PERMISSION_GROUP),
                 color: 'text-indigo-700 bg-indigo-200 hover:bg-indigo-300 dark:text-indigo-500',
                 icon: RectangleGroupIcon,
-                children: () => <CreatePermissionGroup />,
+                children: <CreatePermissionGroup />,
                 query: {
                     slide: 'create-permission-group',
                 },
@@ -442,7 +411,7 @@ export const useMenuRoleControlPC = (): IMenuBtn[] => {
                 title: t(LANGUAGE.CREATE_ROLE),
                 color: 'text-rose-700 bg-rose-200 hover:bg-rose-300 dark:text-rose-500',
                 icon: UserGroupIcon,
-                children: () => <CreateRole />,
+                children: <CreateRole />,
                 query: {
                     slide: 'create-role',
                 },
@@ -462,7 +431,7 @@ export const useMenuAccountPC = (): IMenuBtn[] => {
                 title: t(LANGUAGE.CREATE_ACCOUNT),
                 color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
                 icon: UserPlusIcon,
-                children: () => <CreateAccount />,
+                children: <CreateAccount />,
                 query: {
                     slide: 'create-account',
                 },
@@ -506,7 +475,7 @@ export const useMenuSpendingPages = (): IMenuBtn[] => {
             //     title: t(LANGUAGE.MAKE_BUDGET),
             //     color: 'text-yellow-700 dark:text-yellow-500',
             //     icon: PuzzlePieceIcon,
-            //     children: () => <MakeBudget />,
+            //     children:  <MakeBudget />,
             //     query: {
             //         slide: 'budget',
             //     },
@@ -515,7 +484,7 @@ export const useMenuSpendingPages = (): IMenuBtn[] => {
             //     title: t(LANGUAGE.CREATE_METHOD),
             //     color: 'text-cyan-700 dark:text-cyan-500',
             //     icon: QrCodeIcon,
-            //     children: () => <AddMethod />,
+            //     children:  <AddMethod />,
             //     query: {
             //         slide: 'add-method',
             //     },
@@ -524,7 +493,7 @@ export const useMenuSpendingPages = (): IMenuBtn[] => {
             //     title: t(LANGUAGE.CREATE_CATEGORY),
             //     color: 'text-cyan-700 dark:text-cyan-500',
             //     icon: RectangleGroupIcon,
-            //     children: () => <AddCategory />,
+            //     children:  <AddCategory />,
             //     query: {
             //         slide: 'add-category',
             //     },

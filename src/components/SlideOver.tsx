@@ -1,23 +1,13 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import React, { Fragment } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import { SlideOverProps } from '~/@types/components'
-import { useLoading, useSlideOver } from '~/context'
+import React, { Fragment, Suspense } from 'react'
+import { useLoading, useSlideOverConfig } from '~/context'
 
-const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
-    const { isOpen, setIsOpen, title } = useSlideOver()
+export interface Props {}
+
+const SlideOver: React.FC<Props> = () => {
     const { loading } = useLoading()
-    const [, setSearchParams] = useSearchParams()
-
-    const close = () => {
-        setIsOpen(false)
-        setSearchParams((prev) => {
-            const params = new URLSearchParams(prev)
-            params.delete('slide')
-            return params
-        })
-    }
+    const { isOpen, title, content, fallback, close } = useSlideOverConfig()
 
     return (
         <Transition.Root show={isOpen} as={Fragment}>
@@ -74,7 +64,7 @@ const SlideOver: React.FC<SlideOverProps> = ({ children }) => {
                                             </div>
                                         </div>
                                         <div className='h-full flex-1 overflow-hidden'>
-                                            {children?.()}
+                                            <Suspense fallback={fallback}>{content}</Suspense>
                                             {/* /End replace */}
                                         </div>
                                     </div>

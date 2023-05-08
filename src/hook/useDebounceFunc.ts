@@ -24,21 +24,24 @@ const useDebounceFunc = <T extends { [x: string]: any }>(
             transaction.current = client.transaction()
         }
 
+        const promise = new Promise<void>((resolve) => {
+            resolves.current.push(resolve)
+        })
+
         const timeoutCallback = callback.current(transaction.current, params)
 
-        return new Promise<void>((resolve) => {
-            resolves.current.push(resolve)
-            timeout.current = setTimeout(async () => {
-                try {
-                    await transaction.current?.commit()
-                    timeoutCallback?.()
-                    resolves.current.forEach((resolve) => resolve())
-                    resolves.current = []
-                    transaction.current = null
-                    timeout.current = null
-                } catch (err) {}
-            }, ms)
-        })
+        timeout.current = setTimeout(async () => {
+            try {
+                await transaction.current?.commit()
+                timeoutCallback?.()
+                resolves.current.forEach((resolve) => resolve())
+                resolves.current = []
+                transaction.current = null
+                timeout.current = null
+            } catch (err) {}
+        }, ms)
+
+        return promise
     }, [])
 
     return debounce

@@ -1,7 +1,11 @@
 import { useTranslation } from 'react-i18next'
 import { Box, Divider, Transaction } from '~/components'
 import LANGUAGE from '~/i18n/language/key'
-import { BudgetCategory, BudgetMethod, Method, MobileMenu, Recent, Statistic } from '../components'
+import { BudgetCategory, BudgetMethod } from '../components/Budget'
+import Method from '../components/Method'
+import MobileMenu from '../components/MobileMenu'
+import Recent from '../components/Recent'
+import Statistic from '../components/Statistic'
 import useDashboard from '../hook/useDashboard'
 
 const Dashboard = () => {

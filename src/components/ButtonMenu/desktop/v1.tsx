@@ -2,7 +2,6 @@ import clsx from 'clsx'
 import React, { memo } from 'react'
 import { ButtonMenuProps } from '~/@types/components'
 import ButtonItem from '../ButtonItem'
-import ButtonMenuProvider from '../ButtonMenuProvider'
 
 const v1: React.FC<ButtonMenuProps> = (props) => {
     const { className, data } = props
@@ -14,7 +13,9 @@ const v1: React.FC<ButtonMenuProps> = (props) => {
                 className
             )}
         >
-            <ButtonMenuProvider data={data}>{(item) => <ButtonItem data={item} />}</ButtonMenuProvider>
+            {data.map((item) => (
+                <ButtonItem key={item.title} data={item} />
+            ))}
         </div>
     )
 }

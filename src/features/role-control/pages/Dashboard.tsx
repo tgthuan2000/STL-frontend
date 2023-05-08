@@ -6,7 +6,8 @@ import { IRoleControl } from '~/@types/role-control'
 import { AnimateWrap, Divider, PaperWrap, Transaction } from '~/components'
 import { useCheck } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
-import { MobileMenu, Render } from '../components'
+import MobileMenu from '../components/MobileMenu'
+import Render from '../components/Render'
 import useRoleControl from '../hook/useRoleControl'
 
 const Dashboard = () => {
