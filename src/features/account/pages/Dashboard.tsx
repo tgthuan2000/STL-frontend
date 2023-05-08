@@ -5,7 +5,7 @@ import { DataListViewTable } from '~/@types/components'
 import { AnimateWrap, Divider, Table, Transaction } from '~/components'
 import EmptyTable from '~/components/Table/Empty'
 import { useCheck } from '~/context'
-import { useDebounceFunc } from '~/hook'
+import { useTDF } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { MobileMenu, Skeleton } from '../components'
@@ -20,15 +20,24 @@ const Dashboard = () => {
         reloadData()
     })
 
-    const toggleActive = useDebounceFunc<{ id: string; active: boolean }>((transaction, { id, active }) => {
+    const toggleActive = useTDF<{ id: string; active: boolean }>((transaction, params) => {
+        const { id, active } = params
         const patch = client.patch(id, { set: { active: !active } })
         transaction.patch(patch)
 
-        return () => {
+        const commit = () => transaction.commit()
+
+        const resolved = () => {
             deleteCache('account')
             reloadData()
             toast.success(t(LANGUAGE.NOTIFY_UPDATE_SUCCESS))
         }
+
+        const error = (err: any) => {
+            toast.error(t(LANGUAGE.NOTIFY_UPDATE_FAILED))
+        }
+
+        return { commit, resolved, error }
     }, 800)
 
     const columns = useColumns({ toggleActive })
