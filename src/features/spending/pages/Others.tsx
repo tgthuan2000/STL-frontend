@@ -5,7 +5,8 @@ import { KIND_SPENDING } from '~/constant/spending'
 import { useCache } from '~/context'
 import { useServiceQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
-import { ListOption, OtherMobileMenu } from '../components'
+import ListOption from '../components/ListOption'
+import OtherMobileMenu from '../components/OtherMobileMenu'
 import useOthers from '../hook/useOthers'
 
 const Others = () => {

@@ -4,7 +4,6 @@ import moment from 'moment'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import { IMakeBudgetForm, MakeBudgetQueryData, StateRef, StateRefKey } from '~/@types/spending'
 import { Button, Chip, SubmitWrap, Tabs } from '~/components'
 import { DatePicker } from '~/components/_base'
@@ -35,8 +34,7 @@ const defaultStateRef = {
 
 const MakeBudget = () => {
     const { t } = useTranslation()
-    const { setIsOpen } = useSlideOver()
-    const navigate = useNavigate()
+    const { close } = useSlideOver()
     const firstRef = useRef(false)
     const isPrevMonthClick = useRef(false)
     const { userProfile } = useProfile()
@@ -281,14 +279,7 @@ const MakeBudget = () => {
                 <Button color='yellow' type='submit' disabled={loading.submit}>
                     {t(LANGUAGE.SAVE)}
                 </Button>
-                <Button
-                    color='outline'
-                    type='button'
-                    onClick={() => {
-                        setIsOpen(false)
-                        navigate(-1)
-                    }}
-                >
+                <Button color='outline' type='button' onClick={close}>
                     {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>

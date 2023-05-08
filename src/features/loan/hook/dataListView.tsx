@@ -28,6 +28,7 @@ const getDate = (date: string, title: string, width: number) => {
 export const useColumns = (): Array<TableColumn<ISpendingData>> => {
     const { t } = useTranslation()
     const { width } = useWindowSize()
+
     const columns: Array<TableColumn<ISpendingData>> = useMemo(() => {
         return [
             {

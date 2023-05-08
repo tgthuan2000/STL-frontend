@@ -1,63 +1,91 @@
-import React from 'react'
-import { To, useNavigate, useSearchParams } from 'react-router-dom'
+import React, { Suspense, useEffect, useMemo } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { MenuButtonProps } from '~/@types/components'
-import { SlideOver } from '~/components'
 import { useSlideOver } from '~/context'
-import { useLogout } from '~/hook'
-import DesktopButton from './desktop/Button'
-import MobileButton from './mobile/Button'
+import LoadingText from '../Loading/LoadingText'
 
-const ButtonItem: React.FC<MenuButtonProps & { mobile?: boolean; mode?: 'v1' | 'v2' }> = ({
-    data,
-    mobile = false,
-    mode = 'v1',
-}) => {
-    const { title, children, query, action, to } = data
-    const { setIsOpen, setTitle } = useSlideOver()
-    const navigate = useNavigate()
-    const logout = useLogout()
-    const [searchParams] = useSearchParams()
+const DesktopButtonV1 = React.lazy(() => import('./desktop/Button/v1'))
+const MobileButtonV1 = React.lazy(() => import('./mobile/Button/v1'))
+const MobileButtonV2 = React.lazy(() => import('./mobile/Button/v2'))
 
-    const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-        if (query || action) {
-            const paramsUrl = new URLSearchParams(searchParams)
-            let link = to ?? ''
+type Props = Omit<MenuButtonProps, 'link' | 'onClick'> & { mobile?: boolean; mode?: 'v1' | 'v2' }
 
-            if (query) {
-                for (let [key, value] of Object.entries(query)) {
-                    paramsUrl.set(key, value)
-                }
-                link += `?${paramsUrl.toString()}`
-            }
+const ButtonItem: React.FC<Props> = (props) => {
+    const { data, mobile = false, mode = 'v1' } = props
+    const { slide, to, children, title, action } = data
+    const [searchParams, setSearchParams] = useSearchParams()
+    const { set } = useSlideOver()
 
-            action?.(logout)
-            e.preventDefault()
-            navigate(link, { replace: true })
-            setIsOpen(true)
-            setTitle(title)
+    const link = useMemo(() => {
+        const paramsUrl = new URLSearchParams(searchParams)
+        let link = to ?? ''
+
+        if (slide) {
+            paramsUrl.set('slide', slide)
+
+            link += `?${paramsUrl.toString()}`
         }
+        return link
+    }, [searchParams])
+
+    const handleClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+        if (!slide && !action) return
+
+        e.preventDefault()
+
+        if (slide) {
+            set({
+                slide,
+                title,
+                content: children,
+                fallback: <LoadingText />,
+            })
+            setSearchParams((searchParams) => {
+                const paramsUrl = new URLSearchParams(searchParams)
+
+                if (slide) {
+                    paramsUrl.set('slide', slide)
+                }
+                return paramsUrl
+            })
+        }
+
+        action?.()
     }
 
-    const props = {
+    useEffect(() => {
+        const slideParam = searchParams.get('slide')
+
+        if (slideParam && slideParam === slide) {
+            set({
+                slide,
+                title,
+                content: children,
+                fallback: <LoadingText />,
+            })
+        }
+    }, [])
+
+    const _props = {
         data,
+        link,
         onClick: handleClick,
     }
 
     return (
-        <>
+        <Suspense fallback={<LoadingText />}>
             {mobile ? (
                 <>
-                    {mode === 'v1' && <MobileButton.v1 {...props} />}
-                    {mode === 'v2' && <MobileButton.v2 {...props} />}
+                    {mode === 'v1' && <MobileButtonV1 {..._props} />}
+                    {mode === 'v2' && <MobileButtonV2 {..._props} />}
                 </>
             ) : (
                 <>
-                    {mode === 'v1' && <DesktopButton.v1 {...props} />}
-                    {/* {mode === 'v2' && <DesktopButton.v2 {...props} />} */}
+                    {mode === 'v1' && <DesktopButtonV1 {..._props} />}
+                    {/* {mode === 'v2' && <DesktopButton.v2 {..._props} />} */}
                 </>
             )}
-            <SlideOver>{children}</SlideOver>
-        </>
+        </Suspense>
     )
 }
 

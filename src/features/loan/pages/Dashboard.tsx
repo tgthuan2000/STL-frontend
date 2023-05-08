@@ -9,7 +9,7 @@ import { useQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
 import { useProfile } from '~/store/auth'
-import { MobileMenu } from '../components'
+import MobileMenu from '../components/MobileMenu'
 
 const Dashboard = () => {
     const { t } = useTranslation()

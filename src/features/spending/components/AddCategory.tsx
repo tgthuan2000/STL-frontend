@@ -9,7 +9,7 @@ import { Button, CheckName, SubmitWrap } from '~/components'
 import { Input, Selection } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
-import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
+import { useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
@@ -19,7 +19,7 @@ import { useProfile } from '~/store/auth'
 
 const AddCategory = () => {
     const { t } = useTranslation()
-    const { setIsOpen } = useSlideOver()
+    const { close } = useSlideOver()
     const navigate = useNavigate()
     const { kindSpending, getKindSpendingId } = useConfig()
     const { userProfile } = useProfile()
@@ -161,14 +161,7 @@ const AddCategory = () => {
                 <Button color='cyan' type='submit' disabled={loading.submit}>
                     {t(LANGUAGE.CREATE)}
                 </Button>
-                <Button
-                    color='outline'
-                    type='button'
-                    onClick={() => {
-                        setIsOpen(false)
-                        navigate(-1)
-                    }}
-                >
+                <Button color='outline' type='button' onClick={close}>
                     {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
@@ -176,4 +169,4 @@ const AddCategory = () => {
     )
 }
 
-export default SlideOverHOC(AddCategory)
+export default AddCategory

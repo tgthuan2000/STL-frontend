@@ -2,7 +2,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import { IRoleControl } from '~/@types/role-control'
@@ -58,8 +57,7 @@ interface Form {
 const CreateAccount = () => {
     const { t } = useTranslation()
     const { loading, setSubmitLoading } = useLoading()
-    const { setIsOpen } = useSlideOver()
-    const navigate = useNavigate()
+    const { close } = useSlideOver()
     const { needCheckWhenLeave } = useCheck()
     const { roles, refetch } = useRole()
     const schema = useSchema()
@@ -130,14 +128,7 @@ const CreateAccount = () => {
                 <Button color='green' type='submit' disabled={loading.submit}>
                     {t(LANGUAGE.CREATE)}
                 </Button>
-                <Button
-                    color='outline'
-                    type='button'
-                    onClick={() => {
-                        setIsOpen(false)
-                        navigate(-1)
-                    }}
-                >
+                <Button color='outline' type='button' onClick={close}>
                     {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>

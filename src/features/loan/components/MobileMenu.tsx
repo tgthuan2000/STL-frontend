@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { ButtonMenuMobile } from '~/components'
+import { ButtonMenuMobileV2 } from '~/components/ButtonMenu'
 import { useWindowSize } from '~/hook'
 import { useMenuLoanMobile } from '~/hook/components'
 
@@ -8,7 +8,7 @@ const MobileMenu = () => {
     const menuLoanMobile = useMenuLoanMobile()
 
     if (width < 1280) {
-        return <ButtonMenuMobile.v2 data={menuLoanMobile} />
+        return <ButtonMenuMobileV2 data={menuLoanMobile} />
     }
 
     return <></>

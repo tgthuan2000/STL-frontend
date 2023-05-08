@@ -3,13 +3,12 @@ import moment from 'moment'
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IMakeGetLoanForm, QueryDataMakeGetLoan } from '~/@types/loan'
 import { Button, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { TAGS } from '~/constant'
-import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
+import { useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
@@ -21,8 +20,7 @@ import StatusLoan from './common/StatusLoan'
 
 const MakeGetLoan = () => {
     const { t } = useTranslation()
-    const { setIsOpen } = useSlideOver()
-    const navigate = useNavigate()
+    const { close } = useSlideOver()
     const { userProfile } = useProfile()
     const { getKindSpendingId, kindSpending } = useConfig()
     const { loading, setSubmitLoading } = useLoading()
@@ -219,14 +217,7 @@ const MakeGetLoan = () => {
                 <Button color='radicalRed' type='submit' disabled={loading.submit}>
                     {t(LANGUAGE.SAVE)}
                 </Button>
-                <Button
-                    color='outline'
-                    type='button'
-                    onClick={() => {
-                        setIsOpen(false)
-                        navigate(-1)
-                    }}
-                >
+                <Button color='outline' type='button' onClick={close}>
                     {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
@@ -234,4 +225,4 @@ const MakeGetLoan = () => {
     )
 }
 
-export default SlideOverHOC(MakeGetLoan)
+export default MakeGetLoan

@@ -1,3 +1,4 @@
+import { get } from 'lodash'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -8,9 +9,7 @@ import { useCheck, useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { useProfile } from '~/store/auth'
-import { EditForm } from '../components'
-import { EditUseForm } from '../components/EditForm'
-import { get } from 'lodash'
+import EditForm, { EditUseForm } from '../components/EditForm'
 
 const Edit = () => {
     const { id } = useParams()

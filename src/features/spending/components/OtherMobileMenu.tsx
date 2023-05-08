@@ -1,4 +1,4 @@
-import { ButtonMenuMobile } from '~/components'
+import { ButtonMenuMobileV2 } from '~/components/ButtonMenu'
 import { useWindowSize } from '~/hook'
 import { useMenuMobileOthers } from '~/hook/components'
 
@@ -7,7 +7,7 @@ const OtherMobileMenu = () => {
     const menuMobileOthers = useMenuMobileOthers()
 
     if (width < 1280) {
-        return <ButtonMenuMobile.v2 data={menuMobileOthers} />
+        return <ButtonMenuMobileV2 data={menuMobileOthers} />
     }
 
     return <></>

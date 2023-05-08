@@ -1,13 +1,12 @@
 import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { AddMethodQueryData, IAddMethodForm } from '~/@types/spending'
 import { Button, CheckName, SubmitWrap } from '~/components'
 import { Input } from '~/components/_base'
 import { TAGS } from '~/constant'
-import { SlideOverHOC, useCache, useCheck, useLoading, useSlideOver } from '~/context'
+import { useCache, useCheck, useLoading, useSlideOver } from '~/context'
 import { useQuery, useServiceQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
@@ -16,8 +15,7 @@ import { useProfile } from '~/store/auth'
 
 const AddMethod = () => {
     const { t } = useTranslation()
-    const { setIsOpen } = useSlideOver()
-    const navigate = useNavigate()
+    const { close } = useSlideOver()
     const { userProfile } = useProfile()
     const { loading, setSubmitLoading } = useLoading()
     const { deleteCache } = useCache()
@@ -115,14 +113,7 @@ const AddMethod = () => {
                 <Button color='cyan' type='submit' disabled={loading.submit}>
                     {t(LANGUAGE.CREATE)}
                 </Button>
-                <Button
-                    color='outline'
-                    type='button'
-                    onClick={() => {
-                        setIsOpen(false)
-                        navigate(-1)
-                    }}
-                >
+                <Button color='outline' type='button' onClick={close}>
                     {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
@@ -130,4 +121,4 @@ const AddMethod = () => {
     )
 }
 
-export default SlideOverHOC(AddMethod)
+export default AddMethod
