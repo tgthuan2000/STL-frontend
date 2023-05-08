@@ -5,20 +5,13 @@ import { OptionMenuItemProps } from '~/@types/layout'
 import { useLogout } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 
-const LogoutMenuItem: React.FC<OptionMenuItemProps> = ({ btnClassName, iconClassName }) => {
+const LogoutMenuItem: React.FC<OptionMenuItemProps> = (props) => {
+    const { btnClassName, iconClassName } = props
     const { t } = useTranslation()
     const logout = useLogout()
 
-    const handleLogout = async () => {
-        try {
-            await logout()
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     return (
-        <button type='button' className={btnClassName} onClick={handleLogout}>
+        <button type='button' className={btnClassName} onClick={logout}>
             <ArrowRightOnRectangleIcon className={iconClassName} />
             {t(LANGUAGE.LOGOUT)}
         </button>
