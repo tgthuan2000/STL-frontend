@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { AnimateWrap, Calendar, Divider, Transaction } from '~/components'
 import { useCheck } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
-import { MobileMenu } from '../components'
+import MobileMenu from '../components/MobileMenu'
 import useCalendar from '../hook/useCalendar'
 
 const Dashboard = () => {

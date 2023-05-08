@@ -1,47 +1,96 @@
-import React, { createContext, useCallback, useContext, useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import { SlideParams } from '~/@types/components'
-import { ISlideOverContext } from '~/@types/context'
-import { useEventListener } from '~/hook'
+import React, { createContext, useCallback, useContext, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import {
+    ISlideOverContext,
+    SlideOverContent,
+    SlideOverFallback,
+    SlideOverSetOptions,
+    SlideOverTitle,
+} from '~/@types/context'
+import { SlideOver } from '~/components'
 
 const SlideOverContext = createContext<ISlideOverContext>({
     isOpen: false,
-    setIsOpen: () => {},
-    title: '',
-    setTitle: () => {},
+    title: <></>,
+    content: <></>,
+    fallback: <></>,
+    set: () => {},
+    close: () => {},
 })
 
-const SlideOverProvider = ({
-    children,
-    query,
-    title: _title,
-}: {
+interface Props {
     children: React.ReactNode
-    query?: SlideParams
-    title?: string
-}) => {
-    const location = useLocation()
-    const [isOpen, setIsOpen] = useState(() => {
-        if (location.search) {
-            const search = location.search.substring(1)
-            if (search.includes('slide')) {
-                const parse = JSON.parse(
-                    '{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}'
-                )
-                return parse.slide === query?.slide
-            }
+}
+
+const SlideOverProvider: React.FC<Props> = (props) => {
+    const { children } = props
+    const [title, setTitle] = useState<SlideOverTitle>()
+    const [content, setContent] = useState<SlideOverContent>()
+    const [fallback, setFallback] = useState<SlideOverFallback>()
+    const [slide, setSlide] = useState('')
+    const [searchParams, setSearchParams] = useSearchParams()
+    const slideParam = searchParams.get('slide')
+
+    const isOpen = useMemo(() => {
+        if (slideParam && slide) {
+            return slideParam === slide
         }
         return false
-    })
-    const [title, setTitle] = useState(_title || '')
+    }, [slideParam, slide])
+
+    const close = useCallback(() => {
+        setSearchParams((prev) => {
+            const url = new URLSearchParams(prev)
+            url.delete('slide')
+            return url
+        })
+    }, [])
+
+    const set = useCallback((options: SlideOverSetOptions) => {
+        const { slide, content, title, fallback } = options
+        setTitle(title)
+        setContent(content)
+
+        if (slide) {
+            setSlide(slide)
+        }
+        if (fallback) {
+            setFallback(fallback)
+        }
+    }, [])
 
     const value: ISlideOverContext = {
         isOpen,
-        setIsOpen,
         title,
-        setTitle,
+        content,
+        fallback,
+        close,
+        set,
     }
-    return <SlideOverContext.Provider value={value}>{children}</SlideOverContext.Provider>
+    return (
+        <SlideOverContext.Provider value={value}>
+            <SlideOver />
+            {children}
+        </SlideOverContext.Provider>
+    )
+}
+
+const useSlideOverConfig = () => {
+    const context = useContext(SlideOverContext)
+
+    if (!context) {
+        throw new Error('useSlideOverConfig must be used within a SlideOverProvider')
+    }
+
+    const { isOpen, title, content, fallback, close } = context
+
+    return {
+        isOpen,
+        title,
+        content,
+        fallback,
+        close,
+    }
 }
 
 const useSlideOver = () => {
@@ -51,19 +100,12 @@ const useSlideOver = () => {
         throw new Error('useSlideOver must be used within a SlideOverProvider')
     }
 
-    return context
+    const { set, close } = context
+
+    return {
+        set,
+        close,
+    }
 }
 
-const SlideOverHOC = (Component: (props: any) => JSX.Element) => () => {
-    const { setIsOpen } = useSlideOver()
-
-    const handler = useCallback(() => {
-        setIsOpen(false)
-    }, [])
-
-    useEventListener('popstate', handler)
-
-    return <Component />
-}
-
-export { useSlideOver, SlideOverHOC, SlideOverProvider }
+export { useSlideOver, useSlideOverConfig, SlideOverProvider }

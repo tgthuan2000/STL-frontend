@@ -1,10 +1,11 @@
 import { Suspense, memo } from 'react'
 import { Outlet } from 'react-router-dom'
-import { AsideButtonDesktopWrap, AsideButtonMobileWrap, ButtonMenuDesktop, ButtonMenuMobile } from '~/components'
+import { AsideButtonDesktopWrap, AsideButtonMobileWrap } from '~/components'
+import { ButtonMenuDesktopV1, ButtonMenuMobileV1 } from '~/components/ButtonMenu'
 import LoadingText from '~/components/Loading/LoadingText'
-import { useMenuSpendingPages, useMenuSpendingPC } from '~/hook/components'
 import { useLoading } from '~/context'
 import { useWindowSize } from '~/hook'
+import { useMenuSpendingPC, useMenuSpendingPages } from '~/hook/components'
 
 const Spending = () => {
     const { loading } = useLoading()
@@ -34,7 +35,7 @@ const Desktop = memo(() => {
 
     return (
         <AsideButtonDesktopWrap>
-            <ButtonMenuDesktop.v1 data={menuSpendingPC} />
+            <ButtonMenuDesktopV1 data={menuSpendingPC} />
         </AsideButtonDesktopWrap>
     )
 })
@@ -44,7 +45,7 @@ const Mobile = memo(() => {
 
     return (
         <AsideButtonMobileWrap>
-            <ButtonMenuMobile.v1 data={menuSpendingPages} />
+            <ButtonMenuMobileV1 data={menuSpendingPages} />
         </AsideButtonMobileWrap>
     )
 })

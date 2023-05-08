@@ -32,11 +32,23 @@ export interface IConfigContext {
     hasPermissions: (keys: Array<PERMISSION>) => boolean
 }
 
+export type SlideOverTitle = React.ReactNode
+export type SlideOverContent = React.ReactNode
+export type SlideOverFallback = React.ReactNode
+
+export interface SlideOverSetOptions {
+    slide?: string
+    title: SlideOverTitle
+    content: SlideOverContent
+    fallback?: SlideOverFallback
+}
 export interface ISlideOverContext {
     isOpen: boolean
-    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-    title: string
-    setTitle: React.Dispatch<React.SetStateAction<string>>
+    title: SlideOverTitle
+    content: SlideOverContent
+    fallback?: SlideOverFallback
+    close: () => void
+    set: (options: SlideOverSetOptions) => void
 }
 export type FetchApi = <T extends { [x: string]: any }>(
     callApi: { [x: string]: { query: string; key: number } },

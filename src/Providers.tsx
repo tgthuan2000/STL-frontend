@@ -10,6 +10,7 @@ import {
     FlashScreenProvider,
     LoadingProvider,
     NotifyProvider,
+    SlideOverProvider,
     ThemeProvider,
 } from './context'
 
@@ -26,7 +27,9 @@ export const AppProviders: React.FC<Props> = (props) => {
                 <LoadingProvider>
                     <CheckingProvider>
                         <FilePreviewProvider>
-                            <Suspense fallback={<LoadingText />}>{children}</Suspense>
+                            <SlideOverProvider>
+                                <Suspense fallback={<LoadingText />}>{children}</Suspense>
+                            </SlideOverProvider>
                         </FilePreviewProvider>
                     </CheckingProvider>
                 </LoadingProvider>

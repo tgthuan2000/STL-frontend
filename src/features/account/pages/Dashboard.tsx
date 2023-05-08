@@ -8,10 +8,8 @@ import { useCheck } from '~/context'
 import { useDebounceFunc } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
-import { MobileMenu } from '../components'
-import Skeleton from '../components/Skeleton'
-import { useColumns } from '../hook/dataListView'
-import useDashboard from '../hook/useDashboard'
+import { MobileMenu, Skeleton } from '../components'
+import { useColumns, useDashboard } from '../hook'
 
 const Dashboard = () => {
     const { t } = useTranslation()

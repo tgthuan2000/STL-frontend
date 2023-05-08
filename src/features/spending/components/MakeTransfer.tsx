@@ -3,13 +3,12 @@ import moment from 'moment'
 import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IMakeTransferForm, MakeTransferQueryData } from '~/@types/spending'
 import { Button, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { TAGS } from '~/constant'
-import { SlideOverHOC, useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
+import { useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
 import { useDocument, useQuery, useServiceQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
@@ -18,8 +17,7 @@ import { useProfile } from '~/store/auth'
 
 const MakeTransfer = () => {
     const { t } = useTranslation()
-    const { setIsOpen } = useSlideOver()
-    const navigate = useNavigate()
+    const { close } = useSlideOver()
     const { userProfile } = useProfile()
     const { deleteCache } = useCache()
     const { loading, setSubmitLoading } = useLoading()
@@ -237,14 +235,7 @@ const MakeTransfer = () => {
                 <Button color='blue' type='submit' disabled={loading.submit}>
                     {t(LANGUAGE.TRANSFER)}
                 </Button>
-                <Button
-                    color='outline'
-                    type='button'
-                    onClick={() => {
-                        setIsOpen(false)
-                        navigate(-1)
-                    }}
-                >
+                <Button color='outline' type='button' onClick={close}>
                     {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
@@ -252,4 +243,4 @@ const MakeTransfer = () => {
     )
 }
 
-export default SlideOverHOC(MakeTransfer)
+export default MakeTransfer

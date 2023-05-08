@@ -1,8 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import React, { useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import { Button, SubmitWrap } from '~/components'
@@ -32,8 +31,7 @@ interface Form {
 const CreatePermissionGroup = () => {
     const { t } = useTranslation()
     const { loading, setSubmitLoading } = useLoading()
-    const { setIsOpen } = useSlideOver()
-    const navigate = useNavigate()
+    const { close } = useSlideOver()
     const { needCheckWhenLeave } = useCheck()
     const schema = useSchema()
     const form = useForm<Form>({
@@ -92,14 +90,7 @@ const CreatePermissionGroup = () => {
                 <Button color='indigo' type='submit' disabled={loading.submit}>
                     {t(LANGUAGE.CREATE)}
                 </Button>
-                <Button
-                    color='outline'
-                    type='button'
-                    onClick={() => {
-                        setIsOpen(false)
-                        navigate(-1)
-                    }}
-                >
+                <Button color='outline' type='button' onClick={close}>
                     {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
