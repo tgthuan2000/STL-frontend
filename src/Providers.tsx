@@ -27,9 +27,7 @@ export const AppProviders: React.FC<Props> = (props) => {
                 <LoadingProvider>
                     <CheckingProvider>
                         <FilePreviewProvider>
-                            <SlideOverProvider>
-                                <Suspense fallback={<LoadingText />}>{children}</Suspense>
-                            </SlideOverProvider>
+                            <Suspense fallback={<LoadingText />}>{children}</Suspense>
                         </FilePreviewProvider>
                     </CheckingProvider>
                 </LoadingProvider>
@@ -46,8 +44,10 @@ export const LayoutProviders: React.FC<Props> = (props) => {
             <CacheProvider>
                 <NotifyProvider>
                     <DetailDialogProvider>
-                        <ReloadPrompt />
-                        {children}
+                        <SlideOverProvider>
+                            <ReloadPrompt />
+                            {children}
+                        </SlideOverProvider>
                     </DetailDialogProvider>
                 </NotifyProvider>
             </CacheProvider>

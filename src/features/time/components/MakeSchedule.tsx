@@ -9,7 +9,7 @@ import * as yup from 'yup'
 import { Loop } from '~/@types/time'
 import { Button, SubmitWrap } from '~/components'
 import { DatePicker, Input, Radio, RichText, UploadImage } from '~/components/_base'
-import { useCheck, useLoading } from '~/context'
+import { useCheck, useLoading, useSlideOver } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { useProfile } from '~/store/auth'
@@ -66,6 +66,7 @@ const MakeSchedule = () => {
     const { userProfile } = useProfile()
     const { needCheckWhenLeave } = useCheck()
     const schema = useScheduleSchema()
+    const { close } = useSlideOver()
 
     const form = useForm<ScheduleForm>({
         defaultValues: {
@@ -202,7 +203,7 @@ const MakeSchedule = () => {
                 <Button color='cyan' type='submit' disabled={loading.submit}>
                     {t(LANGUAGE.SAVE)}
                 </Button>
-                <Button color='outline' type='button' onClick={() => {}}>
+                <Button color='outline' type='button' onClick={close}>
                     {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>

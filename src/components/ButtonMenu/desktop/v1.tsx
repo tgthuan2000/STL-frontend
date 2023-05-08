@@ -1,7 +1,8 @@
 import clsx from 'clsx'
-import React, { memo } from 'react'
+import React, { Suspense, memo } from 'react'
 import { ButtonMenuProps } from '~/@types/components'
 import ButtonItem from '../ButtonItem'
+import LoadingText from '~/components/Loading/LoadingText'
 
 const v1: React.FC<ButtonMenuProps> = (props) => {
     const { className, data } = props
@@ -13,9 +14,11 @@ const v1: React.FC<ButtonMenuProps> = (props) => {
                 className
             )}
         >
-            {data.map((item) => (
-                <ButtonItem key={item.title} data={item} />
-            ))}
+            <Suspense fallback={<LoadingText />}>
+                {data.map((item) => (
+                    <ButtonItem key={item.title} data={item} />
+                ))}
+            </Suspense>
         </div>
     )
 }
