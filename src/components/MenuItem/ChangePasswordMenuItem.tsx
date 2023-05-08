@@ -6,9 +6,11 @@ import { OptionMenuItemProps } from '~/@types/layout'
 import LANGUAGE from '~/i18n/language/key'
 import { useProfile } from '~/store/auth'
 
-const ChangePasswordMenuItem: React.FC<OptionMenuItemProps> = ({ btnClassName, iconClassName }) => {
+const ChangePasswordMenuItem: React.FC<OptionMenuItemProps> = (props) => {
+    const { btnClassName, iconClassName } = props
     const { userProfile } = useProfile()
     const { t } = useTranslation()
+
     return (
         <Link className={btnClassName} to='/setting/change-password'>
             <LockClosedIcon className={iconClassName} />

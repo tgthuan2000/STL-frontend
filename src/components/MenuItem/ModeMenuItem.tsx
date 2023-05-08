@@ -5,7 +5,8 @@ import { useTheme } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import ThemeIcon from '../ThemeIcon'
 
-const ModeMenuItem: React.FC<OptionMenuItemProps> = ({ btnClassName, iconClassName }) => {
+const ModeMenuItem: React.FC<OptionMenuItemProps> = (props) => {
+    const { btnClassName, iconClassName } = props
     const { t } = useTranslation()
     const { isDarkTheme, theme, toggleTheme } = useTheme()
 

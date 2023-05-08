@@ -5,8 +5,10 @@ import { Link } from 'react-router-dom'
 import { OptionMenuItemProps } from '~/@types/layout'
 import LANGUAGE from '~/i18n/language/key'
 
-const ProfileMenuItem: React.FC<OptionMenuItemProps> = ({ btnClassName, iconClassName }) => {
+const ProfileMenuItem: React.FC<OptionMenuItemProps> = (props) => {
+    const { btnClassName, iconClassName } = props
     const { t } = useTranslation()
+
     return (
         <Link className={btnClassName} to='/profile'>
             <UserIcon className={iconClassName} />

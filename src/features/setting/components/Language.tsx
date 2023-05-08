@@ -9,6 +9,7 @@ import { languages } from '~/i18n'
 const languageFlat = languages.flat()
 
 const Language: React.FC<SettingComponentProps> = (props) => {
+    const { className } = props
     const { i18n } = useTranslation()
     const [, setLanguageStorage] = useLocalStorage(LOCAL_STORAGE_KEY.STL_LANGUAGE)
     const [label, setLabel] = useState(languageFlat.find((l) => l.code === i18n.language))
@@ -24,7 +25,7 @@ const Language: React.FC<SettingComponentProps> = (props) => {
     }
 
     return (
-        <button type='button' {...props} onClick={handleChangeLanguageClick}>
+        <button type='button' className={className} onClick={handleChangeLanguageClick}>
             <LanguageIcon className='h-6 w-6 flex-shrink-0' />
             <p>{label?.name}</p>
         </button>

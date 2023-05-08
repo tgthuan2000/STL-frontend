@@ -1,6 +1,0 @@
-export { default as ChangePassword } from './ChangePassword'
-export { default as Device } from './Device'
-export { default as Feedback } from './Feedback'
-export { default as Language } from './Language'
-export { default as Logout } from './Logout'
-export { default as Mode } from './Mode'
