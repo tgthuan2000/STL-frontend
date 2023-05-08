@@ -109,9 +109,7 @@ export const useMenuTimeMobile = (): IMenuBtn[] => {
             //     color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
             //     icon: ClipboardDocumentCheckIcon,
             //     children:  <MakeTimeKeeping />,
-            //     query: {
-            //         slide: 'timekeeping',
-            //     },
+            //     slide: 'timekeeping',
             // },
         ]
     }, [t])
@@ -314,9 +312,7 @@ export const useMenuLoanPC = (): IMenuBtn[] => {
             //     color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
             //     icon: ArrowTrendingDownIcon,
             //     children:  <MakeLoan />,
-            //     query: {
-            //         slide: 'loan',
-            //     },
+            //     slide: 'loan',
             // },
             {
                 title: t(LANGUAGE.CREATE_MEMBER),
@@ -344,12 +340,6 @@ export const useMenuLoanPC = (): IMenuBtn[] => {
                 icon: ClipboardDocumentListIcon,
                 to: 'transaction',
             },
-            // {
-            //     title: t(LANGUAGE.METHOD_SPENDING),
-            //     color: 'text-purple-700 bg-purple-200 hover:bg-purple-300 dark:text-purple-500',
-            //     icon: QrCodeIcon,
-            //     to: 'method',
-            // },
         ]
     }, [t])
     return data
@@ -403,18 +393,14 @@ export const useMenuRoleControlPC = (): IMenuBtn[] => {
                 color: 'text-indigo-700 bg-indigo-200 hover:bg-indigo-300 dark:text-indigo-500',
                 icon: RectangleGroupIcon,
                 children: <CreatePermissionGroup />,
-                query: {
-                    slide: 'create-permission-group',
-                },
+                slide: 'create-permission-group',
             },
             {
                 title: t(LANGUAGE.CREATE_ROLE),
                 color: 'text-rose-700 bg-rose-200 hover:bg-rose-300 dark:text-rose-500',
                 icon: UserGroupIcon,
                 children: <CreateRole />,
-                query: {
-                    slide: 'create-role',
-                },
+                slide: 'create-role',
             },
         ]
     }, [t])
@@ -432,9 +418,7 @@ export const useMenuAccountPC = (): IMenuBtn[] => {
                 color: 'text-green-700 bg-green-200 hover:bg-green-300 dark:text-green-500',
                 icon: UserPlusIcon,
                 children: <CreateAccount />,
-                query: {
-                    slide: 'create-account',
-                },
+                slide: 'create-account',
             },
         ]
     }, [t])
@@ -471,33 +455,6 @@ export const useMenuSpendingPages = (): IMenuBtn[] => {
                 icon: EllipsisHorizontalCircleIcon,
                 to: 'others',
             },
-            // {
-            //     title: t(LANGUAGE.MAKE_BUDGET),
-            //     color: 'text-yellow-700 dark:text-yellow-500',
-            //     icon: PuzzlePieceIcon,
-            //     children:  <MakeBudget />,
-            //     query: {
-            //         slide: 'budget',
-            //     },
-            // },
-            // {
-            //     title: t(LANGUAGE.CREATE_METHOD),
-            //     color: 'text-cyan-700 dark:text-cyan-500',
-            //     icon: QrCodeIcon,
-            //     children:  <AddMethod />,
-            //     query: {
-            //         slide: 'add-method',
-            //     },
-            // },
-            // {
-            //     title: t(LANGUAGE.CREATE_CATEGORY),
-            //     color: 'text-cyan-700 dark:text-cyan-500',
-            //     icon: RectangleGroupIcon,
-            //     children:  <AddCategory />,
-            //     query: {
-            //         slide: 'add-category',
-            //     },
-            // },
         ]
     }, [t])
 
@@ -519,12 +476,6 @@ export const useMenuLoanPages = (): IMenuBtn[] => {
                 icon: ClipboardDocumentListIcon,
                 to: 'transaction',
             },
-            // {
-            //     title: t(LANGUAGE.METHOD_SPENDING),
-            //     color: 'text-purple-700 dark:text-purple-500',
-            //     icon: QrCodeIcon,
-            //     to: 'method',
-            // },
         ]
     }, [t])
     return data

@@ -1,13 +1,14 @@
 import { Transaction } from '@sanity/client'
 import { useCallback, useEffect, useRef } from 'react'
 import { client } from '~/sanityConfig'
+import { DFCbResult } from './useDF'
 
-const useDebounceFunc = <T extends { [x: string]: any }>(
-    cb: (trans: Transaction, params: T) => (() => void) | void,
+const useTDF = <T extends { [x: string]: any }>(
+    cb: (trans: Transaction, params: T) => DFCbResult,
     ms: number = 1000
 ) => {
-    const transaction = useRef<Transaction | null>(null)
     const timeout = useRef<NodeJS.Timeout | null>(null)
+    const transaction = useRef<Transaction | null>(null)
     const resolves = useRef<Array<(value: void | PromiseLike<void>) => void>>([])
     const callback = useRef(cb)
 
@@ -28,17 +29,19 @@ const useDebounceFunc = <T extends { [x: string]: any }>(
             resolves.current.push(resolve)
         })
 
-        const timeoutCallback = callback.current(transaction.current, params)
+        const { commit, resolved, error } = callback.current(transaction.current, params)
 
         timeout.current = setTimeout(async () => {
             try {
-                await transaction.current?.commit()
-                timeoutCallback?.()
+                await commit()
+                resolved?.()
                 resolves.current.forEach((resolve) => resolve())
                 resolves.current = []
                 transaction.current = null
                 timeout.current = null
-            } catch (err) {}
+            } catch (err) {
+                error?.(err)
+            }
         }, ms)
 
         return promise
@@ -47,4 +50,4 @@ const useDebounceFunc = <T extends { [x: string]: any }>(
     return debounce
 }
 
-export default useDebounceFunc
+export default useTDF

@@ -56,14 +56,14 @@ const Dashboard = () => {
 
                     <div className='mx-auto my-10 w-full max-w-lg space-y-6 text-gray-900 dark:text-slate-200 sm:rounded-lg sm:border sm:p-5 sm:shadow-md dark:sm:border-slate-600'>
                         <PermissionCheck permissions={[PERMISSION.PROFILE_RECEIVE_EMAIL]} fallback={<></>}>
-                            <div className='space-y-2 px-2'>
+                            <div className='space-y-4 px-2'>
                                 <h4 className='border-b border-gray-200 pb-2 text-2xl font-normal dark:border-slate-700 sm:text-xl'>
                                     {t(LANGUAGE.EMAIL)}
                                 </h4>
                                 <AllowSendMail />
                             </div>
                         </PermissionCheck>
-                        <div className='space-y-2 px-2'>
+                        <div className='space-y-4 px-2'>
                             <h4 className='border-b border-gray-200 pb-2 text-2xl font-normal dark:border-slate-700 sm:text-xl'>
                                 {t(LANGUAGE.SECURITY)}
                             </h4>
