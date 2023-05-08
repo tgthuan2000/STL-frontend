@@ -1,9 +1,9 @@
-import { isUndefined } from 'lodash'
-import { useEffect, useRef } from 'react'
-import { useForm } from 'react-hook-form'
+import { Switch } from '@headlessui/react'
+import clsx from 'clsx'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
-import { Toggle } from '~/components/_base'
+import { useDF } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { useProfile } from '~/store/auth'
@@ -11,60 +11,48 @@ import { useProfile } from '~/store/auth'
 const AllowSendMail = () => {
     const { t } = useTranslation()
     const { userProfile, addUserProfile } = useProfile()
-    const firstRef = useRef(false)
-    const form = useForm({
-        defaultValues: {
-            allowSendMail: userProfile?.allowSendMail,
-        },
-    })
+    const [active, setActive] = useState(Boolean(userProfile?.allowSendMail))
+    const toggleCheck = useDF<{ active: boolean }>((params) => {
+        const { active } = params
+        setActive((prev) => !prev)
 
-    useEffect(() => {
-        let timeout: NodeJS.Timeout | null = null
-        if (firstRef.current) {
-            const allowSendMail = form.watch('allowSendMail')
-            if (isUndefined(allowSendMail)) return
-            if (allowSendMail === userProfile?.allowSendMail) return
-
-            timeout = setTimeout(() => {
-                try {
-                    const sendMail = async () => {
-                        const __ = client.transaction()
-
-                        __.patch(userProfile?._id as string, {
-                            set: {
-                                allowSendMail,
-                            },
-                        })
-                        await __.commit()
-                        addUserProfile({
-                            ...userProfile,
-                            allowSendMail,
-                        } as any)
-                        toast.success(t(LANGUAGE.NOTIFY_UPDATE_SUCCESS))
-                    }
-                    sendMail()
-                } catch (error) {
-                    console.log(error)
-                    toast.error(t(LANGUAGE.NOTIFY_UPDATE_FAILED))
-                }
-            }, 800)
+        const commit = () => {
+            return client.patch(userProfile?._id as string, { set: { allowSendMail: !active } }).commit()
         }
-        return () => {
-            timeout && clearTimeout(timeout)
-        }
-    }, [JSON.stringify(form.watch('allowSendMail'))])
 
-    useEffect(() => {
-        firstRef.current = true
-    }, [])
+        const resolved = () => {
+            addUserProfile({ ...userProfile, allowSendMail: active } as any)
+            toast.success(t(LANGUAGE.NOTIFY_UPDATE_SUCCESS))
+        }
+
+        const error = (err: any) => {
+            toast.error(t(LANGUAGE.NOTIFY_UPDATE_FAILED))
+        }
+
+        return { commit, resolved, error }
+    }, 800)
 
     return (
-        <form onSubmit={(e) => e.preventDefault()}>
+        <div>
             <div className='flex items-center justify-between'>
                 <label className='text-base'>{t(LANGUAGE.RECEIVE_NOTIFY_BY_MAIL)}</label>
-                <Toggle form={form} name='allowSendMail' />
+                <Switch
+                    checked={active}
+                    className={clsx(
+                        active ? 'bg-indigo-600 dark:bg-sky-500' : 'bg-gray-200 dark:bg-slate-700',
+                        'relative inline-flex h-6 w-11 items-center rounded-full transition-all'
+                    )}
+                    onChange={() => toggleCheck({ active })}
+                >
+                    <span
+                        className={clsx(
+                            active ? 'translate-x-6' : 'translate-x-1',
+                            'inline-block h-4 w-4 transform rounded-full bg-white transition-all'
+                        )}
+                    />
+                </Switch>
             </div>
-        </form>
+        </div>
     )
 }
 

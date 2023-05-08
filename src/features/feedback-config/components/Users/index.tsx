@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { AnimateWrap, PaperWrap } from '~/components'
 import LoadingWait from '~/components/Loading/LoadingWait'
-import { useDebounceFunc } from '~/hook'
+import { useTDF } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import useTopFeedback from '../../hook/useTopFeedback'
@@ -27,11 +27,14 @@ const Users: React.FC<Props> = () => {
     const { feedbacks, refetch } = useTopFeedback()
     const [searchParams, setSearchParams] = useSearchParams()
     const feedbackId = searchParams.get(FEEDBACK_PARAM)
-    const handleResponseClick = useDebounceFunc<{ id: string }>((__, { id }) => {
+    const responseClick = useTDF<{ id: string }>((transaction, params) => {
+        const { id } = params
         const patch = client.patch(id, { set: { responded: true } })
-        __.patch(patch)
+        transaction.patch(patch)
 
-        return () => {
+        const commit = () => transaction.commit()
+
+        const resolved = () => {
             const url = new URLSearchParams(searchParams)
             if (url.get(FEEDBACK_PARAM)) {
                 url.delete(FEEDBACK_PARAM)
@@ -40,6 +43,8 @@ const Users: React.FC<Props> = () => {
 
             refetch()
         }
+
+        return { commit, resolved }
     }, 800)
 
     return (
@@ -65,7 +70,7 @@ const Users: React.FC<Props> = () => {
                                 userName={userName}
                                 createdAt={_createdAt}
                                 edited={edited}
-                                onResponseClick={handleResponseClick}
+                                onResponseClick={responseClick}
                             />
                         )
                     })}

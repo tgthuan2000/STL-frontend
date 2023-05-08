@@ -1,5 +1,6 @@
 export { default as useAxios } from './useAxios'
-export { default as useDebounceFunc } from './useDebounceFunc'
+export { default as useTDF } from './useTDF'
+export { default as useDF } from './useDF'
 export { default as useDocument } from './useDocument'
 export { default as useEventListener } from './useEventListener'
 export { default as useListViewFilter } from './useListViewFilter'
