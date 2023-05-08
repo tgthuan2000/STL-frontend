@@ -44,7 +44,7 @@ const SlideOverProvider: React.FC<Props> = (props) => {
             url.delete('slide')
             return url
         })
-    }, [])
+    }, [setSearchParams])
 
     const set = useCallback((options: SlideOverSetOptions) => {
         const { slide, content, title, fallback } = options

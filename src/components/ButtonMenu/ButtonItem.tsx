@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { MenuButtonProps } from '~/@types/components'
 import { useSlideOver } from '~/context'
@@ -15,6 +15,15 @@ const ButtonItem: React.FC<Props> = (props) => {
     const { slide, to, children, title, action } = data
     const [searchParams, setSearchParams] = useSearchParams()
     const { set } = useSlideOver()
+
+    const setDataSlideOVer = () => {
+        set({
+            slide,
+            title,
+            content: children,
+            fallback: <LoadingText className='p-5' />,
+        })
+    }
 
     const link = useMemo(() => {
         const paramsUrl = new URLSearchParams(searchParams)
@@ -34,12 +43,7 @@ const ButtonItem: React.FC<Props> = (props) => {
         e.preventDefault()
 
         if (slide) {
-            set({
-                slide,
-                title,
-                content: children,
-                fallback: <LoadingText />,
-            })
+            setDataSlideOVer()
             setSearchParams((searchParams) => {
                 const paramsUrl = new URLSearchParams(searchParams)
 
@@ -57,12 +61,7 @@ const ButtonItem: React.FC<Props> = (props) => {
         const slideParam = searchParams.get('slide')
 
         if (slideParam && slideParam === slide) {
-            set({
-                slide,
-                title,
-                content: children,
-                fallback: <LoadingText />,
-            })
+            setDataSlideOVer()
         }
     }, [])
 
@@ -73,7 +72,7 @@ const ButtonItem: React.FC<Props> = (props) => {
     }
 
     return (
-        <Suspense fallback={<LoadingText />}>
+        <>
             {mobile ? (
                 <>
                     {mode === 'v1' && <MobileButtonV1 {..._props} />}
@@ -85,7 +84,7 @@ const ButtonItem: React.FC<Props> = (props) => {
                     {/* {mode === 'v2' && <DesktopButton.v2 {..._props} />} */}
                 </>
             )}
-        </Suspense>
+        </>
     )
 }
 
