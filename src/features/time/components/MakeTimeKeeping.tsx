@@ -2,12 +2,13 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Button, SubmitWrap } from '~/components'
 import { DatePicker, Input, TextArea } from '~/components/_base'
-import { useLoading } from '~/context'
+import { useLoading, useSlideOver } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 
 const MakeTimeKeeping = () => {
     const { t } = useTranslation()
     const { loading } = useLoading()
+    const { close } = useSlideOver()
     const form = useForm({
         defaultValues: {},
     })
@@ -32,7 +33,7 @@ const MakeTimeKeeping = () => {
                 <Button color='yellow' type='submit' disabled={loading.submit}>
                     {t(LANGUAGE.SAVE)}
                 </Button>
-                <Button color='outline' type='button' onClick={() => {}}>
+                <Button color='outline' type='button' onClick={close}>
                     {t(LANGUAGE.CANCEL)}
                 </Button>
             </SubmitWrap>
