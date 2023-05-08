@@ -13,6 +13,12 @@ import LANGUAGE from '~/i18n/language/key'
 import { useProfile } from '~/store/auth'
 import { useChangePasswordSchema } from '../hook/schema'
 
+interface Form {
+    'old-password': string
+    'new-password': string
+    're-password': string
+}
+
 const ChangePassword = () => {
     const { t } = useTranslation()
     const { loading, setSubmitLoading } = useLoading()
@@ -24,7 +30,7 @@ const ChangePassword = () => {
 
     const isHasPassword = get(userProfile, 'isHasPassword', false)
 
-    const form = useForm({
+    const form = useForm<Form & { __isHasPassword: boolean }>({
         mode: 'onBlur',
         defaultValues: {
             'old-password': '',
@@ -35,11 +41,7 @@ const ChangePassword = () => {
         resolver: yupResolver(changePasswordSchema),
     })
 
-    const onSubmit: SubmitHandler<{
-        'old-password': string
-        'new-password': string
-        're-password': string
-    }> = async (data) => {
+    const onSubmit: SubmitHandler<Form> = async (data) => {
         try {
             setSubmitLoading(true)
             const { 'new-password': newPassword, 'old-password': oldPassword } = data

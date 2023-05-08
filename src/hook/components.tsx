@@ -14,11 +14,9 @@ import {
     UserGroupIcon,
     UserPlusIcon,
 } from '@heroicons/react/24/outline'
-import { googleLogout } from '@react-oauth/google'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IMenuBtn } from '~/@types/components'
-import axios from '~/axiosConfig'
 import LANGUAGE from '~/i18n/language/key'
 import useLogout from './useLogout'
 
@@ -34,18 +32,6 @@ const MakeCost = React.lazy(() => import('~/features/spending/components/MakeCos
 const MakeIncome = React.lazy(() => import('~/features/spending/components/MakeIncome'))
 const MakeTransfer = React.lazy(() => import('~/features/spending/components/MakeTransfer'))
 const MakeSchedule = React.lazy(() => import('~/features/time/components/MakeSchedule'))
-
-const useLogoutAccount = () => {
-    const logout = useLogout()
-
-    const handleLogout = () => {
-        googleLogout()
-        logout()
-        axios.defaults.headers.common['Authorization'] = null
-    }
-
-    return handleLogout
-}
 
 export const useMenuMobile = (): IMenuBtn[] => {
     const { t } = useTranslation()
@@ -210,7 +196,7 @@ export const useMenuAccountMobile = (): IMenuBtn[] => {
 
 export const useMenuSpendingPC = (): IMenuBtn[] => {
     const { t } = useTranslation()
-    const logout = useLogoutAccount()
+    const logout = useLogout()
 
     const data: IMenuBtn[] = useMemo(() => {
         return [
@@ -296,7 +282,7 @@ export const useMenuSpendingPC = (): IMenuBtn[] => {
 
 export const useMenuLoanPC = (): IMenuBtn[] => {
     const { t } = useTranslation()
-    const logout = useLogoutAccount()
+    const logout = useLogout()
 
     const data: IMenuBtn[] = useMemo(() => {
         return [
@@ -347,7 +333,7 @@ export const useMenuLoanPC = (): IMenuBtn[] => {
 
 export const useMenuTimePC = (): IMenuBtn[] => {
     const { t } = useTranslation()
-    const logout = useLogoutAccount()
+    const logout = useLogout()
 
     const data: IMenuBtn[] = useMemo(() => {
         return [

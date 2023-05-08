@@ -6,10 +6,12 @@ import { useLogout } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 
 const Logout: React.FC<SettingComponentProps> = (props) => {
+    const { className } = props
     const { t } = useTranslation()
     const logout = useLogout()
+
     return (
-        <button type='button' onClick={logout} {...props}>
+        <button type='button' className={className} onClick={logout}>
             <ArrowLeftOnRectangleIcon className='h-6 w-6 flex-shrink-0' />
             <p>{t(LANGUAGE.LOGOUT)}</p>
         </button>

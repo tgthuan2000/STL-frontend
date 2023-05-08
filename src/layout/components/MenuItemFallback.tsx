@@ -1,10 +1,7 @@
 import { CubeTransparentIcon } from '@heroicons/react/24/outline'
-import { useTranslation } from 'react-i18next'
 import LoadingText from '~/components/Loading/LoadingText'
 
 const MenuItemFallback = () => {
-    const { t } = useTranslation()
-
     return (
         <button
             type='button'
