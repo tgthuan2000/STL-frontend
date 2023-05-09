@@ -7,9 +7,10 @@ import LANGUAGE from '~/i18n/language/key'
 
 const BudgetItem: React.FC<BudgetItemProps> = ({ name, textColor, amount, percent, bgColor, isOver, totalAmounts }) => {
     const { t } = useTranslation()
+
     return (
-        <li>
-            <div className='mt-2 flex justify-between px-2'>
+        <li className='py-3'>
+            <div className='flex justify-between px-2'>
                 <h4 className='font-medium'>{name}</h4>
                 <span className={clsx('font-normal', textColor)}>{numeral(amount).format()}</span>
             </div>
@@ -23,12 +24,7 @@ const BudgetItem: React.FC<BudgetItemProps> = ({ name, textColor, amount, percen
                     className='absolute h-full rounded-full transition-all'
                 />
             </div>
-            <div
-                className={clsx(
-                    'mb-4 flex justify-between px-2 font-normal',
-                    isOver ? 'text-radical-red-500' : textColor
-                )}
-            >
+            <div className={clsx('flex justify-between px-2 font-normal', isOver ? 'text-radical-red-500' : textColor)}>
                 <span>
                     {t(LANGUAGE.SHORT_COST)}: {numeral(totalAmounts).format()} • {numeral(percent).format()}%
                 </span>

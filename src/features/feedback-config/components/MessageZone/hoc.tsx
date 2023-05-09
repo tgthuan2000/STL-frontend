@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { PaperWrap } from '~/components'
+import { Paper } from '~/components'
 import { useWindowSize } from '~/hook'
 import { MessageZoneProps } from '.'
 import useFeedbackDetail from '../../hook/useFeedbackDetail'
@@ -29,9 +29,9 @@ const messageZoneHOC = (Component: React.FC<MessageZoneProps>) => () => {
     if (width <= 1024) return <Dialog>{renderComponent}</Dialog>
 
     return (
-        <PaperWrap className='flex-[3] sm:m-0' disabledPadding>
+        <Paper className='flex-[3]' disabledPadding>
             {renderComponent}
-        </PaperWrap>
+        </Paper>
     )
 }
 

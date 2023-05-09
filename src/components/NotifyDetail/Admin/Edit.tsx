@@ -16,7 +16,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useAxios } from '~/hook'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import PaperWrap from '~/components/PaperWrap'
+import Paper from '~/components/Paper'
 
 interface Props {
     refetch: () => void
@@ -130,7 +130,7 @@ const NotifyDetailEdit: React.FC<Props> = (props) => {
                 </Button>
             </SubmitWrap>
             <div className='flex flex-col-reverse gap-4 sm:gap-3 md:gap-4 lg:flex-row lg:items-start'>
-                <PaperWrap className='flex-1 sm:m-0'>
+                <Paper className='flex-1'>
                     <RichText
                         form={form}
                         name='content'
@@ -138,9 +138,9 @@ const NotifyDetailEdit: React.FC<Props> = (props) => {
                         placeholder={t(LANGUAGE.PLACEHOLDER_ENTER_CONTENT)}
                         className='xl'
                     />
-                </PaperWrap>
+                </Paper>
                 <div className='flex w-full flex-col-reverse gap-4 sm:gap-3 md:gap-4 lg:w-96 lg:flex-col'>
-                    <PaperWrap className='space-y-4 sm:m-0'>
+                    <Paper className='space-y-4'>
                         <Input label={t(LANGUAGE.TITLE)} form={form} name='title' />
 
                         <RichText
@@ -150,11 +150,11 @@ const NotifyDetailEdit: React.FC<Props> = (props) => {
                             placeholder={t(LANGUAGE.PLACEHOLDER_SHORT_DESCRIPTION)}
                             className='xs'
                         />
-                    </PaperWrap>
-                    <PaperWrap className='space-y-4 sm:m-0'>
+                    </Paper>
+                    <Paper className='space-y-4'>
                         {/* List user */}
                         <LazySearchUser form={form} autoFocus={false} />
-                    </PaperWrap>
+                    </Paper>
                 </div>
             </div>
         </form>

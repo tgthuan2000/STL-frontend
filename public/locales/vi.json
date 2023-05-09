@@ -232,10 +232,10 @@
     "TO_TRANSFER_METHOD": "Đến phương thức thanh toán",
     "CHOOSE_PREVIOUS_MONTH": "Chọn theo tháng trước",
 
-    "LOAN": "Vay",
-    "GET_LOAN": "Cho vay",
-    "MAKE_LOAN": "Vay",
-    "MAKE_GET_LOAN": "Cho vay",
+    "LOAN": "Cho vay",
+    "GET_LOAN": "Vay",
+    "MAKE_LOAN": "Cho vay",
+    "MAKE_GET_LOAN": "Vay",
     "MAKE_LOAN_GET_LOAN": "Vay/Cho vay",
     "CREATE_MEMBER": "Tạo mới thành viên",
     "NEAR_DEADLINE": "Gần hạn",
@@ -368,6 +368,9 @@
     "EDIT_NOTIFY": "Chỉnh sửa thông báo",
     "CHOOSE_FEEDBACK_USER": "Chọn phản hồi",
     "L_FEEDBACKS_PREVIOUS": "các phản hồi trước",
+
+    "EMPTY_BUDGET_CATEGORY": "Bạn chưa có ngần sách thể loại",
+    "EMPTY_BUDGET_METHOD": "Bạn chưa có ngần sách phương thức thanh toán",
 
     "SPENDING_MANAGEMENT": "Quản lý chi tiêu",
     "LOAN_MANAGEMENT": "Quản lý vay/cho vay",

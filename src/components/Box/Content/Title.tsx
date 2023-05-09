@@ -1,12 +1,35 @@
+import { ArrowSmallRightIcon } from '@heroicons/react/24/outline'
+import clsx from 'clsx'
+import { DefaultTFuncReturn } from 'i18next'
 import React from 'react'
-import { BoxTitleProps } from '~/@types/components'
+import { Link, To } from 'react-router-dom'
 import LoadingButton from '~/components/Loading/LoadingButton'
 
-const Title: React.FC<BoxTitleProps> = ({ title, onReload, loading, customEvent }) => {
-    if (!title) return null
+export interface Props {
+    title?: string | DefaultTFuncReturn
+    onReload?: () => void
+    loading?: boolean
+    customEvent?: React.ReactNode
+    to?: To
+}
+
+const Title: React.FC<Props> = (props) => {
+    const { to, title, onReload, loading, customEvent } = props
+    const Component = to ? Link : 'h4'
+
+    if (!title) return <></>
+
     return (
-        <div className='flex items-center justify-between border-b border-gray-200 bg-white px-4 py-2 dark:border-slate-700 dark:bg-slate-700'>
-            <h4 className='text-base font-normal text-gray-900 dark:text-white sm:text-lg'>{title}</h4>
+        <div className='my-6 flex items-center justify-between p-0 sm:m-0 sm:p-2'>
+            <Component
+                to={to as To}
+                className={clsx('flex items-center gap-2 text-base font-normal text-gray-900 dark:text-white', {
+                    'hover:text-blue-700': to,
+                })}
+            >
+                {title}
+                {to && <ArrowSmallRightIcon className='h-5 w-5' />}
+            </Component>
             <div className='inline-flex gap-2'>
                 {customEvent}
                 {onReload && <LoadingButton onReload={onReload} disabled={loading} />}

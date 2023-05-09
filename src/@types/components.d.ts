@@ -279,18 +279,6 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     disabled?: boolean
 }
 
-export interface ContentBoxProps {
-    title?: string | DefaultTFuncReturn
-    seeMore?: boolean
-    children: React.ReactNode
-    to?: string
-    onReload?: () => void
-    loading?: boolean
-    className?: string
-    fullWidth?: boolean
-    customHeaderEvent?: React.ReactNode
-}
-
 export interface ContentLoanBox2Props {
     data?: ISpendingData[]
     loading?: boolean
@@ -407,13 +395,6 @@ export interface IDataListView {
 
 export interface SettingIconProps {
     className?: string
-}
-
-export interface BoxTitleProps {
-    title?: string | DefaultTFuncReturn
-    onReload?: () => void
-    loading?: boolean
-    customEvent?: React.ReactNode
 }
 
 export interface ListProps {

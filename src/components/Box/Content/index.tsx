@@ -1,32 +1,29 @@
-import clsx from 'clsx'
+import { DefaultTFuncReturn } from 'i18next'
 import React from 'react'
-import { ContentBoxProps } from '~/@types/components'
 import AnimateWrap from '~/components/AnimateWrap'
-import SeeMore from './SeeMore'
+import PaperWrap from '~/components/Paper'
 import Title from './Title'
 
-const ContentBox: React.FC<ContentBoxProps> = ({
-    title,
-    seeMore = true,
-    children,
-    to,
-    onReload,
-    loading,
-    className,
-    fullWidth,
-    customHeaderEvent,
-}) => {
+export interface Props {
+    title?: string | DefaultTFuncReturn
+    children: React.ReactNode
+    to?: string
+    onReload?: () => void
+    loading?: boolean
+    className?: string
+    fullWidth?: boolean
+    customHeaderEvent?: React.ReactNode
+}
+
+const ContentBox: React.FC<Props> = (props) => {
+    const { title, children, to, onReload, loading, className, customHeaderEvent } = props
+
     return (
-        <div
-            className={clsx(
-                'mx-auto h-fit w-full select-none overflow-hidden rounded-md border border-gray-300 bg-white dark:border-slate-700 dark:bg-slate-800',
-                { 'max-w-lg': !fullWidth },
-                className
-            )}
-        >
-            <Title title={title} onReload={onReload} loading={loading} customEvent={customHeaderEvent} />
-            <AnimateWrap>{children}</AnimateWrap>
-            <SeeMore seeMore={seeMore} to={to} />
+        <div className={className}>
+            <Title to={to} title={title} onReload={onReload} loading={loading} customEvent={customHeaderEvent} />
+            <PaperWrap disabledPadding>
+                <AnimateWrap>{children}</AnimateWrap>
+            </PaperWrap>
         </div>
     )
 }
