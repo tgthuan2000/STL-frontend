@@ -1,5 +1,5 @@
 import { SanityDocument } from '@sanity/client'
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useReducer, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -18,6 +18,7 @@ import { service } from '~/services'
 import { useAuth, useProfile } from '~/store/auth'
 import { useFlashScreen } from './FlashScreenContext'
 import { IRoleControl } from '~/@types/role-control'
+import { LAYOUT_GROUP } from '~/constant/render-layout'
 
 interface IConfigProps {
     children: React.ReactNode
@@ -27,8 +28,10 @@ const ConfigContext = createContext<IConfigContext>({
     kindSpending: [],
     budgetSpending: { _id: null },
     role: null,
+    layouts: [],
     getKindSpendingId: () => '',
     getKindSpendingIds: () => [''],
+    getLayoutGroup: () => undefined,
     hasPermissions: () => false,
 })
 
@@ -131,6 +134,7 @@ const ConfigProvider = configHOC(({ children }) => {
         kindSpending: [],
         budgetSpending: { _id: null },
         role: null,
+        layouts: [],
     })
     const { t } = useTranslation()
     const [ok, setOk] = useState(false)
@@ -145,14 +149,15 @@ const ConfigProvider = configHOC(({ children }) => {
                             className='text-md whitespace-nowrap sm:text-lg'
                         />
                     )
-                    const { kindSpending, role }: IConfig = await client.fetch(GET_CONFIG, {
+                    const { kindSpending, user } = await client.fetch(GET_CONFIG, {
                         userId: userProfile?._id as string,
                     })
                     setConfig((prev) => ({
                         ...prev,
                         kindSpending,
                         budgetSpending: { _id: service.getBudgetId(userProfile?._id as string) },
-                        role: role?.role as IRoleControl,
+                        role: user.role,
+                        layouts: user.layouts ?? [],
                     }))
                     setOk(true)
                 }
@@ -164,6 +169,13 @@ const ConfigProvider = configHOC(({ children }) => {
         }
         getConfig()
     }, [userProfile, config])
+
+    const getLayoutGroup = useCallback(
+        (key: keyof typeof LAYOUT_GROUP) => {
+            return config.layouts.find((layout) => layout.group.key.toLowerCase() === LAYOUT_GROUP[key])
+        },
+        [config.layouts]
+    )
 
     const getKindSpendingId = useCallback(
         (KEY: keyof typeof KIND_SPENDING) => {
@@ -200,8 +212,10 @@ const ConfigProvider = configHOC(({ children }) => {
         kindSpending: config.kindSpending,
         budgetSpending: config.budgetSpending,
         role: config.role,
+        layouts: config.layouts,
         getKindSpendingId,
         getKindSpendingIds,
+        getLayoutGroup,
         hasPermissions,
     }
 

@@ -369,6 +369,9 @@
     "CHOOSE_FEEDBACK_USER": "Choose feedback",
     "L_FEEDBACKS_PREVIOUS": "feedbacks previous",
 
+    "EMPTY_BUDGET_CATEGORY": "Empty category budget",
+    "EMPTY_BUDGET_METHOD": "Empty method budget",
+
     "SPENDING_MANAGEMENT": "Spending management",
     "LOAN_MANAGEMENT": "Loan/Get loan management",
     "TIME_MANAGEMENT": "Time management",

@@ -7,14 +7,28 @@ export const GET_CONFIG = groq`
             key,
             name
         },
-        "role": *[_type == "user" && _id == $userId][0] {
+         "user": *[_type == "user" && _id == $userId][0] {
             role -> {
                 _id,
                 name,
                 permissions[] -> {
                     _id,
                 }
+            },
+            layouts[] {
+                group-> {
+                    _id,
+                    key
+                },
+                items[] {
+                    layout-> {
+                        _id,
+                        key
+                    },
+                    index,
+                    order
+                }
             }
-        }
+         }
     }
 `

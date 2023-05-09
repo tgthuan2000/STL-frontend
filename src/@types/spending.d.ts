@@ -122,7 +122,6 @@ interface Statistic {
     _id: string
     value: number
     name: string
-    getLoan?: number
     color: string
 }
 export interface StatisticProps {

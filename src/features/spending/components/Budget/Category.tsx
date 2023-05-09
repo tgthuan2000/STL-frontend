@@ -7,6 +7,7 @@ import { colors } from '~/constant/spending'
 import LANGUAGE from '~/i18n/language/key'
 import BudgetItem from './Item'
 import BudgetSkeleton from './Skeleton'
+import Empty from './Empty'
 
 const Category: React.FC<BudgetProps> = ({ data, loading }) => {
     const { t } = useTranslation()
@@ -17,7 +18,7 @@ const Category: React.FC<BudgetProps> = ({ data, loading }) => {
         return (
             <ul
                 role='list'
-                className='divide-y divide-gray-300 text-gray-900 dark:divide-slate-700 dark:text-slate-200'
+                className='divide-y divide-gray-100 text-gray-900 dark:divide-slate-700 dark:text-slate-200 sm:divide-gray-200'
                 ref={ref}
             >
                 {data?.CategorySpending?.map((item, index) => {
@@ -44,7 +45,7 @@ const Category: React.FC<BudgetProps> = ({ data, loading }) => {
             </ul>
         )
     }
-    return <div className='py-2 text-center text-gray-700 dark:text-slate-200'>{t(LANGUAGE.EMPTY_DATA)}</div>
+    return <Empty slide='budget' text={t(LANGUAGE.EMPTY_BUDGET_CATEGORY)}></Empty>
 }
 
 export default Category

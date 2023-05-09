@@ -19,7 +19,7 @@ const Recent: React.FC<RecentProps> = ({ data, loading }) => {
         return (
             <ul
                 role='list'
-                className='divide-y divide-gray-300 text-gray-900 dark:divide-slate-700 dark:text-slate-200'
+                className='divide-y divide-gray-100 text-gray-900 dark:divide-slate-700 dark:text-slate-200 sm:divide-gray-200'
             >
                 {Array.isArray(data) &&
                     data?.map((item) => (

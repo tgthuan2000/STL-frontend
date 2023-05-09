@@ -23,13 +23,7 @@ const Others = () => {
             <Divider className='py-6 xl:hidden' dashed />
 
             <Box>
-                <Box.Content
-                    className='col-span-1 xl:col-span-1 xl:col-start-1 xl:row-start-1'
-                    title={t(LANGUAGE.CATEGORY)}
-                    loading={category.loading}
-                    seeMore={false}
-                    fullWidth
-                >
+                <Box.Content className='flex-1' title={t(LANGUAGE.CATEGORY)} loading={category.loading}>
                     <ListOption
                         data={category?.data}
                         loading={category.loading}
@@ -54,13 +48,7 @@ const Others = () => {
                         }}
                     />
                 </Box.Content>
-                <Box.Content
-                    className='col-span-1 xl:col-span-1 xl:col-start-2 xl:row-start-1'
-                    title={t(LANGUAGE.METHOD)}
-                    loading={method.loading}
-                    seeMore={false}
-                    fullWidth
-                >
+                <Box.Content className='flex-1' title={t(LANGUAGE.METHOD)} loading={method.loading}>
                     <ListOption
                         data={method?.data}
                         loading={method.loading}

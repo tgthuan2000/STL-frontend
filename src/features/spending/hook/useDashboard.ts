@@ -68,7 +68,8 @@ const useDashboard = (): [Data<DashboardQueryData>, () => void, DataStatistic | 
             },
             { cost: 0, receive: 0, loan: 0, 'get-loan': 0 }
         )
-        const surplus = _.receive - _.cost
+        const surplus = _.receive + _['get-loan'] - _.cost - _.loan
+
         return {
             dateRange: ['start', 'end'].map((value) =>
                 moment(service.getDateOfMonth(value as any)).format(DATE_FORMAT.D_DATE)
@@ -76,16 +77,27 @@ const useDashboard = (): [Data<DashboardQueryData>, () => void, DataStatistic | 
             data: [
                 {
                     _id: getKindSpendingId('RECEIVE') as string,
-                    value: _.receive + _['get-loan'],
-                    getLoan: _['get-loan'],
+                    value: _.receive,
                     name: t(LANGUAGE.RECEIVE),
                     color: 'text-green-500',
                 },
                 {
                     _id: getKindSpendingId('COST') as string,
-                    value: _.cost + _.loan,
+                    value: _.cost,
                     name: t(LANGUAGE.COST),
                     color: 'text-red-500',
+                },
+                {
+                    _id: getKindSpendingId('GET_LOAN') as string,
+                    value: _['get-loan'],
+                    name: t(LANGUAGE.GET_LOAN),
+                    color: 'text-orange-500',
+                },
+                {
+                    _id: getKindSpendingId('LOAN') as string,
+                    value: _.loan,
+                    name: t(LANGUAGE.LOAN),
+                    color: 'text-indigo-500',
                 },
                 {
                     _id: 'Surplus' as string,

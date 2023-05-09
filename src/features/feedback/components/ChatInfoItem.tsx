@@ -62,7 +62,7 @@ const ChatInfoItem: React.FC<Props> = ({ data, lastEl, onReply, onEdit, onDelete
                     />
                 </div>
                 <div className='relative flex-1'>
-                    <div className='relative inline-flex max-w-[70vw] flex-col rounded bg-gray-100 p-2 dark:bg-slate-700 sm:max-w-[60vw]'>
+                    <div className='relative inline-flex max-w-[70vw] flex-col rounded bg-gray-50 p-2 dark:bg-slate-700 sm:max-w-[60vw]'>
                         <h3 className='select-none font-normal'>{data.user.userName}</h3>
                         <p className='whitespace-pre-line'>{data.message.trim()}</p>
                         {data.edited && (
