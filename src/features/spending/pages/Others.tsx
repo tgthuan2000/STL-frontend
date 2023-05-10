@@ -22,7 +22,7 @@ const Others = () => {
 
             <Divider className='py-6 xl:hidden' dashed />
 
-            <Box>
+            <Box.Container>
                 <Box.Content className='flex-1' title={t(LANGUAGE.CATEGORY)} loading={category.loading}>
                     <ListOption
                         data={category?.data}
@@ -59,7 +59,7 @@ const Others = () => {
                         renderItem={(item) => <h4 className='font-medium'>{item?.name}</h4>}
                     />
                 </Box.Content>
-            </Box>
+            </Box.Container>
         </Transaction>
     )
 }
