@@ -4,6 +4,7 @@ import numeral from 'numeral'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { SkeletonProps } from '~/@types/components'
 import { MethodProps } from '~/@types/spending'
 import LANGUAGE from '~/i18n/language/key'
 
@@ -49,19 +50,23 @@ const Method: React.FC<MethodProps> = ({ data, loading }) => {
 
 export default Method
 
-export const MethodSkeleton = () => (
-    <ul role='list' className='pointer-events-none select-none'>
-        {Array.from(Array(5)).map((value, index) => (
-            <li key={index}>
-                <div className='flex px-4 py-4'>
-                    <div className='w-2/3 space-y-1'>
-                        <div className='h-4 w-2/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
+export const MethodSkeleton: React.FC<SkeletonProps> = (props) => {
+    const { elNumber = 5 } = props
+
+    return (
+        <ul role='list' className='pointer-events-none select-none'>
+            {Array.from(Array(elNumber)).map((value, index) => (
+                <li key={index}>
+                    <div className='flex px-4 py-4'>
+                        <div className='w-2/3 space-y-1'>
+                            <div className='h-4 w-2/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
+                        </div>
+                        <div className='flex w-1/3 flex-col items-end space-y-1'>
+                            <div className='h-4 w-2/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
+                        </div>
                     </div>
-                    <div className='flex w-1/3 flex-col items-end space-y-1'>
-                        <div className='h-4 w-2/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
-                    </div>
-                </div>
-            </li>
-        ))}
-    </ul>
-)
+                </li>
+            ))}
+        </ul>
+    )
+}

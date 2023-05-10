@@ -18,7 +18,7 @@ const Dashboard = () => {
     const { getLayoutGroup } = useConfig()
 
     const { renderComponent, setElement } = useDynamicRender({
-        RootLayout: Box,
+        RootLayout: Box.Container,
         ElementsLayout: Box.WrapContent,
         layouts: getLayoutGroup('SPENDING_DASHBOARD')?.items ?? DEFAULT_SPENDING_LAYOUT,
     })
@@ -26,8 +26,9 @@ const Dashboard = () => {
     useEffect(() => {
         const { method, recent, statistic, budget } = data
         setElement({
-            [SPENDING_LAYOUT.STATISTIC]: (
+            [SPENDING_LAYOUT.STATISTIC]: ({ order }) => (
                 <Box.Content
+                    order={order}
                     title={dataStatistic?.dateRange.join(' - ') || ' '}
                     onReload={onReload}
                     loading={statistic.loading}
@@ -35,18 +36,29 @@ const Dashboard = () => {
                     <Statistic data={dataStatistic?.data} loading={statistic.loading} />
                 </Box.Content>
             ),
-            [SPENDING_LAYOUT.BUDGET_CATEGORY]: (
-                <Box.Content title={t(LANGUAGE.BUDGET_BY_CATEGORY)} onReload={onReload} loading={budget?.loading}>
+            [SPENDING_LAYOUT.BUDGET_CATEGORY]: ({ order }) => (
+                <Box.Content
+                    order={order}
+                    title={t(LANGUAGE.BUDGET_BY_CATEGORY)}
+                    onReload={onReload}
+                    loading={budget?.loading}
+                >
                     <BudgetCategory data={budget?.data} loading={Boolean(budget?.loading)} />
                 </Box.Content>
             ),
-            [SPENDING_LAYOUT.BUDGET_METHOD]: (
-                <Box.Content title={t(LANGUAGE.BUDGET_BY_METHOD)} onReload={onReload} loading={budget?.loading}>
+            [SPENDING_LAYOUT.BUDGET_METHOD]: ({ order }) => (
+                <Box.Content
+                    order={order}
+                    title={t(LANGUAGE.BUDGET_BY_METHOD)}
+                    onReload={onReload}
+                    loading={budget?.loading}
+                >
                     <BudgetMethod data={budget?.data} loading={Boolean(budget?.loading)} />
                 </Box.Content>
             ),
-            [SPENDING_LAYOUT.TRANSACTION_RECENT]: (
+            [SPENDING_LAYOUT.TRANSACTION_RECENT]: ({ order }) => (
                 <Box.Content
+                    order={order}
                     title={t(LANGUAGE.TRANSACTION_RECENT)}
                     to='transaction'
                     onReload={onReload}
@@ -55,8 +67,9 @@ const Dashboard = () => {
                     <Recent data={recent.data} loading={recent.loading} />
                 </Box.Content>
             ),
-            [SPENDING_LAYOUT.METHOD_SPENDING]: (
+            [SPENDING_LAYOUT.METHOD_SPENDING]: ({ order }) => (
                 <Box.Content
+                    order={order}
                     title={t(LANGUAGE.METHOD_SPENDING)}
                     to='method'
                     onReload={onReload}

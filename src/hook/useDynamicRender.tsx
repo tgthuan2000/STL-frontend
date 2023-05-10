@@ -7,7 +7,7 @@ interface Props {
 
 interface UseDynamicRenderOptions {
     RootLayout?: React.FC<Props>
-    ElementsLayout?: React.FC<Props>
+    ElementsLayout?: React.FC<Props & { id: string }>
     layouts: Array<{ layout: { key: string }; index: number; order: number }>
 }
 
@@ -16,7 +16,7 @@ interface Result {
 }
 
 interface Element {
-    [x: string]: React.ReactNode
+    [x: string]: (option: { id: string; order: number }) => JSX.Element
 }
 
 const useDynamicRender = (options: UseDynamicRenderOptions) => {
@@ -37,11 +37,9 @@ const useDynamicRender = (options: UseDynamicRenderOptions) => {
                 order,
             } = layout
 
-            const Element = (
-                <div key={key} style={{ order }}>
-                    {element[key]}
-                </div>
-            )
+            const el = element[key]
+
+            const Element = <Fragment key={key}>{el?.({ id: key, order })}</Fragment>
 
             if (result[index]) {
                 result[index].push(Element)
@@ -53,7 +51,11 @@ const useDynamicRender = (options: UseDynamicRenderOptions) => {
         }, {})
 
         for (const [key, children] of Object.entries(childrens)) {
-            result.push(<ElementsLayout key={key}>{children}</ElementsLayout>)
+            result.push(
+                <ElementsLayout key={key} id={key}>
+                    {children}
+                </ElementsLayout>
+            )
         }
 
         return result
