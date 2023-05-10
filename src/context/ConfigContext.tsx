@@ -144,27 +144,25 @@ const ConfigProvider = configHOC(({ children }) => {
     const [ok, setOk] = useState(false)
 
     useEffect(() => {
+        if (userProfile && config.role) {
+            return
+        }
         const getConfig = async () => {
             try {
-                if (userProfile?._id && config.role === null) {
-                    showFlashScreen(
-                        <LoadingText
-                            text={t(LANGUAGE.LOADING_CONFIG)}
-                            className='text-md whitespace-nowrap sm:text-lg'
-                        />
-                    )
-                    const { kindSpending, user } = await client.fetch(GET_CONFIG, {
-                        userId: userProfile?._id as string,
-                    })
-                    setConfig((prev) => ({
-                        ...prev,
-                        kindSpending,
-                        budgetSpending: { _id: service.getBudgetId(userProfile?._id as string) },
-                        role: user.role,
-                        layouts: user.layouts ?? [],
-                    }))
-                    setOk(true)
-                }
+                showFlashScreen(
+                    <LoadingText text={t(LANGUAGE.LOADING_CONFIG)} className='text-md whitespace-nowrap sm:text-lg' />
+                )
+                const { kindSpending, user } = await client.fetch(GET_CONFIG, {
+                    userId: userProfile?._id as string,
+                })
+                setConfig((prev) => ({
+                    ...prev,
+                    kindSpending,
+                    budgetSpending: { _id: service.getBudgetId(userProfile?._id as string) },
+                    role: user.role,
+                    layouts: user.layouts ?? [],
+                }))
+                setOk(true)
             } catch (error) {
                 console.log(error)
             } finally {

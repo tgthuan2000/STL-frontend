@@ -1,4 +1,4 @@
-import { startTransition, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Box, Divider, Transaction } from '~/components'
 import { DEFAULT_SPENDING_LAYOUT, SPENDING_LAYOUT } from '~/constant/render-layout'
@@ -24,49 +24,47 @@ const Dashboard = () => {
     })
 
     useEffect(() => {
-        startTransition(() => {
-            const { method, recent, statistic, budget } = data
-            setElement({
-                [SPENDING_LAYOUT.STATISTIC]: (
-                    <Box.Content
-                        title={dataStatistic?.dateRange.join(' - ') || ' '}
-                        onReload={onReload}
-                        loading={statistic.loading}
-                    >
-                        <Statistic data={dataStatistic?.data} loading={statistic.loading} />
-                    </Box.Content>
-                ),
-                [SPENDING_LAYOUT.BUDGET_CATEGORY]: (
-                    <Box.Content title={t(LANGUAGE.BUDGET_BY_CATEGORY)} onReload={onReload} loading={budget?.loading}>
-                        <BudgetCategory data={budget?.data} loading={Boolean(budget?.loading)} />
-                    </Box.Content>
-                ),
-                [SPENDING_LAYOUT.BUDGET_METHOD]: (
-                    <Box.Content title={t(LANGUAGE.BUDGET_BY_METHOD)} onReload={onReload} loading={budget?.loading}>
-                        <BudgetMethod data={budget?.data} loading={Boolean(budget?.loading)} />
-                    </Box.Content>
-                ),
-                [SPENDING_LAYOUT.TRANSACTION_RECENT]: (
-                    <Box.Content
-                        title={t(LANGUAGE.TRANSACTION_RECENT)}
-                        to='transaction'
-                        onReload={onReload}
-                        loading={recent.loading}
-                    >
-                        <Recent data={recent.data} loading={recent.loading} />
-                    </Box.Content>
-                ),
-                [SPENDING_LAYOUT.METHOD_SPENDING]: (
-                    <Box.Content
-                        title={t(LANGUAGE.METHOD_SPENDING)}
-                        to='method'
-                        onReload={onReload}
-                        loading={method.loading}
-                    >
-                        <Method data={method.data} loading={method.loading} />
-                    </Box.Content>
-                ),
-            })
+        const { method, recent, statistic, budget } = data
+        setElement({
+            [SPENDING_LAYOUT.STATISTIC]: (
+                <Box.Content
+                    title={dataStatistic?.dateRange.join(' - ') || ' '}
+                    onReload={onReload}
+                    loading={statistic.loading}
+                >
+                    <Statistic data={dataStatistic?.data} loading={statistic.loading} />
+                </Box.Content>
+            ),
+            [SPENDING_LAYOUT.BUDGET_CATEGORY]: (
+                <Box.Content title={t(LANGUAGE.BUDGET_BY_CATEGORY)} onReload={onReload} loading={budget?.loading}>
+                    <BudgetCategory data={budget?.data} loading={Boolean(budget?.loading)} />
+                </Box.Content>
+            ),
+            [SPENDING_LAYOUT.BUDGET_METHOD]: (
+                <Box.Content title={t(LANGUAGE.BUDGET_BY_METHOD)} onReload={onReload} loading={budget?.loading}>
+                    <BudgetMethod data={budget?.data} loading={Boolean(budget?.loading)} />
+                </Box.Content>
+            ),
+            [SPENDING_LAYOUT.TRANSACTION_RECENT]: (
+                <Box.Content
+                    title={t(LANGUAGE.TRANSACTION_RECENT)}
+                    to='transaction'
+                    onReload={onReload}
+                    loading={recent.loading}
+                >
+                    <Recent data={recent.data} loading={recent.loading} />
+                </Box.Content>
+            ),
+            [SPENDING_LAYOUT.METHOD_SPENDING]: (
+                <Box.Content
+                    title={t(LANGUAGE.METHOD_SPENDING)}
+                    to='method'
+                    onReload={onReload}
+                    loading={method.loading}
+                >
+                    <Method data={method.data} loading={method.loading} />
+                </Box.Content>
+            ),
         })
     }, [data])
 

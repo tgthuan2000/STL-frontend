@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash'
-import React, { Fragment, useMemo, useState } from 'react'
+import React, { Fragment, startTransition, useCallback, useMemo, useState } from 'react'
 
 interface Props {
     children: React.ReactNode
@@ -15,9 +15,13 @@ interface Result {
     [x: number]: JSX.Element[]
 }
 
+interface Element {
+    [x: string]: React.ReactNode
+}
+
 const useDynamicRender = (options: UseDynamicRenderOptions) => {
     const { RootLayout = Fragment, ElementsLayout = Fragment, layouts } = options
-    const [element, setElement] = useState<{ [x: string]: React.ReactNode }>({})
+    const [element, setElement] = useState<Element>({})
 
     const render = useMemo(() => {
         if (isEmpty(element)) {
@@ -55,8 +59,14 @@ const useDynamicRender = (options: UseDynamicRenderOptions) => {
         return result
     }, [element])
 
+    const setElementTransition = useCallback((data: Element) => {
+        startTransition(() => {
+            setElement(data)
+        })
+    }, [])
+
     return {
-        setElement,
+        setElement: setElementTransition,
         renderComponent: <RootLayout>{render}</RootLayout>,
     }
 }
