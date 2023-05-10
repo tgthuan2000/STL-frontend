@@ -78,7 +78,7 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
                                             (() => {
                                                 const surplus = form.watch('surplus')
                                                 const calc =
-                                                    ([KIND_SPENDING.GET_LOAN].includes(transaction.kindSpending.key)
+                                                    ([KIND_SPENDING.CREDIT].includes(transaction.kindSpending.key)
                                                         ? 1
                                                         : -1) *
                                                         Number(form.watch('amount')) +
@@ -135,10 +135,10 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
                                             name='userLoan'
                                             form={form}
                                             rules={{
-                                                required: t(LANGUAGE.REQUIRED_USER_GET_LOAN) as any,
+                                                required: t(LANGUAGE.REQUIRED_USER_CREDIT) as any,
                                             }}
                                             data={userLoan.data}
-                                            label={t(LANGUAGE.USER_GET_LOAN)}
+                                            label={t(LANGUAGE.USER_CREDIT)}
                                             valueKey='userName'
                                             loading={userLoan.loading}
                                             onReload={

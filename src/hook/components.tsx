@@ -134,11 +134,11 @@ export const useMenuLoanMobile = (): IMenuBtn[] => {
     const data = useMemo(() => {
         return [
             {
-                title: t(LANGUAGE.MAKE_GET_LOAN),
+                title: t(LANGUAGE.MAKE_CREDIT),
                 color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
                 icon: ArrowTrendingUpIcon,
                 children: <MakeGetLoan />,
-                slide: 'get-loan',
+                slide: 'credit',
             },
             // {
             //     title: t(LANGUAGE_MAKE_LOAN),
@@ -294,11 +294,11 @@ export const useMenuLoanPC = (): IMenuBtn[] => {
     const data: IMenuBtn[] = useMemo(() => {
         return [
             {
-                title: t(LANGUAGE.MAKE_GET_LOAN),
+                title: t(LANGUAGE.MAKE_CREDIT),
                 color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
                 icon: ArrowTrendingUpIcon,
                 children: <MakeGetLoan />,
-                slide: 'get-loan',
+                slide: 'credit',
             },
             // {
             //     title: t(LANGUAGE.MAKE_LOAN),

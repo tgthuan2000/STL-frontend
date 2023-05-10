@@ -6,7 +6,7 @@ import { checkDarkTheme, getDefaultMode, getLinkSpending } from '..'
 describe('getLinkSpending', () => {
     const testCases = [
         {
-            key: KIND_SPENDING.GET_LOAN,
+            key: KIND_SPENDING.CREDIT,
             id: '123',
             expected: '/loan/transaction/123/detail',
         },

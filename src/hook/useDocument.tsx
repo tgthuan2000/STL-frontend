@@ -6,6 +6,7 @@ import { useProfile } from '~/store/auth'
 
 const useDocument = (): Service => {
     const { userProfile } = useProfile()
+
     const _createMethodDoc: CreateMethodDoc = useMemo(() => {
         return {
             _type: 'methodSpending',
@@ -14,7 +15,7 @@ const useDocument = (): Service => {
                 _type: 'reference',
                 _ref: userProfile?._id,
             },
-            active: true,
+            display: true,
         }
     }, [userProfile?._id])
 
@@ -28,7 +29,7 @@ const useDocument = (): Service => {
                 _type: 'reference',
                 _ref: userProfile?._id,
             },
-            active: true,
+            display: true,
         }
     }, [userProfile?._id])
 

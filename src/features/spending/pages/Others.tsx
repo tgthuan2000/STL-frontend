@@ -14,7 +14,7 @@ const Others = () => {
     const { METHOD_SPENDING_DESC_SURPLUS, COST_CATEGORY_SPENDING, RECEIVE_CATEGORY_SPENDING, METHOD_SPENDING } =
         useServiceQuery()
     const { deleteCache } = useCache()
-    const [{ category, method }, deleteCaches] = useOthers()
+    const [{ category, method }, deleteCaches, refetch] = useOthers()
 
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.OTHERS)}>
@@ -23,7 +23,12 @@ const Others = () => {
             <Divider className='py-6 xl:hidden' dashed />
 
             <Box.Container>
-                <Box.Content className='flex-1' title={t(LANGUAGE.CATEGORY)} loading={category.loading}>
+                <Box.Content
+                    className='flex-1'
+                    title={t(LANGUAGE.CATEGORY)}
+                    loading={category.loading}
+                    onReload={() => refetch('category')}
+                >
                     <ListOption
                         data={category?.data}
                         loading={category.loading}
@@ -48,7 +53,12 @@ const Others = () => {
                         }}
                     />
                 </Box.Content>
-                <Box.Content className='flex-1' title={t(LANGUAGE.METHOD)} loading={method.loading}>
+                <Box.Content
+                    className='flex-1'
+                    title={t(LANGUAGE.METHOD)}
+                    loading={method.loading}
+                    onReload={() => refetch('method')}
+                >
                     <ListOption
                         data={method?.data}
                         loading={method.loading}

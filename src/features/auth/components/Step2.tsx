@@ -72,7 +72,7 @@ const Step2: React.FC<Step2Props> = ({ previewData, onSubmit }) => {
             )}
             <AnimateWrap>
                 {chose?.isHasPassword ? (
-                    <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-2'>
+                    <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-3'>
                         <Input
                             name='password'
                             form={form}

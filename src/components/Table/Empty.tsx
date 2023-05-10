@@ -6,7 +6,7 @@ const EmptyTable = ({ colSpan = 4 }: { colSpan?: number }) => {
     return (
         <tr>
             <td colSpan={colSpan} className='whitespace-nowrap py-4 px-2'>
-                <span className='text-md font-base block w-full truncate text-center text-gray-700 dark:text-slate-200'>
+                <span className='text-md block w-full truncate text-center font-normal text-gray-700 dark:text-slate-200'>
                     {t(LANGUAGE.EMPTY_DATA)}
                 </span>
             </td>

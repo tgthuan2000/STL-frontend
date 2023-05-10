@@ -259,7 +259,6 @@ export interface TabsProps {
 
 export interface MakeBudgetProps {
     form: UseFormReturn<IMakeBudgetForm, object>
-    budgetLoading: any
     onDelItem: (key: StateRefKey, id: string | null | undefined) => void
     loading?: boolean
 }

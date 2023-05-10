@@ -27,7 +27,7 @@ const TransactionRecent = () => {
         () =>
             services.getAll({
                 userId: userProfile?._id as string,
-                kindSpendingIds: getKindSpendingIds('GET_LOAN', 'LOAN'),
+                kindSpendingIds: getKindSpendingIds('CREDIT', 'LOAN'),
             }),
         []
     )
@@ -47,7 +47,7 @@ const TransactionRecent = () => {
         const data = total.data
         if (!Array.isArray(data) || isNil(data) || isEmpty(data)) return
         const defaultValue = { total: 0, count: 0 }
-        const { loan, 'get-loan': getLoan } = data.reduce(
+        const { loan, credit: getLoan } = data.reduce(
             (result, value) => {
                 return {
                     ...result,
@@ -57,7 +57,7 @@ const TransactionRecent = () => {
                     },
                 }
             },
-            { loan: defaultValue, 'get-loan': defaultValue }
+            { loan: defaultValue, credit: defaultValue }
         )
 
         return {
@@ -132,7 +132,7 @@ const TransactionRecent = () => {
                             loading={recent.loading}
                             onSubmitTimeFilter={handleFilterSubmit}
                             receiveTitle={t(LANGUAGE.LOAN)}
-                            costTitle={t(LANGUAGE.GET_LOAN)}
+                            costTitle={t(LANGUAGE.CREDIT)}
                         />
 
                         {error ? (

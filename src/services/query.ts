@@ -93,7 +93,7 @@ export const getRecentLoanPaginate = <T extends Record<string, any>>({
         query: GET_RECENT_SPENDING_PAGINATE,
         params: {
             userId: userProfile?._id as string,
-            kindSpendingIds: getKindSpendingIds('GET_LOAN', 'LOAN'),
+            kindSpendingIds: getKindSpendingIds('CREDIT', 'LOAN'),
         },
         tags: TAGS.ALTERNATE,
     }
@@ -107,7 +107,7 @@ export const getRecentLoanFilterDateRangePaginate = <T extends Record<string, an
         query: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE,
         params: {
             userId: userProfile?._id as string,
-            kindSpendingIds: getKindSpendingIds('GET_LOAN', 'LOAN'),
+            kindSpendingIds: getKindSpendingIds('CREDIT', 'LOAN'),
         },
         tags: TAGS.ALTERNATE,
     }

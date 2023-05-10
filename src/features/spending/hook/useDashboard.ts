@@ -66,9 +66,9 @@ const useDashboard = (): [Data<DashboardQueryData>, () => void, DataStatistic | 
                     [value.key]: sum(value.data),
                 }
             },
-            { cost: 0, receive: 0, loan: 0, 'get-loan': 0 }
+            { cost: 0, receive: 0, loan: 0, credit: 0 }
         )
-        const surplus = _.receive + _['get-loan'] - _.cost - _.loan
+        const surplus = _.receive + _.credit - _.cost - _.loan
 
         return {
             dateRange: ['start', 'end'].map((value) =>
@@ -88,9 +88,9 @@ const useDashboard = (): [Data<DashboardQueryData>, () => void, DataStatistic | 
                     color: 'text-red-500',
                 },
                 {
-                    _id: getKindSpendingId('GET_LOAN') as string,
-                    value: _['get-loan'],
-                    name: t(LANGUAGE.GET_LOAN),
+                    _id: getKindSpendingId('CREDIT') as string,
+                    value: _.credit,
+                    name: t(LANGUAGE.CREDIT),
                     color: 'text-orange-500',
                 },
                 {
@@ -103,7 +103,7 @@ const useDashboard = (): [Data<DashboardQueryData>, () => void, DataStatistic | 
                     _id: 'Surplus' as string,
                     value: surplus,
                     name: t(LANGUAGE.SURPLUS),
-                    color: surplus >= 0 ? 'text-green-500' : 'text-red-500',
+                    color: surplus > 0 ? 'text-green-500' : surplus < 0 ? 'text-red-500' : 'text-gray-500',
                 },
             ],
         }

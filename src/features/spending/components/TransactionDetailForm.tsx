@@ -89,7 +89,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                                     ([
                                                         KIND_SPENDING.RECEIVE,
                                                         KIND_SPENDING.TRANSFER_TO,
-                                                        KIND_SPENDING.GET_LOAN,
+                                                        KIND_SPENDING.CREDIT,
                                                     ].includes(transaction.kindSpending.key)
                                                         ? 1
                                                         : -1) *

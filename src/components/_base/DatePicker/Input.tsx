@@ -1,4 +1,3 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { CalendarIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { forwardRef, useId } from 'react'
@@ -8,7 +7,6 @@ import ErrorMessage from '~/components/ErrorMessage'
 const Input = forwardRef<HTMLInputElement, DatePickerInputProps>(
     ({ label, error, className, disabledClear, disabled, field, readOnlyInput, ...props }, ref) => {
         const id = useId()
-        const [closeRef] = useAutoAnimate<HTMLSpanElement>()
 
         return (
             <div>
@@ -33,10 +31,7 @@ const Input = forwardRef<HTMLInputElement, DatePickerInputProps>(
                         readOnly={readOnlyInput}
                     />
                     {!disabledClear && !disabled && (
-                        <span
-                            ref={closeRef}
-                            className='absolute inset-y-0 right-6 flex items-center rounded-r-md px-2 focus:outline-none'
-                        >
+                        <span className='absolute inset-y-0 right-6 flex items-center rounded-r-md px-2 focus:outline-none'>
                             {field.value && (
                                 <XMarkIcon
                                     onClick={(e) => {
