@@ -8,7 +8,7 @@ const Auth = () => {
         <div className='relative h-screen overflow-hidden'>
             <div className='absolute top-1/4 w-full space-y-10'>
                 <Logo className='text-8xl' />
-                <AnimateWrap className='flex w-full flex-col items-center justify-center gap-2'>
+                <AnimateWrap className='flex w-full flex-col items-center justify-center gap-5'>
                     <Suspense fallback={<LoadingText />}>
                         <Outlet />
                     </Suspense>

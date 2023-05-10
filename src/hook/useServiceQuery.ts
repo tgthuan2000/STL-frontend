@@ -12,7 +12,7 @@ const useServiceQuery = () => {
     const transferFrom = useMemo(() => getKindSpendingId('TRANSFER_FROM') as string, [])
     const transferTo = useMemo(() => getKindSpendingId('TRANSFER_TO') as string, [])
     const loan = useMemo(() => getKindSpendingId('LOAN') as string, [])
-    const getLoan = useMemo(() => getKindSpendingId('GET_LOAN') as string, [])
+    const getLoan = useMemo(() => getKindSpendingId('CREDIT') as string, [])
 
     return {
         // SPENDING

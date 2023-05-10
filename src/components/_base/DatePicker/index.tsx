@@ -1,15 +1,41 @@
+import { DefaultTFuncReturn } from 'i18next'
 import moment from 'moment'
 import { forwardRef } from 'react'
 import DP, { ReactDatePicker } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { Controller } from 'react-hook-form'
-import { DateProps } from '~/@types/components'
+import { Controller, FieldError, UseFormReturn } from 'react-hook-form'
+import { Rules, TrackingFunc } from '~/@types/components'
 import { DATE_FORMAT } from '~/constant'
 import { useWindowSize } from '~/hook'
 import Input from './Input'
 import './index.css'
 
-const DatePicker = forwardRef<ReactDatePicker<never, undefined>, DateProps>(
+export interface Props {
+    className?: string
+    label?: string | DefaultTFuncReturn
+    name: string
+    error?: FieldError
+    form: UseFormReturn<any, object>
+    rules?: Rules
+    tracking?: TrackingFunc
+    disabledClear?: boolean
+    disabled?: boolean
+    onChange?: (value: any) => void
+    format?: keyof typeof DATE_FORMAT
+    showTimeInput?: boolean
+    placeholderText?: string | DefaultTFuncReturn
+    showMonthYearPicker?: boolean
+    showYearPicker?: boolean
+    selectsRange?: boolean
+    startDate?: Date
+    endDate?: Date
+    InputProps?: { readOnly?: boolean }
+    selectsStart?: boolean
+    selectsEnd?: boolean
+    minDate?: Date
+}
+
+const DatePicker = forwardRef<ReactDatePicker<never, undefined>, Props>(
     (
         {
             name,

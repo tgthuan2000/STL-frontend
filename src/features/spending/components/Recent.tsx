@@ -11,6 +11,8 @@ import { DATE_FORMAT } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import LANGUAGE from '~/i18n/language/key'
 import { getLinkSpending } from '~/utils'
+import Empty from './Empty'
+import { ArchiveBoxXMarkIcon } from '@heroicons/react/24/outline'
 
 const Recent: React.FC<RecentProps> = ({ data, loading }) => {
     const { t } = useTranslation()
@@ -28,7 +30,7 @@ const Recent: React.FC<RecentProps> = ({ data, loading }) => {
                             <Link
                                 to={getLinkSpending(item.kindSpending.key, item._id)}
                                 state={{ status: item.kindSpending._id }}
-                                className='flex cursor-pointer flex-col px-3 py-2 hover:bg-gray-100 dark:hover:bg-slate-600'
+                                className='flex cursor-pointer flex-col px-3 py-2 hover:opacity-50'
                             >
                                 <div className='flex'>
                                     <div className='w-1/2 overflow-hidden xl:w-2/3'>
@@ -43,7 +45,7 @@ const Recent: React.FC<RecentProps> = ({ data, loading }) => {
                                     </div>
                                     <div className='w-1/2 overflow-hidden text-right xl:w-1/3'>
                                         <span className='flex items-center justify-end gap-x-2'>
-                                            {[KIND_SPENDING.GET_LOAN].includes(item.kindSpending.key) && (
+                                            {[KIND_SPENDING.CREDIT].includes(item.kindSpending.key) && (
                                                 <span
                                                     className={clsx(
                                                         'inline-block h-1.5 w-1.5 rounded-full',
@@ -69,7 +71,7 @@ const Recent: React.FC<RecentProps> = ({ data, loading }) => {
                                                 {
                                                     'text-orange-500': [
                                                         KIND_SPENDING.LOAN,
-                                                        KIND_SPENDING.GET_LOAN,
+                                                        KIND_SPENDING.CREDIT,
                                                     ].includes(item.kindSpending.key),
                                                 },
                                                 'font-medium'
@@ -94,7 +96,7 @@ const Recent: React.FC<RecentProps> = ({ data, loading }) => {
             </ul>
         )
     }
-    return <div className='py-2 text-center text-gray-700 dark:text-slate-200'>{t(LANGUAGE.EMPTY_DATA)}</div>
+    return <Empty icon={ArchiveBoxXMarkIcon} text={t(LANGUAGE.EMPTY_DATA)} />
 }
 
 export default Recent

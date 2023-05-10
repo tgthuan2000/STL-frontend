@@ -36,7 +36,7 @@ const Step1: React.FC<Step1Props> = ({ onSubmit }) => {
 
     return (
         <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className='space-y-2'>
+            <div className='space-y-3'>
                 <Input
                     name='email'
                     form={form}

@@ -15,18 +15,16 @@ const Statistic: React.FC<StatisticProps> = ({ data, loading }) => {
 
                     return (
                         <Fragment key={_id}>
-                            {Boolean(value) && (
-                                <div className='flex w-full items-center gap-x-1 overflow-hidden px-2'>
-                                    <h4 className='flex-1 truncate text-base font-normal text-gray-900 dark:text-slate-200'>
-                                        {name}
-                                    </h4>
-                                    <span className={clsx('font-base block text-base text-gray-500', color)}>
-                                        <span className='block w-full truncate text-center'>
-                                            {numeral(value || 0).format()}
-                                        </span>
+                            <div className='flex w-full items-center gap-x-1 overflow-hidden px-2'>
+                                <h4 className='flex-1 truncate text-base font-normal text-gray-900 dark:text-slate-200'>
+                                    {name}
+                                </h4>
+                                <span className={clsx('block text-base font-normal', color)}>
+                                    <span className='block w-full truncate text-center'>
+                                        {numeral(value || 0).format()}
                                     </span>
-                                </div>
-                            )}
+                                </span>
+                            </div>
                         </Fragment>
                     )
                 })}

@@ -5,15 +5,17 @@ import { TabsProps } from '~/@types/spending'
 import AnimateWrap from './AnimateWrap'
 import LoadingText from './Loading/LoadingText'
 
-const Tabs: React.FC<TabsProps> = ({
-    options,
-    idKey = 'id',
-    tabLabelKey = 'label',
-    tabContentKey = 'content',
-    getOptionLabel,
-    getOptionContent,
-    className,
-}) => {
+const Tabs: React.FC<TabsProps> = (props) => {
+    const {
+        options,
+        idKey = 'id',
+        tabLabelKey = 'label',
+        tabContentKey = 'content',
+        getOptionLabel,
+        getOptionContent,
+        className,
+    } = props
+
     return (
         <AnimateWrap className={className}>
             <Tab.Group>

@@ -1,3 +1,4 @@
+import { ArchiveBoxXMarkIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import numeral from 'numeral'
@@ -7,6 +8,7 @@ import { Link } from 'react-router-dom'
 import { SkeletonProps } from '~/@types/components'
 import { MethodProps } from '~/@types/spending'
 import LANGUAGE from '~/i18n/language/key'
+import Empty from './Empty'
 
 const Method: React.FC<MethodProps> = ({ data, loading }) => {
     const { t } = useTranslation()
@@ -21,7 +23,7 @@ const Method: React.FC<MethodProps> = ({ data, loading }) => {
                             <li key={item._id}>
                                 <Link
                                     to={`/spending/method/${item._id}`}
-                                    className='flex cursor-pointer px-3 py-3 hover:bg-gray-100 dark:hover:bg-slate-600'
+                                    className='flex cursor-pointer px-3 py-3 hover:opacity-50'
                                 >
                                     <div className='w-2/3 truncate'>
                                         <h4 className='font-medium'>{item.name}</h4>
@@ -45,7 +47,7 @@ const Method: React.FC<MethodProps> = ({ data, loading }) => {
             </ul>
         )
     }
-    return <div className='py-2 text-center text-gray-700 dark:text-slate-200'>{t(LANGUAGE.EMPTY_DATA)}</div>
+    return <Empty icon={ArchiveBoxXMarkIcon} text={t(LANGUAGE.EMPTY_DATA)} />
 }
 
 export default Method

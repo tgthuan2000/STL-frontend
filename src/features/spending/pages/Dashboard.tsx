@@ -79,7 +79,7 @@ const Dashboard = () => {
                 </Box.Content>
             ),
         })
-    }, [data])
+    }, [data, t])
 
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.SPENDING)}>

@@ -29,7 +29,7 @@ const MakeGetLoan = () => {
     const { deleteCache } = useCache()
 
     const kindLoanId = useMemo(() => {
-        return getKindSpendingId('GET_LOAN')
+        return getKindSpendingId('CREDIT')
     }, [kindSpending])
 
     const [{ methodSpending, userLoan }, fetchData, deleteCacheData, reloadData] = useQuery<QueryDataMakeGetLoan>(
@@ -140,7 +140,7 @@ const MakeGetLoan = () => {
             }, 0)
 
             form.reset({ amount: '', methodReference, userLoan, image: null }, { keepDefaultValues: true })
-            toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_GET_LOAN_SUCCESS))
+            toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_CREDIT_SUCCESS))
             deleteCache([GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN])
             needCheckWhenLeave()
         } catch (error) {
@@ -195,10 +195,10 @@ const MakeGetLoan = () => {
                                 name='userLoan'
                                 form={form}
                                 rules={{
-                                    required: t(LANGUAGE.REQUIRED_USER_GET_LOAN) as any,
+                                    required: t(LANGUAGE.REQUIRED_USER_CREDIT) as any,
                                 }}
                                 data={userLoan.data}
-                                label={t(LANGUAGE.USER_GET_LOAN)}
+                                label={t(LANGUAGE.USER_CREDIT)}
                                 valueKey='userName'
                                 loading={userLoan.loading}
                                 onReload={isEmpty(userLoan.data) ? undefined : () => handleReloadData('userLoan')}

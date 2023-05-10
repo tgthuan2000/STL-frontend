@@ -161,7 +161,7 @@ const TransactionEdit = () => {
     const handleDeleteTransaction = async () => {
         try {
             setSubmitLoading(true)
-            const condition = [KIND_SPENDING.GET_LOAN].includes(trans?.kindSpending.key as KIND_SPENDING) ? 1 : -1
+            const condition = [KIND_SPENDING.CREDIT].includes(trans?.kindSpending.key as KIND_SPENDING) ? 1 : -1
             const __ = client.transaction()
 
             if (trans) {

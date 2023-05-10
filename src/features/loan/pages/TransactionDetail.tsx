@@ -56,7 +56,7 @@ const TransactionDetail = () => {
             try {
                 setSubmitLoading(true)
                 const { paid, methodSpending, amount } = value
-                const condition = [KIND_SPENDING.GET_LOAN].includes(trans?.kindSpending.key as KIND_SPENDING) ? 1 : -1
+                const condition = [KIND_SPENDING.CREDIT].includes(trans?.kindSpending.key as KIND_SPENDING) ? 1 : -1
 
                 const __ = client.transaction()
                 const update = client.patch(id).set({
@@ -114,7 +114,7 @@ const TransactionDetail = () => {
     const handleDeleteTransaction = async () => {
         try {
             setSubmitLoading(true)
-            const condition = [KIND_SPENDING.GET_LOAN].includes(trans?.kindSpending.key as KIND_SPENDING) ? 1 : -1
+            const condition = [KIND_SPENDING.CREDIT].includes(trans?.kindSpending.key as KIND_SPENDING) ? 1 : -1
             const __ = client.transaction()
 
             if (trans) {

@@ -1,3 +1,4 @@
+/** NEED REFACTOR */
 import { yupResolver } from '@hookform/resolvers/yup'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
@@ -228,7 +229,6 @@ const MakeBudget = () => {
         const props = {
             form,
             loading: budgetSpending.loading || methodSpending.loading || categorySpending.loading || loading.submit,
-            budgetLoading: budgetSpending.loading,
             onDelItem: handleDeleteItem,
         }
         return [
@@ -245,7 +245,7 @@ const MakeBudget = () => {
                 ),
             },
         ]
-    }, [budgetSpending.loading, methodSpending.loading, categorySpending.loading, loading, t])
+    }, [budgetSpending, methodSpending, categorySpending, loading, t])
 
     return (
         <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>

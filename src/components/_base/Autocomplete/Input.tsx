@@ -2,11 +2,21 @@ import { Combobox } from '@headlessui/react'
 import clsx from 'clsx'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { AutocompleteInputProps } from '~/@types/components'
 import LANGUAGE from '~/i18n/language/key'
 
-const Input: React.FC<AutocompleteInputProps> = ({ loading, disabled, onChange, onBlur, loadingAddMore, valueKey }) => {
+export interface Props {
+    loading?: boolean
+    disabled?: boolean
+    onChange?: (value: any) => void
+    onBlur?: () => void
+    loadingAddMore?: boolean
+    valueKey: string
+}
+
+const Input: React.FC<Props> = (props) => {
+    const { loading, disabled, onChange, onBlur, loadingAddMore, valueKey } = props
     const { t } = useTranslation()
+
     return (
         <Combobox.Input
             className={clsx(

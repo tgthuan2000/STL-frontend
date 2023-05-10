@@ -7,7 +7,11 @@ import { useQuery } from '~/hook'
 import { GET_CATEGORY, GET_METHOD } from '~/schema/query/spending'
 import { useProfile } from '~/store/auth'
 
-const useOthers = (): [Data<OthersQueryData>, (...keys: (keyof OthersQueryData)[]) => string | null] => {
+const useOthers = (): [
+    Data<OthersQueryData>,
+    (...keys: (keyof OthersQueryData)[]) => string | null,
+    (...keys: (keyof OthersQueryData)[]) => void
+] => {
     const { userProfile } = useProfile()
     const [data, fetchData, deleteCaches, reload] = useQuery<OthersQueryData>(
         {
@@ -29,7 +33,12 @@ const useOthers = (): [Data<OthersQueryData>, (...keys: (keyof OthersQueryData)[
 
     useCheck(reload)
 
-    return [data, deleteCaches]
+    const refetch = (...keys: (keyof OthersQueryData)[]) => {
+        deleteCaches(...keys)
+        reload()
+    }
+
+    return [data, deleteCaches, refetch]
 }
 
 export default useOthers
