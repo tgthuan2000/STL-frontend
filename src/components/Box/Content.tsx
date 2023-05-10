@@ -14,7 +14,7 @@ export interface Props {
     customHeaderEvent?: React.ReactNode
     className?: string
     id?: string
-    order: number
+    order?: number
 }
 
 const ContentBox: React.FC<Props> = (props) => {
