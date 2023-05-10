@@ -2,6 +2,7 @@ import { startTransition, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Box, Divider, Transaction } from '~/components'
 import { DEFAULT_SPENDING_LAYOUT, SPENDING_LAYOUT } from '~/constant/render-layout'
+import { useConfig } from '~/context'
 import { useDynamicRender } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { BudgetCategory, BudgetMethod } from '../components/Budget'
@@ -10,7 +11,6 @@ import MobileMenu from '../components/MobileMenu'
 import Recent from '../components/Recent'
 import Statistic from '../components/Statistic'
 import useDashboard from '../hook/useDashboard'
-import { useConfig } from '~/context'
 
 const Dashboard = () => {
     const { t } = useTranslation()
