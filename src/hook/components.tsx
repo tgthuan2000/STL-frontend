@@ -5,6 +5,7 @@ import {
     CalendarDaysIcon,
     ClipboardDocumentListIcon,
     EllipsisHorizontalCircleIcon,
+    HashtagIcon,
     HomeIcon,
     MinusCircleIcon,
     PlusCircleIcon,
@@ -255,6 +256,12 @@ export const useMenuSpendingPC = (): IMenuBtn[] => {
                 to: 'method',
             },
             {
+                title: t(LANGUAGE.LAYOUT),
+                color: 'text-lime-700 bg-lime-200 hover:bg-lime-300 dark:text-lime-500',
+                icon: RectangleGroupIcon,
+                to: 'layout',
+            },
+            {
                 title: t(LANGUAGE.OTHERS),
                 color: 'text-pink-700 bg-pink-200 hover:bg-pink-300 dark:text-pink-500',
                 icon: EllipsisHorizontalCircleIcon,
@@ -271,7 +278,7 @@ export const useMenuSpendingPC = (): IMenuBtn[] => {
             {
                 title: t(LANGUAGE.CREATE_CATEGORY),
                 color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
-                icon: RectangleGroupIcon,
+                icon: HashtagIcon,
                 children: <AddCategory />,
                 slide: 'add-category',
             },
@@ -440,6 +447,12 @@ export const useMenuSpendingPages = (): IMenuBtn[] => {
                 color: 'text-pink-700 dark:text-pink-500',
                 icon: EllipsisHorizontalCircleIcon,
                 to: 'others',
+            },
+            {
+                title: t(LANGUAGE.LAYOUT),
+                color: 'text-lime-700 dark:text-lime-500',
+                icon: RectangleGroupIcon,
+                to: 'layout',
             },
         ]
     }, [t])

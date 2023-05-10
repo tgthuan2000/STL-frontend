@@ -116,6 +116,8 @@
     "ACTIVE": "Hoạt động",
     "INACTIVE": "Không hoạt động",
     "RESPONDED": "Đã phản hồi",
+    "LAYOUT": "Giao diện",
+    "STATISTIC": "Thống kê",
 
     "APP_READY_WORK_OFFLINE": "Ứng dụng đã sẵn sàng để làm việc ngoại tuyến",
     "RELOAD_TEXT": "Ứng dụng đã được cập nhật. Vui lòng nhấn nút tải lại để xem thay đổi.",

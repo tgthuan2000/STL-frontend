@@ -7,7 +7,8 @@ const Method = React.lazy(() => import('./pages/Method'))
 const MethodDetail = React.lazy(() => import('./pages/MethodDetail'))
 const TransactionDetail = React.lazy(() => import('./pages/TransactionDetail'))
 const TransactionRecent = React.lazy(() => import('./pages/TransactionRecent'))
-const OthersFeature = React.lazy(() => import('./pages/Others'))
+const Layout = React.lazy(() => import('./pages/Layout'))
+const Others = React.lazy(() => import('./pages/Others'))
 
 const Spending = () => {
     return (
@@ -18,7 +19,8 @@ const Spending = () => {
                 <Route path='transaction/:id' element={<TransactionDetail />} />
                 <Route path='method' element={<Method />} />
                 <Route path='method/:id' element={<MethodDetail />} />
-                <Route path='others' element={<OthersFeature />} />
+                <Route path='layout' element={<Layout />} />
+                <Route path='others' element={<Others />} />
             </Route>
             <Route path='*' element={<Navigate to='/' />} />
         </Routes>

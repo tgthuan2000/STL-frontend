@@ -5,6 +5,7 @@ import numeral from 'numeral'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { SkeletonProps } from '~/@types/components'
 import { RecentProps } from '~/@types/spending'
 import { DATE_FORMAT } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
@@ -98,22 +99,26 @@ const Recent: React.FC<RecentProps> = ({ data, loading }) => {
 
 export default Recent
 
-const RecentSkeleton = () => (
-    <ul role='list' className='pointer-events-none select-none divide-y divide-gray-300 dark:divide-slate-700'>
-        {Array.from(Array(5)).map((value, index) => (
-            <li key={index}>
-                <div className='flex px-4 py-3'>
-                    <div className='w-2/3 space-y-1'>
-                        <div className='h-4 w-2/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
-                        <div className='h-4 w-1/2 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
-                        <div className='h-4 w-1/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
+export const RecentSkeleton: React.FC<SkeletonProps> = (props) => {
+    const { elNumber = 5 } = props
+
+    return (
+        <ul role='list' className='pointer-events-none select-none divide-y divide-gray-300 dark:divide-slate-700'>
+            {Array.from(Array(elNumber)).map((value, index) => (
+                <li key={index}>
+                    <div className='flex px-4 py-3'>
+                        <div className='w-2/3 space-y-1'>
+                            <div className='h-4 w-2/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
+                            <div className='h-4 w-1/2 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
+                            <div className='h-4 w-1/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
+                        </div>
+                        <div className='flex w-1/3 flex-col items-end space-y-1'>
+                            <div className='h-4 w-1/2 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
+                            <div className='h-4 w-full animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
+                        </div>
                     </div>
-                    <div className='flex w-1/3 flex-col items-end space-y-1'>
-                        <div className='h-4 w-1/2 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
-                        <div className='h-4 w-full animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
-                    </div>
-                </div>
-            </li>
-        ))}
-    </ul>
-)
+                </li>
+            ))}
+        </ul>
+    )
+}

@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import numeral from 'numeral'
 import React, { Fragment } from 'react'
+import { SkeletonProps } from '~/@types/components'
 import { StatisticProps } from '~/@types/spending'
 
 const Statistic: React.FC<StatisticProps> = ({ data, loading }) => {
@@ -35,10 +36,12 @@ const Statistic: React.FC<StatisticProps> = ({ data, loading }) => {
 
 export default Statistic
 
-const StatisticSkeleton = () => {
+export const StatisticSkeleton: React.FC<SkeletonProps> = (props) => {
+    const { elNumber = 5 } = props
+
     return (
         <div className='flex animate-pulse flex-col gap-y-2 p-2'>
-            {Array.from(Array(5)).map((value, index) => (
+            {Array.from(Array(elNumber)).map((value, index) => (
                 <div key={index} className='flex w-full justify-between gap-x-1 px-2'>
                     <span className='h-5 w-20 rounded-full bg-gray-200 dark:bg-slate-700' />
                     <span className='h-5 w-24 rounded-full bg-gray-200 dark:bg-slate-700' />

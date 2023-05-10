@@ -1,14 +1,16 @@
 import { SanityDocument } from '@sanity/client'
-import React, { createContext, useCallback, useContext, useEffect, useReducer, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IUserProfile } from '~/@types/auth'
 import { IConfig, IConfigContext } from '~/@types/context'
+import { IRoleControl } from '~/@types/role-control'
 import axios from '~/axiosConfig'
 import LoadingText from '~/components/Loading/LoadingText'
 import { CODE } from '~/constant/code'
 import { PERMISSION } from '~/constant/permission'
+import { LAYOUT_GROUP } from '~/constant/render-layout'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useAxios, useLogout } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
@@ -17,8 +19,6 @@ import { GET_CONFIG } from '~/schema/query/config'
 import { service } from '~/services'
 import { useAuth, useProfile } from '~/store/auth'
 import { useFlashScreen } from './FlashScreenContext'
-import { IRoleControl } from '~/@types/role-control'
-import { LAYOUT_GROUP } from '~/constant/render-layout'
 
 interface IConfigProps {
     children: React.ReactNode
@@ -40,7 +40,6 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
         const { showFlashScreen, hiddenFlashScreen } = useFlashScreen()
         const { accessToken, refreshToken, setToken } = useAuth()
         const { userProfile, addUserProfile } = useProfile()
-        const { pathname } = useLocation()
         const { t } = useTranslation()
         const logout = useLogout()
         const _axios = useAxios()
@@ -117,7 +116,7 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
             getUserProfile()
         }, [accessToken, userProfile])
 
-        if (!accessToken) return <Navigate to='/auth' replace={true} state={{ url: pathname }} />
+        if (!accessToken) return <Fallback />
 
         if (userProfile === null) {
             return <></>
@@ -125,6 +124,11 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
 
         return <Component>{children}</Component>
     }
+}
+
+const Fallback = () => {
+    const { pathname } = useLocation()
+    return <Navigate to='/auth' replace={true} state={{ url: pathname }} />
 }
 
 const ConfigProvider = configHOC(({ children }) => {
@@ -140,27 +144,25 @@ const ConfigProvider = configHOC(({ children }) => {
     const [ok, setOk] = useState(false)
 
     useEffect(() => {
+        if (userProfile && config.role) {
+            return
+        }
         const getConfig = async () => {
             try {
-                if (userProfile?._id && config.role === null) {
-                    showFlashScreen(
-                        <LoadingText
-                            text={t(LANGUAGE.LOADING_CONFIG)}
-                            className='text-md whitespace-nowrap sm:text-lg'
-                        />
-                    )
-                    const { kindSpending, user } = await client.fetch(GET_CONFIG, {
-                        userId: userProfile?._id as string,
-                    })
-                    setConfig((prev) => ({
-                        ...prev,
-                        kindSpending,
-                        budgetSpending: { _id: service.getBudgetId(userProfile?._id as string) },
-                        role: user.role,
-                        layouts: user.layouts ?? [],
-                    }))
-                    setOk(true)
-                }
+                showFlashScreen(
+                    <LoadingText text={t(LANGUAGE.LOADING_CONFIG)} className='text-md whitespace-nowrap sm:text-lg' />
+                )
+                const { kindSpending, user } = await client.fetch(GET_CONFIG, {
+                    userId: userProfile?._id as string,
+                })
+                setConfig((prev) => ({
+                    ...prev,
+                    kindSpending,
+                    budgetSpending: { _id: service.getBudgetId(userProfile?._id as string) },
+                    role: user.role,
+                    layouts: user.layouts ?? [],
+                }))
+                setOk(true)
             } catch (error) {
                 console.log(error)
             } finally {
