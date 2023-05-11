@@ -1,4 +1,4 @@
-import { PlusCircleIcon } from '@heroicons/react/24/outline'
+// dùng array thay
 import { isEqual } from 'lodash'
 import { useEffect } from 'react'
 import { DragDropContext, OnDragEndResponder } from 'react-beautiful-dnd'
@@ -56,7 +56,6 @@ const Layout = () => {
             return
         }
 
-        console.log(values)
         updateLayout(
             { index: +source.droppableId, order: source.index },
             { index: +destination.droppableId, order: destination.index }

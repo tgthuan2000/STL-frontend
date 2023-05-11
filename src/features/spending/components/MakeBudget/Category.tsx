@@ -21,7 +21,7 @@ const Category: React.FC<MakeBudgetProps & { optionData: ICategorySpending[] | u
 }) => {
     const { t } = useTranslation()
 
-    const { fields, append, remove } = useFieldArray({
+    const { fields, remove, append } = useFieldArray({
         name: 'CategorySpending' as never,
         control: form.control,
     })
@@ -51,41 +51,42 @@ const Category: React.FC<MakeBudgetProps & { optionData: ICategorySpending[] | u
                 {t(LANGUAGE.CREATE_CATEGORY)}
             </Button>
             <div className='space-y-4'>
-                {fields.map((item, index) => (
-                    <div key={item.id}>
-                        <div className='mb-2 flex justify-start'>
-                            <button
-                                type='button'
-                                className='cursor-pointer text-radical-red-500 transition-all hover:opacity-50 disabled:cursor-not-allowed disabled:text-gray-300 disabled:hover:opacity-100'
-                                onClick={() => {
-                                    handleDeleteItem(form.getValues(`CategorySpending.${index}._id`), index)
-                                }}
-                            >
-                                <TrashIcon className='h-6 w-6' />
-                            </button>
-                        </div>
-                        <div className='flex gap-3'>
-                            <div className='flex-[2]'>
-                                <AutoComplete
-                                    name={`CategorySpending.${index}.categorySpending`}
-                                    form={form}
-                                    data={optionData}
-                                    label={t(LANGUAGE.CATEGORY)}
-                                    loading={optionLoading}
-                                    EmptyOptionFallback={<EmptyOptionFallback />}
-                                />
+                {optionData &&
+                    fields.map((item, index) => (
+                        <div key={item.id}>
+                            <div className='mb-2 flex justify-start'>
+                                <button
+                                    type='button'
+                                    className='cursor-pointer text-radical-red-500 transition-all hover:opacity-50 disabled:cursor-not-allowed disabled:text-gray-300 disabled:hover:opacity-100'
+                                    onClick={() => {
+                                        handleDeleteItem(form.getValues(`CategorySpending.${index}._id`), index)
+                                    }}
+                                >
+                                    <TrashIcon className='h-6 w-6' />
+                                </button>
                             </div>
-                            <div className='flex-1'>
-                                <Input
-                                    name={`CategorySpending.${index}.amount`}
-                                    form={form}
-                                    type='number'
-                                    label={t(LANGUAGE.LIMIT_AMOUNT)}
-                                />
+                            <div className='flex gap-3'>
+                                <div className='flex-[2]'>
+                                    <AutoComplete
+                                        name={`CategorySpending.${index}.categorySpending`}
+                                        form={form}
+                                        data={optionData}
+                                        label={t(LANGUAGE.CATEGORY)}
+                                        loading={optionLoading}
+                                        EmptyOptionFallback={<EmptyOptionFallback />}
+                                    />
+                                </div>
+                                <div className='flex-1'>
+                                    <Input
+                                        name={`CategorySpending.${index}.amount`}
+                                        form={form}
+                                        type='number'
+                                        label={t(LANGUAGE.LIMIT_AMOUNT)}
+                                    />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
             </div>
         </>
     )

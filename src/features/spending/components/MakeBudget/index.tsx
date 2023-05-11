@@ -1,13 +1,14 @@
 import { useTranslation } from 'react-i18next'
 import { Button, Chip, SubmitWrap, Tabs } from '~/components'
 import { DatePicker } from '~/components/_base'
-import { useLoading } from '~/context'
+import { useLoading, useSlideOver } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import useBudget from '../../hook/useBudget'
 
 const MakeBudget = () => {
     const { t } = useTranslation()
     const { loading } = useLoading()
+    const { close } = useSlideOver()
     const { form, onsubmit, handleChangeDate, handlePreviousMonth, tabOptions } = useBudget()
 
     return (

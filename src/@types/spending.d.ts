@@ -167,7 +167,7 @@ export interface MakeIncomeQueryData {
 export interface MakeBudgetQueryData {
     methodSpending: IMethodSpending[]
     categorySpending: ICategorySpending[]
-    budgetSpending: IBudgetSpending
+    budget: IBudgetSpending
 }
 
 export interface MakeTransferQueryData {
