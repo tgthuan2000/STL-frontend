@@ -93,6 +93,7 @@ const DatePicker = forwardRef<ReactDatePicker<never, undefined>, Props>((props, 
                     customTimeInput={<TimeInput />}
                     calendarClassName='bg-gray-50 dark:bg-slate-600 dark:border-slate-800 rounded-md border-gray-200 shadow-md'
                     dayClassName={(date) => 'text-gray-900 dark:text-slate-200'}
+                    monthClassName={(date) => 'text-gray-900 dark:text-slate-200'}
                     renderCustomHeader={(params) => <Header {...params} />}
                     weekDayClassName={(date) => 'dark:text-cyan-500 font-normal text-gray-700'}
                 />
