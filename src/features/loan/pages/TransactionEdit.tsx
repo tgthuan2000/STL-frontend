@@ -91,6 +91,11 @@ const TransactionEdit = () => {
             }
 
             const patch = client.patch(id as string).set(documentSpending)
+
+            if (!estimatePaidDate) {
+                patch.unset(['estimatePaidDate'])
+            }
+
             __.patch(patch)
 
             if (userLoan && trans?.userLoan && userLoan._id !== trans.userLoan._id) {

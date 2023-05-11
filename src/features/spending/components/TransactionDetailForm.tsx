@@ -1,12 +1,14 @@
 import { ArrowSmallLeftIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { yupResolver } from '@hookform/resolvers/yup'
 import clsx from 'clsx'
 import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import * as yup from 'yup'
 import { IDetailSpendingForm, TransactionDetailFormProps } from '~/@types/spending'
 import { Button, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
@@ -14,6 +16,36 @@ import { KIND_SPENDING } from '~/constant/spending'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import { service } from '~/services'
+
+const useSchema = () => {
+    const { t } = useTranslation()
+
+    const schema = useMemo(() => {
+        return yup.object().shape({
+            amount: yup
+                .number()
+                .required(t(LANGUAGE.REQUIRED_FIELD) as string)
+                .min(1, t(LANGUAGE.AMOUNT_MIN_ZERO) as string)
+                .typeError(t(LANGUAGE.REQUIRED_NUMBER) as string),
+            categorySpending: yup
+                .object()
+                .nullable()
+                .required(t(LANGUAGE.REQUIRED_CATEGORY) as string),
+            methodSpending: yup
+                .object()
+                .nullable()
+                .required(t(LANGUAGE.REQUIRED_METHOD) as string),
+            date: yup
+                .date()
+                .required(t(LANGUAGE.REQUIRED_DATE) as string)
+                .typeError(t(LANGUAGE.REQUIRED_DATE) as string),
+            description: yup.string(),
+            image: yup.mixed(),
+        })
+    }, [t])
+
+    return schema
+}
 
 const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) => {
     const {
@@ -30,6 +62,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { loading } = useLoading()
+    const schema = useSchema()
     const form = useForm<IDetailSpendingForm>({
         defaultValues: {
             amount: transaction.amount,
@@ -41,6 +74,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
             surplus: transaction.surplus ?? 0,
             image: transaction.image,
         },
+        resolver: yupResolver(schema),
     })
 
     return (
@@ -113,19 +147,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                                 )
                                             })()}
 
-                                        <Input
-                                            name='amount'
-                                            form={form}
-                                            type='number'
-                                            label={t(LANGUAGE.AMOUNT)}
-                                            rules={{
-                                                required: t(LANGUAGE.REQUIRED_COST) as string,
-                                                min: {
-                                                    value: 0,
-                                                    message: t(LANGUAGE.COST_MIN_ZERO),
-                                                },
-                                            }}
-                                        />
+                                        <Input name='amount' form={form} type='number' label={t(LANGUAGE.AMOUNT)} />
 
                                         {!isEmpty(categorySpending.data) && (
                                             <AutoComplete
@@ -135,9 +157,6 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                                 label={t(LANGUAGE.CATEGORY)}
                                                 loading={categorySpending.loading}
                                                 addMore={handleAddMoreCategorySpending}
-                                                rules={{
-                                                    required: t(LANGUAGE.REQUIRED_CATEGORY) as string,
-                                                }}
                                                 onReload={
                                                     isEmpty(categorySpending.data)
                                                         ? undefined
@@ -169,9 +188,6 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                                     }
                                                     loading={methodSpending.loading}
                                                     addMore={handleAddMoreMethodSpending}
-                                                    rules={{
-                                                        required: t(LANGUAGE.REQUIRED_METHOD_SPENDING) as string,
-                                                    }}
                                                     onReload={
                                                         isEmpty(methodSpending.data)
                                                             ? undefined
@@ -198,9 +214,6 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                                         }
                                                         loading={methodSpending.loading}
                                                         addMore={handleAddMoreMethodSpending}
-                                                        rules={{
-                                                            required: t(LANGUAGE.REQUIRED_METHOD_SPENDING) as string,
-                                                        }}
                                                         onReload={
                                                             isEmpty(methodSpending.data)
                                                                 ? undefined
@@ -211,14 +224,7 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                                             </div>
                                         )}
 
-                                        <DatePicker
-                                            name='date'
-                                            form={form}
-                                            label={t(LANGUAGE.DATE)}
-                                            rules={{
-                                                required: t(LANGUAGE.REQUIRED_DATE) as string,
-                                            }}
-                                        />
+                                        <DatePicker name='date' form={form} label={t(LANGUAGE.DATE)} />
 
                                         <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
 

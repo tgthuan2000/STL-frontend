@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash'
 import moment from 'moment'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -14,6 +14,36 @@ import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
 import { GET_METHOD_SPENDING } from '~/schema/query/spending'
 import { useProfile } from '~/store/auth'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+const useSchema = () => {
+    const { t } = useTranslation()
+    const schema = useMemo(() => {
+        return yup.object().shape({
+            amount: yup
+                .number()
+                .required(t(LANGUAGE.REQUIRED_TRANSFER_AMOUNT) as string)
+                .min(1, t(LANGUAGE.TRANSFER_MIN_ZERO) as string)
+                .typeError(t(LANGUAGE.REQUIRED_NUMBER) as string),
+            methodSpendingFrom: yup
+                .object()
+                .nullable()
+                .required(t(LANGUAGE.REQUIRED_METHOD) as string),
+            methodSpendingTo: yup
+                .object()
+                .nullable()
+                .required(t(LANGUAGE.REQUIRED_METHOD) as string),
+            date: yup
+                .date()
+                .required(t(LANGUAGE.REQUIRED_DATE) as string)
+                .typeError(t(LANGUAGE.REQUIRED_DATE) as string),
+            description: yup.string(),
+            image: yup.mixed(),
+        })
+    }, [t])
+    return schema
+}
 
 const MakeTransfer = () => {
     const { t } = useTranslation()
@@ -25,7 +55,7 @@ const MakeTransfer = () => {
     const { needCheckWhenLeave } = useCheck()
     const { METHOD_SPENDING_DESC_SURPLUS, RECENT_SPENDING, RECENT_SPENDING_PAGINATE } = useServiceQuery()
     const document = useDocument()
-
+    const schema = useSchema()
     const [{ methodSpending }, fetchData, deleteCacheData, reloadData] = useQuery<MakeTransferQueryData>(
         { methodSpending: GET_METHOD_SPENDING },
         { userId: userProfile?._id as string },
@@ -45,6 +75,7 @@ const MakeTransfer = () => {
             description: '',
             image: null,
         },
+        resolver: yupResolver(schema),
     })
 
     const onsubmit: SubmitHandler<IMakeTransferForm> = async (data) => {
@@ -171,26 +202,11 @@ const MakeTransfer = () => {
                 <div className='flex flex-1 flex-col justify-between'>
                     <div className='divide-y divide-gray-200 px-4 sm:px-6'>
                         <div className='space-y-6 pt-3 pb-5'>
-                            <Input
-                                name='amount'
-                                form={form}
-                                rules={{
-                                    required: t(LANGUAGE.REQUIRED_TRANSFER_AMOUNT) as string,
-                                    min: {
-                                        value: 0,
-                                        message: t(LANGUAGE.TRANSFER_MIN_ZERO),
-                                    },
-                                }}
-                                type='number'
-                                label={t(LANGUAGE.AMOUNT)}
-                            />
+                            <Input name='amount' form={form} type='number' label={t(LANGUAGE.AMOUNT)} />
 
                             <AutoComplete
                                 name='methodSpendingFrom'
                                 form={form}
-                                rules={{
-                                    required: t(LANGUAGE.REQUIRED_METHOD) as any,
-                                }}
                                 data={methodSpending.data}
                                 label={t(LANGUAGE.FROM_TRANSFER_METHOD)}
                                 loading={methodSpending.loading}
@@ -203,9 +219,6 @@ const MakeTransfer = () => {
                             <AutoComplete
                                 name='methodSpendingTo'
                                 form={form}
-                                rules={{
-                                    required: t(LANGUAGE.REQUIRED_METHOD) as any,
-                                }}
                                 data={methodSpending.data}
                                 label={t(LANGUAGE.TO_TRANSFER_METHOD)}
                                 loading={methodSpending.loading}
@@ -215,14 +228,7 @@ const MakeTransfer = () => {
                                 }
                             />
 
-                            <DatePicker
-                                name='date'
-                                form={form}
-                                rules={{
-                                    required: t(LANGUAGE.REQUIRED_DATE) as any,
-                                }}
-                                label={t(LANGUAGE.DATE)}
-                            />
+                            <DatePicker name='date' form={form} label={t(LANGUAGE.DATE)} />
 
                             <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
 

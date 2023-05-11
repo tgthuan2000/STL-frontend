@@ -30,7 +30,7 @@ const Recent: React.FC<RecentProps> = ({ data, loading }) => {
                             <Link
                                 to={getLinkSpending(item.kindSpending.key, item._id)}
                                 state={{ status: item.kindSpending._id }}
-                                className='flex cursor-pointer flex-col px-3 py-2 hover:opacity-50'
+                                className='flex cursor-pointer flex-col px-3 py-2 hover:opacity-70'
                             >
                                 <div className='flex'>
                                     <div className='w-1/2 overflow-hidden xl:w-2/3'>

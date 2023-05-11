@@ -3,10 +3,11 @@ import clsx from 'clsx'
 import { isEmpty, isNil } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import * as yup from 'yup'
 import { TransactionEditFormProps } from '~/@types/loan'
 import { Button, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
@@ -16,6 +17,34 @@ import LANGUAGE from '~/i18n/language/key'
 import { service } from '~/services'
 import IconButton from './common/IconButton'
 import StatusLoan from './common/StatusLoan'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+const useSchema = () => {
+    const { t } = useTranslation()
+
+    const schema = useMemo(() => {
+        return yup.object().shape({
+            amount: yup
+                .number()
+                .required(t(LANGUAGE.REQUIRED_FIELD) as string)
+                .min(1, t(LANGUAGE.AMOUNT_MIN_ZERO) as string)
+                .typeError(t(LANGUAGE.REQUIRED_NUMBER) as string),
+            methodReference: yup.object().nullable(),
+            userLoan: yup
+                .object()
+                .nullable()
+                .required(t(LANGUAGE.REQUIRED_USER_CREDIT) as string),
+            estimatePaidDate: yup
+                .date()
+                .nullable()
+                .typeError(t(LANGUAGE.ERROR) as string),
+            description: yup.string(),
+            image: yup.mixed(),
+        })
+    }, [t])
+
+    return schema
+}
 
 const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
     const {
@@ -30,17 +59,19 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { loading } = useLoading()
+    const schema = useSchema()
     const form = useForm<any>({
         defaultValues: {
             paid: transaction.paid,
             description: transaction.description?.split('\n').slice(1).join('\n') || '',
             methodReference: transaction.methodReference ?? null,
             amount: transaction.realPaid ?? transaction.amount,
-            estimatePaidDate: moment(transaction.estimatePaidDate).toDate(),
+            estimatePaidDate: transaction.estimatePaidDate ? moment(transaction.estimatePaidDate).toDate() : null,
             userLoan: transaction.userLoan ?? null,
             surplus: transaction.surplus ?? null,
             image: transaction.image ?? null,
         },
+        resolver: yupResolver(schema),
     })
 
     return (
@@ -101,19 +132,7 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
                                                 )
                                             })()}
 
-                                        <Input
-                                            name='amount'
-                                            form={form}
-                                            type='number'
-                                            label={t(LANGUAGE.AMOUNT)}
-                                            rules={{
-                                                required: t(LANGUAGE.REQUIRED_AMOUNT) as any,
-                                                min: {
-                                                    value: 0,
-                                                    message: t(LANGUAGE.AMOUNT_MIN_ZERO),
-                                                },
-                                            }}
-                                        />
+                                        <Input name='amount' form={form} type='number' label={t(LANGUAGE.AMOUNT)} />
 
                                         <AutoComplete
                                             name='methodReference'
@@ -134,9 +153,6 @@ const TransactionEditForm: React.FC<TransactionEditFormProps> = ({ data }) => {
                                         <AutoComplete
                                             name='userLoan'
                                             form={form}
-                                            rules={{
-                                                required: t(LANGUAGE.REQUIRED_USER_CREDIT) as any,
-                                            }}
                                             data={userLoan.data}
                                             label={t(LANGUAGE.USER_CREDIT)}
                                             valueKey='userName'
