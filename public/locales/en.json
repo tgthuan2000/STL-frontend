@@ -119,6 +119,7 @@
     "RESPONDED": "Responded",
     "LAYOUT": "Layout",
     "STATISTIC": "Statistic",
+    "TIME": "Time",
 
     "APP_READY_WORK_OFFLINE": "App ready to work offline",
     "RELOAD_TEXT": "New content available, click on reload button to update.",
@@ -185,6 +186,7 @@
     "NOTIFY_CREATE_MEMBER_SUCCESS": "Create member success",
     "NOTIFY_CREATE_NOTIFY_SUCCESS": "Create notify success",
     "NOTIFY_UPDATE_NOTIFY_SUCCESS": "Update notify success",
+    "NOTIFY_UPDATE_BUDGET_SUCCESS": "Update budget success",
     "NOTIFY_NOT_EXIST_ACCOUNT": "Not exist account",
     "NOTIFY_ERROR": "Something went wrong",
     "NOTIFY_ACCOUNT_CANT_LOGIN_BY_EMAIL_PASSWORD": "Account can not login by email and password",

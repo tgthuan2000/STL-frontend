@@ -88,7 +88,7 @@ const AutoComplete = forwardRef<HTMLInputElement, Props>((props, ref) => {
     }, [selectedItem])
 
     const filterData =
-        query === '' ? data : filter(data, (item) => item[valueKey].toLowerCase().includes(query.toLowerCase()))
+        query === '' ? data : filter(data, (item) => item[valueKey]?.toLowerCase().includes(query.toLowerCase()))
 
     const handleChange = async (value: any, fieldChange: (...event: any[]) => void) => {
         if (typeof value === 'string') {

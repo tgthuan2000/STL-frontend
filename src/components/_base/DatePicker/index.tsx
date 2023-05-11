@@ -9,6 +9,8 @@ import { DATE_FORMAT } from '~/constant'
 import { useWindowSize } from '~/hook'
 import Input from './Input'
 import './index.css'
+import TimeInput from './TimeInput'
+import Header from './Header'
 
 export interface Props {
     className?: string
@@ -35,70 +37,68 @@ export interface Props {
     minDate?: Date
 }
 
-const DatePicker = forwardRef<ReactDatePicker<never, undefined>, Props>(
-    (
-        {
-            name,
-            form,
-            rules,
-            tracking,
-            label,
-            disabledClear,
-            format = 'DATE_TIME',
-            onChange,
-            InputProps,
-            placeholderText,
-            ...props
-        },
-        ref
-    ) => {
-        const { width } = useWindowSize()
+const DatePicker = forwardRef<ReactDatePicker<never, undefined>, Props>((props, ref) => {
+    const {
+        name,
+        form,
+        rules,
+        tracking,
+        label,
+        disabledClear,
+        format = 'DATE_TIME',
+        onChange,
+        InputProps,
+        placeholderText,
+        disabled,
+        ...rest
+    } = props
+    const { width } = useWindowSize()
+    const mobileScreen = width <= 768
+    const value = form.watch(name)
+    const selected = moment(value).isValid() ? value : undefined
 
-        const inputProps = {
-            disabled: props?.disabled,
-        }
-
-        const value = form.getValues(name)
-        const selected = moment(value).isValid() ? value : undefined
-
-        return (
-            <Controller
-                name={name}
-                control={form.control}
-                rules={rules}
-                render={({ field, fieldState: { error } }) => (
-                    <DP
-                        calendarStartDay={1} // start date is monday
-                        dateFormat={DATE_FORMAT[format]}
-                        timeInputLabel='Time:'
-                        showTimeInput
-                        withPortal={width <= 768}
-                        selected={selected}
-                        disabledKeyboardNavigation
-                        shouldCloseOnSelect
-                        customInput={
-                            <Input
-                                error={error}
-                                label={label}
-                                disabledClear={disabledClear}
-                                field={field}
-                                readOnlyInput={width <= 768}
-                                {...inputProps}
-                            />
-                        }
-                        {...field}
-                        onChange={(date) => {
-                            field.onChange(date)
-                            onChange?.(date)
-                            tracking?.(name)
-                        }}
-                        placeholderText={placeholderText as string}
-                        {...props}
-                    />
-                )}
-            />
-        )
-    }
-)
+    return (
+        <Controller
+            name={name}
+            control={form.control}
+            rules={rules}
+            render={({ field, fieldState: { error } }) => (
+                <DP
+                    calendarStartDay={1} // start date is monday
+                    dateFormat={DATE_FORMAT[format]}
+                    timeInputLabel='Time:'
+                    showTimeInput
+                    withPortal={mobileScreen}
+                    selected={selected}
+                    disabledKeyboardNavigation
+                    shouldCloseOnSelect
+                    customInput={
+                        <Input
+                            error={error}
+                            label={label}
+                            disabledClear={disabledClear}
+                            field={field}
+                            readOnlyInput={mobileScreen}
+                            disabled={disabled}
+                        />
+                    }
+                    {...field}
+                    onChange={(date) => {
+                        field.onChange(date)
+                        onChange?.(date)
+                        // tracking?.(name)
+                    }}
+                    placeholderText={placeholderText as string}
+                    {...rest}
+                    customTimeInput={<TimeInput />}
+                    calendarClassName='bg-gray-50 dark:bg-slate-600 dark:border-slate-800 rounded-md border-gray-200 shadow-md'
+                    dayClassName={(date) => 'text-gray-900 dark:text-slate-200'}
+                    renderCustomHeader={(params) => <Header {...params} />}
+                    weekDayClassName={(date) => 'dark:text-cyan-500 font-normal text-gray-700'}
+                />
+            )}
+        />
+    )
+})
 
 export default DatePicker
