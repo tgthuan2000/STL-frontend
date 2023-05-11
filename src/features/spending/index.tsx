@@ -17,7 +17,7 @@ const Spending = () => {
                 <Route index element={<Dashboard />} />
                 <Route path='transaction' element={<TransactionRecent />} />
                 <Route path='transaction/:id' element={<TransactionDetail />} />
-                <Route path='method' element={<Method />} />
+                {/* <Route path='method' element={<Method />} /> */}
                 <Route path='method/:id' element={<MethodDetail />} />
                 <Route path='layout' element={<Layout />} />
                 <Route path='others' element={<Others />} />

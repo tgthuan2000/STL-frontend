@@ -37,7 +37,7 @@ const Layout = () => {
                 <Box.SkeletonContent id={id} index={order} title={t(LANGUAGE.METHOD_SPENDING)} />
             ),
         })
-    }, [])
+    }, [t])
 
     const handleAddGroup = () => {}
 

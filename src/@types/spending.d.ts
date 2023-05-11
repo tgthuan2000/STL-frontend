@@ -8,6 +8,7 @@ import { IUserProfile } from './auth'
 import { IKindSpending } from './context'
 import { Query } from './hook'
 import { IUserLoan } from './loan'
+import { RecommendOption } from './components'
 
 /* INTERFACES */
 
@@ -74,10 +75,12 @@ export interface IStatisticData {
 export interface IAddCategoryForm {
     name: string
     kindSpending: IKindSpending | null
+    recommends: RecommendOption[]
 }
 
 export interface IAddMethodForm {
     name: string
+    recommends: RecommendOption[]
 }
 
 export interface IAddCostForm {

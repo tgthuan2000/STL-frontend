@@ -120,6 +120,7 @@
     "LAYOUT": "Layout",
     "STATISTIC": "Statistic",
     "TIME": "Time",
+    "RECOMMEND": "Recommend",
 
     "APP_READY_WORK_OFFLINE": "App ready to work offline",
     "RELOAD_TEXT": "New content available, click on reload button to update.",
@@ -231,7 +232,7 @@
     "MAKE_COST": "Make cost",
     "MAKE_TRANSFER": "Make transfer",
     "MAKE_BUDGET": "Make budget",
-    "CREATE_METHOD": "Create new method",
+    "CREATE_METHOD": "Create new spending method",
     "CREATE_CATEGORY": "Create new category",
     "FROM_TRANSFER_METHOD": "From transfer method",
     "TO_TRANSFER_METHOD": "To transfer method",

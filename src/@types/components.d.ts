@@ -544,3 +544,8 @@ export interface TwoFactorFormProps {
     placeholder?: string
     onSubmit: (data: string) => void
 }
+
+export interface RecommendOption {
+    id: string
+    name: string
+}

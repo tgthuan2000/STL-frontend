@@ -120,6 +120,7 @@
     "LAYOUT": "Giao diện",
     "STATISTIC": "Thống kê",
     "TIME": "Thời gian",
+    "RECOMMEND": "Gợi ý",
 
     "APP_READY_WORK_OFFLINE": "Ứng dụng đã sẵn sàng để làm việc ngoại tuyến",
     "RELOAD_TEXT": "Ứng dụng đã được cập nhật. Vui lòng nhấn nút tải lại để xem thay đổi.",
@@ -231,7 +232,7 @@
     "MAKE_COST": "Thêm chi phí",
     "MAKE_TRANSFER": "Chuyển khoản",
     "MAKE_BUDGET": "Ngân sách",
-    "CREATE_METHOD": "Tạo mới phương thức",
+    "CREATE_METHOD": "Tạo mới phương thức thanh toán",
     "CREATE_CATEGORY": "Tạo mới thể loại",
     "FROM_TRANSFER_METHOD": "Từ phương thức thanh toán",
     "TO_TRANSFER_METHOD": "Đến phương thức thanh toán",
