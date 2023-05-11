@@ -23,8 +23,13 @@ const MakeCost = () => {
     const { loading, setSubmitLoading } = useLoading()
     const { getKindSpendingId } = useConfig()
     const { needCheckWhenLeave } = useCheck()
-    const { METHOD_SPENDING_DESC_SURPLUS, RECENT_SPENDING, RECENT_SPENDING_PAGINATE, STATISTIC_SPENDING } =
-        useServiceQuery()
+    const {
+        METHOD_SPENDING_DESC_SURPLUS,
+        RECENT_SPENDING,
+        RECENT_SPENDING_PAGINATE,
+        STATISTIC_SPENDING,
+        BUDGET_SPENDING,
+    } = useServiceQuery()
     const document = useDocument()
 
     const kindSpendingId = useMemo(() => {
@@ -121,8 +126,8 @@ const MakeCost = () => {
                 RECENT_SPENDING,
                 RECENT_SPENDING_PAGINATE,
                 STATISTIC_SPENDING,
+                BUDGET_SPENDING,
             ])
-            console.log(res)
 
             setTimeout(() => {
                 res = deleteCacheData('methodSpending', 'categorySpending')

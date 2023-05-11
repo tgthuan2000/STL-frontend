@@ -160,6 +160,7 @@ export interface DatePickerInputProps {
     disabled?: boolean
     field: ControllerRenderProps<any, string>
     readOnlyInput?: boolean
+    onClick?: any
 }
 
 export interface TextAreaProps {

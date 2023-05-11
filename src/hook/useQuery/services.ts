@@ -18,7 +18,7 @@ export const filterQueryParams = <T>(
         const tag = get(tags, key, undefined)
 
         if (!isEmpty(keys)) {
-            p = Object.assign({}, ...keys.filter((x) => item.includes(x)).map((v) => ({ [v]: params[v] })))
+            p = Object.assign({}, ...keys.filter((x) => item.includes('$' + x)).map((v) => ({ [v]: params[v] })))
         }
 
         return { [key]: { loading: false, data: undefined, query: item, params: p, tags: tag } }

@@ -54,6 +54,7 @@ const AddMethod = () => {
                 _type: 'reference',
                 _ref: userProfile?._id,
             },
+            display: true,
         }
         try {
             await client.create(document)

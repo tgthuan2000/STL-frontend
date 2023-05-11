@@ -1,3 +1,56 @@
 .react-datepicker__year-wrapper {
     @apply max-w-[205px];
 }
+.react-datepicker__input-time-container .react-datepicker-time__caption,
+.react-datepicker__triangle {
+    @apply hidden;
+}
+
+.react-datepicker__input-time-container .react-datepicker-time__input-container .react-datepicker-time__input {
+    @apply mx-2 mb-2;
+}
+.react-datepicker__input-time-container {
+    @apply float-none clear-none m-0 w-full text-right;
+}
+
+.react-datepicker-time__input-container {
+    @apply w-full;
+}
+
+.react-datepicker__header.react-datepicker__header--custom {
+    @apply rounded-t-md border-b-transparent bg-gray-200 dark:border-b-gray-700 dark:bg-slate-700;
+}
+
+.react-datepicker__day--selected:hover,
+.react-datepicker__day--in-selecting-range:hover,
+.react-datepicker__day--in-range:hover,
+.react-datepicker__month-text--selected:hover,
+.react-datepicker__month-text--in-selecting-range:hover,
+.react-datepicker__month-text--in-range:hover,
+.react-datepicker__quarter-text--selected:hover,
+.react-datepicker__quarter-text--in-selecting-range:hover,
+.react-datepicker__quarter-text--in-range:hover,
+.react-datepicker__year-text--selected:hover,
+.react-datepicker__year-text--in-selecting-range:hover,
+.react-datepicker__year-text--in-range:hover,
+.react-datepicker__day--selected,
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--in-range,
+.react-datepicker__month-text--selected,
+.react-datepicker__month-text--in-selecting-range,
+.react-datepicker__month-text--in-range,
+.react-datepicker__quarter-text--selected,
+.react-datepicker__quarter-text--in-selecting-range,
+.react-datepicker__quarter-text--in-range,
+.react-datepicker__year-text--selected,
+.react-datepicker__year-text--in-selecting-range,
+.react-datepicker__year-text--in-range {
+    @apply bg-indigo-500 !text-white dark:bg-cyan-500;
+}
+
+.react-datepicker__day:hover,
+.react-datepicker__month-text:hover,
+.react-datepicker__quarter-text:hover,
+.react-datepicker__year-text:hover {
+    @apply bg-gray-200 dark:bg-slate-500;
+}
