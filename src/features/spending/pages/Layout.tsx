@@ -13,7 +13,7 @@ const Layout = () => {
     const { t } = useTranslation()
     const { getLayoutGroup } = useConfig()
 
-    const { renderComponent, setElement } = useDynamicRender({
+    const { renderComponent, setElement, updateLayout } = useDynamicRender({
         RootLayout: Box.Container,
         ElementsLayout: Box.DraggableWrapContent,
         layouts: getLayoutGroup('SPENDING_DASHBOARD')?.items ?? DEFAULT_SPENDING_LAYOUT,
@@ -37,11 +37,13 @@ const Layout = () => {
                 <Box.SkeletonContent id={id} index={order} title={t(LANGUAGE.METHOD_SPENDING)} />
             ),
         })
-    }, [])
+    }, [t])
 
     const handleAddGroup = () => {}
 
     const handleSave = () => {}
+
+    const handleReset = () => {}
 
     const handleDragEnd: OnDragEndResponder = (values, provided) => {
         const { source, destination } = values
@@ -55,6 +57,10 @@ const Layout = () => {
         }
 
         console.log(values)
+        updateLayout(
+            { index: +source.droppableId, order: source.index },
+            { index: +destination.droppableId, order: destination.index }
+        )
     }
 
     return (
@@ -62,10 +68,9 @@ const Layout = () => {
             {/* Show analytics */}
             <div className='flex flex-col gap-8 rounded-2xl bg-gray-200 p-4 dark:bg-slate-800 sm:p-6'>
                 <div className='flex justify-end gap-4'>
-                    {/* <Button type='button' color='green' onClick={handleAddGroup}>
-                        <PlusCircleIcon className='h-6 w-6' />
-                        <span>{t(LANGUAGE.CREATE)}</span>
-                    </Button> */}
+                    <Button type='button' color='blue' onClick={handleReset}>
+                        {t(LANGUAGE.REFRESH)}
+                    </Button>
                     <Button type='button' color='indigo' onClick={handleSave}>
                         {t(LANGUAGE.SAVE)}
                     </Button>

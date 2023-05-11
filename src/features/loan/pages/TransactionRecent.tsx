@@ -9,7 +9,7 @@ import { AnimateWrap, DataListView, ListViewFilter, Transaction } from '~/compon
 import { COUNT_PAGINATE } from '~/constant'
 import { __groupBy } from '~/constant/component'
 import { useCheck, useConfig } from '~/context'
-import { useListViewFilter, useQuery, useWindowSize } from '~/hook'
+import { useListViewFilter, useQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { useProfile } from '~/store/auth'
 import { getLinkSpending } from '~/utils'
@@ -20,7 +20,6 @@ import * as __services from '../services/dataListView'
 const TransactionRecent = () => {
     const { t } = useTranslation()
     const { userProfile } = useProfile()
-    const { width } = useWindowSize()
     const { getKindSpendingIds } = useConfig()
     const [searchParams] = useSearchParams()
     const getAll = useMemo(

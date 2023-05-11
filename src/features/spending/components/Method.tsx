@@ -23,7 +23,7 @@ const Method: React.FC<MethodProps> = ({ data, loading }) => {
                             <li key={item._id}>
                                 <Link
                                     to={`/spending/method/${item._id}`}
-                                    className='flex cursor-pointer px-3 py-3 hover:opacity-50'
+                                    className='flex cursor-pointer px-3 py-3 hover:opacity-70'
                                 >
                                     <div className='w-2/3 truncate'>
                                         <h4 className='font-medium'>{item.name}</h4>

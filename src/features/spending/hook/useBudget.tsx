@@ -179,12 +179,12 @@ const useBudget = () => {
             stateRef.current = defaultStateRef
             deleteCacheData('budgetSpending')
             if (params.budgetId === _id) {
-                // reloadData()
+                reloadData()
             } else {
                 setQueryDataFn(date)
             }
             needCheckWhenLeave()
-            toast.success<string>(LANGUAGE.NOTIFY_UPDATE_BUDGET_SUCCESS)
+            toast.success<string>(t(LANGUAGE.NOTIFY_UPDATE_BUDGET_SUCCESS))
         } catch (error) {
             console.log(error)
         } finally {

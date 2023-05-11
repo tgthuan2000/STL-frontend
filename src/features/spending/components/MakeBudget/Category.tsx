@@ -1,11 +1,10 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { PlusCircleIcon, TrashIcon } from '@heroicons/react/24/outline'
 import React from 'react'
 import { useFieldArray } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { ICategorySpending, MakeBudgetProps } from '~/@types/spending'
-import { AnimateWrap, Button } from '~/components'
+import { Button } from '~/components'
 import LoadingText from '~/components/Loading/LoadingText'
 import { AutoComplete, Input } from '~/components/_base'
 import { useSlideOver } from '~/context'
@@ -21,7 +20,6 @@ const Category: React.FC<MakeBudgetProps & { optionData: ICategorySpending[] | u
     optionLoading,
 }) => {
     const { t } = useTranslation()
-    const [loadingRef] = useAutoAnimate<HTMLButtonElement>()
 
     const { fields, append, remove } = useFieldArray({
         name: 'CategorySpending' as never,
@@ -48,12 +46,11 @@ const Category: React.FC<MakeBudgetProps & { optionData: ICategorySpending[] | u
                 className='mb-4 items-center gap-1 truncate'
                 onClick={handleAddItem}
                 disabled={loading}
-                ref={loadingRef}
             >
                 <PlusCircleIcon className='h-6 w-6' />
                 {t(LANGUAGE.CREATE_CATEGORY)}
             </Button>
-            <AnimateWrap className='space-y-4'>
+            <div className='space-y-4'>
                 {fields.map((item, index) => (
                     <div key={item.id}>
                         <div className='mb-2 flex justify-start'>
@@ -89,7 +86,7 @@ const Category: React.FC<MakeBudgetProps & { optionData: ICategorySpending[] | u
                         </div>
                     </div>
                 ))}
-            </AnimateWrap>
+            </div>
         </>
     )
 }

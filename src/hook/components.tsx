@@ -249,12 +249,12 @@ export const useMenuSpendingPC = (): IMenuBtn[] => {
                 icon: ClipboardDocumentListIcon,
                 to: 'transaction',
             },
-            {
-                title: t(LANGUAGE.METHOD_SPENDING),
-                color: 'text-purple-700 bg-purple-200 hover:bg-purple-300 dark:text-purple-500',
-                icon: QrCodeIcon,
-                to: 'method',
-            },
+            // {
+            //     title: t(LANGUAGE.METHOD_SPENDING),
+            //     color: 'text-purple-700 bg-purple-200 hover:bg-purple-300 dark:text-purple-500',
+            //     icon: QrCodeIcon,
+            //     to: 'method',
+            // },
             {
                 title: t(LANGUAGE.LAYOUT),
                 color: 'text-lime-700 bg-lime-200 hover:bg-lime-300 dark:text-lime-500',
@@ -436,12 +436,12 @@ export const useMenuSpendingPages = (): IMenuBtn[] => {
                 icon: ClipboardDocumentListIcon,
                 to: 'transaction',
             },
-            {
-                title: t(LANGUAGE.METHOD_SPENDING),
-                color: 'text-purple-700 dark:text-purple-500',
-                icon: QrCodeIcon,
-                to: 'method',
-            },
+            // {
+            //     title: t(LANGUAGE.METHOD_SPENDING),
+            //     color: 'text-purple-700 dark:text-purple-500',
+            //     icon: QrCodeIcon,
+            //     to: 'method',
+            // },
             {
                 title: t(LANGUAGE.OTHERS),
                 color: 'text-pink-700 dark:text-pink-500',
