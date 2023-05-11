@@ -44,7 +44,13 @@
 .react-datepicker__quarter-text--in-range,
 .react-datepicker__year-text--selected,
 .react-datepicker__year-text--in-selecting-range,
-.react-datepicker__year-text--in-range {
+.react-datepicker__year-text--in-range,
+.react-datepicker__month--selected,
+.react-datepicker__month--in-selecting-range,
+.react-datepicker__month--in-range,
+.react-datepicker__quarter--selected,
+.react-datepicker__quarter--in-selecting-range,
+.react-datepicker__quarter--in-range {
     @apply bg-indigo-500 !text-white dark:bg-cyan-500;
 }
 
@@ -53,4 +59,8 @@
 .react-datepicker__quarter-text:hover,
 .react-datepicker__year-text:hover {
     @apply bg-gray-200 dark:bg-slate-500;
+}
+
+.react-datepicker__year-text {
+    @apply text-gray-900 dark:text-slate-200;
 }

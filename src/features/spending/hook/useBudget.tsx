@@ -1,21 +1,21 @@
+import { yupResolver } from '@hookform/resolvers/yup'
+import { isEmpty } from 'lodash'
+import moment from 'moment'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 import { IMakeBudgetForm, MakeBudgetQueryData, StateRef, StateRefKey } from '~/@types/spending'
 import { TAGS } from '~/constant'
-import { useCheck, useConfig, useLoading, useSlideOver } from '~/context'
+import { useCheck, useConfig, useLoading } from '~/context'
+import { useQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
+import { client } from '~/sanityConfig'
 import { GET_BUDGET_BY_MONTH, GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
 import { service } from '~/services'
 import { useProfile } from '~/store/auth'
-import { useBudgetSchema } from './schema'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useQuery } from '~/hook'
-import { isEmpty } from 'lodash'
-import moment from 'moment'
-import { toast } from 'react-toastify'
 import { servicesBudget } from '../services/budget'
-import { client } from '~/sanityConfig'
+import { useBudgetSchema } from './schema'
 
 const Category = React.lazy(() => import('../components/MakeBudget/Category'))
 const Method = React.lazy(() => import('../components/MakeBudget/Method'))
@@ -48,7 +48,7 @@ const useBudget = () => {
         query: {
             methodSpending: GET_METHOD_SPENDING,
             categorySpending: GET_CATEGORY_SPENDING,
-            budgetSpending: GET_BUDGET_BY_MONTH,
+            budget: GET_BUDGET_BY_MONTH,
         },
         params: {
             userId: userProfile?._id as string,
@@ -61,7 +61,7 @@ const useBudget = () => {
         tags: {
             categorySpending: TAGS.ENUM,
             methodSpending: TAGS.ENUM,
-            budgetSpending: TAGS.ALTERNATE,
+            budget: TAGS.ALTERNATE,
         },
     })
 
@@ -85,7 +85,7 @@ const useBudget = () => {
         stateRef.current = { ...prevValues, [option]: { ...prevValues[option], [key]: methods[method]() } }
     }
 
-    const [{ methodSpending, categorySpending, budgetSpending }, fetchData, deleteCacheData, reloadData] =
+    const [{ methodSpending, categorySpending, budget }, fetchData, deleteCacheData, reloadData] =
         useQuery<MakeBudgetQueryData>(query, params, tags)
 
     useEffect(() => {
@@ -100,7 +100,7 @@ const useBudget = () => {
     }, [])
 
     useEffect(() => {
-        const budgetData = budgetSpending.data
+        const budgetData = budget.data
         if (!isEmpty(budgetData)) {
             form.setValue('MethodSpending', budgetData?.MethodSpending)
             form.setValue('CategorySpending', budgetData?.CategorySpending)
@@ -127,7 +127,7 @@ const useBudget = () => {
                 stateRef.current.updates = structuredClone(defaultStateRef.updates)
             }
         }
-    }, [budgetSpending.data])
+    }, [budget.data])
 
     const onsubmit: SubmitHandler<IMakeBudgetForm> = async (data) => {
         try {
@@ -177,7 +177,7 @@ const useBudget = () => {
             // submit transaction
             await __.commit()
             stateRef.current = defaultStateRef
-            deleteCacheData('budgetSpending')
+            deleteCacheData('budget')
             if (params.budgetId === _id) {
                 reloadData()
             } else {
@@ -194,7 +194,7 @@ const useBudget = () => {
 
     const handleChangeDate = (date: Date) => {
         setQueryDataFn(date)
-        deleteCacheData('budgetSpending')
+        deleteCacheData('budget')
     }
 
     const setQueryDataFn = (date: Date) => {
@@ -228,7 +228,7 @@ const useBudget = () => {
     const tabOptions = useMemo(() => {
         const props = {
             form,
-            loading: budgetSpending.loading || methodSpending.loading || categorySpending.loading || loading.submit,
+            loading: budget.loading || methodSpending.loading || categorySpending.loading || loading.submit,
             onDelItem: handleDeleteItem,
         }
         return [
@@ -245,7 +245,7 @@ const useBudget = () => {
                 ),
             },
         ]
-    }, [budgetSpending, methodSpending, categorySpending, loading, t])
+    }, [budget, methodSpending, categorySpending, loading, t])
 
     return {
         form,

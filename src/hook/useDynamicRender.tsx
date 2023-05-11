@@ -66,7 +66,7 @@ const useDynamicRender = (options: UseDynamicRenderOptions) => {
 
         return result
     }, [element, _layouts])
-    console.log(_layouts.map(({ index, order }) => ({ index, order })))
+
     const updateLayout = useCallback((from: Item, to: Item) => {
         setLayout((prev) => {
             let _layout = structuredClone(prev)
@@ -81,9 +81,10 @@ const useDynamicRender = (options: UseDynamicRenderOptions) => {
                 _layout = _layout.map((layout) => {
                     if (layout.index === to.index) {
                         if (to.index === from.index) {
-                            if (layout.order < to.order && layout.order > from.order) {
+                            if (layout.order <= to.order && layout.order > from.order) {
                                 return { ...layout, order: layout.order - 1 }
                             }
+                            return layout
                         }
                         if (layout.order >= to.order) {
                             return { ...layout, order: layout.order + 1 }

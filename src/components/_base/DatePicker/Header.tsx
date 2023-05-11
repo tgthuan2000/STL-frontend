@@ -22,9 +22,18 @@ const Header: React.FC<ReactDatePickerCustomHeaderProps> = (props) => {
         prevYearButtonDisabled,
     } = props
 
+    const isMonthView = !!monthDate
+
     return (
         <div className='mx-3 flex items-center justify-between sm:mx-1'>
-            <Button isIcon hoverOpacity noBg noHover onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+            <Button
+                isIcon
+                hoverOpacity
+                noBg
+                noHover
+                onClick={isMonthView ? decreaseMonth : decreaseYear}
+                disabled={isMonthView ? prevMonthButtonDisabled : prevYearButtonDisabled}
+            >
                 <ChevronLeftIcon className='h-5 w-5' />
             </Button>
             <button
@@ -33,7 +42,14 @@ const Header: React.FC<ReactDatePickerCustomHeaderProps> = (props) => {
             >
                 {moment(monthDate).format(DATE_FORMAT.MONTH)}
             </button>
-            <Button isIcon hoverOpacity noBg noHover onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+            <Button
+                isIcon
+                hoverOpacity
+                noBg
+                noHover
+                onClick={isMonthView ? increaseMonth : increaseYear}
+                disabled={isMonthView ? nextMonthButtonDisabled : nextYearButtonDisabled}
+            >
                 <ChevronRightIcon className='h-5 w-5' />
             </Button>
         </div>
