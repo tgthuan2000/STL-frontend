@@ -121,6 +121,9 @@
     "STATISTIC": "Thống kê",
     "TIME": "Thời gian",
     "RECOMMEND": "Gợi ý",
+    "FIRST_LOGIN": "Đăng nhập lần đầu",
+    "LAST_ACCESS": "Truy cập lần cuối",
+    "THIS_DEVICE": "Thiết bị hiện tại",
 
     "APP_READY_WORK_OFFLINE": "Ứng dụng đã sẵn sàng để làm việc ngoại tuyến",
     "RELOAD_TEXT": "Ứng dụng đã được cập nhật. Vui lòng nhấn nút tải lại để xem thay đổi.",
@@ -214,11 +217,13 @@
     "NOTIFY_DELETE_SCHEDULE_SUCCESSFULLY": "Xóa lịch trình thành công!",
     "NOTIFY_UPDATE_SCHEDULE_SUCCESSFULLY": "Cập nhật lịch trình thành công!",
     "NOTIFY_EMAIL_EXIST": "Email đã tồn tại!",
+    "NOTIFY_DELETE_SUCCESS": "Xóa thành công",
 
     "CONFIRM_NOTIFY": "Bạn có chắc chắn muốn gửi thông báo này?",
-    "CONFIRM_DELETE_TRANSACTION": "Bạn có chắc muốn xóa giao dịch này ?",
-    "CONFIRM_DELETE_MESSAGE": "Bạn có chắc muốn xóa tin nhắn này ?",
-    "CONFIRM_DELETE_SCHEDULE": "Bạn có chắc muốn xóa lịch trình này ?",
+    "CONFIRM_DELETE_TRANSACTION": "Bạn có chắc muốn xóa giao dịch này?",
+    "CONFIRM_DELETE_MESSAGE": "Bạn có chắc muốn xóa tin nhắn này?",
+    "CONFIRM_DELETE_SCHEDULE": "Bạn có chắc muốn xóa lịch trình này?",
+    "CONFIRM_DELETE_DEVICE": "Bạn có chắc muốn xóa thiết bị này?",
     "NEED_SAVE_TO_UPDATED": "Bạn cần lưu lại sau khi chỉnh sửa để cập nhật!",
 
     "SPENDING": "Quản lý chi tiêu",
