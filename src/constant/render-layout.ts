@@ -15,12 +15,12 @@ export enum SPENDING_LAYOUT {
 export const DEFAULT_SPENDING_LAYOUT: LayoutItem[] = [
     {
         layouts: [
-            { key: SPENDING_LAYOUT.STATISTIC },
-            { key: SPENDING_LAYOUT.BUDGET_CATEGORY },
-            { key: SPENDING_LAYOUT.BUDGET_METHOD },
+            { _id: SPENDING_LAYOUT.STATISTIC },
+            { _id: SPENDING_LAYOUT.BUDGET_CATEGORY },
+            { _id: SPENDING_LAYOUT.BUDGET_METHOD },
         ],
     },
     {
-        layouts: [{ key: SPENDING_LAYOUT.TRANSACTION_RECENT }, { key: SPENDING_LAYOUT.METHOD_SPENDING }],
+        layouts: [{ _id: SPENDING_LAYOUT.TRANSACTION_RECENT }, { _id: SPENDING_LAYOUT.METHOD_SPENDING }],
     },
 ]

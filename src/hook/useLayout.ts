@@ -20,42 +20,36 @@ interface GroupData {
 const useLayout = (options: Options) => {
     const { defaultGroupKey, defaultLayout, key } = options
     const { getLayoutGroup } = useConfig()
-    const differences = useRef<Layout[] | null | undefined>(undefined)
 
     const data = useMemo(() => {
         const layoutGroup = getLayoutGroup(key)
         if (layoutGroup) {
-            const keys = layoutGroup.layouts?.flatMap(({ layouts }) => layouts.map(({ key }) => key)) ?? []
+            const keys = layoutGroup.layouts.flatMap(({ layouts }) => layouts.map(({ _id }) => _id))
 
             if (isEmpty(keys)) {
                 layoutGroup.layouts = defaultLayout
             } else {
                 defaultLayout.forEach(({ layouts }, index) => {
-                    differences.current = layouts.filter((layout) => !keys.includes(layout.key))
-                    if (!isEmpty(differences.current)) {
+                    const differences = layouts.filter((layout) => !keys.includes(layout._id))
+                    if (!isEmpty(differences)) {
                         if (!layoutGroup.layouts[index]) {
                             layoutGroup.layouts[index] = { layouts: [] }
                         }
-                        layoutGroup.layouts[index].layouts.push(...differences.current)
+                        layoutGroup.layouts[index].layouts.push(...differences)
                     }
                 })
             }
 
             return layoutGroup
         }
-        differences.current = null
         return {
             _id: null,
-            group: null,
+            group: { _id: defaultGroupKey },
             layouts: defaultLayout,
         }
     }, [getLayoutGroup])
 
-    const getGroupLayout = async () => {
-        return await client.fetch<GroupData>(GET_GROUP_LAYOUT_BY_KEY, { key: defaultGroupKey })
-    }
-
-    return { data, getGroupLayout }
+    return { data }
 }
 
 export default useLayout

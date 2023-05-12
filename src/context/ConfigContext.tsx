@@ -185,7 +185,7 @@ const ConfigProvider = configHOC(({ children }) => {
 
     const getLayoutGroup = useCallback(
         (key: keyof typeof LAYOUT_GROUP) => {
-            return config.layouts.find((layout) => layout.group.key.toLowerCase() === LAYOUT_GROUP[key])
+            return config.layouts.find((layout) => layout.group._id === LAYOUT_GROUP[key])
         },
         [config.layouts]
     )

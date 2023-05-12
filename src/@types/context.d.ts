@@ -13,12 +13,12 @@ type LoadingItems = {
 
 export interface LayoutGroup {
     _id: string
-    key: string
+    name?: string
 }
 
 export interface Layout {
-    _id?: string
-    key: string
+    _id: string
+    name?: string
 }
 export interface LayoutItem {
     layouts: Layout[]

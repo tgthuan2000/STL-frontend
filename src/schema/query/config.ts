@@ -4,13 +4,11 @@ export const GET_USER_LAYOUT = groq`
     *[_type == "layoutUser" && user._ref == $userId] {
         _id,
         group-> {
-            _id,
-            key
+            _id
         },
         layouts[] {
             layouts[]-> {
-                _id,
-                key
+                _id
             }
         }
     }

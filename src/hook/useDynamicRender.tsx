@@ -34,9 +34,9 @@ const useDynamicRender = (options: UseDynamicRenderOptions) => {
         return _layouts.map((items, index) => {
             return (
                 <ElementsLayout key={index} id={index + ''}>
-                    {items.layouts.map(({ key }, index) => {
-                        const el = element[key]
-                        return <Fragment key={key}>{typeof el === 'function' ? el?.(index) : el}</Fragment>
+                    {items.layouts.map(({ _id }, index) => {
+                        const el = element[_id]
+                        return <Fragment key={_id}>{typeof el === 'function' ? el?.(index) : el}</Fragment>
                     })}
                 </ElementsLayout>
             )

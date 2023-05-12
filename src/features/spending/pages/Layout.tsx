@@ -19,8 +19,7 @@ const Layout = () => {
     const { userProfile } = useProfile()
 
     const {
-        data: { _id, layouts },
-        getGroupLayout,
+        data: { _id, layouts, group },
     } = useLayout({
         defaultGroupKey: LAYOUT_GROUP.SPENDING_DASHBOARD,
         defaultLayout: DEFAULT_SPENDING_LAYOUT,
@@ -56,15 +55,10 @@ const Layout = () => {
             setSubmitLoading(true)
             const transaction = client.transaction()
 
-            const group = await getGroupLayout()
-
             const format = (layouts: LayoutItem[]) => {
                 return layouts.map(({ layouts }) => ({
                     _type: 'layoutItem',
-                    layouts: layouts.map(({ _id, key }) => {
-                        const _ref = _id ?? group.layouts.find(({ key: _key }) => _key === key)?._id
-                        return { _type: 'layout', _ref }
-                    }),
+                    layouts: layouts.map(({ _id }) => ({ _type: 'layout', _ref: _id })),
                 }))
             }
 
