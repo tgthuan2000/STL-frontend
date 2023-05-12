@@ -121,6 +121,9 @@
     "STATISTIC": "Statistic",
     "TIME": "Time",
     "RECOMMEND": "Recommend",
+    "FIRST_LOGIN": "First login",
+    "LAST_ACCESS": "Last access",
+    "THIS_DEVICE": "This device",
 
     "APP_READY_WORK_OFFLINE": "App ready to work offline",
     "RELOAD_TEXT": "New content available, click on reload button to update.",
@@ -214,11 +217,13 @@
     "NOTIFY_DELETE_SCHEDULE_SUCCESSFULLY": "Delete schedule successfully",
     "NOTIFY_UPDATE_SCHEDULE_SUCCESSFULLY": "Update schedule successfully",
     "NOTIFY_EMAIL_EXIST": "Email exist",
+    "NOTIFY_DELETE_SUCCESS": "Delete successful",
 
     "CONFIRM_NOTIFY": "Do you want to notify?",
     "CONFIRM_DELETE_TRANSACTION": "Do you want to delete transaction?",
     "CONFIRM_DELETE_MESSAGE": "Do you want to delete message?",
     "CONFIRM_DELETE_SCHEDULE": "Do you want to delete this schedule?",
+    "CONFIRM_DELETE_DEVICE": "Do you want to delete this device?",
     "NEED_SAVE_TO_UPDATED": "Need save after changed to update",
 
     "SPENDING": "Spending management",
