@@ -24,7 +24,7 @@ const Title: React.FC<Props> = (props) => {
             <Component
                 to={to as To}
                 className={clsx('flex items-center gap-2 text-base font-normal text-gray-900 dark:text-white', {
-                    'hover:text-blue-700 dark:hover:text-cyan-600': to,
+                    'hover:text-blue-700 dark:hover:text-cyan-500': to,
                 })}
             >
                 {title}
