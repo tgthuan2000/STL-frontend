@@ -7,17 +7,42 @@ import { colors } from '~/constant/spending'
 import LANGUAGE from '~/i18n/language/key'
 import BudgetItem from './Item'
 import BudgetSkeleton from './Skeleton'
+import Empty from '../Empty'
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
+import { Button } from '~/components'
+import { useSearchParams } from 'react-router-dom'
+import { useSlideOver } from '~/context'
+import LoadingText from '~/components/Loading/LoadingText'
+
+const MakeBudget = React.lazy(() => import('../MakeBudget'))
 
 const Category: React.FC<BudgetProps> = ({ data, loading }) => {
     const { t } = useTranslation()
     const [ref] = useAutoAnimate<HTMLUListElement>()
+    const [, setSearchParams] = useSearchParams()
+    const { set } = useSlideOver()
+
+    const handleClick = () => {
+        setSearchParams((prev) => {
+            const url = new URLSearchParams(prev)
+            url.set('slide', 'budget')
+            return url
+        })
+        set({
+            title: t(LANGUAGE.MAKE_BUDGET),
+            content: <MakeBudget />,
+            slide: 'budget',
+            fallback: <LoadingText className='p-6' />,
+        })
+    }
+
     if (loading && isEmpty(data)) return <BudgetSkeleton />
 
     if (!isEmpty(data?.CategorySpending)) {
         return (
             <ul
                 role='list'
-                className='divide-y divide-gray-300 text-gray-900 dark:divide-slate-700 dark:text-slate-200'
+                className='divide-y divide-gray-100 text-gray-900 dark:divide-slate-700 dark:text-slate-200 sm:divide-gray-200'
                 ref={ref}
             >
                 {data?.CategorySpending?.map((item, index) => {
@@ -44,7 +69,13 @@ const Category: React.FC<BudgetProps> = ({ data, loading }) => {
             </ul>
         )
     }
-    return <div className='py-2 text-center text-gray-700 dark:text-slate-200'>{t(LANGUAGE.EMPTY_DATA)}</div>
+    return (
+        <Empty icon={CubeTransparentIcon} text={t(LANGUAGE.EMPTY_BUDGET_CATEGORY)}>
+            <Button type='button' onClick={handleClick} color='outline-yellow'>
+                {t(LANGUAGE.CREATE)}
+            </Button>
+        </Empty>
+    )
 }
 
 export default Category

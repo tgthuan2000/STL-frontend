@@ -2,7 +2,7 @@ import { isEmpty } from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
-import { AnimateWrap, PaperWrap } from '~/components'
+import { AnimateWrap, Paper } from '~/components'
 import LoadingWait from '~/components/Loading/LoadingWait'
 import { useTDF } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
@@ -48,7 +48,7 @@ const Users: React.FC<Props> = () => {
     }, 800)
 
     return (
-        <PaperWrap className='flex-1 sm:m-0' disabledPadding>
+        <Paper className='flex-1' disabledPadding>
             <div className='relative h-full text-gray-900 dark:text-slate-200 sm:py-4 lg:w-80'>
                 <LoadingWait loading={feedbacks.loading} className='absolute top-5 right-5' />
                 <AnimateWrap className='flex h-full flex-col overflow-auto'>
@@ -78,7 +78,7 @@ const Users: React.FC<Props> = () => {
                     <EmptyFeedback show={!feedbacks.loading && isEmpty(feedbacks.data?.data)} />
                 </AnimateWrap>
             </div>
-        </PaperWrap>
+        </Paper>
     )
 }
 

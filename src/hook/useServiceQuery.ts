@@ -1,18 +1,19 @@
 import { useMemo } from 'react'
 import { useConfig } from '~/context'
+import { service } from '~/services'
 import * as services from '~/services/query'
 import { useProfile } from '~/store/auth'
 
 const useServiceQuery = () => {
     let { userProfile } = useProfile()
-    const { getKindSpendingId, getKindSpendingIds } = useConfig()
+    const { getKindSpendingId, getKindSpendingIds, budgetSpending } = useConfig()
 
     const cost = useMemo(() => getKindSpendingId('COST') as string, [])
     const receive = useMemo(() => getKindSpendingId('RECEIVE') as string, [])
     const transferFrom = useMemo(() => getKindSpendingId('TRANSFER_FROM') as string, [])
     const transferTo = useMemo(() => getKindSpendingId('TRANSFER_TO') as string, [])
     const loan = useMemo(() => getKindSpendingId('LOAN') as string, [])
-    const getLoan = useMemo(() => getKindSpendingId('GET_LOAN') as string, [])
+    const getLoan = useMemo(() => getKindSpendingId('CREDIT') as string, [])
 
     return {
         // SPENDING
@@ -34,6 +35,13 @@ const useServiceQuery = () => {
         METHOD_SPENDING_DESC_SURPLUS: services.getMethodSpendingDescSurplus({ userProfile }),
         RECENT_SPENDING: services.getRecentSpending({ userProfile, getKindSpendingIds }),
         STATISTIC_SPENDING: services.getStatisticSpending({ userProfile }),
+        BUDGET_SPENDING: services.getBudgetSpending({
+            userProfile,
+            budgetId: budgetSpending?._id,
+            budgetKind: getKindSpendingId('COST') as string,
+            startDate: service.getDateOfMonth('start'),
+            endDate: service.getDateOfMonth('end'),
+        }),
 
         // LOAN
         GET_RECENT_LOAN: services.getRecentLoan({ userProfile, kindGetLoan: getLoan, kindLoan: loan }),

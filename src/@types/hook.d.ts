@@ -82,7 +82,7 @@ export interface CreateMethodDoc {
         _type: string
         _ref?: string
     }
-    active: boolean
+    display: boolean
 }
 
 export interface CreateCategoryDoc {
@@ -96,7 +96,7 @@ export interface CreateCategoryDoc {
         _type: string
         _ref?: string
     }
-    active: boolean
+    display: boolean
 }
 
 export interface DataStatistic {

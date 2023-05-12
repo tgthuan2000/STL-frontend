@@ -4,10 +4,30 @@ import { TAGS } from '~/constant'
 import { PERMISSION } from '~/constant/permission'
 import { KIND_SPENDING } from '~/constant/spending'
 import { AssignedNotify, ClientNotifyDataType } from './notify'
+import { LAYOUT_GROUP } from '~/constant/render-layout'
 
 type LoadingItems = {
     config: boolean
     submit: boolean
+}
+
+export interface LayoutGroup {
+    _id: string
+    name?: string
+}
+
+export interface Layout {
+    _id: string
+    name?: string
+}
+export interface LayoutItem {
+    layouts: Layout[]
+}
+
+export interface LayoutRender {
+    _id: string
+    group: LayoutGroup
+    layouts: LayoutItem[]
 }
 
 export interface ILoadingContext {
@@ -23,13 +43,17 @@ export interface IKindSpending {
 }
 export type GetKindSpendingId = (KEY: keyof typeof KIND_SPENDING) => string | undefined
 export type GetKindSpendingIds = (...KEYS: (keyof typeof KIND_SPENDING)[]) => string[]
+export type GetLayoutGroup = (key: keyof typeof LAYOUT_GROUP) => LayoutRender | undefined
 export interface IConfigContext {
     kindSpending: IKindSpending[]
     budgetSpending: { _id: string | undefined | null }
     role: IRoleControl | null | undefined
+    layouts: LayoutRender[]
     getKindSpendingId: GetKindSpendingId
     getKindSpendingIds: GetKindSpendingIds
+    getLayoutGroup: GetLayoutGroup
     hasPermissions: (keys: Array<PERMISSION>) => boolean
+    refetchLayout: () => Promise<void>
 }
 
 export type SlideOverTitle = React.ReactNode
@@ -113,7 +137,8 @@ export type QueryParams = { [key: string]: string | number | undefined | string[
 export interface IConfig {
     kindSpending: IKindSpending[]
     budgetSpending: { _id: string | undefined | null }
-    role: { role: IRoleControl } | null
+    role: IRoleControl
+    layouts: LayoutRender[]
 }
 
 export interface ICheckingContext {

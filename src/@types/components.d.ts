@@ -18,28 +18,6 @@ import { ISpendingData } from './spending'
 type TrackingFunc = (name: Path<any>) => Promise<void>
 type Rules = Omit<RegisterOptions<TFieldValues, TName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>
 
-export interface AutoCompleteProps {
-    name: string
-    className?: string
-    label?: string | DefaultTFuncReturn
-    data?: any[]
-    idKey?: string
-    valueKey?: string
-    onReload?: () => Promise<void> | void
-    addMore?: (value: any) => Promise<any>
-    loading?: boolean
-    form: UseFormReturn<any, object>
-    rules?: Rules
-    tracking?: TrackingFunc
-    disabled?: boolean
-    onChange?: (value: any) => void
-    showImage?: boolean
-    disabledClear?: boolean
-    disabledShowSurplus?: boolean
-    surplusName?: string | DefaultTFuncReturn
-    multiple?: boolean
-}
-
 export interface AutocompleteLabelProps {
     label?: string | DefaultTFuncReturn
     onReload?: () => Promise<void> | void
@@ -57,24 +35,6 @@ export interface AutocompleteButtonProps {
     setSelectedItem: React.Dispatch<any>
     field: ControllerRenderProps<any, string>
     onChange?: (value: any) => void
-}
-
-export interface AutocompleteInputProps {
-    loading?: boolean
-    disabled?: boolean
-    onChange?: (value: any) => void
-    onBlur?: () => void
-    loadingAddMore?: boolean
-    valueKey: string
-}
-
-export interface AutocompleteOptionProps {
-    filterData: any[]
-    idKey: string
-    valueKey: string
-    showImage?: boolean
-    query: string
-    addMore?: (value: any) => Promise<any>
 }
 
 export interface AutocompleteSurplusProps {
@@ -147,21 +107,6 @@ export interface DropdownItemsProps {
     field: ControllerRenderProps<any, string>
 }
 
-export interface InputProps
-    extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
-    className?: string
-    label?: string | DefaultTFuncReturn
-    name: string
-    type?: HTMLInputTypeAttribute
-    disabled?: boolean
-    form: UseFormReturn<any, object>
-    rules?: Rules
-    autoFocus?: boolean
-    numberHint?: boolean
-    calculator?: boolean
-    tracking?: TrackingFunc
-}
-
 export interface LabelProps {
     id?: string
     label?: DefaultTFuncReturn
@@ -207,33 +152,6 @@ export interface UploadImageCoreProps {
     getRootProps: (props?: any) => any
 }
 
-export interface DateProps {
-    className?: string
-    label?: string | DefaultTFuncReturn
-    name: string
-    error?: FieldError
-    form: UseFormReturn<any, object>
-    rules?: Rules
-    tracking?: TrackingFunc
-    disabledClear?: boolean
-    disabled?: boolean
-    onChange?: (value: any) => void
-    format?: keyof typeof DATE_FORMAT
-    showTimeInput?: boolean
-    placeholderText?: string | DefaultTFuncReturn
-    showMonthYearPicker?: boolean
-    showYearPicker?: boolean
-    selectsRange?: boolean
-    startDate?: Date
-    endDate?: Date
-    InputProps?: {
-        readOnly?: boolean
-    }
-    selectsStart?: boolean
-    selectsEnd?: boolean
-    minDate?: Date
-}
-
 export interface DatePickerInputProps {
     error?: FieldError
     label?: string | DefaultTFuncReturn
@@ -242,6 +160,7 @@ export interface DatePickerInputProps {
     disabled?: boolean
     field: ControllerRenderProps<any, string>
     readOnlyInput?: boolean
+    onClick?: any
 }
 
 export interface TextAreaProps {
@@ -277,18 +196,6 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
         | 'outline-yellow'
         | 'custom'
     disabled?: boolean
-}
-
-export interface ContentBoxProps {
-    title?: string | DefaultTFuncReturn
-    seeMore?: boolean
-    children: React.ReactNode
-    to?: string
-    onReload?: () => void
-    loading?: boolean
-    className?: string
-    fullWidth?: boolean
-    customHeaderEvent?: React.ReactNode
 }
 
 export interface ContentLoanBox2Props {
@@ -407,13 +314,6 @@ export interface IDataListView {
 
 export interface SettingIconProps {
     className?: string
-}
-
-export interface BoxTitleProps {
-    title?: string | DefaultTFuncReturn
-    onReload?: () => void
-    loading?: boolean
-    customEvent?: React.ReactNode
 }
 
 export interface ListProps {
@@ -643,4 +543,9 @@ export interface TwoFactorFormProps {
     password?: boolean
     placeholder?: string
     onSubmit: (data: string) => void
+}
+
+export interface RecommendOption {
+    id: string
+    name: string
 }

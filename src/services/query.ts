@@ -1,5 +1,6 @@
 import moment from 'moment'
 import {
+    GetBudgetSpending,
     GetCategorySpending,
     GetMethodKindSpending,
     GetMethodSpending,
@@ -14,6 +15,7 @@ import {
 import { TAGS } from '~/constant'
 import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
 import {
+    GET_BUDGET_BY_MONTH,
     GET_CATEGORY_SPENDING,
     GET_METHOD_SPENDING,
     GET_METHOD_SPENDING_DESC_SURPLUS,
@@ -93,7 +95,7 @@ export const getRecentLoanPaginate = <T extends Record<string, any>>({
         query: GET_RECENT_SPENDING_PAGINATE,
         params: {
             userId: userProfile?._id as string,
-            kindSpendingIds: getKindSpendingIds('GET_LOAN', 'LOAN'),
+            kindSpendingIds: getKindSpendingIds('CREDIT', 'LOAN'),
         },
         tags: TAGS.ALTERNATE,
     }
@@ -107,7 +109,7 @@ export const getRecentLoanFilterDateRangePaginate = <T extends Record<string, an
         query: GET_RECENT_SPENDING_FILTER_DATE_RANGE_PAGINATE,
         params: {
             userId: userProfile?._id as string,
-            kindSpendingIds: getKindSpendingIds('GET_LOAN', 'LOAN'),
+            kindSpendingIds: getKindSpendingIds('CREDIT', 'LOAN'),
         },
         tags: TAGS.ALTERNATE,
     }
@@ -136,6 +138,26 @@ export const getRecentSpendingFilterDateRangePaginate = <T extends Record<string
         params: {
             userId: userProfile?._id as string,
             kindSpendingIds: getKindSpendingIds('COST', 'RECEIVE', 'TRANSFER_FROM', 'TRANSFER_TO'),
+        },
+        tags: TAGS.ALTERNATE,
+    }
+}
+
+export const getBudgetSpending = <T extends Record<string, any>>({
+    userProfile,
+    budgetId,
+    budgetKind,
+    startDate,
+    endDate,
+}: GetBudgetSpending<T>): QueryResult => {
+    return {
+        query: GET_BUDGET_BY_MONTH,
+        params: {
+            userId: userProfile?._id as string,
+            startDate,
+            endDate,
+            budgetKind,
+            ...(budgetId && { budgetId }),
         },
         tags: TAGS.ALTERNATE,
     }

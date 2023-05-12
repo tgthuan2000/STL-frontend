@@ -4,7 +4,7 @@ export enum KIND_SPENDING {
     TRANSFER_FROM = 'transfer-from',
     TRANSFER_TO = 'transfer-to',
     LOAN = 'loan',
-    GET_LOAN = 'get-loan',
+    CREDIT = 'credit',
 }
 
 const C = ['indigo-500', 'green-500', 'yellow-500', 'blue-500', 'orange-500', 'purple-500', 'pink-500']

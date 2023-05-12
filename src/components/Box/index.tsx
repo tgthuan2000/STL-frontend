@@ -1,9 +1,17 @@
+import Container from './Container'
 import Content from './Content'
+import DraggableWrapContent from './DraggableWrapContent'
+import SkeletonContent from './SkeletonContent'
+import WrapContent from './WrapContent'
 
-const Box = ({ children }: { children?: React.ReactNode }) => {
-    return <div className='grid xl:grid-cols-2 grid-cols-1 xl:gap-6 gap-4'>{children}</div>
-}
+const Box = () => {}
+
+Box.Container = Container
+Box.WrapContent = WrapContent
 
 Box.Content = Content
+Box.SkeletonContent = SkeletonContent
+
+Box.DraggableWrapContent = DraggableWrapContent
 
 export default Box

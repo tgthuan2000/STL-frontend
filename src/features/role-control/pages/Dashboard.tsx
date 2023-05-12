@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { List } from '~/@types'
 import { IRoleControl } from '~/@types/role-control'
-import { AnimateWrap, Divider, PaperWrap, Transaction } from '~/components'
+import { AnimateWrap, Divider, Paper, Transaction } from '~/components'
 import { useCheck } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import MobileMenu from '../components/MobileMenu'
@@ -46,8 +46,8 @@ const Dashboard = () => {
 
             <Divider className='py-6 xl:hidden' dashed />
 
-            <PaperWrap
-                className='mt-0 flex flex-col divide-y text-gray-900 dark:divide-slate-700 dark:text-slate-200 md:h-[calc(100vh-280px)] md:flex-row md:divide-y-0 md:divide-x xl:mt-5 xl:h-[calc(100vh-230px)]'
+            <Paper
+                className='flex flex-col divide-y text-gray-900 dark:divide-slate-700 dark:text-slate-200 md:h-[calc(100vh-280px)] md:flex-row md:divide-y-0 md:divide-x xl:mt-5 xl:h-[calc(100vh-230px)]'
                 disabledPadding
             >
                 <AnimateWrap className='sm:flex-1 md:flex-[1.5] lg:flex-1'>
@@ -67,7 +67,7 @@ const Dashboard = () => {
                         refetch={refetch}
                     />
                 </AnimateWrap>
-            </PaperWrap>
+            </Paper>
         </Transaction>
     )
 }

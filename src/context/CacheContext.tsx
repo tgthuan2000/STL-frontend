@@ -15,7 +15,7 @@ const clone = <T extends ICacheData<T>>(
     obj: ICacheData<any>
 ): {
     [Property in TAGS]: DataCache<T>
-} => JSON.parse(JSON.stringify(obj))
+} => structuredClone(obj) as any
 
 const CacheContext = createContext<ICacheContext>({
     fetchApi: <T,>() => Promise.resolve({} as T),
@@ -82,7 +82,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
             const { query, params, tags } = payload
 
             const __params = service.deleteObjKeys(params, DeleteObjKeys)
-            /* queryHash: hash query & params (exclude from, to params) */
+            /* queryHash: hash query & params (exclude from, to,... params) */
             const queryHash = service.hashCode(JSON.stringify({ query, params: __params }))
 
             /* __cache: cache data of tag */
@@ -90,6 +90,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
 
             /* indexCache: index of cached data */
             const indexCache = __cache.length > 0 ? __cache.findIndex((c) => c.key === queryHash) : -1
+
             if (indexCache !== -1) {
                 __cache.splice(indexCache, 1)
                 cache[tags] = __cache
@@ -171,7 +172,7 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
                 : Object.assign(
                       {},
                       ...Object.keys(__params)
-                          .filter((x) => value.includes(x))
+                          .filter((x) => value.includes('$' + x))
                           .map((v) => ({ [v]: __params[v] }))
                   )
 

@@ -8,6 +8,7 @@ import { IUserProfile } from './auth'
 import { IKindSpending } from './context'
 import { Query } from './hook'
 import { IUserLoan } from './loan'
+import { RecommendOption } from './components'
 
 /* INTERFACES */
 
@@ -74,10 +75,12 @@ export interface IStatisticData {
 export interface IAddCategoryForm {
     name: string
     kindSpending: IKindSpending | null
+    recommends: RecommendOption[]
 }
 
 export interface IAddMethodForm {
     name: string
+    recommends: RecommendOption[]
 }
 
 export interface IAddCostForm {
@@ -122,7 +125,6 @@ interface Statistic {
     _id: string
     value: number
     name: string
-    getLoan?: number
     color: string
 }
 export interface StatisticProps {
@@ -165,7 +167,7 @@ export interface MakeIncomeQueryData {
 export interface MakeBudgetQueryData {
     methodSpending: IMethodSpending[]
     categorySpending: ICategorySpending[]
-    budgetSpending: IBudgetSpending
+    budget: IBudgetSpending
 }
 
 export interface MakeTransferQueryData {
@@ -260,7 +262,6 @@ export interface TabsProps {
 
 export interface MakeBudgetProps {
     form: UseFormReturn<IMakeBudgetForm, object>
-    budgetLoading: any
     onDelItem: (key: StateRefKey, id: string | null | undefined) => void
     loading?: boolean
 }

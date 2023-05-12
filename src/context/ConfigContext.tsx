@@ -5,19 +5,20 @@ import { Navigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IUserProfile } from '~/@types/auth'
 import { IConfig, IConfigContext } from '~/@types/context'
+import { IRoleControl } from '~/@types/role-control'
 import axios from '~/axiosConfig'
 import LoadingText from '~/components/Loading/LoadingText'
 import { CODE } from '~/constant/code'
 import { PERMISSION } from '~/constant/permission'
+import { DEFAULT_SPENDING_LAYOUT, LAYOUT_GROUP } from '~/constant/render-layout'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useAxios, useLogout } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
-import { GET_CONFIG } from '~/schema/query/config'
+import { GET_CONFIG, GET_USER_LAYOUT } from '~/schema/query/config'
 import { service } from '~/services'
 import { useAuth, useProfile } from '~/store/auth'
 import { useFlashScreen } from './FlashScreenContext'
-import { IRoleControl } from '~/@types/role-control'
 
 interface IConfigProps {
     children: React.ReactNode
@@ -27,9 +28,12 @@ const ConfigContext = createContext<IConfigContext>({
     kindSpending: [],
     budgetSpending: { _id: null },
     role: null,
+    layouts: [],
     getKindSpendingId: () => '',
     getKindSpendingIds: () => [''],
+    getLayoutGroup: () => undefined,
     hasPermissions: () => false,
+    refetchLayout: () => Promise.resolve(),
 })
 
 const configHOC = (Component: React.FC<IConfigProps>) => {
@@ -37,7 +41,6 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
         const { showFlashScreen, hiddenFlashScreen } = useFlashScreen()
         const { accessToken, refreshToken, setToken } = useAuth()
         const { userProfile, addUserProfile } = useProfile()
-        const { pathname } = useLocation()
         const { t } = useTranslation()
         const logout = useLogout()
         const _axios = useAxios()
@@ -114,7 +117,7 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
             getUserProfile()
         }, [accessToken, userProfile])
 
-        if (!accessToken) return <Navigate to='/auth' replace={true} state={{ url: pathname }} />
+        if (!accessToken) return <Fallback />
 
         if (userProfile === null) {
             return <></>
@@ -124,6 +127,11 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
     }
 }
 
+const Fallback = () => {
+    const { pathname } = useLocation()
+    return <Navigate to='/auth' replace={true} state={{ url: pathname }} />
+}
+
 const ConfigProvider = configHOC(({ children }) => {
     const { userProfile } = useProfile()
     const { showFlashScreen, hiddenFlashScreen } = useFlashScreen()
@@ -131,31 +139,31 @@ const ConfigProvider = configHOC(({ children }) => {
         kindSpending: [],
         budgetSpending: { _id: null },
         role: null,
+        layouts: [],
     })
     const { t } = useTranslation()
     const [ok, setOk] = useState(false)
 
     useEffect(() => {
+        if (userProfile && config.role) {
+            return
+        }
         const getConfig = async () => {
             try {
-                if (userProfile?._id && config.role === null) {
-                    showFlashScreen(
-                        <LoadingText
-                            text={t(LANGUAGE.LOADING_CONFIG)}
-                            className='text-md whitespace-nowrap sm:text-lg'
-                        />
-                    )
-                    const { kindSpending, role }: IConfig = await client.fetch(GET_CONFIG, {
-                        userId: userProfile?._id as string,
-                    })
-                    setConfig((prev) => ({
-                        ...prev,
-                        kindSpending,
-                        budgetSpending: { _id: service.getBudgetId(userProfile?._id as string) },
-                        role: role?.role as IRoleControl,
-                    }))
-                    setOk(true)
-                }
+                showFlashScreen(
+                    <LoadingText text={t(LANGUAGE.LOADING_CONFIG)} className='text-md whitespace-nowrap sm:text-lg' />
+                )
+                const { kindSpending, user, layouts } = await client.fetch(GET_CONFIG, {
+                    userId: userProfile?._id as string,
+                })
+                setConfig((prev) => ({
+                    ...prev,
+                    kindSpending,
+                    budgetSpending: { _id: service.getBudgetId(userProfile?._id as string) },
+                    role: user.role,
+                    layouts: layouts ?? [],
+                }))
+                setOk(true)
             } catch (error) {
                 console.log(error)
             } finally {
@@ -164,6 +172,23 @@ const ConfigProvider = configHOC(({ children }) => {
         }
         getConfig()
     }, [userProfile, config])
+
+    const refetchLayout = async () => {
+        const layouts = await client.fetch(GET_USER_LAYOUT, {
+            userId: userProfile?._id as string,
+        })
+        setConfig((prev) => ({
+            ...prev,
+            layouts: layouts ?? [],
+        }))
+    }
+
+    const getLayoutGroup = useCallback(
+        (key: keyof typeof LAYOUT_GROUP) => {
+            return config.layouts.find((layout) => layout.group._id === LAYOUT_GROUP[key])
+        },
+        [config.layouts]
+    )
 
     const getKindSpendingId = useCallback(
         (KEY: keyof typeof KIND_SPENDING) => {
@@ -200,9 +225,12 @@ const ConfigProvider = configHOC(({ children }) => {
         kindSpending: config.kindSpending,
         budgetSpending: config.budgetSpending,
         role: config.role,
+        layouts: config.layouts,
         getKindSpendingId,
         getKindSpendingIds,
+        getLayoutGroup,
         hasPermissions,
+        refetchLayout,
     }
 
     if (!ok) {

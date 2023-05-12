@@ -5,6 +5,7 @@ import {
     CalendarDaysIcon,
     ClipboardDocumentListIcon,
     EllipsisHorizontalCircleIcon,
+    HashtagIcon,
     HomeIcon,
     MinusCircleIcon,
     PlusCircleIcon,
@@ -133,11 +134,11 @@ export const useMenuLoanMobile = (): IMenuBtn[] => {
     const data = useMemo(() => {
         return [
             {
-                title: t(LANGUAGE.MAKE_GET_LOAN),
+                title: t(LANGUAGE.MAKE_CREDIT),
                 color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
                 icon: ArrowTrendingUpIcon,
                 children: <MakeGetLoan />,
-                slide: 'get-loan',
+                slide: 'credit',
             },
             // {
             //     title: t(LANGUAGE_MAKE_LOAN),
@@ -248,11 +249,17 @@ export const useMenuSpendingPC = (): IMenuBtn[] => {
                 icon: ClipboardDocumentListIcon,
                 to: 'transaction',
             },
+            // {
+            //     title: t(LANGUAGE.METHOD_SPENDING),
+            //     color: 'text-purple-700 bg-purple-200 hover:bg-purple-300 dark:text-purple-500',
+            //     icon: QrCodeIcon,
+            //     to: 'method',
+            // },
             {
-                title: t(LANGUAGE.METHOD_SPENDING),
-                color: 'text-purple-700 bg-purple-200 hover:bg-purple-300 dark:text-purple-500',
-                icon: QrCodeIcon,
-                to: 'method',
+                title: t(LANGUAGE.LAYOUT),
+                color: 'text-lime-700 bg-lime-200 hover:bg-lime-300 dark:text-lime-500',
+                icon: RectangleGroupIcon,
+                to: 'layout',
             },
             {
                 title: t(LANGUAGE.OTHERS),
@@ -271,7 +278,7 @@ export const useMenuSpendingPC = (): IMenuBtn[] => {
             {
                 title: t(LANGUAGE.CREATE_CATEGORY),
                 color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
-                icon: RectangleGroupIcon,
+                icon: HashtagIcon,
                 children: <AddCategory />,
                 slide: 'add-category',
             },
@@ -287,11 +294,11 @@ export const useMenuLoanPC = (): IMenuBtn[] => {
     const data: IMenuBtn[] = useMemo(() => {
         return [
             {
-                title: t(LANGUAGE.MAKE_GET_LOAN),
+                title: t(LANGUAGE.MAKE_CREDIT),
                 color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
                 icon: ArrowTrendingUpIcon,
                 children: <MakeGetLoan />,
-                slide: 'get-loan',
+                slide: 'credit',
             },
             // {
             //     title: t(LANGUAGE.MAKE_LOAN),
@@ -429,17 +436,23 @@ export const useMenuSpendingPages = (): IMenuBtn[] => {
                 icon: ClipboardDocumentListIcon,
                 to: 'transaction',
             },
-            {
-                title: t(LANGUAGE.METHOD_SPENDING),
-                color: 'text-purple-700 dark:text-purple-500',
-                icon: QrCodeIcon,
-                to: 'method',
-            },
+            // {
+            //     title: t(LANGUAGE.METHOD_SPENDING),
+            //     color: 'text-purple-700 dark:text-purple-500',
+            //     icon: QrCodeIcon,
+            //     to: 'method',
+            // },
             {
                 title: t(LANGUAGE.OTHERS),
                 color: 'text-pink-700 dark:text-pink-500',
                 icon: EllipsisHorizontalCircleIcon,
                 to: 'others',
+            },
+            {
+                title: t(LANGUAGE.LAYOUT),
+                color: 'text-lime-700 dark:text-lime-500',
+                icon: RectangleGroupIcon,
+                to: 'layout',
             },
         ]
     }, [t])

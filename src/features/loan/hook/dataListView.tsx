@@ -76,7 +76,7 @@ export const useColumns = (): Array<TableColumn<ISpendingData>> => {
                 title: <p className='text-green-500'>{t(LANGUAGE.RECEIVE)}</p>,
                 label: 'string',
                 renderRow: ({ kindSpending, amount, realPaid }) => {
-                    const isGetLoan = KIND_SPENDING.GET_LOAN === kindSpending.key
+                    const isGetLoan = KIND_SPENDING.CREDIT === kindSpending.key
                     const receive = isGetLoan ? amount : realPaid
                     return (
                         <td className='whitespace-nowrap px-1 text-center text-sm'>
@@ -92,7 +92,7 @@ export const useColumns = (): Array<TableColumn<ISpendingData>> => {
                 title: <p className='text-red-500'>{t(LANGUAGE.COST)}</p>,
                 label: 'string',
                 renderRow: ({ kindSpending, amount, realPaid }) => {
-                    const isGetLoan = KIND_SPENDING.GET_LOAN === kindSpending.key
+                    const isGetLoan = KIND_SPENDING.CREDIT === kindSpending.key
                     const cost = isGetLoan ? realPaid : amount
                     return (
                         <td className='whitespace-nowrap px-1 text-center text-sm'>
@@ -139,7 +139,7 @@ export const useRenderList = () => {
                         </div>
                         <p
                             className={clsx(
-                                { 'text-green-500': [KIND_SPENDING.GET_LOAN].includes(kindSpending.key) },
+                                { 'text-green-500': [KIND_SPENDING.CREDIT].includes(kindSpending.key) },
                                 { 'text-red-500': [KIND_SPENDING.LOAN].includes(kindSpending.key) },
                                 'text-sm font-normal lg:text-base'
                             )}

@@ -9,7 +9,7 @@ import { AnimateWrap, DataListView, ListViewFilter, Transaction } from '~/compon
 import { COUNT_PAGINATE } from '~/constant'
 import { __groupBy } from '~/constant/component'
 import { useCheck, useConfig } from '~/context'
-import { useListViewFilter, useQuery, useWindowSize } from '~/hook'
+import { useListViewFilter, useQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { useProfile } from '~/store/auth'
 import { getLinkSpending } from '~/utils'
@@ -20,14 +20,13 @@ import * as __services from '../services/dataListView'
 const TransactionRecent = () => {
     const { t } = useTranslation()
     const { userProfile } = useProfile()
-    const { width } = useWindowSize()
     const { getKindSpendingIds } = useConfig()
     const [searchParams] = useSearchParams()
     const getAll = useMemo(
         () =>
             services.getAll({
                 userId: userProfile?._id as string,
-                kindSpendingIds: getKindSpendingIds('GET_LOAN', 'LOAN'),
+                kindSpendingIds: getKindSpendingIds('CREDIT', 'LOAN'),
             }),
         []
     )
@@ -47,7 +46,7 @@ const TransactionRecent = () => {
         const data = total.data
         if (!Array.isArray(data) || isNil(data) || isEmpty(data)) return
         const defaultValue = { total: 0, count: 0 }
-        const { loan, 'get-loan': getLoan } = data.reduce(
+        const { loan, credit: getLoan } = data.reduce(
             (result, value) => {
                 return {
                     ...result,
@@ -57,7 +56,7 @@ const TransactionRecent = () => {
                     },
                 }
             },
-            { loan: defaultValue, 'get-loan': defaultValue }
+            { loan: defaultValue, credit: defaultValue }
         )
 
         return {
@@ -132,7 +131,7 @@ const TransactionRecent = () => {
                             loading={recent.loading}
                             onSubmitTimeFilter={handleFilterSubmit}
                             receiveTitle={t(LANGUAGE.LOAN)}
-                            costTitle={t(LANGUAGE.GET_LOAN)}
+                            costTitle={t(LANGUAGE.CREDIT)}
                         />
 
                         {error ? (

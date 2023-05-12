@@ -1,3 +1,4 @@
+/** NEED REFACTOR */
 import { yupResolver } from '@hookform/resolvers/yup'
 import { isEmpty, isUndefined } from 'lodash'
 import moment from 'moment'
@@ -35,7 +36,10 @@ const useSchema = () => {
                 .object()
                 .nullable()
                 .required(t(LANGUAGE.REQUIRED_METHOD) as string),
-            date: yup.date().required(t(LANGUAGE.REQUIRED_DATE) as string),
+            date: yup
+                .date()
+                .required(t(LANGUAGE.REQUIRED_DATE) as string)
+                .typeError(t(LANGUAGE.REQUIRED_DATE) as string),
             description: yup.string(),
             image: yup.mixed(),
         })

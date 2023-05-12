@@ -2,19 +2,43 @@ import { Combobox } from '@headlessui/react'
 import clsx from 'clsx'
 import { filter, find, get, isNil } from 'lodash'
 import { forwardRef, useEffect, useMemo, useState } from 'react'
-import { Controller } from 'react-hook-form'
+import { Controller, UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
-import { AutoCompleteProps } from '~/@types/components'
 import ErrorMessage from '~/components/ErrorMessage'
 import LANGUAGE from '~/i18n/language/key'
 import Button from './Button'
 import Input from './Input'
 import Label from './Label'
-import Option from './Option'
+import Options from './Options'
 import Surplus from './Surplus'
+import { DefaultTFuncReturn } from 'i18next'
+import { Rules, TrackingFunc } from '~/@types/components'
 
-const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>((props, ref) => {
+export interface Props {
+    name: string
+    className?: string
+    label?: string | DefaultTFuncReturn
+    data?: any[]
+    idKey?: string
+    valueKey?: string
+    onReload?: () => Promise<void> | void
+    addMore?: (value: any) => Promise<any>
+    loading?: boolean
+    form: UseFormReturn<any, object>
+    rules?: Rules
+    tracking?: TrackingFunc
+    disabled?: boolean
+    onChange?: (value: any) => void
+    showImage?: boolean
+    disabledClear?: boolean
+    disabledShowSurplus?: boolean
+    surplusName?: string | DefaultTFuncReturn
+    multiple?: boolean
+    EmptyOptionFallback?: React.ReactNode
+}
+
+const AutoComplete = forwardRef<HTMLInputElement, Props>((props, ref) => {
     const { t } = useTranslation()
     const {
         label,
@@ -36,6 +60,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>((props, ref
         surplusName = t(LANGUAGE.SURPLUS),
         disabledShowSurplus,
         multiple = false,
+        EmptyOptionFallback,
     } = props
 
     const value = useMemo(() => {
@@ -63,7 +88,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>((props, ref
     }, [selectedItem])
 
     const filterData =
-        query === '' ? data : filter(data, (item) => item[valueKey].toLowerCase().includes(query.toLowerCase()))
+        query === '' ? data : filter(data, (item) => item[valueKey]?.toLowerCase().includes(query.toLowerCase()))
 
     const handleChange = async (value: any, fieldChange: (...event: any[]) => void) => {
         if (typeof value === 'string') {
@@ -140,13 +165,14 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>((props, ref
                                 setSelectedItem={setSelectedItem}
                             />
 
-                            <Option
+                            <Options
                                 addMore={addMore}
                                 filterData={filterData}
                                 idKey={idKey}
                                 valueKey={valueKey}
                                 query={query}
                                 showImage={showImage}
+                                EmptyOptionFallback={EmptyOptionFallback}
                             />
                         </div>
                     </Combobox>

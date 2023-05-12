@@ -60,7 +60,7 @@ const EditForm: React.FC<EditFormProps> = ({ name, origin, onCancel, onSubmit })
 
     return (
         <form className='p-3' onSubmit={form.handleSubmit(handleSubmit)}>
-            <div className='flex flex-col gap-2 rounded border p-5 shadow-md'>
+            <div className='flex flex-col gap-2 rounded border p-5 shadow-md dark:border-slate-700'>
                 <Input form={form} name='name' label={t(LANGUAGE.NAME)} autoFocus disabled={loading} />
                 <CheckName show={Boolean(!loading && watchName.length >= 2)} list={sameList} watchValue={watchName} />
                 <AnimateWrap className='flex gap-2'>

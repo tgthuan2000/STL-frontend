@@ -33,6 +33,14 @@ export interface GetRecentSpendingPaginate<T extends Record<string, any>> {
     getKindSpendingIds: GetKindSpendingIds
 }
 
+export interface GetBudgetSpending<T extends Record<string, any>> {
+    userProfile: SanityDocument<T> | null
+    budgetId: string | undefined | null
+    budgetKind: string
+    startDate: string
+    endDate: string
+}
+
 export interface GetRecentLoan<T extends Record<string, any>> {
     userProfile: SanityDocument<T> | null
     kindLoan: string
