@@ -108,7 +108,7 @@ const Layout = () => {
         <Transaction hasBack={false} title={t(LANGUAGE.SPENDING)}>
             {/* Show analytics */}
             <div className='flex flex-col gap-8 rounded-2xl bg-gray-200 p-4 dark:bg-slate-800 sm:p-6'>
-                <div className='flex justify-end gap-4'>
+                <div className='flex flex-wrap justify-end gap-4'>
                     <Button type='button' color='outline-radicalRed' onClick={pop}>
                         {t(LANGUAGE.DELETE)}
                     </Button>
