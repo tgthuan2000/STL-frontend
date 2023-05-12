@@ -1,5 +1,21 @@
 import groq from 'groq'
 
+export const GET_USER_LAYOUT = groq`
+    *[_type == "layoutUser" && user._ref == $userId] {
+        _id,
+        group-> {
+            _id,
+            key
+        },
+        layouts[] {
+            layouts[]-> {
+                _id,
+                key
+            }
+        }
+    }
+`
+
 export const GET_CONFIG = groq`
     {
         "kindSpending": *[_type == "kindSpending"] {
@@ -15,20 +31,7 @@ export const GET_CONFIG = groq`
                     _id,
                 }
             },
-            layouts[] {
-                group-> {
-                    _id,
-                    key
-                },
-                items[] {
-                    layout-> {
-                        _id,
-                        key
-                    },
-                    index,
-                    order
-                }
-            }
-         }
+         },
+        "layouts": ${GET_USER_LAYOUT}
     }
 `

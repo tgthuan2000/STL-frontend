@@ -10,12 +10,12 @@ import axios from '~/axiosConfig'
 import LoadingText from '~/components/Loading/LoadingText'
 import { CODE } from '~/constant/code'
 import { PERMISSION } from '~/constant/permission'
-import { LAYOUT_GROUP } from '~/constant/render-layout'
+import { DEFAULT_SPENDING_LAYOUT, LAYOUT_GROUP } from '~/constant/render-layout'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useAxios, useLogout } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
-import { GET_CONFIG } from '~/schema/query/config'
+import { GET_CONFIG, GET_USER_LAYOUT } from '~/schema/query/config'
 import { service } from '~/services'
 import { useAuth, useProfile } from '~/store/auth'
 import { useFlashScreen } from './FlashScreenContext'
@@ -33,6 +33,7 @@ const ConfigContext = createContext<IConfigContext>({
     getKindSpendingIds: () => [''],
     getLayoutGroup: () => undefined,
     hasPermissions: () => false,
+    refetchLayout: () => Promise.resolve(),
 })
 
 const configHOC = (Component: React.FC<IConfigProps>) => {
@@ -152,7 +153,7 @@ const ConfigProvider = configHOC(({ children }) => {
                 showFlashScreen(
                     <LoadingText text={t(LANGUAGE.LOADING_CONFIG)} className='text-md whitespace-nowrap sm:text-lg' />
                 )
-                const { kindSpending, user } = await client.fetch(GET_CONFIG, {
+                const { kindSpending, user, layouts } = await client.fetch(GET_CONFIG, {
                     userId: userProfile?._id as string,
                 })
                 setConfig((prev) => ({
@@ -160,7 +161,7 @@ const ConfigProvider = configHOC(({ children }) => {
                     kindSpending,
                     budgetSpending: { _id: service.getBudgetId(userProfile?._id as string) },
                     role: user.role,
-                    layouts: user.layouts ?? [],
+                    layouts: layouts ?? [],
                 }))
                 setOk(true)
             } catch (error) {
@@ -171,6 +172,16 @@ const ConfigProvider = configHOC(({ children }) => {
         }
         getConfig()
     }, [userProfile, config])
+
+    const refetchLayout = async () => {
+        const layouts = await client.fetch(GET_USER_LAYOUT, {
+            userId: userProfile?._id as string,
+        })
+        setConfig((prev) => ({
+            ...prev,
+            layouts: layouts ?? [],
+        }))
+    }
 
     const getLayoutGroup = useCallback(
         (key: keyof typeof LAYOUT_GROUP) => {
@@ -219,6 +230,7 @@ const ConfigProvider = configHOC(({ children }) => {
         getKindSpendingIds,
         getLayoutGroup,
         hasPermissions,
+        refetchLayout,
     }
 
     if (!ok) {

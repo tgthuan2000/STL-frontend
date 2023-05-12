@@ -17,18 +17,17 @@ export interface LayoutGroup {
 }
 
 export interface Layout {
-    _id: string
+    _id?: string
     key: string
 }
 export interface LayoutItem {
-    layout: Layout
-    index: number
-    order: number
+    layouts: Layout[]
 }
 
 export interface LayoutRender {
+    _id: string
     group: LayoutGroup
-    items: LayoutItem[]
+    layouts: LayoutItem[]
 }
 
 export interface ILoadingContext {
@@ -54,6 +53,7 @@ export interface IConfigContext {
     getKindSpendingIds: GetKindSpendingIds
     getLayoutGroup: GetLayoutGroup
     hasPermissions: (keys: Array<PERMISSION>) => boolean
+    refetchLayout: () => Promise<void>
 }
 
 export type SlideOverTitle = React.ReactNode

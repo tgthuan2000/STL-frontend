@@ -14,7 +14,7 @@ const LoadingText: React.FC<LoadingTextProps> = ({ className, text, cancelAnimat
     return (
         <span
             className={clsx(
-                'inline-block text-gray-700 dark:text-slate-200',
+                'inline-block truncate text-gray-700 dark:text-slate-200',
                 { 'animate-pulse': !cancelAnimate },
                 className
             )}

@@ -1,16 +1,16 @@
 import clsx from 'clsx'
-import React from 'react'
+import React, { useId } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 
 interface Props {
     title: string
     className?: string
     index: number
-    id: string
 }
 
 const SkeletonContent: React.FC<Props> = (props) => {
-    const { title, className, index, id } = props
+    const { title, className, index } = props
+    const id = useId()
 
     return (
         <Draggable draggableId={id} index={index}>

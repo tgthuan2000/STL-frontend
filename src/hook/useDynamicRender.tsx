@@ -1,104 +1,55 @@
-import { findIndex, isEmpty, sortBy } from 'lodash'
+import { isEmpty } from 'lodash'
 import React, { Fragment, startTransition, useCallback, useMemo, useState } from 'react'
+import { LayoutItem } from '~/@types/context'
 
 interface Props {
     children: React.ReactNode
 }
 
-interface Item {
-    index: number
-    order: number
-}
-
 interface UseDynamicRenderOptions {
     RootLayout?: React.FC<Props>
-    ElementsLayout?: React.FC<Props & { id: string }>
-    layouts: Array<Item & { layout: { key: string } }>
-}
-
-interface Result {
-    [x: number]: JSX.Element[]
+    ElementsLayout?: React.FC<Props & { id?: string }>
+    layouts: LayoutItem[]
 }
 
 interface Element {
-    [x: string]: (option: { id: string; order: number }) => JSX.Element
+    [x: string]: ((index: number) => JSX.Element) | JSX.Element
+}
+
+interface Item {
+    id: string
+    index: number
 }
 
 const useDynamicRender = (options: UseDynamicRenderOptions) => {
     const { RootLayout = Fragment, ElementsLayout = Fragment, layouts } = options
     const [element, setElement] = useState<Element>({})
-    const [_layouts, setLayout] = useState(layouts)
+    const [_layouts, setLayout] = useState<LayoutItem[]>(layouts)
 
     const render = useMemo(() => {
         if (isEmpty(element)) {
             return
         }
 
-        const result = []
-
-        const childrens = _layouts.reduce((result: Result, layout) => {
-            const {
-                layout: { key },
-                index,
-                order,
-            } = layout
-
-            const el = element[key]
-
-            const Element = <Fragment key={key}>{el?.({ id: key, order })}</Fragment>
-
-            if (result[index]) {
-                result[index].push(Element)
-            } else {
-                result[index] = [Element]
-            }
-
-            return result
-        }, {})
-
-        for (const [key, children] of Object.entries(childrens)) {
-            result.push(
-                <ElementsLayout key={key} id={key}>
-                    {children}
+        return _layouts.map((items, index) => {
+            return (
+                <ElementsLayout key={index} id={index + ''}>
+                    {items.layouts.map(({ key }, index) => {
+                        const el = element[key]
+                        return <Fragment key={key}>{typeof el === 'function' ? el?.(index) : el}</Fragment>
+                    })}
                 </ElementsLayout>
             )
-        }
-
-        return result
+        })
     }, [element, _layouts])
 
     const updateLayout = useCallback((from: Item, to: Item) => {
         setLayout((prev) => {
-            let _layout = structuredClone(prev)
-            const fromLayoutIdx = findIndex(prev, { index: from.index, order: from.order })
-            if (fromLayoutIdx !== -1) {
-                // delete old element
-                _layout.splice(fromLayoutIdx, 1)
-
-                const fromLayout = prev[fromLayoutIdx]
-                fromLayout.index = to.index
-                fromLayout.order = to.order
-                _layout = _layout.map((layout) => {
-                    if (layout.index === to.index) {
-                        if (to.index === from.index) {
-                            if (layout.order <= to.order && layout.order > from.order) {
-                                return { ...layout, order: layout.order - 1 }
-                            }
-                            return layout
-                        }
-                        if (layout.order >= to.order) {
-                            return { ...layout, order: layout.order + 1 }
-                        }
-                    }
-                    if (layout.index === from.index && layout.order >= from.order) {
-                        return { ...layout, order: layout.order - 1 }
-                    }
-                    return layout
-                })
-                _layout.push(fromLayout)
-            }
-
-            return sortBy(_layout, ['index', 'order'])
+            const layout = structuredClone(prev)
+            const temp = layout[+from.id].layouts[from.index]
+            layout[+from.id].layouts.splice(from.index, 1)
+            layout[+to.id].layouts.splice(to.index, 0, temp)
+            return layout
         })
     }, [])
 
@@ -108,10 +59,48 @@ const useDynamicRender = (options: UseDynamicRenderOptions) => {
         })
     }, [])
 
+    const reset = useCallback(() => {
+        setLayout(layouts)
+    }, [layouts])
+
+    const push = useCallback(() => {
+        setLayout((prev) => {
+            const layouts = structuredClone(prev)
+            layouts.push({ layouts: [] })
+            return layouts
+        })
+    }, [])
+
+    const pop = useCallback(() => {
+        setLayout((prev) => {
+            const layouts = structuredClone(prev)
+            const lastEl = layouts.at(-1)
+            if (lastEl) {
+                if (isEmpty(lastEl.layouts)) {
+                    layouts.pop()
+                }
+            }
+            return layouts
+        })
+    }, [])
+
+    const submit = useCallback(
+        (onSubmit: (layout: LayoutItem[]) => void | Promise<void>) => {
+            return () => {
+                onSubmit(_layouts)
+            }
+        },
+        [_layouts]
+    )
+
     return {
         setElement: setElementTransition,
         renderComponent: <RootLayout>{render}</RootLayout>,
         updateLayout,
+        reset,
+        push,
+        pop,
+        submit,
     }
 }
 
