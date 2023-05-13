@@ -55,13 +55,13 @@ exports[`query > getRecentLoan 1`] = `
 {
   "params": {
     "from": 0,
-    "kindGetLoan": "123",
+    "kindCredit": "123",
     "kindLoan": "123",
     "to": 10,
     "userId": "123",
   },
   "query": "
-    *[_type == \\"spending\\" && user._ref == $userId && !paid && kindSpending._ref in [$kindLoan, $kindGetLoan]] | order(_updatedAt desc) [$from...$to]
+    *[_type == \\"spending\\" && user._ref == $userId && !paid && kindSpending._ref in [$kindLoan, $kindCredit]] | order(_updatedAt desc) [$from...$to]
     {
         _id,
         amount,

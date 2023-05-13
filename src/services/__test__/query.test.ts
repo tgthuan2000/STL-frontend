@@ -90,8 +90,8 @@ describe('query', () => {
             _updatedAt: '',
         }
         const kindLoan = '123'
-        const kindGetLoan = '123'
-        expect(getRecentLoan({ userProfile, kindLoan, kindGetLoan })).toMatchSnapshot()
+        const kindCredit = '123'
+        expect(getRecentLoan({ userProfile, kindLoan, kindCredit })).toMatchSnapshot()
     })
 
     // it('getPayDueLoan', () => {
@@ -103,8 +103,8 @@ describe('query', () => {
     //         _updatedAt: '',
     //     }
     //     const kindLoan = '123'
-    //     const kindGetLoan = '123'
-    //     expect(getPayDueLoan({ userProfile, kindLoan, kindGetLoan })).toMatchSnapshot()
+    //     const kindCredit = '123'
+    //     expect(getPayDueLoan({ userProfile, kindLoan, kindCredit })).toMatchSnapshot()
     // })
 
     it('getStatisticLoan', () => {

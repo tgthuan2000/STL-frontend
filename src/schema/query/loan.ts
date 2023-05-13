@@ -11,7 +11,7 @@ export const GET_USER_LOAN = groq`
 `
 
 export const GET_RECENT_LOAN = groq`
-    *[_type == "spending" && user._ref == $userId && !paid && kindSpending._ref in [$kindLoan, $kindGetLoan]] | order(_updatedAt desc) [$from...$to]
+    *[_type == "spending" && user._ref == $userId && !paid && kindSpending._ref in [$kindLoan, $kindCredit]] | order(_updatedAt desc) [$from...$to]
     {
         _id,
         amount,
@@ -40,7 +40,7 @@ export const GET_STATISTIC_LOAN = groq`
 `
 
 export const GET_PAY_DUE_LOAN = groq`
-    *[_type == "spending" && user._ref == $userId && estimatePaidDate < $dueDate && !paid && kindSpending._ref in [$kindLoan, $kindGetLoan]] | order(estimatePaidDate asc) [$from...$to]
+    *[_type == "spending" && user._ref == $userId && estimatePaidDate < $dueDate && !paid && kindSpending._ref in [$kindLoan, $kindCredit]] | order(estimatePaidDate asc) [$from...$to]
     {
         _id,
         amount,

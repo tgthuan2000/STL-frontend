@@ -26,7 +26,7 @@ const Dashboard = () => {
         <Fragment>
             <GoogleLogin onSuccess={signInWithGoogle} onError={() => {}} />
             <button
-                className='flex h-10 w-auto animate-bg-animate items-center rounded-md border-transparent bg-gradient-to-r from-[#12c2e9] via-[#c471ed] to-[#f64f59] bg-400% text-xs font-medium text-white sm:px-6 sm:text-sm'
+                className='flex h-10 w-auto animate-bg-animate items-center rounded-md border-transparent bg-gradient-to-r from-[#12c2e9] via-[#c471ed] to-[#f64f59] bg-400% px-4 text-xs font-medium text-white sm:px-6 sm:text-sm'
                 type='button'
                 onClick={() => setShowFormLogin(true)}
             >
