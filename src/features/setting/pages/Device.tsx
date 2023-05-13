@@ -139,7 +139,7 @@ const Item: React.FC<ItemProps> = (props) => {
             </div>
 
             {data.thisDevice && (
-                <div className='absolute right-3 top-2'>
+                <div className='absolute right-3 top-1 sm:top-2'>
                     <span className='text-xs font-normal text-prussian-blue-400 dark:text-orange-500'>
                         {t(LANGUAGE.THIS_DEVICE)}
                     </span>

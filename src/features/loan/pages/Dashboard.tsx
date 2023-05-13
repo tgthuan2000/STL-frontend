@@ -28,7 +28,7 @@ const Dashboard = () => {
             to: 10,
             dueDate: moment().utc(true).add(7, 'days').toISOString(),
             kindLoan: getKindSpendingId('LOAN') as string,
-            kindGetLoan: getKindSpendingId('CREDIT') as string,
+            kindCredit: getKindSpendingId('CREDIT') as string,
         },
         {
             paydue: TAGS.ALTERNATE,
