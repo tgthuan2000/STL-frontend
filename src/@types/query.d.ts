@@ -44,13 +44,13 @@ export interface GetBudgetSpending<T extends Record<string, any>> {
 export interface GetRecentLoan<T extends Record<string, any>> {
     userProfile: SanityDocument<T> | null
     kindLoan: string
-    kindGetLoan: string
+    kindCredit: string
 }
 
 export interface GetPayDueLoan<T extends Record<string, any>> {
     userProfile: SanityDocument<T> | null
     kindLoan: string
-    kindGetLoan: string
+    kindCredit: string
 }
 
 export interface GetStatisticLoan<T extends Record<string, any>> {

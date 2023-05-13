@@ -44,8 +44,8 @@ const useServiceQuery = () => {
         }),
 
         // LOAN
-        GET_RECENT_LOAN: services.getRecentLoan({ userProfile, kindGetLoan: getLoan, kindLoan: loan }),
-        GET_PAY_DUE_LOAN: services.getPayDueLoan({ userProfile, kindGetLoan: getLoan, kindLoan: loan }),
+        GET_RECENT_LOAN: services.getRecentLoan({ userProfile, kindCredit: getLoan, kindLoan: loan }),
+        GET_PAY_DUE_LOAN: services.getPayDueLoan({ userProfile, kindCredit: getLoan, kindLoan: loan }),
         GET_STATISTIC_LOAN: services.getStatisticLoan({ userProfile }),
     }
 }

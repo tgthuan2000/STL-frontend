@@ -168,11 +168,11 @@ export const getBudgetSpending = <T extends Record<string, any>>({
 export const getRecentLoan = <T extends Record<string, any>>({
     userProfile,
     kindLoan,
-    kindGetLoan,
+    kindCredit,
 }: GetRecentLoan<T>): QueryResult => {
     return {
         query: GET_RECENT_LOAN,
-        params: { userId: userProfile?._id as string, from: 0, to: 10, kindLoan, kindGetLoan },
+        params: { userId: userProfile?._id as string, from: 0, to: 10, kindLoan, kindCredit },
         tags: TAGS.ALTERNATE,
     }
 }
@@ -180,7 +180,7 @@ export const getRecentLoan = <T extends Record<string, any>>({
 export const getPayDueLoan = <T extends Record<string, any>>({
     userProfile,
     kindLoan,
-    kindGetLoan,
+    kindCredit,
 }: GetPayDueLoan<T>): QueryResult => {
     return {
         query: GET_PAY_DUE_LOAN,
@@ -190,7 +190,7 @@ export const getPayDueLoan = <T extends Record<string, any>>({
             to: 10,
             dueDate: moment().utc(true).add(7, 'days').toISOString(),
             kindLoan,
-            kindGetLoan,
+            kindCredit,
         },
         tags: TAGS.ALTERNATE,
     }
