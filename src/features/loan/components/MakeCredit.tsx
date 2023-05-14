@@ -18,7 +18,7 @@ import { useProfile } from '~/store/auth'
 import { getImageReference } from '~/utils'
 import StatusLoan from './common/StatusLoan'
 
-const MakeGetLoan = () => {
+const MakeCredit = () => {
     const { t } = useTranslation()
     const { close } = useSlideOver()
     const { userProfile } = useProfile()
@@ -225,4 +225,4 @@ const MakeGetLoan = () => {
     )
 }
 
-export default MakeGetLoan
+export default MakeCredit
