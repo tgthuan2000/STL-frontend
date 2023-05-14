@@ -1,18 +1,17 @@
 import { LanguageIcon } from '@heroicons/react/24/outline'
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { SettingComponentProps } from '~/@types/setting'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { useLocalStorage } from '~/hook'
 import { languages } from '~/i18n'
+import LANGUAGE from '~/i18n/language/key'
 
 const languageFlat = languages.flat()
 
 const Language: React.FC<SettingComponentProps> = (props) => {
     const { className } = props
-    const { i18n } = useTranslation()
+    const { i18n, t } = useTranslation()
     const [, setLanguageStorage] = useLocalStorage(LOCAL_STORAGE_KEY.STL_LANGUAGE)
-    const [label, setLabel] = useState(languageFlat.find((l) => l.code === i18n.language))
 
     const handleChangeLanguageClick = () => {
         const index = languageFlat.findIndex((l) => l.code === i18n.language)
@@ -20,14 +19,12 @@ const Language: React.FC<SettingComponentProps> = (props) => {
         const language = languageFlat[nextIndex]
         i18n.changeLanguage(language.code)
         setLanguageStorage(language.code)
-        setLabel(language)
-        // window.location.reload()
     }
 
     return (
         <button type='button' className={className} onClick={handleChangeLanguageClick}>
             <LanguageIcon className='h-6 w-6 flex-shrink-0' />
-            <p>{label?.name}</p>
+            <p>{t(LANGUAGE.LANGUAGE_CHOOSE)}</p>
         </button>
     )
 }

@@ -397,5 +397,6 @@
     "FEEDBACK": "Gửi phản hồi",
     "FEEDBACK_MANAGEMENT": "Quản lý phản hồi",
     "ROLE_CONTROL": "Quản lý phân quyền",
-    "DEVICE_CONTROL": "Quản lý thiết bị"
+    "DEVICE_CONTROL": "Quản lý thiết bị",
+    "LANGUAGE_CHOOSE": "Tiếng Việt"
 }

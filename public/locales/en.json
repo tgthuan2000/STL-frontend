@@ -397,5 +397,6 @@
     "FEEDBACK": "Feedback",
     "FEEDBACK_MANAGEMENT": "Feedback management",
     "ROLE_CONTROL": "Role control",
-    "DEVICE_CONTROL": "Device control"
+    "DEVICE_CONTROL": "Device control",
+    "LANGUAGE_CHOOSE": "English"
 }

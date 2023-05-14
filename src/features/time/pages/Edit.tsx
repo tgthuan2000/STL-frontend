@@ -67,9 +67,6 @@ const Edit = () => {
             await patch.commit()
 
             clearCache()
-            reload()
-            needCheckWhenLeave()
-
             toast.success<string>(t(LANGUAGE.NOTIFY_UPDATE_SCHEDULE_SUCCESSFULLY))
         } catch (error) {
             console.log(error)
@@ -87,7 +84,6 @@ const Edit = () => {
             await client.delete(id)
             toast.success(t(LANGUAGE.NOTIFY_DELETE_SCHEDULE_SUCCESSFULLY))
             clearCache()
-            needCheckWhenLeave()
             navigate(-1)
         } catch (error) {
             console.log(error)
