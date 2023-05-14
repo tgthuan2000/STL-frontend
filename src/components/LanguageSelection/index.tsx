@@ -5,6 +5,7 @@ import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { useLocalStorage, useMounted } from '~/hook'
 import { Language, languages } from '~/i18n'
 import { ButtonGroup } from '../_base'
+import i18next from 'i18next'
 
 const LanguageSelection = () => {
     const { i18n } = useTranslation()
@@ -20,9 +21,8 @@ const LanguageSelection = () => {
         language: Language | undefined
     }> = ({ language }) => {
         if (language) {
-            i18n.changeLanguage(language.code)
+            i18next.changeLanguage(language.code)
             setLanguageStorage(language.code)
-            // window.location.reload()
         }
     }
 

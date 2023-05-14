@@ -23,7 +23,7 @@ import useLogout from './useLogout'
 
 const CreateAccount = React.lazy(() => import('~/features/account/components/CreateAccount'))
 const CreateMember = React.lazy(() => import('~/features/loan/components/CreateMember'))
-const MakeGetLoan = React.lazy(() => import('~/features/loan/components/MakeGetLoan'))
+const MakeCredit = React.lazy(() => import('~/features/loan/components/MakeCredit'))
 const CreatePermissionGroup = React.lazy(() => import('~/features/role-control/components/CreatePermissionGroup'))
 const CreateRole = React.lazy(() => import('~/features/role-control/components/CreateRole'))
 const AddCategory = React.lazy(() => import('~/features/spending/components/AddCategory'))
@@ -137,7 +137,7 @@ export const useMenuLoanMobile = (): IMenuBtn[] => {
                 title: t(LANGUAGE.MAKE_CREDIT),
                 color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
                 icon: ArrowTrendingUpIcon,
-                children: <MakeGetLoan />,
+                children: <MakeCredit />,
                 slide: 'credit',
             },
             // {
@@ -297,7 +297,7 @@ export const useMenuLoanPC = (): IMenuBtn[] => {
                 title: t(LANGUAGE.MAKE_CREDIT),
                 color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
                 icon: ArrowTrendingUpIcon,
-                children: <MakeGetLoan />,
+                children: <MakeCredit />,
                 slide: 'credit',
             },
             // {

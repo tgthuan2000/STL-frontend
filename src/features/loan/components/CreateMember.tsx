@@ -21,7 +21,7 @@ const CreateMember = () => {
     const { userProfile } = useProfile()
     const { loading, setSubmitLoading } = useLoading()
     const { needCheckWhenLeave } = useCheck()
-    const { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } = useServiceQuery()
+    const { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN, GET_USER_LOAN } = useServiceQuery()
     const { deleteCache } = useCache()
 
     const form = useForm<ICreateMemberForm>({
@@ -63,10 +63,8 @@ const CreateMember = () => {
                 keepDefaultValues: true,
             })
             toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_MEMBER_SUCCESS))
-            deleteCache([GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN])
+            deleteCache([GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN, GET_USER_LOAN])
             needCheckWhenLeave()
-            // setIsOpen(false)
-            // navigate(-1)
         } catch (error) {
             console.log(error)
         } finally {

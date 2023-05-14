@@ -13,7 +13,7 @@ import {
     QueryResult,
 } from '~/@types/query'
 import { TAGS } from '~/constant'
-import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN } from '~/schema/query/loan'
+import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN, GET_USER_LOAN } from '~/schema/query/loan'
 import {
     GET_BUDGET_BY_MONTH,
     GET_CATEGORY_SPENDING,
@@ -205,5 +205,15 @@ export const getStatisticLoan = <T extends Record<string, any>>({ userProfile }:
             to: 10,
         },
         tags: TAGS.ALTERNATE,
+    }
+}
+
+export const getUserLoan = <T extends Record<string, any>>({ userProfile }: GetStatisticLoan<T>): QueryResult => {
+    return {
+        query: GET_USER_LOAN,
+        params: {
+            userId: userProfile?._id as string,
+        },
+        tags: TAGS.ENUM,
     }
 }
