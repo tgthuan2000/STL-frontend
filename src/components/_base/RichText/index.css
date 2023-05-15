@@ -128,3 +128,8 @@
 .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill {
     @apply dark:fill-cyan-400;
 }
+
+.ql-snow .ql-editor h6,
+.ql-snow .ql-editor h5 {
+    @apply text-xs;
+}

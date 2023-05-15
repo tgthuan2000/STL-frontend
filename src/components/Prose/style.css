@@ -1,12 +1,13 @@
 .__prose {
     @apply prose 
-    text-gray-900 
+    text-gray-900
     prose-h1:text-gray-900 
     prose-h2:text-gray-900 
     prose-h3:text-gray-900 
     prose-h4:text-gray-900 
     prose-h5:text-gray-900 
     prose-h6:text-gray-900 
+    prose-p:my-1
     prose-a:font-light 
     prose-a:text-cyan-400 
     prose-blockquote:font-normal 
