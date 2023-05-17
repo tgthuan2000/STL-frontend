@@ -420,6 +420,14 @@ enum LANGUAGE {
     ROLE_CONTROL = 'ROLE_CONTROL',
     DEVICE_CONTROL = 'DEVICE_CONTROL',
     LANGUAGE_CHOOSE = 'LANGUAGE_CHOOSE',
+
+    MO = 'MO',
+    TU = 'TU',
+    WE = 'WE',
+    TH = 'TH',
+    FR = 'FR',
+    SA = 'SA',
+    SU = 'SU',
 }
 
 export default LANGUAGE

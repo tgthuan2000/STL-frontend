@@ -1,8 +1,7 @@
 .react-datepicker__year-wrapper {
     @apply max-w-[205px];
 }
-.react-datepicker__input-time-container .react-datepicker-time__caption,
-.react-datepicker__triangle {
+.react-datepicker__input-time-container .react-datepicker-time__caption {
     @apply hidden;
 }
 
