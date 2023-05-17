@@ -1,4 +1,5 @@
 export { default as useAxios } from './useAxios'
+export { default as useCalendarTranslate } from './useCalendarTranslate'
 export { default as useDF } from './useDF'
 export { default as useDocument } from './useDocument'
 export { default as useDynamicRender } from './useDynamicRender'

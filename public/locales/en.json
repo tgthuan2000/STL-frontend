@@ -398,5 +398,13 @@
     "FEEDBACK_MANAGEMENT": "Feedback management",
     "ROLE_CONTROL": "Role control",
     "DEVICE_CONTROL": "Device control",
-    "LANGUAGE_CHOOSE": "English"
+    "LANGUAGE_CHOOSE": "English",
+
+    "MO": "Mo",
+    "TU": "Tu",
+    "WE": "We",
+    "TH": "Th",
+    "FR": "Fr",
+    "SA": "Sa",
+    "SU": "Su"
 }

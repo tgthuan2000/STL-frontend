@@ -398,5 +398,13 @@
     "FEEDBACK_MANAGEMENT": "Quản lý phản hồi",
     "ROLE_CONTROL": "Quản lý phân quyền",
     "DEVICE_CONTROL": "Quản lý thiết bị",
-    "LANGUAGE_CHOOSE": "Tiếng Việt"
+    "LANGUAGE_CHOOSE": "Tiếng Việt",
+
+    "MO": "T2",
+    "TU": "T3",
+    "WE": "T4",
+    "TH": "T5",
+    "FR": "T6",
+    "SA": "T7",
+    "SU": "CN"
 }

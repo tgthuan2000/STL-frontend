@@ -4,13 +4,14 @@ import { forwardRef } from 'react'
 import DP, { ReactDatePicker } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { Controller, FieldError, UseFormReturn } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { Rules, TrackingFunc } from '~/@types/components'
 import { DATE_FORMAT } from '~/constant'
-import { useWindowSize } from '~/hook'
-import Input from './Input'
-import './index.css'
-import TimeInput from './TimeInput'
+import { useCalendarTranslate, useWindowSize } from '~/hook'
 import Header from './Header'
+import Input from './Input'
+import TimeInput from './TimeInput'
+import './index.css'
 
 export interface Props {
     className?: string
@@ -53,6 +54,8 @@ const DatePicker = forwardRef<ReactDatePicker<never, undefined>, Props>((props, 
         ...rest
     } = props
     const { width } = useWindowSize()
+    const { weekday } = useCalendarTranslate()
+    const { t } = useTranslation()
     const mobileScreen = width <= 768
     const value = form.watch(name)
     const selected = moment(value).isValid() ? value : undefined
@@ -64,9 +67,9 @@ const DatePicker = forwardRef<ReactDatePicker<never, undefined>, Props>((props, 
             rules={rules}
             render={({ field, fieldState: { error } }) => (
                 <DP
+                    showPopperArrow={false}
                     calendarStartDay={1} // start date is monday
                     dateFormat={DATE_FORMAT[format]}
-                    timeInputLabel='Time:'
                     showTimeInput
                     withPortal={mobileScreen}
                     selected={selected}
@@ -96,6 +99,7 @@ const DatePicker = forwardRef<ReactDatePicker<never, undefined>, Props>((props, 
                     monthClassName={(date) => 'text-gray-900 dark:text-slate-200'}
                     renderCustomHeader={(params) => <Header {...params} />}
                     weekDayClassName={(date) => 'dark:text-cyan-500 font-normal text-gray-700'}
+                    formatWeekDay={(nameOfDay) => weekday[moment(nameOfDay).format('dd')]}
                 />
             )}
         />
