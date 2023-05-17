@@ -1,6 +1,7 @@
 import { ChevronDoubleRightIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
-import { LanguageSelection, Logo, Notification } from '~/components'
+import { LanguageSelection, Logo, Notification, PermissionCheck } from '~/components'
+import { PERMISSION } from '~/constant/permission'
 import { useSideBar } from '~/context'
 
 const TopBar = () => {
@@ -29,8 +30,12 @@ const TopBar = () => {
                 </div>
                 <div className='flex flex-1 justify-end px-3'>
                     <div className='inline-flex items-center gap-2'>
-                        <LanguageSelection />
-                        <Notification />
+                        <PermissionCheck permissions={[PERMISSION.PROFILE_CHANGE_LANGUAGE]} fallback={<></>}>
+                            <LanguageSelection />
+                        </PermissionCheck>
+                        <PermissionCheck permissions={[PERMISSION.ANNOUNCE_READ]} fallback={<></>}>
+                            <Notification />
+                        </PermissionCheck>
                     </div>
                 </div>
             </div>
