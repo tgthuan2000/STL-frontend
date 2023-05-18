@@ -25,7 +25,7 @@ const MonthEvent: React.FC<Props> = (props) => {
                 />
             ),
             content: <EventContent id={event.resource._id} />,
-            fallback: <LoadingText />,
+            fallback: <LoadingText className='px-6 py-3' />,
         })
     }
 

@@ -4,12 +4,12 @@ import moment from 'moment'
 import React, { useMemo } from 'react'
 import { Calendar as BigCalendar, Event as IEvent, momentLocalizer } from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
+import { useSearchParams } from 'react-router-dom'
 import { ICalendar } from '~/@types/time'
+import { DATE_FORMAT } from '~/constant'
 import { TitleEvent } from './events'
 import { useComponents, useMessage } from './services/components'
 import './style.css'
-import { useParams, useSearchParams } from 'react-router-dom'
-import { DATE_FORMAT } from '~/constant'
 
 moment.locale('en', { week: { dow: 1 } })
 const localizer = momentLocalizer(moment)
@@ -32,7 +32,7 @@ const Calendar: React.FC<Props> = (props) => {
     const { className, data, loading } = props
     const [searchParams] = useSearchParams()
     const messages = useMessage()
-    const components = useComponents()
+    const { components, onShowMore } = useComponents()
 
     const month = useMemo(() => {
         try {
@@ -85,6 +85,8 @@ const Calendar: React.FC<Props> = (props) => {
                 endAccessor='end'
                 messages={messages}
                 defaultDate={month}
+                onShowMore={onShowMore}
+                // showAllEvents
             />
         </div>
     )
