@@ -1,9 +1,14 @@
-import { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { Components, Messages } from 'react-big-calendar'
 import { useTranslation } from 'react-i18next'
 import LANGUAGE from '~/i18n/language/key'
 import { CalendarEvent } from '..'
 import { DateHeader, EventWrapper, Header, Toolbar } from '../components'
+import { useDetailDialog } from '~/context'
+import EventListShowMoreTitle from '../components/EventListShowMoreTitle'
+import LoadingText from '~/components/Loading/LoadingText'
+
+const EventListShowMoreContent = React.lazy(() => import('../components/EventListShowMoreContent'))
 
 export const useMessage = (): Messages => {
     const { t } = useTranslation()
@@ -67,6 +72,8 @@ export const useLabel = (label: string) => {
 }
 
 export const useComponents = () => {
+    const { set } = useDetailDialog()
+
     const components = useMemo(() => {
         const comps: Components<CalendarEvent> = {
             toolbar: Toolbar,
@@ -79,5 +86,13 @@ export const useComponents = () => {
         return comps
     }, [])
 
-    return components
+    const onShowMore = useCallback((events: CalendarEvent[], date: Date) => {
+        set({
+            title: <EventListShowMoreTitle current={date} />,
+            content: <EventListShowMoreContent data={events} current={date} />,
+            fallback: <LoadingText className='px-6 py-3' />,
+        })
+    }, [])
+
+    return { components, onShowMore }
 }
