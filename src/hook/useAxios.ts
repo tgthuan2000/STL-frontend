@@ -1,8 +1,12 @@
 import { AxiosRequestConfig } from 'axios'
-import { get } from 'lodash'
+import { get as lodashGet } from 'lodash'
 import { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 import axios from '~/axiosConfig'
 import { CODE } from '~/constant/code'
+import { useConfig, useLoading } from '~/context'
+import LANGUAGE from '~/i18n/language/key'
 import { useAxiosService } from '~/services/axios'
 
 type ReturnType<T> = { code?: CODE; data?: T }
@@ -10,12 +14,36 @@ type Url = string
 type Data = any
 type Config = AxiosRequestConfig<any> | undefined
 
-const getError = (error: any) => {
-    return get(error, 'response.data.code')
-}
-
 const useAxios = () => {
     const { notify } = useAxiosService()
+    const { getAccessToken } = useConfig()
+    const { setConfigLoading } = useLoading()
+    const { t } = useTranslation()
+
+    const getError = async (error: any) => {
+        const code = lodashGet(error, 'response.data.code')
+
+        switch (code) {
+            case CODE.ACCESS_TOKEN_EXPIRED: {
+                try {
+                    setConfigLoading(true)
+                    axios.defaults.headers.common['Authorization'] = null
+                    const accessToken = await getAccessToken()
+                    if (accessToken) {
+                        toast.warn<string>(t(LANGUAGE.NOTIFY_RE_GET_ACCESS_TOKEN))
+                        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+                    }
+                } catch (error) {
+                } finally {
+                    setConfigLoading(false)
+                }
+            }
+            case CODE.FORBIDDEN: {
+            }
+        }
+
+        return code
+    }
 
     const _catchNotify = useCallback(
         <T>(res: ReturnType<T>) => {
@@ -40,7 +68,7 @@ const useAxios = () => {
                 const _data = _catchNotify<T>(res)
                 return _data
             } catch (error: any) {
-                throw new Error(getError(error))
+                throw new Error(await getError(error))
             }
         },
         [_catchNotify, axios]
@@ -53,7 +81,7 @@ const useAxios = () => {
                 const _data = _catchNotify(res)
                 return _data
             } catch (error: any) {
-                throw new Error(getError(error))
+                throw new Error(await getError(error))
             }
         },
         [_catchNotify, axios]
@@ -66,7 +94,7 @@ const useAxios = () => {
                 const _data = _catchNotify(res)
                 return _data
             } catch (error: any) {
-                throw new Error(getError(error))
+                throw new Error(await getError(error))
             }
         },
         [_catchNotify, axios]
@@ -79,7 +107,7 @@ const useAxios = () => {
                 const _data = _catchNotify(res)
                 return _data
             } catch (error: any) {
-                throw new Error(getError(error))
+                throw new Error(await getError(error))
             }
         },
         [_catchNotify, axios]

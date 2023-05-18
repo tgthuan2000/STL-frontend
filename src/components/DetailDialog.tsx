@@ -1,10 +1,10 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
+import { ArrowSmallLeftIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Fragment, Suspense, memo } from 'react'
 import { useConfigDetailDialog } from '~/context'
 
 const DetailDialog = () => {
-    const { content, isOpen, title, fallback, close } = useConfigDetailDialog()
+    const { content, isOpen, title, fallback, close, back, haveBack } = useConfigDetailDialog()
 
     const handleClose = () => {
         close()
@@ -27,7 +27,7 @@ const DetailDialog = () => {
 
                 <div className='fixed inset-0 overflow-hidden'>
                     <div className='absolute inset-0 overflow-hidden'>
-                        <div className='pointer-events-none fixed top-1/2 left-1/2 flex max-w-full -translate-x-1/2 -translate-y-1/2'>
+                        <div className='pointer-events-none fixed bottom-0 left-1/2 flex max-w-full -translate-x-1/2 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2'>
                             <Transition.Child
                                 as={Fragment}
                                 enter='transform transition ease-in-out duration-500'
@@ -37,13 +37,22 @@ const DetailDialog = () => {
                                 leaveFrom='translate-y-0'
                                 leaveTo='translate-y-full opacity-0'
                             >
-                                <Dialog.Panel className='pointer-events-auto h-screen max-h-full w-screen max-w-full sm:h-auto sm:max-h-[80vh] sm:max-w-lg'>
+                                <Dialog.Panel className='pointer-events-auto relative h-[85vh] max-h-full w-screen max-w-full sm:h-auto sm:max-h-[80vh] sm:max-w-lg'>
+                                    {haveBack && (
+                                        <button
+                                            type='button'
+                                            onClick={back}
+                                            className='absolute bottom-[calc(100%+12px)] left-3 cursor-pointer rounded-xl bg-gray-600 p-2 text-white hover:opacity-70 dark:bg-cyan-400 dark:text-white sm:bottom-[calc(100%+10px)] sm:left-1'
+                                        >
+                                            <ArrowSmallLeftIcon className='h-5 w-5' />
+                                        </button>
+                                    )}
                                     <div className='flex h-full flex-col overflow-y-auto rounded-t-xl bg-white shadow-xl dark:bg-slate-800 sm:rounded-xl'>
                                         <div className='px-4 pt-6 pb-3 sm:px-6'>
                                             <div className='flex items-start justify-between'>
                                                 <Dialog.Title
                                                     as='div'
-                                                    className='text-lg font-medium text-gray-900 dark:text-white'
+                                                    className='select-none text-lg font-medium text-gray-900 dark:text-white'
                                                 >
                                                     {title}
                                                 </Dialog.Title>

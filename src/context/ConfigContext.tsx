@@ -10,7 +10,7 @@ import axios from '~/axiosConfig'
 import LoadingText from '~/components/Loading/LoadingText'
 import { CODE } from '~/constant/code'
 import { PERMISSION } from '~/constant/permission'
-import { DEFAULT_SPENDING_LAYOUT, LAYOUT_GROUP } from '~/constant/render-layout'
+import { LAYOUT_GROUP } from '~/constant/render-layout'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useAxios, useLogout } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
@@ -22,6 +22,9 @@ import { useFlashScreen } from './FlashScreenContext'
 
 interface IConfigProps {
     children: React.ReactNode
+    options: {
+        getAccessToken: () => Promise<string | undefined>
+    }
 }
 
 const ConfigContext = createContext<IConfigContext>({
@@ -34,6 +37,7 @@ const ConfigContext = createContext<IConfigContext>({
     getLayoutGroup: () => undefined,
     hasPermissions: () => false,
     refetchLayout: () => Promise.resolve(),
+    getAccessToken: () => Promise.resolve(undefined),
 })
 
 const configHOC = (Component: React.FC<IConfigProps>) => {
@@ -44,6 +48,37 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
         const { t } = useTranslation()
         const logout = useLogout()
         const _axios = useAxios()
+
+        const getAccessToken = async () => {
+            try {
+                const { data } = await _axios.post<{ accessToken: string }>('/auth/access-token', {
+                    refreshToken,
+                })
+
+                if (data?.accessToken) {
+                    setToken({ accessToken: data.accessToken })
+                    return data.accessToken
+                }
+            } catch (error: any) {
+                hiddenFlashScreen()
+                switch (error.message) {
+                    case CODE.REFRESH_TOKEN_EXPIRED: {
+                        await logout()
+                        toast.warn(t(LANGUAGE.NOTIFY_EXPIRED_TOKEN))
+                        break
+                    }
+                    case CODE.TOKEN_REVOKED: {
+                        toast.warn(t(LANGUAGE.NOTIFY_TOKEN_REVOKED))
+                        await logout()
+                        break
+                    }
+                    default: {
+                        toast.error(error.message)
+                        await logout()
+                    }
+                }
+            }
+        }
 
         useEffect(() => {
             if (userProfile !== null || accessToken === null) {
@@ -72,33 +107,7 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
                     axios.defaults.headers.common['Authorization'] = null
                     switch (error.message) {
                         case CODE.ACCESS_TOKEN_EXPIRED: {
-                            try {
-                                const { data } = await _axios.post<{ accessToken: string }>('/auth/access-token', {
-                                    refreshToken,
-                                })
-
-                                if (data?.accessToken) {
-                                    setToken({ accessToken: data.accessToken })
-                                }
-                            } catch (error: any) {
-                                hiddenFlashScreen()
-                                switch (error.message) {
-                                    case CODE.REFRESH_TOKEN_EXPIRED: {
-                                        await logout()
-                                        toast.warn(t(LANGUAGE.NOTIFY_EXPIRED_TOKEN))
-                                        break
-                                    }
-                                    case CODE.TOKEN_REVOKED: {
-                                        toast.warn(t(LANGUAGE.NOTIFY_TOKEN_REVOKED))
-                                        await logout()
-                                        break
-                                    }
-                                    default: {
-                                        toast.error(error.message)
-                                        await logout()
-                                    }
-                                }
-                            }
+                            await getAccessToken()
                             break
                         }
                         case CODE.INACTIVE_ACCOUNT: {
@@ -123,7 +132,11 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
             return <></>
         }
 
-        return <Component>{children}</Component>
+        const options = {
+            getAccessToken,
+        }
+
+        return <Component options={options}>{children}</Component>
     }
 }
 
@@ -132,7 +145,11 @@ const Fallback = () => {
     return <Navigate to='/auth' replace={true} state={{ url: pathname }} />
 }
 
-const ConfigProvider = configHOC(({ children }) => {
+const ConfigProvider = configHOC((props) => {
+    const {
+        children,
+        options: { getAccessToken },
+    } = props
     const { userProfile } = useProfile()
     const { showFlashScreen, hiddenFlashScreen } = useFlashScreen()
     const [config, setConfig] = useState<Omit<IConfig, 'role'> & { role: IRoleControl | null }>({
@@ -231,6 +248,7 @@ const ConfigProvider = configHOC(({ children }) => {
         getLayoutGroup,
         hasPermissions,
         refetchLayout,
+        getAccessToken,
     }
 
     if (!ok) {

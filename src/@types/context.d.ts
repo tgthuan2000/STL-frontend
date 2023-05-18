@@ -54,6 +54,7 @@ export interface IConfigContext {
     getLayoutGroup: GetLayoutGroup
     hasPermissions: (keys: Array<PERMISSION>) => boolean
     refetchLayout: () => Promise<void>
+    getAccessToken: () => Promise<string | undefined>
 }
 
 export type SlideOverTitle = React.ReactNode
