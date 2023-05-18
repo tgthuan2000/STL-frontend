@@ -218,7 +218,7 @@
     "NOTIFY_UPDATE_SCHEDULE_SUCCESSFULLY": "Cập nhật lịch trình thành công!",
     "NOTIFY_EMAIL_EXIST": "Email đã tồn tại!",
     "NOTIFY_DELETE_SUCCESS": "Xóa thành công",
-    "NOTIFY_RE_GET_ACCESS_TOKEN": "Phiên đang nhập cũ đã hết hạn, vui lòng thực hiện lại thao tác sau",
+    "NOTIFY_RE_GET_ACCESS_TOKEN": "Phiên đăng nhập cũ đã hết hạn, vui lòng thực hiện lại thao tác sau",
 
     "CONFIRM_NOTIFY": "Bạn có chắc chắn muốn gửi thông báo này?",
     "CONFIRM_DELETE_TRANSACTION": "Bạn có chắc muốn xóa giao dịch này?",

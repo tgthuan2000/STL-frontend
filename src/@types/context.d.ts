@@ -54,7 +54,6 @@ export interface IConfigContext {
     getLayoutGroup: GetLayoutGroup
     hasPermissions: (keys: Array<PERMISSION>) => boolean
     refetchLayout: () => Promise<void>
-    getAccessToken: () => Promise<string | undefined>
 }
 
 export type SlideOverTitle = React.ReactNode
@@ -184,4 +183,8 @@ export interface IFlashScreen {
     content: React.ReactNode
     showFlashScreen: (content: React.ReactNode) => void
     hiddenFlashScreen: () => void
+}
+
+export interface IAccessTokenContext {
+    getAccessToken: () => Promise<string | undefined>
 }

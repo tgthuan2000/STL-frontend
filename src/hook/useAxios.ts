@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import axios from '~/axiosConfig'
 import { CODE } from '~/constant/code'
-import { useConfig, useLoading } from '~/context'
+import { useAccessToken, useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import { useAxiosService } from '~/services/axios'
 
@@ -16,7 +16,7 @@ type Config = AxiosRequestConfig<any> | undefined
 
 const useAxios = () => {
     const { notify } = useAxiosService()
-    const { getAccessToken } = useConfig()
+    const { getAccessToken } = useAccessToken()
     const { setConfigLoading } = useLoading()
     const { t } = useTranslation()
 

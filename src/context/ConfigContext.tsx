@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Navigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { IUserProfile } from '~/@types/auth'
-import { IConfig, IConfigContext } from '~/@types/context'
+import { IAccessTokenContext, IConfig, IConfigContext } from '~/@types/context'
 import { IRoleControl } from '~/@types/role-control'
 import axios from '~/axiosConfig'
 import LoadingText from '~/components/Loading/LoadingText'
@@ -22,9 +22,6 @@ import { useFlashScreen } from './FlashScreenContext'
 
 interface IConfigProps {
     children: React.ReactNode
-    options: {
-        getAccessToken: () => Promise<string | undefined>
-    }
 }
 
 const ConfigContext = createContext<IConfigContext>({
@@ -37,6 +34,9 @@ const ConfigContext = createContext<IConfigContext>({
     getLayoutGroup: () => undefined,
     hasPermissions: () => false,
     refetchLayout: () => Promise.resolve(),
+})
+
+const AccessTokenContext = createContext<IAccessTokenContext>({
     getAccessToken: () => Promise.resolve(undefined),
 })
 
@@ -136,7 +136,11 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
             getAccessToken,
         }
 
-        return <Component options={options}>{children}</Component>
+        return (
+            <AccessTokenContext.Provider value={options}>
+                <Component>{children}</Component>
+            </AccessTokenContext.Provider>
+        )
     }
 }
 
@@ -145,11 +149,18 @@ const Fallback = () => {
     return <Navigate to='/auth' replace={true} state={{ url: pathname }} />
 }
 
+const useAccessToken = () => {
+    const context = useContext(AccessTokenContext)
+
+    if (!context) {
+        throw new Error('useAccessToken must be used within a AccessTokenProvider')
+    }
+
+    return context
+}
+
 const ConfigProvider = configHOC((props) => {
-    const {
-        children,
-        options: { getAccessToken },
-    } = props
+    const { children } = props
     const { userProfile } = useProfile()
     const { showFlashScreen, hiddenFlashScreen } = useFlashScreen()
     const [config, setConfig] = useState<Omit<IConfig, 'role'> & { role: IRoleControl | null }>({
@@ -248,7 +259,6 @@ const ConfigProvider = configHOC((props) => {
         getLayoutGroup,
         hasPermissions,
         refetchLayout,
-        getAccessToken,
     }
 
     if (!ok) {
@@ -268,4 +278,4 @@ const useConfig = () => {
     return context
 }
 
-export { useConfig, ConfigProvider }
+export { useConfig, ConfigProvider, useAccessToken }
