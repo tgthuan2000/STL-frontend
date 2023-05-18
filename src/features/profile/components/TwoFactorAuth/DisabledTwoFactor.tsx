@@ -39,14 +39,9 @@ const DisabledTwoFactor: React.FC<DisabledTwoFactorProps> = ({ onClose }) => {
                 </p>
                 <TwoFactorForm onSubmit={handleSubmit} />
             </div>
-            <div className='mt-10 flex-shrink-0 select-none'>
+            <div className='flex-shrink-0 select-none'>
                 <div className='flex justify-end gap-2 p-5'>
-                    <Button
-                        type='button'
-                        color='custom'
-                        className='border-none py-1 px-2 text-gray-400 hover:opacity-50 sm:text-base'
-                        onClick={onClose}
-                    >
+                    <Button type='button' color='outline' onClick={onClose}>
                         {t(LANGUAGE.CANCEL)}
                     </Button>
                 </div>

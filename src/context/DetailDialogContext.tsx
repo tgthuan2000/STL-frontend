@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash'
 import React, { createContext, useContext, useRef, useState } from 'react'
 import { DetailDialog } from '~/components'
 
@@ -7,7 +8,10 @@ interface IDetailDialogContext {
     content: React.ReactNode
     fallback: React.ReactNode
     set(option: setOption): void
+    append(option: setOption): void
+    back(): void
     close(option?: closeOption): void
+    haveBack: boolean
 }
 
 const DetailDialogContext = createContext<IDetailDialogContext>({
@@ -16,7 +20,10 @@ const DetailDialogContext = createContext<IDetailDialogContext>({
     content: <></>,
     fallback: <></>,
     set: () => {},
+    append: () => {},
+    back: () => {},
     close: () => {},
+    haveBack: false,
 })
 
 interface Props {
@@ -40,6 +47,50 @@ const DetailDialogProvider: React.FC<Props> = ({ children }) => {
     const [content, setContent] = useState<React.ReactNode>(<></>)
     const [fallback, setFallback] = useState<React.ReactNode>(<></>)
     const closeCallback = useRef<(() => void) | undefined>(undefined)
+    const store = useRef<Array<setOption>>([])
+
+    const _setCloseCallback = (close: (() => void) | undefined) => {
+        if (close) {
+            closeCallback.current = close
+        }
+    }
+
+    const _callCloseCallback = (cancelCallback: boolean | undefined) => {
+        if (!cancelCallback) {
+            closeCallback.current?.()
+        }
+    }
+
+    const _clearCloseCallback = () => {
+        if (closeCallback.current) {
+            closeCallback.current = undefined
+        }
+    }
+
+    const _checkStore = () => {
+        return !isEmpty(store.current)
+    }
+
+    const _appendStore = () => {
+        store.current.push({
+            title,
+            content,
+            fallback,
+            close: closeCallback.current,
+        })
+    }
+
+    const _popStore = () => {
+        if (_checkStore()) {
+            return store.current.pop()
+        }
+    }
+
+    const _clearStore = () => {
+        if (_checkStore()) {
+            store.current = []
+        }
+    }
 
     const set = (option: setOption) => {
         const { title, content, fallback, close } = option
@@ -48,21 +99,27 @@ const DetailDialogProvider: React.FC<Props> = ({ children }) => {
         setIsOpen(true)
         setContent(content)
         setFallback(fallback)
-        if (close) {
-            closeCallback.current = close
+        _setCloseCallback(close)
+    }
+
+    const append = (option: setOption) => {
+        _appendStore()
+        set(option)
+    }
+
+    const back = () => {
+        const latest = _popStore()
+
+        if (latest) {
+            set(latest)
         }
     }
 
     const close = (option?: closeOption) => {
         setIsOpen(false)
-
-        if (!option?.cancelCallback) {
-            closeCallback.current?.()
-        }
-
-        if (closeCallback.current) {
-            closeCallback.current = undefined
-        }
+        _clearStore()
+        _callCloseCallback(option?.cancelCallback)
+        _clearCloseCallback()
     }
 
     const value = {
@@ -72,6 +129,9 @@ const DetailDialogProvider: React.FC<Props> = ({ children }) => {
         fallback,
         set,
         close,
+        append,
+        back,
+        haveBack: _checkStore(),
     }
 
     return (
@@ -89,7 +149,7 @@ const useConfigDetailDialog = () => {
         throw new Error('useDetailDialog must be used within a DetailDialogProvider')
     }
 
-    const { title, isOpen, content, fallback, close } = context
+    const { title, isOpen, content, fallback, close, back, haveBack } = context
 
     return {
         title,
@@ -97,6 +157,8 @@ const useConfigDetailDialog = () => {
         content,
         fallback,
         close,
+        back,
+        haveBack,
     }
 }
 
@@ -107,11 +169,12 @@ const useDetailDialog = () => {
         throw new Error('useDetailDialog must be used within a DetailDialogProvider')
     }
 
-    const { set, close } = context
+    const { set, close, append } = context
 
     return {
         set,
         close,
+        append,
     }
 }
 

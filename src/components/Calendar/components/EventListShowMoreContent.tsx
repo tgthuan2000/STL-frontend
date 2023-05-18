@@ -35,7 +35,7 @@ const EventListShowMoreContent: React.FC<Props> = (props) => {
                             style={{ backgroundColor: event.resource.bgColor }}
                             title={event.resource.title}
                         >
-                            <MonthEvent event={event} />
+                            <MonthEvent event={event} append />
                         </div>
                     </div>
                 )

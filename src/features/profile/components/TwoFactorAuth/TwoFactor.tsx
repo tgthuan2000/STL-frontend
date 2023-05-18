@@ -7,6 +7,7 @@ import { useLoading } from '~/context'
 import { useAxios, useLogout } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import TwoFactorImage from './Image'
+import { CODE } from '~/constant/code'
 
 interface TwoFactorProps {
     onClose: () => void
@@ -32,8 +33,10 @@ const TwoFactor: React.FC<TwoFactorProps> = ({ onClose }) => {
                     setData(image)
                     setSecret(data.secret)
                 }
-            } catch (error) {
-                console.log(error)
+            } catch (error: any) {
+                if (error.message === CODE.ACCESS_TOKEN_EXPIRED) {
+                    await fetchData()
+                }
             } finally {
                 setLoading(false)
             }
@@ -77,14 +80,9 @@ const TwoFactor: React.FC<TwoFactorProps> = ({ onClose }) => {
                     <TwoFactorForm onSubmit={handleSubmit} />
                 </div>
             </div>
-            <div className='mt-10 flex-shrink-0 select-none'>
+            <div className='flex-shrink-0 select-none'>
                 <div className='flex justify-end gap-2 p-5'>
-                    <Button
-                        type='button'
-                        color='custom'
-                        className='border-none py-1 px-2 text-gray-400 hover:opacity-50 sm:text-base'
-                        onClick={onClose}
-                    >
+                    <Button type='button' color='outline' onClick={onClose}>
                         {t(LANGUAGE.CANCEL)}
                     </Button>
                 </div>

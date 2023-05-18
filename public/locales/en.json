@@ -218,6 +218,7 @@
     "NOTIFY_UPDATE_SCHEDULE_SUCCESSFULLY": "Update schedule successfully",
     "NOTIFY_EMAIL_EXIST": "Email exist",
     "NOTIFY_DELETE_SUCCESS": "Delete successful",
+    "NOTIFY_RE_GET_ACCESS_TOKEN": "The old import session has expired, please try again later",
 
     "CONFIRM_NOTIFY": "Do you want to notify?",
     "CONFIRM_DELETE_TRANSACTION": "Do you want to delete transaction?",

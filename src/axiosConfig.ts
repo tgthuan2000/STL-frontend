@@ -20,15 +20,6 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
     (response) => {
-        // TODO: Call hook outside components
-        // const { notify } = useAxiosService()
-        // const isSuccess = notify(response.data.code)
-
-        // if (typeof isSuccess === 'boolean' && isSuccess === true) {
-        //     return response.data
-        // }
-        // return Promise.reject(response.data.code)
-
         return response.data
     },
     (error) => {

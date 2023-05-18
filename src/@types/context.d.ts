@@ -184,3 +184,7 @@ export interface IFlashScreen {
     showFlashScreen: (content: React.ReactNode) => void
     hiddenFlashScreen: () => void
 }
+
+export interface IAccessTokenContext {
+    getAccessToken: () => Promise<string | undefined>
+}

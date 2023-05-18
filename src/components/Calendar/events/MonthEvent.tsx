@@ -8,14 +8,15 @@ const EventContent = React.lazy(() => import('./EventContent'))
 
 interface Props {
     event: CalendarEvent
+    append?: boolean
 }
 
 const MonthEvent: React.FC<Props> = (props) => {
-    const { event } = props
-    const { set } = useDetailDialog()
+    const { event, append: isAppend } = props
+    const { set, append } = useDetailDialog()
 
     const handleClick = () => {
-        set({
+        ;(isAppend ? append : set)({
             title: (
                 <EventTitle
                     title={event.resource.title}
