@@ -1,7 +1,6 @@
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { TimeFilterPayload } from '~/@types/components'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/@types/hook'
@@ -10,7 +9,7 @@ import { AnimateWrap, TimeFilter } from '~/components'
 import LoadingText from '~/components/Loading/LoadingText'
 import { E_FILTER_DATE } from '~/constant/template'
 import { useConfig, useLoading } from '~/context'
-import { useQuery, useWindowSize } from '~/hook'
+import { useQuery } from '~/hook'
 import { useProfile } from '~/store/auth'
 import { useProfileOptions } from '../hook'
 import { services } from '../services'
@@ -21,12 +20,10 @@ import ProfileInfoSkeleton from './ProfileInfoSkeleton'
 const excludeOptions = [E_FILTER_DATE.DATE]
 
 const Statistic = () => {
-    const { t } = useTranslation()
     const { userProfile } = useProfile()
     const [searchParams] = useSearchParams()
     const { getKindSpendingIds } = useConfig()
-    const { loading, setConfigLoading } = useLoading()
-    const { width } = useWindowSize()
+    const { loading } = useLoading()
 
     const getAll = useMemo(
         () =>
@@ -80,7 +77,7 @@ const Statistic = () => {
             category: category.data,
         })
         return data
-    }, [method.loading, budget.loading, category.loading])
+    }, [method, budget, category])
 
     const handleFilterSubmit = (data: TimeFilterPayload) => {
         const _data = services.filterSubmit(data, {
