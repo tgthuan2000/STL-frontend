@@ -313,6 +313,7 @@
     "CALENDAR_OCTOBER": "October",
     "CALENDAR_NOVEMBER": "November",
     "CALENDAR_DECEMBER": "December",
+    "EVENT_LIST": "Event list",
 
     "JOIN_DATE": "Join date",
     "RECEIVE_NOTIFY_BY_MAIL": "Receive notify by mail",
