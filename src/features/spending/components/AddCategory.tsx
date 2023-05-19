@@ -1,12 +1,14 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { isEmpty } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import * as yup from 'yup'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/@types/hook'
 import { AddCategoryQueryData, IAddCategoryForm } from '~/@types/spending'
-import { Button, CheckName, SubmitWrap } from '~/components'
+import { Button, CheckName, SlideFormWrap, SubmitWrap } from '~/components'
 import { Checkbox, Input, Selection } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
@@ -17,8 +19,6 @@ import { client } from '~/sanityConfig'
 import { GET_CATEGORY_SPENDING } from '~/schema/query/spending'
 import { getCategorySpending } from '~/services/query'
 import { useProfile } from '~/store/auth'
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
 export interface RecommendOption {
     id: string
     name: string
@@ -199,54 +199,45 @@ const AddCategory = () => {
     }, [watchName, watchKind, categorySpending.data])
 
     return (
-        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
-            <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
-                <div className='flex flex-1 flex-col justify-between'>
-                    <div className='divide-y divide-gray-200 px-4 sm:px-6'>
-                        <div className='space-y-6 pt-3 pb-5'>
-                            <Selection
-                                name='kindSpending'
-                                form={form}
-                                label={t(LANGUAGE.CATEGORY)}
-                                placeholder={t(LANGUAGE.PLACEHOLDER_CHOOSE_KIND)}
-                                data={kinds}
-                                idKey='_id'
-                                valueKey='name'
-                            />
-
-                            <Input name='name' form={form} type='text' label={t(LANGUAGE.CATEGORY_NAME)} />
-
-                            <CheckName
-                                show={Boolean(
-                                    !categorySpending.loading && form.watch('kindSpending') && watchName.length >= 2
-                                )}
-                                list={sameCategoryList}
-                                watchValue={watchName}
-                            />
-
-                            {!categorySpending.loading && isEmpty(categorySpending.data) && (
-                                <Checkbox
-                                    form={form}
-                                    name='recommends'
-                                    label={t(LANGUAGE.RECOMMEND)}
-                                    options={isCost ? recommendCosts : recommendReceives}
-                                    getOptionKey={(item) => item?.id}
-                                    getOptionLabel={(item) => item?.name}
-                                />
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <SubmitWrap>
-                <Button color='cyan' type='submit' disabled={loading.submit}>
-                    {t(LANGUAGE.CREATE)}
-                </Button>
-                <Button color='outline' type='button' onClick={close}>
-                    {t(LANGUAGE.CANCEL)}
-                </Button>
-            </SubmitWrap>
-        </form>
+        <SlideFormWrap
+            onSubmit={form.handleSubmit(onsubmit)}
+            buttonZone={
+                <SubmitWrap>
+                    <Button color='cyan' type='submit' disabled={loading.submit}>
+                        {t(LANGUAGE.CREATE)}
+                    </Button>
+                    <Button color='outline' type='button' onClick={close}>
+                        {t(LANGUAGE.CANCEL)}
+                    </Button>
+                </SubmitWrap>
+            }
+        >
+            <Selection
+                name='kindSpending'
+                form={form}
+                label={t(LANGUAGE.CATEGORY)}
+                placeholder={t(LANGUAGE.PLACEHOLDER_CHOOSE_KIND)}
+                data={kinds}
+                idKey='_id'
+                valueKey='name'
+            />
+            <Input name='name' form={form} type='text' label={t(LANGUAGE.CATEGORY_NAME)} />
+            <CheckName
+                show={Boolean(!categorySpending.loading && form.watch('kindSpending') && watchName.length >= 2)}
+                list={sameCategoryList}
+                watchValue={watchName}
+            />
+            {!categorySpending.loading && isEmpty(categorySpending.data) && (
+                <Checkbox
+                    form={form}
+                    name='recommends'
+                    label={t(LANGUAGE.RECOMMEND)}
+                    options={isCost ? recommendCosts : recommendReceives}
+                    getOptionKey={(item) => item?.id}
+                    getOptionLabel={(item) => item?.name}
+                />
+            )}
+        </SlideFormWrap>
     )
 }
 

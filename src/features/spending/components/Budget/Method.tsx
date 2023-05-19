@@ -1,4 +1,3 @@
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { CubeTransparentIcon } from '@heroicons/react/24/outline'
 import { isEmpty, sum } from 'lodash'
 import React from 'react'
@@ -13,38 +12,18 @@ import LANGUAGE from '~/i18n/language/key'
 import Empty from '../Empty'
 import BudgetItem from './Item'
 import BudgetSkeleton from './Skeleton'
+import WrapList from '../WrapList'
 
 const MakeBudget = React.lazy(() => import('../MakeBudget'))
 
-const Method: React.FC<BudgetProps> = ({ data, loading }) => {
-    const { t } = useTranslation()
-    const [ref] = useAutoAnimate<HTMLUListElement>()
-    const [, setSearchParams] = useSearchParams()
-    const { set } = useSlideOver()
-
-    const handleClick = () => {
-        setSearchParams((prev) => {
-            const url = new URLSearchParams(prev)
-            url.set('slide', 'budget')
-            return url
-        })
-        set({
-            title: t(LANGUAGE.MAKE_BUDGET),
-            content: <MakeBudget />,
-            slide: 'budget',
-            fallback: <LoadingText className='p-6' />,
-        })
-    }
+const Method: React.FC<BudgetProps> = (props) => {
+    const { data, loading } = props
 
     if (loading && isEmpty(data)) return <BudgetSkeleton />
 
     if (!isEmpty(data?.MethodSpending)) {
         return (
-            <ul
-                role='list'
-                className='divide-y divide-gray-100 text-gray-900 dark:divide-slate-700 dark:text-slate-200 sm:divide-gray-200'
-                ref={ref}
-            >
+            <WrapList>
                 {data?.MethodSpending?.map((item, index) => {
                     const totalAmounts = sum(item.amounts)
                     const percent = (totalAmounts * 100) / item.amount
@@ -63,12 +42,35 @@ const Method: React.FC<BudgetProps> = ({ data, loading }) => {
                             bgColor={bgColor}
                             isOver={isOver}
                             totalAmounts={totalAmounts}
+                            to={`budget/method/${item._id}`}
                         />
                     )
                 })}
-            </ul>
+            </WrapList>
         )
     }
+    return <EmptyData />
+}
+
+const EmptyData = () => {
+    const { t } = useTranslation()
+    const [, setSearchParams] = useSearchParams()
+    const { set } = useSlideOver()
+
+    const handleClick = () => {
+        setSearchParams((prev) => {
+            const url = new URLSearchParams(prev)
+            url.set('slide', 'budget')
+            return url
+        })
+        set({
+            title: t(LANGUAGE.MAKE_BUDGET),
+            content: <MakeBudget />,
+            slide: 'budget',
+            fallback: <LoadingText className='p-6' />,
+        })
+    }
+
     return (
         <Empty icon={CubeTransparentIcon} text={t(LANGUAGE.EMPTY_BUDGET_METHOD)}>
             <Button type='button' onClick={handleClick} color='outline-yellow'>

@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { IMakeGetLoanForm, QueryDataMakeGetLoan } from '~/@types/loan'
-import { Button, SubmitWrap } from '~/components'
+import { Button, SlideFormWrap, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
@@ -157,71 +157,59 @@ const MakeCredit = () => {
     }
 
     return (
-        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
-            <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
-                <div className='flex flex-1 flex-col justify-between'>
-                    <div className='divide-y divide-gray-200 px-4 sm:px-6'>
-                        <div className='space-y-6 pt-3 pb-5'>
-                            <Input
-                                name='amount'
-                                form={form}
-                                rules={{
-                                    required: t(LANGUAGE.REQUIRED_AMOUNT) as any,
-                                    min: {
-                                        value: 0,
-                                        message: t(LANGUAGE.AMOUNT_MIN_ZERO),
-                                    },
-                                }}
-                                type='number'
-                                label={t(LANGUAGE.AMOUNT)}
-                            />
-
-                            <AutoComplete
-                                name='methodReference'
-                                form={form}
-                                data={methodSpending.data}
-                                label={t(LANGUAGE.METHOD_RECEIVE)}
-                                loading={methodSpending.loading}
-                                onReload={
-                                    isEmpty(methodSpending.data) ? undefined : () => handleReloadData('methodSpending')
-                                }
-                            />
-
-                            <StatusLoan form={form} name='methodReference' />
-
-                            <DatePicker name='estimatePaidDate' form={form} label={t(LANGUAGE.ESTIMATE_PAID_DATE)} />
-
-                            <AutoComplete
-                                name='userLoan'
-                                form={form}
-                                rules={{
-                                    required: t(LANGUAGE.REQUIRED_USER_CREDIT) as any,
-                                }}
-                                data={userLoan.data}
-                                label={t(LANGUAGE.USER_CREDIT)}
-                                valueKey='userName'
-                                loading={userLoan.loading}
-                                onReload={isEmpty(userLoan.data) ? undefined : () => handleReloadData('userLoan')}
-                                showImage
-                                surplusName={t(LANGUAGE.ASSET)}
-                            />
-
-                            <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
-
-                            <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <SubmitWrap>
-                <Button color='radicalRed' type='submit' disabled={loading.submit}>
-                    {t(LANGUAGE.SAVE)}
-                </Button>
-                <Button color='outline' type='button' onClick={close}>
-                    {t(LANGUAGE.CANCEL)}
-                </Button>
-            </SubmitWrap>
-        </form>
+        <SlideFormWrap
+            onSubmit={form.handleSubmit(onsubmit)}
+            buttonZone={
+                <SubmitWrap>
+                    <Button color='radicalRed' type='submit' disabled={loading.submit}>
+                        {t(LANGUAGE.SAVE)}
+                    </Button>
+                    <Button color='outline' type='button' onClick={close}>
+                        {t(LANGUAGE.CANCEL)}
+                    </Button>
+                </SubmitWrap>
+            }
+        >
+            <Input
+                name='amount'
+                form={form}
+                rules={{
+                    required: t(LANGUAGE.REQUIRED_AMOUNT) as any,
+                    min: {
+                        value: 0,
+                        message: t(LANGUAGE.AMOUNT_MIN_ZERO),
+                    },
+                }}
+                type='number'
+                label={t(LANGUAGE.AMOUNT)}
+            />
+            <AutoComplete
+                name='methodReference'
+                form={form}
+                data={methodSpending.data}
+                label={t(LANGUAGE.METHOD_RECEIVE)}
+                loading={methodSpending.loading}
+                onReload={isEmpty(methodSpending.data) ? undefined : () => handleReloadData('methodSpending')}
+            />
+            <StatusLoan form={form} name='methodReference' />
+            <DatePicker name='estimatePaidDate' form={form} label={t(LANGUAGE.ESTIMATE_PAID_DATE)} />
+            <AutoComplete
+                name='userLoan'
+                form={form}
+                rules={{
+                    required: t(LANGUAGE.REQUIRED_USER_CREDIT) as any,
+                }}
+                data={userLoan.data}
+                label={t(LANGUAGE.USER_CREDIT)}
+                valueKey='userName'
+                loading={userLoan.loading}
+                onReload={isEmpty(userLoan.data) ? undefined : () => handleReloadData('userLoan')}
+                showImage
+                surplusName={t(LANGUAGE.ASSET)}
+            />
+            <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
+            <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
+        </SlideFormWrap>
     )
 }
 

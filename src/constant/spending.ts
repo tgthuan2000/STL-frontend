@@ -23,3 +23,8 @@ export const colors = {
     bg: Bg,
     text: C.map((c) => `text-${c}`),
 }
+
+export const budgetLongColors = {
+    bg: [...Bg].reverse(),
+    text: [...C].reverse().map((c) => `text-${c}`),
+}

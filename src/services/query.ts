@@ -2,6 +2,7 @@ import moment from 'moment'
 import {
     GetBudgetSpending,
     GetCategorySpending,
+    GetLongBudgetSpending,
     GetMethodKindSpending,
     GetMethodSpending,
     GetPayDueLoan,
@@ -17,6 +18,7 @@ import { GET_PAY_DUE_LOAN, GET_RECENT_LOAN, GET_STATISTIC_LOAN, GET_USER_LOAN } 
 import {
     GET_BUDGET_BY_MONTH,
     GET_CATEGORY_SPENDING,
+    GET_LONG_BUDGET,
     GET_METHOD_SPENDING,
     GET_METHOD_SPENDING_DESC_SURPLUS,
     GET_RECENT_SPENDING,
@@ -158,6 +160,18 @@ export const getBudgetSpending = <T extends Record<string, any>>({
             endDate,
             budgetKind,
             ...(budgetId && { budgetId }),
+        },
+        tags: TAGS.ALTERNATE,
+    }
+}
+
+export const getLongBudgetSpending = <T extends Record<string, any>>({
+    userProfile,
+}: GetLongBudgetSpending<T>): QueryResult => {
+    return {
+        query: GET_LONG_BUDGET,
+        params: {
+            userId: userProfile?._id as string,
         },
         tags: TAGS.ALTERNATE,
     }

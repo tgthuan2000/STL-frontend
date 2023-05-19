@@ -35,6 +35,9 @@ const Layout = () => {
     useEffect(() => {
         setElement({
             [SPENDING_LAYOUT.STATISTIC]: (index) => <Box.SkeletonContent index={index} title={t(LANGUAGE.STATISTIC)} />,
+            [SPENDING_LAYOUT.LONG_BUDGET]: (index) => (
+                <Box.SkeletonContent index={index} title={t(LANGUAGE.LONG_BUDGET)} />
+            ),
             [SPENDING_LAYOUT.BUDGET_CATEGORY]: (index) => (
                 <Box.SkeletonContent index={index} title={t(LANGUAGE.BUDGET_BY_CATEGORY)} />
             ),

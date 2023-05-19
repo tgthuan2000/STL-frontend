@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { IMakeLoanForm, QueryDataMakeLoan } from '~/@types/loan'
-import { Button, SubmitWrap } from '~/components'
+import { Button, SlideFormWrap, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, LazySearchSelect, TextArea } from '~/components/_base'
 import useLazySearchSelect from '~/components/_base/LazySearchSelect/hook/useLazySearchSelect'
 import UserDeleteButton from '~/components/_base/LazySearchSelect/UserDeleteButton'
@@ -150,88 +150,72 @@ const MakeLoan = () => {
     }
 
     return (
-        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
-            <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
-                <div className='flex flex-1 flex-col justify-between'>
-                    <div className='divide-y divide-gray-200 px-4 sm:px-6'>
-                        <div className='space-y-6 pt-3 pb-5'>
-                            <Input
-                                name='amount'
-                                form={form}
-                                rules={{
-                                    required: t(LANGUAGE.REQUIRED_AMOUNT) as any,
-                                    min: {
-                                        value: 0,
-                                        message: t(LANGUAGE.AMOUNT_MIN_ZERO),
-                                    },
-                                }}
-                                type='number'
-                                label={t(LANGUAGE.AMOUNT)}
-                            />
-
-                            <AutoComplete
-                                name='methodSpending'
-                                form={form}
-                                // rules={{
-                                //     required: 'Yêu cầu chọn phương thức cho vay!',
-                                // }}
-                                data={methodSpending.data}
-                                label={t(LANGUAGE.METHOD)}
-                                loading={methodSpending.loading}
-                                onReload={
-                                    isEmpty(methodSpending.data) ? undefined : () => handleReloadData('methodSpending')
+        <SlideFormWrap
+            onSubmit={form.handleSubmit(onsubmit)}
+            buttonZone={
+                <SubmitWrap>
+                    <Button color='prussianBlue' type='submit' disabled={loading.submit}>
+                        {t(LANGUAGE.CREATE)}
+                    </Button>
+                    <Button color='outline' type='button' onClick={close}>
+                        {t(LANGUAGE.CANCEL)}
+                    </Button>
+                </SubmitWrap>
+            }
+        >
+            <Input
+                name='amount'
+                form={form}
+                rules={{
+                    required: t(LANGUAGE.REQUIRED_AMOUNT) as any,
+                    min: {
+                        value: 0,
+                        message: t(LANGUAGE.AMOUNT_MIN_ZERO),
+                    },
+                }}
+                type='number'
+                label={t(LANGUAGE.AMOUNT)}
+            />
+            <AutoComplete
+                name='methodSpending'
+                form={form}
+                data={methodSpending.data}
+                label={t(LANGUAGE.METHOD)}
+                loading={methodSpending.loading}
+                onReload={isEmpty(methodSpending.data) ? undefined : () => handleReloadData('methodSpending')}
+            />
+            <DatePicker name='date' form={form} label={t(LANGUAGE.DATE)} />
+            <LazySearchSelect
+                options={users.data?.data}
+                hasNextPage={users.data?.hasNextPage}
+                loading={searchLoading}
+                label={t(LANGUAGE.USER_LOAN)}
+                onChange={handleChangeUserLoan}
+                onSearch={handleUserLoanSearch}
+                onGetMore={handleUserLoanScrollGetMore}
+                getOptionLabel={(option, active) => <UserOption active={active} data={option} />}
+            />
+            <UserList
+                data={__users}
+                emptyComp={
+                    <p className='px-4 py-2 text-center text-gray-900 dark:text-slate-200'>{t(LANGUAGE.EMPTY_DATA)}</p>
+                }
+            >
+                {(user) => (
+                    <Fragment>
+                        <UserDeleteButton
+                            onClick={() => {
+                                const filtered = __users?.filter((u) => u._id !== user._id)
+                                if (filtered) {
+                                    form.setValue('loanUsers', filtered)
                                 }
-                            />
-
-                            <DatePicker name='date' form={form} label={t(LANGUAGE.DATE)} />
-
-                            <LazySearchSelect
-                                options={users.data?.data}
-                                hasNextPage={users.data?.hasNextPage}
-                                loading={searchLoading}
-                                label={t(LANGUAGE.USER_LOAN)}
-                                onChange={handleChangeUserLoan}
-                                onSearch={handleUserLoanSearch}
-                                onGetMore={handleUserLoanScrollGetMore}
-                                getOptionLabel={(option, active) => <UserOption active={active} data={option} />}
-                            />
-
-                            <UserList
-                                data={__users}
-                                emptyComp={
-                                    <p className='px-4 py-2 text-center text-gray-900 dark:text-slate-200'>
-                                        {t(LANGUAGE.EMPTY_DATA)}
-                                    </p>
-                                }
-                            >
-                                {(user) => (
-                                    <Fragment>
-                                        <UserDeleteButton
-                                            onClick={() => {
-                                                const filtered = __users?.filter((u) => u._id !== user._id)
-                                                if (filtered) {
-                                                    form.setValue('loanUsers', filtered)
-                                                }
-                                            }}
-                                        />
-                                    </Fragment>
-                                )}
-                            </UserList>
-
-                            <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <SubmitWrap>
-                <Button color='prussianBlue' type='submit' disabled={loading.submit}>
-                    {t(LANGUAGE.CREATE)}
-                </Button>
-                <Button color='outline' type='button' onClick={close}>
-                    {t(LANGUAGE.CANCEL)}
-                </Button>
-            </SubmitWrap>
-        </form>
+                            }}
+                        />
+                    </Fragment>
+                )}
+            </UserList>
+            <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
+        </SlideFormWrap>
     )
 }
 

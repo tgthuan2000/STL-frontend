@@ -2,7 +2,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { ICreateMemberForm } from '~/@types/loan'
-import { Button, SubmitWrap } from '~/components'
+import { Button, SlideFormWrap, SubmitWrap } from '~/components'
 import { Input, UploadImage } from '~/components/_base'
 import { useCache, useCheck, useLoading, useSlideOver } from '~/context'
 import { useServiceQuery } from '~/hook'
@@ -73,34 +73,30 @@ const CreateMember = () => {
     }
 
     return (
-        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
-            <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
-                <div className='flex flex-1 flex-col justify-between'>
-                    <div className='divide-y divide-gray-200 px-4 sm:px-6'>
-                        <div className='space-y-6 pt-3 pb-5'>
-                            <Input
-                                name='userName'
-                                form={form}
-                                rules={{
-                                    required: t(LANGUAGE.REQUIRED_FULL_NAME) as string,
-                                }}
-                                type='text'
-                                label={t(LANGUAGE.FULL_NAME)}
-                            />
-                            <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <SubmitWrap>
-                <Button color='green' type='submit' disabled={loading.submit}>
-                    {t(LANGUAGE.CREATE)}
-                </Button>
-                <Button color='outline' type='button' onClick={close}>
-                    {t(LANGUAGE.CANCEL)}
-                </Button>
-            </SubmitWrap>
-        </form>
+        <SlideFormWrap
+            onSubmit={form.handleSubmit(onsubmit)}
+            buttonZone={
+                <SubmitWrap>
+                    <Button color='green' type='submit' disabled={loading.submit}>
+                        {t(LANGUAGE.CREATE)}
+                    </Button>
+                    <Button color='outline' type='button' onClick={close}>
+                        {t(LANGUAGE.CANCEL)}
+                    </Button>
+                </SubmitWrap>
+            }
+        >
+            <Input
+                name='userName'
+                form={form}
+                rules={{
+                    required: t(LANGUAGE.REQUIRED_FULL_NAME) as string,
+                }}
+                type='text'
+                label={t(LANGUAGE.FULL_NAME)}
+            />
+            <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
+        </SlideFormWrap>
     )
 }
 

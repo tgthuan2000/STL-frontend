@@ -349,3 +349,14 @@ export const GET_BUDGET_BY_MONTH = groq`
         "CategorySpending": ${GET_BUDGET_CATEGORY_DETAIL_BY_MONTH}
     }
 `
+
+export const GET_LONG_BUDGET = groq`
+    *[_type == 'longBudget' && user._ref == $userId] {
+        _id,
+        title,
+        amount,
+        "amounts": *[_type == "longBudgetItem" && ^._id == budget._ref] {
+            amount
+        }
+    }
+`
