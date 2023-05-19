@@ -26,7 +26,7 @@ interface Props {
 const LongBudget: React.FC<Props> = (props) => {
     const { data, loading } = props
 
-    if (loading && isEmpty(data)) return <BudgetSkeleton />
+    if (loading && isEmpty(data)) return <BudgetSkeleton elNumber={3} />
 
     if (data && !isEmpty(data)) {
         return (

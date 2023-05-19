@@ -9,10 +9,11 @@ import { SkeletonProps } from '~/@types/components'
 import { MethodProps } from '~/@types/spending'
 import LANGUAGE from '~/i18n/language/key'
 import Empty from './Empty'
+import { SkeletonLine } from '~/components'
 
 const Method: React.FC<MethodProps> = ({ data, loading }) => {
     const { t } = useTranslation()
-    if (loading) return <MethodSkeleton />
+    if (loading) return <MethodSkeleton elNumber={8} />
 
     if (!isEmpty(data)) {
         return (
@@ -23,7 +24,7 @@ const Method: React.FC<MethodProps> = ({ data, loading }) => {
                             <li key={item._id}>
                                 <Link
                                     to={`/spending/method/${item._id}`}
-                                    className='flex cursor-pointer px-3 py-3 hover:opacity-70'
+                                    className='flex cursor-pointer px-3 py-2.5 hover:opacity-70'
                                 >
                                     <div className='w-2/3 truncate'>
                                         <h4 className='font-medium'>{item.name}</h4>
@@ -58,13 +59,13 @@ export const MethodSkeleton: React.FC<SkeletonProps> = (props) => {
     return (
         <ul role='list' className='pointer-events-none select-none'>
             {Array.from(Array(elNumber)).map((value, index) => (
-                <li key={index}>
-                    <div className='flex px-4 py-4'>
+                <li key={index} className='animate-pulse' style={{ animationDelay: `${index * 300}ms` }}>
+                    <div className='flex px-3 py-2.5'>
                         <div className='w-2/3 space-y-1'>
-                            <div className='h-4 w-2/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
+                            <SkeletonLine className='h-3.5 w-2/3' />
                         </div>
                         <div className='flex w-1/3 flex-col items-end space-y-1'>
-                            <div className='h-4 w-2/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
+                            <SkeletonLine className='h-3.5 w-2/3' />
                         </div>
                     </div>
                 </li>

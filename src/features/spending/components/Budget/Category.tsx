@@ -19,7 +19,7 @@ const MakeBudget = React.lazy(() => import('../MakeBudget'))
 const Category: React.FC<BudgetProps> = (props) => {
     const { data, loading } = props
 
-    if (loading && isEmpty(data)) return <BudgetSkeleton />
+    if (loading && isEmpty(data)) return <BudgetSkeleton elNumber={3} />
 
     if (!isEmpty(data?.CategorySpending)) {
         return (

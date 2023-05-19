@@ -13,9 +13,12 @@ import LANGUAGE from '~/i18n/language/key'
 import { getLinkSpending } from '~/utils'
 import Empty from './Empty'
 import { ArchiveBoxXMarkIcon } from '@heroicons/react/24/outline'
+import { SkeletonLine } from '~/components'
 
-const Recent: React.FC<RecentProps> = ({ data, loading }) => {
+const Recent: React.FC<RecentProps> = (props) => {
+    const { data, loading } = props
     const { t } = useTranslation()
+
     if (loading) return <RecentSkeleton />
 
     if (!isEmpty(data)) {
@@ -107,16 +110,15 @@ export const RecentSkeleton: React.FC<SkeletonProps> = (props) => {
     return (
         <ul role='list' className='pointer-events-none select-none divide-y divide-gray-300 dark:divide-slate-700'>
             {Array.from(Array(elNumber)).map((value, index) => (
-                <li key={index}>
-                    <div className='flex px-4 py-3'>
+                <li key={index} className='animate-pulse' style={{ animationDelay: `${index * 300}ms` }}>
+                    <div className='flex px-3 py-2'>
                         <div className='w-2/3 space-y-1'>
-                            <div className='h-4 w-2/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
-                            <div className='h-4 w-1/2 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
-                            <div className='h-4 w-1/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
+                            <SkeletonLine className='h-3.5 w-2/3' />
+                            <SkeletonLine className='h-3.5 w-1/2' />
                         </div>
                         <div className='flex w-1/3 flex-col items-end space-y-1'>
-                            <div className='h-4 w-1/2 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
-                            <div className='h-4 w-full animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
+                            <SkeletonLine className='h-3.5 w-1/2' />
+                            <SkeletonLine className='h-3.5 w-full' />
                         </div>
                     </div>
                 </li>
