@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import { forwardRef, useId } from 'react'
 import { DatePickerInputProps } from '~/@types/components'
 import ErrorMessage from '~/components/ErrorMessage'
+import Label from '~/components/Label'
 
 const Input = forwardRef<HTMLInputElement, DatePickerInputProps>((props, ref) => {
     const { label, error, className, disabledClear, disabled, field, readOnlyInput, onClick, ...rest } = props
@@ -10,11 +11,7 @@ const Input = forwardRef<HTMLInputElement, DatePickerInputProps>((props, ref) =>
 
     return (
         <div>
-            {label && (
-                <label htmlFor={id} className='inline-block font-medium text-gray-900 dark:text-slate-100'>
-                    {label}
-                </label>
-            )}
+            {label && <Label label={label} id={id} />}
             <div className='relative mt-1'>
                 <input
                     ref={ref}

@@ -107,12 +107,6 @@ export interface DropdownItemsProps {
     field: ControllerRenderProps<any, string>
 }
 
-export interface LabelProps {
-    id?: string
-    label?: DefaultTFuncReturn
-    className?: string
-}
-
 export interface InputNumberHintProps {
     field: ControllerRenderProps<any, string>
 }

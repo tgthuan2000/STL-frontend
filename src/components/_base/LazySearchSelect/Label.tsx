@@ -1,17 +1,16 @@
 import { Combobox } from '@headlessui/react'
 import React from 'react'
 import { LazySearchSelectLabelProps } from '~/@types/components'
+import LabelCore from '~/components/Label'
 
-const Label: React.FC<LazySearchSelectLabelProps> = ({ label }) => {
-    return (
-        <>
-            {label && (
-                <Combobox.Label className='inline-block text-sm font-medium text-gray-700 dark:text-slate-100'>
-                    {label}
-                </Combobox.Label>
-            )}
-        </>
-    )
+const Label: React.FC<LazySearchSelectLabelProps> = (props) => {
+    const { label } = props
+
+    if (!label) {
+        return <></>
+    }
+
+    return <LabelCore label={label} as={Combobox.Label} />
 }
 
 export default Label
