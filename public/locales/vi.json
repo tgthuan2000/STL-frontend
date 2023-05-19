@@ -337,6 +337,10 @@
     "TWO_FA_SETUP": "Thiết lập xác thực hai bước",
     "DISABLED_TWO_FA_SETUP": "Tắt xác thực hai bước",
     "TWO_FA_DESCRIPTION": "Nhập mã gồm sáu số từ ứng dụng xác thực hai yếu tố của bạn để tiếp tục.",
+    "ACHIEVEMENT": "Thành tựu",
+    "RIGHTS": "Quyền",
+    "STATISTICS": "Thống kê",
+    "LONG_BUDGET_ACHIEVEMENT": "Ngân sách dài hạn",
 
     "OR": "Hoặc",
     "LOGIN_WITH_EMAIL_PASSWORD": "Đăng nhập bằng email và mật khẩu",

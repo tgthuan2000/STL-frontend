@@ -35,7 +35,7 @@ const AllowSendMail = () => {
     return (
         <div>
             <div className='flex items-center justify-between'>
-                <label className='text-base'>{t(LANGUAGE.RECEIVE_NOTIFY_BY_MAIL)}</label>
+                <label className='text-sm sm:text-base'>{t(LANGUAGE.RECEIVE_NOTIFY_BY_MAIL)}</label>
                 <Switch
                     checked={active}
                     className={clsx(
