@@ -22,8 +22,8 @@ const Spending = () => {
                 <Route path='transaction/:id' element={<TransactionDetail />} />
                 {/* <Route path='method' element={<Method />} /> */}
                 <Route path='method/:id' element={<MethodDetail />} />
-                <Route path='budget/method/:id' element={<BudgetDetailMethod />} />
-                <Route path='budget/category/:id' element={<BudgetDetailCategory />} />
+                <Route path='budget-method/:id' element={<BudgetDetailMethod />} />
+                <Route path='budget-category/:id' element={<BudgetDetailCategory />} />
                 <Route path='long-budget/:id' element={<LongBudgetDetail />} />
                 <Route path='layout' element={<Layout />} />
                 <Route path='others' element={<Others />} />

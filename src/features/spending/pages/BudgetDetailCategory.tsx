@@ -1,9 +1,11 @@
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 import { Transaction } from '~/components'
 import LANGUAGE from '~/i18n/language/key'
 
 const BudgetDetailCategory = () => {
     const { t } = useTranslation()
+    const { id } = useParams()
 
     return (
         <Transaction hasBack title={t(LANGUAGE.BUDGET_BY_CATEGORY)}>

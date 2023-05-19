@@ -312,8 +312,6 @@ export const GET_BUDGET_METHOD_DETAIL_BY_MONTH = groq`
     *[_type == 'budgetMethodDetail' && user._ref == $userId && budgetSpending._ref == $budgetId] | order(_createdAt asc)
     {
         _id,
-        _createdAt,
-        _updatedAt,
         methodSpending-> {
             _id,
             name,
@@ -327,8 +325,6 @@ export const GET_BUDGET_CATEGORY_DETAIL_BY_MONTH = groq`
     *[_type == 'budgetCategoryDetail' && user._ref == $userId && budgetSpending._ref == $budgetId] | order(_createdAt asc)
     {
         _id,
-        _createdAt,
-        _updatedAt,
         categorySpending-> {
             _id,
             name,
@@ -342,9 +338,6 @@ export const GET_BUDGET_BY_MONTH = groq`
     *[_type == 'budget' && user._ref == $userId && _id == $budgetId][0]
     {
         _id,
-        _createdAt,
-        _updatedAt,
-        date,
         "MethodSpending": ${GET_BUDGET_METHOD_DETAIL_BY_MONTH},
         "CategorySpending": ${GET_BUDGET_CATEGORY_DETAIL_BY_MONTH}
     }
@@ -355,8 +348,6 @@ export const GET_LONG_BUDGET = groq`
         _id,
         title,
         amount,
-        "amounts": *[_type == "longBudgetItem" && ^._id == budget._ref] {
-            amount
-        }
+        "amounts": *[_type == "longBudgetItem" && ^._id == budget._ref].amount
     }
 `

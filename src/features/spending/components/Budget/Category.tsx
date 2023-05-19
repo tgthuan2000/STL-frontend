@@ -42,7 +42,7 @@ const Category: React.FC<BudgetProps> = (props) => {
                             bgColor={bgColor}
                             isOver={isOver}
                             totalAmounts={totalAmounts}
-                            to={`budget/category/${item._id}`}
+                            to={`budget-category/${item._id}`}
                         />
                     )
                 })}

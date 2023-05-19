@@ -42,7 +42,7 @@ const Method: React.FC<BudgetProps> = (props) => {
                             bgColor={bgColor}
                             isOver={isOver}
                             totalAmounts={totalAmounts}
-                            to={`budget/method/${item._id}`}
+                            to={`budget-method/${item._id}`}
                         />
                     )
                 })}
