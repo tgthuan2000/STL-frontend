@@ -12,7 +12,7 @@ const ProgressLine: React.FC<Props> = (props) => {
 
     return (
         <div className={clsx('relative h-2 overflow-hidden rounded-full', className)}>
-            <div className='absolute h-full w-full opacity-30' style={{ background }} />
+            <div className='absolute h-full w-full opacity-30 transition' style={{ background }} />
             <div className='absolute inset-0 flex'>
                 {data.map(({ color, percent }, index) => {
                     return (

@@ -126,6 +126,7 @@
     "FIRST_LOGIN": "First login",
     "LAST_ACCESS": "Last access",
     "THIS_DEVICE": "This device",
+    "PROGRESS": "Progress",
 
     "APP_READY_WORK_OFFLINE": "App ready to work offline",
     "RELOAD_TEXT": "New content available, click on reload button to update.",
