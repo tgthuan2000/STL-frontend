@@ -12,6 +12,7 @@ import useBudgetDetailCategory, { BudgetCategoryDetail } from '../hook/useBudget
 import { sumBy } from 'lodash'
 import Title from '~/components/Box/Title'
 import { Fragment, useMemo } from 'react'
+import { ChartPieIcon, ClockIcon, CurrencyDollarIcon, ReceiptPercentIcon } from '@heroicons/react/24/outline'
 
 const BudgetDetailCategory = () => {
     const { t } = useTranslation()
@@ -44,10 +45,12 @@ const Content: React.FC<Props> = (props) => {
     return (
         <div className='mt-5 flex flex-col gap-8 text-gray-900 dark:text-slate-200 sm:gap-4 lg:flex-row'>
             <div className='flex-1'>
-                <Title title={t(LANGUAGE.PROGRESS)} onReload={reload} loading={loading} />
-                <Paper>
-                    <Progress data={data} />
-                </Paper>
+                <div className='sticky top-20'>
+                    <Title title={t(LANGUAGE.PROGRESS)} onReload={reload} loading={loading} />
+                    <Paper>
+                        <Progress data={data} />
+                    </Paper>
+                </div>
             </div>
             <div className='flex-1'>
                 <Title title={t(LANGUAGE.TRANSACTION)} onReload={reload} loading={loading} />
@@ -115,8 +118,9 @@ interface ProgressProps {
 
 const Progress: React.FC<ProgressProps> = (props) => {
     const { data } = props
+    const { t } = useTranslation()
 
-    const { percent, bgColor, color } = useMemo(() => {
+    const { percent, bgColor, color, amounts } = useMemo(() => {
         let bgColor = 'rgb(16, 185, 129)',
             color = 'text-green-500'
 
@@ -124,9 +128,9 @@ const Progress: React.FC<ProgressProps> = (props) => {
             return { percent: 0, bgColor, color }
         }
 
-        const percent = Array.isArray(data.spending)
-            ? (sumBy(data.spending, ({ amount }) => amount) * 100) / data.amount
-            : 0
+        const amounts = sumBy(data.spending, ({ amount }) => amount)
+
+        const percent = Array.isArray(data.spending) ? (amounts * 100) / data.amount : 0
 
         if (percent > 30) {
             bgColor = 'rgb(245, 158, 11)'
@@ -148,7 +152,7 @@ const Progress: React.FC<ProgressProps> = (props) => {
             color = 'text-purple-500'
         }
 
-        return { percent, bgColor, color }
+        return { percent, bgColor, color, amounts }
     }, [data])
 
     return (
@@ -160,6 +164,37 @@ const Progress: React.FC<ProgressProps> = (props) => {
                 </span>
             </div>
             <ProgressLine data={[{ color: bgColor, percent }]} background={bgColor} className='my-1' />
+
+            <div className='mt-10 grid select-none grid-cols-2 gap-4 sm:mt-8 sm:grid-cols-3'>
+                <div
+                    title={t(LANGUAGE.USAGE_PERCENT) as string}
+                    className={clsx(
+                        'flex flex-col items-center gap-1 rounded-md border border-gray-200 p-4 shadow-sm dark:border-current dark:shadow-current',
+                        color
+                    )}
+                >
+                    <ReceiptPercentIcon className='h-9 w-9' />
+                    <p className='text-base sm:text-lg'>{numeral(percent).format()}%</p>
+                </div>
+                <div
+                    title={t(LANGUAGE.TOTAL_COST) as string}
+                    className='flex flex-col items-center gap-1 rounded-md border border-gray-200 p-4 text-radical-red-500 shadow-sm dark:border-radical-red-500 dark:shadow-radical-red-500'
+                >
+                    <CurrencyDollarIcon className='h-9 w-9' />
+                    <p className='text-base sm:text-lg'>{numeral(amounts).format()}</p>
+                </div>
+                <div
+                    title={t(LANGUAGE.AVERAGE_AMOUNT_REMAINING_FOR_MONTH) as string}
+                    className='flex flex-col items-center gap-1 rounded-md border border-gray-200 p-4 text-yellow-500 shadow-sm dark:border-yellow-500 dark:shadow-yellow-500'
+                >
+                    <ChartPieIcon className='h-9 w-9' />
+                    <p className='text-base sm:text-lg'>
+                        {numeral(
+                            (data.amount - (amounts ?? 0)) / moment().endOf('month').diff(moment(), 'days')
+                        ).format()}
+                    </p>
+                </div>
+            </div>
         </Fragment>
     )
 }
