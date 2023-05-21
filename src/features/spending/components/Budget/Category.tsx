@@ -1,18 +1,17 @@
 import { CubeTransparentIcon } from '@heroicons/react/24/outline'
-import { isEmpty, sum } from 'lodash'
+import { get, isEmpty, sum } from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { BudgetProps } from '~/@types/spending'
-import { Button } from '~/components'
+import { Button, ProgressLine } from '~/components'
 import LoadingText from '~/components/Loading/LoadingText'
+import { BudgetList, RenderAmount, RenderTitle } from '~/components/Spending'
 import { colors } from '~/constant/spending'
 import { useSlideOver } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import Empty from '../Empty'
-import BudgetItem from './Item'
 import BudgetSkeleton from './Skeleton'
-import WrapList from '../WrapList'
 
 const MakeBudget = React.lazy(() => import('../MakeBudget'))
 
@@ -21,35 +20,25 @@ const Category: React.FC<BudgetProps> = (props) => {
 
     if (loading && isEmpty(data)) return <BudgetSkeleton elNumber={3} />
 
-    if (!isEmpty(data?.CategorySpending)) {
-        return (
-            <WrapList>
-                {data?.CategorySpending?.map((item, index) => {
-                    const totalAmounts = sum(item.amounts)
-                    const percent = (totalAmounts * 100) / item.amount
-                    const isOver = percent > 100
+    return (
+        <BudgetList
+            data={data?.CategorySpending}
+            fallback={<EmptyData />}
+            getItemKey={(item) => get(item, '_id')}
+            getItemLink={(item) => `budget-category/${get(item, '_id')}`}
+            renderAmount={(item, index) => (
+                <RenderAmount amount={get(item, 'amount')} className={colors.text[index % colors.text.length]} />
+            )}
+            renderProgress={(item, index) => {
+                const totalAmounts = sum(get(item, 'amounts', []))
+                const percent = (totalAmounts * 100) / get(item, 'amount', 0)
+                const bgColor = colors.bg[index % colors.bg.length]
 
-                    const bgColor = colors.bg[index % colors.bg.length]
-                    const textColor = colors.text[index % colors.text.length]
-
-                    return (
-                        <BudgetItem
-                            key={item._id}
-                            name={item.categorySpending.name}
-                            textColor={textColor}
-                            amount={item.amount}
-                            percent={percent}
-                            bgColor={bgColor}
-                            isOver={isOver}
-                            totalAmounts={totalAmounts}
-                            to={`budget-category/${item._id}`}
-                        />
-                    )
-                })}
-            </WrapList>
-        )
-    }
-    return <EmptyData />
+                return <ProgressLine data={[{ color: bgColor, percent }]} background={bgColor} className='mx-3 my-1' />
+            }}
+            renderTitle={(item) => <RenderTitle title={get(item, 'categorySpending.name')} />}
+        />
+    )
 }
 
 const EmptyData = () => {

@@ -1,20 +1,17 @@
 import { CubeTransparentIcon } from '@heroicons/react/24/outline'
-import clsx from 'clsx'
-import { isEmpty, sum } from 'lodash'
-import numeral from 'numeral'
+import { get, isEmpty, sum } from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { LongBudget as TypeLongBudget } from '~/@types/spending'
 import { Button, ProgressLine } from '~/components'
 import LoadingText from '~/components/Loading/LoadingText'
+import { BudgetList, RenderAmount, RenderTitle } from '~/components/Spending'
 import { budgetLongColors } from '~/constant/spending'
 import { useSlideOver } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import BudgetSkeleton from '../Budget/Skeleton'
 import Empty from '../Empty'
-import WrapItemLink from '../WrapItemLink'
-import WrapList from '../WrapList'
 
 const MakeLongBudget = React.lazy(() => import('../MakeLongBudget'))
 
@@ -28,39 +25,28 @@ const LongBudget: React.FC<Props> = (props) => {
 
     if (loading && isEmpty(data)) return <BudgetSkeleton elNumber={3} />
 
-    if (data && !isEmpty(data)) {
-        return (
-            <WrapList>
-                {Array.isArray(data) &&
-                    data.map((item, index) => {
-                        const { _id, amount, title, amounts } = item
+    return (
+        <BudgetList
+            data={data}
+            fallback={<EmptyData />}
+            getItemKey={(item) => get(item, '_id')}
+            getItemLink={(item) => `long-budget/${get(item, '_id')}`}
+            renderAmount={(item, index: number) => (
+                <RenderAmount
+                    amount={get(item, 'amount')}
+                    className={budgetLongColors.text[index % budgetLongColors.text.length]}
+                />
+            )}
+            renderProgress={(item, index) => {
+                const totalAmounts = sum(get(item, 'amounts', []))
+                const percent = (totalAmounts * 100) / get(item, 'amount', 0)
+                const bgColor = budgetLongColors.bg[index % budgetLongColors.bg.length]
 
-                        return (
-                            <WrapItemLink key={_id} to={`long-budget/${_id}`}>
-                                <div className='flex justify-between px-3'>
-                                    <h4 className='font-medium'>{title}</h4>
-                                    <span className={clsx('font-normal', budgetLongColors.text[index])}>
-                                        {numeral(amount).format()}
-                                    </span>
-                                </div>
-                                <ProgressLine
-                                    data={[
-                                        {
-                                            color: budgetLongColors.bg[index],
-                                            percent: (sum(amounts) * 100) / item.amount,
-                                        },
-                                    ]}
-                                    background={budgetLongColors.bg[index]}
-                                    className='mx-3 my-1'
-                                />
-                            </WrapItemLink>
-                        )
-                    })}
-            </WrapList>
-        )
-    }
-
-    return <EmptyData />
+                return <ProgressLine data={[{ color: bgColor, percent }]} background={bgColor} className='mx-3 my-1' />
+            }}
+            renderTitle={(item) => <RenderTitle title={get(item, 'title')} />}
+        />
+    )
 }
 
 const EmptyData = () => {

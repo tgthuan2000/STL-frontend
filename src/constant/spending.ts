@@ -28,3 +28,32 @@ export const budgetLongColors = {
     bg: [...Bg].reverse(),
     text: [...C].reverse().map((c) => `text-${c}`),
 }
+
+export const getKindSpendingTextColor = (key: KIND_SPENDING | undefined) => {
+    if (!key) {
+        return
+    }
+
+    switch (key) {
+        case KIND_SPENDING.COST:
+            return 'text-red-500'
+        case KIND_SPENDING.RECEIVE:
+            return 'text-green-500'
+        case KIND_SPENDING.TRANSFER_FROM:
+        case KIND_SPENDING.TRANSFER_TO:
+            return 'text-blue-500'
+        case KIND_SPENDING.LOAN:
+        case KIND_SPENDING.CREDIT:
+            return 'text-orange-500'
+    }
+}
+
+export const getAmountTextColor = (amount: number) => {
+    if (amount < 0) {
+        return 'text-red-500'
+    }
+    if (amount > 0) {
+        return 'text-green-500'
+    }
+    return 'text-gray-500'
+}
