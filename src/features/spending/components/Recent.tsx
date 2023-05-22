@@ -5,42 +5,42 @@ import { useTranslation } from 'react-i18next'
 import { SkeletonProps } from '~/@types/components'
 import { RecentProps } from '~/@types/spending'
 import { SkeletonLine } from '~/components'
-import { RecentList, RenderAmount, RenderDate, RenderDescription, RenderDot, RenderTitle } from '~/components/Spending'
-import { KIND_SPENDING, getKindSpendingTextColor } from '~/constant/spending'
+import Atom from '~/components/_atomic/Atom'
+import Template from '~/components/_atomic/Template'
+import { getKindSpendingTextColor } from '~/constant/template'
 import LANGUAGE from '~/i18n/language/key'
 import { getLinkSpending } from '~/utils'
-import Empty from './Empty'
 
 const Recent: React.FC<RecentProps> = (props) => {
     const { data, loading } = props
     const { t } = useTranslation()
 
-    if (loading) return <RecentSkeleton />
-
     return (
-        <RecentList
+        <Template.RecentList
             data={data}
-            fallback={<Empty icon={ArchiveBoxXMarkIcon} text={t(LANGUAGE.EMPTY_DATA)} />}
+            loading={loading}
+            fallback={<Atom.EmptyList icon={ArchiveBoxXMarkIcon} text={t(LANGUAGE.EMPTY_DATA)} />}
+            loadingFallback={<RecentSkeleton />}
             getItemKey={(item) => get(item, '_id')}
             getItemLink={(item) => getLinkSpending(get(item, 'kindSpending.key'), get(item, '_id'))}
-            renderDate={(item) => <RenderDate date={get(item, 'date')} />}
-            renderMethod={(item) => <RenderTitle title={get(item, 'methodSpending.name')} fallback={<></>} />}
+            renderDate={(item) => <Atom.Date date={get(item, 'date')} />}
+            renderMethod={(item) => <Atom.Title title={get(item, 'methodSpending.name')} />}
             renderAmount={(item) => (
-                <RenderAmount
+                <Atom.Amount
                     amount={get(item, 'amount')}
                     className={() => getKindSpendingTextColor(get(item, 'kindSpending.key'))}
                 />
             )}
             renderCategory={(item) => (
-                <RenderTitle title={get(item, 'categorySpending.name')} fallback={get(item, 'kindSpending.name')} />
+                <Atom.Title title={get(item, 'categorySpending.name')} fallback={get(item, 'kindSpending.name')} />
             )}
-            renderDescription={(item) => <RenderDescription data={get(item, 'description')} />}
-            renderDot={(item) => (
-                <RenderDot
-                    hidden={![KIND_SPENDING.CREDIT].includes(get(item, 'kindSpending.key'))}
-                    className={get(item, 'paid') ? 'bg-green-500' : 'bg-radical-red-500'}
-                />
-            )}
+            renderDescription={(item) => <Atom.Description data={get(item, 'description')} />}
+            // renderDot={(item) => (
+            //     <Atom.Dot
+            //         hidden={![KIND_SPENDING.CREDIT].includes(get(item, 'kindSpending.key'))}
+            //         className={get(item, 'paid') ? 'bg-green-500' : 'bg-radical-red-500'}
+            //     />
+            // )}
         />
     )
 }

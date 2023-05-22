@@ -2,7 +2,6 @@ import clsx from 'clsx'
 import { isNil } from 'lodash'
 import numeral from 'numeral'
 import React from 'react'
-import { KIND_SPENDING } from '~/constant/spending'
 
 interface Props {
     amount: number

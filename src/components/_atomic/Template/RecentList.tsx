@@ -1,10 +1,12 @@
-import { isEmpty, isNil } from 'lodash'
+import { isEmpty } from 'lodash'
 import React from 'react'
 import { Link, To } from 'react-router-dom'
 
 interface Props {
     data: any[] | undefined
+    loading?: boolean
     fallback?: React.ReactNode
+    loadingFallback?: React.ReactNode
     getItemKey: (item: any) => string | number
     getItemLink: (item: any) => To
     renderDate?: (item: any) => React.ReactNode
@@ -17,7 +19,9 @@ interface Props {
 const RecentList: React.FC<Props> = (props) => {
     const {
         data,
+        loading,
         fallback,
+        loadingFallback,
         getItemKey,
         getItemLink,
         renderDate,
@@ -27,6 +31,10 @@ const RecentList: React.FC<Props> = (props) => {
         renderAmount,
         renderDescription,
     } = props
+
+    if (loading) {
+        return <>{loadingFallback}</>
+    }
 
     if (isEmpty(data)) {
         return <>{fallback}</>

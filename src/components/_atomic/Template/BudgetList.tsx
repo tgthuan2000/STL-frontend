@@ -4,7 +4,9 @@ import { Link, To } from 'react-router-dom'
 
 interface Props {
     data: any[] | undefined
+    loading?: boolean
     fallback?: React.ReactNode
+    loadingFallback?: React.ReactNode
     getItemKey: (item: any) => string | number
     getItemLink: (item: any) => To
     renderTitle: (item: any) => React.ReactNode
@@ -13,7 +15,21 @@ interface Props {
 }
 
 const BudgetList: React.FC<Props> = (props) => {
-    const { data, fallback, getItemKey, getItemLink, renderTitle, renderAmount, renderProgress } = props
+    const {
+        data,
+        loading,
+        fallback,
+        loadingFallback,
+        getItemKey,
+        getItemLink,
+        renderTitle,
+        renderAmount,
+        renderProgress,
+    } = props
+
+    if (loading) {
+        return <>{loadingFallback}</>
+    }
 
     if (isEmpty(data)) {
         return <>{fallback}</>

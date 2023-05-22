@@ -1,8 +1,8 @@
 import React from 'react'
 import { SkeletonProps } from '~/@types/components'
-import { SkeletonLine } from '~/components'
+import SkeletonLine from '~/components/SkeletonLine'
 
-const BudgetSkeleton: React.FC<SkeletonProps> = (props) => {
+const BudgetListSkeleton: React.FC<SkeletonProps> = (props) => {
     const { elNumber = 5 } = props
 
     return (
@@ -22,4 +22,4 @@ const BudgetSkeleton: React.FC<SkeletonProps> = (props) => {
     )
 }
 
-export default BudgetSkeleton
+export default BudgetListSkeleton

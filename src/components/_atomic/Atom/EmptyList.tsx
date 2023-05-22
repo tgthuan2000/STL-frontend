@@ -7,7 +7,7 @@ interface Props {
     children?: React.ReactNode
 }
 
-const Empty: React.FC<Props> = (props) => {
+const EmptyList: React.FC<Props> = (props) => {
     const { text, icon: Icon, children } = props
 
     return (
@@ -21,4 +21,4 @@ const Empty: React.FC<Props> = (props) => {
     )
 }
 
-export default Empty
+export default EmptyList
