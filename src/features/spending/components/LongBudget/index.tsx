@@ -34,7 +34,7 @@ const LongBudget: React.FC<Props> = (props) => {
                 const percent = (totalAmounts * 100) / get(item, 'amount', 0)
                 const bgColor = budgetLongColors.bg[index % budgetLongColors.bg.length]
 
-                return <ProgressLine data={[{ color: bgColor, percent }]} background={bgColor} className='mx-3 my-1' />
+                return <ProgressLine data={[{ color: bgColor, percent }]} background={bgColor} />
             }}
             renderTitle={(item) => <Atom.Title title={get(item, 'title')} />}
         />

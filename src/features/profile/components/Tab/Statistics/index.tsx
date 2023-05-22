@@ -97,7 +97,7 @@ const Statistics = () => {
                 <TimeFilter onSubmit={handleFilterSubmit} excludes={excludeOptions} />
             </div>
             <div className='overflow-hidden px-1 sm:bg-gradient-to-tl sm:from-indigo-500 sm:via-purple-500 sm:to-pink-500 sm:p-3 sm:shadow-lg sm:dark:from-transparent sm:dark:to-transparent sm:dark:shadow-none'>
-                <AnimateWrap className='grid grid-cols-1 backdrop-blur-lg md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+                <AnimateWrap className='grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] backdrop-blur-lg'>
                     {loading.config ? (
                         <LoadingText className='my-5 text-center text-sm font-normal sm:my-3 sm:text-lg sm:text-white' />
                     ) : isEmpty(profileOptions) ? (

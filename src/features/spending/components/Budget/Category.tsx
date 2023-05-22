@@ -26,7 +26,7 @@ const Category: React.FC<BudgetProps> = (props) => {
                 const percent = (totalAmounts * 100) / get(item, 'amount', 0)
                 const bgColor = colors.bg[index % colors.bg.length]
 
-                return <ProgressLine data={[{ color: bgColor, percent }]} background={bgColor} className='mx-3 my-1' />
+                return <ProgressLine data={[{ color: bgColor, percent }]} background={bgColor} />
             }}
             renderTitle={(item) => <Atom.Title title={get(item, 'categorySpending.name')} />}
         />

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
@@ -46,10 +46,10 @@ const useBudgetDetailCategory = () => {
         { budget: TAGS.ALTERNATE }
     )
 
-    const refetch = () => {
+    const refetch = useCallback(() => {
         deleteCache('budget')
         reload()
-    }
+    }, [])
 
     useEffect(() => {
         fetch()
