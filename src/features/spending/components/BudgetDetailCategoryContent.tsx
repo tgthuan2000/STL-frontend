@@ -1,6 +1,6 @@
 import { ChartPieIcon, CurrencyDollarIcon, ReceiptPercentIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
-import { get, sumBy } from 'lodash'
+import { get, groupBy, sortBy, sumBy } from 'lodash'
 import moment from 'moment'
 import React, { memo, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -82,9 +82,22 @@ const BudgetDetailCategoryContent: React.FC<Props> = (props) => {
         ]
     }, [data?.spending, t])
 
+    const charts = useMemo(() => {
+        if (!data?.spending) {
+            return
+        }
+        const grouped = groupBy(structuredClone(data.spending), (item) => item.date.split('T')[0])
+        const result = Object.keys(grouped).map((key) => ({
+            x: key,
+            y: grouped[key].reduce((acc, item) => acc + item.amount, 0),
+        }))
+
+        return sortBy(result, (item) => item.x)
+    }, [data])
+
     return (
         <div className='mt-5 flex flex-col gap-8 sm:gap-4 lg:flex-row'>
-            <div className='flex-1'>
+            <div className='flex-[1.25]'>
                 <div className='sticky top-20'>
                     <Title title={t(LANGUAGE.PROGRESS)} onReload={reload} loading={loading} />
                     <Paper className='space-y-8 sm:space-y-5'>
@@ -126,7 +139,7 @@ const BudgetDetailCategoryContent: React.FC<Props> = (props) => {
                             />
                         </AnimateWrap>
 
-                        <AnimateWrap>{/* Chart */}</AnimateWrap>
+                        <Template.TransactionChart data={charts} />
                     </Paper>
                 </div>
             </div>
