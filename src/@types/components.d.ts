@@ -107,12 +107,6 @@ export interface DropdownItemsProps {
     field: ControllerRenderProps<any, string>
 }
 
-export interface LabelProps {
-    id?: string
-    label?: DefaultTFuncReturn
-    className?: string
-}
-
 export interface InputNumberHintProps {
     field: ControllerRenderProps<any, string>
 }
@@ -182,6 +176,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
         | 'indigo'
         | 'cyan'
         | 'green'
+        | 'purple'
         | 'blue'
         | 'radicalRed'
         | 'prussianBlue'
@@ -190,9 +185,10 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
         | 'outline-indigo'
         | 'outline-cyan'
         | 'outline-green'
+        | 'outline-purple'
         | 'outline-blue'
-        | 'outline-radicalRed'
         | 'outline-prussianBlue'
+        | 'outline-radicalRed'
         | 'outline-yellow'
         | 'custom'
     disabled?: boolean
@@ -416,11 +412,6 @@ export interface LazySearchSelectOptionsProps {
     handleGetMoreData: () => void
     hasNextPage
 }
-export interface PermissionCheckProps {
-    permissions: PERMISSION[]
-    children: React.ReactNode
-    fallback?: React.ReactNode
-}
 
 export interface ProgressItem {
     step: number
@@ -503,15 +494,6 @@ export interface SubmitWrapProps {
 
 export interface AsideProps {
     children: React.ReactNode
-}
-
-export interface ButtonGroupProps {
-    form: UseFormReturn<any, object>
-    name: string
-    idKey?: string
-    valueKey?: string
-    data?: any[]
-    onChange?: (data: any) => void
 }
 
 export interface ListViewFilterProps {

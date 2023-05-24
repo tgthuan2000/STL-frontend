@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import { AddMethodQueryData, IAddMethodForm } from '~/@types/spending'
-import { Button, CheckName, SubmitWrap } from '~/components'
+import { Button, CheckName, SlideFormWrap, SubmitWrap } from '~/components'
 import { Checkbox, Input } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { useCache, useCheck, useLoading, useSlideOver } from '~/context'
@@ -142,42 +142,36 @@ const AddMethod = () => {
     }, [watchName])
 
     return (
-        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
-            <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
-                <div className='flex flex-1 flex-col justify-between'>
-                    <div className='divide-y divide-gray-200 px-4 sm:px-6'>
-                        <div className='space-y-6 pt-3 pb-5'>
-                            <Input name='name' form={form} type='text' label={t(LANGUAGE.METHOD_NAME)} />
-
-                            <CheckName
-                                show={Boolean(!methodSpending.loading && watchName.length >= 2)}
-                                list={sameMethodList}
-                                watchValue={watchName}
-                            />
-
-                            {!methodSpending.loading && isEmpty(methodSpending.data) && (
-                                <Checkbox
-                                    form={form}
-                                    name='recommends'
-                                    label={t(LANGUAGE.RECOMMEND)}
-                                    options={recommends}
-                                    getOptionKey={(item) => item?.id}
-                                    getOptionLabel={(item) => item?.name}
-                                />
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <SubmitWrap>
-                <Button color='cyan' type='submit' disabled={loading.submit}>
-                    {t(LANGUAGE.CREATE)}
-                </Button>
-                <Button color='outline' type='button' onClick={close}>
-                    {t(LANGUAGE.CANCEL)}
-                </Button>
-            </SubmitWrap>
-        </form>
+        <SlideFormWrap
+            onSubmit={form.handleSubmit(onsubmit)}
+            buttonZone={
+                <SubmitWrap>
+                    <Button color='cyan' type='submit' disabled={loading.submit}>
+                        {t(LANGUAGE.CREATE)}
+                    </Button>
+                    <Button color='outline' type='button' onClick={close}>
+                        {t(LANGUAGE.CANCEL)}
+                    </Button>
+                </SubmitWrap>
+            }
+        >
+            <Input name='name' form={form} type='text' label={t(LANGUAGE.METHOD_NAME)} />
+            <CheckName
+                show={Boolean(!methodSpending.loading && watchName.length >= 2)}
+                list={sameMethodList}
+                watchValue={watchName}
+            />
+            {!methodSpending.loading && isEmpty(methodSpending.data) && (
+                <Checkbox
+                    form={form}
+                    name='recommends'
+                    label={t(LANGUAGE.RECOMMEND)}
+                    options={recommends}
+                    getOptionKey={(item) => item?.id}
+                    getOptionLabel={(item) => item?.name}
+                />
+            )}
+        </SlideFormWrap>
     )
 }
 

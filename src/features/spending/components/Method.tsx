@@ -1,74 +1,32 @@
 import { ArchiveBoxXMarkIcon } from '@heroicons/react/24/outline'
-import clsx from 'clsx'
-import { isEmpty } from 'lodash'
-import numeral from 'numeral'
+import { get } from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
-import { SkeletonProps } from '~/@types/components'
 import { MethodProps } from '~/@types/spending'
+import Atom from '~/components/_atomic/Atom'
+import Template from '~/components/_atomic/Template'
+import { getAmountTextColor } from '~/constant/template'
 import LANGUAGE from '~/i18n/language/key'
-import Empty from './Empty'
 
-const Method: React.FC<MethodProps> = ({ data, loading }) => {
+const Method: React.FC<MethodProps> = (props) => {
+    const { data, loading } = props
     const { t } = useTranslation()
-    if (loading) return <MethodSkeleton />
 
-    if (!isEmpty(data)) {
-        return (
-            <ul role='list' className='text-gray-900 dark:text-slate-200'>
-                {Array.isArray(data) &&
-                    data?.map((item) => {
-                        return (
-                            <li key={item._id}>
-                                <Link
-                                    to={`/spending/method/${item._id}`}
-                                    className='flex cursor-pointer px-3 py-3 hover:opacity-70'
-                                >
-                                    <div className='w-2/3 truncate'>
-                                        <h4 className='font-medium'>{item.name}</h4>
-                                    </div>
-                                    <div className='w-1/3 truncate text-right'>
-                                        <span
-                                            className={clsx(
-                                                'font-medium',
-                                                { 'text-red-500': item.surplus < 0 },
-                                                { 'text-green-500': item.surplus > 0 },
-                                                { 'text-gray-500': item.surplus === 0 }
-                                            )}
-                                        >
-                                            {numeral(item.surplus).format()}
-                                        </span>
-                                    </div>
-                                </Link>
-                            </li>
-                        )
-                    })}
-            </ul>
-        )
-    }
-    return <Empty icon={ArchiveBoxXMarkIcon} text={t(LANGUAGE.EMPTY_DATA)} />
+    return (
+        <Template.SimpleList
+            data={data}
+            loading={loading}
+            fallback={<Atom.EmptyList icon={ArchiveBoxXMarkIcon} text={t(LANGUAGE.EMPTY_DATA)} />}
+            loadingFallback={<Atom.SimpleListSkeleton elNumber={8} />}
+            getItemKey={(item) => get(item, '_id')}
+            getItemLink={(item) => `/spending/method/${get(item, '_id')}`}
+            renderTitle={(item) => <Atom.Title title={get(item, 'name')} fallback={t(LANGUAGE.EMPTY_METHOD)} />}
+            renderValue={(item) => {
+                const surplus = get(item, 'surplus')
+                return <Atom.Amount amount={surplus} className={() => getAmountTextColor(surplus)} />
+            }}
+        />
+    )
 }
 
 export default Method
-
-export const MethodSkeleton: React.FC<SkeletonProps> = (props) => {
-    const { elNumber = 5 } = props
-
-    return (
-        <ul role='list' className='pointer-events-none select-none'>
-            {Array.from(Array(elNumber)).map((value, index) => (
-                <li key={index}>
-                    <div className='flex px-4 py-4'>
-                        <div className='w-2/3 space-y-1'>
-                            <div className='h-4 w-2/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
-                        </div>
-                        <div className='flex w-1/3 flex-col items-end space-y-1'>
-                            <div className='h-4 w-2/3 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700' />
-                        </div>
-                    </div>
-                </li>
-            ))}
-        </ul>
-    )
-}

@@ -5,10 +5,6 @@ import { useProfile } from '~/store/auth'
 import DisabledTwoFactor from './DisabledTwoFactor'
 import TwoFactor from './TwoFactor'
 
-interface TwoFactorForm {
-    enable: boolean
-}
-
 const TwoFactorAuth = () => {
     const { t } = useTranslation()
     const { userProfile } = useProfile()
@@ -31,7 +27,7 @@ const TwoFactorAuth = () => {
     return (
         <>
             <div className='flex items-center justify-between'>
-                <label className='text-base'>{t(LANGUAGE.TWO_FACTOR_AUTHENTICATION)}</label>
+                <label className='text-sm sm:text-base'>{t(LANGUAGE.TWO_FACTOR_AUTHENTICATION)}</label>
 
                 {userProfile?.twoFA ? (
                     <button

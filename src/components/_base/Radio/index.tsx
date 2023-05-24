@@ -31,7 +31,7 @@ const Radio = forwardRef<HTMLInputElement, Props>((props, ref) => {
                     <div className='flex items-center justify-between'>
                         <Label label={label} />
                     </div>
-                    <AnimateWrap className='mt-1 grid grid-cols-2 gap-2'>
+                    <AnimateWrap className='mt-1 grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-2'>
                         {loading ? (
                             <LoadingText />
                         ) : (

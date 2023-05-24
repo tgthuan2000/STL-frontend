@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { IMakeTransferForm, MakeTransferQueryData } from '~/@types/spending'
-import { Button, SubmitWrap } from '~/components'
+import { Button, SlideFormWrap, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
@@ -197,55 +197,42 @@ const MakeTransfer = () => {
     }
 
     return (
-        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
-            <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
-                <div className='flex flex-1 flex-col justify-between'>
-                    <div className='divide-y divide-gray-200 px-4 sm:px-6'>
-                        <div className='space-y-6 pt-3 pb-5'>
-                            <Input name='amount' form={form} type='number' label={t(LANGUAGE.AMOUNT)} />
-
-                            <AutoComplete
-                                name='methodSpendingFrom'
-                                form={form}
-                                data={methodSpending.data}
-                                label={t(LANGUAGE.FROM_TRANSFER_METHOD)}
-                                loading={methodSpending.loading}
-                                addMore={handleAddMoreMethodSpending}
-                                onReload={
-                                    isEmpty(methodSpending.data) ? undefined : () => handleReloadData('methodSpending')
-                                }
-                            />
-
-                            <AutoComplete
-                                name='methodSpendingTo'
-                                form={form}
-                                data={methodSpending.data}
-                                label={t(LANGUAGE.TO_TRANSFER_METHOD)}
-                                loading={methodSpending.loading}
-                                addMore={handleAddMoreMethodSpending}
-                                onReload={
-                                    isEmpty(methodSpending.data) ? undefined : () => handleReloadData('methodSpending')
-                                }
-                            />
-
-                            <DatePicker name='date' form={form} label={t(LANGUAGE.DATE)} />
-
-                            <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
-
-                            <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <SubmitWrap>
-                <Button color='blue' type='submit' disabled={loading.submit}>
-                    {t(LANGUAGE.TRANSFER)}
-                </Button>
-                <Button color='outline' type='button' onClick={close}>
-                    {t(LANGUAGE.CANCEL)}
-                </Button>
-            </SubmitWrap>
-        </form>
+        <SlideFormWrap
+            onSubmit={form.handleSubmit(onsubmit)}
+            buttonZone={
+                <SubmitWrap>
+                    <Button color='blue' type='submit' disabled={loading.submit}>
+                        {t(LANGUAGE.TRANSFER)}
+                    </Button>
+                    <Button color='outline' type='button' onClick={close}>
+                        {t(LANGUAGE.CANCEL)}
+                    </Button>
+                </SubmitWrap>
+            }
+        >
+            <Input name='amount' form={form} type='number' label={t(LANGUAGE.AMOUNT)} />
+            <AutoComplete
+                name='methodSpendingFrom'
+                form={form}
+                data={methodSpending.data}
+                label={t(LANGUAGE.FROM_TRANSFER_METHOD)}
+                loading={methodSpending.loading}
+                addMore={handleAddMoreMethodSpending}
+                onReload={isEmpty(methodSpending.data) ? undefined : () => handleReloadData('methodSpending')}
+            />
+            <AutoComplete
+                name='methodSpendingTo'
+                form={form}
+                data={methodSpending.data}
+                label={t(LANGUAGE.TO_TRANSFER_METHOD)}
+                loading={methodSpending.loading}
+                addMore={handleAddMoreMethodSpending}
+                onReload={isEmpty(methodSpending.data) ? undefined : () => handleReloadData('methodSpending')}
+            />
+            <DatePicker name='date' form={form} label={t(LANGUAGE.DATE)} />
+            <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
+            <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
+        </SlideFormWrap>
     )
 }
 

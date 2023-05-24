@@ -14,7 +14,7 @@ const Dashboard = () => {
 
     return (
         <Transaction hasBack={false} title={t(LANGUAGE.SETTING_MANAGEMENT)}>
-            <div className='mx-2 mt-10 grid grid-cols-2 gap-2 md:grid-cols-12 md:grid-rows-2'>
+            <div className='mx-2 mt-10 grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-2 md:grid-cols-12 md:grid-rows-2'>
                 <Suspense fallback={<LoadingText />}>
                     {settingOptions.map((option) => {
                         let Component = option.component

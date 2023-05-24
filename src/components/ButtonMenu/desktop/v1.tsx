@@ -10,7 +10,7 @@ const v1: React.FC<ButtonMenuProps> = (props) => {
     return (
         <div
             className={clsx(
-                'mx-auto grid min-w-[80px] max-w-lg grid-cols-1 gap-2 rounded-lg transition-all hover:bg-white hover:bg-opacity-30 hover:p-3 hover:shadow-lg dark:hover:bg-slate-800',
+                'mx-auto flex min-w-[80px] max-w-lg flex-col gap-2 rounded-lg transition-all hover:bg-white hover:bg-opacity-30 hover:p-3 hover:shadow-lg dark:hover:bg-slate-800',
                 className
             )}
         >

@@ -4,6 +4,7 @@ import { forwardRef } from 'react'
 import { Controller } from 'react-hook-form'
 import { ToggleProps } from '~/@types/components'
 import ErrorMessage from '../ErrorMessage'
+import Label from '../Label'
 
 const Toggle = forwardRef<HTMLElement, ToggleProps>(({ label, form, name, rules, disabled }, ref) => {
     return (
@@ -31,7 +32,7 @@ const Toggle = forwardRef<HTMLElement, ToggleProps>(({ label, form, name, rules,
                                     )}
                                 />
                             </Switch>
-                            <span className='text-gray-900 dark:text-slate-200'>{label}</span>
+                            <Label label={label} as='span' />
                         </div>
                         <ErrorMessage error={error} />
                     </>

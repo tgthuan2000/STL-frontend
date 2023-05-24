@@ -41,6 +41,10 @@ export interface GetBudgetSpending<T extends Record<string, any>> {
     endDate: string
 }
 
+export interface GetLongBudgetSpending<T extends Record<string, any>> {
+    userProfile: SanityDocument<T> | null
+}
+
 export interface GetRecentLoan<T extends Record<string, any>> {
     userProfile: SanityDocument<T> | null
     kindLoan: string

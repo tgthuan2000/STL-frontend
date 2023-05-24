@@ -26,6 +26,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                             color === 'green',
                     },
                     {
+                        'border-transparent bg-purple-600 text-white hover:bg-purple-700 disabled:hover:bg-purple-600':
+                            color === 'purple',
+                    },
+                    {
                         'border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:hover:bg-blue-600':
                             color === 'blue',
                     },
@@ -64,6 +68,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                     {
                         'border-blue-400 bg-transparent text-blue-500 hover:bg-blue-50 dark:hover:bg-transparent dark:hover:opacity-70 dark:disabled:hover:opacity-30':
                             color === 'outline-blue',
+                    },
+                    {
+                        'border-purple-400 bg-transparent text-purple-500 hover:bg-purple-50 dark:hover:bg-transparent dark:hover:opacity-70 dark:disabled:hover:opacity-30':
+                            color === 'outline-purple',
                     },
                     {
                         'border-prussian-blue-400 bg-transparent text-prussian-blue-500 hover:bg-prussian-blue-50 dark:hover:bg-transparent dark:hover:opacity-70 dark:disabled:hover:opacity-30':

@@ -1,11 +1,16 @@
 import { ChevronDoubleRightIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
-import { LanguageSelection, Logo, Notification, PermissionCheck } from '~/components'
+import React from 'react'
+import { Logo, PermissionCheck } from '~/components'
 import { PERMISSION } from '~/constant/permission'
 import { useSideBar } from '~/context'
 
+const LanguageSelection = React.lazy(() => import('~/components/LanguageSelection'))
+const Notification = React.lazy(() => import('~/components/Notification'))
+
 const TopBar = () => {
     const { desktop } = useSideBar()
+
     return (
         <div className='fixed top-0 left-0 right-0 z-30 hidden h-16 bg-white shadow dark:bg-gray-900 md:block'>
             <div className='flex h-full items-center'>

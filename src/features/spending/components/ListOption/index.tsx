@@ -1,15 +1,14 @@
+import { ArchiveBoxXMarkIcon } from '@heroicons/react/24/outline'
 import { isEmpty } from 'lodash'
 import React, { startTransition, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { ListOptionProps } from '~/@types/spending'
+import Atom from '~/components/_atomic/Atom'
+import { useTDF } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
-import { MethodSkeleton } from '../Method'
 import Item from './Item'
-import Empty from '../Empty'
-import { ArchiveBoxXMarkIcon } from '@heroicons/react/24/outline'
-import { useTDF } from '~/hook'
 
 interface Params {
     id: string
@@ -79,7 +78,7 @@ const ListOption: React.FC<ListOptionProps> = ({ data: _data, loading, cleanCach
         }
     }
 
-    if (loading) return <MethodSkeleton />
+    if (loading) return <Atom.SimpleListSkeleton />
 
     if (!isEmpty(data)) {
         return (
@@ -100,7 +99,7 @@ const ListOption: React.FC<ListOptionProps> = ({ data: _data, loading, cleanCach
             </ul>
         )
     }
-    return <Empty icon={ArchiveBoxXMarkIcon} text={t(LANGUAGE.EMPTY_DATA)} />
+    return <Atom.EmptyList icon={ArchiveBoxXMarkIcon} text={t(LANGUAGE.EMPTY_DATA)} />
 }
 
 export default ListOption

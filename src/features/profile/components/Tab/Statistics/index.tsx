@@ -9,17 +9,17 @@ import { AnimateWrap, TimeFilter } from '~/components'
 import LoadingText from '~/components/Loading/LoadingText'
 import { E_FILTER_DATE } from '~/constant/template'
 import { useConfig, useLoading } from '~/context'
+import { useProfileOptions } from '~/features/profile/hook'
+import { services } from '~/features/profile/services'
 import { useQuery } from '~/hook'
 import { useProfile } from '~/store/auth'
-import { useProfileOptions } from '../hook'
-import { services } from '../services'
-import ProfileInfo from './ProfileInfo'
-import ProfileInfoGroup from './ProfileInfoGroup'
 import ProfileInfoSkeleton from './ProfileInfoSkeleton'
+import ProfileInfoGroup from './ProfileInfoGroup'
+import ProfileInfo from './ProfileInfo'
 
 const excludeOptions = [E_FILTER_DATE.DATE]
 
-const Statistic = () => {
+const Statistics = () => {
     const { userProfile } = useProfile()
     const [searchParams] = useSearchParams()
     const { getKindSpendingIds } = useConfig()
@@ -92,44 +92,40 @@ const Statistic = () => {
     }
 
     return (
-        <>
-            <hr className='mx-2 block border-gray-200 dark:border-slate-700 sm:hidden' />
-
-            <div className='mt-2 space-y-2 sm:mt-5 sm:space-y-5'>
-                <div className='sm:px-3'>
-                    <TimeFilter onSubmit={handleFilterSubmit} excludes={excludeOptions} />
-                </div>
-                <div className='overflow-hidden px-1 sm:bg-gradient-to-tl sm:from-indigo-500 sm:via-purple-500 sm:to-pink-500 sm:p-3 sm:shadow-lg sm:dark:from-transparent sm:dark:to-transparent sm:dark:shadow-none'>
-                    <AnimateWrap className='grid grid-cols-1 backdrop-blur-lg md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-                        {loading.config ? (
-                            <LoadingText className='my-5 text-center text-sm font-normal sm:my-3 sm:text-lg sm:text-white' />
-                        ) : isEmpty(profileOptions) ? (
-                            <ProfileInfoSkeleton />
-                        ) : (
-                            profileOptions.map((profile, index) => (
-                                <ProfileInfoGroup
-                                    key={index}
-                                    title={profile.title}
-                                    className={clsx('flex gap-2', profile.className)}
-                                    wrapClassName={profile.wrapClassName}
-                                    hidden={profile.hidden}
-                                >
-                                    {profile.values.map((value, index) => (
-                                        <ProfileInfo
-                                            key={value.id}
-                                            label={value.title}
-                                            hidden={value.hidden}
-                                            data={value.data}
-                                        />
-                                    ))}
-                                </ProfileInfoGroup>
-                            ))
-                        )}
-                    </AnimateWrap>
-                </div>
+        <div className='mt-2 space-y-2 sm:mt-5 sm:space-y-5'>
+            <div className='sm:px-3'>
+                <TimeFilter onSubmit={handleFilterSubmit} excludes={excludeOptions} />
             </div>
-        </>
+            <div className='overflow-hidden px-1 sm:bg-gradient-to-tl sm:from-indigo-500 sm:via-purple-500 sm:to-pink-500 sm:p-3 sm:shadow-lg sm:dark:from-transparent sm:dark:to-transparent sm:dark:shadow-none'>
+                <AnimateWrap className='grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] backdrop-blur-lg'>
+                    {loading.config ? (
+                        <LoadingText className='my-5 text-center text-sm font-normal sm:my-3 sm:text-lg sm:text-white' />
+                    ) : isEmpty(profileOptions) ? (
+                        <ProfileInfoSkeleton />
+                    ) : (
+                        profileOptions.map((profile, index) => (
+                            <ProfileInfoGroup
+                                key={index}
+                                title={profile.title}
+                                className={clsx('flex gap-2', profile.className)}
+                                wrapClassName={profile.wrapClassName}
+                                hidden={profile.hidden}
+                            >
+                                {profile.values.map((value, index) => (
+                                    <ProfileInfo
+                                        key={value.id}
+                                        label={value.title}
+                                        hidden={value.hidden}
+                                        data={value.data}
+                                    />
+                                ))}
+                            </ProfileInfoGroup>
+                        ))
+                    )}
+                </AnimateWrap>
+            </div>
+        </div>
     )
 }
 
-export default Statistic
+export default Statistics

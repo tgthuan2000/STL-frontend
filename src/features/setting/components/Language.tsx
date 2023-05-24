@@ -13,7 +13,7 @@ const Language: React.FC<SettingComponentProps> = (props) => {
     const { i18n, t } = useTranslation()
     const [, setLanguageStorage] = useLocalStorage(LOCAL_STORAGE_KEY.STL_LANGUAGE)
 
-    const handleChangeLanguageClick = () => {
+    const handleChange = () => {
         const index = languageFlat.findIndex((l) => l.code === i18n.language)
         const nextIndex = index + 1 >= languageFlat.length ? 0 : index + 1
         const language = languageFlat[nextIndex]
@@ -22,7 +22,7 @@ const Language: React.FC<SettingComponentProps> = (props) => {
     }
 
     return (
-        <button type='button' className={className} onClick={handleChangeLanguageClick}>
+        <button type='button' className={className} onClick={handleChange}>
             <LanguageIcon className='h-6 w-6 flex-shrink-0' />
             <p>{t(LANGUAGE.LANGUAGE_CHOOSE)}</p>
         </button>
