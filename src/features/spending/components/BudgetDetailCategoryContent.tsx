@@ -1,21 +1,19 @@
 import { ChartPieIcon, CurrencyDollarIcon, ReceiptPercentIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
-import { get, groupBy, sortBy, sumBy } from 'lodash'
+import { get, groupBy, merge, sumBy } from 'lodash'
 import moment from 'moment'
+import numeral from 'numeral'
 import React, { Fragment, memo, useMemo, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { AnimateWrap, Paper, ProgressLine } from '~/components'
 import Title from '~/components/Box/Title'
 import Atom from '~/components/_atomic/Atom'
 import Template from '~/components/_atomic/Template'
+import { ButtonGroup } from '~/components/_base'
 import LANGUAGE from '~/i18n/language/key'
 import { getLinkSpending } from '~/utils'
 import { BudgetCategoryDetail } from '../hook/useBudgetDetailCategory'
-import numeral from 'numeral'
-import { ButtonGroup } from '~/components/_base'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
 
 const getColor = (percent: number) => {
     if (percent >= 100) {
@@ -33,6 +31,16 @@ const getColor = (percent: number) => {
     return { color: 'text-green-500', bgColor: 'rgb(16, 185, 129)' }
 }
 
+const months = Array.from(Array(moment().daysInMonth())).reduce((result, item, index) => {
+    result[
+        moment()
+            .date(index + 1)
+            .format('YYYY-MM-DD')
+    ] = []
+
+    return result
+}, {})
+
 interface Props {
     data: BudgetCategoryDetail | undefined
     loading: boolean
@@ -48,16 +56,22 @@ interface Form {
     chartType: ChartType
 }
 
-const chartTypes: ChartType[] = [
-    { id: 'bar', label: 'Hằng ngày' },
-    { id: 'line', label: 'Tổng cộng' },
-]
-
-const defaultChartType = chartTypes[0]
+interface Charts {
+    daily: { x: string; y: number }[]
+    total: { x: string; y: number }[]
+}
 
 const BudgetDetailCategoryContent: React.FC<Props> = (props) => {
     const { data, loading, reload } = props
     const { t } = useTranslation()
+
+    const chartTypes: ChartType[] = [
+        { id: 'bar', label: t(LANGUAGE.DAILY) },
+        { id: 'line', label: t(LANGUAGE.TOTAL) },
+    ]
+
+    const defaultChartType = chartTypes[0]
+
     const [chartType, setChartType] = useState<'bar' | 'line'>(defaultChartType.id)
 
     const { percent, amounts, progress } = useMemo(() => {
@@ -108,14 +122,35 @@ const BudgetDetailCategoryContent: React.FC<Props> = (props) => {
         if (!data?.spending) {
             return
         }
-        const grouped = groupBy(structuredClone(data.spending), (item) => item.date.split('T')[0])
-        const result = Object.keys(grouped).map((key) => ({
-            x: key,
-            y: grouped[key].reduce((acc, item) => acc + item.amount, 0),
-        }))
 
-        return sortBy(result, (item) => item.x)
-    }, [data])
+        const grouped = groupBy(structuredClone(data.spending), (item) => item.date.split('T')[0])
+        const result = Object.keys(merge(months, grouped)).reduce<Charts>(
+            (result, key, index) => {
+                const amount = grouped[key]?.reduce((acc, item) => acc + item.amount, 0) ?? 0
+
+                result.daily.push({ x: key, y: amount })
+                result.total.push({ x: key, y: (result.total[index - 1]?.y ?? 0) + amount })
+
+                return result
+            },
+            { daily: [], total: [] }
+        )
+
+        return result
+    }, [data?.spending])
+
+    const dataChart = useMemo(() => {
+        if (charts) {
+            switch (chartType) {
+                case 'bar': {
+                    return charts.daily
+                }
+                case 'line': {
+                    return charts.total
+                }
+            }
+        }
+    }, [chartType, charts])
 
     const form = useForm<Form>({
         defaultValues: {
@@ -197,7 +232,7 @@ const BudgetDetailCategoryContent: React.FC<Props> = (props) => {
                                     />
                                 </form>
                             }
-                            renderChart={<Template.Chart data={charts} type={chartType} />}
+                            renderChart={<Template.Chart data={dataChart} loading={loading} type={chartType} />}
                         />
                     </Paper>
                 </div>

@@ -130,6 +130,8 @@
     "USAGE_PERCENT": "Phần trăm đã sử dụng",
     "TOTAL_COST": "Tổng chi phí",
     "AVERAGE_AMOUNT_REMAINING_FOR_MONTH": "Số tiền trung bình còn lại trong tháng",
+    "DAILY": "Hằng ngày",
+    "TOTAL": "Tổng cộng",
 
     "APP_READY_WORK_OFFLINE": "Ứng dụng đã sẵn sàng để làm việc ngoại tuyến",
     "RELOAD_TEXT": "Ứng dụng đã được cập nhật. Vui lòng nhấn nút tải lại để xem thay đổi.",

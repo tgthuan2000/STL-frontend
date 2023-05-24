@@ -130,6 +130,8 @@
     "USAGE_PERCENT": "Per % used",
     "TOTAL_COST": "Total cost",
     "AVERAGE_AMOUNT_REMAINING_FOR_MONTH": "Average amount remaining for the month",
+    "DAILY": "Daily",
+    "TOTAL": "Running total",
 
     "APP_READY_WORK_OFFLINE": "App ready to work offline",
     "RELOAD_TEXT": "New content available, click on reload button to update.",
