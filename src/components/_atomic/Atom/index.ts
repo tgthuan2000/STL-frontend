@@ -8,6 +8,7 @@ import RecentListSkeleton from './RecentListSkeleton'
 import SimpleListSkeleton from './SimpleListSkeleton'
 import SmallStatisticListSkeleton from './SmallStatisticListSkeleton'
 import Title from './Title'
+import ChartTitle from './TransactionTitle'
 
 const Atom = () => {}
 
@@ -21,5 +22,6 @@ Atom.SimpleListSkeleton = SimpleListSkeleton
 Atom.BudgetListSkeleton = BudgetListSkeleton
 Atom.RecentListSkeleton = RecentListSkeleton
 Atom.SmallStatisticListSkeleton = SmallStatisticListSkeleton
+Atom.ChartTitle = ChartTitle
 
 export default Atom

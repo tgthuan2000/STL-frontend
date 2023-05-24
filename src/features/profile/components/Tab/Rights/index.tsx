@@ -2,8 +2,10 @@ import { useTranslation } from 'react-i18next'
 import { PermissionCheck } from '~/components'
 import { PERMISSION } from '~/constant/permission'
 import LANGUAGE from '~/i18n/language/key'
-import AllowSendMail from './AllowSendMail'
 import TwoFactorAuth from './TwoFactorAuth'
+import React from 'react'
+
+const AllowSendMail = React.lazy(() => import('./AllowSendMail'))
 
 const Rights = () => {
     const { t } = useTranslation()

@@ -412,11 +412,6 @@ export interface LazySearchSelectOptionsProps {
     handleGetMoreData: () => void
     hasNextPage
 }
-export interface PermissionCheckProps {
-    permissions: PERMISSION[]
-    children: React.ReactNode
-    fallback?: React.ReactNode
-}
 
 export interface ProgressItem {
     step: number
@@ -499,15 +494,6 @@ export interface SubmitWrapProps {
 
 export interface AsideProps {
     children: React.ReactNode
-}
-
-export interface ButtonGroupProps {
-    form: UseFormReturn<any, object>
-    name: string
-    idKey?: string
-    valueKey?: string
-    data?: any[]
-    onChange?: (data: any) => void
 }
 
 export interface ListViewFilterProps {

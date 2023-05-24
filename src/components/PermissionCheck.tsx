@@ -1,17 +1,26 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { PermissionCheckProps } from '~/@types/components'
 import WarningGif from '~/assets/warning.gif'
+import { PERMISSION } from '~/constant/permission'
 import { useConfig } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
+import LoadingAnimate from './Loading/LoadingAnimate'
 
-const PermissionCheck: React.FC<PermissionCheckProps> = ({ permissions, children, fallback }) => {
+export interface Props {
+    permissions: PERMISSION[]
+    children: React.ReactNode
+    fallback?: React.ReactNode
+    suspenseFallback?: React.ReactNode
+}
+
+const PermissionCheck: React.FC<Props> = (props) => {
+    const { permissions, children, fallback, suspenseFallback } = props
     const { t } = useTranslation()
     const { hasPermissions } = useConfig()
     const navigation = useNavigate()
     if (hasPermissions(permissions)) {
-        return <>{children}</>
+        return <Suspense fallback={suspenseFallback ?? <LoadingAnimate />}>{children}</Suspense>
     }
 
     if (fallback) {

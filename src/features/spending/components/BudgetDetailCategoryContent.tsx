@@ -2,7 +2,7 @@ import { ChartPieIcon, CurrencyDollarIcon, ReceiptPercentIcon } from '@heroicons
 import clsx from 'clsx'
 import { get, groupBy, sortBy, sumBy } from 'lodash'
 import moment from 'moment'
-import React, { memo, useMemo } from 'react'
+import React, { Fragment, memo, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AnimateWrap, Paper, ProgressLine } from '~/components'
 import Title from '~/components/Box/Title'
@@ -11,6 +11,11 @@ import Template from '~/components/_atomic/Template'
 import LANGUAGE from '~/i18n/language/key'
 import { getLinkSpending } from '~/utils'
 import { BudgetCategoryDetail } from '../hook/useBudgetDetailCategory'
+import numeral from 'numeral'
+import { ButtonGroup } from '~/components/_base'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 
 const getColor = (percent: number) => {
     if (percent >= 100) {
@@ -34,9 +39,26 @@ interface Props {
     reload: () => void
 }
 
+interface ChartType {
+    id: 'bar' | 'line'
+    label: string
+}
+
+interface Form {
+    chartType: ChartType
+}
+
+const chartTypes: ChartType[] = [
+    { id: 'bar', label: 'Hằng ngày' },
+    { id: 'line', label: 'Tổng cộng' },
+]
+
+const defaultChartType = chartTypes[0]
+
 const BudgetDetailCategoryContent: React.FC<Props> = (props) => {
     const { data, loading, reload } = props
     const { t } = useTranslation()
+    const [chartType, setChartType] = useState<'bar' | 'line'>(defaultChartType.id)
 
     const { percent, amounts, progress } = useMemo(() => {
         if (!data?.spending) {
@@ -95,13 +117,24 @@ const BudgetDetailCategoryContent: React.FC<Props> = (props) => {
         return sortBy(result, (item) => item.x)
     }, [data])
 
+    const form = useForm<Form>({
+        defaultValues: {
+            chartType: defaultChartType,
+        },
+    })
+
+    const onSubmit = (data: Form) => {
+        const { chartType } = data
+        setChartType(chartType.id)
+    }
+
     return (
         <div className='mt-5 flex flex-col gap-8 sm:gap-4 lg:flex-row'>
             <div className='flex-[1.25]'>
                 <div className='sticky top-20'>
                     <Title title={t(LANGUAGE.PROGRESS)} onReload={reload} loading={loading} />
-                    <Paper className='space-y-8 sm:space-y-5'>
-                        <AnimateWrap className='-mx-2'>
+                    <Paper className='space-y-2 sm:space-y-2'>
+                        <AnimateWrap className='-mx-2 -mt-3'>
                             <Template.BudgetList
                                 data={progress}
                                 loading={loading}
@@ -138,8 +171,34 @@ const BudgetDetailCategoryContent: React.FC<Props> = (props) => {
                                 renderTitle={(item) => get(item, 'title')}
                             />
                         </AnimateWrap>
-
-                        <Template.TransactionChart data={charts} />
+                    </Paper>
+                    <Paper disabledPadding className='mt-2 sm:mt-5'>
+                        <Template.TransactionChart
+                            renderTitle={
+                                <Atom.ChartTitle
+                                    title={t(LANGUAGE.TRANSACTION)}
+                                    subTitle={
+                                        <Fragment>
+                                            <span>{numeral(amounts).format()}</span>／
+                                            <span className='text-xs'>{numeral(data?.amount).format()}</span>
+                                        </Fragment>
+                                    }
+                                />
+                            }
+                            renderTool={
+                                <form onSubmit={form.handleSubmit(onSubmit)}>
+                                    <ButtonGroup
+                                        type='submit'
+                                        form={form}
+                                        name='chartType'
+                                        data={chartTypes}
+                                        getItemKey={(item) => get(item, 'id')}
+                                        getItemLabel={(item) => get(item, 'label')}
+                                    />
+                                </form>
+                            }
+                            renderChart={<Template.Chart data={charts} type={chartType} />}
+                        />
                     </Paper>
                 </div>
             </div>
