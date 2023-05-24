@@ -42,7 +42,7 @@ const SmallStatisticList: React.FC<Props> = (props) => {
                             <div
                                 title={title}
                                 className={clsx(
-                                    'flex flex-col items-center gap-1 rounded-md border border-gray-200 p-4 shadow-sm',
+                                    'flex items-center gap-1 rounded-md border border-gray-300 py-2 px-4 shadow-sm',
                                     className
                                 )}
                             >

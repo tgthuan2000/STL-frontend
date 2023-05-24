@@ -1,9 +1,11 @@
 import ApexCharts from 'apexcharts'
-import { get, merge } from 'lodash'
+import { get, isEmpty, merge } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
 import React, { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import AnimateWrap from '~/components/AnimateWrap'
+import LoadingText from '~/components/Loading/LoadingText'
 import { DATE_FORMAT } from '~/constant'
 import { useTheme } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
@@ -80,6 +82,12 @@ const getOptionsByType = (type: ChartType): ApexCharts.ApexOptions => {
                         sizeOffset: 3,
                     },
                 },
+                grid: {
+                    padding: {
+                        left: 20,
+                        right: 20,
+                    },
+                },
             }
         }
         default: {
@@ -116,6 +124,7 @@ const Chart: React.FC<Props> = (props) => {
                 tooltip: {
                     enabled: false,
                 },
+                tickAmount: 7,
             },
             tooltip: {
                 theme: undefined,
@@ -133,14 +142,20 @@ const Chart: React.FC<Props> = (props) => {
                     `
                 },
             },
+            grid: {
+                show: false,
+            },
             yaxis: {
                 axisBorder: { show: false },
                 axisTicks: { show: false },
-                labels: { show: true, formatter: (amount) => numeral(amount).format('0a') },
+                labels: { show: true, formatter: (amount) => numeral(amount).format('0.0a') },
                 showForNullSeries: false,
+                min: 0,
+                max: (max) => max * 1.15, // over 15% of max
+                tickAmount: 4,
             },
             plotOptions: {
-                bar: { borderRadius: 2, dataLabels: { position: 'top' } },
+                // bar: { borderRadius: 0, dataLabels: { position: 'top' } },
             },
             dataLabels: {
                 enabled: false,
@@ -165,13 +180,19 @@ const Chart: React.FC<Props> = (props) => {
                 chart: { type },
                 ...getOptionsByType(type),
             }
+            const noDataOptions: ApexCharts.ApexOptions = {
+                grid: {
+                    show: !isEmpty(data),
+                },
+            }
             const dataOptions: ApexCharts.ApexOptions = {
                 annotations: {
                     yaxis: [
                         {
                             y: 2000000,
                             borderColor: 'rgb(255, 51, 85)',
-                            strokeDashArray: 12,
+                            borderWidth: 2,
+                            strokeDashArray: 0,
                             label: {
                                 borderColor: 'transparent',
                                 style: {
@@ -180,13 +201,15 @@ const Chart: React.FC<Props> = (props) => {
                                     cssClass: 'font-normal text-xs',
                                 },
                                 text: 'Annotation',
+                                position: 'start',
+                                textAnchor: 'start',
                             },
                         },
                     ],
                 },
             }
 
-            const options = merge(themeOptions, typeOptions, dataOptions)
+            const options = merge(themeOptions, typeOptions, dataOptions, noDataOptions)
             chart.current.updateOptions(options)
             chart.current.updateSeries([
                 {
@@ -195,21 +218,24 @@ const Chart: React.FC<Props> = (props) => {
                 },
             ])
         }
-    }, [data, isDarkTheme, type])
+    }, [data, isDarkTheme, type, t])
 
-    /** NO DATA */
-    useEffect(() => {
-        if (chart.current) {
-            const options: ApexCharts.ApexOptions = {
-                noData: {
-                    text: t(LANGUAGE.LOADING) as string,
-                },
-            }
-            chart.current.updateOptions(options)
-        }
-    }, [t])
-
-    return <div ref={chartEl} />
+    return (
+        <AnimateWrap className='relative'>
+            <div ref={chartEl} />
+            {loading ? (
+                <div className='absolute inset-0 flex items-center justify-center text-sm sm:text-base'>
+                    <LoadingText />
+                </div>
+            ) : (
+                isEmpty(data) && (
+                    <div className='absolute inset-0 flex items-center justify-center text-sm sm:text-base'>
+                        {t(LANGUAGE.EMPTY_DATA)}
+                    </div>
+                )
+            )}
+        </AnimateWrap>
+    )
 }
 
 export default Chart
