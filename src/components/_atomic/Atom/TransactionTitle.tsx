@@ -13,7 +13,7 @@ const ChartTitle: React.FC<Props> = (props) => {
     return (
         <div className={clsx('select-none', className)}>
             <h4 className='text-base font-medium'>{title}</h4>
-            {subTitle && <div className='flex items-center'>{subTitle}</div>}
+            {subTitle}
         </div>
     )
 }

@@ -364,6 +364,36 @@ export const GET_BUDGET_CATEGORY_DETAIL_SPENDING_BY_MONTH = groq`
     }
 `
 
+export const GET_BUDGET_METHOD_DETAIL_SPENDING_BY_MONTH = groq`
+    *[_type == 'budgetMethodDetail' && user._ref == $userId && _id == $budgetId][0]
+    {
+        _id,
+        methodSpending-> {
+            _id,
+            name,
+        },
+        amount,
+        "spending": *[_type == "spending" && user._ref == $userId && $startDate <= date && date <= $endDate && kindSpending._ref == $budgetKind && methodSpending._ref == ^.methodSpending._ref] | order(_createdAt desc) {
+            _id,
+            categorySpending-> {
+                _id,
+                name,
+            },
+            methodSpending-> {
+                name
+            },
+            kindSpending-> {
+                _id,
+                name,
+                key
+            },
+            description,
+            amount,
+            date
+        }
+    }
+`
+
 export const GET_BUDGET_BY_MONTH = groq`
     *[_type == 'budget' && user._ref == $userId && _id == $budgetId][0]
     {

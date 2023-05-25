@@ -4,7 +4,6 @@ import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useConfig } from '~/context'
 import { useQuery } from '~/hook'
-import { GET_BUDGET_CATEGORY_DETAIL_SPENDING_BY_MONTH } from '~/schema/query/spending'
 import { service } from '~/services'
 import { useProfile } from '~/store/auth'
 
@@ -12,10 +11,17 @@ export interface BudgetCategoryDetail {
     _id: string
     categorySpending: { _id: string; name: string }
     amount: number
-    spending: BudgetCategoryDetailItem[]
+    spending: BudgetDetailItem[]
 }
 
-export interface BudgetCategoryDetailItem {
+export interface BudgetMethodDetail {
+    _id: string
+    methodSpending: { _id: string; name: string }
+    amount: number
+    spending: BudgetDetailItem[]
+}
+
+interface BudgetDetailItem {
     _id: string
     categorySpending: { _id: string; name: string }
     methodSpending: { name: string }
@@ -26,16 +32,16 @@ export interface BudgetCategoryDetailItem {
 }
 
 interface Query {
-    budget: BudgetCategoryDetail
+    budget: BudgetCategoryDetail | BudgetMethodDetail
 }
 
-const useBudgetDetailCategory = () => {
+const useBudgetDetail = (query: string) => {
     const { id } = useParams()
     const { userProfile } = useProfile()
     const { getKindSpendingId } = useConfig()
 
     const [data, fetch, deleteCache, reload] = useQuery<Query>(
-        { budget: GET_BUDGET_CATEGORY_DETAIL_SPENDING_BY_MONTH },
+        { budget: query },
         {
             userId: userProfile?._id as string,
             startDate: service.getDateOfMonth('start'),
@@ -58,4 +64,4 @@ const useBudgetDetailCategory = () => {
     return { data, refetch }
 }
 
-export default useBudgetDetailCategory
+export default useBudgetDetail
