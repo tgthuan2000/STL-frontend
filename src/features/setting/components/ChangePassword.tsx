@@ -11,8 +11,8 @@ const ChangePassword: React.FC<SettingComponentProps> = (props) => {
 
     return (
         <Link to='change-password' className={className}>
-            <LockClosedIcon className='h-6 w-6 flex-shrink-0' />
-            <p>{t(LANGUAGE.CHANGE_PASSWORD)}</p>
+            <LockClosedIcon className='h-6 w-6 flex-shrink-0 sm:h-8 sm:w-8' />
+            <p className='text-sm sm:text-base'>{t(LANGUAGE.CHANGE_PASSWORD)}</p>
         </Link>
     )
 }

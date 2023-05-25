@@ -1,6 +1,6 @@
 import { ChartPieIcon, CurrencyDollarIcon, ReceiptPercentIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
-import { get, groupBy, merge, sumBy } from 'lodash'
+import { get, groupBy, isEmpty, merge, sumBy } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
 import React, { Fragment, memo, useMemo, useState } from 'react'
@@ -74,15 +74,36 @@ const BudgetDetailCategoryContent: React.FC<Props> = (props) => {
 
     const [chartType, setChartType] = useState<'bar' | 'line'>(defaultChartType.id)
 
-    const { percent, amounts, progress } = useMemo(() => {
+    const { percent, amounts, progress, annotations } = useMemo(() => {
         if (!data?.spending) {
             return { percent: 0, amounts: 0 }
         }
 
         const amounts = sumBy(data.spending, ({ amount }) => amount)
         const percent = Array.isArray(data.spending) ? (amounts * 100) / data.amount : 0
+        const annotations: ApexAnnotations = {
+            yaxis: [
+                {
+                    y: data.amount,
+                    borderColor: 'rgb(255, 51, 85)',
+                    borderWidth: 2,
+                    strokeDashArray: 0,
+                    label: {
+                        borderColor: 'transparent',
+                        style: {
+                            background: 'transparent',
+                            color: 'rgb(255, 51, 85)',
+                            cssClass: 'font-normal text-xs',
+                        },
+                        text: numeral(data.amount).format(),
+                        position: 'start',
+                        textAnchor: 'start',
+                    },
+                },
+            ],
+        }
 
-        return { percent, amounts, progress: [{ ...data, ...getColor(percent), percent }] }
+        return { percent, amounts, progress: [{ ...data, ...getColor(percent), percent }], annotations }
     }, [data?.spending])
 
     const statistic = useMemo(() => {
@@ -94,7 +115,7 @@ const BudgetDetailCategoryContent: React.FC<Props> = (props) => {
             {
                 id: 'USAGE_PERCENT',
                 title: t(LANGUAGE.USAGE_PERCENT),
-                className: clsx('dark:border-current dark:shadow-current', getColor(percent).color),
+                className: clsx('dark:border-current', getColor(percent).color),
                 amount: percent,
                 suffix: '%',
                 Icon: ReceiptPercentIcon,
@@ -102,7 +123,7 @@ const BudgetDetailCategoryContent: React.FC<Props> = (props) => {
             {
                 id: 'TOTAL_COST',
                 title: t(LANGUAGE.TOTAL_COST),
-                className: 'text-radical-red-500 dark:border-radical-red-500 dark:shadow-radical-red-500',
+                className: 'text-radical-red-500 dark:border-radical-red-500',
                 amount: amounts,
                 suffix: undefined,
                 Icon: CurrencyDollarIcon,
@@ -110,7 +131,7 @@ const BudgetDetailCategoryContent: React.FC<Props> = (props) => {
             {
                 id: 'AVERAGE_AMOUNT_REMAINING_FOR_MONTH',
                 title: t(LANGUAGE.AVERAGE_AMOUNT_REMAINING_FOR_MONTH),
-                className: 'text-yellow-500 dark:border-yellow-500 dark:shadow-yellow-500',
+                className: 'text-yellow-500 dark:border-yellow-500',
                 amount: ((data.amount ?? 0) - (amounts ?? 0)) / moment().endOf('month').diff(moment(), 'days'),
                 suffix: undefined,
                 Icon: ChartPieIcon,
@@ -221,18 +242,29 @@ const BudgetDetailCategoryContent: React.FC<Props> = (props) => {
                                 />
                             }
                             renderTool={
-                                <form onSubmit={form.handleSubmit(onSubmit)}>
-                                    <ButtonGroup
-                                        type='submit'
-                                        form={form}
-                                        name='chartType'
-                                        data={chartTypes}
-                                        getItemKey={(item) => get(item, 'id')}
-                                        getItemLabel={(item) => get(item, 'label')}
-                                    />
-                                </form>
+                                <AnimateWrap>
+                                    {(!loading || !isEmpty(dataChart)) && (
+                                        <form onSubmit={form.handleSubmit(onSubmit)}>
+                                            <ButtonGroup
+                                                type='submit'
+                                                form={form}
+                                                name='chartType'
+                                                data={chartTypes}
+                                                getItemKey={(item) => get(item, 'id')}
+                                                getItemLabel={(item) => get(item, 'label')}
+                                            />
+                                        </form>
+                                    )}
+                                </AnimateWrap>
                             }
-                            renderChart={<Template.Chart data={dataChart} loading={loading} type={chartType} />}
+                            renderChart={
+                                <Template.Chart
+                                    data={dataChart}
+                                    loading={loading}
+                                    type={chartType}
+                                    annotations={annotations}
+                                />
+                            }
                         />
                     </Paper>
                 </div>

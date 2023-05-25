@@ -42,11 +42,11 @@ const SmallStatisticList: React.FC<Props> = (props) => {
                             <div
                                 title={title}
                                 className={clsx(
-                                    'flex items-center gap-1 rounded-md border border-gray-300 py-2 px-4 shadow-sm',
+                                    'flex items-center gap-1 rounded-md border border-gray-300 py-1.5 px-3 sm:py-2 sm:px-4',
                                     className
                                 )}
                             >
-                                <Icon className='h-9 w-9' />
+                                <Icon className='h-7 w-7 sm:h-9 sm:w-9' />
                                 {amount}
                             </div>
                         </li>

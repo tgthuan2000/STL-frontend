@@ -32,6 +32,7 @@ interface Props {
     data: any[] | undefined
     loading?: boolean
     type?: ChartType
+    annotations?: ApexAnnotations
 }
 
 const darkThemeOptions: ApexCharts.ApexOptions = {
@@ -97,7 +98,7 @@ const getOptionsByType = (type: ChartType): ApexCharts.ApexOptions => {
 }
 
 const Chart: React.FC<Props> = (props) => {
-    const { data, loading, type = 'bar' } = props
+    const { data, loading, type = 'bar', annotations } = props
     const { t } = useTranslation()
     const { isDarkTheme } = useTheme()
     const chart = useRef<ApexCharts | null>(null)
@@ -186,27 +187,7 @@ const Chart: React.FC<Props> = (props) => {
                 },
             }
             const dataOptions: ApexCharts.ApexOptions = {
-                annotations: {
-                    yaxis: [
-                        {
-                            y: 2000000,
-                            borderColor: 'rgb(255, 51, 85)',
-                            borderWidth: 2,
-                            strokeDashArray: 0,
-                            label: {
-                                borderColor: 'transparent',
-                                style: {
-                                    background: 'transparent',
-                                    color: 'rgb(255, 51, 85)',
-                                    cssClass: 'font-normal text-xs',
-                                },
-                                text: 'Annotation',
-                                position: 'start',
-                                textAnchor: 'start',
-                            },
-                        },
-                    ],
-                },
+                annotations,
             }
 
             const options = merge(themeOptions, typeOptions, dataOptions, noDataOptions)
@@ -218,21 +199,15 @@ const Chart: React.FC<Props> = (props) => {
                 },
             ])
         }
-    }, [data, isDarkTheme, type, t])
+    }, [data, isDarkTheme, type, annotations, t])
 
     return (
         <AnimateWrap className='relative'>
             <div ref={chartEl} />
-            {loading ? (
+            {loading && isEmpty(data) && (
                 <div className='absolute inset-0 flex items-center justify-center text-sm sm:text-base'>
                     <LoadingText />
                 </div>
-            ) : (
-                isEmpty(data) && (
-                    <div className='absolute inset-0 flex items-center justify-center text-sm sm:text-base'>
-                        {t(LANGUAGE.EMPTY_DATA)}
-                    </div>
-                )
             )}
         </AnimateWrap>
     )

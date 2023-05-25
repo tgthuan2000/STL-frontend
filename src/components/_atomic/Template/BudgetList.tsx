@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import React from 'react'
 import { Link, To } from 'react-router-dom'
@@ -49,7 +50,13 @@ const BudgetList: React.FC<Props> = (props) => {
 
                     return (
                         <li key={key}>
-                            <Component to={link as To} className='block cursor-pointer py-3 hover:opacity-70'>
+                            <Component
+                                to={link as To}
+                                className={clsx('block py-3', {
+                                    'cursor-pointer hover:opacity-70': link,
+                                    'cursor-default': !link,
+                                })}
+                            >
                                 <div className='flex items-end justify-between px-3'>
                                     <h4 className='font-medium'>{title}</h4>
                                     {amount}
