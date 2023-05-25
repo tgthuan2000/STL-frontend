@@ -7,8 +7,7 @@ import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import LANGUAGE from '~/i18n/language/key'
 import { getBudgetProgressColor, getMonths } from '~/utils'
-import { BudgetCategoryDetail } from './useBudgetDetail'
-import { BudgetMethodDetail } from './budget-detail/useBudgetDetailMethod'
+import { BudgetCategoryDetail, BudgetMethodDetail } from './useBudgetDetail'
 
 interface Charts {
     daily: { x: string; y: number }[]
