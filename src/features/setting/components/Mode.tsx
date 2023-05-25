@@ -12,8 +12,8 @@ const Mode: React.FC<SettingComponentProps> = (props) => {
 
     return (
         <button type='button' className={className} onClick={toggleTheme}>
-            <ThemeIcon theme={theme} className='h-6 w-6 flex-shrink-0' />
-            <p>{isDarkTheme ? t(LANGUAGE.LIGHT_MODE) : t(LANGUAGE.DARK_MODE)}</p>
+            <ThemeIcon theme={theme} className='h-6 w-6 flex-shrink-0 sm:h-8 sm:w-8' />
+            <p className='text-sm sm:text-base'>{isDarkTheme ? t(LANGUAGE.LIGHT_MODE) : t(LANGUAGE.DARK_MODE)}</p>
         </button>
     )
 }

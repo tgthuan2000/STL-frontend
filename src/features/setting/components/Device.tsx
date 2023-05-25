@@ -11,8 +11,8 @@ const Device: React.FC<SettingComponentProps> = (props) => {
 
     return (
         <Link to='device' className={className}>
-            <ComputerDesktopIcon className='h-6 w-6 flex-shrink-0' />
-            <p>{t(LANGUAGE.DEVICE_CONTROL)}</p>
+            <ComputerDesktopIcon className='h-6 w-6 flex-shrink-0 sm:h-8 sm:w-8' />
+            <p className='text-sm sm:text-base'>{t(LANGUAGE.DEVICE_CONTROL)}</p>
         </Link>
     )
 }

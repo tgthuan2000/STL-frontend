@@ -7,7 +7,7 @@ const NoPermission: React.FC<SettingComponentProps> = (props) => {
 
     return (
         <div className={className}>
-            <ShieldExclamationIcon className='h-6 w-6 flex-shrink-0' />
+            <ShieldExclamationIcon className='h-6 w-6 flex-shrink-0 sm:h-8 sm:w-8' />
         </div>
     )
 }

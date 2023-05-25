@@ -23,8 +23,8 @@ const Language: React.FC<SettingComponentProps> = (props) => {
 
     return (
         <button type='button' className={className} onClick={handleChange}>
-            <LanguageIcon className='h-6 w-6 flex-shrink-0' />
-            <p>{t(LANGUAGE.LANGUAGE_CHOOSE)}</p>
+            <LanguageIcon className='h-6 w-6 flex-shrink-0 sm:h-8 sm:w-8' />
+            <p className='text-sm sm:text-base'>{t(LANGUAGE.LANGUAGE_CHOOSE)}</p>
         </button>
     )
 }

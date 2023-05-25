@@ -10,9 +10,9 @@ const SmallStatisticListSkeleton: React.FC<SkeletonProps> = (props) => {
         <ul role='list' className='grid select-none grid-cols-[repeat(auto-fill,minmax(144px,1fr))] gap-4'>
             {Array.from(Array(elNumber)).map((value, index) => (
                 <li key={index} className='animate-pulse' style={{ animationDelay: `${index * 300}ms` }}>
-                    <div className='flex flex-col items-center gap-2 rounded-md border border-gray-200 p-4 shadow-sm dark:border-slate-700'>
-                        <CubeTransparentIcon className='h-9 w-9 text-gray-400 dark:text-slate-400' />
-                        <SkeletonLine className='h-4 w-1/2' />
+                    <div className='flex items-center gap-1 rounded-md border border-gray-300 py-1.5 px-3 shadow-sm dark:border-slate-700 sm:py-2 sm:px-4'>
+                        <CubeTransparentIcon className='h-7 w-7 text-gray-400 dark:text-slate-400 sm:h-9 sm:w-9' />
+                        <SkeletonLine className='h-4 w-20' />
                     </div>
                 </li>
             ))}

@@ -31,7 +31,7 @@ const ButtonGroup: React.FC<Props> = (props) => {
                                     type={type}
                                     key={key}
                                     className={clsx(
-                                        'rounded-full py-1.5 px-3 text-sm sm:min-w-[100px] sm:py-2 sm:px-4',
+                                        'rounded-full py-1.5 px-3 text-xs sm:min-w-[100px] sm:py-2 sm:px-4 sm:text-sm',
                                         isActive
                                             ? 'bg-indigo-500 text-white dark:bg-cyan-500'
                                             : 'text-gray-700 dark:text-slate-400'
