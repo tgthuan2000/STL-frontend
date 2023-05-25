@@ -42,6 +42,7 @@ const useServiceQuery = () => {
             startDate: service.getDateOfMonth('start'),
             endDate: service.getDateOfMonth('end'),
         }),
+        LONG_BUDGET_SPENDING: services.getLongBudgetSpending({ userProfile }),
 
         // LOAN
         GET_RECENT_LOAN: services.getRecentLoan({ userProfile, kindCredit: getLoan, kindLoan: loan }),

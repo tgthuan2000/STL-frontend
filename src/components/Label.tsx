@@ -1,17 +1,27 @@
 import clsx from 'clsx'
+import { DefaultTFuncReturn } from 'i18next'
 import React from 'react'
-import { LabelProps } from '~/@types/components'
 
-const Label: React.FC<LabelProps> = ({ id, label, className }) => {
+export interface Props {
+    id?: string
+    label?: DefaultTFuncReturn | React.ReactNode
+    className?: string
+    as?: any
+}
+
+const Label: React.FC<Props> = (props) => {
+    const { id, label, className, as } = props
+    const Component = as ?? 'label'
+
     return (
         <>
             {label && (
-                <label
+                <Component
                     htmlFor={id}
-                    className={clsx('inline-block font-medium text-gray-900 dark:text-slate-100', className)}
+                    className={clsx('inline-block font-medium text-gray-900 dark:text-slate-200', className)}
                 >
                     {label}
-                </label>
+                </Component>
             )}
         </>
     )

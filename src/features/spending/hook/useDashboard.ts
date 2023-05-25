@@ -10,6 +10,7 @@ import { useQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import {
     GET_BUDGET_BY_MONTH,
+    GET_LONG_BUDGET,
     GET_METHOD_SPENDING_DESC_SURPLUS,
     GET_RECENT_SPENDING,
     GET_STATISTIC_SPENDING,
@@ -28,6 +29,7 @@ const useDashboard = (): [Data<DashboardQueryData>, () => void, DataStatistic | 
             recent: GET_RECENT_SPENDING,
             method: GET_METHOD_SPENDING_DESC_SURPLUS,
             statistic: GET_STATISTIC_SPENDING,
+            longBudget: GET_LONG_BUDGET,
             ...(budgetId && { budget: GET_BUDGET_BY_MONTH }),
         },
         {
@@ -44,6 +46,7 @@ const useDashboard = (): [Data<DashboardQueryData>, () => void, DataStatistic | 
             recent: TAGS.ALTERNATE,
             method: TAGS.ALTERNATE,
             statistic: TAGS.ALTERNATE,
+            longBudget: TAGS.ALTERNATE,
             ...(budgetId && { budget: TAGS.ALTERNATE }),
         }
     )

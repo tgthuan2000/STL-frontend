@@ -1,20 +1,17 @@
-import { PencilSquareIcon } from '@heroicons/react/24/outline'
 import moment from 'moment'
-import { Suspense } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, Image, PermissionCheck, Transaction } from '~/components'
-import LoadingText from '~/components/Loading/LoadingText'
+import { Image, Tabs, Transaction } from '~/components'
 import { DATE_FORMAT } from '~/constant'
-import { PERMISSION } from '~/constant/permission'
 import { useWindowSize } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { useProfile } from '~/store/auth'
-import { AllowSendMail, Statistic, TwoFactorAuth } from '../components'
+import useProfileTab from '../hook/useProfileTab'
 
 const Dashboard = () => {
     const { t } = useTranslation()
     const { userProfile } = useProfile()
     const { width } = useWindowSize()
+    const tabs = useProfileTab()
 
     return (
         <Transaction title={t(LANGUAGE.PROFILE_MANAGEMENT)} hasBack={width > 768}>
@@ -54,27 +51,7 @@ const Dashboard = () => {
                     </div>
                     {/* DASHBOARD */}
 
-                    <div className='mx-auto my-10 w-full max-w-lg space-y-6 text-gray-900 dark:text-slate-200 sm:rounded-lg sm:border sm:p-5 sm:shadow-md dark:sm:border-slate-600'>
-                        <PermissionCheck permissions={[PERMISSION.PROFILE_RECEIVE_EMAIL]} fallback={<></>}>
-                            <div className='space-y-4 px-2'>
-                                <h4 className='border-b border-gray-200 pb-2 text-2xl font-normal dark:border-slate-700 sm:text-xl'>
-                                    {t(LANGUAGE.EMAIL)}
-                                </h4>
-                                <AllowSendMail />
-                            </div>
-                        </PermissionCheck>
-                        <div className='space-y-4 px-2'>
-                            <h4 className='border-b border-gray-200 pb-2 text-2xl font-normal dark:border-slate-700 sm:text-xl'>
-                                {t(LANGUAGE.SECURITY)}
-                            </h4>
-                            <TwoFactorAuth />
-                        </div>
-                    </div>
-                    <Suspense fallback={<LoadingText />}>
-                        <PermissionCheck permissions={[PERMISSION.PROFILE_STATISTIC]} fallback={<></>}>
-                            <Statistic />
-                        </PermissionCheck>
-                    </Suspense>
+                    <Tabs options={tabs} className='mt-10 px-0 sm:px-6' />
                 </div>
             </div>
         </Transaction>

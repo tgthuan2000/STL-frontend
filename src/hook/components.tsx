@@ -2,14 +2,15 @@ import {
     ArrowRightOnRectangleIcon,
     ArrowTrendingUpIcon,
     ArrowsRightLeftIcon,
+    BuildingLibraryIcon,
     CalendarDaysIcon,
+    ChartPieIcon,
     ClipboardDocumentListIcon,
+    CubeIcon,
     EllipsisHorizontalCircleIcon,
-    HashtagIcon,
     HomeIcon,
     MinusCircleIcon,
     PlusCircleIcon,
-    PuzzlePieceIcon,
     QrCodeIcon,
     RectangleGroupIcon,
     UserGroupIcon,
@@ -29,6 +30,7 @@ const CreateRole = React.lazy(() => import('~/features/role-control/components/C
 const AddCategory = React.lazy(() => import('~/features/spending/components/AddCategory'))
 const AddMethod = React.lazy(() => import('~/features/spending/components/AddMethod'))
 const MakeBudget = React.lazy(() => import('~/features/spending/components/MakeBudget'))
+const MakeLongBudget = React.lazy(() => import('~/features/spending/components/MakeLongBudget'))
 const MakeCost = React.lazy(() => import('~/features/spending/components/MakeCost'))
 const MakeIncome = React.lazy(() => import('~/features/spending/components/MakeIncome'))
 const MakeTransfer = React.lazy(() => import('~/features/spending/components/MakeTransfer'))
@@ -63,9 +65,16 @@ export const useMenuMobile = (): IMenuBtn[] => {
             {
                 title: t(LANGUAGE.MAKE_BUDGET),
                 color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
-                icon: PuzzlePieceIcon,
+                icon: ChartPieIcon,
                 children: <MakeBudget />,
                 slide: 'budget',
+            },
+            {
+                title: t(LANGUAGE.MAKE_LONG_BUDGET),
+                color: 'text-purple-700 bg-purple-200 hover:bg-purple-300 dark:text-purple-500',
+                icon: BuildingLibraryIcon,
+                children: <MakeLongBudget />,
+                slide: 'long-budget',
             },
             // {
             //     title: t(LANGUAGE.TRANSACTION),
@@ -119,7 +128,7 @@ export const useMenuMobileOthers = (): IMenuBtn[] => {
             {
                 title: t(LANGUAGE.CREATE_CATEGORY),
                 color: 'text-prussian-blue-700 bg-prussian-blue-200 hover:bg-prussian-blue-300 dark:text-prussian-blue-300',
-                icon: RectangleGroupIcon,
+                icon: CubeIcon,
                 children: <AddCategory />,
                 slide: 'category',
             },
@@ -225,9 +234,16 @@ export const useMenuSpendingPC = (): IMenuBtn[] => {
             {
                 title: t(LANGUAGE.MAKE_BUDGET),
                 color: 'text-yellow-700 bg-yellow-200 hover:bg-yellow-300 dark:text-yellow-500',
-                icon: PuzzlePieceIcon,
+                icon: ChartPieIcon,
                 children: <MakeBudget />,
                 slide: 'budget',
+            },
+            {
+                title: t(LANGUAGE.MAKE_LONG_BUDGET),
+                color: 'text-purple-700 bg-purple-200 hover:bg-purple-300 dark:text-purple-500',
+                icon: BuildingLibraryIcon,
+                children: <MakeLongBudget />,
+                slide: 'long-budget',
             },
 
             {
@@ -278,7 +294,7 @@ export const useMenuSpendingPC = (): IMenuBtn[] => {
             {
                 title: t(LANGUAGE.CREATE_CATEGORY),
                 color: 'text-cyan-700 bg-cyan-200 hover:bg-cyan-300 dark:text-cyan-500',
-                icon: HashtagIcon,
+                icon: CubeIcon,
                 children: <AddCategory />,
                 slide: 'add-category',
             },

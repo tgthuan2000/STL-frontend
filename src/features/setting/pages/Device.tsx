@@ -72,7 +72,7 @@ const Device = () => {
                     <div className='mb-4 flex justify-end'>
                         <LoadingButton onReload={reload} disabled={device.loading} />
                     </div>
-                    <div className='grid gap-4 lg:grid-cols-2'>
+                    <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
                         {Array.isArray(device.data) &&
                             device.data?.map((item) => {
                                 return <Item key={item._id} data={item} onRevokeClick={() => handleRevoke(item._id)} />

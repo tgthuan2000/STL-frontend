@@ -1,34 +1,47 @@
 import clsx from 'clsx'
 import React from 'react'
-import { Controller } from 'react-hook-form'
-import { ButtonGroupProps } from '~/@types/components'
+import { Controller, UseFormReturn } from 'react-hook-form'
 
-const ButtonGroup: React.FC<ButtonGroupProps> = ({ form, name, data, idKey = 'id', valueKey = 'name', onChange }) => {
-    const handleChange = (item: any, fieldChange: (...event: any[]) => void) => {
-        fieldChange(item)
-        onChange?.(item)
-    }
+export interface Props {
+    type?: 'button' | 'submit'
+    form: UseFormReturn<any, object>
+    name: string
+    data: any[] | undefined
+    getItemKey: (item: any) => string
+    getItemLabel: (item: any) => string
+}
+
+const ButtonGroup: React.FC<Props> = (props) => {
+    const { type = 'button', form, name, data, getItemKey, getItemLabel } = props
 
     return (
         <Controller
             control={form.control}
             name={name}
             render={({ field: { onChange, value } }) => (
-                <div className='flex divide-x overflow-hidden rounded-md border border-gray-700 bg-gray-400 text-gray-900 dark:divide-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-white'>
-                    {data?.map((item) => (
-                        <button
-                            key={item[idKey]}
-                            className={clsx(
-                                'py-2 px-4',
-                                value[idKey] === item[idKey]
-                                    ? 'bg-gray-700 text-white dark:bg-slate-600 dark:text-cyan-500'
-                                    : 'bg-transparent opacity-30'
-                            )}
-                            onClick={() => handleChange(item, onChange)}
-                        >
-                            {item[valueKey]}
-                        </button>
-                    ))}
+                <div className='flex overflow-hidden rounded-full bg-gray-200 p-1 dark:bg-slate-700'>
+                    {Array.isArray(data) &&
+                        data?.map((item) => {
+                            const key = getItemKey(item)
+                            const label = getItemLabel(item)
+                            const isActive = getItemKey(value) === key
+
+                            return (
+                                <button
+                                    type={type}
+                                    key={key}
+                                    className={clsx(
+                                        'rounded-full py-1.5 px-3 text-xs sm:min-w-[100px] sm:py-2 sm:px-4 sm:text-sm',
+                                        isActive
+                                            ? 'bg-indigo-500 text-white dark:bg-cyan-500'
+                                            : 'text-gray-700 dark:text-slate-400'
+                                    )}
+                                    onClick={() => onChange(item)}
+                                >
+                                    {label}
+                                </button>
+                            )
+                        })}
                 </div>
             )}
         />

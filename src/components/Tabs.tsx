@@ -19,7 +19,7 @@ const Tabs: React.FC<TabsProps> = (props) => {
     return (
         <AnimateWrap className={className}>
             <Tab.Group>
-                <Tab.List className='mb-4 space-x-2 border-b dark:border-slate-700'>
+                <Tab.List className='mb-4 space-x-2 border-b px-2 dark:border-slate-700 sm:px-0'>
                     {options.map((option, index) => (
                         <Tab key={option[idKey] ?? index}>
                             {({ selected }) => (

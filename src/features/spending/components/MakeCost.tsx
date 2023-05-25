@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { IAddCostForm, MakeCostQueryData } from '~/@types/spending'
-import { Button, SubmitWrap } from '~/components'
+import { Button, SlideFormWrap, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
@@ -180,8 +180,6 @@ const MakeCost = () => {
             )
             toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_COST_SUCCESS))
             needCheckWhenLeave()
-            // setIsOpen(false)
-            // navigate(-1)
         } catch (error) {
             console.log(error)
         } finally {
@@ -224,55 +222,42 @@ const MakeCost = () => {
     }
 
     return (
-        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
-            <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
-                <div className='flex flex-1 flex-col justify-between'>
-                    <div className='divide-y divide-gray-200 px-4 sm:px-6'>
-                        <div className='space-y-6 pt-3 pb-5'>
-                            <Input name='amount' form={form} type='number' label={t(LANGUAGE.COST)} />
-
-                            <AutoComplete
-                                name='categorySpending'
-                                form={form}
-                                data={categorySpending.data}
-                                label={t(LANGUAGE.CATEGORY)}
-                                loading={categorySpending.loading}
-                                addMore={handleAddMoreCategorySpending}
-                                onReload={
-                                    isEmpty(categorySpending.data)
-                                        ? undefined
-                                        : () => handleReloadData('categorySpending')
-                                }
-                            />
-                            <AutoComplete
-                                name='methodSpending'
-                                form={form}
-                                data={methodSpending.data}
-                                label={t(LANGUAGE.METHOD_SPENDING)}
-                                loading={methodSpending.loading}
-                                addMore={handleAddMoreMethodSpending}
-                                onReload={
-                                    isEmpty(methodSpending.data) ? undefined : () => handleReloadData('methodSpending')
-                                }
-                            />
-                            <DatePicker name='date' form={form} label={t(LANGUAGE.DATE)} />
-
-                            <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
-
-                            <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <SubmitWrap>
-                <Button color='radicalRed' type='submit' disabled={loading.submit}>
-                    {t(LANGUAGE.SAVE)}
-                </Button>
-                <Button color='outline' type='button' onClick={close}>
-                    {t(LANGUAGE.CANCEL)}
-                </Button>
-            </SubmitWrap>
-        </form>
+        <SlideFormWrap
+            onSubmit={form.handleSubmit(onsubmit)}
+            buttonZone={
+                <SubmitWrap>
+                    <Button color='radicalRed' type='submit' disabled={loading.submit}>
+                        {t(LANGUAGE.SAVE)}
+                    </Button>
+                    <Button color='outline' type='button' onClick={close}>
+                        {t(LANGUAGE.CANCEL)}
+                    </Button>
+                </SubmitWrap>
+            }
+        >
+            <Input name='amount' form={form} type='number' label={t(LANGUAGE.COST)} />
+            <AutoComplete
+                name='categorySpending'
+                form={form}
+                data={categorySpending.data}
+                label={t(LANGUAGE.CATEGORY)}
+                loading={categorySpending.loading}
+                addMore={handleAddMoreCategorySpending}
+                onReload={isEmpty(categorySpending.data) ? undefined : () => handleReloadData('categorySpending')}
+            />
+            <AutoComplete
+                name='methodSpending'
+                form={form}
+                data={methodSpending.data}
+                label={t(LANGUAGE.METHOD_SPENDING)}
+                loading={methodSpending.loading}
+                addMore={handleAddMoreMethodSpending}
+                onReload={isEmpty(methodSpending.data) ? undefined : () => handleReloadData('methodSpending')}
+            />
+            <DatePicker name='date' form={form} label={t(LANGUAGE.DATE)} />
+            <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
+            <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
+        </SlideFormWrap>
     )
 }
 

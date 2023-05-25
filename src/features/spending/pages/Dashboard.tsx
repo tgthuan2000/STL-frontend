@@ -2,10 +2,10 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Box, Divider, Transaction } from '~/components'
 import { DEFAULT_SPENDING_LAYOUT, LAYOUT_GROUP, SPENDING_LAYOUT } from '~/constant/render-layout'
-import { useConfig } from '~/context'
 import { useDynamicRender, useLayout } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { BudgetCategory, BudgetMethod } from '../components/Budget'
+import LongBudget from '../components/LongBudget'
 import Method from '../components/Method'
 import MobileMenu from '../components/MobileMenu'
 import Recent from '../components/Recent'
@@ -15,7 +15,6 @@ import useDashboard from '../hook/useDashboard'
 const Dashboard = () => {
     const { t } = useTranslation()
     const [data, onReload, dataStatistic] = useDashboard()
-    const { getLayoutGroup } = useConfig()
 
     const {
         data: { layouts },
@@ -32,7 +31,8 @@ const Dashboard = () => {
     })
 
     useEffect(() => {
-        const { method, recent, statistic, budget } = data
+        const { method, recent, statistic, budget, longBudget } = data
+
         setElement({
             [SPENDING_LAYOUT.STATISTIC]: (
                 <Box.Content
@@ -41,6 +41,11 @@ const Dashboard = () => {
                     loading={statistic.loading}
                 >
                     <Statistic data={dataStatistic?.data} loading={statistic.loading} />
+                </Box.Content>
+            ),
+            [SPENDING_LAYOUT.LONG_BUDGET]: (
+                <Box.Content title={t(LANGUAGE.LONG_BUDGET)} onReload={onReload} loading={longBudget?.loading}>
+                    <LongBudget data={longBudget?.data} loading={Boolean(longBudget?.loading)} />
                 </Box.Content>
             ),
             [SPENDING_LAYOUT.BUDGET_CATEGORY]: (

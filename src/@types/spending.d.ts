@@ -1,4 +1,4 @@
-import { SanityImageAssetDocument } from '@sanity/client'
+import { SanityAssetDocument, SanityImageAssetDocument } from '@sanity/client'
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/@types/hook'
@@ -9,6 +9,7 @@ import { IKindSpending } from './context'
 import { Query } from './hook'
 import { IUserLoan } from './loan'
 import { RecommendOption } from './components'
+import { To } from 'react-router-dom'
 
 /* INTERFACES */
 
@@ -35,6 +36,25 @@ export interface IBudgetSpending {
     MethodSpending: Array<IBudgetDetail & { methodSpending: IMethodSpending }>
     CategorySpending: Array<IBudgetDetail & { categorySpending: ICategorySpending }>
 }
+
+export interface ILongBudgetSpending {
+    _id: string
+    _createdAt?: string
+    title: string
+    amount: number
+    duration: string
+    finishedAt: string
+    image?: SanityAssetDocument
+    user: IUserProfile
+}
+
+export interface ILongBudgetItem {
+    _id: string
+    amount: number
+    method: IMethodSpending
+    budget: ILongBudgetSpending
+}
+
 export interface IBudgetDetail {
     _id: string
     _createdAt: string
@@ -184,6 +204,14 @@ export interface DashboardQueryData {
     method: IMethodSpending[]
     budget?: IBudgetSpending
     statistic: IStatisticData[]
+    longBudget: LongBudget[]
+}
+
+export interface LongBudget {
+    _id: string
+    title: string
+    amount: number
+    amounts: number[]
 }
 export interface ITotalSpending {
     key: KIND_SPENDING
@@ -274,6 +302,7 @@ export interface BudgetItemProps {
     bgColor: string
     isOver: boolean
     totalAmounts: number
+    to: To
 }
 
 /* --- SERVICES --- */

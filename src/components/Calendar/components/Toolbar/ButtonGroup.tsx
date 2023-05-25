@@ -8,12 +8,12 @@ import { useMessage } from '../../services/components'
 import Button from './Button'
 import Wrap from './Wrap'
 
-interface ButtonGroupProps {
+interface Props {
     onNavigate: (navigate: NavigateAction, date?: Date | undefined) => void
     value: string
 }
 
-const ButtonGroup: React.FC<ButtonGroupProps> = (props) => {
+const ButtonGroup: React.FC<Props> = (props) => {
     const { onNavigate, value } = props
     const messages = useMessage()
     const navigate = useNavigate()
