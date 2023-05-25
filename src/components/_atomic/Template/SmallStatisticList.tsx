@@ -46,8 +46,11 @@ const SmallStatisticList: React.FC<Props> = (props) => {
                                     className
                                 )}
                             >
-                                <Icon className='h-7 w-7 sm:h-9 sm:w-9' />
-                                {amount}
+                                <Icon className='h-8 w-8 flex-shrink-0 sm:h-9 sm:w-9' />
+                                <div className='flex flex-col overflow-hidden'>
+                                    <p className='truncate text-xs'>{title}</p>
+                                    {amount}
+                                </div>
                             </div>
                         </li>
                     )
