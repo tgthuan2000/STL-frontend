@@ -48,6 +48,7 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
                             <Template.BudgetList
                                 data={progress}
                                 loading={loading}
+                                fallback={<Atom.EmptyList />}
                                 loadingFallback={<Atom.BudgetListSkeleton elNumber={1} />}
                                 getItemKey={(item) => get(item, '_id')}
                                 renderAmount={(item) => (
@@ -67,6 +68,7 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
                             <Template.SmallStatisticList
                                 data={statistic}
                                 loading={loading}
+                                fallback={<Atom.EmptyList />}
                                 loadingFallback={<Atom.SmallStatisticListSkeleton elNumber={6} />}
                                 getItemKey={(item) => get(item, 'id')}
                                 getClassName={(item) => get(item, 'className')}
@@ -89,6 +91,7 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
                                     title={t(LANGUAGE.TRANSACTION)}
                                     subTitle={
                                         <Atom.SlashTitle
+                                            hidden={!data?.amount}
                                             title={numeral(amounts).format()}
                                             subTitle={numeral(data?.amount).format()}
                                         />
@@ -98,7 +101,7 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
                             renderTool={
                                 <AnimateWrap>
                                     <Atom.ChartTool
-                                        hidden={loading && isEmpty(dataChart)}
+                                        hidden={isEmpty(dataChart)}
                                         data={chartTypes}
                                         onSubmit={({ chartType }) => setChartType(chartType.id)}
                                     />

@@ -39,11 +39,14 @@ const SlideOverProvider: React.FC<Props> = (props) => {
     }, [slideParam, slide])
 
     const close = useCallback(() => {
-        setSearchParams((prev) => {
-            const url = new URLSearchParams(prev)
-            url.delete('slide')
-            return url
-        })
+        setSearchParams(
+            (prev) => {
+                const url = new URLSearchParams(prev)
+                url.delete('slide')
+                return url
+            },
+            { replace: true }
+        )
     }, [setSearchParams])
 
     const set = useCallback((options: SlideOverSetOptions) => {

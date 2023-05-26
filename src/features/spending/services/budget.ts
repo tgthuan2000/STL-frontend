@@ -1,12 +1,8 @@
 import { Transaction } from '@sanity/client'
-import { isEmpty } from 'lodash'
+import { isEmpty, isEqual } from 'lodash'
 
-type Update = (
-    __: Transaction,
-    key: 'methodSpending' | 'categorySpending',
-    arr: string[],
-    finds: any[] | undefined
-) => void
+type GetChanges = (arr: string[], finds: any[] | undefined, origins: any[] | undefined) => any[]
+type Update = (__: Transaction, key: 'methodSpending' | 'categorySpending', finds: any[] | undefined) => void
 type Delete = (__: Transaction, arr: string[]) => void
 type Create = (
     __: Transaction,
@@ -23,6 +19,7 @@ const typeCreate = {
 
 interface ServicesBudget {
     create: Create
+    getChanges: GetChanges
     update: Update
     delete: Delete
 }
@@ -44,19 +41,33 @@ export const servicesBudget: ServicesBudget = {
             })
         }
     },
-    update(__, key, arr, finds) {
+    getChanges(arr, finds, origins) {
+        const result: any[] = []
         if (!isEmpty(arr)) {
             arr.forEach((item) => {
                 const found = finds?.find((i) => i._id === item)
-                if (found) {
-                    const { amount } = found
-                    __.patch(item, {
-                        set: {
-                            amount,
-                            [key]: { _type: 'reference', _ref: found[key]._id },
-                        },
-                    })
+                const origin = origins?.find((i) => i._id === item)
+                if (found && origin) {
+                    if (isEqual(found, origin)) {
+                        return
+                    }
+                    result.push(found)
                 }
+            })
+        }
+
+        return result
+    },
+    update(__, key, finds) {
+        if (!isEmpty(finds)) {
+            finds?.forEach((find) => {
+                const { _id, amount } = find
+                __.patch(_id, {
+                    set: {
+                        amount,
+                        [key]: { _type: 'reference', _ref: find[key]._id },
+                    },
+                })
             })
         }
     },

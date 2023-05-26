@@ -10,7 +10,7 @@ const TransactionChart: React.FC<Props> = (props) => {
 
     return (
         <div className='text-gray-900 dark:text-slate-200'>
-            <div className='flex items-center justify-between px-5 pt-3'>
+            <div className='flex items-center justify-between px-5 py-3'>
                 {renderTitle}
                 {renderTool}
             </div>

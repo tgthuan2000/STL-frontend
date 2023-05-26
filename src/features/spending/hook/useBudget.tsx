@@ -7,11 +7,17 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { IMakeBudgetForm, MakeBudgetQueryData, StateRef, StateRefKey } from '~/@types/spending'
 import { TAGS } from '~/constant'
-import { useCheck, useConfig, useLoading } from '~/context'
+import { useCache, useCheck, useConfig, useLoading } from '~/context'
 import { useQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
-import { GET_BUDGET_BY_MONTH, GET_CATEGORY_SPENDING, GET_METHOD_SPENDING } from '~/schema/query/spending'
+import {
+    GET_BUDGET_BY_MONTH,
+    GET_BUDGET_CATEGORY_DETAIL_SPENDING_BY_MONTH,
+    GET_BUDGET_METHOD_DETAIL_SPENDING_BY_MONTH,
+    GET_CATEGORY_SPENDING,
+    GET_METHOD_SPENDING,
+} from '~/schema/query/spending'
 import { service } from '~/services'
 import { useProfile } from '~/store/auth'
 import { servicesBudget } from '../services/budget'
@@ -42,6 +48,7 @@ const useBudget = () => {
         getKindSpendingId,
         budgetSpending: { _id: budgetSpendingId },
     } = useConfig()
+    const { deleteCache } = useCache()
     const { needCheckWhenLeave } = useCheck()
     const stateRef = useRef<StateRef>(defaultStateRef)
     const [{ query, params, tags }, setQueryData] = useState({
@@ -144,22 +151,74 @@ const useBudget = () => {
                 user: { _type: 'reference', _ref: userProfile?._id },
             })
 
+            const budgetData = budget.data
             const { updates, removes } = stateRef.current
+            const deleteCaches: { _id: string; query: string }[] = []
 
             if (updates) {
                 // update methodSpending
-                servicesBudget.update(__, 'methodSpending', updates.MethodSpending, MethodSpending)
+                const methodChanges = servicesBudget.getChanges(
+                    updates.MethodSpending,
+                    MethodSpending,
+                    budgetData?.MethodSpending
+                )
+                servicesBudget.update(__, 'methodSpending', methodChanges)
 
                 // update categorySpending
-                servicesBudget.update(__, 'categorySpending', updates.CategorySpending, CategorySpending)
+                const categoryChanges = servicesBudget.getChanges(
+                    updates.CategorySpending,
+                    CategorySpending,
+                    budgetData?.CategorySpending
+                )
+                servicesBudget.update(__, 'categorySpending', categoryChanges)
+
+                deleteCaches.push(
+                    ...methodChanges.map((item) => ({
+                        _id: item._id,
+                        query: GET_BUDGET_METHOD_DETAIL_SPENDING_BY_MONTH,
+                    })),
+                    ...categoryChanges.map((item) => ({
+                        _id: item._id,
+                        query: GET_BUDGET_CATEGORY_DETAIL_SPENDING_BY_MONTH,
+                    }))
+                )
             }
 
             if (removes) {
                 // delete methodSpending
-                servicesBudget.delete(__, removes.CategorySpending)
+                servicesBudget.delete(__, removes.MethodSpending)
 
                 // delete categorySpending
-                servicesBudget.delete(__, removes.MethodSpending)
+                servicesBudget.delete(__, removes.CategorySpending)
+
+                deleteCaches.push(
+                    ...removes.MethodSpending.map((_id) => ({
+                        _id,
+                        query: GET_BUDGET_METHOD_DETAIL_SPENDING_BY_MONTH,
+                    })),
+                    ...removes.CategorySpending.map((_id) => ({
+                        _id,
+                        query: GET_BUDGET_CATEGORY_DETAIL_SPENDING_BY_MONTH,
+                    }))
+                )
+            }
+
+            // delete cache
+            if (!isEmpty(deleteCaches)) {
+                const res = deleteCache(
+                    deleteCaches.map(({ _id, query }) => ({
+                        query,
+                        params: {
+                            userId: userProfile?._id as string,
+                            startDate: service.getDateOfMonth('start'),
+                            endDate: service.getDateOfMonth('end'),
+                            budgetKind: getKindSpendingId('COST') as string,
+                            budgetId: _id,
+                        },
+                        tags: TAGS.ALTERNATE,
+                    }))
+                )
+                console.log(res)
             }
 
             // create methodSpending

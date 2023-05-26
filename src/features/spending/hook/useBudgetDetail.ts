@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
-import { useConfig } from '~/context'
+import { useCheck, useConfig } from '~/context'
 import { useQuery } from '~/hook'
 import { service } from '~/services'
 import { useProfile } from '~/store/auth'
@@ -60,6 +60,8 @@ const useBudgetDetail = (query: string) => {
     useEffect(() => {
         fetch()
     }, [])
+
+    useCheck(reload)
 
     return { data, refetch }
 }
