@@ -8,7 +8,7 @@ import AnimateWrap from '~/components/AnimateWrap'
 import LoadingText from '~/components/Loading/LoadingText'
 import { DATE_FORMAT } from '~/constant'
 import { useTheme } from '~/context'
-import LANGUAGE from '~/i18n/language/key'
+import Atom from '../Atom'
 
 type ChartType =
     | 'line'
@@ -207,6 +207,11 @@ const Chart: React.FC<Props> = (props) => {
             {loading && isEmpty(data) && (
                 <div className='absolute inset-0 flex items-center justify-center text-sm sm:text-base'>
                     <LoadingText />
+                </div>
+            )}
+            {!loading && isEmpty(data) && (
+                <div className='absolute inset-0 flex items-center justify-center text-sm sm:text-base'>
+                    <Atom.EmptyList />
                 </div>
             )}
         </AnimateWrap>
