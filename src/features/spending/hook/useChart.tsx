@@ -19,7 +19,7 @@ const useChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefined) =
 
     const { percent, amounts, progress, annotations } = useMemo(() => {
         if (!data?.spending) {
-            return { percent: 0, amounts: 0 }
+            return { percent: 0, amounts: 0, progress: [], annotations: {} }
         }
 
         const amounts = sumBy(data.spending, ({ amount }) => amount)
@@ -84,7 +84,7 @@ const useChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefined) =
 
     const charts = useMemo(() => {
         if (!data?.spending) {
-            return
+            return { daily: [], total: [] }
         }
 
         const grouped = groupBy(structuredClone(data.spending), (item) => item.date.split('T')[0])

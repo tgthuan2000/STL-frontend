@@ -44,14 +44,17 @@ const ButtonItem: React.FC<Props> = (props) => {
 
         if (slide) {
             setDataSlideOVer()
-            setSearchParams((searchParams) => {
-                const paramsUrl = new URLSearchParams(searchParams)
+            setSearchParams(
+                (searchParams) => {
+                    const paramsUrl = new URLSearchParams(searchParams)
 
-                if (slide) {
-                    paramsUrl.set('slide', slide)
-                }
-                return paramsUrl
-            })
+                    if (slide) {
+                        paramsUrl.set('slide', slide)
+                    }
+                    return paramsUrl
+                },
+                { replace: true }
+            )
         }
 
         action?.()

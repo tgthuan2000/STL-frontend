@@ -19,6 +19,7 @@ export default Transaction
 
 const BackButton = () => {
     const navigate = useNavigate()
+
     return (
         <ArrowSmallLeftIcon
             className='h-7 w-7 cursor-pointer hover:opacity-50'
