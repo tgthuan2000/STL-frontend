@@ -21,12 +21,30 @@ export interface Props {
     numberHint?: boolean
     calculator?: boolean
     tracking?: TrackingFunc
+    onChange?: (value: string) => void
 }
 
 const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
-    const { className, label, name, form, tracking, rules, type, numberHint = true, calculator = true, ...rest } = props
+    const {
+        className,
+        label,
+        name,
+        form,
+        tracking,
+        onChange,
+        rules,
+        type,
+        numberHint = true,
+        calculator = true,
+        ...rest
+    } = props
     const id = useId()
     const [_type, setType] = useState(type)
+
+    const onchange = (value: string, fieldChange: (...event: any[]) => void) => {
+        fieldChange(value)
+        onChange?.(value)
+    }
 
     return (
         <Controller
@@ -49,6 +67,7 @@ const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
                                 { 'pr-8': type === 'password' }
                             )}
                             {...field}
+                            onChange={(e) => onchange(e.target.value, field.onChange)}
                             onBlur={() => {
                                 field.onBlur()
                                 tracking?.(name)

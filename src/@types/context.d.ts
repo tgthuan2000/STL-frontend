@@ -124,6 +124,7 @@ export interface ICacheContext {
     checkInCache: CheckInCache
     deleteCache: DeleteCache
     saveCache: SaveCache
+    watchCache: ICacheData<any>
 }
 
 export type DataCache<T> = Array<{ key: number; data: { data: T; hasNextPage: boolean } | T }>

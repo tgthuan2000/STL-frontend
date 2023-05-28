@@ -11,6 +11,7 @@ interface ImportMetaEnv {
     readonly VITE_APP_URL: string
     readonly VITE_SERVER_PUBLIC_KEY: string
     readonly VITE_SERVER: string
+    readonly VITE_WATCH_CACHE_MODE: string
 }
 interface ImportMeta {
     readonly env: ImportMetaEnv
