@@ -1,5 +1,5 @@
-import Chart from './Chart'
 import BudgetList from './BudgetList'
+import Chart from './Chart'
 import RecentList from './RecentList'
 import SimpleList from './SimpleList'
 import SmallStatisticList from './SmallStatisticList'

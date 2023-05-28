@@ -1,11 +1,14 @@
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
 import { get, isEqual } from 'lodash'
-import React, { createContext, useContext, useRef } from 'react'
+import React, { Suspense, createContext, useCallback, useContext, useRef, useState } from 'react'
 import { DataCache, DeleteCache, ICacheContext, ICacheData, QueryParams, TagsField } from '~/@types/context'
 import { TAGS } from '~/constant'
 import { client } from '~/sanityConfig'
 import { service } from '~/services'
 
-const CACHE_RANGE = {
+const WatchCache = React.lazy(() => import('~/components/Cache'))
+
+export const CACHE_RANGE = {
     [TAGS.ALTERNATE]: 10,
     [TAGS.ENUM]: Infinity,
     [TAGS.SHORT]: 10,
@@ -17,23 +20,40 @@ const clone = <T extends ICacheData<T>>(
     [Property in TAGS]: DataCache<T>
 } => structuredClone(obj) as any
 
+const WATCH_CACHE_MODE = import.meta.env.VITE_WATCH_CACHE_MODE.toLowerCase() === 'true'
+
 const CacheContext = createContext<ICacheContext>({
     fetchApi: <T,>() => Promise.resolve({} as T),
     deleteCache: () => '',
     checkInCache: <T,>() => ({ data: {} as T, callApi: {} }),
     saveCache: <T,>() => ({} as T),
+    watchCache: {},
 })
 
 const DeleteObjKeys = ['__from', '__to', '__start', '__end', '__exclude']
 
-const CacheProvider = ({ children }: { children: React.ReactNode }) => {
+interface Props {
+    children: React.ReactNode
+}
+
+const CacheProvider: React.FC<Props> = (props) => {
+    const { children } = props
     const cacheRef = useRef<ICacheData<any>>(Object.assign({}, ...Object.values(TAGS).map((tag) => ({ [tag]: [] }))))
+    const [stateCache, setStateCache] = useState(cacheRef.current)
+
+    const _update = <T extends any>(cache: ICacheData<T>) => {
+        cacheRef.current = cache
+
+        if (WATCH_CACHE_MODE) {
+            setStateCache(cacheRef.current)
+        }
+    }
 
     /*
         INPUT: data need to be cached
         OUTPUT: update cache
     */
-    const updateCache = <T extends ICacheData<T>>(groups: T) => {
+    const updateCache = useCallback(<T extends ICacheData<T>>(groups: T) => {
         let cache = clone<T>(cacheRef.current)
 
         /* Check space in cache & cached data */
@@ -47,12 +67,14 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
                     if (indexCached !== -1) {
                         const { data } = __cache[indexCached]
 
-                        cache[tags][indexCached] = {
-                            ...cache[tags][indexCached],
-                            data: {
-                                hasNextPage: get(d.data, 'hasNextPage', false),
-                                data: [...(get(data, 'data', []) as any[]), ...(get(d.data, 'data', []) as any[])],
-                            } as any,
+                        if (get(data, 'data')) {
+                            cache[tags][indexCached] = {
+                                ...cache[tags][indexCached],
+                                data: {
+                                    hasNextPage: get(d.data, 'hasNextPage', false),
+                                    data: [...(get(data, 'data', []) as any[]), ...(get(d.data, 'data', []) as any[])],
+                                } as any,
+                            }
                         }
                         return
                     }
@@ -67,14 +89,15 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
                 })
             }
         }
-        cacheRef.current = cache
-    }
+
+        _update<T>(cache)
+    }, [])
 
     /*
         INPUT: payloads Array<{ query, params, tags }> elements need to be deleted
         OUTPUT: Delete cached data
     */
-    const deleteCache: DeleteCache = (payloads) => {
+    const deleteCache: DeleteCache = useCallback((payloads) => {
         let cache = clone<any>(cacheRef.current)
         let count = 0
 
@@ -97,10 +120,10 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
                 count++
             }
         })
-        cacheRef.current = cache
+        _update<any>(cache)
 
         return 'Deleted ' + count + ' cached data'
-    }
+    }, [])
 
     /*
         INPUT: callApi: { x: { query: queryString, key: hash query & params } },  params: all params, tags: { x: TAGS }
@@ -200,9 +223,19 @@ const CacheProvider = ({ children }: { children: React.ReactNode }) => {
         deleteCache,
         checkInCache,
         saveCache,
+        watchCache: stateCache,
     }
 
-    return <CacheContext.Provider value={value}>{children}</CacheContext.Provider>
+    return (
+        <CacheContext.Provider value={value}>
+            {WATCH_CACHE_MODE && (
+                <Suspense fallback={<CubeTransparentIcon className='h-5 w-5 animate-pulse' />}>
+                    <WatchCache />
+                </Suspense>
+            )}
+            {children}
+        </CacheContext.Provider>
+    )
 }
 
 const useCache = () => {
@@ -212,7 +245,21 @@ const useCache = () => {
         throw new Error('useCache must be used within a CacheProvider')
     }
 
-    return context
+    const { watchCache, ...ctx } = context
+
+    return ctx
 }
 
-export { useCache, CacheProvider }
+const useWatchCache = () => {
+    const context = useContext(CacheContext)
+
+    if (!context) {
+        throw new Error('useCache must be used within a CacheProvider')
+    }
+
+    const { watchCache, ...ctx } = context
+
+    return watchCache
+}
+
+export { useCache, useWatchCache, CacheProvider }

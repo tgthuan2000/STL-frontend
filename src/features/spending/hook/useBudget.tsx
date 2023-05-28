@@ -109,8 +109,20 @@ const useBudget = () => {
     useEffect(() => {
         const budgetData = budget.data
         if (!isEmpty(budgetData)) {
-            form.setValue('MethodSpending', budgetData?.MethodSpending)
-            form.setValue('CategorySpending', budgetData?.CategorySpending)
+            form.setValue(
+                'MethodSpending',
+                budgetData?.MethodSpending.map((method) => ({
+                    ...method,
+                    avgAmount: Math.floor(method.amount / moment(budgetData?.date).daysInMonth()),
+                }))
+            )
+            form.setValue(
+                'CategorySpending',
+                budgetData?.CategorySpending.map((category) => ({
+                    ...category,
+                    avgAmount: Math.floor(category.amount / moment(budgetData?.date).daysInMonth()),
+                }))
+            )
             if (!isPrevMonthClick.current) {
                 form.setValue('date', moment(budgetData?.date).toDate())
                 budgetData?.MethodSpending?.forEach((item) => {

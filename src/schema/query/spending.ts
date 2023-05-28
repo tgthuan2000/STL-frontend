@@ -398,6 +398,7 @@ export const GET_BUDGET_BY_MONTH = groq`
     *[_type == 'budget' && user._ref == $userId && _id == $budgetId][0]
     {
         _id,
+        date,
         "MethodSpending": ${GET_BUDGET_METHOD_DETAIL_BY_MONTH},
         "CategorySpending": ${GET_BUDGET_CATEGORY_DETAIL_BY_MONTH}
     }
