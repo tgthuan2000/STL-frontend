@@ -20,6 +20,8 @@ const clone = <T extends ICacheData<T>>(
     [Property in TAGS]: DataCache<T>
 } => structuredClone(obj) as any
 
+const WATCH_CACHE_MODE = import.meta.env.VITE_WATCH_CACHE_MODE.toLowerCase() === 'true'
+
 const CacheContext = createContext<ICacheContext>({
     fetchApi: <T,>() => Promise.resolve({} as T),
     deleteCache: () => '',
@@ -41,7 +43,10 @@ const CacheProvider: React.FC<Props> = (props) => {
 
     const _update = <T extends any>(cache: ICacheData<T>) => {
         cacheRef.current = cache
-        setStateCache(cacheRef.current)
+
+        if (WATCH_CACHE_MODE) {
+            setStateCache(cacheRef.current)
+        }
     }
 
     /*
@@ -62,12 +67,14 @@ const CacheProvider: React.FC<Props> = (props) => {
                     if (indexCached !== -1) {
                         const { data } = __cache[indexCached]
 
-                        cache[tags][indexCached] = {
-                            ...cache[tags][indexCached],
-                            data: {
-                                hasNextPage: get(d.data, 'hasNextPage', false),
-                                data: [...(get(data, 'data', []) as any[]), ...(get(d.data, 'data', []) as any[])],
-                            } as any,
+                        if (get(data, 'data')) {
+                            cache[tags][indexCached] = {
+                                ...cache[tags][indexCached],
+                                data: {
+                                    hasNextPage: get(d.data, 'hasNextPage', false),
+                                    data: [...(get(data, 'data', []) as any[]), ...(get(d.data, 'data', []) as any[])],
+                                } as any,
+                            }
                         }
                         return
                     }
@@ -221,7 +228,7 @@ const CacheProvider: React.FC<Props> = (props) => {
 
     return (
         <CacheContext.Provider value={value}>
-            {import.meta.env.VITE_WATCH_CACHE_MODE.toLowerCase() === 'true' && (
+            {WATCH_CACHE_MODE && (
                 <Suspense fallback={<CubeTransparentIcon className='h-5 w-5 animate-pulse' />}>
                     <WatchCache />
                 </Suspense>
