@@ -266,8 +266,12 @@ export interface DataCategory {
 
 export interface IMakeBudgetForm {
     date: Date
-    MethodSpending: Array<{ _id: string; amount: number; methodSpending: IMethodSpending }> | undefined
-    CategorySpending: Array<{ _id: string; amount: number; categorySpending: ICategorySpending }> | undefined
+    MethodSpending:
+        | Array<{ _id: string; avgAmount: number; amount: number; methodSpending: IMethodSpending }>
+        | undefined
+    CategorySpending:
+        | Array<{ _id: string; avgAmount: number; amount: number; categorySpending: ICategorySpending }>
+        | undefined
 }
 
 export type StateRefKey = 'CategorySpending' | 'MethodSpending'
