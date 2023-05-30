@@ -56,7 +56,7 @@ export default defineConfig({
                 name: 'STL App',
                 short_name: 'STLApp',
                 description: 'Ứng dụng cho phép quản lý những thông tin cá nhân như Quản lý chi tiêu, ghi nợ,...',
-                theme_color: '#ffffff',
+                theme_color: '#6365f1',
                 icons: [
                     {
                         src: 'pwa-192x192.png',
