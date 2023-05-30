@@ -11,7 +11,7 @@ const Logout: React.FC<SettingComponentProps> = (props) => {
     const logout = useLogout()
 
     return (
-        <button type='button' className={className} onClick={logout}>
+        <button type='button' className={className} onClick={() => logout()}>
             <ArrowLeftOnRectangleIcon className='h-6 w-6 flex-shrink-0 sm:h-8 sm:w-8' />
             <p className='text-sm sm:text-base'>{t(LANGUAGE.LOGOUT)}</p>
         </button>

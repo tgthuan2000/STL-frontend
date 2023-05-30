@@ -63,18 +63,18 @@ const configHOC = (Component: React.FC<IConfigProps>) => {
                 hiddenFlashScreen()
                 switch (error.message) {
                     case CODE.REFRESH_TOKEN_EXPIRED: {
-                        await logout()
+                        await logout({ withLogoutApi: false })
                         toast.warn(t(LANGUAGE.NOTIFY_EXPIRED_TOKEN))
                         break
                     }
                     case CODE.TOKEN_REVOKED: {
                         toast.warn(t(LANGUAGE.NOTIFY_TOKEN_REVOKED))
-                        await logout()
+                        await logout({ withLogoutApi: false })
                         break
                     }
                     default: {
                         toast.error(error.message)
-                        await logout()
+                        await logout({ withLogoutApi: false })
                     }
                 }
             }

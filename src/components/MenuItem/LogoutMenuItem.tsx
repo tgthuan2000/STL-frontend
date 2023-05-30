@@ -11,7 +11,7 @@ const LogoutMenuItem: React.FC<OptionMenuItemProps> = (props) => {
     const logout = useLogout()
 
     return (
-        <button type='button' className={btnClassName} onClick={logout}>
+        <button type='button' className={btnClassName} onClick={() => logout()}>
             <ArrowRightOnRectangleIcon className={iconClassName} />
             {t(LANGUAGE.LOGOUT)}
         </button>

@@ -235,6 +235,7 @@
     "CONFIRM_DELETE_MESSAGE": "Bạn có chắc muốn xóa tin nhắn này?",
     "CONFIRM_DELETE_SCHEDULE": "Bạn có chắc muốn xóa lịch trình này?",
     "CONFIRM_DELETE_DEVICE": "Bạn có chắc muốn xóa thiết bị này?",
+    "CONFIRM_DELETE_ALL_DEVICES": "Bạn có chắc muốn xóa tất cả thiết bị?",
     "NEED_SAVE_TO_UPDATED": "Bạn cần lưu lại sau khi chỉnh sửa để cập nhật!",
 
     "SPENDING": "Quản lý chi tiêu",
@@ -379,6 +380,7 @@
     "OLD_PASSWORD": "Mật khẩu cũ",
     "NEW_PASSWORD": "Mật khẩu mới",
     "RE_PASSWORD": "Xác nhận mật khẩu",
+    "LOGOUT_ALL_DEVICES": "Đăng xuất khỏi tất cả các thiết bị",
 
     "NOTIFICATION": "Thông báo",
     "LIST_RECEIVE_NOTIFY_MEMBER": "Danh sách thành viên nhận thông báo",
