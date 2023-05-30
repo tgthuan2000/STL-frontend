@@ -8,7 +8,7 @@ import { Button, Paper, Transaction } from '~/components'
 import LoadingButton from '~/components/Loading/LoadingButton'
 import { DATE_FORMAT, TAGS } from '~/constant'
 import { useLoading } from '~/context'
-import { useAxios, useQuery } from '~/hook'
+import { useAxios, useLogout, useQuery } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { GET_USER_DEVICE } from '~/schema/query/setting'
 import { useAuth, useProfile } from '~/store/auth'
@@ -33,6 +33,7 @@ const Device = () => {
     const axios = useAxios()
     const { setSubmitLoading } = useLoading()
     const { refreshToken } = useAuth()
+    const logout = useLogout()
 
     const [{ device }, fetchData, deleteCache, reloadData] = useQuery<QueryData>(
         { device: GET_USER_DEVICE },
@@ -65,11 +66,35 @@ const Device = () => {
         }
     }
 
+    const handleSignOutAllDevices = async () => {
+        if (!window.confirm(t(LANGUAGE.CONFIRM_DELETE_ALL_DEVICES) as string)) {
+            return
+        }
+        try {
+            setSubmitLoading(true)
+            await axios.post('/auth/revoke-all')
+            toast.success<string>(t(LANGUAGE.NOTIFY_DELETE_SUCCESS))
+            logout({ withLogoutApi: false })
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setSubmitLoading(false)
+        }
+    }
+
     return (
         <Transaction title={t(LANGUAGE.DEVICE_CONTROL)}>
             <Paper className='mt-5 text-gray-900 dark:text-slate-200'>
                 <div className='mx-auto w-full max-w-4xl lg:py-5'>
-                    <div className='mb-4 flex justify-end'>
+                    <div className='mb-4 flex justify-between'>
+                        <Button
+                            type='button'
+                            color='outline-radicalRed'
+                            disabled={device.loading}
+                            onClick={handleSignOutAllDevices}
+                        >
+                            {t(LANGUAGE.LOGOUT_ALL_DEVICES)}
+                        </Button>
                         <LoadingButton onReload={reload} disabled={device.loading} />
                     </div>
                     <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>

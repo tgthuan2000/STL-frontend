@@ -4,16 +4,23 @@ import axios from '~/axiosConfig'
 import { useAuth, useProfile } from '~/store/auth'
 import useAxios from './useAxios'
 
+interface logoutOptions {
+    withLogoutApi?: boolean
+}
+
 const useLogout = () => {
     const { removeToken, refreshToken } = useAuth()
     const { removeUserProfile } = useProfile()
     const _axios = useAxios()
 
-    const logout = useCallback(async () => {
+    const logout = useCallback(async (options: logoutOptions = {}) => {
+        const { withLogoutApi = true } = options
         removeToken()
         removeUserProfile()
         googleLogout()
-        await _axios.post('/auth/logout', { refreshToken })
+        if (withLogoutApi) {
+            await _axios.post('/auth/logout', { refreshToken })
+        }
         axios.defaults.headers.common['Authorization'] = null
     }, [])
 
