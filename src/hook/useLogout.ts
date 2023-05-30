@@ -14,7 +14,7 @@ const useLogout = () => {
     const _axios = useAxios()
 
     const logout = useCallback(async (options: logoutOptions = {}) => {
-        const { withLogoutApi } = options
+        const { withLogoutApi = true } = options
         removeToken()
         removeUserProfile()
         googleLogout()
