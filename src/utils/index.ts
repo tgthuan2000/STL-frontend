@@ -68,3 +68,19 @@ export const getBudgetProgressColor = (percent: number) => {
     }
     return { color: 'text-green-500', bgColor: 'rgb(16, 185, 129)' }
 }
+
+export const getBudgetProgressColorRevert = (percent: number) => {
+    if (percent >= 100) {
+        return { color: 'text-green-500', bgColor: 'rgb(16, 185, 129)' }
+    }
+    if (percent > 75) {
+        return { color: 'text-yellow-500', bgColor: 'rgb(245, 158, 11)' }
+    }
+    if (percent > 50) {
+        return { color: 'text-orange-500', bgColor: 'rgb(249, 115, 22)' }
+    }
+    if (percent > 30) {
+        return { color: 'text-red-500', bgColor: 'red' }
+    }
+    return { color: 'text-purple-500', bgColor: 'rgb(168, 85, 247)' }
+}

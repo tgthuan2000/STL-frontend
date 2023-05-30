@@ -1,29 +1,27 @@
+import { memo, useMemo } from 'react'
+import { LongBudgetDetail } from '../hook/useLongBudgetDetail'
+import Title from '~/components/Box/Title'
+import { useTranslation } from 'react-i18next'
+import LANGUAGE from '~/i18n/language/key'
+import { AnimateWrap, Paper, ProgressLine } from '~/components'
+import Template from '~/components/_atomic/Template'
+import Atom from '~/components/_atomic/Atom'
 import { get, isEmpty } from 'lodash'
 import numeral from 'numeral'
-import React, { memo, useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
-import { AnimateWrap, Paper, ProgressLine } from '~/components'
-import Title from '~/components/Box/Title'
-import Atom from '~/components/_atomic/Atom'
-import Template from '~/components/_atomic/Template'
-import LANGUAGE from '~/i18n/language/key'
-import { getLinkSpending } from '~/utils'
-import { BudgetCategoryDetail, BudgetMethodDetail } from '../hook/useBudgetDetail'
-import useBudgetChart from '../hook/useBudgetChart'
 import useChartTool from '../hook/useChartTool'
+import useLongBudgetChart from '../hook/useLongBudgetChart'
 
 interface Props {
-    type: 'categorySpending' | 'methodSpending'
-    data: BudgetCategoryDetail | BudgetMethodDetail | undefined
+    data: LongBudgetDetail | undefined
     loading: boolean
-    reload: () => void
+    reload(): void
 }
 
-const BudgetDetailContent: React.FC<Props> = (props) => {
-    const { type, data, loading, reload } = props
+const LongBudgetDetailContent: React.FC<Props> = (props) => {
+    const { data, loading, reload } = props
     const { t } = useTranslation()
     const { chartTypes, chartType, setChartType } = useChartTool()
-    const { amounts, annotations, charts, progress, statistic } = useBudgetChart(data)
+    const { progress, amounts, statistic, charts, notes } = useLongBudgetChart(data)
 
     const dataChart = useMemo(() => {
         if (charts) {
@@ -37,17 +35,6 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
             }
         }
     }, [chartType, charts])
-
-    const dataAnnotation = useMemo(() => {
-        switch (chartType) {
-            case 'bar': {
-                return annotations.avg ?? {}
-            }
-            case 'line': {
-                return annotations.total ?? {}
-            }
-        }
-    }, [chartType, annotations])
 
     return (
         <div className='mt-5 flex flex-col gap-8 sm:gap-4 lg:flex-row'>
@@ -65,14 +52,29 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
                                 renderAmount={(item) => (
                                     <Atom.Amount amount={get(item, 'amount')} className={get(item, 'color')} />
                                 )}
-                                renderProgress={(item) => (
-                                    <ProgressLine
-                                        data={[{ color: get(item, 'bgColor'), percent: get(item, 'percent') }]}
-                                        background={get(item, 'bgColor')}
-                                    />
-                                )}
-                                renderTitle={(item) => <Atom.Title title={get(item, `${type}.name`)} />}
+                                renderProgress={(item) => {
+                                    const data =
+                                        item.items?.map((item: any) => ({
+                                            color: get(item, 'bgColor'),
+                                            percent: get(item, 'percent'),
+                                        })) ?? []
+
+                                    return <ProgressLine data={data} background={get(item, 'bgColor')} />
+                                }}
+                                renderTitle={(item) => <Atom.Title title={get(item, 'title')} />}
                             />
+                        </AnimateWrap>
+
+                        <AnimateWrap>
+                            {/* <Template.ChartNote
+                                data={notes}
+                                loading={loading}
+                                fallback={<></>}
+                                loadingFallback={'Loading...'}
+                                getItemKey={(item) => get(item, 'id')}
+                                renderTitle={(item) => <Atom.Title title={get(item, 'methodName')} />}
+                                renderDot={item => <Atom.Square style={{background: get(item, "bgColor")}} />}
+                            /> */}
                         </AnimateWrap>
 
                         <AnimateWrap>
@@ -119,12 +121,7 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
                                 </AnimateWrap>
                             }
                             renderChart={
-                                <Template.Chart
-                                    data={dataChart}
-                                    loading={loading}
-                                    type={chartType}
-                                    annotations={dataAnnotation}
-                                />
+                                <Template.Chart data={dataChart} loading={loading} type={chartType} annotations={{}} />
                             }
                         />
                     </Paper>
@@ -135,20 +132,16 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
                 <Paper disabledPadding>
                     <AnimateWrap>
                         <Template.RecentList
-                            data={data?.spending}
+                            data={data?.items}
                             loading={loading}
                             fallback={<Atom.EmptyList />}
                             loadingFallback={<Atom.RecentListSkeleton elNumber={7} />}
                             getItemKey={(item) => get(item, '_id')}
-                            getItemLink={(item) => getLinkSpending(get(item, 'kindSpending.key'), get(item, '_id'))}
-                            renderDate={(item) => <Atom.Date date={get(item, 'date')} fallback={<></>} />}
-                            renderMethod={(item) => (
-                                <Atom.Title title={get(item, 'methodSpending.name')} fallback={<></>} />
-                            )}
+                            renderDate={(item) => <Atom.Date date={get(item, '_createdAt')} fallback={<></>} />}
+                            renderMethod={(item) => <Atom.Title title={get(item, 'method.name')} fallback={<></>} />}
                             renderAmount={(item) => (
-                                <Atom.Amount amount={get(item, 'amount')} className='text-red-500' />
+                                <Atom.Amount amount={get(item, 'amount')} className='text-green-500' />
                             )}
-                            renderCategory={(item) => <Atom.Title title={get(item, 'categorySpending.name')} />}
                             renderDescription={(item) => <Atom.Description data={get(item, 'description')} />}
                         />
                     </AnimateWrap>
@@ -158,4 +151,4 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
     )
 }
 
-export default memo(BudgetDetailContent)
+export default memo(LongBudgetDetailContent)

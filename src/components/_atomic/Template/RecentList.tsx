@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import React from 'react'
 import { Link, To } from 'react-router-dom'
@@ -8,7 +9,7 @@ interface Props {
     fallback?: React.ReactNode
     loadingFallback?: React.ReactNode
     getItemKey: (item: any) => string | number
-    getItemLink: (item: any) => To
+    getItemLink?: (item: any) => To
     renderDate?: (item: any) => React.ReactNode
     renderMethod?: (item: any) => React.ReactNode
     renderDot?: (item: any) => React.ReactNode
@@ -48,7 +49,7 @@ const RecentList: React.FC<Props> = (props) => {
             {Array.isArray(data) &&
                 data?.map((item) => {
                     const key = getItemKey(item)
-                    const link = getItemLink(item)
+                    const link = getItemLink?.(item)
                     const date = renderDate?.(item)
                     const method = renderMethod?.(item)
                     const dot = renderDot?.(item)
@@ -56,9 +57,16 @@ const RecentList: React.FC<Props> = (props) => {
                     const amount = renderAmount?.(item)
                     const description = renderDescription?.(item)
 
+                    const Component = link ? Link : 'div'
+
                     return (
                         <li key={key}>
-                            <Link to={link} className='flex cursor-pointer flex-col px-3 py-2 hover:opacity-70'>
+                            <Component
+                                to={link as To}
+                                className={clsx('flex flex-col px-3 py-2', {
+                                    'cursor-pointer hover:opacity-70': !!link,
+                                })}
+                            >
                                 <div className='flex'>
                                     <div className='w-1/2 overflow-hidden xl:w-2/3'>
                                         {date && <span>{date}</span>}
@@ -74,7 +82,7 @@ const RecentList: React.FC<Props> = (props) => {
                                     </div>
                                 </div>
                                 {description}
-                            </Link>
+                            </Component>
                         </li>
                     )
                 })}

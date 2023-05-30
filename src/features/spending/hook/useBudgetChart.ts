@@ -14,17 +14,54 @@ interface Charts {
     total: { x: string; y: number }[]
 }
 
-const useChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefined) => {
+const useBudgetChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefined) => {
     const { t } = useTranslation()
 
-    const { percent, amounts, progress, annotations } = useMemo(() => {
+    const { percent, amounts, progress } = useMemo(() => {
         if (!data?.spending) {
-            return { percent: 0, amounts: 0, progress: [], annotations: {} }
+            return { percent: 0, amounts: 0, progress: [] }
         }
 
         const amounts = sumBy(data.spending, ({ amount }) => amount)
         const percent = Array.isArray(data.spending) ? (amounts * 100) / data.amount : 0
-        const annotations: ApexAnnotations = {
+
+        return {
+            percent,
+            amounts,
+            progress: [{ ...data, ...getBudgetProgressColor(percent), percent }],
+        }
+    }, [data?.spending])
+
+    const annotations = useMemo(() => {
+        if (!data?.amount) {
+            return { avg: {}, total: {} }
+        }
+
+        const avgAmount = Math.round(data.amount / moment().daysInMonth())
+
+        const avgAnnotations: ApexAnnotations = {
+            yaxis: [
+                {
+                    y: avgAmount,
+                    borderColor: 'rgb(249, 115, 22)',
+                    borderWidth: 2,
+                    strokeDashArray: 0,
+                    label: {
+                        borderColor: 'transparent',
+                        style: {
+                            background: 'rgb(249, 115, 22)',
+                            color: '#fff',
+                            cssClass: 'font-normal text-xs',
+                        },
+                        text: numeral(avgAmount).format(),
+                        position: 'left',
+                        textAnchor: 'start',
+                    },
+                },
+            ],
+        }
+
+        const totalAnnotations: ApexAnnotations = {
             yaxis: [
                 {
                     y: data.amount,
@@ -39,15 +76,15 @@ const useChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefined) =
                             cssClass: 'font-normal text-xs',
                         },
                         text: numeral(data.amount).format(),
-                        position: 'start',
+                        position: 'left',
                         textAnchor: 'start',
                     },
                 },
             ],
         }
 
-        return { percent, amounts, progress: [{ ...data, ...getBudgetProgressColor(percent), percent }], annotations }
-    }, [data?.spending])
+        return { avg: avgAnnotations, total: totalAnnotations }
+    }, [data?.amount])
 
     const statistic = useMemo(() => {
         if (!data?.spending) {
@@ -106,4 +143,4 @@ const useChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefined) =
     return { amounts, progress, annotations, charts, statistic }
 }
 
-export default useChart
+export default useBudgetChart
