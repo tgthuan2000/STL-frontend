@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import { IAddIncomeForm, MakeIncomeQueryData } from '~/@types/spending'
-import { Button, SlideFormWrap, SubmitWrap } from '~/components'
+import { Button, FormWrap, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { useCache, useCheck, useConfig, useLoading, useSlideOver } from '~/context'
@@ -219,9 +219,9 @@ const MakeIncome = () => {
     }
 
     return (
-        <SlideFormWrap
+        <FormWrap
             onSubmit={form.handleSubmit(onsubmit)}
-            buttonZone={
+            renderButton={
                 <SubmitWrap>
                     <Button color='green' type='submit' disabled={loading.submit}>
                         {t(LANGUAGE.SAVE)}
@@ -256,7 +256,7 @@ const MakeIncome = () => {
             <DatePicker name='date' form={form} tracking={tracking} label={t(LANGUAGE.DATE)} />
             <TextArea name='description' form={form} tracking={tracking} label={t(LANGUAGE.NOTE)} />
             <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
-        </SlideFormWrap>
+        </FormWrap>
     )
 }
 

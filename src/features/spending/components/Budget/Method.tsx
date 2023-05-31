@@ -11,7 +11,7 @@ const Method: React.FC<BudgetProps> = (props) => {
     const { data, loading } = props
 
     return (
-        <Template.BudgetList
+        <Template.BudgetProgressList
             data={data?.MethodSpending}
             loading={loading && isEmpty(data)}
             fallback={<EmptyData method />}

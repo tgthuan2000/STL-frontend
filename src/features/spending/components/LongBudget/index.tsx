@@ -16,7 +16,7 @@ const LongBudget: React.FC<Props> = (props) => {
     const { data, loading } = props
 
     return (
-        <Template.BudgetList
+        <Template.BudgetProgressList
             data={data}
             loading={loading && isEmpty(data)}
             fallback={<EmptyData />}

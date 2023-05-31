@@ -9,11 +9,14 @@ import RecentListSkeleton from './RecentListSkeleton'
 import SimpleListSkeleton from './SimpleListSkeleton'
 import SlashTitle from './SlashTitle'
 import SmallStatisticListSkeleton from './SmallStatisticListSkeleton'
+import Square from './Square'
+import Suffix from './Suffix'
 import Title from './Title'
 import ChartTitle from './TransactionTitle'
 
 const Atom = () => {}
 
+Atom.Suffix = Suffix
 Atom.Amount = Amount
 Atom.Date = Date
 Atom.Description = Description
@@ -27,5 +30,6 @@ Atom.SmallStatisticListSkeleton = SmallStatisticListSkeleton
 Atom.ChartTitle = ChartTitle
 Atom.SlashTitle = SlashTitle
 Atom.ChartTool = ChartTool
+Atom.Square = Square
 
 export default Atom

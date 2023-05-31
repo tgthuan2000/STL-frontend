@@ -3,7 +3,9 @@ import React from 'react'
 import { SubmitWrapProps } from '~/@types/components'
 import AnimateWrap from './AnimateWrap'
 
-const SubmitWrap: React.FC<SubmitWrapProps> = ({ children, className, hiddenBorder }) => {
+const SubmitWrap: React.FC<SubmitWrapProps> = (props) => {
+    const { children, className, hiddenBorder } = props
+
     return (
         <div
             className={clsx(

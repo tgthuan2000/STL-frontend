@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
-import { Button, SlideFormWrap, SubmitWrap } from '~/components'
+import { Button, FormWrap, SubmitWrap } from '~/components'
 import { DatePicker, Input, UploadImage } from '~/components/_base'
 import { useCache, useCheck, useLoading, useSlideOver } from '~/context'
 import { useServiceQuery } from '~/hook'
@@ -99,9 +99,9 @@ const MakeLongBudget = () => {
     }
 
     return (
-        <SlideFormWrap
+        <FormWrap
             onSubmit={form.handleSubmit(onsubmit)}
-            buttonZone={
+            renderButton={
                 <SubmitWrap>
                     <Button color='purple' type='submit' disabled={loading.submit}>
                         {t(LANGUAGE.SAVE)}
@@ -116,7 +116,7 @@ const MakeLongBudget = () => {
             <Input name='amount' form={form} type='number' label={t(LANGUAGE.AMOUNT)} />
             <DatePicker name='duration' form={form} label={t(LANGUAGE.DURATION)} />
             <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
-        </SlideFormWrap>
+        </FormWrap>
     )
 }
 export default MakeLongBudget

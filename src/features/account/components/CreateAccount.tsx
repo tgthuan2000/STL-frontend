@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import { IRoleControl } from '~/@types/role-control'
-import { Button, SubmitWrap } from '~/components'
+import { Button, FormWrap, SubmitWrap } from '~/components'
 import { AutoComplete, Input, Toggle } from '~/components/_base'
 import { useCheck, useLoading, useSlideOver } from '~/context'
 import useRole from '~/features/role-control/hook/useRole'
@@ -97,42 +97,33 @@ const CreateAccount = () => {
     }
 
     return (
-        <form onSubmit={form.handleSubmit(onSubmit)} className='flex h-full flex-col'>
-            <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
-                <div className='flex flex-1 flex-col justify-between'>
-                    <div className='divide-y divide-gray-200 px-4 sm:px-6'>
-                        <div className='space-y-6 pt-3 pb-5'>
-                            <Input name='email' form={form} type='text' label={t(LANGUAGE.EMAIL)} />
-
-                            <Input name='password' form={form} type='password' label={t(LANGUAGE.PASSWORD)} />
-
-                            <Input name='rePassword' form={form} type='password' label={t(LANGUAGE.RE_PASSWORD)} />
-
-                            <Input name='userName' form={form} type='text' label={t(LANGUAGE.NAME)} />
-
-                            <AutoComplete
-                                name='role'
-                                form={form}
-                                label={t(LANGUAGE.ROLE)}
-                                loading={roles.loading}
-                                data={roles.data}
-                                onReload={refetch}
-                            />
-
-                            <Toggle name='active' form={form} label={t(LANGUAGE.ACTIVE)} />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <SubmitWrap>
-                <Button color='green' type='submit' disabled={loading.submit}>
-                    {t(LANGUAGE.CREATE)}
-                </Button>
-                <Button color='outline' type='button' onClick={close}>
-                    {t(LANGUAGE.CANCEL)}
-                </Button>
-            </SubmitWrap>
-        </form>
+        <FormWrap
+            onSubmit={form.handleSubmit(onSubmit)}
+            renderButton={
+                <SubmitWrap>
+                    <Button color='green' type='submit' disabled={loading.submit}>
+                        {t(LANGUAGE.CREATE)}
+                    </Button>
+                    <Button color='outline' type='button' onClick={close}>
+                        {t(LANGUAGE.CANCEL)}
+                    </Button>
+                </SubmitWrap>
+            }
+        >
+            <Input name='email' form={form} type='text' label={t(LANGUAGE.EMAIL)} />
+            <Input name='password' form={form} type='password' label={t(LANGUAGE.PASSWORD)} />
+            <Input name='rePassword' form={form} type='password' label={t(LANGUAGE.RE_PASSWORD)} />
+            <Input name='userName' form={form} type='text' label={t(LANGUAGE.NAME)} />
+            <AutoComplete
+                name='role'
+                form={form}
+                label={t(LANGUAGE.ROLE)}
+                loading={roles.loading}
+                data={roles.data}
+                onReload={refetch}
+            />
+            <Toggle name='active' form={form} label={t(LANGUAGE.ACTIVE)} />
+        </FormWrap>
     )
 }
 

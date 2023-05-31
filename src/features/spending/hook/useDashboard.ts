@@ -113,7 +113,7 @@ const useDashboard = (): [Data<DashboardQueryData>, () => void, DataStatistic | 
     }, [data.statistic.data, t])
 
     const handleReload = () => {
-        const res = deleteCache('statistic', 'recent', 'method', 'budget')
+        const res = deleteCache('statistic', 'recent', 'method', 'budget', 'longBudget')
         console.log(res)
         reload()
     }

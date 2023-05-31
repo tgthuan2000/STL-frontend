@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { isNil } from 'lodash'
 import numeral from 'numeral'
 import React from 'react'
@@ -18,7 +17,7 @@ const Amount: React.FC<Props> = (props) => {
     }
 
     return (
-        <span className={clsx('font-medium', typeof className === 'function' ? className() : className)}>
+        <span className={typeof className === 'function' ? className() : className}>
             {numeral(amount).format()}
             {suffix}
         </span>

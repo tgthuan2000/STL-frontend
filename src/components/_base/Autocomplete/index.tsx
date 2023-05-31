@@ -1,10 +1,12 @@
 import { Combobox } from '@headlessui/react'
 import clsx from 'clsx'
-import { filter, find, get, isNil } from 'lodash'
+import { DefaultTFuncReturn } from 'i18next'
+import { filter, find, get, isEmpty, isNil } from 'lodash'
 import { forwardRef, useEffect, useMemo, useState } from 'react'
 import { Controller, UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
+import { Rules, TrackingFunc } from '~/@types/components'
 import ErrorMessage from '~/components/ErrorMessage'
 import LANGUAGE from '~/i18n/language/key'
 import Button from './Button'
@@ -12,8 +14,6 @@ import Input from './Input'
 import Label from './Label'
 import Options from './Options'
 import Surplus from './Surplus'
-import { DefaultTFuncReturn } from 'i18next'
-import { Rules, TrackingFunc } from '~/@types/components'
 
 export interface Props {
     name: string
@@ -62,7 +62,6 @@ const AutoComplete = forwardRef<HTMLInputElement, Props>((props, ref) => {
         multiple = false,
         EmptyOptionFallback,
     } = props
-
     const value = useMemo(() => {
         return form.getValues(name)
     }, [JSON.stringify(form.getValues(name))])
@@ -73,12 +72,10 @@ const AutoComplete = forwardRef<HTMLInputElement, Props>((props, ref) => {
     const [surplus, setSurplus] = useState(value?.surplus || null)
 
     useEffect(() => {
-        setSelectedItem((prev: any) => {
-            if (isNil(prev)) {
-                return null
-            }
-            return find(data, [idKey, get(selectedItem, idKey)]) ?? null
-        })
+        if (isEmpty(data)) {
+            return
+        }
+        setSelectedItem((prev: any) => find(data, [idKey, get(prev, idKey)]) ?? null)
     }, [data])
 
     useEffect(() => {
