@@ -16,6 +16,7 @@
     "END_DATE": "Ngày kết thúc",
     "DAY": "Ngày",
     "L_DAYS": "ngày",
+    "L_MONTHS": "tháng",
     "L_MAXIMUM": "tối đa",
     "YEAR": "Năm",
     "NOTE": "Ghi chú",
@@ -133,7 +134,6 @@
     "TOTAL_COST": "Tổng chi phí",
     "TOTAL_RECEIVE": "Tổng thu nhập",
     "AVERAGE_AMOUNT_REMAINING": "Số tiền trung bình còn lại",
-    "AVERAGE_AMOUNT_REMAINING_FOR_MONTH": "Số tiền trung bình còn lại trong tháng",
     "DAILY": "Hằng ngày",
     "TOTAL": "Tổng cộng",
 

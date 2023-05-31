@@ -1,4 +1,4 @@
-import { ChartPieIcon, CurrencyDollarIcon, ReceiptPercentIcon } from '@heroicons/react/24/outline'
+import { CalendarDaysIcon, ChartPieIcon, CurrencyDollarIcon, ReceiptPercentIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { groupBy, merge, sumBy } from 'lodash'
 import moment from 'moment'
@@ -91,6 +91,8 @@ const useBudgetChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefi
             return []
         }
 
+        const remainingDays = moment().endOf('month').diff(moment(), 'days')
+
         return [
             {
                 id: 'USAGE_PERCENT',
@@ -109,12 +111,20 @@ const useBudgetChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefi
                 Icon: CurrencyDollarIcon,
             },
             {
-                id: 'AVERAGE_AMOUNT_REMAINING_FOR_MONTH',
-                title: t(LANGUAGE.AVERAGE_AMOUNT_REMAINING_FOR_MONTH),
+                id: 'AVERAGE_AMOUNT_REMAINING',
+                title: t(LANGUAGE.AVERAGE_AMOUNT_REMAINING),
                 className: 'text-yellow-500 dark:border-yellow-500',
-                amount: ((data.amount ?? 0) - (amounts ?? 0)) / moment().endOf('month').diff(moment(), 'days'),
-                suffix: undefined,
+                amount: ((data.amount ?? 0) - (amounts ?? 0)) / (remainingDays || 1),
+                suffix: '/' + t(LANGUAGE.L_DAYS),
                 Icon: ChartPieIcon,
+            },
+            {
+                id: 'REMAINING',
+                title: t(LANGUAGE.REMAINING),
+                className: 'text-gray-500 dark:text-slate-300 dark:border-slate-300',
+                amount: remainingDays,
+                suffix: ' ' + t(LANGUAGE.L_DAYS),
+                Icon: CalendarDaysIcon,
             },
         ]
     }, [data?.spending, t])
@@ -124,10 +134,10 @@ const useBudgetChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefi
             return { daily: [], total: [] }
         }
 
-        const grouped = groupBy(structuredClone(data.spending), (item) => item.date.split('T')[0])
-        const result = Object.keys(merge(getMonths(), grouped)).reduce<Charts>(
+        const group = groupBy(structuredClone(data.spending), (item) => item.date.split('T')[0])
+        const result = Object.keys(merge(getMonths(), group)).reduce<Charts>(
             (result, key, index) => {
-                const amount = grouped[key]?.reduce((acc, item) => acc + item.amount, 0) ?? 0
+                const amount = group[key]?.reduce((acc, item) => acc + item.amount, 0) ?? 0
 
                 result.daily.push({ x: key, y: amount })
                 result.total.push({ x: key, y: (result.total[index - 1]?.y ?? 0) + amount })

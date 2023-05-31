@@ -37,7 +37,7 @@ const DetailDialog = () => {
                                 leaveFrom='translate-y-0'
                                 leaveTo='translate-y-full opacity-0'
                             >
-                                <Dialog.Panel className='pointer-events-auto relative h-[85vh] max-h-full w-screen max-w-full sm:h-auto sm:max-h-[80vh] sm:max-w-lg'>
+                                <Dialog.Panel className='pointer-events-auto relative h-[90vh] max-h-full w-screen max-w-full sm:h-auto sm:max-h-[80vh] sm:max-w-lg'>
                                     {haveBack && (
                                         <button
                                             type='button'

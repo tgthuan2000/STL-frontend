@@ -38,8 +38,12 @@ const useLongBudgetDetail = () => {
         { longBudget: TAGS.ALTERNATE }
     )
 
-    const refetch = useCallback(() => {
+    const clearCache = useCallback(() => {
         deleteCache('longBudget')
+    }, [])
+
+    const refetch = useCallback(() => {
+        clearCache()
         reload()
     }, [])
 
@@ -49,7 +53,7 @@ const useLongBudgetDetail = () => {
 
     useCheck(reload)
 
-    return { data, refetch }
+    return { data, refetch, clearCache }
 }
 
 export default useLongBudgetDetail

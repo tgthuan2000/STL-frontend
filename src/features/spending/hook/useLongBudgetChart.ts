@@ -1,4 +1,11 @@
-import { ChartPieIcon, CurrencyDollarIcon, ReceiptPercentIcon } from '@heroicons/react/24/outline'
+import {
+    CalendarDaysIcon,
+    CalendarIcon,
+    ChartPieIcon,
+    CurrencyDollarIcon,
+    PowerIcon,
+    ReceiptPercentIcon,
+} from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { groupBy, sumBy } from 'lodash'
 import moment from 'moment'
@@ -47,7 +54,7 @@ const useLongBudgetChart = (data: LongBudgetDetail | undefined) => {
             percent,
             amounts,
             notes,
-            progress: [{ ...data, items, ...getBudgetProgressColorRevert(percent), percent }],
+            progress: [{ ...data, items, color: 'text-purple-500', bgColor: 'rgb(168, 85, 247)', percent }],
         }
     }, [data?.items])
 
@@ -56,30 +63,69 @@ const useLongBudgetChart = (data: LongBudgetDetail | undefined) => {
             return []
         }
 
+        const remainingDays = moment(data.duration).diff(moment(), 'days')
+        const remainingMonths = moment(data.duration).diff(moment(), 'months')
+
+        let avgAmountPerMonth = ((data.amount ?? 0) - (amounts ?? 0)) / (remainingMonths || 1)
+        avgAmountPerMonth = avgAmountPerMonth <= 0 ? 0 : avgAmountPerMonth
+
+        let avgAmountPerDay = ((data.amount ?? 0) - (amounts ?? 0)) / (remainingDays || 1)
+        avgAmountPerDay = avgAmountPerDay <= 0 ? 0 : avgAmountPerDay
+
         return [
             {
                 id: 'PERCENTAGE',
+                type: 'number',
                 title: t(LANGUAGE.PERCENTAGE),
                 className: clsx('dark:border-current', getBudgetProgressColorRevert(percent).color),
-                amount: percent,
+                value: percent,
                 suffix: '%',
                 Icon: ReceiptPercentIcon,
             },
             {
                 id: 'TOTAL_RECEIVE',
+                type: 'number',
                 title: t(LANGUAGE.TOTAL_RECEIVE),
                 className: 'text-green-500 dark:border-green-500',
-                amount: amounts,
+                value: amounts,
                 suffix: undefined,
                 Icon: CurrencyDollarIcon,
             },
             {
-                id: 'AVERAGE_AMOUNT_REMAINING',
+                id: 'AVERAGE_AMOUNT_REMAINING_PER_MONTH',
+                type: 'number',
                 title: t(LANGUAGE.AVERAGE_AMOUNT_REMAINING),
                 className: 'text-yellow-500 dark:border-yellow-500',
-                amount: ((data.amount ?? 0) - (amounts ?? 0)) / moment(data.duration).diff(moment(), 'days'),
-                suffix: undefined,
+                value: avgAmountPerMonth,
+                suffix: '/' + t(LANGUAGE.L_MONTHS),
                 Icon: ChartPieIcon,
+            },
+            {
+                id: 'AVERAGE_AMOUNT_REMAINING_PER_DAY',
+                type: 'number',
+                title: t(LANGUAGE.AVERAGE_AMOUNT_REMAINING),
+                className: 'text-orange-500 dark:border-orange-500',
+                value: avgAmountPerDay,
+                suffix: '/' + t(LANGUAGE.L_DAYS),
+                Icon: ChartPieIcon,
+            },
+            {
+                id: 'REMAINING',
+                type: 'number',
+                title: t(LANGUAGE.REMAINING),
+                className: 'text-gray-500 dark:text-slate-300 dark:border-slate-300',
+                value: remainingDays,
+                suffix: ` ${t(LANGUAGE.L_DAYS)}`,
+                Icon: CalendarDaysIcon,
+            },
+            {
+                id: 'DURATION',
+                type: 'date',
+                title: t(LANGUAGE.DURATION),
+                className: 'text-radical-red-500 dark:border-radical-red-500',
+                value: data.duration,
+                suffix: undefined,
+                Icon: PowerIcon,
             },
         ]
     }, [data?.items, t])
@@ -88,6 +134,10 @@ const useLongBudgetChart = (data: LongBudgetDetail | undefined) => {
         if (!data?.items) {
             return { daily: [], total: [] }
         }
+
+        const group = groupBy(structuredClone(data.items), (item) => item._createdAt.split('T')[0])
+
+        console.log(group)
 
         return { daily: [], total: [] }
     }, [data?.items])

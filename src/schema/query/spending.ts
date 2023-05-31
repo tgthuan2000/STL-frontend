@@ -419,14 +419,14 @@ export const GET_LONG_BUDGET_DETAIL = groq`
             title,
             amount,
             duration,
-            "items": *[_type == "longBudgetItem" && ^._id == budget._ref] {
+            "items": *[_type == "longBudgetItem" && ^._id == budget._ref] | order(_createdAt desc) {
                 _id,
                 _createdAt,
                 amount,
                 description,
                 method-> {
                     _id,
-                    name
+                    name,
                 },
             }
         }

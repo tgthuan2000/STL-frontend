@@ -28,7 +28,7 @@ const SmallStatisticList: React.FC<Props> = (props) => {
     }
 
     return (
-        <ul role='list' className='grid select-none grid-cols-[repeat(auto-fit,minmax(144px,1fr))] gap-4'>
+        <ul role='list' className='grid select-none grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4'>
             {Array.isArray(data) &&
                 data?.map((item, index) => {
                     const key = getItemKey(item)
@@ -42,7 +42,7 @@ const SmallStatisticList: React.FC<Props> = (props) => {
                             <div
                                 title={title}
                                 className={clsx(
-                                    'flex items-center gap-1 rounded-md border border-gray-300 py-1.5 px-3 sm:py-2 sm:px-4',
+                                    'flex items-center gap-1 rounded-md border border-gray-200 py-1.5 px-3 sm:py-2 sm:px-4',
                                     className
                                 )}
                             >

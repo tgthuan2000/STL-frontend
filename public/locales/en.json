@@ -16,6 +16,7 @@
     "END_DATE": "End date",
     "DAY": "Day",
     "L_DAYS": "day(s)",
+    "L_MONTHS": "month(s)",
     "L_MAXIMUM": "maximum",
     "YEAR": "Year",
     "NOTE": "Note",
@@ -133,7 +134,6 @@
     "TOTAL_COST": "Total cost",
     "TOTAL_RECEIVE": "Total receive",
     "AVERAGE_AMOUNT_REMAINING": "Average amount remaining",
-    "AVERAGE_AMOUNT_REMAINING_FOR_MONTH": "Average amount remaining for the month",
     "DAILY": "Daily",
     "TOTAL": "Running total",
 

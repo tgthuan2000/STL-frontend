@@ -10,6 +10,7 @@ interface Props {
     loadingFallback?: React.ReactNode
     getItemKey: (item: any) => string | number
     getItemLink?: (item: any) => To
+    onItemClick?: (item: any) => void
     renderDate?: (item: any) => React.ReactNode
     renderMethod?: (item: any) => React.ReactNode
     renderDot?: (item: any) => React.ReactNode
@@ -25,6 +26,7 @@ const RecentList: React.FC<Props> = (props) => {
         loadingFallback,
         getItemKey,
         getItemLink,
+        onItemClick,
         renderDate,
         renderMethod,
         renderDot,
@@ -64,8 +66,9 @@ const RecentList: React.FC<Props> = (props) => {
                             <Component
                                 to={link as To}
                                 className={clsx('flex flex-col px-3 py-2', {
-                                    'cursor-pointer hover:opacity-70': !!link,
+                                    'cursor-pointer hover:opacity-70': !!link || !!onItemClick,
                                 })}
+                                onClick={() => onItemClick?.(item)}
                             >
                                 <div className='flex'>
                                     <div className='w-1/2 overflow-hidden xl:w-2/3'>

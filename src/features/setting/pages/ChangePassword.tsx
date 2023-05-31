@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { Button, SubmitWrap, Transaction } from '~/components'
+import { Button, FormWrap, SubmitWrap, Transaction } from '~/components'
 import { Input } from '~/components/_base'
 import { useLoading } from '~/context'
 import { useAxios, useLogout } from '~/hook'
@@ -62,47 +62,11 @@ const ChangePassword = () => {
 
     return (
         <Transaction title={t(LANGUAGE.CHANGE_PASSWORD)}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-                <div className='rounded-xl bg-white py-2 shadow-lg dark:bg-slate-800 sm:py-6 lg:py-8'>
-                    <div className='mx-auto w-full max-w-lg'>
-                        <div className='flex h-full flex-col'>
-                            {userProfile && !isHasPassword && (
-                                <div className='mx-2 flex select-none items-center gap-2 rounded-md bg-yellow-500 p-3 text-white'>
-                                    <ExclamationTriangleIcon className='h-6' />
-                                    <p className='font-normal'>Tài khoản này chưa đặt mật khẩu!</p>
-                                </div>
-                            )}
-                            <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
-                                <div className='flex flex-1 flex-col justify-between'>
-                                    <div className='divide-y divide-gray-200 px-4 sm:px-6'>
-                                        <div className='space-y-6 pt-3 pb-5'>
-                                            {isHasPassword && (
-                                                <Input
-                                                    name='old-password'
-                                                    form={form}
-                                                    type='password'
-                                                    label={t(LANGUAGE.OLD_PASSWORD)}
-                                                    disabled={loading.submit}
-                                                />
-                                            )}
-                                            <Input
-                                                name='new-password'
-                                                form={form}
-                                                type='password'
-                                                label={t(LANGUAGE.NEW_PASSWORD)}
-                                                disabled={loading.submit}
-                                            />
-                                            <Input
-                                                name='re-password'
-                                                form={form}
-                                                type='password'
-                                                label={t(LANGUAGE.RE_PASSWORD)}
-                                                disabled={loading.submit}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            <div className='rounded-xl bg-white py-2 shadow-lg dark:bg-slate-800 sm:py-6 lg:py-8'>
+                <div className='mx-auto w-full max-w-lg'>
+                    <FormWrap
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        renderButton={
                             <SubmitWrap>
                                 <Button color='blue' type='submit' disabled={loading.submit}>
                                     {t(LANGUAGE.UPDATE)}
@@ -117,10 +81,41 @@ const ChangePassword = () => {
                                     {t(LANGUAGE.CANCEL)}
                                 </Button>
                             </SubmitWrap>
-                        </div>
-                    </div>
+                        }
+                    >
+                        {userProfile && !isHasPassword && (
+                            <div className='mx-2 flex select-none items-center gap-2 rounded-md bg-yellow-500 p-3 text-white'>
+                                <ExclamationTriangleIcon className='h-6' />
+                                <p className='font-normal'>{t(LANGUAGE.ACCOUNT_NOT_HAVE_PASSWORD)}</p>
+                            </div>
+                        )}
+
+                        {isHasPassword && (
+                            <Input
+                                name='old-password'
+                                form={form}
+                                type='password'
+                                label={t(LANGUAGE.OLD_PASSWORD)}
+                                disabled={loading.submit}
+                            />
+                        )}
+                        <Input
+                            name='new-password'
+                            form={form}
+                            type='password'
+                            label={t(LANGUAGE.NEW_PASSWORD)}
+                            disabled={loading.submit}
+                        />
+                        <Input
+                            name='re-password'
+                            form={form}
+                            type='password'
+                            label={t(LANGUAGE.RE_PASSWORD)}
+                            disabled={loading.submit}
+                        />
+                    </FormWrap>
                 </div>
-            </form>
+            </div>
         </Transaction>
     )
 }

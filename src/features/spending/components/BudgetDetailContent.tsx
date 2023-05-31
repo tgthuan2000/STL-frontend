@@ -87,8 +87,7 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
                                 renderAmount={(item) => (
                                     <Atom.Amount
                                         amount={get(item, 'amount')}
-                                        suffix={get(item, 'suffix')}
-                                        className='text-base !font-normal'
+                                        suffix={<Atom.Suffix suffix={get(item, 'suffix')} />}
                                     />
                                 )}
                                 renderTitle={(item) => get(item, 'title')}

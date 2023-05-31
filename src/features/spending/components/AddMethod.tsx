@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import { AddMethodQueryData, IAddMethodForm } from '~/@types/spending'
-import { Button, CheckName, SlideFormWrap, SubmitWrap } from '~/components'
+import { Button, CheckName, FormWrap, SubmitWrap } from '~/components'
 import { Checkbox, Input } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { useCache, useCheck, useLoading, useSlideOver } from '~/context'
@@ -142,9 +142,9 @@ const AddMethod = () => {
     }, [watchName])
 
     return (
-        <SlideFormWrap
+        <FormWrap
             onSubmit={form.handleSubmit(onsubmit)}
-            buttonZone={
+            renderButton={
                 <SubmitWrap>
                     <Button color='cyan' type='submit' disabled={loading.submit}>
                         {t(LANGUAGE.CREATE)}
@@ -171,7 +171,7 @@ const AddMethod = () => {
                     getOptionLabel={(item) => item?.name}
                 />
             )}
-        </SlideFormWrap>
+        </FormWrap>
     )
 }
 
