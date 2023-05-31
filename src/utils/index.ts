@@ -2,6 +2,7 @@ import { find, flatMapDeep, isEmpty } from 'lodash'
 import moment from 'moment'
 import { localStorageValue } from '~/@types/hook'
 import { OptionMode } from '~/@types/utils'
+import { DATE_FORMAT } from '~/constant'
 import { LOCAL_STORAGE_KEY } from '~/constant/localStorage'
 import { KIND_SPENDING } from '~/constant/spending'
 
@@ -39,7 +40,7 @@ const initialMonths = () => {
             months = Array.from(Array(moment().daysInMonth())).reduce((result, item, index) => {
                 const month = moment()
                     .date(index + 1)
-                    .format('YYYY-MM-DD')
+                    .format(DATE_FORMAT.D_DATE)
                 result[month] = []
 
                 return result

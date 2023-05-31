@@ -15,6 +15,8 @@ import { colors } from '~/constant/template'
 import LANGUAGE from '~/i18n/language/key'
 import { getBudgetProgressColorRevert } from '~/utils'
 import { LongBudgetDetail, LongBudgetDetailItem } from './useLongBudgetDetail'
+import { DATE_FORMAT } from '~/constant'
+import { Charts } from '~/@types/components'
 
 const { text, bg } = colors
 
@@ -34,7 +36,7 @@ const useLongBudgetChart = (data: LongBudgetDetail | undefined) => {
 
         const amounts = sumBy(data.items, ({ amount }) => amount)
         const percent = (amounts * 100) / data.amount
-        const group = groupBy(data.items, (item) => item.method._id)
+        const group = groupBy(structuredClone(data.items), (item) => item.method._id)
 
         const { notes, items } = Object.keys(group).reduce<{ items: LongBudgetDetailItem[]; notes: Note[] }>(
             (result, key, index) => {
@@ -135,7 +137,18 @@ const useLongBudgetChart = (data: LongBudgetDetail | undefined) => {
             return { daily: [], total: [] }
         }
 
-        const group = groupBy(structuredClone(data.items), (item) => item._createdAt.split('T')[0])
+        const group = groupBy(structuredClone(data.items), (item) => moment(item._createdAt).format(DATE_FORMAT.D_DATE))
+        const result = Object.keys(group).reduce<Charts>(
+            (result, key, index) => {
+                const amount = group[key]?.reduce((acc, item) => acc + item.amount, 0) ?? 0
+
+                result.daily.push({ x: key, y: amount })
+                result.total.push({ x: key, y: (result.total[index - 1]?.y ?? 0) + amount })
+
+                return result
+            },
+            { daily: [], total: [] }
+        )
 
         console.log(group)
 

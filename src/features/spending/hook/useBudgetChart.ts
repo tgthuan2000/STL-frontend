@@ -8,11 +8,8 @@ import { useTranslation } from 'react-i18next'
 import LANGUAGE from '~/i18n/language/key'
 import { getBudgetProgressColor, getMonths } from '~/utils'
 import { BudgetCategoryDetail, BudgetMethodDetail } from './useBudgetDetail'
-
-interface Charts {
-    daily: { x: string; y: number }[]
-    total: { x: string; y: number }[]
-}
+import { DATE_FORMAT } from '~/constant'
+import { Charts } from '~/@types/components'
 
 const useBudgetChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefined) => {
     const { t } = useTranslation()
@@ -134,7 +131,7 @@ const useBudgetChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefi
             return { daily: [], total: [] }
         }
 
-        const group = groupBy(structuredClone(data.spending), (item) => item.date.split('T')[0])
+        const group = groupBy(structuredClone(data.spending), (item) => moment(item.date).format(DATE_FORMAT.D_DATE))
         const result = Object.keys(merge(getMonths(), group)).reduce<Charts>(
             (result, key, index) => {
                 const amount = group[key]?.reduce((acc, item) => acc + item.amount, 0) ?? 0

@@ -119,7 +119,9 @@ const Chart: React.FC<Props> = (props) => {
                 },
             },
             xaxis: {
-                labels: { formatter: (date) => moment(date).format('DD') },
+                labels: {
+                    formatter: (date) => moment(date, DATE_FORMAT.D_DATE).format('DD'),
+                },
                 axisTicks: { show: false },
                 axisBorder: { show: false },
                 tooltip: {

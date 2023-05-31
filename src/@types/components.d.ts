@@ -531,3 +531,8 @@ export interface RecommendOption {
     id: string
     name: string
 }
+
+export interface Charts {
+    daily: { x: string; y: number }[]
+    total: { x: string; y: number }[]
+}
