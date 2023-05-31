@@ -15,7 +15,7 @@ interface Props {
     renderProgress: (item: any, index: number) => React.ReactNode
 }
 
-const BudgetList: React.FC<Props> = (props) => {
+const BudgetProgressList: React.FC<Props> = (props) => {
     const {
         data,
         loading,
@@ -70,4 +70,4 @@ const BudgetList: React.FC<Props> = (props) => {
     )
 }
 
-export default BudgetList
+export default BudgetProgressList

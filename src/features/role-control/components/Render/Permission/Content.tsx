@@ -81,9 +81,7 @@ const Content: React.FC<ContentProps> = (props) => {
         <form onSubmit={form.handleSubmit(onSubmit)} className='flex h-full flex-col gap-2'>
             <div className='flex flex-1 flex-col gap-4 px-6 pb-6 pt-4'>
                 <Input form={form} type='text' name='_id' label='ID' disabled />
-
                 <Input form={form} type='text' name='name' label={t(LANGUAGE.NAME)} />
-
                 <TextArea form={form} name='description' label={t(LANGUAGE.SHORT_DESCRIPTION)} />
             </div>
             <div className='flex justify-end gap-2 px-6 pb-6 pt-4'>

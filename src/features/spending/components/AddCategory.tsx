@@ -8,7 +8,7 @@ import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import { ParamsTypeUseQuery, QueryTypeUseQuery, TagsTypeUseQuery } from '~/@types/hook'
 import { AddCategoryQueryData, IAddCategoryForm } from '~/@types/spending'
-import { Button, CheckName, SlideFormWrap, SubmitWrap } from '~/components'
+import { Button, CheckName, FormWrap, SubmitWrap } from '~/components'
 import { Checkbox, Input, Selection } from '~/components/_base'
 import { TAGS } from '~/constant'
 import { KIND_SPENDING } from '~/constant/spending'
@@ -199,9 +199,9 @@ const AddCategory = () => {
     }, [watchName, watchKind, categorySpending.data])
 
     return (
-        <SlideFormWrap
+        <FormWrap
             onSubmit={form.handleSubmit(onsubmit)}
-            buttonZone={
+            renderButton={
                 <SubmitWrap>
                     <Button color='cyan' type='submit' disabled={loading.submit}>
                         {t(LANGUAGE.CREATE)}
@@ -237,7 +237,7 @@ const AddCategory = () => {
                     getOptionLabel={(item) => item?.name}
                 />
             )}
-        </SlideFormWrap>
+        </FormWrap>
     )
 }
 

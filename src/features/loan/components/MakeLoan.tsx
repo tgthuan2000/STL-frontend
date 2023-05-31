@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { IMakeLoanForm, QueryDataMakeLoan } from '~/@types/loan'
-import { Button, SlideFormWrap, SubmitWrap } from '~/components'
+import { Button, FormWrap, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, LazySearchSelect, TextArea } from '~/components/_base'
 import useLazySearchSelect from '~/components/_base/LazySearchSelect/hook/useLazySearchSelect'
 import UserDeleteButton from '~/components/_base/LazySearchSelect/UserDeleteButton'
@@ -150,9 +150,9 @@ const MakeLoan = () => {
     }
 
     return (
-        <SlideFormWrap
+        <FormWrap
             onSubmit={form.handleSubmit(onsubmit)}
-            buttonZone={
+            renderButton={
                 <SubmitWrap>
                     <Button color='prussianBlue' type='submit' disabled={loading.submit}>
                         {t(LANGUAGE.CREATE)}
@@ -215,7 +215,7 @@ const MakeLoan = () => {
                 )}
             </UserList>
             <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
-        </SlideFormWrap>
+        </FormWrap>
     )
 }
 

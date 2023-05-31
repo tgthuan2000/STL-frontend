@@ -18,7 +18,7 @@ const WatchCache = () => {
         <div className='fixed bottom-0 right-1 z-30 w-96 overflow-hidden rounded-t-md border dark:border-slate-700'>
             <div
                 onClick={() => setShow(!show)}
-                className='flex w-full cursor-pointer items-center justify-between bg-gray-300 p-2 text-gray-700 dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-900'
+                className='flex w-full cursor-pointer items-center justify-between bg-gray-300 p-2 text-gray-700 hover:bg-gray-400 dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-900'
             >
                 <h1 className='text-base font-medium'>{t(LANGUAGE.CACHE_MANAGEMENT)}</h1>
             </div>

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Button, Chip, SlideFormWrap, SubmitWrap, Tabs } from '~/components'
+import { Button, Chip, FormWrap, SubmitWrap, Tabs } from '~/components'
 import { DatePicker } from '~/components/_base'
 import { useLoading, useSlideOver } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
@@ -12,9 +12,9 @@ const MakeBudget = () => {
     const { form, onsubmit, handleChangeDate, handlePreviousMonth, tabOptions } = useBudget()
 
     return (
-        <SlideFormWrap
+        <FormWrap
             onSubmit={form.handleSubmit(onsubmit)}
-            buttonZone={
+            renderButton={
                 <SubmitWrap>
                     <Button color='yellow' type='submit' disabled={loading.submit}>
                         {t(LANGUAGE.SAVE)}
@@ -43,7 +43,7 @@ const MakeBudget = () => {
                 </Chip>
             </div>
             <Tabs options={tabOptions} />
-        </SlideFormWrap>
+        </FormWrap>
     )
 }
 

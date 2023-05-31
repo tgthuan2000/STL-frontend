@@ -1,21 +1,19 @@
 import { ArrowSmallLeftIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { yupResolver } from '@hookform/resolvers/yup'
 import clsx from 'clsx'
-import { isEmpty, isNil } from 'lodash'
+import { isEmpty } from 'lodash'
 import moment from 'moment'
-import numeral from 'numeral'
 import React, { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 import { IDetailSpendingForm, TransactionDetailFormProps } from '~/@types/spending'
-import { Button, SubmitWrap } from '~/components'
+import { Button, FormWrap, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
-import { service } from '~/services'
 
 const useSchema = () => {
     const { t } = useTranslation()
@@ -77,6 +75,8 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
         resolver: yupResolver(schema),
     })
 
+    // const surplus = form.watch('surplus')
+
     return (
         <div>
             <div className='mb-4 flex items-center justify-between'>
@@ -108,148 +108,135 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
             </div>
             <div className='rounded-xl bg-white py-2 shadow-lg dark:bg-slate-800 sm:py-6 lg:py-8'>
                 <div className='mx-auto w-full max-w-lg'>
-                    <form
+                    <FormWrap
                         onSubmit={!isEmpty(categorySpending.data) ? form.handleSubmit(onsubmit) : undefined}
-                        className='flex h-full flex-col'
+                        renderButton={
+                            !isEmpty(categorySpending.data) && (
+                                <SubmitWrap>
+                                    <Button color='blue' type='submit' disabled={loading.submit}>
+                                        {t(LANGUAGE.UPDATE)}
+                                    </Button>
+                                    <Button
+                                        color='outline'
+                                        type='button'
+                                        onClick={() => {
+                                            navigate(-1)
+                                        }}
+                                    >
+                                        {t(LANGUAGE.CANCEL)}
+                                    </Button>
+                                </SubmitWrap>
+                            )
+                        }
                     >
-                        <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
-                            <div className='flex flex-1 flex-col justify-between'>
-                                <div className='divide-y divide-gray-200 px-4 sm:px-6'>
-                                    <div className='space-y-6 pt-3 pb-5'>
-                                        {!isNil(form.watch('surplus')) &&
-                                            (() => {
-                                                const surplus = form.watch('surplus')
-                                                const calc =
-                                                    ([
-                                                        KIND_SPENDING.RECEIVE,
-                                                        KIND_SPENDING.TRANSFER_TO,
-                                                        KIND_SPENDING.CREDIT,
-                                                    ].includes(transaction.kindSpending.key)
-                                                        ? 1
-                                                        : -1) *
-                                                        Number(form.watch('amount')) +
-                                                    surplus
-                                                return (
-                                                    <div className='flex justify-between'>
-                                                        <h4 className='inline-block font-medium text-gray-900 dark:text-slate-200'>
-                                                            {t(LANGUAGE.SURPLUS_AT_TIME)}
-                                                        </h4>
-                                                        <div className='flex items-center space-x-2 font-normal'>
-                                                            <span className={clsx(...service.getColorPrize(calc))}>
-                                                                {numeral(calc).format()}
-                                                            </span>
-                                                            <span className='inline-block h-full w-px border border-gray-400 dark:border-slate-700' />
-                                                            <span className={clsx(...service.getColorPrize(surplus))}>
-                                                                {numeral(surplus).format()}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            })()}
-
-                                        <Input name='amount' form={form} type='number' label={t(LANGUAGE.AMOUNT)} />
-
-                                        {!isEmpty(categorySpending.data) && (
-                                            <AutoComplete
-                                                name='categorySpending'
-                                                form={form}
-                                                data={categorySpending.data}
-                                                label={t(LANGUAGE.CATEGORY)}
-                                                loading={categorySpending.loading}
-                                                addMore={handleAddMoreCategorySpending}
-                                                onReload={
-                                                    isEmpty(categorySpending.data)
-                                                        ? undefined
-                                                        : () => handleReloadDataCategory('categorySpending')
-                                                }
-                                            />
-                                        )}
-
-                                        {transaction.methodSpending && (
-                                            <div
-                                                className={clsx(
-                                                    'flex gap-y-6',
-                                                    transaction.kindSpending.key === KIND_SPENDING.TRANSFER_TO
-                                                        ? 'flex-col-reverse'
-                                                        : 'flex-col'
-                                                )}
-                                            >
-                                                <AutoComplete
-                                                    name='methodSpending'
-                                                    form={form}
-                                                    data={methodSpending.data}
-                                                    label={
-                                                        transaction.methodReference
-                                                            ? transaction.kindSpending.key ===
-                                                              KIND_SPENDING.TRANSFER_FROM
-                                                                ? t(LANGUAGE.FROM_METHOD_SPENDING)
-                                                                : t(LANGUAGE.TO_METHOD_SPENDING)
-                                                            : t(LANGUAGE.METHOD_SPENDING)
-                                                    }
-                                                    loading={methodSpending.loading}
-                                                    addMore={handleAddMoreMethodSpending}
-                                                    onReload={
-                                                        isEmpty(methodSpending.data)
-                                                            ? undefined
-                                                            : () => handleReloadData('methodSpending')
-                                                    }
-                                                    onChange={(item) => {
-                                                        if (transaction.methodSpending._id !== item._id) {
-                                                            form.setValue('surplus', item.surplus)
-                                                        } else {
-                                                            form.setValue('surplus', transaction.surplus)
-                                                        }
-                                                    }}
-                                                />
-
-                                                {transaction.methodReference && (
-                                                    <AutoComplete
-                                                        name='methodReference'
-                                                        form={form}
-                                                        data={methodSpending.data}
-                                                        label={
-                                                            transaction.kindSpending.key === KIND_SPENDING.TRANSFER_FROM
-                                                                ? t(LANGUAGE.TO_METHOD_SPENDING)
-                                                                : t(LANGUAGE.FROM_METHOD_SPENDING)
-                                                        }
-                                                        loading={methodSpending.loading}
-                                                        addMore={handleAddMoreMethodSpending}
-                                                        onReload={
-                                                            isEmpty(methodSpending.data)
-                                                                ? undefined
-                                                                : () => handleReloadData('methodSpending')
-                                                        }
-                                                    />
-                                                )}
-                                            </div>
-                                        )}
-
-                                        <DatePicker name='date' form={form} label={t(LANGUAGE.DATE)} />
-
-                                        <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
-
-                                        <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
+                        {/* {!isNil(surplus) &&
+                            (() => {
+                                const calc =
+                                    ([KIND_SPENDING.RECEIVE, KIND_SPENDING.TRANSFER_TO, KIND_SPENDING.CREDIT].includes(
+                                        transaction.kindSpending.key
+                                    )
+                                        ? 1
+                                        : -1) *
+                                        Number(form.watch('amount')) +
+                                    surplus
+                                return (
+                                    <div className='flex justify-between'>
+                                        <h4 className='inline-block font-medium text-gray-900 dark:text-slate-200'>
+                                            {t(LANGUAGE.SURPLUS_AT_TIME)}
+                                        </h4>
+                                        <div className='flex items-center space-x-2 font-normal'>
+                                            <span className={clsx(...service.getColorPrize(calc))}>
+                                                {numeral(calc).format()}
+                                            </span>
+                                            <span className='inline-block h-full w-px border border-gray-400 dark:border-slate-700' />
+                                            <span className={clsx(...service.getColorPrize(surplus))}>
+                                                {numeral(surplus).format()}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
+                                )
+                            })()} */}
+
+                        <Input name='amount' form={form} type='number' label={t(LANGUAGE.AMOUNT)} />
+
                         {!isEmpty(categorySpending.data) && (
-                            <SubmitWrap>
-                                <Button color='blue' type='submit' disabled={loading.submit}>
-                                    {t(LANGUAGE.UPDATE)}
-                                </Button>
-                                <Button
-                                    color='outline'
-                                    type='button'
-                                    onClick={() => {
-                                        navigate(-1)
-                                    }}
-                                >
-                                    {t(LANGUAGE.CANCEL)}
-                                </Button>
-                            </SubmitWrap>
+                            <AutoComplete
+                                name='categorySpending'
+                                form={form}
+                                data={categorySpending.data}
+                                label={t(LANGUAGE.CATEGORY)}
+                                loading={categorySpending.loading}
+                                addMore={handleAddMoreCategorySpending}
+                                onReload={
+                                    isEmpty(categorySpending.data)
+                                        ? undefined
+                                        : () => handleReloadDataCategory('categorySpending')
+                                }
+                            />
                         )}
-                    </form>
+
+                        {transaction.methodSpending && (
+                            <div
+                                className={clsx(
+                                    'flex gap-y-6',
+                                    transaction.kindSpending.key === KIND_SPENDING.TRANSFER_TO
+                                        ? 'flex-col-reverse'
+                                        : 'flex-col'
+                                )}
+                            >
+                                <AutoComplete
+                                    name='methodSpending'
+                                    form={form}
+                                    data={methodSpending.data}
+                                    label={
+                                        transaction.methodReference
+                                            ? transaction.kindSpending.key === KIND_SPENDING.TRANSFER_FROM
+                                                ? t(LANGUAGE.FROM_METHOD_SPENDING)
+                                                : t(LANGUAGE.TO_METHOD_SPENDING)
+                                            : t(LANGUAGE.METHOD_SPENDING)
+                                    }
+                                    loading={methodSpending.loading}
+                                    addMore={handleAddMoreMethodSpending}
+                                    onReload={
+                                        isEmpty(methodSpending.data)
+                                            ? undefined
+                                            : () => handleReloadData('methodSpending')
+                                    }
+                                    onChange={(item) => {
+                                        if (transaction.methodSpending._id !== item._id) {
+                                            form.setValue('surplus', item.surplus)
+                                        } else {
+                                            form.setValue('surplus', transaction.surplus)
+                                        }
+                                    }}
+                                />
+
+                                {transaction.methodReference && (
+                                    <AutoComplete
+                                        name='methodReference'
+                                        form={form}
+                                        data={methodSpending.data}
+                                        label={
+                                            transaction.kindSpending.key === KIND_SPENDING.TRANSFER_FROM
+                                                ? t(LANGUAGE.TO_METHOD_SPENDING)
+                                                : t(LANGUAGE.FROM_METHOD_SPENDING)
+                                        }
+                                        loading={methodSpending.loading}
+                                        addMore={handleAddMoreMethodSpending}
+                                        onReload={
+                                            isEmpty(methodSpending.data)
+                                                ? undefined
+                                                : () => handleReloadData('methodSpending')
+                                        }
+                                    />
+                                )}
+                            </div>
+                        )}
+
+                        <DatePicker name='date' form={form} label={t(LANGUAGE.DATE)} />
+                        <TextArea name='description' form={form} label={t(LANGUAGE.NOTE)} />
+                        <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
+                    </FormWrap>
                 </div>
             </div>
         </div>

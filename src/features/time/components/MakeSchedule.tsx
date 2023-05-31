@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import { Loop } from '~/@types/time'
-import { Button, SubmitWrap } from '~/components'
+import { Button, FormWrap, SubmitWrap } from '~/components'
 import { DatePicker, Input, Radio, RichText, UploadImage } from '~/components/_base'
 import { useCheck, useLoading, useSlideOver } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
@@ -150,64 +150,54 @@ const MakeSchedule = () => {
     const setDefaultLoopValue = useCallback((value: Loop) => form.setValue('loop', value), [])
 
     return (
-        <form onSubmit={form.handleSubmit(onsubmit)} className='flex h-full flex-col'>
-            <div className='h-0 flex-1 overflow-y-auto overflow-x-hidden'>
-                <div className='flex flex-1 flex-col justify-between'>
-                    <div className='px-4 sm:px-6'>
-                        <div className='space-y-6 pt-3 pb-5'>
-                            <Input name='title' form={form} label={t(LANGUAGE.TITLE)} />
-
-                            <RichText
-                                label={t(LANGUAGE.SHORT_DESCRIPTION)}
-                                form={form}
-                                name='description'
-                                placeholder={t(LANGUAGE.PLACEHOLDER_SHORT_DESCRIPTION)}
-                                className='xs'
-                            />
-
-                            <DatePicker
-                                form={form}
-                                name='startDate'
-                                label={t(LANGUAGE.START_DATE)}
-                                placeholderText={t(LANGUAGE.PLACEHOLDER_CHOOSE_TIME)}
-                                format='DATE_TIME'
-                                disabledClear={!startDate}
-                                startDate={startDate}
-                                endDate={endDate}
-                                selectsStart
-                            />
-
-                            <DatePicker
-                                form={form}
-                                name='endDate'
-                                label={t(LANGUAGE.END_DATE)}
-                                placeholderText={t(LANGUAGE.PLACEHOLDER_CHOOSE_TIME)}
-                                format='DATE_TIME'
-                                disabledClear={!endDate}
-                                startDate={startDate}
-                                endDate={endDate}
-                                selectsEnd
-                                minDate={startDate}
-                            />
-
-                            <GetLoop onDefaultValue={setDefaultLoopValue}>{renderLoop}</GetLoop>
-
-                            <ChooseColor form={form} bgColorName='bgColor' textColorName='textColor' />
-
-                            <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <SubmitWrap>
-                <Button color='cyan' type='submit' disabled={loading.submit}>
-                    {t(LANGUAGE.SAVE)}
-                </Button>
-                <Button color='outline' type='button' onClick={close}>
-                    {t(LANGUAGE.CANCEL)}
-                </Button>
-            </SubmitWrap>
-        </form>
+        <FormWrap
+            onSubmit={form.handleSubmit(onsubmit)}
+            renderButton={
+                <SubmitWrap>
+                    <Button color='cyan' type='submit' disabled={loading.submit}>
+                        {t(LANGUAGE.SAVE)}
+                    </Button>
+                    <Button color='outline' type='button' onClick={close}>
+                        {t(LANGUAGE.CANCEL)}
+                    </Button>
+                </SubmitWrap>
+            }
+        >
+            <Input name='title' form={form} label={t(LANGUAGE.TITLE)} />
+            <RichText
+                label={t(LANGUAGE.SHORT_DESCRIPTION)}
+                form={form}
+                name='description'
+                placeholder={t(LANGUAGE.PLACEHOLDER_SHORT_DESCRIPTION)}
+                className='xs'
+            />
+            <DatePicker
+                form={form}
+                name='startDate'
+                label={t(LANGUAGE.START_DATE)}
+                placeholderText={t(LANGUAGE.PLACEHOLDER_CHOOSE_TIME)}
+                format='DATE_TIME'
+                disabledClear={!startDate}
+                startDate={startDate}
+                endDate={endDate}
+                selectsStart
+            />
+            <DatePicker
+                form={form}
+                name='endDate'
+                label={t(LANGUAGE.END_DATE)}
+                placeholderText={t(LANGUAGE.PLACEHOLDER_CHOOSE_TIME)}
+                format='DATE_TIME'
+                disabledClear={!endDate}
+                startDate={startDate}
+                endDate={endDate}
+                selectsEnd
+                minDate={startDate}
+            />
+            <GetLoop onDefaultValue={setDefaultLoopValue}>{renderLoop}</GetLoop>
+            <ChooseColor form={form} bgColorName='bgColor' textColorName='textColor' />
+            <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
+        </FormWrap>
     )
 }
 

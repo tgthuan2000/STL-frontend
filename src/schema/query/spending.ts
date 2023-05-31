@@ -412,3 +412,22 @@ export const GET_LONG_BUDGET = groq`
         "amounts": *[_type == "longBudgetItem" && ^._id == budget._ref].amount
     }
 `
+
+export const GET_LONG_BUDGET_DETAIL = groq`
+    *[_type == 'longBudget' && user._ref == $userId && _id == $budgetId][0] {
+            _id,
+            title,
+            amount,
+            duration,
+            "items": *[_type == "longBudgetItem" && ^._id == budget._ref] | order(_createdAt desc) {
+                _id,
+                _createdAt,
+                amount,
+                description,
+                method-> {
+                    _id,
+                    name,
+                },
+            }
+        }
+`

@@ -2,7 +2,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { ICreateMemberForm } from '~/@types/loan'
-import { Button, SlideFormWrap, SubmitWrap } from '~/components'
+import { Button, FormWrap, SubmitWrap } from '~/components'
 import { Input, UploadImage } from '~/components/_base'
 import { useCache, useCheck, useLoading, useSlideOver } from '~/context'
 import { useServiceQuery } from '~/hook'
@@ -73,9 +73,9 @@ const CreateMember = () => {
     }
 
     return (
-        <SlideFormWrap
+        <FormWrap
             onSubmit={form.handleSubmit(onsubmit)}
-            buttonZone={
+            renderButton={
                 <SubmitWrap>
                     <Button color='green' type='submit' disabled={loading.submit}>
                         {t(LANGUAGE.CREATE)}
@@ -96,7 +96,7 @@ const CreateMember = () => {
                 label={t(LANGUAGE.FULL_NAME)}
             />
             <UploadImage name='image' form={form} label={t(LANGUAGE.IMAGE_OPTION)} />
-        </SlideFormWrap>
+        </FormWrap>
     )
 }
 

@@ -1,4 +1,4 @@
-import { ChartPieIcon, CurrencyDollarIcon, ReceiptPercentIcon } from '@heroicons/react/24/outline'
+import { CalendarDaysIcon, ChartPieIcon, CurrencyDollarIcon, ReceiptPercentIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { groupBy, merge, sumBy } from 'lodash'
 import moment from 'moment'
@@ -14,17 +14,54 @@ interface Charts {
     total: { x: string; y: number }[]
 }
 
-const useChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefined) => {
+const useBudgetChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefined) => {
     const { t } = useTranslation()
 
-    const { percent, amounts, progress, annotations } = useMemo(() => {
+    const { percent, amounts, progress } = useMemo(() => {
         if (!data?.spending) {
-            return { percent: 0, amounts: 0, progress: [], annotations: {} }
+            return { percent: 0, amounts: 0, progress: [] }
         }
 
         const amounts = sumBy(data.spending, ({ amount }) => amount)
         const percent = Array.isArray(data.spending) ? (amounts * 100) / data.amount : 0
-        const annotations: ApexAnnotations = {
+
+        return {
+            percent,
+            amounts,
+            progress: [{ ...data, ...getBudgetProgressColor(percent), percent }],
+        }
+    }, [data?.spending])
+
+    const annotations = useMemo(() => {
+        if (!data?.amount) {
+            return { avg: {}, total: {} }
+        }
+
+        const avgAmount = Math.round(data.amount / moment().daysInMonth())
+
+        const avgAnnotations: ApexAnnotations = {
+            yaxis: [
+                {
+                    y: avgAmount,
+                    borderColor: 'rgb(249, 115, 22)',
+                    borderWidth: 2,
+                    strokeDashArray: 0,
+                    label: {
+                        borderColor: 'transparent',
+                        style: {
+                            background: 'rgb(249, 115, 22)',
+                            color: '#fff',
+                            cssClass: 'font-normal text-xs',
+                        },
+                        text: numeral(avgAmount).format(),
+                        position: 'left',
+                        textAnchor: 'start',
+                    },
+                },
+            ],
+        }
+
+        const totalAnnotations: ApexAnnotations = {
             yaxis: [
                 {
                     y: data.amount,
@@ -39,20 +76,22 @@ const useChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefined) =
                             cssClass: 'font-normal text-xs',
                         },
                         text: numeral(data.amount).format(),
-                        position: 'start',
+                        position: 'left',
                         textAnchor: 'start',
                     },
                 },
             ],
         }
 
-        return { percent, amounts, progress: [{ ...data, ...getBudgetProgressColor(percent), percent }], annotations }
-    }, [data?.spending])
+        return { avg: avgAnnotations, total: totalAnnotations }
+    }, [data?.amount])
 
     const statistic = useMemo(() => {
         if (!data?.spending) {
             return []
         }
+
+        const remainingDays = moment().endOf('month').diff(moment(), 'days')
 
         return [
             {
@@ -72,12 +111,20 @@ const useChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefined) =
                 Icon: CurrencyDollarIcon,
             },
             {
-                id: 'AVERAGE_AMOUNT_REMAINING_FOR_MONTH',
-                title: t(LANGUAGE.AVERAGE_AMOUNT_REMAINING_FOR_MONTH),
+                id: 'AVERAGE_AMOUNT_REMAINING',
+                title: t(LANGUAGE.AVERAGE_AMOUNT_REMAINING),
                 className: 'text-yellow-500 dark:border-yellow-500',
-                amount: ((data.amount ?? 0) - (amounts ?? 0)) / moment().endOf('month').diff(moment(), 'days'),
-                suffix: undefined,
+                amount: ((data.amount ?? 0) - (amounts ?? 0)) / (remainingDays || 1),
+                suffix: '/' + t(LANGUAGE.L_DAYS),
                 Icon: ChartPieIcon,
+            },
+            {
+                id: 'REMAINING',
+                title: t(LANGUAGE.REMAINING),
+                className: 'text-gray-500 dark:text-slate-300 dark:border-slate-300',
+                amount: remainingDays,
+                suffix: ' ' + t(LANGUAGE.L_DAYS),
+                Icon: CalendarDaysIcon,
             },
         ]
     }, [data?.spending, t])
@@ -87,10 +134,10 @@ const useChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefined) =
             return { daily: [], total: [] }
         }
 
-        const grouped = groupBy(structuredClone(data.spending), (item) => item.date.split('T')[0])
-        const result = Object.keys(merge(getMonths(), grouped)).reduce<Charts>(
+        const group = groupBy(structuredClone(data.spending), (item) => item.date.split('T')[0])
+        const result = Object.keys(merge(getMonths(), group)).reduce<Charts>(
             (result, key, index) => {
-                const amount = grouped[key]?.reduce((acc, item) => acc + item.amount, 0) ?? 0
+                const amount = group[key]?.reduce((acc, item) => acc + item.amount, 0) ?? 0
 
                 result.daily.push({ x: key, y: amount })
                 result.total.push({ x: key, y: (result.total[index - 1]?.y ?? 0) + amount })
@@ -106,4 +153,4 @@ const useChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefined) =
     return { amounts, progress, annotations, charts, statistic }
 }
 
-export default useChart
+export default useBudgetChart

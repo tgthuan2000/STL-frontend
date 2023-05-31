@@ -11,7 +11,7 @@ const Category: React.FC<BudgetProps> = (props) => {
     const { data, loading } = props
 
     return (
-        <Template.BudgetList
+        <Template.BudgetProgressList
             data={data?.CategorySpending}
             loading={loading && isEmpty(data)}
             fallback={<EmptyData />}
