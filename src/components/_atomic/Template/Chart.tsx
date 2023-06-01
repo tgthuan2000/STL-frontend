@@ -82,10 +82,10 @@ const getOptionsByType = (type: ChartType): ApexCharts.ApexOptions => {
                     width: 3,
                 },
                 markers: {
-                    size: 5,
+                    size: 4,
                     strokeWidth: 0,
                     hover: {
-                        sizeOffset: 3,
+                        sizeOffset: 2,
                     },
                 },
                 grid: {
@@ -124,6 +124,7 @@ const Chart: React.FC<Props> = (props) => {
                 },
             },
             xaxis: {
+                type: 'category',
                 labels: {
                     formatter: (date) => moment(date, DATE_FORMAT.D_DATE).format('DD'),
                 },

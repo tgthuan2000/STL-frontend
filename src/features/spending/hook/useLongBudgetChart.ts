@@ -23,6 +23,8 @@ interface Note {
     id: string
     methodName: string
     bgColor: string
+    percent: number
+    amount: number
 }
 
 const useLongBudgetChart = (data: LongBudgetDetail | undefined) => {
@@ -42,10 +44,24 @@ const useLongBudgetChart = (data: LongBudgetDetail | undefined) => {
                 const bgColor = bg[index % bg.length]
                 const _group = group[key]
 
-                result.items.push(
-                    ..._group.map((item) => ({ ...item, percent: (item.amount * 100) / data.amount, bgColor }))
+                const { items, note } = _group.reduce<{
+                    items: Array<LongBudgetDetailItem & { percent: number; bgColor: string }>
+                    note: { percent: number; amount: number }
+                }>(
+                    (result, item) => {
+                        const percent = (item.amount * 100) / data.amount
+
+                        result.items.push({ ...item, percent, bgColor })
+                        result.note.percent += percent
+                        result.note.amount += item.amount
+
+                        return result
+                    },
+                    { items: [], note: { percent: 0, amount: 0 } }
                 )
-                result.notes.push({ id: key, methodName: _group[0].method.name, bgColor })
+
+                result.items.push(...items)
+                result.notes.push({ id: key, methodName: _group[0].method.name, bgColor, ...note })
                 return result
             },
             { items: [], notes: [] }
@@ -154,7 +170,7 @@ const useLongBudgetChart = (data: LongBudgetDetail | undefined) => {
 
             return result
         }, [])
-
+        console.log(daily)
         return {
             daily,
             total: [],

@@ -1,5 +1,7 @@
 import Amount from './Amount'
 import BudgetListSkeleton from './BudgetListSkeleton'
+import CardIcon from './CardIcon'
+import CardInfoSkeleton from './CardInfoSkeleton'
 import ChartTool from './ChartTool'
 import Date from './Date'
 import Description from './Description'
@@ -7,8 +9,7 @@ import Dot from './Dot'
 import EmptyList from './EmptyList'
 import RecentListSkeleton from './RecentListSkeleton'
 import SimpleListSkeleton from './SimpleListSkeleton'
-import SlashTitle from './SlashTitle'
-import SmallStatisticListSkeleton from './SmallStatisticListSkeleton'
+import Content from './Content'
 import Square from './Square'
 import Suffix from './Suffix'
 import Title from './Title'
@@ -26,9 +27,10 @@ Atom.EmptyList = EmptyList
 Atom.SimpleListSkeleton = SimpleListSkeleton
 Atom.BudgetListSkeleton = BudgetListSkeleton
 Atom.RecentListSkeleton = RecentListSkeleton
-Atom.SmallStatisticListSkeleton = SmallStatisticListSkeleton
+Atom.CardInfoSkeleton = CardInfoSkeleton
+Atom.CardIcon = CardIcon
 Atom.ChartTitle = ChartTitle
-Atom.SlashTitle = SlashTitle
+Atom.Content = Content
 Atom.ChartTool = ChartTool
 Atom.Square = Square
 

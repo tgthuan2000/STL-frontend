@@ -76,21 +76,21 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
                         </AnimateWrap>
 
                         <AnimateWrap>
-                            <Template.SmallStatisticList
+                            <Template.CardInfo
                                 data={statistic}
                                 loading={loading}
                                 fallback={<Atom.EmptyList />}
-                                loadingFallback={<Atom.SmallStatisticListSkeleton elNumber={6} />}
+                                loadingFallback={<Atom.CardInfoSkeleton elNumber={6} />}
                                 getItemKey={(item) => get(item, 'id')}
                                 getClassName={(item) => get(item, 'className')}
-                                getIcon={(item) => get(item, 'Icon')}
-                                renderAmount={(item) => (
+                                renderIcon={(item) => <Atom.CardIcon Icon={get(item, 'Icon')} />}
+                                renderTitle={(item) => get(item, 'title')}
+                                renderSubTitle={(item) => (
                                     <Atom.Amount
                                         amount={get(item, 'amount')}
                                         suffix={<Atom.Suffix suffix={get(item, 'suffix')} />}
                                     />
                                 )}
-                                renderTitle={(item) => get(item, 'title')}
                             />
                         </AnimateWrap>
                     </Paper>
@@ -100,10 +100,10 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
                                 <Atom.ChartTitle
                                     title={t(LANGUAGE.TRANSACTION)}
                                     subTitle={
-                                        <Atom.SlashTitle
+                                        <Atom.Content
                                             hidden={!data?.amount}
                                             title={numeral(amounts).format()}
-                                            subTitle={numeral(data?.amount).format()}
+                                            subTitle={'/' + numeral(data?.amount).format()}
                                         />
                                     }
                                 />

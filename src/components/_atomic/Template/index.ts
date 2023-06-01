@@ -3,7 +3,7 @@ import Chart from './Chart'
 import ChartNote from './ChartNote'
 import RecentList from './RecentList'
 import SimpleList from './SimpleList'
-import SmallStatisticList from './SmallStatisticList'
+import CardInfo from './CardInfo'
 import TransactionChart from './TransactionChart'
 
 const Template = () => {}
@@ -11,7 +11,7 @@ const Template = () => {}
 Template.BudgetProgressList = BudgetProgressList
 Template.RecentList = RecentList
 Template.SimpleList = SimpleList
-Template.SmallStatisticList = SmallStatisticList
+Template.CardInfo = CardInfo
 Template.Chart = Chart
 Template.TransactionChart = TransactionChart
 Template.ChartNote = ChartNote

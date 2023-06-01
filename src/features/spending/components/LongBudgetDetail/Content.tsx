@@ -90,30 +90,36 @@ const Content: React.FC<Props> = (props) => {
                         </AnimateWrap>
 
                         <AnimateWrap className='mt-2 mb-4'>
-                            <Template.ChartNote
+                            <Template.CardInfo
                                 data={notes}
                                 loading={loading}
-                                fallback={<></>}
-                                loadingFallback={<></>}
+                                fallback={<Atom.EmptyList />}
+                                loadingFallback={<Atom.CardInfoSkeleton elNumber={6} />}
+                                className='mb-10'
                                 getItemKey={(item) => get(item, 'id')}
-                                renderNoteTitle={(item) => <Atom.Title title={get(item, 'methodName')} />}
-                                renderNoteSquare={(item) => (
-                                    <Atom.Square style={{ background: get(item, 'bgColor') }} />
+                                renderIcon={(item) => <Atom.Square style={{ background: get(item, 'bgColor') }} />}
+                                renderTitle={(item) => get(item, 'methodName')}
+                                renderSubTitle={(item) => (
+                                    <Atom.Content
+                                        title={numeral(get(item, 'amount', 0)).format()}
+                                        subTitle={numeral(get(item, 'percent', 0)).format('0.0') + '%'}
+                                        className='justify-between gap-x-2'
+                                    />
                                 )}
                             />
                         </AnimateWrap>
 
                         <AnimateWrap>
-                            <Template.SmallStatisticList
+                            <Template.CardInfo
                                 data={statistic}
                                 loading={loading}
                                 fallback={<Atom.EmptyList />}
-                                loadingFallback={<Atom.SmallStatisticListSkeleton elNumber={6} />}
+                                loadingFallback={<Atom.CardInfoSkeleton elNumber={6} />}
                                 getItemKey={(item) => get(item, 'id')}
                                 getClassName={(item) => get(item, 'className')}
-                                getIcon={(item) => get(item, 'Icon')}
-                                renderAmount={(item) => <CustomAmount data={item} />}
+                                renderIcon={(item) => <Atom.CardIcon Icon={get(item, 'Icon')} />}
                                 renderTitle={(item) => get(item, 'title')}
+                                renderSubTitle={(item) => <CustomAmount data={item} />}
                             />
                         </AnimateWrap>
                         <AnimateWrap className='mt-5'>
@@ -134,10 +140,10 @@ const Content: React.FC<Props> = (props) => {
                                 <Atom.ChartTitle
                                     title={t(LANGUAGE.TRANSACTION)}
                                     subTitle={
-                                        <Atom.SlashTitle
+                                        <Atom.Content
                                             hidden={!data?.amount}
                                             title={numeral(amounts).format()}
-                                            subTitle={numeral(data?.amount).format()}
+                                            subTitle={'/' + numeral(data?.amount).format()}
                                         />
                                     }
                                 />
