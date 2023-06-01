@@ -56,7 +56,7 @@ const useLongBudgetChart = (data: LongBudgetDetail | undefined) => {
             percent,
             amounts,
             notes,
-            progress: [{ ...data, items, color: 'text-purple-500', bgColor: 'rgb(168, 85, 247)', percent }],
+            progress: [{ ...data, items, color: 'text-pink-500', bgColor: 'rgb(236, 72, 153)', percent }],
         }
     }, [data?.items])
 

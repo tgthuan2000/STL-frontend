@@ -119,7 +119,7 @@ const Content: React.FC<Props> = (props) => {
                         <AnimateWrap className='mt-5'>
                             <Button
                                 type='button'
-                                color='indigo'
+                                color='pink'
                                 className='w-full'
                                 onClick={handleCreateTran}
                                 disabled={loading}
@@ -177,7 +177,7 @@ const Content: React.FC<Props> = (props) => {
                             renderDate={(item) => <Atom.Date date={get(item, '_createdAt')} fallback={<></>} />}
                             renderMethod={(item) => <Atom.Title title={get(item, 'method.name')} fallback={<></>} />}
                             renderAmount={(item) => (
-                                <Atom.Amount amount={get(item, 'amount')} className='text-green-500' />
+                                <Atom.Amount amount={get(item, 'amount')} className='text-pink-500' />
                             )}
                             renderDescription={(item) => <Atom.Description data={get(item, 'description')} />}
                         />

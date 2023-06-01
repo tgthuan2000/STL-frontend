@@ -180,7 +180,7 @@ const DetailTran: React.FC<Props> = (props) => {
                         {t(LANGUAGE.DELETE)}
                     </Button>
                 )}
-                <Button type='submit' color='indigo' disabled={loading.submit}>
+                <Button type='submit' color='pink' disabled={loading.submit}>
                     {t(isEditMode ? LANGUAGE.UPDATE : LANGUAGE.CREATE)}
                 </Button>
             </div>
