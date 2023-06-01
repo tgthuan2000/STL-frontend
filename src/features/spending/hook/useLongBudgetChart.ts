@@ -1,6 +1,5 @@
 import {
     CalendarDaysIcon,
-    CalendarIcon,
     ChartPieIcon,
     CurrencyDollarIcon,
     PowerIcon,
@@ -11,12 +10,12 @@ import { groupBy, sumBy } from 'lodash'
 import moment from 'moment'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { DataChart, Series } from '~/@types/components'
+import { DATE_FORMAT } from '~/constant'
 import { colors } from '~/constant/template'
 import LANGUAGE from '~/i18n/language/key'
 import { getBudgetProgressColorRevert } from '~/utils'
 import { LongBudgetDetail, LongBudgetDetailItem } from './useLongBudgetDetail'
-import { DATE_FORMAT } from '~/constant'
-import { Charts } from '~/@types/components'
 
 const { text, bg } = colors
 
@@ -29,7 +28,7 @@ interface Note {
 const useLongBudgetChart = (data: LongBudgetDetail | undefined) => {
     const { t } = useTranslation()
 
-    const { percent, amounts, progress, notes } = useMemo(() => {
+    const { percent, amounts, progress, notes, group } = useMemo(() => {
         if (!data?.items || !Array.isArray(data.items)) {
             return { percent: 0, amounts: 0, progress: [] }
         }
@@ -53,6 +52,7 @@ const useLongBudgetChart = (data: LongBudgetDetail | undefined) => {
         )
 
         return {
+            group,
             percent,
             amounts,
             notes,
@@ -133,27 +133,33 @@ const useLongBudgetChart = (data: LongBudgetDetail | undefined) => {
     }, [data?.items, t])
 
     const charts = useMemo(() => {
-        if (!data?.items) {
-            return { daily: [], total: [] }
+        if (!data?.items || !group) {
+            const defaultFnc = () => []
+            return { daily: defaultFnc, total: defaultFnc }
         }
 
-        const group = groupBy(structuredClone(data.items), (item) => moment(item._createdAt).format(DATE_FORMAT.D_DATE))
-        const result = Object.keys(group).reduce<Charts>(
-            (result, key, index) => {
-                const amount = group[key]?.reduce((acc, item) => acc + item.amount, 0) ?? 0
+        const daily = Object.keys(group).reduce<Series[]>((result, key, index) => {
+            const color = bg[index % bg.length]
+            const methods = group[key]
+            const dataDaily = methods.reduce<DataChart[]>((result, method) => {
+                const { _createdAt, amount } = method
+                const x = moment(_createdAt).format(DATE_FORMAT.D_DATE)
 
-                result.daily.push({ x: key, y: amount })
-                result.total.push({ x: key, y: (result.total[index - 1]?.y ?? 0) + amount })
+                result.push({ x, y: amount })
 
                 return result
-            },
-            { daily: [], total: [] }
-        )
+            }, [])
 
-        console.log(group)
+            result.push({ data: dataDaily, name: methods[0].method.name, color })
 
-        return { daily: [], total: [] }
-    }, [data?.items])
+            return result
+        }, [])
+
+        return {
+            daily,
+            total: [],
+        }
+    }, [data?.items, group])
 
     return { progress, amounts, statistic, charts, notes }
 }

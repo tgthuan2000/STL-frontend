@@ -532,7 +532,13 @@ export interface RecommendOption {
     name: string
 }
 
-export interface Charts {
-    daily: { x: string; y: number }[]
-    total: { x: string; y: number }[]
+export interface Series {
+    data: Array<DataChart>
+    color: string
+    name?: string
+}
+
+export interface DataChart {
+    x: string
+    y: number
 }

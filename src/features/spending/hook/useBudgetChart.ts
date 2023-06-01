@@ -9,7 +9,32 @@ import LANGUAGE from '~/i18n/language/key'
 import { getBudgetProgressColor, getMonths } from '~/utils'
 import { BudgetCategoryDetail, BudgetMethodDetail } from './useBudgetDetail'
 import { DATE_FORMAT } from '~/constant'
-import { Charts } from '~/@types/components'
+import { DataChart, Series } from '~/@types/components'
+import { getSeriesOption } from '~/components/_atomic/Template/Chart'
+
+interface Chart {
+    daily: DataChart[]
+    total: DataChart[]
+}
+
+type generateDataType = (data: DataChart[]) => (options?: getSeriesOption) => Series[]
+
+const generateData: generateDataType = (data) => {
+    const dark = 'rgb(34, 211, 238)' //text-cyan-400
+    const light = 'rgb(99, 102, 241)' // text-indigo-500
+
+    return (options) => {
+        if (!options) {
+            options = {
+                darkTheme: false,
+            }
+        }
+
+        const { darkTheme } = options
+
+        return [{ data, color: darkTheme ? dark : light }]
+    }
+}
 
 const useBudgetChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefined) => {
     const { t } = useTranslation()
@@ -128,11 +153,12 @@ const useBudgetChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefi
 
     const charts = useMemo(() => {
         if (!data?.spending) {
-            return { daily: [], total: [] }
+            const defaultFnc = () => []
+            return { daily: defaultFnc, total: defaultFnc }
         }
 
         const group = groupBy(structuredClone(data.spending), (item) => moment(item.date).format(DATE_FORMAT.D_DATE))
-        const result = Object.keys(merge(getMonths(), group)).reduce<Charts>(
+        const { daily, total } = Object.keys(merge(getMonths(), group)).reduce<Chart>(
             (result, key, index) => {
                 const amount = group[key]?.reduce((acc, item) => acc + item.amount, 0) ?? 0
 
@@ -144,7 +170,7 @@ const useBudgetChart = (data: BudgetCategoryDetail | BudgetMethodDetail | undefi
             { daily: [], total: [] }
         )
 
-        return result
+        return { daily: generateData(daily), total: generateData(total) }
     }, [data?.spending])
 
     return { amounts, progress, annotations, charts, statistic }

@@ -8,8 +8,8 @@ import Atom from '~/components/_atomic/Atom'
 import Template from '~/components/_atomic/Template'
 import LANGUAGE from '~/i18n/language/key'
 import { getLinkSpending } from '~/utils'
-import { BudgetCategoryDetail, BudgetMethodDetail } from '../hook/useBudgetDetail'
 import useBudgetChart from '../hook/useBudgetChart'
+import { BudgetCategoryDetail, BudgetMethodDetail } from '../hook/useBudgetDetail'
 import useChartTool from '../hook/useChartTool'
 
 interface Props {
@@ -25,7 +25,7 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
     const { chartTypes, chartType, setChartType } = useChartTool()
     const { amounts, annotations, charts, progress, statistic } = useBudgetChart(data)
 
-    const dataChart = useMemo(() => {
+    const generateDataChart = useMemo(() => {
         if (charts) {
             switch (chartType) {
                 case 'bar': {
@@ -111,7 +111,7 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
                             renderTool={
                                 <AnimateWrap>
                                     <Atom.ChartTool
-                                        hidden={isEmpty(dataChart)}
+                                        hidden={isEmpty(generateDataChart?.())}
                                         data={chartTypes}
                                         onSubmit={({ chartType }) => setChartType(chartType.id)}
                                     />
@@ -119,7 +119,7 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
                             }
                             renderChart={
                                 <Template.Chart
-                                    data={dataChart}
+                                    getSeries={generateDataChart}
                                     loading={loading}
                                     type={chartType}
                                     annotations={dataAnnotation}

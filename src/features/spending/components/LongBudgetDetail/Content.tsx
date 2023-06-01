@@ -2,7 +2,7 @@ import { get, isEmpty } from 'lodash'
 import numeral from 'numeral'
 import React, { memo, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { AnimateWrap, Paper, ProgressLine } from '~/components'
+import { AnimateWrap, Button, Paper, ProgressLine } from '~/components'
 import Title from '~/components/Box/Title'
 import LoadingText from '~/components/Loading/LoadingText'
 import Atom from '~/components/_atomic/Atom'
@@ -12,6 +12,7 @@ import LANGUAGE from '~/i18n/language/key'
 import useChartTool from '../../hook/useChartTool'
 import useLongBudgetChart from '../../hook/useLongBudgetChart'
 import { LongBudgetDetail, LongBudgetDetailItem } from '../../hook/useLongBudgetDetail'
+import { useParams } from 'react-router-dom'
 
 const DetailTran = React.lazy(() => import('./DetailTran'))
 
@@ -28,6 +29,7 @@ const Content: React.FC<Props> = (props) => {
     const { chartTypes, chartType, setChartType } = useChartTool()
     const { progress, amounts, statistic, charts, notes } = useLongBudgetChart(data)
     const { set } = useDetailDialog()
+    const { id } = useParams()
 
     const dataChart = useMemo(() => {
         if (charts) {
@@ -46,6 +48,14 @@ const Content: React.FC<Props> = (props) => {
         set({
             title: t(LANGUAGE.TRANSACTION_DETAIL),
             content: <DetailTran data={item} clearCache={clearCache} />,
+            fallback: <LoadingText />,
+        })
+    }
+
+    const handleCreateTran = () => {
+        set({
+            title: t(LANGUAGE.CREATE_NEW),
+            content: <DetailTran clearCache={clearCache} budgetId={id} />,
             fallback: <LoadingText />,
         })
     }
@@ -106,6 +116,17 @@ const Content: React.FC<Props> = (props) => {
                                 renderTitle={(item) => get(item, 'title')}
                             />
                         </AnimateWrap>
+                        <AnimateWrap className='mt-5'>
+                            <Button
+                                type='button'
+                                color='indigo'
+                                className='w-full'
+                                onClick={handleCreateTran}
+                                disabled={loading}
+                            >
+                                {t(LANGUAGE.CREATE_NEW)}
+                            </Button>
+                        </AnimateWrap>
                     </Paper>
                     <Paper disabledPadding className='mt-2 sm:mt-5'>
                         <Template.TransactionChart
@@ -131,7 +152,12 @@ const Content: React.FC<Props> = (props) => {
                                 </AnimateWrap>
                             }
                             renderChart={
-                                <Template.Chart data={dataChart} loading={loading} type={chartType} annotations={{}} />
+                                <Template.Chart
+                                    getSeries={dataChart}
+                                    loading={loading}
+                                    type={chartType}
+                                    annotations={{}}
+                                />
                             }
                         />
                     </Paper>

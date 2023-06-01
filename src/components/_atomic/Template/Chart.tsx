@@ -2,13 +2,14 @@ import ApexCharts from 'apexcharts'
 import { get, isEmpty, merge } from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import AnimateWrap from '~/components/AnimateWrap'
 import LoadingText from '~/components/Loading/LoadingText'
 import { DATE_FORMAT } from '~/constant'
 import { useTheme } from '~/context'
 import Atom from '../Atom'
+import { Series } from '~/@types/components'
 
 type ChartType =
     | 'line'
@@ -28,8 +29,12 @@ type ChartType =
     | 'rangeArea'
     | 'treemap'
 
+export interface getSeriesOption {
+    darkTheme: boolean
+}
+
 interface Props {
-    data: any[] | undefined
+    getSeries: ((options: getSeriesOption) => Series[]) | Series[] | undefined
     loading?: boolean
     type?: ChartType
     annotations?: ApexAnnotations
@@ -98,7 +103,7 @@ const getOptionsByType = (type: ChartType): ApexCharts.ApexOptions => {
 }
 
 const Chart: React.FC<Props> = (props) => {
-    const { data, loading, type = 'bar', annotations } = props
+    const { getSeries, loading, type = 'bar', annotations } = props
     const { t } = useTranslation()
     const { isDarkTheme } = useTheme()
     const chart = useRef<ApexCharts | null>(null)
@@ -134,13 +139,12 @@ const Chart: React.FC<Props> = (props) => {
                 custom: ({ seriesIndex, dataPointIndex, w }) => {
                     const dotColor = get(w, `config.series[${seriesIndex}].color`)
                     const { x, y } = get(w, `globals.initialSeries[${seriesIndex}].data[${dataPointIndex}]`, {})
-                    const date = moment(x).format(DATE_FORMAT.D_DATE)
                     const amount = numeral(y).format()
 
                     return /*html*/ `
                         <div class="p-2 flex items-center gap-1 text-gray-900 dark:text-slate-200 bg-gray-100 dark:bg-slate-700 text-xs shadow-md">
                             <span class="inline-block h-1.5 w-1.5 rounded-full" style="background-color:${dotColor};"></span>
-                            ${date}: <span class="font-normal dark:text-yellow-500">${amount}</span>
+                            ${x}: <span class="font-normal dark:text-yellow-500">${amount}</span>
                         </div>
                     `
                 },
@@ -175,17 +179,34 @@ const Chart: React.FC<Props> = (props) => {
         }
     }, [])
 
+    /** SERIES */
+    const series = useMemo(() => {
+        if (!getSeries) {
+            return
+        }
+
+        if (typeof getSeries === 'function') {
+            const options: getSeriesOption = {
+                darkTheme: isDarkTheme,
+            }
+
+            return getSeries(options)
+        }
+
+        return getSeries
+    }, [getSeries, isDarkTheme])
+
     /** DATA, THEME, CHART-TYPE */
     useEffect(() => {
-        if (chart.current && data) {
+        if (chart.current && series) {
             const themeOptions = isDarkTheme ? darkThemeOptions : lightThemeOptions
             const typeOptions: ApexCharts.ApexOptions = {
-                chart: { type },
+                chart: { type, stacked: true },
                 ...getOptionsByType(type),
             }
             const noDataOptions: ApexCharts.ApexOptions = {
                 grid: {
-                    show: !isEmpty(data),
+                    show: !isEmpty(series),
                 },
             }
             const dataOptions: ApexCharts.ApexOptions = {
@@ -194,24 +215,19 @@ const Chart: React.FC<Props> = (props) => {
 
             const options = merge(themeOptions, typeOptions, dataOptions, noDataOptions)
             chart.current.updateOptions(options)
-            chart.current.updateSeries([
-                {
-                    data,
-                    color: isDarkTheme ? 'rgb(34, 211, 238)' : 'rgb(99, 102, 241)', // text-cyan-400 | text-indigo-500
-                },
-            ])
+            chart.current.updateSeries(series)
         }
-    }, [data, isDarkTheme, type, annotations, t])
+    }, [series, isDarkTheme, type, annotations, t])
 
     return (
         <AnimateWrap className='relative'>
             <div ref={chartEl} />
-            {loading && isEmpty(data) && (
+            {loading && isEmpty(series) && (
                 <div className='absolute inset-0 flex items-center justify-center text-sm sm:text-base'>
                     <LoadingText />
                 </div>
             )}
-            {!loading && isEmpty(data) && (
+            {!loading && isEmpty(series) && (
                 <div className='absolute inset-0 flex items-center justify-center text-sm sm:text-base'>
                     <Atom.EmptyList />
                 </div>
