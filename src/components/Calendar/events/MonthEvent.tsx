@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import LoadingText from '~/components/Loading/LoadingText'
 import { useDetailDialog } from '~/context'
 import { CalendarEvent } from '..'
 import EventTitle from './EventTitle'
 
-const EventContent = React.lazy(() => import('./EventContent'))
+const EventContent = lazy(() => import('./EventContent'))
 
 interface Props {
     event: CalendarEvent

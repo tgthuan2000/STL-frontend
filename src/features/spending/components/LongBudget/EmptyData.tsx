@@ -1,5 +1,5 @@
 import { CubeTransparentIcon } from '@heroicons/react/24/outline'
-import React from 'react'
+import { lazy } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { Button } from '~/components'
@@ -8,7 +8,7 @@ import Atom from '~/components/_atomic/Atom'
 import { useSlideOver } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 
-const MakeLongBudget = React.lazy(() => import('../MakeLongBudget'))
+const MakeLongBudget = lazy(() => import('../MakeLongBudget'))
 
 const EmptyData = () => {
     const { t } = useTranslation()

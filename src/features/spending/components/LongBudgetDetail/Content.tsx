@@ -1,6 +1,7 @@
+import { PencilSquareIcon } from '@heroicons/react/24/outline'
 import { get, isEmpty } from 'lodash'
 import numeral from 'numeral'
-import React, { memo, useMemo } from 'react'
+import { lazy, memo, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AnimateWrap, Button, Paper, ProgressLine } from '~/components'
 import Title from '~/components/Box/Title'
@@ -12,9 +13,9 @@ import LANGUAGE from '~/i18n/language/key'
 import useChartTool from '../../hook/useChartTool'
 import useLongBudgetChart from '../../hook/useLongBudgetChart'
 import { LongBudgetDetail, LongBudgetDetailItem } from '../../hook/useLongBudgetDetail'
-import { useParams } from 'react-router-dom'
 
-const DetailTran = React.lazy(() => import('./DetailTran'))
+const DetailTran = lazy(() => import('./DetailTran'))
+const DetailBudget = lazy(() => import('./DetailBudget'))
 
 interface Props {
     data: LongBudgetDetail | undefined
@@ -29,7 +30,6 @@ const Content: React.FC<Props> = (props) => {
     const { chartTypes, chartType, setChartType } = useChartTool()
     const { progress, amounts, statistic, charts, notes } = useLongBudgetChart(data)
     const { set } = useDetailDialog()
-    const { id } = useParams()
 
     const dataChart = useMemo(() => {
         if (charts) {
@@ -55,7 +55,18 @@ const Content: React.FC<Props> = (props) => {
     const handleCreateTran = () => {
         set({
             title: t(LANGUAGE.CREATE_NEW),
-            content: <DetailTran clearCache={clearCache} budgetId={id} />,
+            content: <DetailTran clearCache={clearCache} budgetId={data?._id} />,
+            fallback: <LoadingText />,
+        })
+    }
+
+    const handleDetail = () => {
+        if (!data) {
+            return
+        }
+        set({
+            title: t(LANGUAGE.LONG_BUDGET_DETAIL),
+            content: <DetailBudget data={data} clearCache={clearCache} />,
             fallback: <LoadingText />,
         })
     }
@@ -64,7 +75,14 @@ const Content: React.FC<Props> = (props) => {
         <div className='mt-5 flex flex-col gap-8 sm:gap-4 lg:flex-row'>
             <div className='flex-[1.25]'>
                 <div className='sticky top-20'>
-                    <Title title={t(LANGUAGE.PROGRESS)} onReload={reload} loading={loading} />
+                    <Title
+                        title={t(LANGUAGE.PROGRESS)}
+                        onReload={reload}
+                        loading={loading}
+                        customEvent={
+                            <Atom.SmallIcon Icon={PencilSquareIcon} disabled={loading} onClick={handleDetail} />
+                        }
+                    />
                     <Paper>
                         <AnimateWrap className='-mx-2 -mt-3 -mb-2'>
                             <Template.BudgetProgressList
@@ -93,7 +111,7 @@ const Content: React.FC<Props> = (props) => {
                             <Template.CardInfo
                                 data={notes}
                                 loading={loading}
-                                fallback={<Atom.EmptyList />}
+                                fallback={<></>}
                                 loadingFallback={<Atom.CardInfoSkeleton elNumber={6} />}
                                 className='mb-10'
                                 getItemKey={(item) => get(item, 'id')}

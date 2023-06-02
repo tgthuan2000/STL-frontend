@@ -1,37 +1,23 @@
-import Amount from './Amount'
-import BudgetListSkeleton from './BudgetListSkeleton'
-import CardIcon from './CardIcon'
-import CardInfoSkeleton from './CardInfoSkeleton'
-import ChartTool from './ChartTool'
-import Date from './Date'
-import Description from './Description'
-import Dot from './Dot'
-import EmptyList from './EmptyList'
-import RecentListSkeleton from './RecentListSkeleton'
-import SimpleListSkeleton from './SimpleListSkeleton'
-import Content from './Content'
-import Square from './Square'
-import Suffix from './Suffix'
-import Title from './Title'
-import ChartTitle from './TransactionTitle'
+import { lazy } from 'react'
 
-const Atom = () => {}
-
-Atom.Suffix = Suffix
-Atom.Amount = Amount
-Atom.Date = Date
-Atom.Description = Description
-Atom.Dot = Dot
-Atom.Title = Title
-Atom.EmptyList = EmptyList
-Atom.SimpleListSkeleton = SimpleListSkeleton
-Atom.BudgetListSkeleton = BudgetListSkeleton
-Atom.RecentListSkeleton = RecentListSkeleton
-Atom.CardInfoSkeleton = CardInfoSkeleton
-Atom.CardIcon = CardIcon
-Atom.ChartTitle = ChartTitle
-Atom.Content = Content
-Atom.ChartTool = ChartTool
-Atom.Square = Square
+const Atom = {
+    Amount: lazy(() => import('./Amount')),
+    BudgetListSkeleton: lazy(() => import('./BudgetListSkeleton')),
+    CardIcon: lazy(() => import('./CardIcon')),
+    CardInfoSkeleton: lazy(() => import('./CardInfoSkeleton')),
+    ChartTool: lazy(() => import('./ChartTool')),
+    Content: lazy(() => import('./Content')),
+    Date: lazy(() => import('./Date')),
+    Description: lazy(() => import('./Description')),
+    Dot: lazy(() => import('./Dot')),
+    EmptyList: lazy(() => import('./EmptyList')),
+    RecentListSkeleton: lazy(() => import('./RecentListSkeleton')),
+    SimpleListSkeleton: lazy(() => import('./SimpleListSkeleton')),
+    SmallIcon: lazy(() => import('./SmallIcon')),
+    Square: lazy(() => import('./Square')),
+    Suffix: lazy(() => import('./Suffix')),
+    Title: lazy(() => import('./Title')),
+    ChartTitle: lazy(() => import('./TransactionTitle')),
+}
 
 export default Atom

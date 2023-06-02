@@ -16,25 +16,25 @@ import {
     UserGroupIcon,
     UserPlusIcon,
 } from '@heroicons/react/24/outline'
-import React, { useMemo } from 'react'
+import { lazy, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IMenuBtn } from '~/@types/components'
 import LANGUAGE from '~/i18n/language/key'
 import useLogout from './useLogout'
 
-const CreateAccount = React.lazy(() => import('~/features/account/components/CreateAccount'))
-const CreateMember = React.lazy(() => import('~/features/loan/components/CreateMember'))
-const MakeCredit = React.lazy(() => import('~/features/loan/components/MakeCredit'))
-const CreatePermissionGroup = React.lazy(() => import('~/features/role-control/components/CreatePermissionGroup'))
-const CreateRole = React.lazy(() => import('~/features/role-control/components/CreateRole'))
-const AddCategory = React.lazy(() => import('~/features/spending/components/AddCategory'))
-const AddMethod = React.lazy(() => import('~/features/spending/components/AddMethod'))
-const MakeBudget = React.lazy(() => import('~/features/spending/components/MakeBudget'))
-const MakeLongBudget = React.lazy(() => import('~/features/spending/components/MakeLongBudget'))
-const MakeCost = React.lazy(() => import('~/features/spending/components/MakeCost'))
-const MakeIncome = React.lazy(() => import('~/features/spending/components/MakeIncome'))
-const MakeTransfer = React.lazy(() => import('~/features/spending/components/MakeTransfer'))
-const MakeSchedule = React.lazy(() => import('~/features/time/components/MakeSchedule'))
+const CreateAccount = lazy(() => import('~/features/account/components/CreateAccount'))
+const CreateMember = lazy(() => import('~/features/loan/components/CreateMember'))
+const MakeCredit = lazy(() => import('~/features/loan/components/MakeCredit'))
+const CreatePermissionGroup = lazy(() => import('~/features/role-control/components/CreatePermissionGroup'))
+const CreateRole = lazy(() => import('~/features/role-control/components/CreateRole'))
+const AddCategory = lazy(() => import('~/features/spending/components/AddCategory'))
+const AddMethod = lazy(() => import('~/features/spending/components/AddMethod'))
+const MakeBudget = lazy(() => import('~/features/spending/components/MakeBudget'))
+const MakeLongBudget = lazy(() => import('~/features/spending/components/MakeLongBudget'))
+const MakeCost = lazy(() => import('~/features/spending/components/MakeCost'))
+const MakeIncome = lazy(() => import('~/features/spending/components/MakeIncome'))
+const MakeTransfer = lazy(() => import('~/features/spending/components/MakeTransfer'))
+const MakeSchedule = lazy(() => import('~/features/time/components/MakeSchedule'))
 
 export const useMenuMobile = (): IMenuBtn[] => {
     const { t } = useTranslation()

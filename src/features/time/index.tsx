@@ -1,9 +1,9 @@
-import React from 'react'
+import { lazy } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-const TimePage = React.lazy(() => import('./pages/Time'))
-const Dashboard = React.lazy(() => import('./pages/Dashboard'))
-const Edit = React.lazy(() => import('./pages/Edit'))
+const TimePage = lazy(() => import('./pages/Time'))
+const Dashboard = lazy(() => import('./pages/Dashboard'))
+const Edit = lazy(() => import('./pages/Edit'))
 
 const Time = () => {
     return (

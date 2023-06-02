@@ -239,6 +239,7 @@
     "CONFIRM_DELETE_SCHEDULE": "Do you want to delete this schedule?",
     "CONFIRM_DELETE_DEVICE": "Do you want to delete this device?",
     "CONFIRM_DELETE_ALL_DEVICES": "Do you want to delete all devices?",
+    "CONFIRM_DELETE_LONG_BUDGET": "Do you want to delete this budget?",
     "NEED_SAVE_TO_UPDATED": "Need save after changed to update",
 
     "SPENDING": "Spending management",
@@ -258,6 +259,7 @@
     "FROM_TRANSFER_METHOD": "From transfer method",
     "TO_TRANSFER_METHOD": "To transfer method",
     "CHOOSE_PREVIOUS_MONTH": "Choose by previous month",
+    "LONG_BUDGET_DETAIL": "Long budget detail",
 
     "LOAN": "Loan",
     "CREDIT": "Credit",

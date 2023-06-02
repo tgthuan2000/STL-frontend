@@ -1,14 +1,14 @@
-import React, { useCallback, useMemo } from 'react'
+import { lazy, useCallback, useMemo } from 'react'
 import { Components, Messages } from 'react-big-calendar'
 import { useTranslation } from 'react-i18next'
+import LoadingText from '~/components/Loading/LoadingText'
+import { useDetailDialog } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import { CalendarEvent } from '..'
 import { DateHeader, EventWrapper, Header, Toolbar } from '../components'
-import { useDetailDialog } from '~/context'
 import EventListShowMoreTitle from '../components/EventListShowMoreTitle'
-import LoadingText from '~/components/Loading/LoadingText'
 
-const EventListShowMoreContent = React.lazy(() => import('../components/EventListShowMoreContent'))
+const EventListShowMoreContent = lazy(() => import('../components/EventListShowMoreContent'))
 
 export const useMessage = (): Messages => {
     const { t } = useTranslation()

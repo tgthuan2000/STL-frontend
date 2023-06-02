@@ -1,8 +1,8 @@
-import React from 'react'
+import { lazy } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-const RoleControlFeature = React.lazy(() => import('./pages/RoleControl'))
-const Dashboard = React.lazy(() => import('./pages/Dashboard'))
+const RoleControlFeature = lazy(() => import('./pages/RoleControl'))
+const Dashboard = lazy(() => import('./pages/Dashboard'))
 
 const RoleControl = () => {
     return (

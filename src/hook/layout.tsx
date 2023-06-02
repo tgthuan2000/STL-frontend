@@ -7,23 +7,23 @@ import {
     LockClosedIcon,
     UserGroupIcon,
 } from '@heroicons/react/24/outline'
-import React, { useMemo } from 'react'
+import { lazy, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavigationMobile } from '~/@types/layout'
 import { Navigation } from '~/constant/layout'
 import { PERMISSION } from '~/constant/permission'
 import LANGUAGE from '~/i18n/language/key'
 
-const AccountNavLink = React.lazy(() => import('~/components/NavLink/AccountNavLink'))
-const AnnounceConfigNavLink = React.lazy(() => import('~/components/NavLink/AnnounceConfigNavLink'))
-const LoanNavLink = React.lazy(() => import('~/components/NavLink/LoanNavLink'))
-const TimeNavLink = React.lazy(() => import('~/components/NavLink/TimeNavLink'))
-const NotifyNavLink = React.lazy(() => import('~/components/NavLink/NotifyNavLink'))
-const ProfileNavLink = React.lazy(() => import('~/components/NavLink/ProfileNavLink'))
-const SettingNavLink = React.lazy(() => import('~/components/NavLink/SettingNavLink'))
-const SpendingNavLink = React.lazy(() => import('~/components/NavLink/SpendingNavLink'))
-const FeedbackConfigNavLink = React.lazy(() => import('~/components/NavLink/FeedbackConfigNavLink'))
-const RoleControlNavLink = React.lazy(() => import('~/components/NavLink/RoleControlNavLink'))
+const AccountNavLink = lazy(() => import('~/components/NavLink/AccountNavLink'))
+const AnnounceConfigNavLink = lazy(() => import('~/components/NavLink/AnnounceConfigNavLink'))
+const LoanNavLink = lazy(() => import('~/components/NavLink/LoanNavLink'))
+const TimeNavLink = lazy(() => import('~/components/NavLink/TimeNavLink'))
+const NotifyNavLink = lazy(() => import('~/components/NavLink/NotifyNavLink'))
+const ProfileNavLink = lazy(() => import('~/components/NavLink/ProfileNavLink'))
+const SettingNavLink = lazy(() => import('~/components/NavLink/SettingNavLink'))
+const SpendingNavLink = lazy(() => import('~/components/NavLink/SpendingNavLink'))
+const FeedbackConfigNavLink = lazy(() => import('~/components/NavLink/FeedbackConfigNavLink'))
+const RoleControlNavLink = lazy(() => import('~/components/NavLink/RoleControlNavLink'))
 
 export const useNavigation = (): Array<Navigation> => {
     const { t } = useTranslation()

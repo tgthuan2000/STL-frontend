@@ -1,12 +1,12 @@
-import React from 'react'
+import { lazy } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-const LoanFeature = React.lazy(() => import('./pages/Loan'))
-const Dashboard = React.lazy(() => import('./pages/Dashboard'))
-const MemberDetail = React.lazy(() => import('./pages/MemberDetail'))
-const TransactionDetail = React.lazy(() => import('./pages/TransactionDetail'))
-const TransactionEdit = React.lazy(() => import('./pages/TransactionEdit'))
-const TransactionRecent = React.lazy(() => import('./pages/TransactionRecent'))
+const LoanFeature = lazy(() => import('./pages/Loan'))
+const Dashboard = lazy(() => import('./pages/Dashboard'))
+const MemberDetail = lazy(() => import('./pages/MemberDetail'))
+const TransactionDetail = lazy(() => import('./pages/TransactionDetail'))
+const TransactionEdit = lazy(() => import('./pages/TransactionEdit'))
+const TransactionRecent = lazy(() => import('./pages/TransactionRecent'))
 
 const Loan = () => {
     return (
