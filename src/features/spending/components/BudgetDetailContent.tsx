@@ -4,8 +4,8 @@ import React, { memo, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AnimateWrap, Paper, ProgressLine } from '~/components'
 import Title from '~/components/Box/Title'
-import Atom from '~/components/_atomic/Atom'
-import Template from '~/components/_atomic/Template'
+import * as Atom from '~/components/_atomic/Atom'
+import * as Template from '~/components/_atomic/Template'
 import LANGUAGE from '~/i18n/language/key'
 import { getLinkSpending } from '~/utils'
 import useBudgetChart from '../hook/useBudgetChart'
@@ -97,7 +97,7 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
                     <Paper disabledPadding className='mt-2 sm:mt-5'>
                         <Template.TransactionChart
                             renderTitle={
-                                <Atom.ChartTitle
+                                <Atom.TransactionTitle
                                     title={t(LANGUAGE.TRANSACTION)}
                                     subTitle={
                                         <Atom.Content

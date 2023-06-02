@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import { Transaction } from '~/components'
 import LANGUAGE from '~/i18n/language/key'
-import useLongBudgetDetail from '../hook/useLongBudgetDetail'
 import LongBudgetDetailContent from '../components/LongBudgetDetail/Content'
+import useLongBudgetDetail from '../hook/useLongBudgetDetail'
 
 const LongBudgetDetail = () => {
     const { t } = useTranslation()

@@ -87,7 +87,7 @@ const DetailBudget: React.FC<Props> = (props) => {
 
             const transaction = client.transaction()
 
-            const patch = client.patch(data._id).set({
+            const patch = client.patch(_id).set({
                 title,
                 amount,
                 duration: moment(duration).format(),
@@ -122,7 +122,7 @@ const DetailBudget: React.FC<Props> = (props) => {
         }
         try {
             setSubmitLoading(true)
-            await axios.delete('/spending/long-budget', { data: { id: data._id } })
+            await axios.delete('/spending/long-budget', { data: { id: _id } })
             toast.success<string>(t(LANGUAGE.NOTIFY_DELETE_SUCCESS))
             deleteCache([LONG_BUDGET_SPENDING])
             onClose()

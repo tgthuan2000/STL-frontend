@@ -4,7 +4,7 @@ import React, { startTransition, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { ListOptionProps } from '~/@types/spending'
-import Atom from '~/components/_atomic/Atom'
+import { EmptyList, SimpleListSkeleton } from '~/components/_atomic/Atom'
 import { useTDF } from '~/hook'
 import LANGUAGE from '~/i18n/language/key'
 import { client } from '~/sanityConfig'
@@ -78,7 +78,7 @@ const ListOption: React.FC<ListOptionProps> = ({ data: _data, loading, cleanCach
         }
     }
 
-    if (loading) return <Atom.SimpleListSkeleton />
+    if (loading) return <SimpleListSkeleton />
 
     if (!isEmpty(data)) {
         return (
@@ -99,7 +99,7 @@ const ListOption: React.FC<ListOptionProps> = ({ data: _data, loading, cleanCach
             </ul>
         )
     }
-    return <Atom.EmptyList icon={ArchiveBoxXMarkIcon} text={t(LANGUAGE.EMPTY_DATA)} />
+    return <EmptyList icon={ArchiveBoxXMarkIcon} text={t(LANGUAGE.EMPTY_DATA)} />
 }
 
 export default ListOption

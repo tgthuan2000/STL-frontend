@@ -3,14 +3,14 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { LoadingButtonProps } from '~/@types/components'
 import LANGUAGE from '~/i18n/language/key'
-import Atom from '../_atomic/Atom'
+import { SmallIcon } from '../_atomic/Atom'
 
 const LoadingButton: React.FC<LoadingButtonProps> = (props) => {
     const { onReload, disabled } = props
     const { t } = useTranslation()
 
     return (
-        <Atom.SmallIcon
+        <SmallIcon
             title={t(LANGUAGE.RELOAD) as string}
             Icon={ArrowPathIcon}
             className='disabled:animate-spin'

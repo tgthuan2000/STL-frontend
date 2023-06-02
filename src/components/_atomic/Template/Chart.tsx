@@ -8,8 +8,8 @@ import AnimateWrap from '~/components/AnimateWrap'
 import LoadingText from '~/components/Loading/LoadingText'
 import { DATE_FORMAT } from '~/constant'
 import { useTheme } from '~/context'
-import Atom from '../Atom'
 import { Series } from '~/@types/components'
+import { EmptyList } from '../Atom'
 
 type ChartType =
     | 'line'
@@ -114,7 +114,6 @@ const Chart: React.FC<Props> = (props) => {
         const options: ApexCharts.ApexOptions = {
             series: [{ data: [] }],
             chart: {
-                type: 'line',
                 fontFamily: 'Lexend',
                 toolbar: {
                     show: false,
@@ -126,7 +125,10 @@ const Chart: React.FC<Props> = (props) => {
             xaxis: {
                 type: 'category',
                 labels: {
-                    formatter: (date) => moment(date, DATE_FORMAT.D_DATE).format('DD'),
+                    formatter: (date) => {
+                        // console.log(date)
+                        return moment(date, DATE_FORMAT.D_DATE).format('DD')
+                    },
                 },
                 axisTicks: { show: false },
                 axisBorder: { show: false },
@@ -230,7 +232,7 @@ const Chart: React.FC<Props> = (props) => {
             )}
             {!loading && isEmpty(series) && (
                 <div className='absolute inset-0 flex items-center justify-center text-sm sm:text-base'>
-                    <Atom.EmptyList />
+                    <EmptyList />
                 </div>
             )}
         </AnimateWrap>
