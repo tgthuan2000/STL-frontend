@@ -1,12 +1,12 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { lazy, useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { MenuButtonProps } from '~/@types/components'
 import { useSlideOver } from '~/context'
 import LoadingText from '../Loading/LoadingText'
 
-const DesktopButtonV1 = React.lazy(() => import('./desktop/Button/v1'))
-const MobileButtonV1 = React.lazy(() => import('./mobile/Button/v1'))
-const MobileButtonV2 = React.lazy(() => import('./mobile/Button/v2'))
+const DesktopButtonV1 = lazy(() => import('./desktop/Button/v1'))
+const MobileButtonV1 = lazy(() => import('./mobile/Button/v1'))
+const MobileButtonV2 = lazy(() => import('./mobile/Button/v2'))
 
 type Props = Omit<MenuButtonProps, 'link' | 'onClick'> & { mobile?: boolean; mode?: 'v1' | 'v2' }
 

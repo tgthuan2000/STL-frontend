@@ -1,3 +1,4 @@
+import { SanityImageAssetDocument } from '@sanity/client'
 import { useCallback, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { TAGS } from '~/constant'
@@ -16,8 +17,10 @@ export interface LongBudgetDetailItem {
 
 export interface LongBudgetDetail {
     _id: string
+    title: string
     amount: number
     duration: string
+    image: SanityImageAssetDocument
     items: LongBudgetDetailItem[]
 }
 

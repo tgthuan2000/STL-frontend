@@ -1,8 +1,9 @@
+import { PencilSquareIcon } from '@heroicons/react/24/outline'
 import { get, isEmpty } from 'lodash'
 import numeral from 'numeral'
-import React, { memo, useMemo } from 'react'
+import { lazy, memo, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { AnimateWrap, Paper, ProgressLine } from '~/components'
+import { AnimateWrap, Button, Paper, ProgressLine } from '~/components'
 import Title from '~/components/Box/Title'
 import LoadingText from '~/components/Loading/LoadingText'
 import Atom from '~/components/_atomic/Atom'
@@ -13,7 +14,8 @@ import useChartTool from '../../hook/useChartTool'
 import useLongBudgetChart from '../../hook/useLongBudgetChart'
 import { LongBudgetDetail, LongBudgetDetailItem } from '../../hook/useLongBudgetDetail'
 
-const DetailTran = React.lazy(() => import('./DetailTran'))
+const DetailTran = lazy(() => import('./DetailTran'))
+const DetailBudget = lazy(() => import('./DetailBudget'))
 
 interface Props {
     data: LongBudgetDetail | undefined
@@ -50,11 +52,37 @@ const Content: React.FC<Props> = (props) => {
         })
     }
 
+    const handleCreateTran = () => {
+        set({
+            title: t(LANGUAGE.CREATE_NEW),
+            content: <DetailTran clearCache={clearCache} budgetId={data?._id} />,
+            fallback: <LoadingText />,
+        })
+    }
+
+    const handleDetail = () => {
+        if (!data) {
+            return
+        }
+        set({
+            title: t(LANGUAGE.LONG_BUDGET_DETAIL),
+            content: <DetailBudget data={data} clearCache={clearCache} />,
+            fallback: <LoadingText />,
+        })
+    }
+
     return (
         <div className='mt-5 flex flex-col gap-8 sm:gap-4 lg:flex-row'>
             <div className='flex-[1.25]'>
                 <div className='sticky top-20'>
-                    <Title title={t(LANGUAGE.PROGRESS)} onReload={reload} loading={loading} />
+                    <Title
+                        title={t(LANGUAGE.PROGRESS)}
+                        onReload={reload}
+                        loading={loading}
+                        customEvent={
+                            <Atom.SmallIcon Icon={PencilSquareIcon} disabled={loading} onClick={handleDetail} />
+                        }
+                    />
                     <Paper>
                         <AnimateWrap className='-mx-2 -mt-3 -mb-2'>
                             <Template.BudgetProgressList
@@ -80,31 +108,48 @@ const Content: React.FC<Props> = (props) => {
                         </AnimateWrap>
 
                         <AnimateWrap className='mt-2 mb-4'>
-                            <Template.ChartNote
+                            <Template.CardInfo
                                 data={notes}
                                 loading={loading}
                                 fallback={<></>}
-                                loadingFallback={<></>}
+                                loadingFallback={<Atom.CardInfoSkeleton elNumber={6} />}
+                                className='mb-10'
                                 getItemKey={(item) => get(item, 'id')}
-                                renderNoteTitle={(item) => <Atom.Title title={get(item, 'methodName')} />}
-                                renderNoteSquare={(item) => (
-                                    <Atom.Square style={{ background: get(item, 'bgColor') }} />
+                                renderIcon={(item) => <Atom.Square style={{ background: get(item, 'bgColor') }} />}
+                                renderTitle={(item) => get(item, 'methodName')}
+                                renderSubTitle={(item) => (
+                                    <Atom.Content
+                                        title={numeral(get(item, 'amount', 0)).format()}
+                                        subTitle={numeral(get(item, 'percent', 0)).format('0.0') + '%'}
+                                        className='justify-between gap-x-2'
+                                    />
                                 )}
                             />
                         </AnimateWrap>
 
                         <AnimateWrap>
-                            <Template.SmallStatisticList
+                            <Template.CardInfo
                                 data={statistic}
                                 loading={loading}
                                 fallback={<Atom.EmptyList />}
-                                loadingFallback={<Atom.SmallStatisticListSkeleton elNumber={6} />}
+                                loadingFallback={<Atom.CardInfoSkeleton elNumber={6} />}
                                 getItemKey={(item) => get(item, 'id')}
                                 getClassName={(item) => get(item, 'className')}
-                                getIcon={(item) => get(item, 'Icon')}
-                                renderAmount={(item) => <CustomAmount data={item} />}
+                                renderIcon={(item) => <Atom.CardIcon Icon={get(item, 'Icon')} />}
                                 renderTitle={(item) => get(item, 'title')}
+                                renderSubTitle={(item) => <CustomAmount data={item} />}
                             />
+                        </AnimateWrap>
+                        <AnimateWrap className='mt-5'>
+                            <Button
+                                type='button'
+                                color='pink'
+                                className='w-full'
+                                onClick={handleCreateTran}
+                                disabled={loading}
+                            >
+                                {t(LANGUAGE.CREATE_NEW)}
+                            </Button>
                         </AnimateWrap>
                     </Paper>
                     <Paper disabledPadding className='mt-2 sm:mt-5'>
@@ -113,10 +158,10 @@ const Content: React.FC<Props> = (props) => {
                                 <Atom.ChartTitle
                                     title={t(LANGUAGE.TRANSACTION)}
                                     subTitle={
-                                        <Atom.SlashTitle
+                                        <Atom.Content
                                             hidden={!data?.amount}
                                             title={numeral(amounts).format()}
-                                            subTitle={numeral(data?.amount).format()}
+                                            subTitle={'/' + numeral(data?.amount).format()}
                                         />
                                     }
                                 />
@@ -131,7 +176,12 @@ const Content: React.FC<Props> = (props) => {
                                 </AnimateWrap>
                             }
                             renderChart={
-                                <Template.Chart data={dataChart} loading={loading} type={chartType} annotations={{}} />
+                                <Template.Chart
+                                    getSeries={dataChart}
+                                    loading={loading}
+                                    type={chartType}
+                                    annotations={{}}
+                                />
                             }
                         />
                     </Paper>
@@ -151,7 +201,7 @@ const Content: React.FC<Props> = (props) => {
                             renderDate={(item) => <Atom.Date date={get(item, '_createdAt')} fallback={<></>} />}
                             renderMethod={(item) => <Atom.Title title={get(item, 'method.name')} fallback={<></>} />}
                             renderAmount={(item) => (
-                                <Atom.Amount amount={get(item, 'amount')} className='text-green-500' />
+                                <Atom.Amount amount={get(item, 'amount')} className='text-pink-500' />
                             )}
                             renderDescription={(item) => <Atom.Description data={get(item, 'description')} />}
                         />

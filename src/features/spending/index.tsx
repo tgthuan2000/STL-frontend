@@ -1,18 +1,18 @@
-import React from 'react'
+import { lazy } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-const SpendingFeature = React.lazy(() => import('./pages/Spending'))
-const Dashboard = React.lazy(() => import('./pages/Dashboard'))
-const Method = React.lazy(() => import('./pages/Method'))
-const MethodDetail = React.lazy(() => import('./pages/MethodDetail'))
-const TransactionDetail = React.lazy(() => import('./pages/TransactionDetail'))
-const TransactionRecent = React.lazy(() => import('./pages/TransactionRecent'))
-const Layout = React.lazy(() => import('./pages/Layout'))
-const Others = React.lazy(() => import('./pages/Others'))
-const Budget = React.lazy(() => import('./pages/Budget'))
-const BudgetDetailMethod = React.lazy(() => import('./pages/BudgetDetailMethod'))
-const BudgetDetailCategory = React.lazy(() => import('./pages/BudgetDetailCategory'))
-const LongBudgetDetail = React.lazy(() => import('./pages/LongBudgetDetail'))
+const SpendingFeature = lazy(() => import('./pages/Spending'))
+const Dashboard = lazy(() => import('./pages/Dashboard'))
+const Method = lazy(() => import('./pages/Method'))
+const MethodDetail = lazy(() => import('./pages/MethodDetail'))
+const TransactionDetail = lazy(() => import('./pages/TransactionDetail'))
+const TransactionRecent = lazy(() => import('./pages/TransactionRecent'))
+const Layout = lazy(() => import('./pages/Layout'))
+const Others = lazy(() => import('./pages/Others'))
+const Budget = lazy(() => import('./pages/Budget'))
+const BudgetDetailMethod = lazy(() => import('./pages/BudgetDetailMethod'))
+const BudgetDetailCategory = lazy(() => import('./pages/BudgetDetailCategory'))
+const LongBudgetDetail = lazy(() => import('./pages/LongBudgetDetail'))
 
 const Spending = () => {
     return (

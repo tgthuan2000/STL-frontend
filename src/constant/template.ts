@@ -21,26 +21,44 @@ export interface IFILTER_DATE {
     formatDate: keyof typeof DATE_FORMAT
 }
 
-const C = ['indigo-500', 'green-500', 'yellow-500', 'blue-500', 'orange-500', 'purple-500', 'pink-500']
+const C = [
+    'text-indigo-500',
+    'text-green-500',
+    'text-yellow-500',
+    'text-blue-500',
+    'text-orange-500',
+    'text-purple-500',
+    'text-pink-500',
+    'text-sky-500',
+    'text-lime-500',
+    'text-prussian-blue-500',
+    'text-teal-500',
+    'text-amber-500',
+]
 
 const Bg = [
     'rgb(99, 102, 241)',
     'rgb(16, 185, 129)',
     'rgb(245, 158, 11)',
-    'rgb(59 130 246)',
+    'rgb(59, 130, 246)',
     'rgb(249, 115, 22)',
     'rgb(168, 85, 247)',
     'rgb(236, 72, 153)',
+    'rgb(14, 165, 233)',
+    'rgb(132, 204, 22)',
+    'rgb(0, 34, 102)',
+    'rgb(20, 184, 166)',
+    'rgb(245, 158, 11)',
 ]
 
 export const colors = {
     bg: Bg,
-    text: C.map((c) => `text-${c}`),
+    text: C,
 }
 
 export const budgetLongColors = {
     bg: [...Bg].reverse(),
-    text: [...C].reverse().map((c) => `text-${c}`),
+    text: [...C].reverse(),
 }
 
 export const getKindSpendingTextColor = (key: KIND_SPENDING | undefined) => {

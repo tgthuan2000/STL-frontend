@@ -1,13 +1,13 @@
 import { GoogleLogin } from '@react-oauth/google'
 import { get } from 'lodash'
-import React, { Fragment, useState } from 'react'
+import { Fragment, lazy, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useLocation } from 'react-router-dom'
 import LANGUAGE from '~/i18n/language/key'
 import { useAuth } from '~/store/auth'
 import useLogin from '../hook/useLogin'
 
-const LoginByEmailPasswordForm = React.lazy(() => import('../components/LoginByEmailPasswordForm'))
+const LoginByEmailPasswordForm = lazy(() => import('../components/LoginByEmailPasswordForm'))
 
 const Dashboard = () => {
     const { t } = useTranslation()

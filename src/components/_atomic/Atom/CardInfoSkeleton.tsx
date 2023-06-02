@@ -1,9 +1,9 @@
-import { CubeIcon, CubeTransparentIcon } from '@heroicons/react/24/outline'
+import { CubeTransparentIcon } from '@heroicons/react/24/outline'
 import React from 'react'
 import { SkeletonProps } from '~/@types/components'
 import SkeletonLine from '~/components/SkeletonLine'
 
-const SmallStatisticListSkeleton: React.FC<SkeletonProps> = (props) => {
+const CardInfoSkeleton: React.FC<SkeletonProps> = (props) => {
     const { elNumber } = props
 
     return (
@@ -20,4 +20,4 @@ const SmallStatisticListSkeleton: React.FC<SkeletonProps> = (props) => {
     )
 }
 
-export default SmallStatisticListSkeleton
+export default CardInfoSkeleton

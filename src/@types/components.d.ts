@@ -182,6 +182,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
         | 'prussianBlue'
         | 'yellow'
         | 'rose'
+        | 'pink'
         | 'outline-indigo'
         | 'outline-cyan'
         | 'outline-green'
@@ -530,4 +531,15 @@ export interface TwoFactorFormProps {
 export interface RecommendOption {
     id: string
     name: string
+}
+
+export interface Series {
+    data: Array<DataChart>
+    color: string
+    name?: string
+}
+
+export interface DataChart {
+    x: string
+    y: number
 }

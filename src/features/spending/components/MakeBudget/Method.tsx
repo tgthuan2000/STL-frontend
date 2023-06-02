@@ -1,5 +1,5 @@
 import { PlusCircleIcon } from '@heroicons/react/24/outline'
-import React from 'react'
+import { lazy } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { IMethodSpending, MakeBudgetProps } from '~/@types/spending'
@@ -10,7 +10,7 @@ import LANGUAGE from '~/i18n/language/key'
 import Item from './Item'
 import useFieldMakeBudget from './service'
 
-const AddMethod = React.lazy(() => import('../AddMethod'))
+const AddMethod = lazy(() => import('../AddMethod'))
 
 type Props = MakeBudgetProps & { optionData: IMethodSpending[] | undefined; optionLoading: boolean }
 

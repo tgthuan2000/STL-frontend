@@ -1,10 +1,10 @@
-import React from 'react'
+import { lazy } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-const SettingFeature = React.lazy(() => import('./pages/Setting'))
-const Dashboard = React.lazy(() => import('./pages/Dashboard'))
-const ChangePassword = React.lazy(() => import('./pages/ChangePassword'))
-const Device = React.lazy(() => import('./pages/Device'))
+const SettingFeature = lazy(() => import('./pages/Setting'))
+const Dashboard = lazy(() => import('./pages/Dashboard'))
+const ChangePassword = lazy(() => import('./pages/ChangePassword'))
+const Device = lazy(() => import('./pages/Device'))
 
 const Setting = () => {
     return (

@@ -17,13 +17,14 @@ import { useProfile } from '~/store/auth'
 import { LongBudgetDetailItem } from '../../hook/useLongBudgetDetail'
 
 interface Props {
-    data: LongBudgetDetailItem
+    data?: LongBudgetDetailItem
     clearCache(): void
+    budgetId?: string
 }
 
 interface Form {
     amount: number | string
-    method: { _id: string; name: string }
+    method: { _id: string; name: string } | null
     description: string
 }
 
@@ -49,14 +50,14 @@ const useSchema = () => {
 }
 
 const DetailTran: React.FC<Props> = (props) => {
-    const { data, clearCache } = props
-    const { _id, amount, method, description } = data
+    const { data, budgetId, clearCache } = props
     const { t } = useTranslation()
     const { loading, setSubmitLoading } = useLoading()
     const { close } = useDetailDialog()
     const { needCheckWhenLeave } = useCheck()
     const { userProfile } = useProfile()
     const schema = useSchema()
+    const isEditMode = !!data
 
     const [{ methodSpending }, fetchData, deleteCache, reload] = useQuery<{ methodSpending: IMethodSpending[] }>(
         { methodSpending: GET_METHOD_SPENDING },
@@ -74,31 +75,57 @@ const DetailTran: React.FC<Props> = (props) => {
     }, [])
 
     const form = useForm<Form>({
-        defaultValues: { amount, description, method },
+        defaultValues: {
+            amount: data?.amount ?? '',
+            description: data?.description ?? '',
+            method: data?.method ?? null,
+        },
         resolver: yupResolver(schema),
     })
 
-    const onSubmit = async (data: Form) => {
+    const onSubmit = async (formData: Form) => {
         try {
             setSubmitLoading(true)
 
-            let { amount, description, method } = data
+            let { amount, description, method } = formData
             description = description.trim()
             amount = Number(amount)
 
-            await client
-                .patch(_id, {
+            const transaction = client.transaction()
+            if (data) {
+                /** UPDATE */
+                transaction.patch(data._id, {
                     set: {
                         amount,
                         description,
                         method: {
                             _type: 'reference',
-                            _ref: method._id,
+                            _ref: method?._id,
                         },
                     },
                 })
-                .commit()
+            } else {
+                /** CREATE */
+                if (budgetId) {
+                    transaction.create({
+                        _type: 'longBudgetItem',
+                        amount,
+                        description,
+                        method: {
+                            _type: 'reference',
+                            _ref: method?._id,
+                        },
+                        budget: {
+                            _type: 'reference',
+                            _ref: budgetId,
+                        },
+                    })
+                } else {
+                    throw new Error('Need `budgetId` props')
+                }
+            }
 
+            await transaction.commit()
             toast.success<string>(t(LANGUAGE.NOTIFY_UPDATE_SUCCESS))
             onClose()
         } catch (error) {
@@ -110,14 +137,13 @@ const DetailTran: React.FC<Props> = (props) => {
     }
 
     const handleDelete = async () => {
-        if (!window.confirm(t(LANGUAGE.CONFIRM_DELETE_TRANSACTION) as string)) {
+        if (!data || !window.confirm(t(LANGUAGE.CONFIRM_DELETE_TRANSACTION) as string)) {
             return
         }
 
         try {
             setSubmitLoading(true)
-
-            await client.delete(_id)
+            await client.delete(data._id)
             toast.success<string>(t(LANGUAGE.NOTIFY_DELETE_SUCCESS))
             onClose()
         } catch (error) {
@@ -149,11 +175,13 @@ const DetailTran: React.FC<Props> = (props) => {
                 <TextArea form={form} name='description' label={t(LANGUAGE.SHORT_DESCRIPTION)} />
             </div>
             <div className='flex justify-end gap-2 px-6 pb-6 pt-4'>
-                <Button type='button' color='outline-radicalRed' onClick={handleDelete} disabled={loading.submit}>
-                    {t(LANGUAGE.DELETE)}
-                </Button>
-                <Button type='submit' color='indigo' disabled={loading.submit}>
-                    {t(LANGUAGE.UPDATE)}
+                {isEditMode && (
+                    <Button type='button' color='outline-radicalRed' onClick={handleDelete} disabled={loading.submit}>
+                        {t(LANGUAGE.DELETE)}
+                    </Button>
+                )}
+                <Button type='submit' color='pink' disabled={loading.submit}>
+                    {t(isEditMode ? LANGUAGE.UPDATE : LANGUAGE.CREATE)}
                 </Button>
             </div>
         </form>

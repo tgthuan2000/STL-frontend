@@ -1,13 +1,13 @@
-import React from 'react'
+import { lazy } from 'react'
 import { SettingOptions } from '~/@types/setting'
 import { PERMISSION } from '~/constant/permission'
 
-const Feedback = React.lazy(() => import('../components/Feedback'))
-const Mode = React.lazy(() => import('../components/Mode'))
-const ChangePassword = React.lazy(() => import('../components/ChangePassword'))
-const Language = React.lazy(() => import('../components/Language'))
-const Device = React.lazy(() => import('../components/Device'))
-const Logout = React.lazy(() => import('../components/Logout'))
+const Feedback = lazy(() => import('../components/Feedback'))
+const Mode = lazy(() => import('../components/Mode'))
+const ChangePassword = lazy(() => import('../components/ChangePassword'))
+const Language = lazy(() => import('../components/Language'))
+const Device = lazy(() => import('../components/Device'))
+const Logout = lazy(() => import('../components/Logout'))
 
 export const settingOptions: SettingOptions[] = [
     {

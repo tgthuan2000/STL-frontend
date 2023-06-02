@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import { ContentLoanBox2Props } from '~/@types/components'
 import AvatarUser from '~/components/AvatarUser'
 import { DATE_FORMAT } from '~/constant'
+import { KIND_SPENDING } from '~/constant/spending'
 import LANGUAGE from '~/i18n/language/key'
 
 const Content: React.FC<ContentLoanBox2Props> = ({ data, loading }) => {
@@ -68,7 +69,12 @@ const Content: React.FC<ContentLoanBox2Props> = ({ data, loading }) => {
                                 moment(item.estimatePaidDate).format(DATE_FORMAT.D_DATE_TIME) + ' - '}{' '}
                             {date?.message}
                         </span>
-                        <span className={clsx('font-normal', item.amount > 0 ? 'text-green-500' : 'text-red-500')}>
+                        <span
+                            className={clsx('font-normal', {
+                                'text-orange-500': KIND_SPENDING.CREDIT === item.kindSpending.key,
+                                'text-indigo-500': KIND_SPENDING.LOAN === item.kindSpending.key,
+                            })}
+                        >
                             {numeral(item.amount).format()}
                         </span>
                     </Link>

@@ -1,12 +1,12 @@
 import { CubeTransparentIcon } from '@heroicons/react/24/outline'
 import { get, isEqual } from 'lodash'
-import React, { Suspense, createContext, useCallback, useContext, useRef, useState } from 'react'
+import React, { Suspense, createContext, lazy, useCallback, useContext, useRef, useState } from 'react'
 import { DataCache, DeleteCache, ICacheContext, ICacheData, QueryParams, TagsField } from '~/@types/context'
 import { TAGS } from '~/constant'
 import { client } from '~/sanityConfig'
 import { service } from '~/services'
 
-const WatchCache = React.lazy(() => import('~/components/Cache'))
+const WatchCache = lazy(() => import('~/components/Cache'))
 
 export const CACHE_RANGE = {
     [TAGS.ALTERNATE]: 10,
