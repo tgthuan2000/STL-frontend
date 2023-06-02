@@ -170,7 +170,7 @@ const useLongBudgetChart = (data: LongBudgetDetail | undefined) => {
 
             return result
         }, [])
-        console.log(daily)
+
         return {
             daily,
             total: [],

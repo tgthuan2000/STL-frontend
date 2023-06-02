@@ -2,8 +2,8 @@ import { get, isEmpty, sum } from 'lodash'
 import React from 'react'
 import { LongBudget as TypeLongBudget } from '~/@types/spending'
 import { ProgressLine } from '~/components'
-import Atom from '~/components/_atomic/Atom'
-import Template from '~/components/_atomic/Template'
+import * as Atom from '~/components/_atomic/Atom'
+import { BudgetProgressList } from '~/components/_atomic/Template'
 import { budgetLongColors } from '~/constant/template'
 import EmptyData from './EmptyData'
 
@@ -16,7 +16,7 @@ const LongBudget: React.FC<Props> = (props) => {
     const { data, loading } = props
 
     return (
-        <Template.BudgetProgressList
+        <BudgetProgressList
             data={data}
             loading={loading && isEmpty(data)}
             fallback={<EmptyData />}

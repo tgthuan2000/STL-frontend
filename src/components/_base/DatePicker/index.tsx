@@ -51,6 +51,7 @@ const DatePicker = forwardRef<ReactDatePicker<never, undefined>, Props>((props, 
         InputProps,
         placeholderText,
         disabled,
+        className,
         ...rest
     } = props
     const { width } = useWindowSize()
@@ -66,41 +67,43 @@ const DatePicker = forwardRef<ReactDatePicker<never, undefined>, Props>((props, 
             control={form.control}
             rules={rules}
             render={({ field, fieldState: { error } }) => (
-                <DP
-                    showPopperArrow={false}
-                    calendarStartDay={1} // start date is monday
-                    dateFormat={DATE_FORMAT[format]}
-                    showTimeInput
-                    withPortal={mobileScreen}
-                    selected={selected}
-                    disabledKeyboardNavigation
-                    shouldCloseOnSelect
-                    customInput={
-                        <Input
-                            error={error}
-                            label={label}
-                            disabledClear={disabledClear}
-                            field={field}
-                            readOnlyInput={mobileScreen}
-                            disabled={disabled}
-                        />
-                    }
-                    {...field}
-                    onChange={(date) => {
-                        field.onChange(date)
-                        onChange?.(date)
-                        // tracking?.(name)
-                    }}
-                    placeholderText={placeholderText as string}
-                    {...rest}
-                    customTimeInput={<TimeInput />}
-                    calendarClassName='bg-gray-50 dark:bg-slate-600 dark:border-slate-800 rounded-md border-gray-200 shadow-md'
-                    dayClassName={(date) => 'text-gray-900 dark:text-slate-200'}
-                    monthClassName={(date) => 'text-gray-900 dark:text-slate-200'}
-                    renderCustomHeader={(params) => <Header {...params} />}
-                    weekDayClassName={(date) => 'dark:text-cyan-500 font-normal text-gray-700'}
-                    formatWeekDay={(nameOfDay) => weekday[moment(nameOfDay).format('dd')]}
-                />
+                <div className={className}>
+                    <DP
+                        showPopperArrow={false}
+                        calendarStartDay={1} // start date is monday
+                        dateFormat={DATE_FORMAT[format]}
+                        showTimeInput
+                        withPortal={mobileScreen}
+                        selected={selected}
+                        disabledKeyboardNavigation
+                        shouldCloseOnSelect
+                        customInput={
+                            <Input
+                                error={error}
+                                label={label}
+                                disabledClear={disabledClear}
+                                field={field}
+                                readOnlyInput={mobileScreen}
+                                disabled={disabled}
+                            />
+                        }
+                        {...field}
+                        onChange={(date) => {
+                            field.onChange(date)
+                            onChange?.(date)
+                            // tracking?.(name)
+                        }}
+                        placeholderText={placeholderText as string}
+                        {...rest}
+                        customTimeInput={<TimeInput />}
+                        calendarClassName='bg-gray-50 dark:bg-slate-600 dark:border-slate-800 rounded-md border-gray-200 shadow-md'
+                        dayClassName={(date) => 'text-gray-900 dark:text-slate-200'}
+                        monthClassName={(date) => 'text-gray-900 dark:text-slate-200'}
+                        renderCustomHeader={(params) => <Header {...params} />}
+                        weekDayClassName={(date) => 'dark:text-cyan-500 font-normal text-gray-700'}
+                        formatWeekDay={(nameOfDay) => weekday[moment(nameOfDay).format('dd')]}
+                    />
+                </div>
             )}
         />
     )

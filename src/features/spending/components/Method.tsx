@@ -3,8 +3,8 @@ import { get } from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { MethodProps } from '~/@types/spending'
-import Atom from '~/components/_atomic/Atom'
-import Template from '~/components/_atomic/Template'
+import * as Atom from '~/components/_atomic/Atom'
+import { SimpleList } from '~/components/_atomic/Template'
 import { getAmountTextColor } from '~/constant/template'
 import LANGUAGE from '~/i18n/language/key'
 
@@ -13,7 +13,7 @@ const Method: React.FC<MethodProps> = (props) => {
     const { t } = useTranslation()
 
     return (
-        <Template.SimpleList
+        <SimpleList
             data={data}
             loading={loading}
             fallback={<Atom.EmptyList icon={ArchiveBoxXMarkIcon} text={t(LANGUAGE.EMPTY_DATA)} />}

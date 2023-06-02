@@ -1,13 +1,13 @@
 import { PencilSquareIcon } from '@heroicons/react/24/outline'
-import { get, isEmpty } from 'lodash'
+import { get } from 'lodash'
 import numeral from 'numeral'
 import { lazy, memo, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AnimateWrap, Button, Paper, ProgressLine } from '~/components'
 import Title from '~/components/Box/Title'
 import LoadingText from '~/components/Loading/LoadingText'
-import Atom from '~/components/_atomic/Atom'
-import Template from '~/components/_atomic/Template'
+import * as Atom from '~/components/_atomic/Atom'
+import * as Template from '~/components/_atomic/Template'
 import { useDetailDialog } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import useChartTool from '../../hook/useChartTool'
@@ -140,22 +140,20 @@ const Content: React.FC<Props> = (props) => {
                                 renderSubTitle={(item) => <CustomAmount data={item} />}
                             />
                         </AnimateWrap>
-                        <AnimateWrap className='mt-5'>
-                            <Button
-                                type='button'
-                                color='pink'
-                                className='w-full'
-                                onClick={handleCreateTran}
-                                disabled={loading}
-                            >
-                                {t(LANGUAGE.CREATE_NEW)}
-                            </Button>
-                        </AnimateWrap>
+                        <Button
+                            type='button'
+                            color='pink'
+                            className='mt-5 w-full'
+                            onClick={handleCreateTran}
+                            disabled={loading}
+                        >
+                            {t(LANGUAGE.CREATE_NEW)}
+                        </Button>
                     </Paper>
                     <Paper disabledPadding className='mt-2 sm:mt-5'>
                         <Template.TransactionChart
                             renderTitle={
-                                <Atom.ChartTitle
+                                <Atom.TransactionTitle
                                     title={t(LANGUAGE.TRANSACTION)}
                                     subTitle={
                                         <Atom.Content
@@ -169,7 +167,6 @@ const Content: React.FC<Props> = (props) => {
                             renderTool={
                                 <AnimateWrap>
                                     <Atom.ChartTool
-                                        hidden={isEmpty(dataChart)}
                                         data={chartTypes}
                                         onSubmit={({ chartType }) => setChartType(chartType.id)}
                                     />
