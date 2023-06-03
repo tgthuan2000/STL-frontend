@@ -150,7 +150,7 @@ const Content: React.FC<Props> = (props) => {
                             {t(LANGUAGE.CREATE_NEW)}
                         </Button>
                     </Paper>
-                    <Paper disabledPadding className='mt-2 sm:mt-5'>
+                    {/* <Paper disabledPadding className='mt-2 sm:mt-5'>
                         <Template.TransactionChart
                             renderTitle={
                                 <Atom.TransactionTitle
@@ -181,7 +181,7 @@ const Content: React.FC<Props> = (props) => {
                                 />
                             }
                         />
-                    </Paper>
+                    </Paper> */}
                 </div>
             </div>
             <div className='flex-1'>
