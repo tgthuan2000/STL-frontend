@@ -1,11 +1,11 @@
 import { ChevronUpIcon, PlusIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
-import React from 'react'
+import { lazy } from 'react'
 import LoadingText from '~/components/Loading/LoadingText'
 import { useDetailDialog } from '~/context'
 import ExpandButton from './ExpandButton'
 
-const Content = React.lazy(() => import('./Content'))
+const Content = lazy(() => import('./Content'))
 
 interface ExpandHeaderProps {
     onExpand?: (expand: boolean) => void

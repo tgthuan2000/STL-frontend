@@ -4,12 +4,12 @@ import React, { memo, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AnimateWrap, Paper, ProgressLine } from '~/components'
 import Title from '~/components/Box/Title'
-import Atom from '~/components/_atomic/Atom'
-import Template from '~/components/_atomic/Template'
+import * as Atom from '~/components/_atomic/Atom'
+import * as Template from '~/components/_atomic/Template'
 import LANGUAGE from '~/i18n/language/key'
 import { getLinkSpending } from '~/utils'
-import { BudgetCategoryDetail, BudgetMethodDetail } from '../hook/useBudgetDetail'
 import useBudgetChart from '../hook/useBudgetChart'
+import { BudgetCategoryDetail, BudgetMethodDetail } from '../hook/useBudgetDetail'
 import useChartTool from '../hook/useChartTool'
 
 interface Props {
@@ -25,7 +25,7 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
     const { chartTypes, chartType, setChartType } = useChartTool()
     const { amounts, annotations, charts, progress, statistic } = useBudgetChart(data)
 
-    const dataChart = useMemo(() => {
+    const generateDataChart = useMemo(() => {
         if (charts) {
             switch (chartType) {
                 case 'bar': {
@@ -76,34 +76,34 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
                         </AnimateWrap>
 
                         <AnimateWrap>
-                            <Template.SmallStatisticList
+                            <Template.CardInfo
                                 data={statistic}
                                 loading={loading}
                                 fallback={<Atom.EmptyList />}
-                                loadingFallback={<Atom.SmallStatisticListSkeleton elNumber={6} />}
+                                loadingFallback={<Atom.CardInfoSkeleton elNumber={6} />}
                                 getItemKey={(item) => get(item, 'id')}
                                 getClassName={(item) => get(item, 'className')}
-                                getIcon={(item) => get(item, 'Icon')}
-                                renderAmount={(item) => (
+                                renderIcon={(item) => <Atom.CardIcon Icon={get(item, 'Icon')} />}
+                                renderTitle={(item) => get(item, 'title')}
+                                renderSubTitle={(item) => (
                                     <Atom.Amount
                                         amount={get(item, 'amount')}
                                         suffix={<Atom.Suffix suffix={get(item, 'suffix')} />}
                                     />
                                 )}
-                                renderTitle={(item) => get(item, 'title')}
                             />
                         </AnimateWrap>
                     </Paper>
                     <Paper disabledPadding className='mt-2 sm:mt-5'>
                         <Template.TransactionChart
                             renderTitle={
-                                <Atom.ChartTitle
+                                <Atom.TransactionTitle
                                     title={t(LANGUAGE.TRANSACTION)}
                                     subTitle={
-                                        <Atom.SlashTitle
+                                        <Atom.Content
                                             hidden={!data?.amount}
                                             title={numeral(amounts).format()}
-                                            subTitle={numeral(data?.amount).format()}
+                                            subTitle={'/' + numeral(data?.amount).format()}
                                         />
                                     }
                                 />
@@ -111,7 +111,7 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
                             renderTool={
                                 <AnimateWrap>
                                     <Atom.ChartTool
-                                        hidden={isEmpty(dataChart)}
+                                        hidden={isEmpty(generateDataChart?.())}
                                         data={chartTypes}
                                         onSubmit={({ chartType }) => setChartType(chartType.id)}
                                     />
@@ -119,7 +119,7 @@ const BudgetDetailContent: React.FC<Props> = (props) => {
                             }
                             renderChart={
                                 <Template.Chart
-                                    data={dataChart}
+                                    getSeries={generateDataChart}
                                     loading={loading}
                                     type={chartType}
                                     annotations={dataAnnotation}

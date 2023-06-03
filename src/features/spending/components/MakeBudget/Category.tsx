@@ -1,5 +1,5 @@
 import { PlusCircleIcon } from '@heroicons/react/24/outline'
-import React from 'react'
+import { lazy } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { ICategorySpending, MakeBudgetProps } from '~/@types/spending'
@@ -10,7 +10,7 @@ import LANGUAGE from '~/i18n/language/key'
 import Item from './Item'
 import useFieldMakeBudget from './service'
 
-const AddCategory = React.lazy(() => import('../AddCategory'))
+const AddCategory = lazy(() => import('../AddCategory'))
 
 type Props = MakeBudgetProps & { optionData: ICategorySpending[] | undefined; optionLoading: boolean }
 

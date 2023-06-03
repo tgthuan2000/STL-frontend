@@ -1,15 +1,15 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import { localStorageValue } from '~/@types/hook'
 import { NavLinkIconProps, OptionMenu } from '~/@types/layout'
 import { LOCAL_STORAGE_KEY } from './localStorage'
 import { PERMISSION } from './permission'
 
-const SettingMenuItem = React.lazy(() => import('~/components/MenuItem/SettingMenuItem'))
-const ProfileMenuItem = React.lazy(() => import('~/components/MenuItem/ProfileMenuItem'))
-const ChangePasswordMenuItem = React.lazy(() => import('~/components/MenuItem/ChangePasswordMenuItem'))
-const ModeMenuItem = React.lazy(() => import('~/components/MenuItem/ModeMenuItem'))
-const FeedbackMenuItem = React.lazy(() => import('~/components/MenuItem/FeedbackMenuItem'))
-const LogoutMenuItem = React.lazy(() => import('~/components/MenuItem/LogoutMenuItem'))
+const SettingMenuItem = lazy(() => import('~/components/MenuItem/SettingMenuItem'))
+const ProfileMenuItem = lazy(() => import('~/components/MenuItem/ProfileMenuItem'))
+const ChangePasswordMenuItem = lazy(() => import('~/components/MenuItem/ChangePasswordMenuItem'))
+const ModeMenuItem = lazy(() => import('~/components/MenuItem/ModeMenuItem'))
+const FeedbackMenuItem = lazy(() => import('~/components/MenuItem/FeedbackMenuItem'))
+const LogoutMenuItem = lazy(() => import('~/components/MenuItem/LogoutMenuItem'))
 
 export interface Navigation {
     name: string

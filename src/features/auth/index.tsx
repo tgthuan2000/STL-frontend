@@ -1,9 +1,9 @@
-import React from 'react'
+import { lazy } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-const AuthPage = React.lazy(() => import('./pages/Auth'))
-const Dashboard = React.lazy(() => import('./pages/Dashboard'))
-const TwoFactor = React.lazy(() => import('./pages/TwoFactor'))
+const AuthPage = lazy(() => import('./pages/Auth'))
+const Dashboard = lazy(() => import('./pages/Dashboard'))
+const TwoFactor = lazy(() => import('./pages/TwoFactor'))
 
 const Auth = () => {
     return (

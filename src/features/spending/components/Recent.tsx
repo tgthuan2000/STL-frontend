@@ -1,8 +1,8 @@
 import { get } from 'lodash'
 import React from 'react'
 import { RecentProps } from '~/@types/spending'
-import Atom from '~/components/_atomic/Atom'
-import Template from '~/components/_atomic/Template'
+import * as Atom from '~/components/_atomic/Atom'
+import { RecentList } from '~/components/_atomic/Template'
 import { getKindSpendingTextColor } from '~/constant/template'
 import { getLinkSpending } from '~/utils'
 
@@ -10,7 +10,7 @@ const Recent: React.FC<RecentProps> = (props) => {
     const { data, loading } = props
 
     return (
-        <Template.RecentList
+        <RecentList
             data={data}
             loading={loading}
             fallback={<Atom.EmptyList />}

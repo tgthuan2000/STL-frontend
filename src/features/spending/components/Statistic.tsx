@@ -1,14 +1,14 @@
 import { get } from 'lodash'
 import React from 'react'
 import { StatisticProps } from '~/@types/spending'
-import Atom from '~/components/_atomic/Atom'
-import Template from '~/components/_atomic/Template'
+import * as Atom from '~/components/_atomic/Atom'
+import { SimpleList } from '~/components/_atomic/Template'
 
 const Statistic: React.FC<StatisticProps> = (props) => {
     const { data, loading } = props
 
     return (
-        <Template.SimpleList
+        <SimpleList
             data={data}
             loading={loading}
             loadingFallback={<Atom.SimpleListSkeleton />}

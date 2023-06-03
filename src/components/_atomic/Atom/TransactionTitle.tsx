@@ -7,7 +7,7 @@ interface Props {
     className?: string
 }
 
-const ChartTitle: React.FC<Props> = (props) => {
+const TransactionTitle: React.FC<Props> = (props) => {
     const { title, subTitle, className } = props
 
     return (
@@ -18,4 +18,4 @@ const ChartTitle: React.FC<Props> = (props) => {
     )
 }
 
-export default ChartTitle
+export default TransactionTitle

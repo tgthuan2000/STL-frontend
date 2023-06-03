@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { lazy, useEffect, useMemo, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -23,8 +23,8 @@ import { useProfile } from '~/store/auth'
 import { servicesBudget } from '../services/budget'
 import { useBudgetSchema } from './schema'
 
-const Category = React.lazy(() => import('../components/MakeBudget/Category'))
-const Method = React.lazy(() => import('../components/MakeBudget/Method'))
+const Category = lazy(() => import('../components/MakeBudget/Category'))
+const Method = lazy(() => import('../components/MakeBudget/Method'))
 
 const defaultStateRef = {
     removes: {

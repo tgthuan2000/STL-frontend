@@ -239,6 +239,7 @@
     "CONFIRM_DELETE_SCHEDULE": "Bạn có chắc muốn xóa lịch trình này?",
     "CONFIRM_DELETE_DEVICE": "Bạn có chắc muốn xóa thiết bị này?",
     "CONFIRM_DELETE_ALL_DEVICES": "Bạn có chắc muốn xóa tất cả thiết bị?",
+    "CONFIRM_DELETE_LONG_BUDGET": "Bạn có chắc muốn xóa ngân sách này?",
     "NEED_SAVE_TO_UPDATED": "Bạn cần lưu lại sau khi chỉnh sửa để cập nhật!",
 
     "SPENDING": "Quản lý chi tiêu",
@@ -258,6 +259,7 @@
     "FROM_TRANSFER_METHOD": "Từ phương thức thanh toán",
     "TO_TRANSFER_METHOD": "Đến phương thức thanh toán",
     "CHOOSE_PREVIOUS_MONTH": "Chọn theo tháng trước",
+    "LONG_BUDGET_DETAIL": "Chi tiết ngân sách",
 
     "LOAN": "Cho vay",
     "CREDIT": "Vay",

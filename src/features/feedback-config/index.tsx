@@ -1,8 +1,8 @@
-import React from 'react'
+import { lazy } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-const FeedbackConfigFeature = React.lazy(() => import('./pages/FeedbackConfig'))
-const Dashboard = React.lazy(() => import('./pages/Dashboard'))
+const FeedbackConfigFeature = lazy(() => import('./pages/FeedbackConfig'))
+const Dashboard = lazy(() => import('./pages/Dashboard'))
 
 const FeedbackConfig = () => {
     return (

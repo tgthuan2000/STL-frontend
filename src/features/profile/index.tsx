@@ -1,11 +1,11 @@
-import React from 'react'
+import { lazy } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { PermissionCheck } from '~/components'
 import { PERMISSION } from '~/constant/permission'
 
-const ProfileFeature = React.lazy(() => import('./pages/Profile'))
-const Dashboard = React.lazy(() => import('./pages/Dashboard'))
-const Edit = React.lazy(() => import('./pages/Edit'))
+const ProfileFeature = lazy(() => import('./pages/Profile'))
+const Dashboard = lazy(() => import('./pages/Dashboard'))
+const Edit = lazy(() => import('./pages/Edit'))
 
 const Profile = () => {
     return (

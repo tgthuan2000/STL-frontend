@@ -1,19 +1,19 @@
-import BudgetProgressList from './BudgetProgressList'
-import Chart from './Chart'
-import ChartNote from './ChartNote'
-import RecentList from './RecentList'
-import SimpleList from './SimpleList'
-import SmallStatisticList from './SmallStatisticList'
-import TransactionChart from './TransactionChart'
+export { default as BudgetProgressList } from './BudgetProgressList'
+export { default as CardInfo } from './CardInfo'
+export { default as Chart } from './Chart'
+export { default as ChartNote } from './ChartNote'
+export { default as RecentList } from './RecentList'
+export { default as SimpleList } from './SimpleList'
+export { default as TransactionChart } from './TransactionChart'
 
-const Template = () => {}
+// import { lazy } from 'react'
 
-Template.BudgetProgressList = BudgetProgressList
-Template.RecentList = RecentList
-Template.SimpleList = SimpleList
-Template.SmallStatisticList = SmallStatisticList
-Template.Chart = Chart
-Template.TransactionChart = TransactionChart
-Template.ChartNote = ChartNote
+// const BudgetProgressList = lazy(() => import('./BudgetProgressList'))
+// const CardInfo = lazy(() => import('./CardInfo'))
+// const Chart = lazy(() => import('./Chart'))
+// const ChartNote = lazy(() => import('./ChartNote'))
+// const RecentList = lazy(() => import('./RecentList'))
+// const SimpleList = lazy(() => import('./SimpleList'))
+// const TransactionChart = lazy(() => import('./TransactionChart'))
 
-export default Template
+// export { BudgetProgressList, CardInfo, Chart, ChartNote, RecentList, SimpleList, TransactionChart }
