@@ -9,8 +9,8 @@ const SideBar = () => {
     return (
         <div
             className={clsx(
-                'group hidden md:fixed md:top-16 md:bottom-0 md:left-0 md:z-10 md:flex md:w-64 md:flex-col md:transition-all md:duration-300 md:ease-in-out',
-                desktop.open ? 'md:w-64' : 'md:w-16 hover:md:w-64'
+                'group fixed top-16 bottom-0 left-0 z-10 flex w-64 flex-col transition-all duration-300 ease-in-out',
+                desktop.open ? 'w-64' : 'w-16 hover:w-64'
             )}
         >
             {/* Sidebar component, swap this element with another sidebar if you like */}

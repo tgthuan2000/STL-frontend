@@ -12,7 +12,7 @@ const TopBar = () => {
     const { desktop } = useSideBar()
 
     return (
-        <div className='fixed top-0 left-0 right-0 z-30 hidden h-16 bg-white shadow dark:bg-gray-900 md:block'>
+        <div className='fixed top-0 left-0 right-0 z-30 h-16 bg-white shadow dark:bg-gray-900'>
             <div className='flex h-full items-center'>
                 {/* Notification  */}
                 <div
