@@ -10,19 +10,18 @@ const NavLinkItem: React.FC<NavLinkItemProps> = ({ data, onClick, open = true })
             onClick={onClick}
             className={({ isActive }) =>
                 clsx(
-                    isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'hover:text-gray-300 flex gap-2 items-center px-3 py-2 text-sm font-medium rounded-md select-none truncate',
+                    isActive
+                        ? 'bg-indigo-500 text-white dark:bg-cyan-500'
+                        : 'text-gray-900 hover:bg-gray-600 hover:text-white dark:text-white dark:hover:bg-slate-800',
+                    'flex select-none items-center gap-2 truncate rounded-md px-3 py-2 text-sm font-medium',
                     !open && 'group-hover:justify-start'
                 )
             }
         >
             {({ isActive }) => (
                 <>
-                    <data.icon
-                        className={clsx(isActive ? 'text-gray-300' : 'text-gray-400', 'flex-shrink-0 h-6 w-6')}
-                        aria-hidden='true'
-                    />
-                    <span className={clsx('flex-1', !open && 'group-hover:block hidden')}>{data.name}</span>
+                    <data.icon className='h-6 w-6 flex-shrink-0' aria-hidden='true' />
+                    <span className={clsx('flex-1', !open && 'hidden group-hover:block')}>{data.name}</span>
                 </>
             )}
         </NavLink>

@@ -172,6 +172,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     type: 'button' | 'submit' | 'reset'
     onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
     color:
+        | 'orange'
         | 'outline'
         | 'indigo'
         | 'cyan'

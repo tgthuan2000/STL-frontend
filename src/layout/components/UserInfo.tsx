@@ -17,7 +17,7 @@ const UserInfo = () => {
     )
 
     return (
-        <Menu as='div' className='relative flex cursor-pointer select-none bg-gray-700 p-4'>
+        <Menu as='div' className='relative flex cursor-pointer select-none bg-white p-4 dark:bg-slate-800'>
             <Menu.Button className='block max-w-full'>
                 <div className='flex items-center justify-center gap-x-3'>
                     <div className='flex-shrink-0'>
@@ -29,8 +29,12 @@ const UserInfo = () => {
                             !desktop.open && 'hidden group-hover:block'
                         )}
                     >
-                        <p className='truncate text-base font-normal text-white'>{userProfile?.userName}</p>
-                        <p className='truncate text-sm font-normal text-gray-400'>{userProfile?.email}</p>
+                        <p className='truncate text-base font-normal text-gray-900 dark:text-white'>
+                            {userProfile?.userName}
+                        </p>
+                        <p className='truncate text-sm font-normal text-gray-500 dark:text-slate-400'>
+                            {userProfile?.email}
+                        </p>
                     </div>
                 </div>
             </Menu.Button>

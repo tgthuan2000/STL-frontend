@@ -14,6 +14,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 className={clsx(
                     'inline-flex w-auto min-w-[100px] select-none items-center justify-center gap-0.5 whitespace-nowrap rounded-md border py-3 px-4 text-sm font-medium shadow-sm focus:outline-none disabled:cursor-not-allowed disabled:opacity-30 sm:py-2',
                     {
+                        'border-transparent bg-orange-600 text-white hover:bg-orange-700 disabled:hover:bg-orange-600':
+                            color === 'orange',
+                    },
+                    {
                         'border-transparent bg-indigo-600 text-white hover:bg-indigo-700 disabled:hover:bg-indigo-600':
                             color === 'indigo',
                     },

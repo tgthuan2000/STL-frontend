@@ -263,6 +263,7 @@
 
     "LOAN": "Cho vay",
     "CREDIT": "Vay",
+    "CREDIT_LIST": "Danh sách vay",
     "MAKE_LOAN": "Cho vay",
     "MAKE_CREDIT": "Vay",
     "MAKE_LOAN_CREDIT": "Vay/Cho vay",
@@ -409,7 +410,7 @@
     "EMPTY_LONG_BUDGET": "Bạn chưa có ngân sách dài hạn",
 
     "SPENDING_MANAGEMENT": "Quản lý chi tiêu",
-    "LOAN_MANAGEMENT": "Quản lý vay/cho vay",
+    "LOAN_MANAGEMENT": "Quản lý vay nợ",
     "TIME_MANAGEMENT": "Quản lý thời gian",
     "ACCOUNT_MANAGEMENT": "Quản lý tài khoản",
     "NOTIFY_MANAGEMENT": "Quản lý thông báo",

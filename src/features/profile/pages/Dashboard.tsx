@@ -21,7 +21,7 @@ const Dashboard = () => {
                     <Image
                         src={userProfile?.image}
                         avatar={{ roundFull: true, size: 'custom' }}
-                        className='mx-auto h-28 w-28 border-2 shadow-lg dark:border-slate-700 sm:h-32 sm:w-32'
+                        className='mx-auto h-28 w-28 border-2 object-cover shadow-lg dark:border-slate-700 sm:h-32 sm:w-32'
                     />
                 </div>
                 {/* MAIN */}

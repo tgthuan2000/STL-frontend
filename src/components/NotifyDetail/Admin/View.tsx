@@ -16,7 +16,7 @@ const NotifyDetailView: React.FC<Props> = ({ data }) => {
     const { notify } = data
 
     return (
-        <div className='-mx-4 bg-white p-2 dark:bg-slate-800 sm:rounded-lg sm:p-3 sm:shadow-xl'>
+        <div className='-mx-4 bg-white p-2 dark:bg-slate-800 sm:min-h-[calc(100vh-250px)] sm:rounded-lg sm:p-3 sm:shadow-xl'>
             <div className='flex flex-col gap-2'>
                 <div className='flex flex-col items-start justify-between p-2 sm:flex-row'>
                     <div className='flex flex-col gap-0.5'>
