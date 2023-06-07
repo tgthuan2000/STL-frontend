@@ -144,7 +144,7 @@ export const useMenuLoanMobile = (): IMenuBtn[] => {
         return [
             {
                 title: t(LANGUAGE.MAKE_CREDIT),
-                color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
+                color: 'text-orange-700 bg-orange-200 hover:bg-orange-300 dark:text-orange-500',
                 icon: ArrowTrendingUpIcon,
                 children: <MakeCredit />,
                 slide: 'credit',
@@ -311,7 +311,7 @@ export const useMenuLoanPC = (): IMenuBtn[] => {
         return [
             {
                 title: t(LANGUAGE.MAKE_CREDIT),
-                color: 'text-radical-red-700 bg-radical-red-200 hover:bg-radical-red-300 dark:text-radical-red-500',
+                color: 'text-orange-700 bg-orange-200 hover:bg-orange-300 dark:text-orange-500',
                 icon: ArrowTrendingUpIcon,
                 children: <MakeCredit />,
                 slide: 'credit',

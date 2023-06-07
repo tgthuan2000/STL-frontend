@@ -161,7 +161,7 @@ const MakeCredit = () => {
             onSubmit={form.handleSubmit(onsubmit)}
             renderButton={
                 <SubmitWrap>
-                    <Button color='radicalRed' type='submit' disabled={loading.submit}>
+                    <Button color='orange' type='submit' disabled={loading.submit}>
                         {t(LANGUAGE.SAVE)}
                     </Button>
                     <Button color='outline' type='button' onClick={close}>

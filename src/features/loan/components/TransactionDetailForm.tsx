@@ -7,14 +7,13 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { PaidForm, TransactionDetailFormProps } from '~/@types/loan'
-import { AnimateWrap, AvatarUser, Button, Divider, FormWrap, SubmitWrap } from '~/components'
+import { AnimateWrap, AvatarUser, Button, Divider, FormWrap, IconButton, SubmitWrap } from '~/components'
 import { AutoComplete, Input, Toggle } from '~/components/_base'
 import { DATE_FORMAT } from '~/constant'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
 import { urlFor } from '~/sanityConfig'
 import Group from './Group'
-import IconButton from './common/IconButton'
 
 const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) => {
     const { t } = useTranslation()

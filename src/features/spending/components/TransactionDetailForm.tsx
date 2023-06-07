@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 import { IDetailSpendingForm, TransactionDetailFormProps } from '~/@types/spending'
-import { Button, FormWrap, SubmitWrap } from '~/components'
+import { Button, FormWrap, IconButton, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { KIND_SPENDING } from '~/constant/spending'
 import { useLoading } from '~/context'
@@ -95,15 +95,14 @@ const TransactionDetailForm: React.FC<TransactionDetailFormProps> = ({ data }) =
                     KIND_SPENDING.TRANSFER_FROM,
                     KIND_SPENDING.TRANSFER_TO,
                 ].includes(transaction.kindSpending.key) && (
-                    <span
-                        className='h-8 w-8 cursor-pointer rounded-lg bg-slate-200 p-1.5 text-gray-600 transition-opacity hover:opacity-50 dark:bg-slate-700 dark:text-slate-300 lg:h-9 lg:w-9'
+                    <IconButton
                         onClick={() =>
                             window.confirm(t(LANGUAGE.CONFIRM_DELETE_TRANSACTION) as string) &&
                             handleDeleteTransaction()
                         }
                     >
                         <TrashIcon />
-                    </span>
+                    </IconButton>
                 )}
             </div>
             <div className='rounded-xl bg-white py-2 shadow-lg dark:bg-slate-800 sm:py-6 lg:py-8'>

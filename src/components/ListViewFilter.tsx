@@ -1,4 +1,4 @@
-import { FunnelIcon, ListBulletIcon } from '@heroicons/react/24/outline'
+import { ListBulletIcon, WrenchScrewdriverIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { isNil } from 'lodash'
 import numeral from 'numeral'
@@ -87,7 +87,7 @@ const ListViewFilter: React.FC<ListViewFilterProps> = (props) => {
                             data={dropdownOptions}
                             idKey='id'
                             valueKey='name'
-                            label={<FunnelIcon className='h-6' />}
+                            label={<WrenchScrewdriverIcon className='h-6' />}
                             disabled={loading}
                         />
                         {children}

@@ -93,7 +93,7 @@ const Permission: React.FC<Props> = (props) => {
 
             await transaction.commit({ autoGenerateArrayKeys: true })
             refetch()
-            toast.success<string>(t(LANGUAGE.NOTIFY_CREATE_SUCCESS))
+            toast.success<string>(t(LANGUAGE.NOTIFY_UPDATE_SUCCESS))
         } catch (error: any) {
             console.log(error)
             toast.error<string>(error.message)

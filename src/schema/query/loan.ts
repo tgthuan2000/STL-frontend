@@ -101,3 +101,30 @@ export const GET_TRANSACTION_DETAIL = groq`
         }
     }
 `
+
+export const GET_MEMBER_LOAN_BY_ID = groq`
+    *[_type == "userLoan" && _id == $id && user._ref == $userId][0] {
+        _id,
+        _createdAt,
+        userName,
+        image,
+        "spending": *[_type == "spending" && userLoan._ref == ^._id] {
+            _id,
+            amount,
+            date,
+            description,
+            estimatePaidDate,
+            kindSpending-> {
+                _id,
+                name,
+                key
+            },
+            methodSpending-> {
+                _id,
+                name,
+                surplus
+            },
+            paid
+        }
+    }
+`
