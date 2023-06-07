@@ -8,11 +8,10 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 import { TransactionEditFormProps } from '~/@types/loan'
-import { Button, FormWrap, SubmitWrap } from '~/components'
+import { Button, FormWrap, IconButton, SubmitWrap } from '~/components'
 import { AutoComplete, DatePicker, Input, TextArea, UploadImage } from '~/components/_base'
 import { useLoading } from '~/context'
 import LANGUAGE from '~/i18n/language/key'
-import IconButton from './common/IconButton'
 import StatusLoan from './common/StatusLoan'
 
 const useSchema = () => {

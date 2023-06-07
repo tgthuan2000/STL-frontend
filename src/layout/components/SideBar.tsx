@@ -29,7 +29,7 @@ const Sidebar: React.FC<SideBarProps> = ({ children }) => {
             <ScrollToTopProvider>
                 <div
                     className={clsx(
-                        'transition-all md:min-h-[calc(100vh-64px)]',
+                        'transition-all duration-200 md:min-h-[calc(100vh-64px)]',
                         desktop.open ? 'md:pl-64' : 'md:pl-16'
                     )}
                 >

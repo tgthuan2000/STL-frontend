@@ -23,7 +23,7 @@ const SkeletonContent: React.FC<Props> = (props) => {
                         'mb-4 select-none rounded-lg p-2 dark:text-white',
                         isDragging
                             ? 'bg-gray-700 text-white dark:bg-cyan-400'
-                            : ' bg-gray-300 text-gray-900 dark:bg-slate-700',
+                            : ' bg-gray-200 text-gray-900 dark:bg-slate-700',
 
                         className
                     )}
